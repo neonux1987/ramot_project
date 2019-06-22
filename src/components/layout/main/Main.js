@@ -3,6 +3,7 @@ import MonthExpanses from '../../pages/MonthExpanses';
 import Home from '../../pages/Home';
 import BudgetExecution from '../../pages/BudgetExecution';
 import SummarizedBudget from '../../pages/SummarizedBudget';
+import Settings from '../../pages/Settings';
 import Statistics from '../../pages/Statistics'
 import { Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
@@ -90,8 +91,8 @@ class Main extends Component {
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
           <Switch>
             {this.state.routes}
-            <Route path="/sum" exact component={BudgetExecution} />
             <Route path="/דף-הבית" exact component={Home} />
+            <Route path="/הגדרות" exact component={Settings} />
             <Route exact component={Home} />
           </Switch>
         </main>
