@@ -24,6 +24,11 @@ const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
   typography: {
     useNextVariants: true,
+    fontFamily: [
+      'Roboto',
+      'Arial',
+      'sans-serif'
+    ].join(',')
   }
 });
 

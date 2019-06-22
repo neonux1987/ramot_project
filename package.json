@@ -23,7 +23,8 @@
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
-    "sqlite3": "^4.0.9"
+    "sqlite3": "^4.0.9",
+    "typeface-roboto": "0.0.54"
   },
   "author": {
     "name": "Your Name",

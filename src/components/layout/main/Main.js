@@ -3,7 +3,7 @@ import MonthExpanses from '../../pages/MonthExpanses';
 import Home from '../../pages/Home';
 import BudgetExecution from '../../pages/BudgetExecution';
 import SummarizedBudget from '../../pages/SummarizedBudget';
-import Settings from '../../pages/Settings';
+import Settings from '../../pages/settings/Settings';
 import Statistics from '../../pages/Statistics'
 import { Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';

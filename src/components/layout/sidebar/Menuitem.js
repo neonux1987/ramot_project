@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItem, ListItemIcon, ListItemText, withStyles, Collapse } from '@material-ui/core';
-import { Home, ExpandLess, ExpandMore, InsertChartOutlined, AssignmentTurnedIn, AttachMoney, Receipt, Label } from '@material-ui/icons';
+import { Home, ArrowDropUp, ArrowDropDown, InsertChartOutlined, AssignmentTurnedIn, AttachMoney, Receipt, Label } from '@material-ui/icons';
 import NavButton from './NavButton';
 
 const styles = theme => ({
@@ -63,7 +63,7 @@ const Menuitem = (props) => {
       <ListItem classes={{ root: props.classes.itemStyle }} onClick={() => props.expandClick(props.item.id)} button>
         <ListItemIcon classes={{ root: props.classes.listItemIcon }}><Home /></ListItemIcon>
         <ListItemText classes={{ root: props.classes.listItemTextRoot, primary: props.classes.listItemText }} primary={props.item.label} />
-        {expandedItem ? <ExpandLess className={props.classes.expander} /> : <ExpandMore className={props.classes.expander} />}
+        {expandedItem ? <ArrowDropUp className={props.classes.expander} /> : <ArrowDropDown className={props.classes.expander} />}
       </ListItem>
 
       <Collapse in={expandedItem} timeout="auto" unmountOnExit>

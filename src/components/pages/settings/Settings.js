@@ -20,9 +20,19 @@ TabContainer.propTypes = {
 };
 
 const styles = (theme) => ({
-  root: {
+  tabs: {
     flexGrow: 1,
+    backgroundColor: "#27354a"
     //backgroundColor: theme.palette.background.paper
+  },
+  tab: {
+    fontSize: "16px"
+  },
+  indicator: {
+    backgroundColor: "#fff"
+  },
+  selected: {
+    backgroundColor: "#0a8fc1"
   }
 });
 
@@ -53,11 +63,11 @@ class Settings extends Component {
   render() {
     return (
       <div>
-        <AppBar classes={{ root: this.props.classes.root }} position="static">
-          <Tabs value={this.state.value} onChange={this.handleChange}>
-            <Tab label="כללי" />
-            <Tab label="קישורים" />
-            <Tab label="גיבויים" />
+        <AppBar position="static">
+          <Tabs classes={{ root: this.props.classes.tabs, indicator: this.props.classes.indicator }} value={this.state.value} onChange={this.handleChange}>
+            <Tab classes={{ root: this.props.classes.tab, selected: this.props.classes.selected }} label="כללי" />
+            <Tab classes={{ root: this.props.classes.tab, selected: this.props.classes.selected }} label="קישורים" />
+            <Tab classes={{ root: this.props.classes.tab, selected: this.props.classes.selected }} label="גיבויים" />
           </Tabs>
         </AppBar>
         {this.state.value === 0 && <TabContainer>Item One</TabContainer>}
