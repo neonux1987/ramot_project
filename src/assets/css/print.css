@@ -1,0 +1,32 @@
+
+
+body{
+  font-family: "Arial";
+  font-size: 14px;
+  direction: rtl;
+}
+
+table{
+  border-collapse: collapse;
+}
+
+tr {
+  height: 34px;
+}
+
+tr.td {
+  padding: 4px 24px 4px 24px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #000;
+}
+
+td {
+  padding: 4px 24px 4px 24px;
+  border: 1px solid #000;
+  font-size: 16px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.87);
+}

@@ -1,0 +1,61 @@
+.hideAnimation{
+  animation: hide 0.4s ease 0.4s forwards;
+}
+
+.showAnimation{
+  animation: show 0.4s ease 0.4s backwards;
+}
+
+@keyframes hide{
+  0% {margin-right: 0px;}
+  100% {
+    margin-right: -230px;
+  }
+}
+
+@keyframes show{
+  0% {
+    margin-right: -230px;
+  }
+  100% {
+    margin-right: 0px;
+  }
+}
+
+.hideButtonAnimation{
+  animation: hideButton 0.3s ease 0.3s forwards;
+}
+
+.showButtonAnimation{
+  animation: showButton 0.3s ease 0.3s backwards;
+}
+
+@keyframes hideButton{
+  0% {right: 186px;}
+  100% {
+    right: -6px;
+  }
+}
+
+@keyframes showButton{
+  0% {
+    right: -6px;
+  }
+  100% {
+    right: 186px;
+  }
+}
+
+.showMainAnimation{
+  animation: showMain 0.6s ease 0.6s forwards;
+}
+
+@keyframes showMain{
+  0% {
+    left: -1960px;
+  }
+  100% {
+    opacity: 1;
+    left: 0px;
+  }
+}

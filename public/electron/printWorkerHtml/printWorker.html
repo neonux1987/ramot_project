@@ -1,0 +1,17 @@
+<head>
+  <title>asdasdasd</title>
+</head>
+
+<body>
+  <script>
+    import { ipcRenderer } from "electron";
+    console.log("inside worker html");
+    ipcRenderer.on("worker-data", (event, doc) => {
+
+
+
+
+      ipcRenderer.send("print-worker-data");
+    });
+  </script>
+</body>

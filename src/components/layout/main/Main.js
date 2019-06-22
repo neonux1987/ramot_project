@@ -1,0 +1,104 @@
+import React, { Component } from 'react';
+import MonthExpanses from '../../pages/MonthExpanses';
+import Home from '../../pages/Home';
+import BudgetExecution from '../../pages/BudgetExecution';
+import SummarizedBudget from '../../pages/SummarizedBudget';
+import Statistics from '../../pages/Statistics'
+import { Route, Switch } from 'react-router-dom';
+import { withStyles } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
+import LoadingCircle from '../../common/LoadingCircle';
+
+const styles = theme => ({
+  main: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+    overflow: "auto",
+    display: "block",
+    position: "relative",
+    right: "-1960px",
+    opacity: "0",
+    paddingTop: "22px"
+  },
+  loadingWrapper: {
+    display: "flex",
+    height: "100%",
+    alignItems: "center",
+    color: "#000",
+    fontSize: "34px",
+    margin: "0 auto"
+  }
+})
+
+class Main extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+    this._isMounted = false;
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    ipcRenderer.send("get-menu");
+    //request month expanses data
+    ipcRenderer.once("menu-data", (event, result) => {
+      if (this._isMounted) {
+        this.setState((prevState) => ({
+          ...prevState,
+          routes: this.generateRoutes(result)
+        }));
+
+      }
+    });
+  }
+
+  //gnerate routes from menu array with sub arrays
+  generateRoutes(menu) {
+    //generate menu routes and submenu routes
+    let routes = [];
+    menu.forEach(route => {
+      routes.push(route.submenu.map(subRoute => {
+        return (<Route path={"/" + route.path + "/" + subRoute.path} exact component={this.whichPageComponent(subRoute.label)} key={route.id} />);
+      }));
+      /* routes.push(<Route path={"/" + route.path} exact component={MonthExpanses} key={route.id} />); */
+    });
+    return routes;
+  }
+
+  whichPageComponent(pageName) {
+    switch (pageName) {
+      case "הוצאות חודשי": return MonthExpanses;
+      case "ביצוע מול תקציב": return BudgetExecution;
+      case "סיכום תקציבי": return SummarizedBudget;
+      case "סטטיסטיקה": return Statistics;
+      default: return Home;
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  render() {
+    if (this.state.routes === undefined) {
+      return <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} />;
+    } else {
+      return (
+        <main id="main" className={this.props.classes.main + this.props.toggleMain}>
+          <Switch>
+            {this.state.routes}
+            <Route path="/sum" exact component={BudgetExecution} />
+            <Route path="/דף-הבית" exact component={Home} />
+            <Route exact component={Home} />
+          </Switch>
+        </main>
+      );
+    }
+  }
+
+}
+
+export default withStyles(styles)(Main);
