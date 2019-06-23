@@ -1,6 +1,10 @@
-import SummarizedSectionsController from '../../../controllers/SummarizedSectionsController';
+import SummarizedSectionsController from '../../controllers/SummarizedSectionsController';
 
-const getSummarizedSectionsAction = (payload = Object) => {
+/**
+ * get summarized sections
+ * @param {*} payload 
+ */
+const getSummarizedSections = (payload = Object) => {
   return dispatch => {
 
     //important params that allows to pull the current data by
@@ -17,4 +21,6 @@ const getSummarizedSectionsAction = (payload = Object) => {
   }
 };
 
-export default getSummarizedSectionsAction;
+export default {
+  getSummarizedSections
+};

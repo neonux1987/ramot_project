@@ -1,6 +1,6 @@
 const path = require('path');
 const homedir = require('os').homedir();
-const dbPath = path.join(homedir, "Documents/db/ndts-frms-db.sqlite")
+const dbPath = path.join(homedir, "Dropbox/db/ndts-frms-db.sqlite")
 console.log(dbPath)
 
 const createDBConnection = () => {

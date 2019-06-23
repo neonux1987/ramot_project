@@ -1,23 +1,8 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { withStyles, Tabs, Tab, Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-
-function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  );
-}
-
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+import { Route, Switch, NavLink } from 'react-router-dom';
+import Home from '../Home';
 
 const styles = (theme) => ({
   tabs: {
@@ -33,58 +18,45 @@ const styles = (theme) => ({
   },
   selected: {
     backgroundColor: "#0a8fc1"
+  },
+  headerTitle: {
+    marginBottom: "10px"
   }
 });
 
 const PAGE_NAME = "settings";
 
-class Settings extends Component {
+const Settings = ({ classes, match }, props) => {
 
-  state = {
-    value: 0
-  };
+  const [value, setValue] = React.useState(0);
 
-  _isMounted = false;
-
-  componentDidMount() {
-    this._isMounted = true;
-
-
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
   }
 
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  handleChange = (event, newValue) => {
-    this.setState({ value: newValue })
-  }
-
-  render() {
-    return (
+  return (
+    <div>
+      <Typography className={classes.headerTitle} variant="h3">
+        הגדרות
+      </Typography>
+      <AppBar position="static">
+        <Tabs classes={{ root: classes.tabs, indicator: classes.indicator }} value={value} onChange={handleChange}>
+          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="כללי" component={NavLink} to={{ pathname: `${match.path}/כללי` }} />
+          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="קישור סעיפים" component={NavLink} to={{ pathname: `${match.path}/קישור-סעיפים` }} />
+          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="גיבוי" component={NavLink} to={{ pathname: `${match.path}/גיבוי` }} />
+        </Tabs>
+      </AppBar>
       <div>
-        <AppBar position="static">
-          <Tabs classes={{ root: this.props.classes.tabs, indicator: this.props.classes.indicator }} value={this.state.value} onChange={this.handleChange}>
-            <Tab classes={{ root: this.props.classes.tab, selected: this.props.classes.selected }} label="כללי" />
-            <Tab classes={{ root: this.props.classes.tab, selected: this.props.classes.selected }} label="קישורים" />
-            <Tab classes={{ root: this.props.classes.tab, selected: this.props.classes.selected }} label="גיבויים" />
-          </Tabs>
-        </AppBar>
-        {this.state.value === 0 && <TabContainer>Item One</TabContainer>}
-        {this.state.value === 1 && <TabContainer>Item Two</TabContainer>}
-        {this.state.value === 2 && <TabContainer>Item Three</TabContainer>}
+        <Switch>
+          <Route path={`${match.path}/כללי`} render={() => <h3>Plasdsad</h3>} />
+          <Route path={`${match.path}/קישור-סעיפים`} component={Home} />
+          <Route path={`${match.path}/גיבוי`} component={Home} />
+          <Route render={() => <h3>Please select a topic.</h3>} />
+        </Switch>
       </div>
-    );
-  }
+    </div>
+  );
 
 }
 
-const mapStateToProps = state => ({
-  ...state
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Settings));
+export default withStyles(styles)(Settings);

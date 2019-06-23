@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import RTL from './components/RTL';
 import SidebarToggleButton from './components/layout/sidebar/SidebarToggleButton';
 import { connect } from 'react-redux';
-import toggleSidebarAction from './redux/actions/sidebar/toggleSidebarAction';
+import sidebarActions from './redux/actions/sidebarActions';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
 
@@ -48,7 +48,7 @@ class App extends Component {
           <MemoryRouter>
             <div className={this.props.classes.root}>
               <CssBaseline />
-              <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebarAction(!this.props.sidebar.toggleSidebar)} />
+              <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebar(!this.props.sidebar.toggleSidebar)} />
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
@@ -64,7 +64,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleSidebarAction: (payload) => dispatch(toggleSidebarAction(payload))
+  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload))
 });
 
 App.propTypes = {

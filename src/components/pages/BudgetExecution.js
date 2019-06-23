@@ -31,7 +31,7 @@ const styles = (theme) => ({
 });
 
 const PAGE_NAME = "budgetExecution";
-const PAGE_TITLE = "מעקב הוצאות חודשיות";
+const PAGE_TITLE = "מעקב ביצוע מול תקציב";
 
 const FIXED_FLOAT = 2;
 

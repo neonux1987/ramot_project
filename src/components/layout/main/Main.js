@@ -91,9 +91,9 @@ class Main extends Component {
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
           <Switch>
             {this.state.routes}
-            <Route path="/דף-הבית" exact component={Home} />
-            <Route path="/הגדרות" exact component={Settings} />
-            <Route exact component={Home} />
+            <Route path="/דף-הבית" component={Home} />
+            <Route path="/הגדרות" component={Settings} />
+            <Route exact path="/" component={Home} />
           </Switch>
         </main>
       );

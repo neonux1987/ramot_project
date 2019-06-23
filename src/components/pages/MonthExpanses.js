@@ -3,13 +3,13 @@ import InputExpansesField from '../common/InputExpansesField'
 import ReactTable from 'react-table';
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { getMonthExpansesDataAction, updateMonthExpanseAction } from '../../redux/actions/monthExpanses/index';
-import getSummarizedSectionsAction from '../../redux/actions/summarized_sections/getSummarizedSectionsAction';
+import summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
+import monthExpansesActions from '../../redux/actions/monthExpansesActions';
+import dateActions from '../../redux/actions/dateActions';
 import Helper from '../../helpers/Helper';
 import Header from '../layout/main/Header';
 import IOController from '../../controllers/IOController';
 import LoadingCircle from '../common/LoadingCircle';
-import setCurrentDateAction from '../../redux/actions/date/setCurrentDateAction';
 import PageControls from '../common/page_controls/PageControls';
 import DatePicker from '../common/DatePicker';
 import WithHeaderWrapper from '../HOC/WithHeaderWrapper';
@@ -288,10 +288,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getMonthExpanses: (payload) => dispatch(getMonthExpansesDataAction(payload)),
-  updateMonthExpanse: (payload, tableData) => dispatch(updateMonthExpanseAction(payload, tableData)),
-  setCurrentDate: (payload) => dispatch(setCurrentDateAction(payload)),
-  getSummarizedSections: () => dispatch(getSummarizedSectionsAction())
+  getMonthExpanses: (payload) => dispatch(monthExpansesActions.getMonthExpanses(payload)),
+  updateMonthExpanse: (payload, tableData) => dispatch(monthExpansesActions.updateMonthExpanse(payload, tableData)),
+  addNewMonthExpanse: (payload, tableData) => dispatch(monthExpansesActions.addNewMonthExpanse(payload, tableData)),
+  setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
+  getSummarizedSections: () => dispatch(summarizedSectionsActions.getSummarizedSections())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MonthExpanses));
