@@ -9,16 +9,33 @@ const initState = {
     monthHeb: Helper.getCurrentMonthHeb(),
     quarter: Helper.getCurrentQuarter()
   },
-  tableHeaders: [],
-  tableData: []
+  expanses: {
+    isFetching: false,
+    status: "",
+    error: "",
+    data: []
+  }
 }
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "GET_MONTH_EXPANSES":
+    case "RECEIVE_MONTH_EXPANSES":
       return {
         ...state,
-        tableData: action.payload
+        expanses: {
+          ...state.expanses,
+          isFetching: false,
+          status: "success",
+          data: action.data
+        }
+      }
+    case "REQUEST_MONTH_EXPANSES":
+      return {
+        ...state,
+        expanses: {
+          ...state.expanses,
+          isFetching: true,
+        }
       }
     case "UPDATE_MONTH_EXPANSES":
       return {
@@ -29,6 +46,15 @@ export default (state = initState, action) => {
       return {
         ...state,
         tableData: action.payload
+      }
+    case "FETCHING_FAILED":
+      return {
+        ...state,
+        expanses: {
+          ...state.expanses,
+          status: "error",
+          error: action.payload
+        }
       }
     case "UPDATE_DATE":
       return {

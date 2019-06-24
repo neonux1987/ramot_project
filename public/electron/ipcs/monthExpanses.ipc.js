@@ -9,20 +9,27 @@ const monthExpansesIpc = (connection) => {
   ipcMain.on('get-month-expanses-data', (event, arg) => {
     monthExpansesLogic.getAllMonthExpanses(arg).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.sender.send("month-expanses-data", result);
-    }).catch((err) => {
-      throw "קרתה תקלה בשליפת המידע מהבסיס נתונים.";
+      event.reply("month-expanses-data", { data: result });
+    }).catch((error) => {
+      event.reply("month-expanses-data", { error: error.message });
     });
   });
 
   ipcMain.on('update-month-expanse', (event, data) => {
-    let result = monthExpansesLogic.updateMonthExpanse(data);
-    event.sender.send("month-expanse-updated", result);
+    monthExpansesLogic.updateMonthExpanse(data).then((result) => {
+      event.reply("month-expanse-updated", result);
+    }).catch((err) => {
+      console.log(err)
+    });
   });
 
   ipcMain.on('add-new-month-expanse', (event, data) => {
-    let result = monthExpansesLogic.addNewMonthExpanse(data);
-    event.sender.send("month-expanse-added", result);
+    monthExpansesLogic.addNewMonthExpanse(data).then((result) => {
+      event.reply("month-expanse-added", result);
+    }).catch((err) => {
+      console.log(err)
+    });
+
   });
 
 }

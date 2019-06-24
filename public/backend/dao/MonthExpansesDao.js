@@ -42,14 +42,14 @@ class MonthExpansesDao {
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
-    });
+    }).catch((error) => { throw new Error("קרתה תקלה בשליפת הנתונים של מעקב הוצאות חודשיות.") });
   }
 
   /**
    * get month expanse record by summarized section id
    */
   getMonthExpansesBySummarizedSectionId({ buildingName = String, year = Number, month = String, expanse = Object }) {
-    let data = this.connection.where({ year: year, month: month, summarized_section_id: expanse.summarized_section_id }).select(
+    let data = this.connection.where({ year: year, month: month, summarized_section_idddd: expanse.summarized_section_id }).select(
       "building.id AS id",
       "building.expanses_code_id AS expanses_code_id",
       "building.sum AS sum",
@@ -61,7 +61,7 @@ class MonthExpansesDao {
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
     }).catch((error) => {
-      throw error;
+      throw "asdsad";
     });
   }
 

@@ -22,11 +22,12 @@ const styles = theme => ({
     background: `url('${bgImg}')`,
     backgroundPosition: "center top",
     backgroundSize: "cover",
-    zIndex: 2
+    zIndex: 2,
+    boxShadow: "-1px 0px 4px #00000042"
   },
   drawerPaper: {
     width: drawerWidth,
-    boxShadow: "-22px 0px 4px #00000057",
+    /* boxShadow: "-22px 0px 4px #00000057", */
     background: "#0000008f",
     padding: "0 10px",
     overflow: "hidden",

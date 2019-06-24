@@ -48,7 +48,8 @@ a {
 }
 
 .activeButton{
-  background: #394ba5;
+  /* background: #394ba5; */
+  background: #279bc7;
   border-radius: 4px;
   color: #fff;
 }

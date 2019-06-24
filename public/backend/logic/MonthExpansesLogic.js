@@ -25,8 +25,15 @@ class MonthExpansesLogic {
 
     params.buildingName = Helper.trimSpaces(params.buildingName);
 
+
+    return this.getMonthExpansesBySummarizedSectionId(params).then((result) => {
+
+
+
+    })
+
     //get all the expanses by summarized section id
-    let result = await this.getMonthExpansesBySummarizedSectionId(params);
+    let result = await this.getMonthExpansesBySummarizedSectionId(params).catch(error => console.log(error));
     let totalSum = 0;
     for (let i = 0; i < result.length; i++) {
       //set the sum of the new expanse instead of the old
@@ -36,12 +43,12 @@ class MonthExpansesLogic {
       totalSum += result[i].sum;
     }
     //set the sum to the params and update the budget execution table
-    params.totalSum = totalSum - ((totalSum * TAX_NUM) / 100);
+    //params.totalSum = totalSum - ((totalSum * TAX_NUM) / 100);
 
-    this.bel.updateBudgetExecution(params);
+    //this.bel.updateBudgetExecution(params);
 
-    let expanseToSave = { supplierName: params.expanse.supplierName, sum: params.expanse.sum, notes: params.expanse.notes };
-    return this.med.updateMonthExpanse(params.expanse.id, params.buildingName, expanseToSave);
+    let expanseToSave = { supplierName: params.expanse.supplierName, sum: params.expanse.sum, notes: params.expanse.notes }; console.log(expanseToSave);
+    // return this.med.updateMonthExpanse(params.expanse.id, params.buildingName, expanseToSave);
   }
 
   addNewMonthExpanse(params) {

@@ -67,18 +67,18 @@ class MonthExpanses extends Component {
     this.props.getSummarizedSections();
 
     //get the building month expanses
-    this.props.getMonthExpanses(params);
+    this.props.fetchExpanses(params);
   }
 
   inputExpansesSubmit(formInputs, rowIndex, reset, isNew) {
     let valid = true;
-    const { tableData } = this.props.monthExpanses;
+    const { data } = this.props.monthExpanses.expanses;
     if (formInputs.code === "" || formInputs.codeName === "") {
       valid = false
     } else {
       if (!isNew) {
         //copy state data
-        let copyData = [...tableData];
+        let copyData = [...data];
 
         copyData[rowIndex] = {
           ...copyData[rowIndex],
@@ -94,7 +94,7 @@ class MonthExpanses extends Component {
         };
 
         //add new expanse into the database
-        this.props.updateMonthExpanse(params, copyData)
+        this.props.updateExpanse(params, copyData);
 
       } else {
 
@@ -107,7 +107,7 @@ class MonthExpanses extends Component {
 
 
         //add new expanse into the database
-        /* this.monthExpansesController.addNewMonthExpanse(params, (result) => {
+        /* this.monthExpansesController.addExpanse(params, (result) => {
           //copy state data
           let copyData = [...this.state.data];
           copyData.push(result);
@@ -145,7 +145,7 @@ class MonthExpanses extends Component {
 
   findExpanseIndex(code = null, codeName = null) {
     let result = null;
-    this.props.monthExpanses.tableData.forEach((row, index) => {
+    this.props.monthExpanses.expanses.data.forEach((row, index) => {
       if (row["code"] === Number.parseInt(code) || row["codeName"] === codeName) {
         result = index;
       }
@@ -164,7 +164,7 @@ class MonthExpanses extends Component {
     }
 
     //get the building month expanses
-    this.props.getMonthExpanses(params);
+    this.props.fetchExpanses(params);
 
   }
 
@@ -214,11 +214,14 @@ class MonthExpanses extends Component {
   render() {
     const {
       date,
-      tableData,
+      expanses,
       pageName,
       headerTitle
     } = this.props.monthExpanses;
     const buildingName = this.props.location.state.parentLabel;
+    if (expanses.status === "error") {
+      alert(expanses.error)
+    }
 
     return (
       <Fragment>
@@ -231,7 +234,7 @@ class MonthExpanses extends Component {
             />
             <PageControls
               excel={{
-                data: tableData,
+                data: expanses.data,
                 fileName: Helper.getMonthExpansesFilename(buildingName, date)
               }}
               print={{
@@ -242,7 +245,7 @@ class MonthExpanses extends Component {
             />
             <DatePicker date={date} loadDataByDateHandler={this.loadExpansesByDate} enableMonth={true} enableYear={true} enableQuarter={false} />
           </div>
-          <InputExpansesField summarizedSections={this.props.summarizedSections.tableData} data={tableData} submitData={this.inputExpansesSubmit} findData={this.findExpanseIndex} />
+          <InputExpansesField summarizedSections={this.props.summarizedSections.tableData} data={expanses.data} submitData={this.inputExpansesSubmit} findData={this.findExpanseIndex} />
         </WithHeaderWrapper>
 
         <ReactTable
@@ -272,7 +275,7 @@ class MonthExpanses extends Component {
           LoadingComponent={LoadingCircle}
           defaultPageSize={50}
           showPagination={true}
-          data={this.props.monthExpanses.tableData}
+          data={expanses.data}
           columns={this.generateHeaders()}
           resizable={true}
           minRows={0}
@@ -288,9 +291,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getMonthExpanses: (payload) => dispatch(monthExpansesActions.getMonthExpanses(payload)),
-  updateMonthExpanse: (payload, tableData) => dispatch(monthExpansesActions.updateMonthExpanse(payload, tableData)),
-  addNewMonthExpanse: (payload, tableData) => dispatch(monthExpansesActions.addNewMonthExpanse(payload, tableData)),
+  fetchExpanses: (payload) => dispatch(monthExpansesActions.fetchExpanses(payload)),
+  updateExpanse: (payload, tableData) => dispatch(monthExpansesActions.updateExpanse(payload, tableData)),
+  addExpanse: (payload, tableData) => dispatch(monthExpansesActions.addExpanse(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
   getSummarizedSections: () => dispatch(summarizedSectionsActions.getSummarizedSections())
 });
