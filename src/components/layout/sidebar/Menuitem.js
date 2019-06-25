@@ -34,7 +34,10 @@ const styles = theme => ({
   collapse: {
     background: "#333a48",
     paddingTop: "10px",
-    paddingBottom: "6px"
+    paddingBottom: "6px",
+    boxShadow: "inset 0px 1px 1px #050606, inset 0px -1px 1px #050606",
+    borderTop: "1px solid #262b2f",
+    borderBottom: "1px solid #262b2f"
   }
 });
 
