@@ -16,8 +16,8 @@ const styles = theme => ({
     display: "inline-block",
     float: "right",
     background: "#fff",
-    border: "1px solid #e6e6e6",
-    borderRadius: "4px"
+    border: "1px dotted #9c9c9c"
+    //borderRadius: "4px"
   },
   month: {
     display: "inline-block",

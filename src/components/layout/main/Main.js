@@ -9,18 +9,19 @@ import { Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import LoadingCircle from '../../common/LoadingCircle';
+import Toolbar from './Toolbar';
 
 const styles = theme => ({
   main: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
+    //padding: theme.spacing.unit * 3,
     overflow: "auto",
     display: "block",
     position: "relative",
     right: "-1960px",
     opacity: "0",
-    paddingTop: "22px"
+    //paddingTop: "22px"
   },
   loadingWrapper: {
     display: "flex",
@@ -89,12 +90,15 @@ class Main extends Component {
     } else {
       return (
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
-          <Switch>
-            {this.state.routes}
-            <Route path="/דף-הבית" component={Home} />
-            <Route path="/הגדרות" component={Settings} />
-            <Route exact path="/" component={Home} />
-          </Switch>
+          <Toolbar />
+          <div style={{ padding: "24px" }}>
+            <Switch>
+              {this.state.routes}
+              <Route path="/דף-הבית" component={Home} />
+              <Route path="/הגדרות" component={Settings} />
+              <Route exact path="/" component={Home} />
+            </Switch>
+          </div>
         </main>
       );
     }

@@ -19,23 +19,25 @@ const styles = theme => ({
     //background: "url('https://c.wallhere.com/photos/44/47/1600x900_px_mountain_night_sky_stars_Trees-517931.jpg!d')",
     //background: "url('https://sfilev2.f-static.com/image/users/441204/departAlbum/441204/normal/4252487.jpg')",
     //background: "url('https://i.pinimg.com/originals/79/a5/b7/79a5b7eb6d5ba37b8179562f045a2be2.jpg')",
-    background: `url('${bgImg}')`,
-    backgroundPosition: "center top",
-    backgroundSize: "cover",
+    //background: `url('${bgImg}')`,
+    //backgroundPosition: "center top",
+    //backgroundSize: "cover",
     zIndex: 2,
-    boxShadow: "-1px 0px 4px #00000042"
+    boxShadow: `-2px 0px 4px #00000042`
   },
   drawerPaper: {
     width: drawerWidth,
     /* boxShadow: "-22px 0px 4px #00000057", */
-    background: "#0000008f",
-    padding: "0 10px",
+    //background: "#0000008f",
+    backgroundColor: "#191b21",
+    //padding: "0 10px",
     overflow: "hidden",
-    position: "relative"
+    position: "relative",
+    border: "none"
   },
   divider: {
     backgroundColor: "rgba(255, 255, 255, 0.12)",
-    width: "220px",
+    width: "100%",
     margin: "0 auto"
   },
   unaffected: {
@@ -58,28 +60,36 @@ const styles = theme => ({
   },
   homeDivider: {
     backgroundColor: "rgba(255, 255, 255, 0.12)",
-    width: "220px",
+    width: "100%",
     margin: "0 auto 25px"
   },
   logoDivider: {
     margin: "0 auto 10px",
     backgroundColor: "rgba(255, 255, 255, 0.12)",
-    width: "220px"
+    width: "100%"
   },
   settingsDivider: {
-    backgroundColor: "rgba(255, 255, 255, 0.12)",
-    width: "220px",
+    //backgroundColor: "rgba(255, 255, 255, 0.12)",
+    borderTop: "1px dashed #cbcdda",
+    width: "100%",
     margin: "0px auto 15px"
   },
   buildingsTitle: {
-    color: "#f5f5f5",
+    color: "#cbcdda",
     display: "block",
-    marginLeft: "16px",
-    marginBottom: "10px"
+    marginLeft: "9px",
+    paddingLeft: "6px",
+    marginTop: "6px",
+    marginBottom: "16px",
+    paddingBottom: "16px",
+    borderBottom: "1px dashed #cbcdda",
+    width: "220px"
   },
   settingsWrapper: {
     position: "fixed",
-    bottom: "0"
+    bottom: "0",
+    width: "220px",
+    marginLeft: "10px"
   }
 });
 
@@ -184,21 +194,21 @@ class Sidebar extends Component {
     return (
       <Drawer id="sidebar" variant="permanent" classes={{ paper: this.props.classes.drawerPaper }} anchor="left" className={this.props.classes.drawer + this.props.toggleStyle}>
         <Logo />
-        <Divider className={this.props.classes.logoDivider} />
+        {/* <Divider className={this.props.classes.logoDivider} /> */}
 
         <NavButton label="דף הבית" path="דף-הבית" active={this.state.active.subMenuItemId === this.state.homeButtonId || this.state.active.subMenuItemId === 0}
           activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.homeButtonId, this.state.homeButtonId))} >
           <Dashboard />
         </NavButton>
 
-        <Divider className={this.props.classes.homeDivider} />
+        {/* <Divider className={this.props.classes.homeDivider} /> */}
 
         <span className={this.props.classes.buildingsTitle}>בניינים:</span>
         {render}
 
         <div className={this.props.classes.settingsWrapper}>
           <Divider className={this.props.classes.settingsDivider} />
-          <NavButton label="נהל הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
+          <NavButton style={{ marginRight: 0 }} label="נהל הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
             activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.settingsButtonId, this.state.settingsButtonId))} >
             <Settings />
           </NavButton>

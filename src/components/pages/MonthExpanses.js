@@ -30,6 +30,9 @@ const styles = (theme) => ({
     borderRadius: "4px",
     //paddingTop: "10px",
     marginBottom: "20px"
+  },
+  headerTitleTextColor: {
+    color: "rgb(17, 164, 220)"
   }
 });
 
@@ -230,6 +233,7 @@ class MonthExpanses extends Component {
           <div style={{ paddingBottom: "10px" }}>
             <Header
               title={headerTitle}
+              textColor={this.props.classes.headerTitleTextColor}
               subTitle={buildingName + " / " + date.monthHeb + " / " + date.year}
             />
             <PageControls

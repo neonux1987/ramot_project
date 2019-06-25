@@ -6,8 +6,9 @@ const styles = theme => ({
   navLinkHome: {
     display: "block",
     marginBottom: "10px",
-    borderRadius: "4px",
-    width: "219px"
+    width: "220px",
+    marginLeft: "9px",
+    borderRadius: "unset"
   },
   listItemTextRoot: {
     padding: 0
@@ -36,7 +37,7 @@ const NavButton = (props) => {
   let active = props.active ? props.activeClass : "";
 
   return (
-    <NavLink className={props.classes.navLinkHome + " " + active} to={{
+    <NavLink style={props.style} className={props.classes.navLinkHome + " " + active} to={{
       pathname: "/" + props.path,
       state: {
         label: props.label,

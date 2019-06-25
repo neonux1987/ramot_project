@@ -1,0 +1,41 @@
+.wrapper {
+  left: 30px;
+  width: 320px;
+  bottom: 30px;
+  padding: 15px 20px 25px;
+  z-index: 99;
+  position: absolute;
+  background: #141619d1;
+  box-shadow: 0 0 4px #333333;
+  border-radius: 4px;
+}
+
+.header{
+  align-items: center;
+  display: flex;
+}
+
+.headerIconError{
+  font-size: 32px;
+  display: inline-block;
+  color: red;
+}
+
+.headerIconInfo{
+  font-size: 32px;
+  display: inline-block;
+  color: #1eb2f9;
+}
+
+.headerTitle{
+  font-size: 22px;
+  display: inline-block;
+  margin-right: 4px;
+  color: #fff;
+}
+
+.body{
+  color: #c4d2de;
+  font-size: 15px;
+  padding-right: 4px;
+}

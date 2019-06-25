@@ -27,6 +27,9 @@ const styles = (theme) => ({
     background: "#fff",
     border: "1px solid #ccc",
     borderRadius: "4px"
+  },
+  headerTitleTextColor: {
+    color: "rgb(130, 75, 204)"
   }
 });
 
@@ -373,15 +376,7 @@ class BudgetExecution extends Component {
         <Header
           title={PAGE_TITLE}
           subTitle={this.props.location.state.parentLabel + " / " + this.state.date.quarterHeb + " / " + this.state.date.year}
-          date={this.state.date}
-          buildingName={this.props.location.state.parentLabel}
-          pageName={PAGE_NAME}
-          excelData={this.state.data}
-          excelFileName={Helper.getBudgetExecutionFilename(this.props.location.state.parentLabel, this.state.date)}
-          loadDataByDateHandler={this.loadBudgetExecutionsByDate}
-          enableDatePickerMonth={false}
-          enableDatePickerYear={true}
-          enableDatePickerQuarter={true}
+          textColor={this.props.classes.headerTitleTextColor}
         >
         </Header>
 

@@ -5,7 +5,8 @@ import { Button, withStyles } from '@material-ui/core';
 const styles = theme => ({
   button: {
     background: "#f5f5f5",
-    border: "1px solid #000",
+    //border: "1px solid #000",
+    borderRadius: "unset",
     "&:hover": {
       background: "#f1f1f1"
     },
@@ -13,8 +14,9 @@ const styles = theme => ({
     minWidth: "initial",
     position: "absolute",
     zIndex: 3,
-    top: "32px",
-    left: "184px"
+    top: "20px",
+    left: "184px",
+    boxShadow: "0px 0px 2px #868383"
   },
   keyboardArrowRoot: {
     color: "#000"

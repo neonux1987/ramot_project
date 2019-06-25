@@ -11,7 +11,7 @@ const styles = theme => ({
     marginBottom: "132px"
   },
   menuContainer: {
-    width: "219px",
+    width: "240px"
   },
   listItemTextRoot: {
     padding: 0
@@ -33,11 +33,11 @@ const styles = theme => ({
     color: "#f5f5f5",
     display: "flex",
     marginLeft: "16px",
-    marginBottom: "10px"
+    marginTop: "10px",
   },
   navLink: {
     display: "block",
-    marginBottom: "10px"
+    marginBottom: "18px"
   },
   active: {
     backgroundColor: "#2f75b1"

@@ -10,10 +10,10 @@ const styles = theme => ({
     float: "right",
     margin: "0 0 0 20px",
     paddingTop: "3px",
-    border: "1px solid #e6e6e6",
+    border: "1px dotted #9c9c9c",
     display: "inline-block",
-    background: "#fff",
-    borderRadius: "4px",
+    background: "#fff"
+    //borderRadius: "4px",
     //marginRight: "10px"
   },
   pageControlsButton: {

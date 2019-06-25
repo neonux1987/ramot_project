@@ -12,7 +12,9 @@ const styles = (theme) => ({
   },
   header: {
     display: "inline-block",
-    //marginLeft: "10px"
+    background: "#f1f1f1",
+    border: "1px dotted #9c9c9c",
+    padding: "0 10px 6px"
   },
   headerTitle: {
     marginBottom: "0",
@@ -29,14 +31,14 @@ const Header = props => {
 
   return (
     <div className={props.classes.header}>
-      <Typography variant="h3" className={props.classes.headerTitle}>
+      <Typography variant="h3" color="primary" classes={{ root: props.classes.headerTitle, colorPrimary: props.textColor }}>
         {props.title}
       </Typography>
-      <Typography variant="subtitle1" className={props.classes.headerSubTitle}>
+      {/* <Typography variant="subtitle1" className={props.classes.headerSubTitle}>
         {props.subTitle}
 
 
-      </Typography>
+      </Typography> */}
     </div>
   );
 

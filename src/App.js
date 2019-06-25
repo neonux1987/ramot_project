@@ -9,6 +9,7 @@ import RTL from './components/RTL';
 import SidebarToggleButton from './components/layout/sidebar/SidebarToggleButton';
 import { connect } from 'react-redux';
 import sidebarActions from './redux/actions/sidebarActions';
+import NotificationBox from './components/common/notificationBox/NotificationBox';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
 
@@ -17,6 +18,19 @@ const styles = theme => ({
     display: "flex",
     height: "100%",
     padding: 0
+  },
+  errorBox: {
+    width: "300px",
+    padding: "30px",
+    background: "#000000e0",
+    borderRadius: "4px",
+    //border: "1px solid #ccc",
+    boxShadow: "0 0 4px #333333",
+    minHeight: "100px",
+    position: "absolute",
+    zIndex: "99",
+    bottom: "30px",
+    left: "30px"
   }
 });
 
@@ -52,6 +66,7 @@ class App extends Component {
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
+            <NotificationBox isVisible />
           </MemoryRouter>
         </MuiThemeProvider>
       </RTL>

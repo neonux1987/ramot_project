@@ -12,10 +12,10 @@ const styles = theme => ({
   },
   listItemText: {
     fontSize: "16px",
-    color: "#f5f5f5"
+    color: "#cbcdda"
   },
   listItemIcon: {
-    color: "#5975ff"
+    color: "#cbcdda"
   },
   listItem: {
     '&:hover': {
@@ -29,7 +29,12 @@ const styles = theme => ({
     //paddingLeft: theme.spacing.unit * 4
   },
   expander: {
-    color: "#5975ff"
+    color: "#cbcdda"
+  },
+  collapse: {
+    background: "#333a48",
+    paddingTop: "10px",
+    paddingBottom: "6px"
   }
 });
 
@@ -67,7 +72,7 @@ const Menuitem = (props) => {
       </ListItem>
 
       <Collapse in={expandedItem} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List className={props.classes.collapse} component="div" disablePadding>
           {subMenuItems}
         </List>
       </Collapse>
