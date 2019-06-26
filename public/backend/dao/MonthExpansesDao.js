@@ -73,8 +73,8 @@ class MonthExpansesDao {
    * @param {*} buildingName the name of the building
    * @param {*} expanseToSave the record to update with
    */
-  updateMonthExpanse(id = Number, buildingName = String, expanseToSave = Object) {
-    let data = this.connection(buildingName + "_month_expanses")
+  updateMonthExpanse(id = Number, buildingName = String, expanseToSave = Object, trx = null) {
+    let data = trx(buildingName + "_month_expanses")
       .where({ id: id })
       .update(expanseToSave);
 

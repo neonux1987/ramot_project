@@ -1,13 +1,16 @@
 const Helper = require('../../helpers/Helper');
 const MonthExpansesDao = require('../dao/MonthExpansesDao');
 const BudgetExecutionLogic = require('./BudgetExecutionLogic');
+const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
 
 const TAX_NUM = 17;
 
 class MonthExpansesLogic {
 
   constructor(connection) {
+    this.connection = connection;
     this.bel = new BudgetExecutionLogic(connection);
+    this.bed = new BudgetExecutionDao(connection);
     this.med = new MonthExpansesDao(connection);
   }
 
@@ -25,12 +28,20 @@ class MonthExpansesLogic {
 
     params.buildingName = Helper.trimSpaces(params.buildingName);
 
+    // Using trx as a transaction object:
+    const trx = await this.connection.transaction();
 
-    return this.getMonthExpansesBySummarizedSectionId(params).then((result) => {
+    let expanseToSave = { supplierName: params.expanse.supplierName, sum: params.expanse.sum, notes: params.expanse.notes };
+    this.med.updateMonthExpanse(params, trx);
 
+    this.med.getMonthExpansesBySummarizedSectionId(params, trx)
 
+    this.bed.getBudgetExecution(params, trx);
 
-    })
+    trx.then((expanses) => {
+      calculateExpansesSum(expanses);
+      return this.bel.updateBudgetExecution(params, trx);
+    });
 
     //get all the expanses by summarized section id
     let result = await this.getMonthExpansesBySummarizedSectionId(params).catch(error => console.log(error));
