@@ -8,10 +8,9 @@ const budgetExecutionIpc = (connection) => {
 
   ipcMain.on('get-budget-execution-data', (event, arg) => {
     budgetExecutionLogic.getAllBudgetExecutions(arg).then((result) => {
-      //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.sender.send("budget-execution-data", result);
+      event.sender.send("budget-execution-data", { data: result });
     }).catch((err) => {
-      throw err;
+      event.reply("budget-execution-data", { error: error.message });
     });
   });
 

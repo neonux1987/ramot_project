@@ -9,7 +9,7 @@ import RTL from './components/RTL';
 import SidebarToggleButton from './components/layout/sidebar/SidebarToggleButton';
 import { connect } from 'react-redux';
 import sidebarActions from './redux/actions/sidebarActions';
-import NotificationBox from './components/common/notificationBox/NotificationBox';
+import NotificationWrapper from './components/common/notifications/NotificationWrapper';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
 
@@ -66,7 +66,7 @@ class App extends Component {
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
-            <NotificationBox isVisible />
+            <NotificationWrapper notifications={this.props.app.notifications} />
           </MemoryRouter>
         </MuiThemeProvider>
       </RTL>

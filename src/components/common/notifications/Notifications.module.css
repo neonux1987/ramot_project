@@ -1,13 +1,17 @@
 .wrapper {
   left: 30px;
-  width: 320px;
   bottom: 30px;
-  padding: 15px 20px 25px;
   z-index: 99;
   position: absolute;
+}
+
+.notificationBox {
+  width: 360px;
+  padding: 15px 20px 25px;
   background: #141619d1;
   box-shadow: 0 0 4px #333333;
   border-radius: 4px;
+  margin-top: 10px;
 }
 
 .header{

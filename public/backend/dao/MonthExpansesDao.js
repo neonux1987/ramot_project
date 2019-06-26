@@ -42,7 +42,9 @@ class MonthExpansesDao {
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
-    }).catch((error) => { throw new Error("קרתה תקלה בשליפת הנתונים של מעקב הוצאות חודשיות.") });
+    }).catch((error) => {
+      throw new Error("קרתה תקלה בשליפת הנתונים של מעקב הוצאות חודשיות.");
+    });
   }
 
   /**
@@ -61,7 +63,7 @@ class MonthExpansesDao {
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
     }).catch((error) => {
-      throw "asdsad";
+      throw new Error("קרתה תקלה בשליפת הנתונים של הוצאות חודשיות.");
     });
   }
 
@@ -76,13 +78,17 @@ class MonthExpansesDao {
       .where({ id: id })
       .update(expanseToSave);
 
-    return data.then((result) => result).catch((error) => {
-      console.log(error);
-    })
+    return data.then((result) => result)
+      .catch((error) => {
+        throw new Error("קרתה תקלה בנסיון עידכון הוצאה.");
+      })
   }
 
   addNewMonthExpanse(buildingName = String, record = Object) {
-    return this.connection(buildingName + "_month_expanses").insert(record);
+    return this.connection(buildingName + "_month_expanses").insert(record)
+      .catch((error) => {
+        throw new Error("קרתה תקלה בנסיון להוסיף הוצאה חדשה.");
+      });;
   }
 
 }

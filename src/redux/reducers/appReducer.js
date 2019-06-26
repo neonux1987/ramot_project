@@ -6,7 +6,16 @@ const initState = {
     month: Helper.getCurrentMonthEng(),
     monthHeb: Helper.getCurrentMonthHeb(),
     quarter: Helper.getCurrentQuarter()
-  }
+  },
+  settings: {
+    general: {
+      tax: 17,
+      dbPath: ""
+    }
+  },
+  notifications: [
+
+  ]
 }
 
 export default (state = initState, action) => {

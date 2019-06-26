@@ -120,15 +120,6 @@ a {
 }
 
 
-/* react table css override
-*/
-.ReactTable .rt-table{
-  display: block;
-}
-
-.rt-tbody{
-  overflow: overlay;
-}
 
 
 /*

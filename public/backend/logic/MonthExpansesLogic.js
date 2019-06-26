@@ -51,6 +51,14 @@ class MonthExpansesLogic {
     // return this.med.updateMonthExpanse(params.expanse.id, params.buildingName, expanseToSave);
   }
 
+  static calculateExpansesSum(expanses) {
+    let totalSum = 0;
+    for (let i = 0; i < expanses.length; i++) {
+      totalSum += expanses[i].sum;
+    }
+    return totalSum;
+  }
+
   addNewMonthExpanse(params) {
     params.buildingName = Helper.trimSpaces(params.buildingName);
     return this.med.addNewMonthExpanse(params.expanse.id, params.buildingName, expanseToSave);

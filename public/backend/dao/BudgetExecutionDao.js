@@ -104,8 +104,8 @@ class BudgetExecutionDao {
     return data.then((result) => {
       return result;
     }).catch((error) => {
-      throw error;
-    });
+      throw new Error("קרתה תקלה בשליפת נתונים מטבלת ביצוע מול תקציב.");
+    });;
   }
 
   /**
@@ -138,8 +138,8 @@ class BudgetExecutionDao {
     return data.then((result) => {
       return result;
     }).catch((error) => {
-      throw error;
-    });
+      throw new Error("קרתה תקלה בשליפת רשומה מטבלת ביצוע מול תקציב.");
+    });;
   }
 
   /**
@@ -159,8 +159,8 @@ class BudgetExecutionDao {
     return data.then((result) => {
       return result;
     }).catch((error) => {
-      throw error;
-    });
+      throw new Error("קרתה תקלה בעידכון רשומה בטבלת ביצוע מול תקציב.");
+    });;
   }
 
 }
