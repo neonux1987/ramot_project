@@ -58,7 +58,7 @@ class MonthExpansesLogic {
 
     //this.bel.updateBudgetExecution(params);
 
-    let expanseToSave = { supplierName: params.expanse.supplierName, sum: params.expanse.sum, notes: params.expanse.notes }; console.log(expanseToSave);
+    //let expanseToSave = { supplierName: params.expanse.supplierName, sum: params.expanse.sum, notes: params.expanse.notes }; console.log(expanseToSave);
     // return this.med.updateMonthExpanse(params.expanse.id, params.buildingName, expanseToSave);
   }
 

@@ -24,8 +24,14 @@ class MonthExpansesDao {
   /**
    * get all month expanses records
    */
-  getAllMonthExpanses({ buildingName = String, year = Number, month = String }) {
-    let data = this.connection.where({ year: year, month: month }).select(
+  getAllMonthExpanses({
+    buildingName = String,
+    date = {
+      year: year = Number,
+      month: month = String
+    }
+  }) {
+    let data = this.connection.where({ year: date.year, month: date.month }).select(
       "building.id AS id",
       "building.expanses_code_id AS expanses_code_id",
       "ec.code AS code",
@@ -50,8 +56,15 @@ class MonthExpansesDao {
   /**
    * get month expanse record by summarized section id
    */
-  getMonthExpansesBySummarizedSectionId({ buildingName = String, year = Number, month = String, expanse = Object }) {
-    let data = this.connection.where({ year: year, month: month, summarized_section_idddd: expanse.summarized_section_id }).select(
+  getMonthExpansesBySummarizedSectionId({
+    buildingName = String,
+    date = {
+      year: year = Number,
+      month: month = String
+    },
+    summarized_section_id = Number
+  }) {
+    let data = this.connection.where({ year: date.year, month: date.month, summarized_section_id: summarized_section_id }).select(
       "building.id AS id",
       "building.expanses_code_id AS expanses_code_id",
       "building.sum AS sum",
@@ -69,14 +82,14 @@ class MonthExpansesDao {
 
   /**
    * update month expanse record
-   * @param {*} id the id of the month expanse to update
+   * @param {*} id the id of the expanse to update
    * @param {*} buildingName the name of the building
-   * @param {*} expanseToSave the record to update with
+   * @param {*} expanse the expanse to update
    */
-  updateMonthExpanse(id = Number, buildingName = String, expanseToSave = Object, trx = null) {
+  updateMonthExpanse(buildingName = String, id = Number, expanse = Object, trx) {
     let data = trx(buildingName + "_month_expanses")
       .where({ id: id })
-      .update(expanseToSave);
+      .update(expanse);
 
     return data.then((result) => result)
       .catch((error) => {

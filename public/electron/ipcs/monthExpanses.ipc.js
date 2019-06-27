@@ -1,10 +1,13 @@
 const { ipcMain } = require('electron');
 const MonthExpansesLogic = require('../../backend/logic/MonthExpansesLogic');
+const Transactions = require('../../backend/dao/transactions/Transactions');
 
 const monthExpansesIpc = (connection) => {
 
   //fetch month expanses data
   const monthExpansesLogic = new MonthExpansesLogic(connection);
+  //create transactions layer
+  const transactions = new MonthExpansesLogic(connection);
 
   ipcMain.on('get-month-expanses-data', (event, arg) => {
     monthExpansesLogic.getAllMonthExpanses(arg).then((result) => {
@@ -16,9 +19,9 @@ const monthExpansesIpc = (connection) => {
   });
 
   ipcMain.on('update-month-expanse', (event, data) => {
-    monthExpansesLogic.updateMonthExpanse(data).then((result) => {
+    transactions.updateMonthExpanse(data).then((result) => {
       event.reply("month-expanse-updated", result);
-    }).catch((err) => {
+    }).catch((error) => {
       event.reply("month-expanse-updated", { error: error.message });
     });
   });

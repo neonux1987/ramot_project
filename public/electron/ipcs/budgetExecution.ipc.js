@@ -9,7 +9,7 @@ const budgetExecutionIpc = (connection) => {
   ipcMain.on('get-budget-execution-data', (event, arg) => {
     budgetExecutionLogic.getAllBudgetExecutions(arg).then((result) => {
       event.sender.send("budget-execution-data", { data: result });
-    }).catch((err) => {
+    }).catch((error) => {
       event.reply("budget-execution-data", { error: error.message });
     });
   });

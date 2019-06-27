@@ -63,8 +63,10 @@ class MonthExpanses extends Component {
     //building name, current month and year.
     let params = {
       buildingName: this.props.location.state.engLabel,
-      year: Helper.getCurrentYear(),
-      month: Helper.getCurrentMonthEng()
+      date: {
+        year: Helper.getCurrentYear(),
+        month: Helper.getCurrentMonthEng()
+      }
     }
 
     this.props.getSummarizedSections();
