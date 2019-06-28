@@ -7,7 +7,7 @@ const monthExpansesIpc = (connection) => {
   //fetch month expanses data
   const monthExpansesLogic = new MonthExpansesLogic(connection);
   //create transactions layer
-  const transactions = new MonthExpansesLogic(connection);
+  const transactions = new Transactions(connection);
 
   ipcMain.on('get-month-expanses-data', (event, arg) => {
     monthExpansesLogic.getAllMonthExpanses(arg).then((result) => {
@@ -20,6 +20,7 @@ const monthExpansesIpc = (connection) => {
 
   ipcMain.on('update-month-expanse', (event, data) => {
     transactions.updateMonthExpanse(data).then((result) => {
+      console.log("ipc");
       event.reply("month-expanse-updated", result);
     }).catch((error) => {
       event.reply("month-expanse-updated", { error: error.message });

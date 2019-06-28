@@ -33,8 +33,7 @@ class SummarizedBudget extends Component {
     //building name, current month and year.
     let params = {
       buildingName: this.props.location.state.engLabel,
-      year: Helper.getCurrentYear(),
-      month: Helper.getCurrentMonthEng()
+      date: Helper.getCurrentDate()
     }
     //get the building month expanses
     this.summarizedBudgetController.getBuildingSummarizedBudget(params, (result) => {

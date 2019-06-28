@@ -3,12 +3,7 @@ import Helper from '../../helpers/Helper';
 const initState = {
   pageName: "monthExpanses",
   headerTitle: "מעקב הוצאות חודשיות",
-  date: {
-    year: Helper.getCurrentYear(),
-    month: Helper.getCurrentMonthEng(),
-    monthHeb: Helper.getCurrentMonthHeb(),
-    quarter: Helper.getCurrentQuarter()
-  },
+  date: Helper.getCurrentDate(),
   expanses: {
     isFetching: false,
     status: "",
@@ -68,12 +63,7 @@ export default (state = initState, action) => {
       }
     case "SET_CURRENT_DATE": return {
       ...state,
-      date: {
-        year: Helper.getCurrentYear(),
-        month: Helper.getCurrentMonthEng(),
-        monthHeb: Helper.getCurrentMonthHeb(),
-        quarter: Helper.getCurrentQuarter()
-      }
+      date: Helper.getCurrentDate()
     }
     default: return state;
   }

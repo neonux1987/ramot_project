@@ -49,13 +49,7 @@ class BudgetExecution extends Component {
         rowNum: -1,
         cellHeader: ""
       },
-      date: {
-        year: Helper.getCurrentYear(),
-        month: Helper.getCurrentMonthEng(),
-        monthHeb: Helper.getCurrentMonthHeb(),
-        quarter: Helper.getCurrentQuarter(),
-        quarterHeb: Helper.getCurrentQuarterHeb()
-      },
+      date: Helper.getCurrentDate(),
       loadingData: true
     };
     this._isMounted = false;
@@ -76,8 +70,7 @@ class BudgetExecution extends Component {
     //current quarter, month and year.
     let params = {
       buildingName: this.props.location.state.engLabel,
-      quarter: Helper.getCurrentQuarter(),
-      year: Helper.getCurrentYear()
+      date: Helper.getCurrentDate()
     }
     //get the building execution data
     this.budgetExecutionController.getAllBudgetExecutions(params, (result) => {

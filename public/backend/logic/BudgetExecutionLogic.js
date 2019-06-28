@@ -8,12 +8,12 @@ class BudgetExecutionLogic {
 
   getAllBudgetExecutions(params) {
     //params.buildingName = Helper.trimSpaces(params.buildingName);
-    params.quarterQuery = this.getQuarterQuery(params.quarter);
+    params.quarterQuery = this.getQuarterQuery(params.date.quarter);
     return this.bed.getAllBudgetExecutions(params);
   }
 
   getBudgetExecution(params) {
-    params.quarterQuery = this.getQuarterQuery(params.quarter);
+    params.quarterQuery = this.getQuarterQuery(params.date.quarter);
     return this.bed.getBudgetExecution(params);
   }
 
@@ -42,7 +42,7 @@ class BudgetExecutionLogic {
       difference: result["difference"]
     };
 
-    newData[params.month + "_budget_execution"] = result[params.month + "_budget_execution"];
+    newData[params.date.month + "_budget_execution"] = result[params.date.month + "_budget_execution"];
 
     params.newData = newData;
     params.summarized_section_id = params.expanse.summarized_section_id;
@@ -53,7 +53,7 @@ class BudgetExecutionLogic {
   /**
    * get the the desired quarter query to pull from the db
    */
-  getQuarterQuery(quarterNum) {
+  static getQuarterQuery(quarterNum) {
     switch (quarterNum) {
       case 1: return BudgetExecutionDao.getQuarter1Query()
       case 2: return BudgetExecutionDao.getQuarter2Query()
@@ -62,7 +62,7 @@ class BudgetExecutionLogic {
     }
   }
 
-  calculateBudget(budget, totalSum, date) {
+  static calculateBudget(budget, totalSum, date) {
     budget["total_execution"] -= budget[date.month + "_budget_execution"];
     budget[date.month + "_budget_execution"] = totalSum;
     budget["total_execution"] += totalSum;

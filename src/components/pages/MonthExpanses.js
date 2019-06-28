@@ -63,10 +63,7 @@ class MonthExpanses extends Component {
     //building name, current month and year.
     let params = {
       buildingName: this.props.location.state.engLabel,
-      date: {
-        year: Helper.getCurrentYear(),
-        month: Helper.getCurrentMonthEng()
-      }
+      date: Helper.getCurrentDate()
     }
 
     this.props.getSummarizedSections();
@@ -95,7 +92,9 @@ class MonthExpanses extends Component {
         let params = {
           expanse: copyData[rowIndex],
           buildingName: this.props.location.state.engLabel,
-          ...this.props.monthExpanses.date
+          date: {
+            ...this.props.monthExpanses.date
+          }
         };
 
         //add new expanse into the database

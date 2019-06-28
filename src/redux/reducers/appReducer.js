@@ -1,12 +1,7 @@
 import Helper from '../../helpers/Helper';
 
 const initState = {
-  date: {
-    year: Helper.getCurrentYear(),
-    month: Helper.getCurrentMonthEng(),
-    monthHeb: Helper.getCurrentMonthHeb(),
-    quarter: Helper.getCurrentQuarter()
-  },
+  date: Helper.getCurrentDate(),
   settings: {
     general: {
       tax: 17,

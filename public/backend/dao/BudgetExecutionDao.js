@@ -84,9 +84,16 @@ class BudgetExecutionDao {
    * quarterQuery - different months query
    * }
    */
-  getAllBudgetExecutions({ buildingName = String, year = Number, quarter = Number, quarterQuery = Array }) {
+  getAllBudgetExecutions({
+    buildingName = String,
+    date = {
+      year: year = Number,
+      quarter: quarter = String
+    },
+    quarterQuery = Array
+  }) {
     let data = this.connection
-      .where({ year: year, quarter: quarter })
+      .where({ year: date.year, quarter: date.quarter })
       .select(
         "exec.id AS id",
         "exec.summarized_section_id AS summarized_section_id",
@@ -99,7 +106,7 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id");
+      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id");
 
     return data.then((result) => {
       return result;
@@ -118,9 +125,17 @@ class BudgetExecutionDao {
    * quarterQuery - different months query
    * }
    */
-  getBudgetExecution({ buildingName = String, year = Number, quarter = Number, quarterQuery = Array, expanse = Object }) {
+  getBudgetExecution({
+    buildingName = String,
+    date = {
+      year: year = Number,
+      quarter: quarter = String
+    },
+    quarterQuery = Array,
+    expanse = Object
+  }) {
     let data = this.connection
-      .where({ year: year, quarter: quarter, summarized_section_id: expanse.summarized_section_id })
+      .where({ year: date.year, quarter: date.quarter, summarized_section_id: expanse.summarized_section_id })
       .select(
         "exec.id AS id",
         "exec.summarized_section_id AS summarized_section_id",
@@ -133,7 +148,7 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id");
+      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id");
 
     return data.then((result) => {
       return result;
@@ -151,9 +166,17 @@ class BudgetExecutionDao {
    * budgetExecutionData
    * }
    */
-  updateBudgetExecution({ buildingName = String, year = Number, quarter = Number, summarized_section_id = Number, newData = Object }) {
-    let data = this.connection(buildingName + "_budget_execution_quarter" + quarter + " AS exec")
-      .where({ year: year, summarized_section_id: summarized_section_id })
+  updateBudgetExecution({
+    buildingName = String,
+    date = {
+      year: year = Number,
+      quarter: quarter = String
+    },
+    summarized_section_id = Number,
+    newData = Object
+  }) {
+    let data = this.connection(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
+      .where({ year: date.year, summarized_section_id: summarized_section_id })
       .update(newData);
 
     return data.then((result) => {

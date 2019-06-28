@@ -70,6 +70,10 @@ class MonthExpansesLogic {
     return totalSum;
   }
 
+  static prepareExpanseObj(expanse) {
+    return { supplierName: expanse.supplierName, sum: expanse.sum, notes: expanse.notes };
+  }
+
   addNewMonthExpanse(params) {
     params.buildingName = Helper.trimSpaces(params.buildingName);
     return this.med.addNewMonthExpanse(params.expanse.id, params.buildingName, expanseToSave);

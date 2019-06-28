@@ -11,7 +11,7 @@ class Helper {
     return date.getYear() + 1900;
   }
 
-  static getCurrentMonth() {
+  static getCurrentMonthNum() {
     let date = new Date();
     return date.getMonth();
   }
@@ -52,7 +52,7 @@ class Helper {
     }
   }
 
-  static getCurrentMonthEng(month = (new Date()).getMonth()) {
+  static getCurrentMonth(month = (new Date()).getMonth()) {
     switch (month) {
       case 0: return "january"
       case 1: return "february"
@@ -162,6 +162,17 @@ class Helper {
       if (obj[key] === 0) {
         obj[key] = "";
       }
+    }
+  }
+
+  static getCurrentDate() {
+    return {
+      month: this.getCurrentMonth(),
+      monthHeb: this.getCurrentMonthHeb(),
+      monthNum: this.getCurrentMonthNum(),
+      year: this.getCurrentYear(),
+      quarter: this.getCurrentQuarter(),
+      quarterHeb: Helper.getCurrentQuarterHeb()
     }
   }
 

@@ -2,13 +2,8 @@ import Helper from '../../helpers/Helper';
 
 const initState = {
   pageName: "monthExpanses",
-  headerTitle: "מעקב הוצאות חודשיות",
-  date: {
-    year: Helper.getCurrentYear(),
-    month: Helper.getCurrentMonthEng(),
-    monthHeb: Helper.getCurrentMonthHeb(),
-    quarter: Helper.getCurrentQuarter()
-  },
+  headerTitle: "מעקב ביצוע מול תקציב",
+  date: Helper.getCurrentDate(),
   tableHeaders: [],
   tableData: []
 }

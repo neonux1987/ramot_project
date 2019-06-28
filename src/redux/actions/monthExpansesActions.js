@@ -22,7 +22,7 @@ const fetchExpanses = (params = Object) => {
         //success store the data
         dispatch(receiveExpanses(arg.data));
         //update the date to he requested date in the params of the data
-        dispatch(dateActions.updateDate(params));
+        dispatch(dateActions.updateDate(params.date));
       }
     });
   }

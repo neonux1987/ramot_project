@@ -1,8 +1,9 @@
 const NestHydrationJS = require('nesthydrationjs');
 const MonthExpansesLogic = require('../../logic/MonthExpansesLogic');
 const BudgetExecutionLogic = require('../../logic/BudgetExecutionLogic');
+const Helper = require('../../../helpers/Helper');
 
-class TransactionsDao {
+class Transactions {
 
   constructor(connection) {
     this.connection = connection;
@@ -15,36 +16,29 @@ class TransactionsDao {
    * @param {*} buildingName the name of the building
    * @param {*} expanseToSave the record to update with
    */
-  async updateMonthExpanse({ date = Object, buildingName = String, expanse = Object }) {
+  updateMonthExpanse({ date = Object, buildingName = String, expanse = Object }) {
 
     buildingName = Helper.trimSpaces(buildingName);
 
-    console.log(date);
-    console.log(buildingName);
-    console.log(expanse);
-
     this.connection.transaction((trx) => {
-
       return trx(buildingName + "_month_expanses")
         .where({ id: expanse.id })
-        .update(expanse)
-        .transacting(trx)
+        .update(MonthExpansesLogic.prepareExpanseObj(expanse))
         .then(() => {
+          console.log("inside then of get all expanses by summarized id");
           //update the expanse first
-          return this.connection.where({ year: date.year, month: date.month, summarized_section_id: expanse.summarized_section_id }).select(
+          return trx.where({ year: date.year, month: date.month, summarized_section_id: expanse.summarized_section_id }).select(
             "building.id AS id",
             "building.expanses_code_id AS expanses_code_id",
             "building.sum AS sum",
             "sc.id AS summarized_section_id",
             "sc.section AS section",
           ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
-            .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id").transacting(trx);
+            .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id");
         })
         .then((expanses) => {
-          return MonthExpansesLogic.calculateExpansesSum(expanses);
-        })
-        .then((totalSum) => {
-          return this.connection.where({ year: date.year, quarter: date.quarter, summarized_section_id: expanse.summarized_section_id })
+          const totalSum = MonthExpansesLogic.calculateExpansesSum(expanses);
+          return trx.where({ year: date.year, quarter: date.quarter, summarized_section_id: expanse.summarized_section_id })
             .select(
               "exec.id AS id",
               "exec.summarized_section_id AS summarized_section_id",
@@ -58,29 +52,20 @@ class TransactionsDao {
               "exec.difference AS difference",
               "exec.notes AS notes"
             ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
-            .transacting(trx)
             .then((budget) => {
-              let newData = this.bel.calculateBudget(budget, totalSum, date);
+              let newData = BudgetExecutionLogic.calculateBudget(budget, totalSum, date);
               return trx(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
                 .where({ year: date.year, summarized_section_id: expanse.summarized_section_id })
                 .update(newData)
             })
-        })
-        .then(trx.commit)
-        .catch(function (e) {
-          trx.rollback();
-          throw e;
-        })
+        });
 
     })
-      .then((inserts) => {
+      .then(() => {
         console.log("success");
       })
       .catch((error) => {
-        // If we get here, that means that neither the 'Old Books' catalogues insert,
-        // nor any of the books inserts will have taken place.
-        console.error("error");
-        console.error(error);
+        console.log(error);
       });
 
 
@@ -143,4 +128,4 @@ class TransactionsDao {
 
 }
 
-module.exports = TransactionsDao;
+module.exports = Transactions;
