@@ -3,6 +3,39 @@ const MonthExpansesLogic = require('../../logic/MonthExpansesLogic');
 const BudgetExecutionLogic = require('../../logic/BudgetExecutionLogic');
 const Helper = require('../../../helpers/Helper');
 
+const BUDGET_EXEC_DEFINITION = [{
+  id: { column: 'id', type: 'NUMBER' },
+  summarized_section_id: { column: 'summarized_section_id', type: 'NUMBER' },
+  section: 'section',
+  year: { column: 'year', type: 'INTEGER' },
+  quarter: { column: 'quarter', type: 'INTEGER' },
+  april_budget_execution: { column: 'april_budget_execution', type: 'INTEGER' },
+  april_budget: { column: 'april_budget', type: 'INTEGER' },
+  may_budget_execution: { column: 'may_budget_execution', type: 'INTEGER' },
+  may_budget: { column: 'may_budget', type: 'INTEGER' },
+  june_budget_execution: { column: 'june_budget_execution', type: 'INTEGER' },
+  june_budget: { column: 'june_budget', type: 'INTEGER' },
+  evaluation: { column: 'evaluation', type: 'INTEGER' },
+  total_budget: { column: 'total_budget', type: 'INTEGER' },
+  total_execution: { column: 'total_execution', type: 'INTEGER' },
+  difference: { column: 'difference', type: 'INTEGER' },
+  notes: 'notes',
+}];
+
+const MONTH_EXPANSE_DEFINITION = [{
+  id: { column: 'id', type: 'NUMBER' },
+  expanses_code_id: { column: 'expanses_code_id', type: 'NUMBER' },
+  code: { column: 'code', type: 'NUMBER' },
+  codeName: 'codeName',
+  summarized_section_id: { column: 'summarized_section_id', type: 'NUMBER' },
+  section: 'section',
+  supplierName: 'supplierName',
+  sum: { column: 'sum', type: 'REAL' },
+  notes: 'notes',
+  month: 'month',
+  year: { column: 'year', type: 'INTEGER' }
+}];
+
 class Transactions {
 
   constructor(connection) {
@@ -20,12 +53,11 @@ class Transactions {
 
     buildingName = Helper.trimSpaces(buildingName);
 
-    this.connection.transaction((trx) => {
+    return this.connection.transaction((trx) => {
       return trx(buildingName + "_month_expanses")
         .where({ id: expanse.id })
         .update(MonthExpansesLogic.prepareExpanseObj(expanse))
         .then(() => {
-          console.log("inside then of get all expanses by summarized id");
           //update the expanse first
           return trx.where({ year: date.year, month: date.month, summarized_section_id: expanse.summarized_section_id }).select(
             "building.id AS id",
@@ -47,13 +79,14 @@ class Transactions {
               "exec.quarter AS quarter",
               ...BudgetExecutionLogic.getQuarterQuery(date.quarter),
               "exec.evaluation AS evaluation",
-              "exec.total_budget AS total_budget",
+              "exec.total_busdget AS total_budget",
               "exec.total_execution AS total_execution",
               "exec.difference AS difference",
               "exec.notes AS notes"
             ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
-            .then((budget) => {
-              let newData = BudgetExecutionLogic.calculateBudget(budget, totalSum, date);
+            .then((budgets) => {
+              budgets = this.nestHydrationJS.nest(budgets, BUDGET_EXEC_DEFINITION);
+              let newData = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date);
               return trx(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
                 .where({ year: date.year, summarized_section_id: expanse.summarized_section_id })
                 .update(newData)
@@ -61,11 +94,8 @@ class Transactions {
         });
 
     })
-      .then(() => {
-        console.log("success");
-      })
       .catch((error) => {
-        console.log(error);
+        throw new Error("קרתה תקלה, שמירת ההוצאה עברה ללא הצלחה. השינויים ל נשמרו.")
       });
 
 

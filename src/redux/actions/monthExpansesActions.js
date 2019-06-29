@@ -3,7 +3,7 @@ import dateActions from './dateActions';
 
 /**
  * fetch month expanses
- * @param {*} payload 
+ * @param {*} params 
  */
 const fetchExpanses = (params = Object) => {
   return dispatch => {
@@ -74,7 +74,7 @@ const updateExpanse = (params = Object, tableData = Array) => {
     //send a request to backend to get the data
     ipcRenderer.send("update-month-expanse", params);
     //listen when the data comes back
-    ipcRenderer.once("month-expanse-updated", () => {
+    ipcRenderer.once("month-expanse-updated", (arg) => {
       dispatch(receiveExpanses(tableData));
     });
   }

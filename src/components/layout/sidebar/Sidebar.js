@@ -8,7 +8,6 @@ import NavButton from './NavButton';
 import { Dashboard, Settings } from '@material-ui/icons';
 import LoadingCircle from '../../common/LoadingCircle';
 import { connect } from 'react-redux';
-import bgImg from '../../../assets/images/Virtual-Grass-for-ALL-iPhone-AR72014.jpeg';
 
 const drawerWidth = 240;
 

@@ -36,6 +36,8 @@ const styles = (theme) => ({
   }
 });
 
+const FIXED_FLOAT = 2;
+
 class MonthExpanses extends Component {
 
   constructor(props) {
@@ -101,25 +103,25 @@ class MonthExpanses extends Component {
         this.props.updateExpanse(params, copyData);
 
       } else {
-
-        //prepare the expanse object 
-        let params = {
-          expanse: formInputs,
-          buildingName: this.props.location.state.engLabel,
-          ...this.props.monthExpanses.date
-        };
-
-
-        //add new expanse into the database
-        /* this.monthExpansesController.addExpanse(params, (result) => {
-          //copy state data
-          let copyData = [...this.state.data];
-          copyData.push(result);
-          this.setState(() => ({
-            ...this.state,
-            data: copyData
-          }));
-        }); */
+        /*
+                //prepare the expanse object 
+                let params = {
+                  expanse: formInputs,
+                  buildingName: this.props.location.state.engLabel,
+                  ...this.props.monthExpanses.date
+                };
+        
+        
+                //add new expanse into the database
+                 this.monthExpansesController.addExpanse(params, (result) => {
+                  //copy state data
+                  let copyData = [...this.state.data];
+                  copyData.push(result);
+                  this.setState(() => ({
+                    ...this.state,
+                    data: copyData
+                  }));
+                }); */
       }
       //reset form state
       reset();
@@ -163,8 +165,10 @@ class MonthExpanses extends Component {
     //building name, current month and year.
     let params = {
       buildingName: this.props.location.state.engLabel,
-      year: year,
-      month: month
+      date: {
+        year: year,
+        month: month
+      }
     }
 
     //get the building month expanses
@@ -204,7 +208,8 @@ class MonthExpanses extends Component {
       {
         accessor: "sum",
         Header: "סכום",
-        headerStyle: { background: "#000", color: "#fff" }
+        headerStyle: { background: "#000", color: "#fff" },
+        Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
       },
       {
         accessor: "notes",

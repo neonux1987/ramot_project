@@ -20,7 +20,6 @@ const monthExpansesIpc = (connection) => {
 
   ipcMain.on('update-month-expanse', (event, data) => {
     transactions.updateMonthExpanse(data).then((result) => {
-      console.log("ipc");
       event.reply("month-expanse-updated", result);
     }).catch((error) => {
       event.reply("month-expanse-updated", { error: error.message });

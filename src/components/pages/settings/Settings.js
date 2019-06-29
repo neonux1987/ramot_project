@@ -24,7 +24,7 @@ const styles = (theme) => ({
   }
 });
 
-const PAGE_NAME = "settings";
+//const PAGE_NAME = "settings";
 
 const Settings = ({ classes, match }, props) => {
 
