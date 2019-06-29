@@ -79,7 +79,7 @@ class Transactions {
               "exec.quarter AS quarter",
               ...BudgetExecutionLogic.getQuarterQuery(date.quarter),
               "exec.evaluation AS evaluation",
-              "exec.total_busdget AS total_budget",
+              "exec.total_budget AS total_budget",
               "exec.total_execution AS total_execution",
               "exec.difference AS difference",
               "exec.notes AS notes"
@@ -91,6 +91,8 @@ class Transactions {
                 .where({ year: date.year, summarized_section_id: expanse.summarized_section_id })
                 .update(newData)
             })
+        }).then(() => {
+
         });
 
     })
