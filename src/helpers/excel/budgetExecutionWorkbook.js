@@ -56,7 +56,7 @@ const BUDGET_EXECUTION_QUARTER4_HEADERS = [
   { header: 'הערכה', key: 'evaluation', width: 30 },
   { header: 'תקציב', key: 'total_budget', width: 30 },
   { header: 'ביצוע', key: 'total_execution', width: 30 },
-  { header: 'הפרש', key: 'difference', width: 30, alignment: { vertical: 'middle', horizontal: 'center' } },
+  { header: 'הפרש', key: 'difference', width: 30 },
   { header: 'הערות', key: 'notes', width: 30 }
 ];
 
@@ -68,7 +68,7 @@ const headerStyle = {
   },
   font: {
     name: 'Arial',
-    color: "FFFFFF",
+    color: { argb: 'FFFFFF' },
     family: 2,
     size: 11
   }
@@ -105,14 +105,21 @@ export default (workbook, sheetTitle, data) => {
   //and set style to each column of header row
   headerRow.eachCell(function (cell, colNumber) {
     cell.style = headerStyle;
+    cell.alignment = {
+      vertical: 'middle',
+      horizontal: 'center'
+    }
   });
 
   data.forEach((row) => {
-    sheet.addRow((() => {
+    let addedRow = sheet.addRow((() => {
       const { id, quarter, summarized_section_id, year, ...newRow } = row;
       Helper.replaceZeroWithEmpty(newRow);
       return newRow;
     })());
+    addedRow.eachCell((cell) => {
+      console.log(cell);
+    });
   });
 
   // iterate over all current cells in this column including empty cells

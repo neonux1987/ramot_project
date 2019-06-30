@@ -8,7 +8,7 @@ const headerStyle = {
   },
   font: {
     name: 'Arial',
-    color: "FFFFFF",
+    color: { argb: 'FFFFFF' },
     family: 2,
     size: 11
   }
@@ -46,13 +46,14 @@ export default (workbook, sheetTitle, data) => {
   ];
 
   //get the first row of headers
-  const headerRow = sheet.getRow(1);
   //and set style to each column of header row
-  headerRow.eachCell(function (cell, colNumber) {
+  sheet.getRow(1).eachCell(function (cell, colNumber) {
     cell.style = headerStyle;
+    cell.alignment = {
+      vertical: 'middle',
+      horizontal: 'center'
+    }
   });
-
-
 
   data.forEach((row) => {
     Helper.replaceZeroWithEmpty(row);
@@ -65,13 +66,21 @@ export default (workbook, sheetTitle, data) => {
     });
   });
 
-  sheet.eachRow((row) => {
-    row.eachCell((cell) => {
-      cell.alignment = {
-        vertical: 'middle',
-        horizontal: 'center'
-      }
-    });
+  sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+    if (rowNumber > 1) {
+      row.eachCell((cell) => {
+        cell.alignment = {
+          vertical: 'middle',
+          horizontal: 'center'
+        }
+        cell.style.font = {
+          name: 'Arial',
+          color: { argb: '000000' },
+          family: 2,
+          size: 11
+        };
+      });
+    }
   });
 
   return workbook;
