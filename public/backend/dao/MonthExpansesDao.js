@@ -56,15 +56,16 @@ class MonthExpansesDao {
   /**
    * get month expanse record by summarized section id
    */
-  getMonthExpansesBySummarizedSectionId({
+  getMonthExpansesBySummarizedSectionIdTrx(
     buildingName = String,
     date = {
       year: year = Number,
       month: month = String
     },
-    summarized_section_id = Number
-  }) {
-    let data = this.connection.where({ year: date.year, month: date.month, summarized_section_id: summarized_section_id }).select(
+    summarized_section_id = Number,
+    trx
+  ) {
+    return trx.where({ year: date.year, month: date.month, summarized_section_id: summarized_section_id }).select(
       "building.id AS id",
       "building.expanses_code_id AS expanses_code_id",
       "building.sum AS sum",
@@ -72,12 +73,6 @@ class MonthExpansesDao {
       "sc.section AS section",
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id");
-
-    return data.then((result) => {
-      return this.nestHydrationJS.nest(result, DEFINITION);
-    }).catch((error) => {
-      throw new Error("קרתה תקלה בשליפת הנתונים של הוצאות חודשיות.");
-    });
   }
 
   /**
@@ -86,15 +81,10 @@ class MonthExpansesDao {
    * @param {*} buildingName the name of the building
    * @param {*} expanse the expanse to update
    */
-  updateMonthExpanse(buildingName = String, id = Number, expanse = Object, trx) {
-    let data = trx(buildingName + "_month_expanses")
+  updateMonthExpanseTrx(buildingName = String, id = Number, expanse = Object, trx) {
+    return trx(buildingName + "_month_expanses")
       .where({ id: id })
       .update(expanse);
-
-    return data.then((result) => result)
-      .catch((error) => {
-        throw new Error("קרתה תקלה בנסיון עידכון הוצאה.");
-      })
   }
 
   addNewMonthExpanse(buildingName = String, record = Object) {

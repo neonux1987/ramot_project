@@ -4,13 +4,12 @@ import budgetExecutionWorkbook from './excel/budgetExecutionWorkbook';
 
 
 export default (fileName, sheetTitle, pageName, data) => {
-
   //create work book
   var workbook = new Excel.Workbook();
 
   whichPage(pageName, workbook, sheetTitle, data);
 
-  workbook.xlsx.writeFile(fileName)
+  workbook.xlsx.writeFile(`${fileName}.xlsx`)
     .then(function () {
       console.log("Successfully Written to File.");
     });

@@ -1,11 +1,15 @@
 import Helper from '../../helpers/Helper';
 
 const initState = {
-  pageName: "monthExpanses",
+  pageName: "budgetExecution",
   headerTitle: "מעקב ביצוע מול תקציב",
   date: Helper.getCurrentDate(),
-  tableHeaders: [],
-  tableData: []
+  budgetExecutions: {
+    isFetching: false,
+    status: "",
+    error: "",
+    data: []
+  }
 }
 
 export default (state = initState, action) => {

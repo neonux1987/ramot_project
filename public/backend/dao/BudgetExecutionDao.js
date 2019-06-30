@@ -116,7 +116,7 @@ class BudgetExecutionDao {
   }
 
   /**
-   * get single building budget execution data
+   * get single building budget execution data with transaction object
    * params object {
    * year,
    * quarter,
@@ -125,17 +125,17 @@ class BudgetExecutionDao {
    * quarterQuery - different months query
    * }
    */
-  getBudgetExecution({
+  getBudgetExecution(
     buildingName = String,
     date = {
       year: year = Number,
       quarter: quarter = String
     },
     quarterQuery = Array,
-    expanse = Object
-  }) {
-    let data = this.connection
-      .where({ year: date.year, quarter: date.quarter, summarized_section_id: expanse.summarized_section_id })
+    summarized_section_id = Number,
+    trx
+  ) {
+    return trx.where({ year: date.year, quarter: date.quarter, summarized_section_id: summarized_section_id })
       .select(
         "exec.id AS id",
         "exec.summarized_section_id AS summarized_section_id",
@@ -149,16 +149,10 @@ class BudgetExecutionDao {
         "exec.difference AS difference",
         "exec.notes AS notes"
       ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id");
-
-    return data.then((result) => {
-      return result;
-    }).catch((error) => {
-      throw new Error("קרתה תקלה בשליפת רשומה מטבלת ביצוע מול תקציב.");
-    });;
   }
 
   /**
-   * update budget execution record
+   * update budget execution record with transaction object
    * params object {
    * year,
    * buildingName,
@@ -166,24 +160,19 @@ class BudgetExecutionDao {
    * budgetExecutionData
    * }
    */
-  updateBudgetExecution({
+  updateBudgetExecution(
     buildingName = String,
     date = {
       year: year = Number,
       quarter: quarter = String
     },
     summarized_section_id = Number,
-    newData = Object
-  }) {
-    let data = this.connection(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
+    budgetExec = Object,
+    trx
+  ) {
+    return trx(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
       .where({ year: date.year, summarized_section_id: summarized_section_id })
-      .update(newData);
-
-    return data.then((result) => {
-      return result;
-    }).catch((error) => {
-      throw new Error("קרתה תקלה בעידכון רשומה בטבלת ביצוע מול תקציב.");
-    });;
+      .update(budgetExec);
   }
 
 }

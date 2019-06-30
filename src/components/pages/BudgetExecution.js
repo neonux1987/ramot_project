@@ -8,6 +8,9 @@ import excel from '../../helpers/excel';
 import ReactTable from 'react-table';
 import Header from '../layout/main/Header';
 import LoadingCircle from '../common/LoadingCircle';
+import WithHeaderWrapper from '../HOC/WithHeaderWrapper';
+import PageControls from '../common/page_controls/PageControls';
+import DatePicker from '../common/DatePicker';
 
 const styles = (theme) => ({
   loadingWrapper: {
@@ -248,14 +251,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(140, 193, 24)",
+          background: "rgb(75, 145, 222)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "may_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(140, 193, 24)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -264,7 +267,7 @@ class BudgetExecution extends Component {
           {
             accessor: "may_budget_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(140, 193, 24)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
             Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
           }
         ]
@@ -274,14 +277,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(75, 145, 222)",
+          background: "rgb(152, 202, 43)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "june_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(152, 202, 43)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -290,7 +293,7 @@ class BudgetExecution extends Component {
           {
             accessor: "june_budget_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(152, 202, 43)", fontWeight: "600" },
             Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
           }
         ]
@@ -364,15 +367,38 @@ class BudgetExecution extends Component {
   }
 
   render() {
-    console.log(this.state)
+    const {
+      date,
+      pageName,
+      headerTitle
+    } = this.props.budgetExecution;
+    const buildingName = this.props.location.state.parentLabel;
     return (
       <div>
-        <Header
-          title={PAGE_TITLE}
-          subTitle={this.props.location.state.parentLabel + " / " + this.state.date.quarterHeb + " / " + this.state.date.year}
-          textColor={this.props.classes.headerTitleTextColor}
-        >
-        </Header>
+
+
+        <WithHeaderWrapper>
+          <div style={{ paddingBottom: "10px" }}>
+            <Header
+              title={PAGE_TITLE}
+              subTitle={this.props.location.state.parentLabel + " / " + this.state.date.quarterHeb + " / " + this.state.date.year}
+              textColor={this.props.classes.headerTitleTextColor}
+            >
+            </Header>
+            <PageControls
+              excel={{
+                data: this.state.data,
+                fileName: Helper.getBudgetExecutionFilename(buildingName, date)
+              }}
+              print={{
+                title: headerTitle,
+                pageTitle: headerTitle + " - " + buildingName
+              }}
+              pageName={pageName}
+            />
+            <DatePicker date={date} loadDataByDateHandler={this.loadExpansesByDate} enableMonth={true} enableYear={true} enableQuarter={false} />
+          </div>
+        </WithHeaderWrapper>
 
         <ReactTable className="-striped"
           style={{

@@ -56,9 +56,23 @@ const BUDGET_EXECUTION_QUARTER4_HEADERS = [
   { header: 'הערכה', key: 'evaluation', width: 30 },
   { header: 'תקציב', key: 'total_budget', width: 30 },
   { header: 'ביצוע', key: 'total_execution', width: 30 },
-  { header: 'הפרש', key: 'difference', width: 30 },
+  { header: 'הפרש', key: 'difference', width: 30, alignment: { vertical: 'middle', horizontal: 'center' } },
   { header: 'הערות', key: 'notes', width: 30 }
 ];
+
+const headerStyle = {
+  fill: {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: '000000' }
+  },
+  font: {
+    name: 'Arial',
+    color: "FFFFFF",
+    family: 2,
+    size: 11
+  }
+}
 
 export default (workbook, sheetTitle, data) => {
 
@@ -78,7 +92,7 @@ export default (workbook, sheetTitle, data) => {
       views: [
         { rightToLeft: true }
       ],
-      pageSetup: { fitToPage: true, fitToHeight: 5, fitToWidth: 7 }
+      pageSetup: { fitToPage: true, fitToHeight: 5, fitToWidth: 7, orientation: 'landscape' }
     }
   );
 
@@ -86,7 +100,12 @@ export default (workbook, sheetTitle, data) => {
   //worksheet headers
   sheet.columns = whichBudgetExecutionHeaders();
 
-  console.log(data);
+  //get the first row of headers
+  const headerRow = sheet.getRow(1);
+  //and set style to each column of header row
+  headerRow.eachCell(function (cell, colNumber) {
+    cell.style = headerStyle;
+  });
 
   data.forEach((row) => {
     sheet.addRow((() => {
@@ -94,6 +113,49 @@ export default (workbook, sheetTitle, data) => {
       Helper.replaceZeroWithEmpty(newRow);
       return newRow;
     })());
+  });
+
+  // iterate over all current cells in this column including empty cells
+  sheet.getColumn("difference").eachCell(function (cell, rowNumber) {
+    if (rowNumber > 1) {
+      let bg = "ffff00";
+      let fontColor = "000000";
+      if (cell.value > 0) {
+        bg = "008000";
+        fontColor = "ffffff";
+      } else if (cell.value < 0) {
+        bg = "ff0000";
+        fontColor = "ffffff";
+      }
+
+      cell.style = {
+        fill: {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: bg }
+        },
+        font: {
+          name: 'Arial',
+          family: 2,
+          color: { argb: fontColor }
+        },
+        border: {
+          top: { style: 'thin', color: { argb: 'C3C4C3' } },
+          left: { style: 'thin', color: { argb: 'C3C4C3' } },
+          bottom: { style: 'thin', color: { argb: 'C3C4C3' } },
+          right: { style: 'thin', color: { argb: 'C3C4C3' } }
+        }
+      }
+    }
+  });
+
+  sheet.eachRow((row) => {
+    row.eachCell((cell) => {
+      cell.alignment = {
+        vertical: 'middle',
+        horizontal: 'center'
+      }
+    });
   });
 
   return workbook;

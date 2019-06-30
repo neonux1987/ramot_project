@@ -1,6 +1,8 @@
 const NestHydrationJS = require('nesthydrationjs');
 const MonthExpansesLogic = require('../../logic/MonthExpansesLogic');
 const BudgetExecutionLogic = require('../../logic/BudgetExecutionLogic');
+const MonthExpansesDao = require('../MonthExpansesDao');
+const BudgetExecutionDao = require('../BudgetExecutionDao');
 const Helper = require('../../../helpers/Helper');
 
 const BUDGET_EXEC_DEFINITION = [{
@@ -40,6 +42,8 @@ class Transactions {
 
   constructor(connection) {
     this.connection = connection;
+    this.monthExpansesDao = new MonthExpansesDao();
+    this.budgetExecutionDao = new BudgetExecutionDao();
     this.nestHydrationJS = new NestHydrationJS();
   }
 
@@ -54,98 +58,36 @@ class Transactions {
     buildingName = Helper.trimSpaces(buildingName);
 
     return this.connection.transaction((trx) => {
-      return trx(buildingName + "_month_expanses")
-        .where({ id: expanse.id })
-        .update(MonthExpansesLogic.prepareExpanseObj(expanse))
+
+      //prepare the expanse obejct, remove all the unneccessary 
+      //fields so it can b saved.
+      const expanseToUpdate = MonthExpansesLogic.prepareExpanseObj(expanse);
+      //update the expanse
+      return this.monthExpansesDao.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx)
         .then(() => {
-          //update the expanse first
-          return trx.where({ year: date.year, month: date.month, summarized_section_id: expanse.summarized_section_id }).select(
-            "building.id AS id",
-            "building.expanses_code_id AS expanses_code_id",
-            "building.sum AS sum",
-            "sc.id AS summarized_section_id",
-            "sc.section AS section",
-          ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
-            .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id");
+          //get all the expanses by summarized sections id
+          return this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, expanse.summarized_section_id, trx);
         })
         .then((expanses) => {
+          //calculate total sum of the received expanses
           const totalSum = MonthExpansesLogic.calculateExpansesSum(expanses);
-          return trx.where({ year: date.year, quarter: date.quarter, summarized_section_id: expanse.summarized_section_id })
-            .select(
-              "exec.id AS id",
-              "exec.summarized_section_id AS summarized_section_id",
-              "ss.section AS section",
-              "exec.year AS year",
-              "exec.quarter AS quarter",
-              ...BudgetExecutionLogic.getQuarterQuery(date.quarter),
-              "exec.evaluation AS evaluation",
-              "exec.total_budget AS total_budget",
-              "exec.total_execution AS total_execution",
-              "exec.difference AS difference",
-              "exec.notes AS notes"
-            ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+          //get the quarter months query
+          const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
+          //get budget execution of the selected date
+          return this.budgetExecutionDao.getBudgetExecution(buildingName, date, quarterQuery, expanse.summarized_section_id, trx)
             .then((budgets) => {
+              //validate data to be consistent
               budgets = this.nestHydrationJS.nest(budgets, BUDGET_EXEC_DEFINITION);
-              let newData = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date);
-              return trx(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
-                .where({ year: date.year, summarized_section_id: expanse.summarized_section_id })
-                .update(newData)
-            })
-        }).then(() => {
+              //prepare budget execution object to be updated
+              let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date);
+              //update budget execution
+              return this.budgetExecutionDao.updateBudgetExecution(buildingName, date, expanse.summarized_section_id, budgetExec, trx);
+            }).catch(error => { throw error });
+        }).catch(error => { throw error });
 
-        });
-
-    })
-      .catch((error) => {
-        throw new Error("קרתה תקלה, שמירת ההוצאה עברה ללא הצלחה. השינויים ל נשמרו.")
-      });
-
-
-
-
-
-    /*     // Using trx as a transaction object:
-        const trx = await knex.transaction();
-    
-        trx(buildingName + "_month_expanses")
-          .where({ id: id })
-          .update(expanse)
-          .then(() => {
-            //update the expanse first
-            return trx.where({ year: date.year, month: date.month, summarized_section_id: expanse.summarized_section_id }).select(
-              "building.id AS id",
-              "building.expanses_code_id AS expanses_code_id",
-              "building.sum AS sum",
-              "sc.id AS summarized_section_id",
-              "sc.section AS section",
-            ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
-              .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id");
-          })
-          .then((expanses) => {
-            return MonthExpansesLogic.calculateExpansesSum(expanses);
-          })
-          .then((totalSum) => {
-            trx.where({ year: date.year, quarter: date.quarter, summarized_section_id: expanse.summarized_section_id })
-              .select(
-                "exec.id AS id",
-                "exec.summarized_section_id AS summarized_section_id",
-                "ss.section AS section",
-                "exec.year AS year",
-                "exec.quarter AS quarter",
-                ...BudgetExecutionLogic.getQuarterQuery(date.quarter),
-                "exec.evaluation AS evaluation",
-                "exec.total_budget AS total_budget",
-                "exec.total_execution AS total_execution",
-                "exec.difference AS difference",
-                "exec.notes AS notes"
-              ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id");
-          })
-          .then(trx.commit)
-          .catch((error) => {
-            trx.rollback();
-            throw new Error(error);
-          }); */
-
+    }).catch((error) => {
+      throw new Error("קרתה תקלה, שמירת ההוצאה עברה ללא הצלחה. השינויים ל נשמרו.")
+    });
   }
 
 
