@@ -76,8 +76,6 @@ class Transactions {
           //get budget execution of the selected date
           return this.budgetExecutionDao.getBudgetExecution(buildingName, date, quarterQuery, expanse.summarized_section_id, trx)
             .then((budgets) => {
-              //validate data to be consistent
-              budgets = this.nestHydrationJS.nest(budgets, BUDGET_EXEC_DEFINITION);
               //prepare budget execution object to be updated
               let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date);
               //update budget execution
@@ -90,14 +88,21 @@ class Transactions {
     });
   }
 
-
-
-
   addNewMonthExpanse(buildingName = String, record = Object) {
     return this.connection(buildingName + "_month_expanses").insert(record)
       .catch((error) => {
         throw new Error("קרתה תקלה בנסיון להוסיף הוצאה חדשה.");
       });;
+  }
+
+  generateTableData() {
+
+    buildingName = Helper.trimSpaces(buildingName);
+
+    return this.connection.transaction((trx) => {
+
+    });
+
   }
 
 }

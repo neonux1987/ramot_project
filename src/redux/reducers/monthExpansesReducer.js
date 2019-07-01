@@ -37,11 +37,6 @@ export default (state = initState, action) => {
         ...state,
         tableData: action.payload
       }
-    case "ADD_NEW_MONTH_EXPANSE":
-      return {
-        ...state,
-        tableData: action.payload
-      }
     case "FETCHING_FAILED":
       return {
         ...state,

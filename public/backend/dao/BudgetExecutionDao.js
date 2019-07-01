@@ -34,7 +34,7 @@ const quarter2 = [
 ]
 
 const quarter3 = [
-  "exec.july AS july_budget_execution",
+  "exec.july_budget_execution AS july_budget_execution",
   "exec.july_budget AS july_budget",
   "exec.august_budget_execution AS august_budget_execution",
   "exec.august_budget AS august_budget",

@@ -98,7 +98,7 @@ class MonthExpanses extends Component {
             ...this.props.monthExpanses.date
           }
         };
-
+        console.log(params);
         //add new expanse into the database
         this.props.updateExpanse(params, copyData);
 
@@ -276,12 +276,12 @@ class MonthExpanses extends Component {
           }}
           getTdProps={(state, rowInfo, column) => {
             return {
-              onClick: () => console.log("")
+              //onClick: () => console.log("")
             }
           }}
           loadingText={"טוען..."}
           noDataText={"המידע לא נמצא"}
-          loading={this.state.loadingData}
+          loading={expanses.isFetching}
           LoadingComponent={LoadingCircle}
           defaultPageSize={50}
           showPagination={true}

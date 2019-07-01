@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import LoadingCircle from '../../common/LoadingCircle';
 import Toolbar from './Toolbar';
+import Helper from '../../../helpers/Helper';
 
 const styles = theme => ({
   main: {
@@ -90,7 +91,7 @@ class Main extends Component {
     } else {
       return (
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
-          <Toolbar />
+          <Toolbar buildingName={"לב תל אביב"} header={"מעקב תקציב מול ביצוע"} year={Helper.getCurrentYear()} month={Helper.getCurrentMonthHeb()} />
           <div style={{ padding: "24px" }}>
             <Switch>
               {this.state.routes}

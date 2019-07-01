@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 import BudgetExecutionController from '../../controllers/BudgetExecutionController';
+import budgetExecutionActions from '../../redux/actions/budgetExecutionActions';
+import dateActions from '../../redux/actions/dateActions';
 import Helper from '../../helpers/Helper';
 import saveToFile from '../../helpers/saveToFile';
 import excel from '../../helpers/excel';
@@ -47,18 +49,10 @@ class BudgetExecution extends Component {
     super(props);
     this.budgetExecutionController = new BudgetExecutionController();
     this.state = {
-      data: [],
-      cellEditMode: {
-        rowNum: -1,
-        cellHeader: ""
-      },
-      date: Helper.getCurrentDate(),
-      loadingData: true
     };
     this._isMounted = false;
     //binds
     this.exportToExcel = this.exportToExcel.bind(this);
-    this.toggleEdit = this.toggleEdit.bind(this);
     this.generateHeaders = this.generateHeaders.bind(this);
     this.loadBudgetExecutionsByDate = this.loadBudgetExecutionsByDate.bind(this);
     this.cellTextInput = this.cellTextInput.bind(this);
@@ -67,24 +61,14 @@ class BudgetExecution extends Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
 
     //important params that allows to pull the current data by
     //current quarter, month and year.
     let params = {
       buildingName: this.props.location.state.engLabel,
-      date: Helper.getCurrentDate()
+      date: Helper.getCurrentDate(),
     }
-    //get the building execution data
-    this.budgetExecutionController.getAllBudgetExecutions(params, (result) => {
-      if (this._isMounted) {
-        this.setState((state, props) => ({
-          ...state,
-          data: result,
-          loadingData: false
-        }));
-      }
-    });
+    this.props.fetchBudgetExecutions(params);
 
   }
 
@@ -100,40 +84,18 @@ class BudgetExecution extends Component {
     this._isMounted = false;
   }
 
-  toggleEdit(event, cellHeader, rowNum) {
-    this.setState({
-      ...this.state,
-      cellEditMode: {
-        rowNum: rowNum,
-        cellHeader: cellHeader
-      }
-    });
-  }
-
   loadBudgetExecutionsByDate(month, year, quarter) {
-
     //important params that allows to pull the current data by
     //current quarter, month and year.
     let params = {
       buildingName: this.props.location.state.engLabel,
-      quarter: quarter,
-      year: year
-    }
-
-    //get the building budget executions
-    this.budgetExecutionController.getAllBudgetExecutions(params, (result) => {
-      this.setState((prevState, props) => ({
-        ...this.state,
-        date: {
-          ...prevState.date,
-          year: year,
-          quarter: quarter,
-          quarterHeb: Helper.getCurrentQuarterHeb(quarter)
-        },
-        data: result
-      }));
-    });
-
+      date: {
+        quarter: quarter,
+        year: year
+      }
+    };
+    console.log(params);
+    this.props.fetchBudgetExecutions(params);
   }
 
   colorCell(title, value) {
@@ -159,6 +121,11 @@ class BudgetExecution extends Component {
 
     return colored;
 
+  }
+
+  cell(cellInfo) {
+    const newValue = cellInfo.value === 0 ? "" : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    return newValue;
   }
 
   cellInputOnBlurHandler(e, cellInfo) {
@@ -196,7 +163,7 @@ class BudgetExecution extends Component {
     />
   };
 
-  generateHeaders() {
+  generateHeaders(months) {
     return [
       {
         Header: "",
@@ -221,7 +188,7 @@ class BudgetExecution extends Component {
         ]
       },
       {
-        Header: "חודש אפריל",
+        Header: months[0].header,
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
@@ -230,8 +197,8 @@ class BudgetExecution extends Component {
         },
         columns: [
           {
-            accessor: "april_budget",
-            Header: "תקציב",
+            accessor: months[0].column1.accessor,
+            Header: months[0].column1.header,
             headerStyle: { color: "#fff", background: "rgb(255, 99, 0)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
@@ -239,15 +206,15 @@ class BudgetExecution extends Component {
             }
           },
           {
-            accessor: "april_budget_execution",
-            Header: "ביצוע",
+            accessor: months[0].column2.accessor,
+            Header: months[0].column2.header,
             headerStyle: { color: "#fff", background: "rgb(255, 99, 0)", fontWeight: "600" },
-            Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
+            Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
-        Header: "חודש מאי",
+        Header: months[1].header,
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
@@ -256,8 +223,8 @@ class BudgetExecution extends Component {
         },
         columns: [
           {
-            accessor: "may_budget",
-            Header: "תקציב",
+            accessor: months[1].column1.accessor,
+            Header: months[1].column1.header,
             headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
@@ -265,15 +232,15 @@ class BudgetExecution extends Component {
             }
           },
           {
-            accessor: "may_budget_execution",
-            Header: "ביצוע",
+            accessor: months[1].column2.accessor,
+            Header: months[1].column2.header,
             headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
-            Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
+            Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
-        Header: "חודש יוני",
+        Header: months[2].header,
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
@@ -282,8 +249,8 @@ class BudgetExecution extends Component {
         },
         columns: [
           {
-            accessor: "june_budget",
-            Header: "תקציב",
+            accessor: months[2].column1.accessor,
+            Header: months[2].column1.header,
             headerStyle: { color: "#fff", background: "rgb(152, 202, 43)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
@@ -291,10 +258,10 @@ class BudgetExecution extends Component {
             }
           },
           {
-            accessor: "june_budget_execution",
-            Header: "ביצוע",
+            accessor: months[2].column2.accessor,
+            Header: months[2].column2.header,
             headerStyle: { color: "#fff", background: "rgb(152, 202, 43)", fontWeight: "600" },
-            Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
+            Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
@@ -305,7 +272,7 @@ class BudgetExecution extends Component {
             accessor: "evaluation",
             Header: "הערכה",
             headerStyle: { background: "#000", color: "#fff" },
-            Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
+            Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       }
@@ -323,13 +290,13 @@ class BudgetExecution extends Component {
             accessor: "total_budget",
             Header: "תקציב",
             headerStyle: { color: "#fff", background: "rgb(150, 0, 255)", fontWeight: "600" },
-            Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
+            Cell: (cellInfo) => this.cell(cellInfo)
           },
           {
             accessor: "total_execution",
             Header: "ביצוע",
             headerStyle: { color: "#fff", background: "rgb(150, 0, 255)", fontWeight: "600" },
-            Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
+            Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
@@ -340,7 +307,7 @@ class BudgetExecution extends Component {
             accessor: "difference",
             Header: "הפרש",
             headerStyle: { background: "#000", color: "#fff" },
-            Cell: (cellInfo) => cellInfo.value === 0 ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, ""),
+            Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               direction: "ltr"
             },
@@ -370,24 +337,23 @@ class BudgetExecution extends Component {
     const {
       date,
       pageName,
+      budgetExecutions,
       headerTitle
     } = this.props.budgetExecution;
     const buildingName = this.props.location.state.parentLabel;
     return (
       <div>
-
-
         <WithHeaderWrapper>
           <div style={{ paddingBottom: "10px" }}>
             <Header
               title={PAGE_TITLE}
-              subTitle={this.props.location.state.parentLabel + " / " + this.state.date.quarterHeb + " / " + this.state.date.year}
+              subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
               textColor={this.props.classes.headerTitleTextColor}
             >
             </Header>
             <PageControls
               excel={{
-                data: this.state.data,
+                data: budgetExecutions.data,
                 fileName: Helper.getBudgetExecutionFilename(buildingName, date)
               }}
               print={{
@@ -396,7 +362,7 @@ class BudgetExecution extends Component {
               }}
               pageName={pageName}
             />
-            <DatePicker date={date} loadDataByDateHandler={this.loadExpansesByDate} enableMonth={true} enableYear={true} enableQuarter={false} />
+            <DatePicker date={date} loadDataByDateHandler={this.loadBudgetExecutionsByDate} enableMonth={false} enableYear={true} enableQuarter={true} />
           </div>
         </WithHeaderWrapper>
 
@@ -416,17 +382,17 @@ class BudgetExecution extends Component {
           }}
           getTdProps={(state, rowInfo, column) => {
             return {
-              onClick: () => console.log(rowInfo)
+              //onClick: () => console.log(rowInfo)
             }
           }}
           loadingText={"טוען..."}
           noDataText={"המידע לא נמצא"}
-          loading={this.state.loadingData}
+          loading={budgetExecutions.isFetching}
           LoadingComponent={LoadingCircle}
           defaultPageSize={50}
           showPagination={true}
-          data={this.state.data}
-          columns={this.generateHeaders()}
+          data={budgetExecutions.data}
+          columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
           resizable={true}
         />
       </div>
@@ -440,7 +406,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  //formChangedAction: (payload) => dispatch(formChangedAction(payload))
+  fetchBudgetExecutions: (payload) => dispatch(budgetExecutionActions.fetchBudgetExecutions(payload)),
+  updateBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.updateBudgetExecution(payload, tableData)),
+  addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData)),
+  setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

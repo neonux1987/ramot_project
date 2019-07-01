@@ -41,8 +41,6 @@ class BudgetExecutionLogic {
       budget["difference"] = 0.0;
     }
 
-
-
     let newData = {
       total_execution: budget["total_execution"],
       difference: budget["difference"]

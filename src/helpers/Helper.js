@@ -116,6 +116,152 @@ class Helper {
     }
   }
 
+  static getQuarterMonthsHeaders(quarter = Helper.getCurrentQuarter()) {
+    switch (quarter) {
+      case 1: return [
+        {
+          header: "חודש ינואר",
+          column1: {
+            accessor: "january_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "january_budget_execution",
+            header: "ביצוע"
+          }
+        },
+        {
+          header: "חודש פברואר",
+          column1: {
+            accessor: "february_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "february_budget_execution",
+            header: "ביצוע"
+          }
+        },
+        {
+          header: "חודש מרץ",
+          column1: {
+            accessor: "march_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "march_budget_execution",
+            header: "ביצוע"
+          }
+        }
+      ]
+      case 2: return [
+        {
+          header: "חודש אפריל",
+          column1: {
+            accessor: "april_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "april_budget_execution",
+            header: "ביצוע"
+          }
+        },
+        {
+          header: "חודש מאי",
+          column1: {
+            accessor: "may_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "may_budget_execution",
+            header: "ביצוע"
+          }
+        },
+        {
+          header: "חודש יוני",
+          column1: {
+            accessor: "june_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "june_budget_execution",
+            header: "ביצוע"
+          }
+        }
+      ]
+      case 3: return [
+        {
+          header: "חודש יולי",
+          column1: {
+            accessor: "july_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "july_budget_execution",
+            header: "ביצוע"
+          }
+        },
+        {
+          header: "חודש אוגוסט",
+          column1: {
+            accessor: "august_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "august_budget_execution",
+            header: "ביצוע"
+          }
+        },
+        {
+          header: "חודש ספטמבר",
+          column1: {
+            accessor: "september_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "september_budget_execution",
+            header: "ביצוע"
+          }
+        }
+      ]
+      case 4: return [
+        {
+          header: "חודש אוקטובר",
+          column1: {
+            accessor: "october_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "october_budget_execution",
+            header: "ביצוע"
+          }
+        },
+        {
+          header: "חודש נובמבר",
+          column1: {
+            accessor: "november_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "november_budget_execution",
+            header: "ביצוע"
+          }
+        },
+        {
+          header: "חודש דצמבר",
+          column1: {
+            accessor: "december_budget",
+            header: "תקציב"
+          },
+          column2: {
+            accessor: "december_budget_execution",
+            header: "ביצוע"
+          }
+        }
+      ]
+      default: return null
+    }
+  }
+
   static getBudgetExecutionTableHeaders() {
     switch (this.getCurrentQuarter()) {
       case 1: return quarter1
