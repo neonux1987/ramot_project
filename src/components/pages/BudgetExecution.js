@@ -340,7 +340,7 @@ class BudgetExecution extends Component {
       budgetExecutions,
       headerTitle
     } = this.props.budgetExecution;
-    const buildingName = this.props.location.state.parentLabel;
+    const buildingName = this.props.location.state.parentLabel; console.log(budgetExecutions.data)
     return (
       <div>
         <WithHeaderWrapper>
