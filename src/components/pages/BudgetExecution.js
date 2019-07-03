@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 import BudgetExecutionController from '../../controllers/BudgetExecutionController';
 import budgetExecutionActions from '../../redux/actions/budgetExecutionActions';
@@ -11,32 +10,10 @@ import ReactTable from 'react-table';
 import Header from '../layout/main/Header';
 import LoadingCircle from '../common/LoadingCircle';
 import WithHeaderWrapper from '../HOC/WithHeaderWrapper';
-import PageControls from '../common/page_controls/PageControls';
-import DatePicker from '../common/DatePicker';
+import PageControls from '../common/PageControls/PageControls';
+import DatePicker from '../common/DatePicker/DatePicker';
 
-const styles = (theme) => ({
-  loadingWrapper: {
-    display: "flex",
-    height: "100%",
-    alignItems: "center",
-    color: "#000",
-    fontSize: "34px",
-    margin: "0 auto"
-  },
-  header: {
-    display: "inline-block",
-  },
-  total: {
-    display: "inline-block",
-    float: "right",
-    background: "#fff",
-    border: "1px solid #ccc",
-    borderRadius: "4px"
-  },
-  headerTitleTextColor: {
-    color: "rgb(130, 75, 204)"
-  }
-});
+
 
 const PAGE_NAME = "budgetExecution";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -91,10 +68,10 @@ class BudgetExecution extends Component {
       buildingName: this.props.location.state.engLabel,
       date: {
         quarter: quarter,
+        quarterHeb: Helper.getQuarterHeb(quarter),
         year: year
       }
     };
-    console.log(params);
     this.props.fetchBudgetExecutions(params);
   }
 
@@ -124,14 +101,18 @@ class BudgetExecution extends Component {
   }
 
   cell(cellInfo) {
-    const newValue = cellInfo.value === 0 ? "" : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    const newValue = cellInfo.value === 0 ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     return newValue;
   }
 
   cellInputOnBlurHandler(e, cellInfo) {
-    const data = [...this.state.data];
+    const data = [...this.props.budgetExecution.budgetExecutions.data];
     data[cellInfo.index][cellInfo.column.id] = e.target.value;
-    this.setState({ data });
+
+    let params = {
+      buildingName: this.props.location.state.engLabel
+    };
+    this.props.updateBudgetExecution(params, data);
   }
 
   cellTextInput(cellInfo) {
@@ -340,7 +321,7 @@ class BudgetExecution extends Component {
       budgetExecutions,
       headerTitle
     } = this.props.budgetExecution;
-    const buildingName = this.props.location.state.parentLabel; console.log(budgetExecutions.data)
+    const buildingName = this.props.location.state.parentLabel;
     return (
       <div>
         <WithHeaderWrapper>
@@ -348,7 +329,7 @@ class BudgetExecution extends Component {
             <Header
               title={PAGE_TITLE}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={this.props.classes.headerTitleTextColor}
+              textColor={{ color: "rgb(130, 75, 204)" }}
             >
             </Header>
             <PageControls
@@ -412,8 +393,4 @@ const mapDispatchToProps = dispatch => ({
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(
-    BudgetExecution
-  )
-);
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecution);

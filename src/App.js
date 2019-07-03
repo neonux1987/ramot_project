@@ -1,38 +1,17 @@
 import React, { Component } from 'react';
-import Sidebar from "./components/layout/sidebar/Sidebar";
+import Sidebar from "./components/layout/Sidebar/Sidebar";
 import Main from "./components/layout/main/Main";
 import { MemoryRouter } from 'react-router-dom';
-import { CssBaseline, withStyles } from '@material-ui/core';
+import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import RTL from './components/RTL';
-import SidebarToggleButton from './components/layout/sidebar/SidebarToggleButton';
+import SidebarToggleButton from './components/layout/Sidebar/SidebarToggleButton';
 import { connect } from 'react-redux';
 import sidebarActions from './redux/actions/sidebarActions';
-import NotificationWrapper from './components/common/notifications/NotificationWrapper';
+import NotificationWrapper from './components/common/Notifications/NotificationWrapper';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
-
-const styles = theme => ({
-  root: {
-    display: "flex",
-    height: "100%",
-    padding: 0
-  },
-  errorBox: {
-    width: "300px",
-    padding: "30px",
-    background: "#000000e0",
-    borderRadius: "4px",
-    //border: "1px solid #ccc",
-    boxShadow: "0 0 4px #333333",
-    minHeight: "100px",
-    position: "absolute",
-    zIndex: "99",
-    bottom: "30px",
-    left: "30px"
-  }
-});
 
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
@@ -60,7 +39,7 @@ class App extends Component {
       <RTL>
         <MuiThemeProvider theme={theme}>
           <MemoryRouter>
-            <div className={this.props.classes.root}>
+            <div style={{ display: "flex", height: "100%", padding: 0 }}>
               <CssBaseline />
               <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebar(!this.props.sidebar.toggleSidebar)} />
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
@@ -86,4 +65,4 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));
+export default connect(mapStateToProps, mapDispatchToProps)(App);

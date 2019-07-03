@@ -51,9 +51,9 @@ export default (state = initState, action) => {
         ...state,
         date: {
           ...state.date,
-          year: action.payload.year,
-          month: action.payload.month,
-          monthHeb: Helper.convertEngToHebMonth(action.payload.month)
+          ...action.payload,
+          quarter: Helper.getCurrentQuarter(action.payload.month),
+          quarterHeb: Helper.getQuarterHeb(Helper.getCurrentQuarter(action.payload.month))
         }
       }
     case "SET_CURRENT_DATE": return {

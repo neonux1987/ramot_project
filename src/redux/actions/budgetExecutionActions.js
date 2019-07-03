@@ -72,16 +72,18 @@ const addBudgetExecution = (params = Object, tableData) => {
  */
 const updateBudgetExecution = (params = Object, tableData = Array) => {
   return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("update-month-expanse", params);
+    /* //send a request to backend to get the data
+    ipcRenderer.send("update-budget-execution", params);
     //listen when the data comes back
     ipcRenderer.once("month-expanse-updated", (event, arg) => {
       if (arg.error) {
         console.log(arg.error);
       } else {
-        dispatch(receiveBudgetExecutions(tableData));
+        
       }
-    });
+    }); */
+
+    dispatch(receiveBudgetExecutions(tableData));
   }
 };
 

@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
 import LoadingCircle from '../common/LoadingCircle';
 import Table from '../common/table/Table';
 import SummarizedBudgetController from '../../controllers/SummarizedBudgetController';
 import Helper from '../../helpers/Helper';
 import Header from '../layout/main/Header';
 import { connect } from 'react-redux';
-
-const styles = (theme) => ({
-  header: {
-    display: "inline-block",
-  }
-});
 
 const PAGE_NAME = "summarizedBudget";
 
@@ -84,4 +77,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SummarizedBudget));
+export default connect(mapStateToProps, mapDispatchToProps)(SummarizedBudget);

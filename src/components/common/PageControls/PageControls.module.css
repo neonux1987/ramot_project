@@ -1,0 +1,15 @@
+.pageControls{
+  float: left;
+  margin: 0 20px 0 0;
+  padding-top: 3px;
+  border: 1px dotted #9c9c9c;
+  background: #fff;
+}
+
+.pageControlsButton{
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  margin: 0 6px;
+}

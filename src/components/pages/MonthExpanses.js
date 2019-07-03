@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import InputExpansesField from '../common/InputExpansesField'
 import ReactTable from 'react-table';
-import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
 import monthExpansesActions from '../../redux/actions/monthExpansesActions';
@@ -10,31 +9,10 @@ import Helper from '../../helpers/Helper';
 import Header from '../layout/main/Header';
 import IOController from '../../controllers/IOController';
 import LoadingCircle from '../common/LoadingCircle';
-import PageControls from '../common/page_controls/PageControls';
-import DatePicker from '../common/DatePicker';
+import PageControls from '../common/PageControls/PageControls';
+import DatePicker from '../common/DatePicker/DatePicker';
 import WithHeaderWrapper from '../HOC/WithHeaderWrapper';
 import SummarizedSectionsController from '../../controllers/SummarizedSectionsController';
-
-const styles = (theme) => ({
-  loadingWrapper: {
-    display: "flex",
-    height: "100%",
-    alignItems: "center",
-    color: "#000",
-    fontSize: "34px",
-    margin: "0 auto"
-  },
-  headerWrapper: {
-    //background: "#fff",
-    //border: "1px solid #eaeaea",
-    borderRadius: "4px",
-    //paddingTop: "10px",
-    marginBottom: "20px"
-  },
-  headerTitleTextColor: {
-    color: "rgb(17, 164, 220)"
-  }
-});
 
 const FIXED_FLOAT = 2;
 
@@ -167,7 +145,8 @@ class MonthExpanses extends Component {
       buildingName: this.props.location.state.engLabel,
       date: {
         year: year,
-        month: month
+        month: month,
+        monthHeb: Helper.convertEngToHebMonth(month)
       }
     }
 
@@ -231,7 +210,6 @@ class MonthExpanses extends Component {
     if (expanses.status === "error") {
       alert(expanses.error)
     }
-
     return (
       <Fragment>
 
@@ -239,7 +217,7 @@ class MonthExpanses extends Component {
           <div style={{ paddingBottom: "10px" }}>
             <Header
               title={headerTitle}
-              textColor={this.props.classes.headerTitleTextColor}
+              textColor={{ color: "rgb(17, 164, 220)" }}
               subTitle={buildingName + " / " + date.monthHeb + " / " + date.year}
             />
             <PageControls
@@ -308,4 +286,4 @@ const mapDispatchToProps = dispatch => ({
   getSummarizedSections: () => dispatch(summarizedSectionsActions.getSummarizedSections())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MonthExpanses));
+export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

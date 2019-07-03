@@ -31,14 +31,9 @@ const Header = props => {
 
   return (
     <div className={props.classes.header}>
-      <Typography variant="h3" color="primary" classes={{ root: props.classes.headerTitle, colorPrimary: props.textColor }}>
+      <Typography style={props.textColor} variant="h3" color="primary" classes={{ root: props.classes.headerTitle /*colorPrimary: props.textColor*/ }}>
         {props.title}
       </Typography>
-      {/* <Typography variant="subtitle1" className={props.classes.headerSubTitle}>
-        {props.subTitle}
-
-
-      </Typography> */}
     </div>
   );
 

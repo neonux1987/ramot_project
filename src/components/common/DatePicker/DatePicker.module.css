@@ -1,0 +1,33 @@
+.formControl {
+    min-width: 120;
+    margin: 8px;
+    display: inline-block;
+  }
+
+  .formSelect {
+    display: inline-block;
+    padding: 0 10px;
+    margin: 0 5px
+  }
+
+  .dates {
+
+    float: left;
+    background: #fff;
+    border: 1px dotted #9c9c9c;
+  }
+
+  .month{
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .year{
+    display: inline-block;
+    margin-left: "10px";
+  }
+  .button{
+    display: inline-block;
+    margin: 6px 5px 0;
+    background-color: #439dd2;
+  }
