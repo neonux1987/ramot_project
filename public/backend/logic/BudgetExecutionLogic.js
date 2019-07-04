@@ -30,6 +30,7 @@ class BudgetExecutionLogic {
   }
 
   static calculateBudget(budget, totalSum, date) {
+    totalSum = totalSum - ((totalSum * 17) / 100);
     budget["total_execution"] -= budget[`${date.month}_budget_execution`];
     budget[`${date.month}_budget_execution`] = totalSum;
     budget["total_execution"] += totalSum;

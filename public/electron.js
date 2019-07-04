@@ -7,6 +7,7 @@ const budgetExecutionIpc = require('./electron/ipcs/budgetExecution.ipc');
 const summarizedBudgetIpc = require('./electron/ipcs/SummarizedBudget.ipc');
 const sidebarIpc = require('./electron/ipcs/sidebar.ipc');
 const summarizedSectionsIpc = require('./electron/ipcs/summarizedSections.ipc');
+const expansesCodesIpc = require('./electron/ipcs/expansesCodes.ipc');
 const contextMenu = require('electron-context-menu');
 
 const path = require('path');
@@ -94,3 +95,5 @@ budgetExecutionIpc(knex);
 summarizedBudgetIpc(knex);
 
 summarizedSectionsIpc(knex);
+
+expansesCodesIpc(knex);

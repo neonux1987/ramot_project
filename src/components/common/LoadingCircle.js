@@ -19,25 +19,34 @@ const styles = theme => ({
     left: "0",
     color: "#000",
     fontSize: "34px",
+    zIndex: "4",
     "-webkit-transform": "translateY(-52%)",
     transform: "translateY(-52%)",
     transition: "all .3s cubic-bezier(.25,.46,.45,.94)"
   },
   loadingText: {
-    color: "#000",
+    color: "#353535",
     fontSize: "34px"
   },
   circleStyle: {
-    color: 'pruple'
+    color: '#353535'
   }
 });
 
 const LoadingCricle = (props) => {
   return (
     props.loading ? <div className={props.wrapperStyle ? props.wrapperStyle : props.classes.loadingWrapper}>
-      <span className={props.textStyle ? props.textStyle : props.classes.loadingText}>טוען... </span>
-      <CircularProgress className={props.classes.circleStyle} />
-    </div> : null
+      <div style={{
+        background: "#fff",
+        border: "1px dashed rgb(154, 154, 154)",
+        padding: "20px",
+        margin: "0 auto",
+        width: "280px"
+      }}>
+        <span className={props.textStyle ? props.textStyle : props.classes.loadingText}>טוען... </span>
+        <CircularProgress className={props.classes.circleStyle} />
+      </div>
+    </div > : null
   );
 };
 

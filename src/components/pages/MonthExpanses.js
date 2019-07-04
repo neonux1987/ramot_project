@@ -108,8 +108,9 @@ class MonthExpanses extends Component {
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
     this.props.setCurrentDate();
+    //on exit init table data
+    this.props.receiveExpanses([]);
   }
 
   /**
@@ -207,9 +208,6 @@ class MonthExpanses extends Component {
       headerTitle
     } = this.props.monthExpanses;
     const buildingName = this.props.location.state.parentLabel;
-    if (expanses.status === "error") {
-      alert(expanses.error)
-    }
     return (
       <Fragment>
 
@@ -258,7 +256,7 @@ class MonthExpanses extends Component {
             }
           }}
           loadingText={"טוען..."}
-          noDataText={"המידע לא נמצא"}
+          noDataText={"לא נמצא מידע בבסיס נתונים."}
           loading={expanses.isFetching}
           LoadingComponent={LoadingCircle}
           defaultPageSize={50}
@@ -280,6 +278,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchExpanses: (payload) => dispatch(monthExpansesActions.fetchExpanses(payload)),
+  receiveExpanses: (payload) => dispatch(monthExpansesActions.receiveExpanses(payload)),
   updateExpanse: (payload, tableData) => dispatch(monthExpansesActions.updateExpanse(payload, tableData)),
   addExpanse: (payload, tableData) => dispatch(monthExpansesActions.addExpanse(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),

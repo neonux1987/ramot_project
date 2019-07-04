@@ -58,7 +58,8 @@ class BudgetExecution extends Component {
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
+    //on exit init table data
+    this.props.receiveBudgetExecutions([]);
   }
 
   loadBudgetExecutionsByDate(month, year, quarter) {
@@ -388,6 +389,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchBudgetExecutions: (payload) => dispatch(budgetExecutionActions.fetchBudgetExecutions(payload)),
+  receiveBudgetExecutions: (payload) => dispatch(budgetExecutionActions.receiveBudgetExecutions(payload)),
   updateBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.updateBudgetExecution(payload, tableData)),
   addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload))

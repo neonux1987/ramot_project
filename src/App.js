@@ -4,7 +4,6 @@ import Main from "./components/layout/main/Main";
 import { MemoryRouter } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import RTL from './components/RTL';
 import SidebarToggleButton from './components/layout/Sidebar/SidebarToggleButton';
 import { connect } from 'react-redux';
@@ -60,9 +59,5 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload))
 });
-
-App.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

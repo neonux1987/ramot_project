@@ -84,7 +84,7 @@ class Transactions {
         }).catch(error => { throw error });
 
     }).catch((error) => {
-      throw new Error("קרתה תקלה, שמירת ההוצאה עברה ללא הצלחה. השינויים ל נשמרו.")
+      throw new Error(error.message)
     });
   }
 
