@@ -178,7 +178,6 @@ class InputExpansesField extends Component {
   }
 
   render() {
-
     const selectDataRender = this.props.summarizedSections ? this.props.summarizedSections.map((summarizedSection) => {
       return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
     }) : "";

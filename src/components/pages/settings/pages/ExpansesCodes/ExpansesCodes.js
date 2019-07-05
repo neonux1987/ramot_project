@@ -1,21 +1,22 @@
 import React, { Component, Fragment } from 'react';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
-import summarizedSectionsActions from '../../../../redux/actions/summarizedSectionsActions';
-import expansesCodesActions from '../../../../redux/actions/expansesCodesActions';
-import dateActions from '../../../../redux/actions/dateActions';
-import Helper from '../../../../helpers/Helper';
-import LoadingCircle from '../../../common/LoadingCircle';
+import summarizedSectionsActions from '../../../../../redux/actions/summarizedSectionsActions';
+import expansesCodesActions from '../../../../../redux/actions/expansesCodesActions';
+import dateActions from '../../../../../redux/actions/dateActions';
+import LoadingCircle from '../../../../common/LoadingCircle';
 import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 
 class ExpansesCodes extends Component {
 
-  selectRender = [
-    <div>asdsa</div>
-  ]
+  state = {
+    selectRender: [
+
+    ]
+  }
 
   componentDidMount() {
-    this.props.getSummarizedSections();
+    this.props.fetchSummarizedSections();
     //get the building month expanses
     this.props.fetchExpansesCodes();
   }
@@ -26,30 +27,39 @@ class ExpansesCodes extends Component {
     this.props.receiveExpansesCodes([]);
   }
 
+  cellSelectHandler = (event, rowNumber) => {
 
+    const copyData = [...this.props.expansesCodes.expansesCodes.data];
+    copyData[rowNumber].summarized_section_id = event.target;
+    //this.props.updateExpansesCode()
 
-  cellSelect = (cellInfo) => {
+  }
 
-
-
+  cellSelect = (cellInfo, selectDataRender) => {
     return <FormControl >
-      <InputLabel htmlFor="age-helper">בחר סעיף:</InputLabel>
+      <InputLabel htmlFor="age-helper">בחר סעיף מסכם:</InputLabel>
       <Select
         name="summarized_section_id"
-        value={5}
-        onChange={() => {
-
-        }}
+        value={cellInfo.value}
+        onChange={(event) => this.cellSelectHandler(event, cellInfo.index)}
       >
         <MenuItem value="">
           <em></em>
         </MenuItem>
-        {this.selectRender}
+        {selectDataRender}
       </Select>
     </FormControl>;
   }
 
   generateHeaders() {
+
+    let selectDataRender = null;
+    const { summarizedSections } = this.props.summarizedSections;
+    if (summarizedSections.status === "success") {
+      selectDataRender = summarizedSections.data.map((summarizedSection) => {
+        return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
+      });
+    }
 
     return [
       {
@@ -70,9 +80,9 @@ class ExpansesCodes extends Component {
       },
       {
         accessor: "summarized_section_id",
-        Header: "מקושר לסעיף...",
+        Header: "מקושר לסעיף מסכם...",
         headerStyle: { background: "#000", color: "#fff" },
-        Cell: cellInfo => this.cellSelect(cellInfo)
+        Cell: cellInfo => this.cellSelect(cellInfo, selectDataRender)
       }
     ]
 
@@ -80,10 +90,8 @@ class ExpansesCodes extends Component {
 
   render() {
     const {
-      date,
       expansesCodes,
-      pageName,
-      headerTitle
+      pageName
     } = this.props.expansesCodes;
     return (
       <Fragment>
@@ -128,10 +136,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
   receiveExpansesCodes: (payload) => dispatch(expansesCodesActions.receiveExpansesCodes(payload)),
-  updateExpanseCode: (payload, tableData) => dispatch(expansesCodesActions.updateExpanseCode(payload, tableData)),
+  updateExpanseCode: (payload) => dispatch(expansesCodesActions.updateExpanseCode(payload)),
   addExpanseCode: (payload, tableData) => dispatch(expansesCodesActions.addExpanseCode(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
-  getSummarizedSections: () => dispatch(summarizedSectionsActions.getSummarizedSections())
+  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpansesCodes);

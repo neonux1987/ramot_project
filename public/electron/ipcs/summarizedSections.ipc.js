@@ -7,11 +7,11 @@ const summarizedSectionsIpc = (connection) => {
   const summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
 
   ipcMain.on('get-summarized-sections-data', (event, arg) => {
+
     summarizedSectionsLogic.getAllSummarizedSections().then((result) => {
-      //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.sender.send("summarized-sections-data", result);
-    }).catch((err) => {
-      throw err;
+      event.sender.send("summarized-sections-data", { data: result });
+    }).catch((error) => {
+      event.reply("summarized-sections-data", { error: error.message });
     });
   });
 

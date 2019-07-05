@@ -12,7 +12,6 @@ import LoadingCircle from '../common/LoadingCircle';
 import PageControls from '../common/PageControls/PageControls';
 import DatePicker from '../common/DatePicker/DatePicker';
 import WithHeaderWrapper from '../HOC/WithHeaderWrapper';
-import SummarizedSectionsController from '../../controllers/SummarizedSectionsController';
 
 const FIXED_FLOAT = 2;
 
@@ -20,7 +19,6 @@ class MonthExpanses extends Component {
 
   constructor(props) {
     super(props);
-    this.summarizedSectionsController = new SummarizedSectionsController();
     //services
     this.iOController = new IOController();
     //refs
@@ -46,7 +44,7 @@ class MonthExpanses extends Component {
       date: Helper.getCurrentDate()
     }
 
-    this.props.getSummarizedSections();
+    this.props.fetchSummarizedSections();
 
     //get the building month expanses
     this.props.fetchExpanses(params);
@@ -207,6 +205,7 @@ class MonthExpanses extends Component {
       pageName,
       headerTitle
     } = this.props.monthExpanses;
+    const { summarizedSections } = this.props.summarizedSections;
     const buildingName = this.props.location.state.parentLabel;
     return (
       <Fragment>
@@ -231,7 +230,7 @@ class MonthExpanses extends Component {
             />
             <DatePicker date={date} loadDataByDateHandler={this.loadExpansesByDate} enableMonth={true} enableYear={true} enableQuarter={false} />
           </div>
-          <InputExpansesField summarizedSections={this.props.summarizedSections.tableData} data={expanses.data} submitData={this.inputExpansesSubmit} findData={this.findExpanseIndex} />
+          <InputExpansesField summarizedSections={summarizedSections.data} data={expanses.data} submitData={this.inputExpansesSubmit} findData={this.findExpanseIndex} />
         </WithHeaderWrapper>
 
         <ReactTable
@@ -282,7 +281,7 @@ const mapDispatchToProps = dispatch => ({
   updateExpanse: (payload, tableData) => dispatch(monthExpansesActions.updateExpanse(payload, tableData)),
   addExpanse: (payload, tableData) => dispatch(monthExpansesActions.addExpanse(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
-  getSummarizedSections: () => dispatch(summarizedSectionsActions.getSummarizedSections())
+  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import BudgetExecutionController from '../../controllers/BudgetExecutionController';
 import budgetExecutionActions from '../../redux/actions/budgetExecutionActions';
 import dateActions from '../../redux/actions/dateActions';
 import Helper from '../../helpers/Helper';
@@ -24,7 +23,6 @@ class BudgetExecution extends Component {
 
   constructor(props) {
     super(props);
-    this.budgetExecutionController = new BudgetExecutionController();
     this.state = {
     };
     this._isMounted = false;

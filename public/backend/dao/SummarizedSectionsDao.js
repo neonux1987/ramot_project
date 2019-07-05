@@ -9,12 +9,10 @@ class SummarizedSectionsDao {
    * get all summarized sections
    */
   getAllSummarizedSections() {
-    let data = this.connection.select().from("summarized_sections");
-    return data.then((result) => {
-      return result;
-    }).catch((error) => {
-      throw error;
-    });
+    return this.connection.select().from("summarized_sections")
+      .catch((error) => {
+        throw error;
+      });
   }
 
   /**
