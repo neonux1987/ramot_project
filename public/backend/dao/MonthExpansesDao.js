@@ -44,7 +44,8 @@ class MonthExpansesDao {
       "building.month AS month",
       "building.year AS year"
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
-      .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id");
+      .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
+      .orderBy(['code', { column: 'codeName', order: 'asc' }]);
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);

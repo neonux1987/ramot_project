@@ -1,3 +1,4 @@
+import React from 'react';
 const { quarter1, quarter2, quarter3, quarter4, budget_summarized_headers } = require('./Headers');
 
 class Helper {

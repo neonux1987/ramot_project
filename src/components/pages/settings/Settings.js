@@ -3,7 +3,7 @@ import { withStyles, Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import { Route, Switch, NavLink } from 'react-router-dom';
 import Home from '../Home';
-import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
+import ExpansesCodes from './pages/ExpansesCodes';
 
 const styles = (theme) => ({
   tabs: {

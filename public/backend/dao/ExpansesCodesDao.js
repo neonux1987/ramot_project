@@ -9,25 +9,28 @@ class ExpansesCodesDao {
    * get all expanses codes
    */
   getExpansesCodes() {
-    let data = this.connection.select().from("expanses_codes");
-    return data.then((result) => {
-      return result;
-    }).catch((error) => {
-      throw error;
-    });
+    return this.connection.select().from("expanses_codes")
+      .orderBy(['code', { column: 'codeName', order: 'asc' }])
+      .catch((error) => {
+        throw error;
+      });
   }
 
   /**
    * update expanse code record
    * @param {*} data 
    */
-  updateExpanseCode(data = { id: Number, summarized_section_id: Number, code: Number, codeName: String }) {
+  updateExpanseCode({ id = Number, data = { summarized_section_id: Number, code: Number, codeName: String } }) {
     return this.connection("expanses_codes")
       .where({ id: id })
-      .update(expanseCode)
-      .then((result) => result)
+      .update(data)
+      .then((result) => {
+        if (result === 0) {
+          throw new Error(`${id} לא קיימת רשומה עם מספר זיהוי`);
+        }
+      })
       .catch((error) => {
-        throw new Error("קרתה תקלה בעידכון רשומת קוד של הנהלת חשבון.");
+        throw new Error(error.message);
       });
   }
 

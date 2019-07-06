@@ -10,6 +10,7 @@ class SummarizedSectionsDao {
    */
   getAllSummarizedSections() {
     return this.connection.select().from("summarized_sections")
+      .orderBy('section', 'asc')
       .catch((error) => {
         throw error;
       });

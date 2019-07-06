@@ -7,11 +7,18 @@ const expansesCodesIpc = (connection) => {
   const expansesCodesLogic = new ExpansesCodesLogic(connection);
 
   ipcMain.on('get-expanses-codes-data', (event, arg) => {
-    console.log("ipc");
     expansesCodesLogic.getExpansesCodes(arg).then((result) => {
       event.sender.send("expanses-codes-data", { data: result });
     }).catch((error) => {
       event.reply("expanses-codes-data", { error: error.message });
+    });
+  });
+
+  ipcMain.on('update-expanse-code', (event, arg) => {
+    expansesCodesLogic.updateExpanseCode(arg).then((result) => {
+      event.sender.send("expanse-code-updated", { data: result });
+    }).catch((error) => {
+      event.reply("expanse-code-updated", { error: error.message });
     });
   });
 

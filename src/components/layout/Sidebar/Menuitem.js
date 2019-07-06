@@ -32,7 +32,7 @@ const styles = theme => ({
     color: "#cbcdda"
   },
   collapse: {
-    background: "#333a48",
+    background: "#22272f",
     paddingTop: "10px",
     paddingBottom: "6px",
     boxShadow: "inset 0px 1px 1px #050606, inset 0px -1px 1px #050606",
