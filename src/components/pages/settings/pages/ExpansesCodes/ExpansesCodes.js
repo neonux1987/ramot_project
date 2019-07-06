@@ -1,17 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
-import summarizedSectionsActions from '../../../../redux/actions/summarizedSectionsActions';
-import expansesCodesActions from '../../../../redux/actions/expansesCodesActions';
-import dateActions from '../../../../redux/actions/dateActions';
-import LoadingCircle from '../../../common/LoadingCircle';
-import SelectDropDown from '../../../common/SelectDropDown/SelectDropDown';
+import summarizedSectionsActions from '../../../../../redux/actions/summarizedSectionsActions';
+import expansesCodesActions from '../../../../../redux/actions/expansesCodesActions';
+import dateActions from '../../../../../redux/actions/dateActions';
+import LoadingCircle from '../../../../common/LoadingCircle';
+import SelectDropDown from '../../../../common/SelectDropDown/SelectDropDown';
 import { Button } from '@material-ui/core';
+import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 
 class ExpansesCodes extends Component {
 
   state = {
-    editMode: false
+    editMode: false,
+    addNewMode: false
   }
 
   componentDidMount() {
@@ -43,57 +45,68 @@ class ExpansesCodes extends Component {
   }
 
   cellText = (cellInfo) => {
-    if (!this.state.editMode) {
-      return cellInfo.value;
+    if (this.state.editMode) {
+      return <input
+        type={"text"}
+        className="cellRender"
+        defaultValue={cellInfo.value}
+        onBlur={(event) => this.cellSelectHandler(cellInfo.column.id, event.target.value, cellInfo.index)}
+        onClick={e => {
+          e.target.select()
+        }}
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            event.target.blur();
+          }
+        }}
+      />
     }
-    return <input
-      type={"text"}
-      className="cellRender"
-      defaultValue={cellInfo.value}
-      onBlur={(event) => this.cellSelectHandler(cellInfo.column.id, event.target.value, cellInfo.index)}
-      onClick={e => {
-        e.target.select()
-      }}
-      onKeyPress={(event) => {
-        if (event.key === "Enter") {
-          event.target.blur();
-        }
-      }}
-    />
+    return cellInfo.value;
   }
 
   cellNumber = (cellInfo) => {
-    if (!this.state.editMode) {
-      return cellInfo.value;
+    if (this.state.editMode) {
+      return <input
+        type={"number"}
+        className="cellRender"
+        defaultValue={Number.parseInt(cellInfo.value)}
+        onBlur={(event) => this.cellSelectHandler(cellInfo.column.id, event.target.value, cellInfo.index)}
+        onClick={e => {
+          e.target.select()
+        }}
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            event.target.blur();
+          }
+        }}
+      />
     }
-    return <input
-      type={"number"}
-      className="cellRender"
-      defaultValue={Number.parseInt(cellInfo.value)}
-      onBlur={(event) => this.cellSelectHandler(cellInfo.column.id, event.target.value, cellInfo.index)}
-      onClick={e => {
-        e.target.select()
-      }}
-      onKeyPress={(event) => {
-        if (event.key === "Enter") {
-          event.target.blur();
-        }
-      }}
-    />
+    return cellInfo.value;
   }
 
   cellSelect = (cellInfo) => {
-    console.log();
-    if (!this.state.editMode) {
-      return this.props.summarizedSections.summarizedSections.data[cellInfo.value - 1].section;
+    if (this.state.editMode) {
+      return <SelectDropDown targetValue={cellInfo.value} rowNumber={cellInfo.index} itemsArr={this.props.summarizedSections.summarizedSections.data} selectChangeHandler={this.cellSelectHandler} />;
     }
-    return <SelectDropDown targetValue={cellInfo.value} rowNumber={cellInfo.index} itemsArr={this.props.summarizedSections.summarizedSections.data} selectChangeHandler={this.cellSelectHandler} />;
+    const data = this.props.summarizedSections.summarizedSections.data;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].id === cellInfo.value) {
+        return data[i].section;
+      }
+    }
   }
 
   toggleEditMode = () => {
     this.setState({
       ...this.state,
       editMode: !this.state.editMode
+    })
+  }
+
+  toggleAddNewMode = () => {
+    this.setState({
+      ...this.state,
+      addNewMode: !this.state.addNewMode
     })
   }
 
@@ -134,13 +147,22 @@ class ExpansesCodes extends Component {
       pageName
     } = this.props.expansesCodes;
     const buttonTitle = this.state.editMode ? "בטל מצב עריכה" : "הפעל מצב עריכה";
+    const addNewBtnTitle = this.state.addNewMode ? "סגור מצב הוספה" : "הוסף חדש";
+    const addnewExpanseBox = this.state.addNewMode ? <AddExpanseCode /> : null;
     return (
       <Fragment>
 
         <Button onClick={this.toggleEditMode} variant="contained" color="primary" >
           {buttonTitle}
         </Button>
-        <br />
+
+        <Button onClick={this.toggleAddNewMode} variant="contained" color="primary" >
+          {addNewBtnTitle}
+        </Button>
+
+
+
+        {addnewExpanseBox}
 
         <ReactTable
           id={pageName}
