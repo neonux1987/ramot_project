@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import { Route, Switch, NavLink } from 'react-router-dom';
 import Home from '../Home/Home';
 import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
+import General from './pages/General/General';
 
 const styles = (theme) => ({
   tabs: {
@@ -50,11 +51,11 @@ const Settings = ({ classes, match }, props) => {
       </AppBar>
       <div>
         <Switch>
-          <Route path={`${match.path}/כללי`} render={() => <h3>Plasdsad</h3>} />
+          <Route path={`${match.path}/כללי`} component={General} />
           <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
           <Route path={`${match.path}/סעיפים מסכמים`} component={ExpansesCodes} />
           <Route path={`${match.path}/גיבוי`} component={Home} />
-          <Route render={() => <h3>Please select a topic.</h3>} />
+          <Route component={General} />
         </Switch>
       </div>
     </div>

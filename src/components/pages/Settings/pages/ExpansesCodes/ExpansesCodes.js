@@ -8,6 +8,7 @@ import LoadingCircle from '../../../../common/LoadingCircle';
 import SelectDropDown from '../../../../common/SelectDropDown/SelectDropDown';
 import { Button } from '@material-ui/core';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
+import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 
 class ExpansesCodes extends Component {
 
@@ -112,33 +113,45 @@ class ExpansesCodes extends Component {
 
   generateHeaders() {
 
+    const headerStyle = { background: "#000", color: "#fff" };
+
     return [
       {
         accessor: "id",
         Header: "ספרור",
         width: 100,
-        headerStyle: { background: "#000", color: "#fff" }
+        headerStyle: headerStyle
       },
       {
         accessor: "code",
         Header: "קוד הנהח\"ש",
-        headerStyle: { background: "#000", color: "#fff" },
+        headerStyle: headerStyle,
         Cell: this.cellNumber
       },
       {
         accessor: "codeName",
         Header: "שם חשבון",
-        headerStyle: { background: "#000", color: "#fff" },
+        headerStyle: headerStyle,
         Cell: this.cellText
       },
       {
         accessor: "summarized_section_id",
         Header: "מקושר לסעיף מסכם...",
-        headerStyle: { background: "#000", color: "#fff" },
+        headerStyle: headerStyle,
         Cell: this.cellSelect
       }
     ]
 
+  }
+
+  addNewSubmitHandler = (formInputs) => {
+
+
+
+    const params = {
+
+    }
+    this.props.addExpanseCode(params, this.props.summarizedSections.summarizedSections.data)
   }
 
   render() {
@@ -148,7 +161,12 @@ class ExpansesCodes extends Component {
     } = this.props.expansesCodes;
     const buttonTitle = this.state.editMode ? "בטל מצב עריכה" : "הפעל מצב עריכה";
     const addNewBtnTitle = this.state.addNewMode ? "סגור מצב הוספה" : "הוסף חדש";
-    const addnewExpanseBox = this.state.addNewMode ? <AddExpanseCode /> : null;
+
+    //give the box a form functionality
+    const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
+    //show or hide based of the add new mode status
+    const renderAddewExpanse = this.state.addNewMode ? <WrappedAddNewBox submitHandler={this.addNewSubmitHandler} summarizedSections={this.props.summarizedSections.summarizedSections.data} /> : null;
+
     return (
       <Fragment>
 
@@ -162,7 +180,7 @@ class ExpansesCodes extends Component {
 
 
 
-        {addnewExpanseBox}
+        {renderAddewExpanse}
 
         <ReactTable
           id={pageName}

@@ -5,6 +5,7 @@ import monthExpanses from './monthExpansesReducer';
 import budgetExecution from './budgetExecutionReducer';
 import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
+import generalSettings from './generalSettingsReducer';
 
 export default combineReducers({
   app,
@@ -12,5 +13,6 @@ export default combineReducers({
   monthExpanses,
   budgetExecution,
   summarizedSections,
-  expansesCodes
+  expansesCodes,
+  generalSettings
 });
