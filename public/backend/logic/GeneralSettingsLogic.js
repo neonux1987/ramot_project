@@ -10,7 +10,7 @@ class GeneralSettingsLogic {
     return this.gsd.getGeneralSettings();
   }
 
-  updateExpanseCode(params) {
+  updateGeneralSettings(params) {
     return this.gsd.updateGeneralSettings(params);
   }
 

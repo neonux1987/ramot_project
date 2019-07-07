@@ -118,7 +118,7 @@ class MonthExpanses extends Component {
    */
   findExpanse(code = null, codeName = null) {
     let result = null;
-    this.state.data.forEach((row) => {
+    this.props.monthExpanses.expanses.data.forEach((row) => {
       if (row["code"] === Number.parseInt(code) || row["codeName"] === codeName) {
         result = row;
       }

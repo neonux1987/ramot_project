@@ -23,7 +23,9 @@ const AddExpanseCode = (props) => {
       noValidate
       autoComplete="off"
       onKeyPress={(event) => props.inputEnterPress(event, keys)}
-      onChange={(event) => props.changeHandler(event, formInputs, setFormInput)} >
+      onChange={(event) => props.changeHandler(event, formInputs, setFormInput)}
+      onSubmit={(event) => event.preventDefault()}
+    >
 
       <TextField
         name="code"

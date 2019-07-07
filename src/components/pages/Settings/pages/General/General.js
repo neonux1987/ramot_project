@@ -19,26 +19,39 @@ class General extends Component {
   componentWillUnmount() {
   }
 
-  saveSettings = (event) => {
+  formOnChange = (event) => {
+    let target = event.target;
+    let copyData = [...this.props.generalSettings.generalSettings.data];
+    copyData[0][target.name] = target.type === "number" ? parseFloat(target.value) : target.value;
+    this.props.receiveGeneralSettings(copyData);
+  }
 
+  saveSettings = (event) => {
+    const data = { ...this.props.generalSettings.generalSettings.data[0] }
+    const params = {
+      id: data.id,
+      settings: {
+        tax: data.tax
+      }
+    }
+    this.props.updateGeneralSettings(params);
   }
 
   render() {
     const {
       generalSettings
     } = this.props.generalSettings;
-    console.log(generalSettings.isFetching === true)
     if (generalSettings.isFetching) {
-      return <LoadingCircle />
+      return <LoadingCircle loading={generalSettings.isFetching} />
     }
     return (
       <Fragment>
 
-        <form>
+        <form onChange={(event) => this.formOnChange(event)} onSubmit={(event) => event.preventDefault()}>
           <TextField
-            name="code"
+            name="tax"
             label='הזן מע"מ'
-            required
+            type="number"
             value={generalSettings.data[0].tax}
             style={{ width: 160 }}
           />
@@ -59,7 +72,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings()),
-  updateGeneralSettings: (payload, data) => dispatch(generalSettingsActions.updateGeneralSettings(payload, data)),
+  receiveGeneralSettings: (data) => dispatch(generalSettingsActions.receiveGeneralSettings(data)),
+  updateGeneralSettings: (payload) => dispatch(generalSettingsActions.updateGeneralSettings(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(General);

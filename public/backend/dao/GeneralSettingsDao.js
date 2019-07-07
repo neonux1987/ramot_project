@@ -18,9 +18,7 @@ class GeneralSettingsDao {
 
   /**
    * update settings
-   * @param {*} id the id of the expanse to update
-   * @param {*} buildingName the name of the building
-   * @param {*} expanse the expanse to update
+   * @param {*} params
    */
   updateGeneralSettings({ id = Number, settings = Object }) {
     return this.connection("general")

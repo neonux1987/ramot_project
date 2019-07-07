@@ -7,7 +7,6 @@ const generalSettingsIpc = (connection) => {
   const generalSettingsLogic = new GeneralSettingsLogic(connection);
 
   ipcMain.on('get-general-settings', (event, arg) => {
-    console.log("asd")
     generalSettingsLogic.getGeneralSettings().then((result) => {
       event.sender.send("general-settings-data", { data: result });
     }).catch((error) => {
@@ -16,7 +15,7 @@ const generalSettingsIpc = (connection) => {
   });
 
   ipcMain.on('update-general-settings', (event, arg) => {
-    generalSettingsLogic.getGeneralSettings().then((result) => {
+    generalSettingsLogic.updateGeneralSettings(arg).then((result) => {
       event.sender.send("updated-general-settings", { data: result });
     }).catch((error) => {
       event.reply("updated-general-settings", { error: error.message });
