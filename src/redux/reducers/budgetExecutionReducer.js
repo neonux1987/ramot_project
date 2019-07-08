@@ -5,7 +5,7 @@ const initState = {
   headerTitle: "מעקב ביצוע מול תקציב",
   date: Helper.getCurrentDate(),
   budgetExecutions: {
-    isFetching: false,
+    isFetching: true,
     status: "",
     error: "",
     data: []

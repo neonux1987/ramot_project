@@ -159,7 +159,7 @@ class ExpansesCodes extends Component {
       expansesCodes,
       pageName
     } = this.props.expansesCodes;
-    const buttonTitle = this.state.editMode ? "בטל מצב עריכה" : "הפעל מצב עריכה";
+    const buttonTitle = this.state.editMode ? "בטל עריכה" : "עריכה";
     const addNewBtnTitle = this.state.addNewMode ? "סגור מצב הוספה" : "הוסף חדש";
 
     //give the box a form functionality

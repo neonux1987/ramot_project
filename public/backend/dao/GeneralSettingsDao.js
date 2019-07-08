@@ -10,7 +10,8 @@ class GeneralSettingsDao {
   getGeneralSettings() {
     return this.connection.select(
       "*"
-    ).from("general")
+    )
+      .from("general")
       .catch((error) => {
         throw new Error("קרתה תקלה בשליפת הגדרות.");
       });

@@ -9,8 +9,10 @@ import SidebarToggleButton from './components/layout/Sidebar/SidebarToggleButton
 import { connect } from 'react-redux';
 import sidebarActions from './redux/actions/sidebarActions';
 import NotificationWrapper from './components/common/Notifications/NotificationWrapper';
+import generalSettingsActions from './redux/actions/generalSettingsActions';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
+import LoadingCircle from './components/common/LoadingCircle';
 
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
@@ -29,6 +31,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.toggleSidebarAnimation = "";
+  }
+
+  componentDidMount() {
+    this.props.fetchGeneralSettings();
   }
 
   render() {
@@ -57,7 +63,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload))
+  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload)),
+  fetchGeneralSettings: (payload) => dispatch(generalSettingsActions.fetchGeneralSettings())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

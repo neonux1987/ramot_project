@@ -5,7 +5,7 @@ const initState = {
   headerTitle: "מעקב הוצאות חודשיות",
   date: Helper.getCurrentDate(),
   expanses: {
-    isFetching: false,
+    isFetching: true,
     status: "",
     error: "",
     data: []

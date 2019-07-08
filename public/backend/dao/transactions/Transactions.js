@@ -53,7 +53,7 @@ class Transactions {
    * @param {*} buildingName the name of the building
    * @param {*} expanseToSave the record to update with
    */
-  updateMonthExpanse({ date = Object, buildingName = String, expanse = Object }) {
+  updateMonthExpanse({ date = Object, buildingName = String, expanse = Object, tax = Number }) {
 
     buildingName = Helper.trimSpaces(buildingName);
 
@@ -77,7 +77,7 @@ class Transactions {
           return this.budgetExecutionDao.getBudgetExecution(buildingName, date, quarterQuery, expanse.summarized_section_id, trx)
             .then((budgets) => {
               //prepare budget execution object to be updated
-              let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date);
+              let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date, tax);
               //update budget execution
               return this.budgetExecutionDao.updateBudgetExecution(buildingName, date, expanse.summarized_section_id, budgetExec, trx);
             }).catch(error => { throw error });

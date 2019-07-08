@@ -48,6 +48,7 @@ class MonthExpanses extends Component {
 
     //get the building month expanses
     this.props.fetchExpanses(params);
+
   }
 
   inputExpansesSubmit(formInputs, rowIndex, reset, isNew) {
@@ -72,9 +73,9 @@ class MonthExpanses extends Component {
           buildingName: this.props.location.state.engLabel,
           date: {
             ...this.props.monthExpanses.date
-          }
+          },
+          tax: Number.parseFloat(this.props.generalSettings.generalSettings.data[0].tax)
         };
-        console.log(params);
         //add new expanse into the database
         this.props.updateExpanse(params, copyData);
 
@@ -206,7 +207,7 @@ class MonthExpanses extends Component {
       headerTitle
     } = this.props.monthExpanses;
     const { summarizedSections } = this.props.summarizedSections;
-    const buildingName = this.props.location.state.parentLabel;
+    const buildingName = this.props.location.state.parentLabel; console.log(this.props.generalSettings);
     return (
       <Fragment>
 

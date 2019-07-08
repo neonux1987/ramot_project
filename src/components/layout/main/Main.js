@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import MonthExpanses from '../../pages/MonthExpanses/MonthExpanses';
 import Home from '../../pages/Home/Home';
 import BudgetExecution from '../../pages/BudgetExecution/BudgetExecution';
@@ -9,7 +10,7 @@ import { Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import LoadingCircle from '../../common/LoadingCircle';
-import Toolbar from './Toolbar';
+import Toolbar from './Toolbar/Toolbar';
 import Helper from '../../../helpers/Helper';
 
 const styles = theme => ({
@@ -91,7 +92,7 @@ class Main extends Component {
     } else {
       return (
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
-          <Toolbar buildingName={"לב תל אביב"} header={"מעקב תקציב מול ביצוע"} year={Helper.getCurrentYear()} month={Helper.getCurrentMonthHeb()} />
+          <Toolbar buildingName={"לב תל אביב"} header={"מעקב תקציב מול ביצוע"} year={Helper.getCurrentYear()} month={Helper.getCurrentMonthHeb()} tax={"17%"} />
           <div style={{ padding: "24px" }}>
             <Switch>
               {this.state.routes}
@@ -107,4 +108,12 @@ class Main extends Component {
 
 }
 
-export default withStyles(styles)(Main);
+const mapStateToProps = state => ({
+  ...state
+});
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Main));
