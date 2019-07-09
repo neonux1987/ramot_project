@@ -1,7 +1,10 @@
 const initState = {
   toggleSidebar: true,
-  activeButton: {
-    id: 99
+  sidebar: {
+    isFetching: true,
+    status: "",
+    error: "",
+    data: []
   }
 }
 
@@ -12,10 +15,32 @@ export default (state = initState, action) => {
         ...state,
         toggleSidebar: action.payload
       }
-    case "SAVE_HISTORY":
+    case "RECEIVE_SIDEBAR":
       return {
         ...state,
-        history: action.payload
+        sidebar: {
+          ...state.sidebar,
+          isFetching: false,
+          status: "success",
+          data: action.data
+        }
+      }
+    case "REQUEST_SIDEBAR":
+      return {
+        ...state,
+        sidebar: {
+          ...state.sidebar,
+          isFetching: true,
+        }
+      }
+    case "FETCHING_FAILED":
+      return {
+        ...state,
+        sidebar: {
+          ...state.sidebar,
+          status: "error",
+          error: action.payload
+        }
       }
     default: return state;
   }

@@ -31,6 +31,7 @@ const AddExpanseCode = (props) => {
         name="code"
         label="הזן קוד:"
         required
+        type="number"
         className={styles.textField}
         value={formInputs.code}
         style={{ width: 160 }}
@@ -42,7 +43,6 @@ const AddExpanseCode = (props) => {
         label="הזן שם חשבון:"
         className={styles.textField}
         value={formInputs.codeName}
-
         InputLabelProps={{ classes: { root: styles.inputLabel } }}
       />
 
@@ -65,7 +65,7 @@ const AddExpanseCode = (props) => {
         אפס
         </Button>
 
-      <Button style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => props.submitHandler()} className={styles.button}>
+      <Button style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => props.submitHandler(formInputs)} className={styles.button}>
         שמור
         </Button>
 

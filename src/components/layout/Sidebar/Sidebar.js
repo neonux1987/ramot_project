@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import NavButton from './NavButton';
 import { Dashboard, Settings } from '@material-ui/icons';
 import LoadingCircle from '../../common/LoadingCircle';
+import sidebarActions from '../../../redux/actions/sidebarActions';
 import { connect } from 'react-redux';
 
 const drawerWidth = 240;
@@ -124,10 +125,11 @@ class Sidebar extends Component {
     ipcRenderer.once("menu-data", (event, result) => {
       if (this._isMounted) {
         this.setState(() => ({
-          menu: result
+          menu: result.data
         }));
       }
     });
+    this.props.fetchSidebar();
   }
 
   //handle menu button click to expand
@@ -186,8 +188,9 @@ class Sidebar extends Component {
   }
 
   render() {
-    let render = <Menu menu={this.state.menu} active={this.state.active} clicked={this.activeItem} expandClick={this.expandMenuItem} />;
-    if (this.state.menu === undefined || this.state.menu === null) {
+    const { sidebar } = this.props.sidebar;
+    let render = <Menu menu={sidebar.data} active={this.state.active} clicked={this.activeItem} expandClick={this.expandMenuItem} />;
+    if (sidebar.isFetching) {
       render = <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} textStyle={this.props.classes.loadingText} circleStyle={this.props.classes.loadingCircle} />;
     }
     return (
@@ -223,7 +226,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar())
 });
 
 Sidebar.propTypes = {

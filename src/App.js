@@ -9,10 +9,10 @@ import SidebarToggleButton from './components/layout/Sidebar/SidebarToggleButton
 import { connect } from 'react-redux';
 import sidebarActions from './redux/actions/sidebarActions';
 import NotificationWrapper from './components/common/Notifications/NotificationWrapper';
+import LoadingCircle from './components/common/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
-import LoadingCircle from './components/common/LoadingCircle';
 
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
@@ -40,6 +40,9 @@ class App extends Component {
   render() {
     this.toggleSidebarAnimation = !this.props.sidebar.toggleSidebar ? "hideAnimation" : "showAnimation";
     this.toggleSidebarButtonAnimation = !this.props.sidebar.toggleSidebar ? "hideButtonAnimation" : "showButtonAnimation";
+    if (this.props.generalSettings.generalSettings.isFetching) {
+      return <LoadingCircle loading={true} />;
+    }
     return (
       <RTL>
         <MuiThemeProvider theme={theme}>
@@ -63,8 +66,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload)),
-  fetchGeneralSettings: (payload) => dispatch(generalSettingsActions.fetchGeneralSettings())
+  fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings()),
+  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

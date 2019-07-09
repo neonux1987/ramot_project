@@ -45,7 +45,9 @@ class MenuDao {
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
-    });
+    }).catch((error) => {
+      throw new Error("קרתה תקלה בשליפת נתונים של התפריט");
+    });;
   }
 
 }

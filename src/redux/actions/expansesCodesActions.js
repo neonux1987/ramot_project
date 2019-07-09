@@ -59,8 +59,16 @@ const addExpanseCode = (params = Object, tableData) => {
     //send a request to backend to get the data
     ipcRenderer.send("add-expanse-code", params);
     //listen when the data comes back
-    ipcRenderer.once("expanse-code-added", () => {
-      dispatch(receiveExpansesCodes(tableData));
+    ipcRenderer.once("expanse-code-added", (event, arg) => {
+      if (arg.error) {
+        console.log(arg.error);
+      } else {
+        params.id = arg.data;
+        dispatch({
+          type: "ADD_EXPANSE_CODE",
+          payload: params
+        })
+      }
     });
   }
 };

@@ -15,7 +15,7 @@ class ExpansesCodesLogic {
   }
 
   addExpanseCode(params) {
-    return this.ec.updateExpanseCode(params);
+    return this.ec.addExpanseCode(params);
   }
 
 }

@@ -22,6 +22,17 @@ const expansesCodesIpc = (connection) => {
     });
   });
 
+  ipcMain.on('add-expanse-code', (event, arg) => {
+
+    expansesCodesLogic.addExpanseCode(arg).then((result) => {
+      //extract the id from the array
+      result = result[0];
+      event.sender.send("expanse-code-added", { data: result });
+    }).catch((error) => {
+      event.reply("expanse-code-added", { error: error.message });
+    });
+  });
+
 }
 
 module.exports = expansesCodesIpc;

@@ -50,7 +50,7 @@ const fetchingFailed = function (error) {
  * update general settings
  * @param {*} params 
  */
-const updateGeneralSettings = (params = Object) => {
+const updateGeneralSettings = (params = Object, tableData) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("update-general-settings", params);
@@ -58,6 +58,8 @@ const updateGeneralSettings = (params = Object) => {
     ipcRenderer.once("updated-general-settings", (event, arg) => {
       if (arg.error) {
         console.log(arg.error);
+      } else {
+        dispatch(receiveGeneralSettings(tableData));
       }
     });
   }

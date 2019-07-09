@@ -224,14 +224,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(152, 202, 43)",
+          background: "rgb(150, 191, 60)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(152, 202, 43)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(150, 191, 60)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -240,7 +240,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(152, 202, 43)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(150, 191, 60)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]

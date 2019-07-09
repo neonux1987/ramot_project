@@ -52,58 +52,70 @@ class MonthExpanses extends Component {
   }
 
   inputExpansesSubmit(formInputs, rowIndex, reset, isNew) {
-    let valid = true;
     const { data } = this.props.monthExpanses.expanses;
-    if (formInputs.code === "" || formInputs.codeName === "") {
-      valid = false
-    } else {
-      if (!isNew) {
-        //copy state data
-        let copyData = [...data];
-
-        copyData[rowIndex] = {
-          ...copyData[rowIndex],
-          ...formInputs,
-          sum: formInputs.sum ? Number.parseFloat(formInputs.sum) : 0
-        }
-
-        //prepare the expanse object 
-        let params = {
-          expanse: copyData[rowIndex],
-          buildingName: this.props.location.state.engLabel,
-          date: {
-            ...this.props.monthExpanses.date
-          },
-          tax: Number.parseFloat(this.props.generalSettings.generalSettings.data[0].tax)
-        };
-        //add new expanse into the database
-        this.props.updateExpanse(params, copyData);
-
-      } else {
-        /*
-                //prepare the expanse object 
-                let params = {
-                  expanse: formInputs,
-                  buildingName: this.props.location.state.engLabel,
-                  ...this.props.monthExpanses.date
-                };
-        
-        
-                //add new expanse into the database
-                 this.monthExpansesController.addExpanse(params, (result) => {
-                  //copy state data
-                  let copyData = [...this.state.data];
-                  copyData.push(result);
-                  this.setState(() => ({
-                    ...this.state,
-                    data: copyData
-                  }));
-                }); */
-      }
-      //reset form state
-      reset();
+    const valid = this.validateFormInputs(formInputs);
+    if (!valid) {
+      alert("קוד או שם חשבון לא יכולים להיות ריקים");
+      return;
     }
-    if (!valid) alert("קוד או שם חשבון לא יכולים להיות ריקים");
+
+    if (!isNew) {
+      //copy state data
+      let copyData = [...data];
+
+      copyData[rowIndex] = {
+        ...copyData[rowIndex],
+        ...formInputs,
+        sum: formInputs.sum ? Number.parseFloat(formInputs.sum) : 0
+      }
+
+      //prepare the expanse object 
+      let params = {
+        expanse: copyData[rowIndex],
+        buildingName: this.props.location.state.engLabel,
+        date: {
+          ...this.props.monthExpanses.date
+        },
+        tax: Number.parseFloat(this.props.generalSettings.generalSettings.data[0].tax)
+      };
+      //add new expanse into the database
+      this.props.updateExpanse(params, copyData);
+
+    } else {
+      /*
+              //prepare the expanse object 
+              let params = {
+                expanse: formInputs,
+                buildingName: this.props.location.state.engLabel,
+                ...this.props.monthExpanses.date
+              };
+      
+      
+              //add new expanse into the database
+               this.monthExpansesController.addExpanse(params, (result) => {
+                //copy state data
+                let copyData = [...this.state.data];
+                copyData.push(result);
+                this.setState(() => ({
+                  ...this.state,
+                  data: copyData
+                }));
+              }); */
+    }
+    //reset form state
+    reset();
+
+  }
+
+  validateFormInputs(formInputs) {
+    if (formInputs.code === "" || formInputs.codeName === "") {
+      return false;
+    }
+    return true;
+  }
+
+  parseFormInputs(formInputs) {
+
   }
 
   componentWillUnmount() {
@@ -207,7 +219,7 @@ class MonthExpanses extends Component {
       headerTitle
     } = this.props.monthExpanses;
     const { summarizedSections } = this.props.summarizedSections;
-    const buildingName = this.props.location.state.parentLabel; console.log(this.props.generalSettings);
+    const buildingName = this.props.location.state.parentLabel;
     return (
       <Fragment>
 

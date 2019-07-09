@@ -14,6 +14,17 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
+    case "ADD_EXPANSE_CODE": {
+      const copyData = [...state.expansesCodes.data];
+      copyData.push(action.payload);
+      return {
+        ...state,
+        expansesCodes: {
+          ...state.expansesCodes,
+          data: copyData
+        }
+      }
+    }
     case "RECEIVE_EXPANSES_CODES":
       return {
         ...state,
@@ -31,11 +42,6 @@ export default (state = initState, action) => {
           ...state.expansesCodes,
           isFetching: true,
         }
-      }
-    case "ADD_EXPANSES_CODE":
-      return {
-        ...state,
-        tableData: action.payload
       }
     case "FETCHING_FAILED":
       return {

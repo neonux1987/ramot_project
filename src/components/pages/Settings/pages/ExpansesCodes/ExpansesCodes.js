@@ -9,6 +9,7 @@ import SelectDropDown from '../../../../common/SelectDropDown/SelectDropDown';
 import { Button } from '@material-ui/core';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
+import styles from './ExpansesCodes.module.css';
 
 class ExpansesCodes extends Component {
 
@@ -145,13 +146,44 @@ class ExpansesCodes extends Component {
   }
 
   addNewSubmitHandler = (formInputs) => {
+    const valid = this.validateFormInputs(formInputs);
 
-
-
-    const params = {
-
+    if (!valid) {
+      console.log("קוד ושם חשבון לא יכולים להיות ריקים");
+      return;
     }
-    this.props.addExpanseCode(params, this.props.summarizedSections.summarizedSections.data)
+
+    const exist = this.dataExist(formInputs.code, formInputs.codeName);
+    if (exist) {
+      console.log("קוד או שם חשבון כבר קיימים ברשימה.");
+      return;
+    }
+    const params = this.parseFormInputs(formInputs);
+    this.props.addExpanseCode(params);
+  }
+
+  parseFormInputs = (formInputs) => {
+    const copyFormInputs = { ...formInputs };
+    copyFormInputs.code = Number.parseInt(formInputs.code);
+    return copyFormInputs;
+  }
+
+  validateFormInputs = (formInputs) => {
+    if (formInputs.code === "" || formInputs.codeName === "") {
+      return false;
+    }
+    return true;
+  }
+
+  dataExist = (code) => {
+    let valid = false;
+    const data = this.props.expansesCodes.expansesCodes.data;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].code === code) {
+        valid = true;
+      }
+    }
+    return valid;
   }
 
   render() {
@@ -159,7 +191,7 @@ class ExpansesCodes extends Component {
       expansesCodes,
       pageName
     } = this.props.expansesCodes;
-    const buttonTitle = this.state.editMode ? "בטל עריכה" : "עריכה";
+    const editBtnTitle = this.state.editMode ? "בטל עריכה" : "עריכה";
     const addNewBtnTitle = this.state.addNewMode ? "סגור מצב הוספה" : "הוסף חדש";
 
     //give the box a form functionality
@@ -170,11 +202,11 @@ class ExpansesCodes extends Component {
     return (
       <Fragment>
 
-        <Button onClick={this.toggleEditMode} variant="contained" color="primary" >
-          {buttonTitle}
+        <Button className={styles.editBtn} onClick={this.toggleEditMode} variant="contained" color="primary" >
+          {editBtnTitle}
         </Button>
 
-        <Button onClick={this.toggleAddNewMode} variant="contained" color="primary" >
+        <Button className={styles.addNewBtn} onClick={this.toggleAddNewMode} variant="contained" color="primary" >
           {addNewBtnTitle}
         </Button>
 

@@ -26,7 +26,7 @@ class GeneralSettingsDao {
       .where({ id: id })
       .update(settings)
       .catch((error) => {
-        throw new Error("קרתה תקלה בעידכון הגדרות.");
+        throw new Error(error.message);
       });
   }
 

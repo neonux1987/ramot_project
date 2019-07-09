@@ -10,9 +10,9 @@ const sidearIpc = (connection) => {
     menuDao.getMenu().then((result) => {
       //converts the result to support nested array of objects
       //if an innerJoin is used
-      event.sender.send("menu-data", result);
-    }).catch((err) => {
-      console.log(err);
+      event.sender.send("menu-data", { data: result });
+    }).catch((error) => {
+      event.reply("menu-data", { error: error.message });
     });
   });
 

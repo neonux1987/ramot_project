@@ -12,6 +12,7 @@ import { ipcRenderer } from 'electron';
 import LoadingCircle from '../../common/LoadingCircle';
 import Toolbar from './Toolbar/Toolbar';
 import Helper from '../../../helpers/Helper';
+import sidebarActions from '../../../redux/actions/sidebarActions';
 
 const styles = theme => ({
   main: {
@@ -45,18 +46,7 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
-    ipcRenderer.send("get-menu");
-    //request month expanses data
-    ipcRenderer.once("menu-data", (event, result) => {
-      if (this._isMounted) {
-        this.setState((prevState) => ({
-          ...prevState,
-          routes: this.generateRoutes(result)
-        }));
-
-      }
-    });
+    this.props.fetchSidebar();
   }
 
   //gnerate routes from menu array with sub arrays
@@ -83,19 +73,20 @@ class Main extends Component {
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
+
   }
 
   render() {
-    if (this.state.routes === undefined) {
+    const { generalSettings } = this.props.generalSettings;
+    if (this.props.sidebar.sidebar.isFetching) {
       return <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} />;
     } else {
       return (
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
-          <Toolbar buildingName={"לב תל אביב"} header={"מעקב תקציב מול ביצוע"} year={Helper.getCurrentYear()} month={Helper.getCurrentMonthHeb()} tax={"17%"} />
+          <Toolbar buildingName={"לב תל אביב"} header={"מעקב תקציב מול ביצוע"} year={Helper.getCurrentYear()} month={Helper.getCurrentMonthHeb()} tax={`${generalSettings.data[0].tax}%`} />
           <div style={{ padding: "24px" }}>
             <Switch>
-              {this.state.routes}
+              {this.generateRoutes(this.props.sidebar.sidebar.data)}
               <Route path="/דף-הבית" component={Home} />
               <Route path="/הגדרות" component={Settings} />
               <Route exact path="/" component={Home} />
@@ -113,7 +104,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Main));
