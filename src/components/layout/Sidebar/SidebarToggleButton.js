@@ -14,7 +14,8 @@ const styles = theme => ({
     minWidth: "initial",
     position: "absolute",
     zIndex: 3,
-    top: "20px",
+    //top: "20px",
+    top: "49px",
     left: "184px",
     boxShadow: "0px 0px 2px #868383"
   },

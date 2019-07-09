@@ -1,6 +1,4 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app, BrowserWindow } = require('electron');
 const createDBConnection = require('./backend/dao/connection/dbconfig');
 const monthExpansesIpc = require('./electron/ipcs/monthExpanses.ipc');
 const budgetExecutionIpc = require('./electron/ipcs/budgetExecution.ipc');
@@ -54,10 +52,10 @@ function createWindow() {
     width: 1280,
     height: 720,
     title: appName + " - " + companyName,
-    //show: false,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    frame: false
   });
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
   if (isDev) {

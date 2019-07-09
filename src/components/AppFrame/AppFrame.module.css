@@ -1,0 +1,21 @@
+.appFrame{
+  padding: 4px;
+  background: #2a3135;
+
+  -webkit-app-region: drag;
+}
+
+.section{
+  display: inline-block;
+  width: 50%;
+}
+
+.header{
+  color: #fff;
+  -webkit-user-select: none;
+}
+
+.controls{
+  text-align: left;
+  -webkit-app-region: no-drag;
+} 

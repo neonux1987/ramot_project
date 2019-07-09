@@ -13,6 +13,8 @@ import LoadingCircle from './components/common/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
+import AppFrame from './components/AppFrame/AppFrame';
+const remote = require('electron').remote;
 
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
@@ -37,6 +39,25 @@ class App extends Component {
     this.props.fetchGeneralSettings();
   }
 
+  closeButtonHandler = () => {
+    const window = remote.getCurrentWindow();
+    window.close();
+  }
+
+  minimizeButtonHandler = () => {
+    const window = remote.getCurrentWindow();
+    window.minimize();
+  }
+
+  maximizeButtonHandler = () => {
+    const window = remote.getCurrentWindow();
+    if (!window.isMaximized()) {
+      window.maximize();
+    } else {
+      window.unmaximize();
+    }
+  }
+
   render() {
     this.toggleSidebarAnimation = !this.props.sidebar.toggleSidebar ? "hideAnimation" : "showAnimation";
     this.toggleSidebarButtonAnimation = !this.props.sidebar.toggleSidebar ? "hideButtonAnimation" : "showButtonAnimation";
@@ -47,6 +68,11 @@ class App extends Component {
       <RTL>
         <MuiThemeProvider theme={theme}>
           <MemoryRouter>
+            <AppFrame handlers={{
+              close: this.closeButtonHandler,
+              minimize: this.minimizeButtonHandler,
+              maximize: this.maximizeButtonHandler
+            }} />
             <div style={{ display: "flex", height: "100%", padding: 0 }}>
               <CssBaseline />
               <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebar(!this.props.sidebar.toggleSidebar)} />
