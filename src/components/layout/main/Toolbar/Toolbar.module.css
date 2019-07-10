@@ -6,6 +6,11 @@
     color: #40484c;
     font-weight: 600;
     border-bottom: 1px solid #ccc;
+    position: sticky;
+    width: 100%;
+    z-index: 998;
+    left: 0;
+    top: 0;
 }
 
 .section{

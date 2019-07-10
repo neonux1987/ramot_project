@@ -6,17 +6,16 @@ const styles = theme => ({
   button: {
     background: "#f5f5f5",
     //border: "1px solid #000",
-    borderRadius: "unset",
     "&:hover": {
       background: "#f1f1f1"
     },
-    padding: "4px",
+    padding: "2px",
     minWidth: "initial",
     position: "absolute",
     zIndex: 3,
     //top: "20px",
     top: "49px",
-    left: "184px",
+    left: "194px",
     boxShadow: "0px 0px 2px #868383"
   },
   keyboardArrowRoot: {

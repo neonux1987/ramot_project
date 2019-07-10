@@ -4,6 +4,7 @@ html,body{
     padding: 0;
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
+    /* background: #191b21; */
 }
 
 #root{
@@ -141,15 +142,15 @@ other stuff */
   background-position: right center;
 }
 
-/* remove the input box type number arrows */
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0; 
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 
 /* react table overrides */
 .ReactTable .rt-noData{

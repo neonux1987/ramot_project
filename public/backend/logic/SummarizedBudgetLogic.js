@@ -12,6 +12,11 @@ class SummarizedBudgetLogic {
     return this.sbd.getBuildingSummarizedBudget(params);
   }
 
+  updateSummarizedBudget(params) {
+    params.buildingName = Helper.trimSpaces(params.buildingName);
+    return this.sbd.updateSummarizedBudget(params);
+  }
+
 }
 
 module.exports = SummarizedBudgetLogic;

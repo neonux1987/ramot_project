@@ -48,6 +48,43 @@ class SummarizedBudgetDao {
     });
   }
 
+  /**
+   * update expanse code record
+   * @param {*} data 
+   */
+  updateSummarizedBudgetTrx({
+    summarized_section_id = Number,
+    buildingName = String,
+    data = {
+      quarter1_budget: Number,
+      quarter1_execution: Number,
+      quarter2_budget: Number,
+      quarter2_execution: Number,
+      quarter3_budget: Number,
+      quarter3_execution: Number,
+      quarter4_budget: Number,
+      quarter4_execution: Number,
+      year_total_budget: Number,
+      year_total_execution: Number,
+      notes: String
+    },
+  },
+    trx = Function
+  ) {
+    return trx(`${buildingName}_summarized_budget`)
+      .where({ summarized_section_id: summarized_section_id })
+      .update(data)
+      .then((result) => {
+        console.log(result);
+        if (result === 0) {
+          throw new Error(`${summarized_section_id} לא קיימת רשומה עם מספר זיהוי`);
+        }
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
+  }
+
 }
 
 module.exports = SummarizedBudgetDao;

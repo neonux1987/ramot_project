@@ -13,7 +13,7 @@ const withFormFunctionality = (WrappedComponent, logic) => {
       let index = keys.indexOf(event.target.name);//current selected element index in the array of keys
       let currenElement = event.target.form[keys[index]];//current selected form element
       //the next element to move the focus to
-      let nextElement = event.target.form[keys[index + 1]];
+      let nextElement = event.target.form[keys[index + 1]]; console.log(currenElement); console.log(nextElement);
       nextElement.focus();
       if (logic) {
         logic(currenElement, nextElement, changeHandler, reset);

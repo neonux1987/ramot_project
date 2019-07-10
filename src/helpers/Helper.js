@@ -34,8 +34,8 @@ class Helper {
     }
   }
 
-  static convertEngToHebMonth(month = (new Date()).getMonth()) {
-    switch (month) {
+  static convertEngToHebMonth(monthEng) {
+    switch (monthEng) {
       case "january": return "ינואר"
       case "february": return "פברואר"
       case "march": return "מרץ"
@@ -48,6 +48,24 @@ class Helper {
       case "october": return "אוקטובר"
       case "november": return "נובמבר"
       case "december": return "דצמבר"
+      default: return null
+    }
+  }
+
+  static convertEngToMonthNum(monthEng) {
+    switch (monthEng) {
+      case "january": return 0
+      case "february": return 1
+      case "march": return 2
+      case "april": return 3
+      case "may": return 4
+      case "june": return 5
+      case "july": return 6
+      case "august": return 7
+      case "september": return 8
+      case "october": return 9
+      case "november": return 10
+      case "december": return 11
       default: return null
     }
   }
@@ -112,6 +130,26 @@ class Helper {
       case 2: return "רבעון 2"
       case 3: return "רבעון 3"
       case 4: return "רבעון 4"
+      default: return null
+    }
+  }
+
+  static convertQuarterToEng(quarter) {
+    switch (quarter) {
+      case 1: return "quarter1"
+      case 2: return "quarter2"
+      case 3: return "quarter3"
+      case 4: return "quarter4"
+      default: return null
+    }
+  }
+
+  static getCurrentQuarterEng(quarter = Helper.getCurrentQuarter()) {
+    switch (quarter) {
+      case 1: return "quarter1"
+      case 2: return "quarter2"
+      case 3: return "quarter3"
+      case 4: return "quarter4"
       default: return null
     }
   }
@@ -318,7 +356,8 @@ class Helper {
       monthNum: this.getCurrentMonthNum(),
       year: this.getCurrentYear(),
       quarter: this.getCurrentQuarter(),
-      quarterHeb: Helper.getCurrentQuarterHeb()
+      quarterHeb: Helper.getCurrentQuarterHeb(),
+      quarterEng: Helper.getCurrentQuarterEng()
     }
   }
 

@@ -8,7 +8,7 @@ const styles = theme => ({
     marginBottom: "10px",
     width: "220px",
     marginLeft: "9px",
-    borderRadius: "unset"
+    borderRadius: "4px"
   },
   listItemTextRoot: {
     padding: 0

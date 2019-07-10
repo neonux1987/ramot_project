@@ -75,6 +75,7 @@ const updateExpanse = (params = Object, tableData = Array) => {
     ipcRenderer.send("update-month-expanse", params);
     //listen when the data comes back
     ipcRenderer.once("month-expanse-updated", (event, arg) => {
+      console.log(arg);
       if (arg.error) {
         console.log(arg.error);
       } else {

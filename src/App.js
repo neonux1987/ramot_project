@@ -45,6 +45,7 @@ class App extends Component {
   }
 
   minimizeButtonHandler = () => {
+    console.log("hello");
     const window = remote.getCurrentWindow();
     window.minimize();
   }

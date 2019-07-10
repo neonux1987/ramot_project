@@ -3,6 +3,7 @@ const MonthExpansesLogic = require('../../logic/MonthExpansesLogic');
 const BudgetExecutionLogic = require('../../logic/BudgetExecutionLogic');
 const MonthExpansesDao = require('../MonthExpansesDao');
 const BudgetExecutionDao = require('../BudgetExecutionDao');
+const SummarizedBudget = require('../../dao/SummarizedBudgetDao');
 const Helper = require('../../../helpers/Helper');
 
 const BUDGET_EXEC_DEFINITION = [{
@@ -44,6 +45,7 @@ class Transactions {
     this.connection = connection;
     this.monthExpansesDao = new MonthExpansesDao();
     this.budgetExecutionDao = new BudgetExecutionDao();
+    this.summarizedBudget = new SummarizedBudget();
     this.nestHydrationJS = new NestHydrationJS();
   }
 
@@ -79,9 +81,27 @@ class Transactions {
               //prepare budget execution object to be updated
               let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date, tax);
               //update budget execution
-              return this.budgetExecutionDao.updateBudgetExecution(buildingName, date, expanse.summarized_section_id, budgetExec, trx);
+              return this.budgetExecutionDao.updateBudgetExecution(buildingName, date, expanse.summarized_section_id, budgetExec, trx).then(() => budgets);
             }).catch(error => { throw error });
-        }).catch(error => { throw error });
+        })
+        .then((budgets) => {
+          const params = {
+            summarized_section_id: budgets[0].summarized_section_id,
+            buildingName,
+            data: {
+              [`${date.quarterEng}_budget`]: budgets[0].total_budget,
+              [`${date.quarterEng}_execution`]: budgets[0].total_execution,
+              year_total_budget: budgets[0].total_budget,
+              year_total_execution: budgets[0].total_execution,
+              notes: budgets[0].notes
+            }
+          }
+          return this.summarizedBudget.updateSummarizedBudgetTrx(params, trx)
+        })
+        .then((result) => {
+          //console.log(result);
+        })
+        .catch(error => { throw error });
 
     }).catch((error) => {
       throw new Error(error.message)

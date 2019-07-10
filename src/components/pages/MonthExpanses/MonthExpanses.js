@@ -151,6 +151,9 @@ class MonthExpanses extends Component {
 
   loadExpansesByDate(month, year) {
 
+    const monthNum = Helper.convertEngToMonthNum(month);
+    const quarter = Helper.getCurrentQuarter(monthNum);
+
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
@@ -158,7 +161,11 @@ class MonthExpanses extends Component {
       date: {
         year: year,
         month: month,
-        monthHeb: Helper.convertEngToHebMonth(month)
+        monthNum: monthNum,
+        monthHeb: Helper.convertEngToHebMonth(month),
+        quarter: quarter,
+        quarterHeb: Helper.getQuarterHeb(quarter),
+        quarterEng: Helper.convertQuarterToEng(quarter)
       }
     }
 

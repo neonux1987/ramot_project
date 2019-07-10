@@ -8,7 +8,7 @@ const styles = theme => ({
     padding: 0
   },
   menuItemWrapper: {
-    marginBottom: "10px"
+    //marginBottom: "10px"
   },
   listItemText: {
     fontSize: "16px",
