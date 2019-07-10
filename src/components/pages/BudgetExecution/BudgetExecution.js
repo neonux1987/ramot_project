@@ -29,7 +29,6 @@ class BudgetExecution extends Component {
     //binds
     this.exportToExcel = this.exportToExcel.bind(this);
     this.generateHeaders = this.generateHeaders.bind(this);
-    this.loadBudgetExecutionsByDate = this.loadBudgetExecutionsByDate.bind(this);
     this.cellTextInput = this.cellTextInput.bind(this);
     this.cellNumberInput = this.cellNumberInput.bind(this);
     this.cellInputOnBlurHandler = this.cellInputOnBlurHandler.bind(this);
@@ -60,7 +59,7 @@ class BudgetExecution extends Component {
     this.props.receiveBudgetExecutions([]);
   }
 
-  loadBudgetExecutionsByDate(month, year, quarter) {
+  loadBudgetExecutionsByDate = (month, year, quarter) => {
     //important params that allows to pull the current data by
     //current quarter, month and year.
     let params = {
@@ -326,7 +325,7 @@ class BudgetExecution extends Component {
         <WithHeaderWrapper>
           <div style={{ paddingBottom: "10px" }}>
             <Header
-              title={PAGE_TITLE}
+              title={headerTitle}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
               textColor={{ color: "rgb(130, 75, 204)" }}
             >

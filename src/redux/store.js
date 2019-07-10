@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['app', 'sidebar', 'monthExpanses', 'budgetExecution', "summarizedSections", "expansesCodes", "generalSettings"]
+  blacklist: ['app', 'sidebar', 'monthExpanses', 'budgetExecution', "summarizedSections", "expansesCodes", "generalSettings", "summarizedBudget"]
 
 }
 

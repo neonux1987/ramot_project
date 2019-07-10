@@ -19,7 +19,7 @@ const styles = theme => ({
     boxShadow: "0px 0px 2px #868383"
   },
   keyboardArrowRoot: {
-    color: "#000"
+    color: "#167db9"
   }
 });
 

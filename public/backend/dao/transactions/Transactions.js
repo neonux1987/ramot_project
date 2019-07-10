@@ -85,15 +85,19 @@ class Transactions {
             }).catch(error => { throw error });
         })
         .then((budgets) => {
+          //prepare the params
           const params = {
             summarized_section_id: budgets[0].summarized_section_id,
             buildingName,
             data: {
-              [`${date.quarterEng}_budget`]: budgets[0].total_budget,
-              [`${date.quarterEng}_execution`]: budgets[0].total_execution,
-              year_total_budget: budgets[0].total_budget,
-              year_total_execution: budgets[0].total_execution,
-              notes: budgets[0].notes
+              [`${date.quarterEng}_budget`]: budgets[0].total_budget,//quarter budget
+              [`${date.quarterEng}_execution`]: budgets[0].total_execution,//quarter execution
+              year_total_budget: budgets[0].total_budget,//year budget
+              year_total_execution: budgets[0].total_execution,//year execution
+              notes: budgets[0].notes//notes
+            },
+            date: {
+              year: date.year
             }
           }
           return this.summarizedBudget.updateSummarizedBudgetTrx(params, trx)

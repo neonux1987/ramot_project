@@ -52,9 +52,9 @@ a {
 
 .activeButton{
   /* background: #394ba5; */
-  background: #3588c1;
+  background: #167db9;
     /* background-image: linear-gradient(141deg, #5bb7b7 0%, #347a9c 51%, #1084af 75%); */
-    background-image: linear-gradient(141deg, #21bd99 0%, #14659e 75%);
+    /* background-image: linear-gradient(141deg, #21bd99 0%, #14659e 75%); */
   color: #fff;
 }
 

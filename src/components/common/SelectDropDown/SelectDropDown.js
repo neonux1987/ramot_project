@@ -18,9 +18,6 @@ const SelectDropDown = ({ targetValue, itemsArr, selectChangeHandler, rowNumber 
         value={targetValue}
         onChange={(event) => selectChangeHandler(event.target.name, event.target.value, rowNumber)}
       >
-        <MenuItem value="">
-          <em></em>
-        </MenuItem>
         {selectDataRender}
       </Select>
     </FormControl>

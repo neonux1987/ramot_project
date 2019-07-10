@@ -21,7 +21,12 @@ class SummarizedBudgetDao {
     this.nestHydrationJS = new NestHydrationJS();
   }
 
-  getBuildingSummarizedBudget(params) {
+  getBuildingSummarizedBudget({
+    buildingName = String,
+    date = {
+      year: Number
+    }
+  }) {
     let data = this.connection.select(
       "building.id AS id",
       "building.year AS year",
@@ -39,7 +44,9 @@ class SummarizedBudgetDao {
       "building.year_total_budget AS year_total_budget",
       "building.year_total_execution AS year_total_execution",
       "building.notes AS notes"
-    ).from(params.buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id");
+    )
+      .where({ year: date.year })
+      .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id");
 
     return data.then((result) => {
       return result;
@@ -68,11 +75,14 @@ class SummarizedBudgetDao {
       year_total_execution: Number,
       notes: String
     },
+    date = {
+      year: Number
+    }
   },
     trx = Function
   ) {
     return trx(`${buildingName}_summarized_budget`)
-      .where({ summarized_section_id: summarized_section_id })
+      .where({ summarized_section_id: summarized_section_id, year: date.year })
       .update(data)
       .then((result) => {
         console.log(result);

@@ -9,9 +9,9 @@ const summarizedBudgetIpc = (connection) => {
   ipcMain.on('get-summarized-budget-data', (event, arg) => {
     summarizedBudgetLogic.getBuildingSummarizedBudget(arg).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.sender.send("summarized-budget-data", result);
-    }).catch((err) => {
-      throw err;
+      event.sender.send("summarized-budget-data", { data: result });
+    }).catch((error) => {
+      event.reply("summarized-budget-data", { error: error.message });
     });
   });
 

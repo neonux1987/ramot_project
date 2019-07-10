@@ -1,7 +1,7 @@
 .appFrame{
   padding: 4px 6px;
-  background: rgb(185, 185, 185);
-    background: linear-gradient(0deg, rgb(185, 185, 185) 0%, rgb(195, 195, 195) 43%, rgb(249, 249, 249) 100%);
+  background: rgb(202, 202, 202);
+    background: linear-gradient(0deg, rgb(202, 202, 202) 0%, rgb(220, 220, 220) 43%, rgb(245, 245, 245) 100%);
   position: relative;
   width: 100%;
   top: 0;
