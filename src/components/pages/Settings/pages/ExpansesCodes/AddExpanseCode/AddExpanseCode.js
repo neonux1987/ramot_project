@@ -42,6 +42,7 @@ const AddExpanseCode = (props) => {
         name="codeName"
         label="הזן שם חשבון:"
         className={styles.textField}
+        type="text"
         value={formInputs.codeName}
         InputLabelProps={{ classes: { root: styles.inputLabel } }}
       />

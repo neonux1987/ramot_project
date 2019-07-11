@@ -5,7 +5,7 @@ const styles = theme => ({
   typography: {
     marginTop: "0.35em",
     color: "#f5f5f5",
-    fontSize: "20px",
+    fontSize: "24px",
     //width: "125px"
   },
   toolbarRoot: {
@@ -13,11 +13,13 @@ const styles = theme => ({
     display: "initial",
     minHeight: "initial",
     padding: "0",
-    paddingTop: "16px",
-    paddingBottom: "4px",
+    paddingTop: "10px",
+    paddingBottom: "12px",
     //backgroundColor: "#1fc8db",
     //backgroundImage: "linear-gradient(141deg, #21bd99 0%, #14659e 75%)",
-    marginBottom: "18px"
+    marginBottom: "18px",
+    boxShadow: "inset 0px -1px 1px #050606",
+    borderBottom: "1px solid #262b2f",
   }
 });
 
@@ -25,7 +27,7 @@ const Logo = (props) => {
   return (
     <Toolbar classes={{ root: props.classes.toolbarRoot }} >
       <Typography className={props.classes.typography} variant="h4" gutterBottom>
-        NDT SOLUTIONS
+        NDTS
         </Typography>
     </Toolbar>
   );

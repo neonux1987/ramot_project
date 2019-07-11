@@ -85,7 +85,6 @@ class SummarizedBudgetDao {
       .where({ summarized_section_id: summarized_section_id, year: date.year })
       .update(data)
       .then((result) => {
-        console.log(result);
         if (result === 0) {
           throw new Error(`${summarized_section_id} לא קיימת רשומה עם מספר זיהוי`);
         }

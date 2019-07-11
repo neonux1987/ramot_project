@@ -7,7 +7,6 @@ import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
 import dateActions from '../../../redux/actions/dateActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
-import IOController from '../../../controllers/IOController';
 import LoadingCircle from '../../common/LoadingCircle';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
@@ -19,19 +18,11 @@ class MonthExpanses extends Component {
 
   constructor(props) {
     super(props);
-    //services
-    this.iOController = new IOController();
-    //refs
-    this.tableDiv = React.createRef();
     //state init
     this.state = {
-
     };
-    //vars
-    this._isMounted = false;
     //binds
     this.inputExpansesSubmit = this.inputExpansesSubmit.bind(this);
-    this.findExpanse = this.findExpanse.bind(this);
     this.findExpanseIndex = this.findExpanseIndex.bind(this);
     this.loadExpansesByDate = this.loadExpansesByDate.bind(this);
   }
@@ -40,7 +31,7 @@ class MonthExpanses extends Component {
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
-      buildingName: this.props.location.state.engLabel,
+      buildingName: this.props.location.state.buildingNameEng,
       date: Helper.getCurrentDate()
     }
 
@@ -62,17 +53,20 @@ class MonthExpanses extends Component {
     if (!isNew) {
       //copy state data
       let copyData = [...data];
+      //parse form inputs
+      const parsedFormInputs = this.parseFormInputs(formInputs);
 
+      //create a copy of the data
       copyData[rowIndex] = {
         ...copyData[rowIndex],
-        ...formInputs,
-        sum: formInputs.sum ? Number.parseFloat(formInputs.sum) : 0
+        ...parsedFormInputs,
+        sum: parsedFormInputs.sum
       }
 
       //prepare the expanse object 
       let params = {
         expanse: copyData[rowIndex],
-        buildingName: this.props.location.state.engLabel,
+        buildingName: this.props.location.state.buildingNameEng,
         date: {
           ...this.props.monthExpanses.date
         },
@@ -115,28 +109,19 @@ class MonthExpanses extends Component {
   }
 
   parseFormInputs(formInputs) {
+    const copyFormInputs = { ...formInputs };
+    //parse inputs
+    copyFormInputs.code = Number.parseInt(copyFormInputs.code);
+    copyFormInputs.sum = Number.parseFloat(copyFormInputs.sum);
+    copyFormInputs.summarized_section_id = Number.parseInt(copyFormInputs.summarized_section_id);
 
+    return copyFormInputs;
   }
 
   componentWillUnmount() {
     this.props.setCurrentDate();
     //on exit init table data
     this.props.receiveExpanses([]);
-  }
-
-  /**
-   * find an expanse by code or code name
-   * @param {*} code the code to find the expanse with
-   * @param {*} codeName the codeName to find the expanse with
-   */
-  findExpanse(code = null, codeName = null) {
-    let result = null;
-    this.props.monthExpanses.expanses.data.forEach((row) => {
-      if (row["code"] === Number.parseInt(code) || row["codeName"] === codeName) {
-        result = row;
-      }
-    });
-    return result;
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -149,7 +134,7 @@ class MonthExpanses extends Component {
     return result;
   }
 
-  loadExpansesByDate(month, year) {
+  loadExpansesByDate({ month, year }) {
 
     const monthNum = Helper.convertEngToMonthNum(month);
     const quarter = Helper.getCurrentQuarter(monthNum);
@@ -157,7 +142,7 @@ class MonthExpanses extends Component {
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
-      buildingName: this.props.location.state.engLabel,
+      buildingName: this.props.location.state.buildingNameEng,
       date: {
         year: year,
         month: month,
@@ -226,7 +211,7 @@ class MonthExpanses extends Component {
       headerTitle
     } = this.props.monthExpanses;
     const { summarizedSections } = this.props.summarizedSections;
-    const buildingName = this.props.location.state.parentLabel;
+    const buildingName = this.props.location.state.buildingName;
     return (
       <Fragment>
 

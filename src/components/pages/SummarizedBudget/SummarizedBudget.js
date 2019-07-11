@@ -9,7 +9,6 @@ import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 
-const PAGE_NAME = "summarizedBudget";
 const FIXED_FLOAT = 2;
 
 class SummarizedBudget extends Component {
@@ -24,7 +23,7 @@ class SummarizedBudget extends Component {
     //important params that allows to pull the current data by
     //current quarter, month and year.
     let params = {
-      buildingName: this.props.location.state.engLabel,
+      buildingName: this.props.location.state.buildingNameEng,
       date: Helper.getCurrentDate(),
     }
 
@@ -34,11 +33,11 @@ class SummarizedBudget extends Component {
   componentWillUnmount() {
   }
 
-  loadSummarizedBudgetsByDate = (year) => {
+  loadSummarizedBudgetsByDate = ({ year }) => {
     //important params that allows to pull the current data by
     //current quarter, month and year.
     let params = {
-      buildingName: this.props.location.state.engLabel,
+      buildingName: this.props.location.state.buildingNameEng,
       date: {
         year: year
       }
@@ -233,7 +232,7 @@ class SummarizedBudget extends Component {
       summarizedBudgets,
       headerTitle
     } = this.props.summarizedBudget;
-    const buildingName = this.props.location.state.parentLabel;
+    const buildingName = this.props.location.state.buildingName;
     return (
       <div>
         <WithHeaderWrapper>
@@ -247,7 +246,7 @@ class SummarizedBudget extends Component {
             <PageControls
               excel={{
                 data: summarizedBudgets.data,
-                fileName: Helper.getBudgetExecutionFilename(buildingName, date)
+                fileName: Helper.getSummarizedBudgetFilename(buildingName, date)
               }}
               print={{
                 title: headerTitle,
@@ -287,6 +286,7 @@ class SummarizedBudget extends Component {
           data={summarizedBudgets.data}
           columns={this.generateHeaders()}
           resizable={true}
+          minRows={0}
         />
       </div>
     );

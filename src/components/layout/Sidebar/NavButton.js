@@ -40,14 +40,16 @@ const NavButton = (props) => {
     <NavLink style={props.style} className={props.classes.navLinkHome + " " + active} to={{
       pathname: "/" + props.path,
       state: {
-        label: props.label,
-        parentLabel: props.parentLabel,
-        engLabel: props.engLabel
+        page: props.page,
+        buildingName: props.buildingName,
+        buildingNameEng: props.buildingNameEng
       }
-    }} exact>
+    }}
+      exact
+    >
       <ListItem classes={{ root: props.classes.listItem }} onClick={props.clicked} button>
         <ListItemIcon classes={{ root: props.classes.listItemIcon }} children={props.children} />
-        <ListItemText classes={{ root: props.classes.listItemTextRoot, primary: props.classes.listItemText }} primary={props.label} />
+        <ListItemText classes={{ root: props.classes.listItemTextRoot, primary: props.classes.listItemText }} primary={props.page} />
       </ListItem>
     </NavLink>
   );

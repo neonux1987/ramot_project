@@ -1,18 +1,18 @@
 import Helper from '../Helper';
 
 const BUDGET_EXECUTION_QUARTER1_HEADERS = [
-  { header: 'סעיף', key: 'section', width: 30 },
-  { header: 'ינואר-תקציב', key: 'january_budget', width: 30 },
-  { header: 'ינואר-ביצוע', key: 'january_budget_execution', width: 30 },
-  { header: 'פברואר-תקציב', key: 'february_budget', width: 30 },
-  { header: 'פברואר-ביצוע', key: 'february_budget_execution', width: 30 },
-  { header: 'מרץ-תקציב', key: 'march_budget', width: 30 },
-  { header: 'מרץ-ביצוע', key: 'march_budget_execution', width: 30 },
-  { header: 'הערכה', key: 'evaluation', width: 30 },
-  { header: 'תקציב', key: 'total_budget', width: 30 },
-  { header: 'ביצוע', key: 'total_execution', width: 30 },
-  { header: 'הפרש', key: 'difference', width: 30 },
-  { header: 'הערות', key: 'notes', width: 30 }
+  { header: 'סעיף', key: 'section' },
+  { header: 'ינואר-תקציב', key: 'january_budget' },
+  { header: 'ינואר-ביצוע', key: 'january_budget_execution' },
+  { header: 'פברואר-תקציב', key: 'february_budget' },
+  { header: 'פברואר-ביצוע', key: 'february_budget_execution' },
+  { header: 'מרץ-תקציב', key: 'march_budget' },
+  { header: 'מרץ-ביצוע', key: 'march_budget_execution' },
+  { header: 'הערכה', key: 'evaluation' },
+  { header: 'תקציב', key: 'total_budget' },
+  { header: 'ביצוע', key: 'total_execution' },
+  { header: 'הפרש', key: 'difference' },
+  { header: 'הערות', key: 'notes' }
 ];
 
 const BUDGET_EXECUTION_QUARTER2_HEADERS = [
@@ -31,33 +31,33 @@ const BUDGET_EXECUTION_QUARTER2_HEADERS = [
 ];
 
 const BUDGET_EXECUTION_QUARTER3_HEADERS = [
-  { header: 'סעיף', key: 'section', width: 30 },
-  { header: 'יולי-תקציב', key: 'july_budget', width: 30 },
-  { header: 'יולי-ביצוע', key: 'july_budget_execution', width: 30 },
-  { header: 'אוגוסט-תקציב', key: 'august_budget', width: 30 },
-  { header: 'אוגוסט-ביצוע', key: 'august_budget_execution', width: 30 },
-  { header: 'ספטמבר-תקציב', key: 'september_budget', width: 30 },
-  { header: 'ספטמבר-ביצוע', key: 'september_budget_execution', width: 30 },
-  { header: 'הערכה', key: 'evaluation', width: 30 },
-  { header: 'תקציב', key: 'total_budget', width: 30 },
-  { header: 'ביצוע', key: 'total_execution', width: 30 },
-  { header: 'הפרש', key: 'difference', width: 30 },
-  { header: 'הערות', key: 'notes', width: 30 }
+  { header: 'סעיף', key: 'section', style: headerStyle },
+  { header: 'יולי-תקציב', key: 'july_budget' },
+  { header: 'יולי-ביצוע', key: 'july_budget_execution' },
+  { header: 'אוגוסט-תקציב', key: 'august_budget' },
+  { header: 'אוגוסט-ביצוע', key: 'august_budget_execution' },
+  { header: 'ספטמבר-תקציב', key: 'september_budget' },
+  { header: 'ספטמבר-ביצוע', key: 'september_budget_execution' },
+  { header: 'הערכה', key: 'evaluation' },
+  { header: 'תקציב', key: 'total_budget' },
+  { header: 'ביצוע', key: 'total_execution' },
+  { header: 'הפרש', key: 'difference' },
+  { header: 'הערות', key: 'notes' }
 ];
 
 const BUDGET_EXECUTION_QUARTER4_HEADERS = [
-  { header: 'סעיף', key: 'section', width: 30 },
-  { header: 'אוקטובר-תקציב', key: 'october_budget', width: 30 },
-  { header: 'אוקטובר-ביצוע', key: 'october_budget_execution', width: 30 },
-  { header: 'נובמבר-תקציב', key: 'november_budget', width: 30 },
-  { header: 'נובמבר-ביצוע', key: 'november_budget_execution', width: 30 },
-  { header: 'דצמבר-תקציב', key: 'december_budget', width: 30 },
-  { header: 'דצמבר-ביצוע', key: 'december_budget_execution', width: 30 },
-  { header: 'הערכה', key: 'evaluation', width: 30 },
-  { header: 'תקציב', key: 'total_budget', width: 30 },
-  { header: 'ביצוע', key: 'total_execution', width: 30 },
-  { header: 'הפרש', key: 'difference', width: 30 },
-  { header: 'הערות', key: 'notes', width: 30 }
+  { header: 'סעיף', key: 'section' },
+  { header: 'אוקטובר-תקציב', key: 'october_budget' },
+  { header: 'אוקטובר-ביצוע', key: 'october_budget_execution' },
+  { header: 'נובמבר-תקציב', key: 'november_budget' },
+  { header: 'נובמבר-ביצוע', key: 'november_budget_execution' },
+  { header: 'דצמבר-תקציב', key: 'december_budget' },
+  { header: 'דצמבר-ביצוע', key: 'december_budget_execution' },
+  { header: 'הערכה', key: 'evaluation' },
+  { header: 'תקציב', key: 'total_budget' },
+  { header: 'ביצוע', key: 'total_execution' },
+  { header: 'הפרש', key: 'difference' },
+  { header: 'הערות', key: 'notes' }
 ];
 
 const headerStyle = {

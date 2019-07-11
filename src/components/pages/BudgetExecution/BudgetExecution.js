@@ -3,19 +3,12 @@ import { connect } from 'react-redux';
 import budgetExecutionActions from '../../../redux/actions/budgetExecutionActions';
 import dateActions from '../../../redux/actions/dateActions';
 import Helper from '../../../helpers/Helper';
-import saveToFile from '../../../helpers/saveToFile';
-import excel from '../../../helpers/excel';
 import ReactTable from 'react-table';
 import Header from '../../layout/main/Header';
 import LoadingCircle from '../../common/LoadingCircle';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
-
-
-
-const PAGE_NAME = "budgetExecution";
-const PAGE_TITLE = "מעקב ביצוע מול תקציב";
 
 const FIXED_FLOAT = 2;
 
@@ -27,7 +20,6 @@ class BudgetExecution extends Component {
     };
     this._isMounted = false;
     //binds
-    this.exportToExcel = this.exportToExcel.bind(this);
     this.generateHeaders = this.generateHeaders.bind(this);
     this.cellTextInput = this.cellTextInput.bind(this);
     this.cellNumberInput = this.cellNumberInput.bind(this);
@@ -39,19 +31,11 @@ class BudgetExecution extends Component {
     //important params that allows to pull the current data by
     //current quarter, month and year.
     let params = {
-      buildingName: this.props.location.state.engLabel,
+      buildingName: this.props.location.state.buildingNameEng,
       date: Helper.getCurrentDate(),
     }
     this.props.fetchBudgetExecutions(params);
 
-  }
-
-  exportToExcel() {
-    let fileName = Helper.getBudgetExecutionFilename(this.props.location.state.parentLabel);
-    saveToFile(fileName, (fullPath) => {
-      if (fullPath)
-        excel(fullPath, fileName, PAGE_NAME, this.state.data);
-    });
   }
 
   componentWillUnmount() {
@@ -59,11 +43,11 @@ class BudgetExecution extends Component {
     this.props.receiveBudgetExecutions([]);
   }
 
-  loadBudgetExecutionsByDate = (month, year, quarter) => {
+  loadBudgetExecutionsByDate = ({ year, quarter }) => {
     //important params that allows to pull the current data by
     //current quarter, month and year.
     let params = {
-      buildingName: this.props.location.state.engLabel,
+      buildingName: this.props.location.state.buildingNameEng,
       date: {
         quarter: quarter,
         quarterHeb: Helper.getQuarterHeb(quarter),
@@ -108,7 +92,7 @@ class BudgetExecution extends Component {
     data[cellInfo.index][cellInfo.column.id] = e.target.value;
 
     let params = {
-      buildingName: this.props.location.state.engLabel
+      buildingName: this.props.location.state.buildingNameEng
     };
     this.props.updateBudgetExecution(params, data);
   }
@@ -319,7 +303,7 @@ class BudgetExecution extends Component {
       budgetExecutions,
       headerTitle
     } = this.props.budgetExecution;
-    const buildingName = this.props.location.state.parentLabel;
+    const buildingName = this.props.location.state.buildingName;
     return (
       <div>
         <WithHeaderWrapper>
@@ -373,6 +357,7 @@ class BudgetExecution extends Component {
           data={budgetExecutions.data}
           columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
           resizable={true}
+          minRows={0}
         />
       </div>
     );

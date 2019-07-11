@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import generalSettingsActions from '../../../../../redux/actions/generalSettingsActions';
-import { TextField, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import LoadingCircle from '../../../../common/LoadingCircle';
 import styles from './General.module.css';
 
@@ -21,13 +21,13 @@ class General extends Component {
 
   formOnChange = (event) => {
     let target = event.target;
-
+    const value = target.type === "number" && target.value === "" ? 0 : target.value;
     this.setState(() => {
       return {
         ...this.state,
         formInputs: {
           ...this.formInputs,
-          [target.name]: target.type === "number" ? parseFloat(target.value) : target.value
+          [target.name]: target.type === "number" ? parseFloat(value) : value
         }
       }
     })
@@ -35,14 +35,22 @@ class General extends Component {
 
   saveSettings = (event) => {
     const data = [...this.props.generalSettings.generalSettings.data];
-    data[0].tax = this.state.formInputs.tax;
+    const parsedFomInputs = this.parseFormInputs(this.state.formInputs);
+    data[0].tax = parsedFomInputs.tax;
+
     const params = {
       id: data[0].id,
       settings: {
-        tax: this.state.formInputs.tax
+        ...parsedFomInputs
       }
     };
     this.props.updateGeneralSettings(params, data);
+  }
+
+  parseFormInputs(formInputs) {
+    const copyFormInputs = { ...formInputs };
+    copyFormInputs.tax = Number.parseFloat(copyFormInputs.tax);
+    return copyFormInputs;
   }
 
   render() {

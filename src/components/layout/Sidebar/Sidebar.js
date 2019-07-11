@@ -23,7 +23,7 @@ const styles = theme => ({
     //backgroundPosition: "center top",
     //backgroundSize: "cover",
     zIndex: 2,
-    boxShadow: `-2px 0px 4px #00000042`
+    boxShadow: `-1px 0px 4px #00000042`
   },
   drawerPaper: {
     width: drawerWidth,
@@ -77,13 +77,12 @@ const styles = theme => ({
   buildingsTitle: {
     color: "#cbcdda",
     display: "block",
-    marginLeft: "9px",
-    paddingLeft: "6px",
     marginTop: "6px",
     marginBottom: "16px",
     paddingBottom: "16px",
-    borderBottom: "1px dashed #cbcdda",
-    width: "220px"
+    boxShadow: "inset 0px 1px 1px #050606, inset 0px -1px 1px #050606",
+    borderTop: "1px solid #262b2f",
+    borderBottom: "1px solid #262b2f"
   },
   settingsWrapper: {
     position: "fixed",
@@ -198,19 +197,19 @@ class Sidebar extends Component {
         <Logo />
         {/* <Divider className={this.props.classes.logoDivider} /> */}
 
-        <NavButton label="דף הבית" path="דף-הבית" active={this.state.active.subMenuItemId === this.state.homeButtonId || this.state.active.subMenuItemId === 0}
+        <NavButton page="דף הבית" path="דף-הבית" active={this.state.active.subMenuItemId === this.state.homeButtonId || this.state.active.subMenuItemId === 0}
           activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.homeButtonId, this.state.homeButtonId))} >
           <Dashboard />
         </NavButton>
 
         {/* <Divider className={this.props.classes.homeDivider} /> */}
 
-        <span className={this.props.classes.buildingsTitle}>בניינים:</span>
+        <span className={this.props.classes.buildingsTitle}></span>
         {render}
 
         <div className={this.props.classes.settingsWrapper}>
           <Divider className={this.props.classes.settingsDivider} />
-          <NavButton style={{ marginRight: 0 }} label="נהל הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
+          <NavButton style={{ marginRight: 0 }} page="נהל הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
             activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.settingsButtonId, this.state.settingsButtonId))} >
             <Settings />
           </NavButton>

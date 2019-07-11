@@ -182,11 +182,18 @@ class InputExpansesField extends Component {
       return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
     }) : "";
     return (
-      <form id="inputExpanses" className={this.props.classes.container} noValidate autoComplete="off" onKeyPress={(event) => this.inputEnterPress(event)} onChange={this.formChangeHandler} >
+      <form
+        id="inputExpanses"
+        className={this.props.classes.container}
+        noValidate
+        autoComplete="off"
+        onKeyPress={(event) => this.inputEnterPress(event)}
+        onChange={this.formChangeHandler} >
         <TextField
           name="code"
           label="הזן קוד:"
           required
+          type="number"
           className={this.props.classes.textField}
           value={this.state.formInputs.code}
           style={{ width: 160 }}
@@ -198,7 +205,7 @@ class InputExpansesField extends Component {
           label="הזן שם חשבון:"
           className={this.props.classes.textField}
           value={this.state.formInputs.codeName}
-
+          type="text"
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
 
@@ -221,6 +228,7 @@ class InputExpansesField extends Component {
           name="supplierName"
           label="שם הספק:"
           className={this.props.classes.textField}
+          type="text"
           value={this.state.formInputs.supplierName}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
@@ -230,7 +238,7 @@ class InputExpansesField extends Component {
           label="הזן סכום:"
           className={this.props.classes.textField}
           value={this.state.formInputs.sum}
-
+          type="number"
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
 
@@ -257,7 +265,7 @@ class InputExpansesField extends Component {
           }
         />
 
-        <Button style={{ backgroundColor: "#fd5050" }} type="reset" onClick={this.reset} variant="contained" color="primary" className={this.props.classes.button}>
+        <Button style={{ backgroundColor: "#fd5050" }} name="reset" type="reset" onClick={this.reset} variant="contained" color="primary" className={this.props.classes.button}>
           אפס
         </Button>
 

@@ -332,12 +332,16 @@ class Helper {
 
   static getMonthExpansesFilename(buildingName, date = { year: Number, month: String }) {
     let monthHebName = this.convertEngToHebMonth(date.month);
-    return `${date.year} ${buildingName} מעקב הוצאות חודש ${monthHebName}`;
+    return `${buildingName} מעקב הוצאות חודש ${monthHebName} ${date.year}`;
   }
 
   static getBudgetExecutionFilename(buildingName, date = { year: Number, quarter: Number }) {
     let quarter = this.getQuarterHeb(date.quarter);
-    return `${quarter} ${date.year} ${buildingName} ביצוע מול תקציב`;
+    return `${buildingName} ביצוע מול תקציב ${quarter} ${date.year}`;
+  }
+
+  static getSummarizedBudgetFilename(buildingName, date = { year: Number }) {
+    return `${buildingName} ביצוע מול תקציב ${date.year}`;
   }
 
   static replaceZeroWithEmpty(obj) {

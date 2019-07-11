@@ -56,7 +56,7 @@ const Menuitem = (props) => {
   }
 
   let subMenuItems = props.item.submenu.map((item, index) => {
-    return (<NavButton parentLabel={props.item.label} engLabel={props.item.engLabel} label={item.label} path={props.item.path + "/" + item.path} active={props.active.subMenuItemId === item.id}
+    return (<NavButton buildingName={props.item.label} buildingNameEng={props.item.engLabel} page={item.label} path={props.item.path + "/" + item.path} active={props.active.subMenuItemId === item.id}
       activeClass={activeButtonClass} clicked={() => (props.clicked(props.item.id, item.id))} key={index} iconStyle={{ root: props.classes.listItemIcon }}>
       {generateIcon(item.icon)}
     </NavButton>);

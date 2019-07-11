@@ -8,7 +8,6 @@ import Settings from '../../pages/Settings/Settings';
 import Statistics from '../../pages/Statistics/Statistics'
 import { Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
 import LoadingCircle from '../../common/LoadingCircle';
 import Toolbar from './Toolbar/Toolbar';
 import Helper from '../../../helpers/Helper';
