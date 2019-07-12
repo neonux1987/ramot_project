@@ -5,7 +5,7 @@ import JssProvider from 'react-jss/lib/JssProvider';
 import { jssPreset } from '@material-ui/core/styles';
 
 // Configure JSS
-const jss = create({ plugins: [...jssPreset().plugins, rtl()], insertionPoint: "jss-insertion-point" });
+const jss = create({ plugins: [...jssPreset().plugins, rtl()], insertionPoint: document.getElementById('jss-insertion-point') });
 
 // Custom Material-UI class name generator.
 /* const generateClassName = createGenerateClassName(); */

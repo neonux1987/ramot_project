@@ -5,7 +5,7 @@ export default ({ handlers }) => {
   return (
     <div className={styles.appFrame}>
       <div className={styles.section + " " + styles.header}>
-        <span style={{ fontWeight: "600" }}>NDT Solutions</span> - <span>ניהול דוחות</span>
+        <span>NDT Solutions</span> - <span>ניהול דוחות</span>
       </div>
       <div className={styles.section}>
         <div className={styles.controls}>

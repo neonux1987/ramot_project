@@ -80,21 +80,24 @@ class InputExpansesField extends Component {
     //focus on next elemnt when finished by hitting enter or out of focus
     if (event.key === "Enter") {
       let index = expanseObjKeys.indexOf(event.target.name);//current selected element index in the array of keys
-      let currenElement = event.target.form[expanseObjKeys[index]];//current selected form element
+      let currentElement = event.target.form[expanseObjKeys[index]];//current selected form element
       //the next element to move the focus to
       let nextElement = event.target.form[expanseObjKeys[index + 1]];
+
       nextElement.focus();
       //auto complete the data in all input fields 
       //if the code or the codeName exist in the array or in db
       //and move the focus to the sum field which in most case the most used input
-      if (currenElement.name === "code" || currenElement.name === "codeName") {
-        let row = this.props.findData(currenElement.value, currenElement.value);
+      if (currentElement.name === "code" || currentElement.name === "codeName") {
+        let row = this.props.findData(currentElement.value, currentElement.value);
         if (row !== null) {
           this.autoCompleteForm(row);
           if (nextElement.name !== "submit") nextElement.select();
-        } else if (row === null && currenElement.name !== "codeName") {
+        } else if (row === null && currentElement.name !== "codeName") {
           this.reset();
           this.formChangeHandler(event);
+          //not found in the data, it's new to be added
+          this.setState({ isNew: true });
         }
       }
       //if the next element is the button with id submit
@@ -209,20 +212,30 @@ class InputExpansesField extends Component {
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
 
+        <TextField
+          name="summarized_section_id"
+          label="מקושר לסעיף מסכם:"
+          className={this.props.classes.textField}
+          value={this.state.formInputs.summarized_section_id}
+          type="text"
+          InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        />
 
-        <FormControl className={this.props.classes.formControl}>
+        {/* <FormControl className={this.props.classes.formControl}>
           <InputLabel className={this.props.classes.inputLabel} htmlFor="age-helper">בחר סעיף:</InputLabel>
           <Select
             name="summarized_section_id"
             value={this.state.formInputs.summarized_section_id}
             onChange={this.formChangeHandler}
+            open={this.state.selectOpen}
+            onClose={(event) => { }}
           >
             <MenuItem value="">
               <em></em>
             </MenuItem>
             {selectDataRender}
           </Select>
-        </FormControl>
+        </FormControl> */}
 
         <TextField
           name="supplierName"

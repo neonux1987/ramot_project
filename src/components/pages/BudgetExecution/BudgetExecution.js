@@ -155,14 +155,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(255, 99, 0)",
+          background: "rgb(255, 71, 0)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[0].column1.accessor,
             Header: months[0].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(255, 99, 0)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(255, 71, 0)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -171,7 +171,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(255, 99, 0)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(255, 71, 0)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -181,14 +181,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(75, 145, 222)",
+          background: "rgb(25, 152, 226)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[1].column1.accessor,
             Header: months[1].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(25, 152, 226)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -197,7 +197,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[1].column2.accessor,
             Header: months[1].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(25, 152, 226)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -207,14 +207,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(150, 191, 60)",
+          background: "rgb(87, 189, 10)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(150, 191, 60)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(87, 189, 10)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -223,7 +223,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(150, 191, 60)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(87, 189, 10)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -245,20 +245,20 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(150, 0, 255)",
+          background: "rgb(144, 69, 212)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(150, 0, 255)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(144, 69, 212)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           },
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(150, 0, 255)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(144, 69, 212)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]

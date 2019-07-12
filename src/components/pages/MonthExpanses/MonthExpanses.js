@@ -112,7 +112,7 @@ class MonthExpanses extends Component {
     const copyFormInputs = { ...formInputs };
     //parse inputs
     copyFormInputs.code = Number.parseInt(copyFormInputs.code);
-    copyFormInputs.sum = Number.parseFloat(copyFormInputs.sum);
+    copyFormInputs.sum = copyFormInputs.sum === "" ? 0 : Number.parseFloat(copyFormInputs.sum);
     copyFormInputs.summarized_section_id = Number.parseInt(copyFormInputs.summarized_section_id);
 
     return copyFormInputs;
