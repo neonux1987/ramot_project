@@ -69,12 +69,12 @@ class BudgetExecution extends Component {
     if (title === "difference") {
       if (value < 0) {
         colored.color = "#fff";
-        colored.background = "red";
+        colored.background = "#ff4444";
       } else if (value > 0) {
         colored.color = "#fff";
-        colored.background = "green";
+        colored.background = "#64bd37";
       } else {
-        colored.background = "yellow";
+        colored.background = "#fff200";
       }
     }
 
@@ -110,10 +110,11 @@ class BudgetExecution extends Component {
   };
 
   cellNumberInput(cellInfo) {
+    const newValue = cellInfo.value === 0 ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     return <input
       type="number"
       className="cellRender"
-      defaultValue={Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")}
+      defaultValue={newValue}
       onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
       onClick={e => {
         e.target.select()
@@ -155,14 +156,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(255, 71, 0)",
+          background: "#ff5150",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[0].column1.accessor,
             Header: months[0].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(255, 71, 0)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#ff5150", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -171,7 +172,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(255, 71, 0)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#ff5150", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -181,14 +182,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(25, 152, 226)",
+          background: "#208ade",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[1].column1.accessor,
             Header: months[1].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(25, 152, 226)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#208ade", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -197,7 +198,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[1].column2.accessor,
             Header: months[1].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(25, 152, 226)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#208ade", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -207,14 +208,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(87, 189, 10)",
+          background: "#00b274",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(87, 189, 10)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#00b274", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -223,7 +224,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(87, 189, 10)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#00b274", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -245,20 +246,20 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(144, 69, 212)",
+          background: "rgb(185, 93, 175)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(144, 69, 212)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(185, 93, 175)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           },
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(144, 69, 212)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(185, 93, 175)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -311,13 +312,14 @@ class BudgetExecution extends Component {
             <Header
               title={headerTitle}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "rgb(130, 75, 204)" }}
+              textColor={{ color: "rgb(180, 80, 255)" }}
             >
             </Header>
             <PageControls
               excel={{
                 data: budgetExecutions.data,
-                fileName: Helper.getBudgetExecutionFilename(buildingName, date)
+                fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+                date: date
               }}
               print={{
                 title: headerTitle,

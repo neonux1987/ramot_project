@@ -32,7 +32,7 @@ export default (workbook, sheetTitle, data) => {
       views: [
         { rightToLeft: true }
       ],
-      pageSetup: { fitToPage: true, fitToHeight: 5, fitToWidth: 7 }
+      pageSetup: { fitToPage: true, fitToHeight: 5, fitToWidth: 7, orientation: 'landscape' }
     }
   );
 

@@ -158,7 +158,7 @@ class Helper {
     switch (quarter) {
       case 1: return [
         {
-          header: "חודש ינואר",
+          header: "חודש ינואר 1",
           column1: {
             accessor: "january_budget",
             header: "תקציב"
@@ -169,7 +169,7 @@ class Helper {
           }
         },
         {
-          header: "חודש פברואר",
+          header: "חודש פברואר 2",
           column1: {
             accessor: "february_budget",
             header: "תקציב"
@@ -180,7 +180,7 @@ class Helper {
           }
         },
         {
-          header: "חודש מרץ",
+          header: "חודש מרץ 3",
           column1: {
             accessor: "march_budget",
             header: "תקציב"
@@ -193,7 +193,7 @@ class Helper {
       ]
       case 2: return [
         {
-          header: "חודש אפריל",
+          header: "חודש אפריל 4",
           column1: {
             accessor: "april_budget",
             header: "תקציב"
@@ -204,7 +204,7 @@ class Helper {
           }
         },
         {
-          header: "חודש מאי",
+          header: "חודש מאי 5",
           column1: {
             accessor: "may_budget",
             header: "תקציב"
@@ -215,7 +215,7 @@ class Helper {
           }
         },
         {
-          header: "חודש יוני",
+          header: "חודש יוני 6",
           column1: {
             accessor: "june_budget",
             header: "תקציב"
@@ -228,7 +228,7 @@ class Helper {
       ]
       case 3: return [
         {
-          header: "חודש יולי",
+          header: "חודש יולי 7",
           column1: {
             accessor: "july_budget",
             header: "תקציב"
@@ -239,7 +239,7 @@ class Helper {
           }
         },
         {
-          header: "חודש אוגוסט",
+          header: "חודש אוגוסט 8",
           column1: {
             accessor: "august_budget",
             header: "תקציב"
@@ -250,7 +250,7 @@ class Helper {
           }
         },
         {
-          header: "חודש ספטמבר",
+          header: "חודש ספטמבר 9",
           column1: {
             accessor: "september_budget",
             header: "תקציב"
@@ -263,7 +263,7 @@ class Helper {
       ]
       case 4: return [
         {
-          header: "חודש אוקטובר",
+          header: "חודש אוקטובר 10",
           column1: {
             accessor: "october_budget",
             header: "תקציב"
@@ -274,7 +274,7 @@ class Helper {
           }
         },
         {
-          header: "חודש נובמבר",
+          header: "חודש נובמבר 11",
           column1: {
             accessor: "november_budget",
             header: "תקציב"
@@ -285,7 +285,7 @@ class Helper {
           }
         },
         {
-          header: "חודש דצמבר",
+          header: "חודש דצמבר 12",
           column1: {
             accessor: "december_budget",
             header: "תקציב"

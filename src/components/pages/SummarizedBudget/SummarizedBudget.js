@@ -75,7 +75,7 @@ class SummarizedBudget extends Component {
         ]
       },
       {
-        Header: "ריבעון 1",
+        Header: "רבעון 1",
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
@@ -101,7 +101,7 @@ class SummarizedBudget extends Component {
         ]
       },
       {
-        Header: "ריבעון 2",
+        Header: "רבעון 2",
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
@@ -127,7 +127,7 @@ class SummarizedBudget extends Component {
         ]
       },
       {
-        Header: "ריבעון 3",
+        Header: "רבעון 3",
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
@@ -153,7 +153,7 @@ class SummarizedBudget extends Component {
         ]
       },
       {
-        Header: "ריבעון 4",
+        Header: "רבעון 4",
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
