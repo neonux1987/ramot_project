@@ -32,22 +32,58 @@ export default (workbook, sheetTitle, data) => {
       views: [
         { rightToLeft: true }
       ],
-      pageSetup: { fitToPage: true, fitToHeight: 5, fitToWidth: 7, orientation: 'landscape' }
+      pageSetup: { paperSize: 9, orientation: 'portrait' }
     }
   );
 
+  // adjust pageSetup settings afterwards
+  sheet.pageSetup.margins = {
+    left: 0.24, right: 0.24,
+    top: 0.35, bottom: 0.35,
+    header: 0.3, footer: 0.3
+  };
+
+  // Repeat specific rows on every printed page
+  sheet.pageSetup.printTitlesRow = '1:1';
+
+  sheet.mergeCells('A2', 'E3');
+  const mergedCell = sheet.getCell('A2');
+  //set title
+  mergedCell.value = "לב תל אביב - הוצאות חודש יולי - 2019";
+  //set background style
+  mergedCell.fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FFFFFF' }
+  };
+  //set font style
+  mergedCell.font = {
+    name: 'Arial',
+    color: { argb: '000000' },
+    family: 2,
+    size: 18
+  }
+  //set alignment
+  mergedCell.alignment = {
+    vertical: 'middle',
+    horizontal: 'center'
+  }
+
+  /*Column headers*/
+  sheet.getRow(5).values = ['code', 'codeName', 'supplierName', 'sum', 'notes'];
+
   //worksheet headers
   sheet.columns = [
-    { header: 'קוד הנהח"ש', key: 'code', width: 15 },
-    { header: 'שם חשבון', key: 'codeName', width: 20 },
-    { header: 'שם הספק', key: 'supplierName', width: 20 },
-    { header: 'סכום', key: 'sum', width: 15 },
-    { header: 'הערות', key: 'notes', width: 20 }
+    { key: 'code', width: 15 },
+    { key: 'codeName', width: 20 },
+    { key: 'supplierName', width: 20 },
+    { key: 'sum', width: 15 },
+    { key: 'notes', width: 20 }
   ];
 
   //get the first row of headers
   //and set style to each column of header row
-  sheet.getRow(1).eachCell(function (cell, colNumber) {
+  sheet.getRow(5).eachCell(function (cell, colNumber) {
     cell.style = headerStyle;
     cell.alignment = {
       vertical: 'middle',
@@ -67,7 +103,7 @@ export default (workbook, sheetTitle, data) => {
   });
 
   sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
-    if (rowNumber > 1) {
+    if (rowNumber > 5) {
       row.eachCell((cell) => {
         cell.alignment = {
           vertical: 'middle',

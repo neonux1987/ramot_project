@@ -225,7 +225,8 @@ class MonthExpanses extends Component {
             <PageControls
               excel={{
                 data: expanses.data,
-                fileName: Helper.getMonthExpansesFilename(buildingName, date)
+                fileName: Helper.getMonthExpansesFilename(buildingName, date),
+                tabName: `שנה ${date.year} חודש ${date.monthHeb}`
               }}
               print={{
                 title: headerTitle,

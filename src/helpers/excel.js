@@ -9,7 +9,7 @@ export default (fileName, sheetTitle, pageName, data, date) => {
 
   whichPage(pageName, workbook, sheetTitle, data, date);
 
-  workbook.xlsx.writeFile(`${fileName}.xlsx`)
+  workbook.xlsx.writeFile(`${fileName}`)
     .then(function () {
       console.log("Successfully Written to File.");
     });

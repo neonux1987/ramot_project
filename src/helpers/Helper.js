@@ -330,6 +330,8 @@ class Helper {
     return today;
   }
 
+
+
   static getMonthExpansesFilename(buildingName, date = { year: Number, month: String }) {
     let monthHebName = this.convertEngToHebMonth(date.month);
     return `${buildingName} מעקב הוצאות חודש ${monthHebName} ${date.year}`;
@@ -341,7 +343,7 @@ class Helper {
   }
 
   static getSummarizedBudgetFilename(buildingName, date = { year: Number }) {
-    return `${buildingName} ביצוע מול תקציב ${date.year}`;
+    return `${buildingName} סיכום תקציבי ${date.year}`;
   }
 
   static replaceZeroWithEmpty(obj) {

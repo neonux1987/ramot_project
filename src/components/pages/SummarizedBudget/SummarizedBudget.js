@@ -246,7 +246,8 @@ class SummarizedBudget extends Component {
             <PageControls
               excel={{
                 data: summarizedBudgets.data,
-                fileName: Helper.getSummarizedBudgetFilename(buildingName, date)
+                fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
+                tabName: `שנה ${date.year}`
               }}
               print={{
                 title: headerTitle,

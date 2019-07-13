@@ -89,28 +89,23 @@ export default (workbook, sheetTitle, data, { quarter }) => {
   workbook.lastPrinted = new Date();
 
   //add a worksheet
-  var sheet = workbook.addWorksheet();
-
-  //worksheet title
-  sheet.name = sheetTitle;
-  //properties
-  sheet.properties = {
-    tabColor: { argb: 'FFC0000' }
-  };
-  //views
-  sheet.views = [
-    { rightToLeft: true }
-  ];
-  //page setup
-  sheet.pageSetup = {
-    paperSize: 9,
-    orientation: 'landscape'
-  };
+  var sheet = workbook.addWorksheet(sheetTitle,
+    {
+      properties: {
+        tabColor: { argb: 'FFC0000' }
+      },
+      views: [
+        { rightToLeft: true }
+      ],
+      pageSetup: { paperSize: 9, orientation: 'landscape' }
+    }
+  );
 
   // adjust pageSetup settings afterwards
   sheet.pageSetup.margins = {
     left: 0.24, right: 0.24,
-    top: 0.35, bottom: 0.35
+    top: 0.35, bottom: 0.35,
+    header: 0.3, footer: 0.3
   };
 
   // Repeat specific rows on every printed page

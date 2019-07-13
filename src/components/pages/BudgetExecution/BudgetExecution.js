@@ -312,13 +312,14 @@ class BudgetExecution extends Component {
             <Header
               title={headerTitle}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "rgb(180, 80, 255)" }}
+              textColor={{ color: "rgb(150, 20, 247)" }}
             >
             </Header>
             <PageControls
               excel={{
                 data: budgetExecutions.data,
                 fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+                tabName: `שנה ${date.year} רבעון ${date.quarter}`,
                 date: date
               }}
               print={{
