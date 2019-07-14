@@ -176,6 +176,13 @@ export default (
   //set alignment
   headerCell.alignment = headerCellsStyles.alignment;
 
+  sheet.getCell('A3').font = {
+    name: 'Arial',
+    color: { argb: '1b75bc' },
+    family: 2,
+    size: 11
+  };
+
   const months = getMonthHeaders(excel.date.quarter);
 
   //merge cells for month 1 header
