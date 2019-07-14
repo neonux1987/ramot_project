@@ -226,7 +226,8 @@ class MonthExpanses extends Component {
               excel={{
                 data: expanses.data,
                 fileName: Helper.getMonthExpansesFilename(buildingName, date),
-                tabName: `שנה ${date.year} חודש ${date.monthHeb}`
+                sheetTitle: `שנה ${date.year} חודש ${date.monthHeb}`,
+                header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,
               }}
               print={{
                 title: headerTitle,

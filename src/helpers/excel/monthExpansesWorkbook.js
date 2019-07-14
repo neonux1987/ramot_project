@@ -14,17 +14,24 @@ const headerStyle = {
   }
 }
 
-export default (workbook, sheetTitle, data) => {
-
+export default (
+  workbook = Object,
+  excel = {
+    fileName: String,
+    sheetTitle: String,
+    header: String,
+    date: Object,
+  }
+) => {
   //workbook properties
   workbook.creator = 'NDT Solutions';
   workbook.lastModifiedBy = 'NDT Solutions';
   workbook.created = new Date();
   workbook.modified = new Date();
-  workbook.lastPrinted = new Date(2016, 9, 27);
+  workbook.lastPrinted = new Date();
 
   //add a worksheet
-  var sheet = workbook.addWorksheet(sheetTitle,
+  var sheet = workbook.addWorksheet(excel.sheetTitle,
     {
       properties: {
         tabColor: { argb: 'FFC0000' }
@@ -44,54 +51,61 @@ export default (workbook, sheetTitle, data) => {
   };
 
   // Repeat specific rows on every printed page
-  sheet.pageSetup.printTitlesRow = '1:1';
+  //sheet.pageSetup.printTitlesRow = '1:1';
 
-  sheet.mergeCells('A2', 'E3');
-  const mergedCell = sheet.getCell('A2');
+  //merge cells for the header
+  sheet.mergeCells('A1', 'E2');
+  const headerCell = sheet.getCell('A1');
   //set title
-  mergedCell.value = "לב תל אביב - הוצאות חודש יולי - 2019";
+  headerCell.value = excel.header;
   //set background style
-  mergedCell.fill = {
+  headerCell.fill = {
     type: 'pattern',
     pattern: 'solid',
     fgColor: { argb: 'FFFFFF' }
   };
   //set font style
-  mergedCell.font = {
+  headerCell.font = {
     name: 'Arial',
-    color: { argb: '000000' },
+    color: { argb: '1b75bc' },
     family: 2,
-    size: 18
+    size: 24
   }
   //set alignment
-  mergedCell.alignment = {
+  headerCell.alignment = {
     vertical: 'middle',
     horizontal: 'center'
   }
 
   /*Column headers*/
-  sheet.getRow(5).values = ['code', 'codeName', 'supplierName', 'sum', 'notes'];
+  sheet.getRow(3).values = ['קוד הנהח"ש', 'שם חשבון', 'ספק', 'סכום', 'הערות'];
 
   //worksheet headers
   sheet.columns = [
-    { key: 'code', width: 15 },
-    { key: 'codeName', width: 20 },
-    { key: 'supplierName', width: 20 },
-    { key: 'sum', width: 15 },
-    { key: 'notes', width: 20 }
+    { key: 'code', width: 4.5 },
+    { key: 'codeName', width: 10 },
+    { key: 'supplierName', width: 9.8 },
+    { key: 'sum', width: 4.5 },
+    { key: 'notes', width: 13 }
   ];
 
   //get the first row of headers
   //and set style to each column of header row
-  sheet.getRow(5).eachCell(function (cell, colNumber) {
+  sheet.getRow(3).eachCell(function (cell, colNumber) {
     cell.style = headerStyle;
     cell.alignment = {
       vertical: 'middle',
       horizontal: 'center'
     }
+    cell.border = {
+      top: { style: 'thin', color: { argb: '000000' } },
+      left: { style: 'thin', color: { argb: '000000' } },
+      bottom: { style: 'thin', color: { argb: '000000' } },
+      right: { style: 'thin', color: { argb: '000000' } }
+    }
   });
 
-  data.forEach((row) => {
+  excel.data.forEach((row) => {
     Helper.replaceZeroWithEmpty(row);
     sheet.addRow({
       code: row.code,
@@ -103,7 +117,7 @@ export default (workbook, sheetTitle, data) => {
   });
 
   sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
-    if (rowNumber > 5) {
+    if (rowNumber > 3) {
       row.eachCell((cell) => {
         cell.alignment = {
           vertical: 'middle',
@@ -115,6 +129,12 @@ export default (workbook, sheetTitle, data) => {
           family: 2,
           size: 11
         };
+        cell.border = {
+          top: { style: 'thin', color: { argb: '000000' } },
+          left: { style: 'thin', color: { argb: '000000' } },
+          bottom: { style: 'thin', color: { argb: '000000' } },
+          right: { style: 'thin', color: { argb: '000000' } }
+        }
       });
     }
   });

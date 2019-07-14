@@ -9,7 +9,8 @@ const PageControls = ({ excel, print, pageName, styles, ...props }) => {
   const exportToExcel = () => {
     saveToFile(excel.fileName, (fullPath) => {
       if (fullPath)
-        excelProcess(fullPath, excel.tabName, pageName, excel.data, excel.date);
+        excel.fileName = fullPath;
+      excelProcess(pageName, excel);
     });
   }
 

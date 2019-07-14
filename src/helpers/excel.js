@@ -3,23 +3,22 @@ import monthExpansesWorkbook from './excel/monthExpansesWorkbook';
 import budgetExecutionWorkbook from './excel/budgetExecutionWorkbook';
 
 
-export default (fileName, sheetTitle, pageName, data, date) => {
+export default (pageName, excel) => {
   //create work book
   var workbook = new Excel.Workbook();
 
-  whichPage(pageName, workbook, sheetTitle, data, date);
-
-  workbook.xlsx.writeFile(`${fileName}`)
+  whichPage(pageName, workbook, excel);
+  workbook.xlsx.writeFile(`${excel.fileName}.xlsx`)
     .then(function () {
       console.log("Successfully Written to File.");
     });
 
 }
 
-function whichPage(pageName, workbook, sheetTitle, data, date) {
+function whichPage(pageName, workbook, excel) {
   switch (pageName) {
-    case "monthExpanses": return monthExpansesWorkbook(workbook, sheetTitle, data, date);
-    case "budgetExecution": return budgetExecutionWorkbook(workbook, sheetTitle, data, date);
+    case "monthExpanses": return monthExpansesWorkbook(workbook, excel);
+    case "budgetExecution": return budgetExecutionWorkbook(workbook, excel);
     default: return pageName;
   }
 }

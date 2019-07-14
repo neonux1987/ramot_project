@@ -9,6 +9,7 @@ import LoadingCircle from '../../common/LoadingCircle';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
+import { throwStatement } from '@babel/types';
 
 const FIXED_FLOAT = 2;
 
@@ -83,13 +84,13 @@ class BudgetExecution extends Component {
   }
 
   cell(cellInfo) {
-    const newValue = cellInfo.value === 0 ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    const newValue = cellInfo.value === 0 || cellInfo.value === "" ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     return newValue;
   }
 
   cellInputOnBlurHandler(e, cellInfo) {
     const data = [...this.props.budgetExecution.budgetExecutions.data];
-    data[cellInfo.index][cellInfo.column.id] = e.target.value;
+    data[cellInfo.index][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
 
     let params = {
       buildingName: this.props.location.state.buildingNameEng
@@ -110,7 +111,7 @@ class BudgetExecution extends Component {
   };
 
   cellNumberInput(cellInfo) {
-    const newValue = cellInfo.value === 0 ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    const newValue = cellInfo.value === 0 || cellInfo.value === "" ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     return <input
       type="number"
       className="cellRender"
@@ -173,7 +174,7 @@ class BudgetExecution extends Component {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
             headerStyle: { color: "#fff", background: "#ff5150", fontWeight: "600" },
-            Cell: (cellInfo) => this.cell(cellInfo)
+            Cell: this.cell
           }
         ]
       },
@@ -225,7 +226,7 @@ class BudgetExecution extends Component {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
             headerStyle: { color: "#fff", background: "#00b274", fontWeight: "600" },
-            Cell: (cellInfo) => this.cell(cellInfo)
+            Cell: this.cell
           }
         ]
       },
@@ -236,7 +237,7 @@ class BudgetExecution extends Component {
             accessor: "evaluation",
             Header: "הערכה",
             headerStyle: { background: "#000", color: "#fff" },
-            Cell: (cellInfo) => this.cell(cellInfo)
+            Cell: this.cell
           }
         ]
       }
@@ -254,13 +255,13 @@ class BudgetExecution extends Component {
             accessor: "total_budget",
             Header: "תקציב",
             headerStyle: { color: "#fff", background: "rgb(185, 93, 175)", fontWeight: "600" },
-            Cell: (cellInfo) => this.cell(cellInfo)
+            Cell: this.cell
           },
           {
             accessor: "total_execution",
             Header: "ביצוע",
             headerStyle: { color: "#fff", background: "rgb(185, 93, 175)", fontWeight: "600" },
-            Cell: (cellInfo) => this.cell(cellInfo)
+            Cell: this.cell
           }
         ]
       },
@@ -271,7 +272,7 @@ class BudgetExecution extends Component {
             accessor: "difference",
             Header: "הפרש",
             headerStyle: { background: "#000", color: "#fff" },
-            Cell: (cellInfo) => this.cell(cellInfo),
+            Cell: this.cell,
             style: {
               direction: "ltr"
             },
@@ -304,7 +305,7 @@ class BudgetExecution extends Component {
       budgetExecutions,
       headerTitle
     } = this.props.budgetExecution;
-    const buildingName = this.props.location.state.buildingName;
+    const buildingName = this.props.location.state.buildingName; console.log(budgetExecutions.data);
     return (
       <div>
         <WithHeaderWrapper>
@@ -312,14 +313,15 @@ class BudgetExecution extends Component {
             <Header
               title={headerTitle}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "rgb(150, 20, 247)" }}
+              textColor={{ color: "rgb(255, 46, 46)" }}
             >
             </Header>
             <PageControls
               excel={{
                 data: budgetExecutions.data,
                 fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-                tabName: `שנה ${date.year} רבעון ${date.quarter}`,
+                sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
+                header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
                 date: date
               }}
               print={{
