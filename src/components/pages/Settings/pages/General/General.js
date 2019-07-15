@@ -70,6 +70,7 @@ class General extends Component {
             type="number"
             value={this.state.formInputs.tax}
             classes={{ root: styles.textField }}
+            onClick={(event => event.target.select())}
           />
           <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={(event) => this.saveSettings(event)}>
             שמור

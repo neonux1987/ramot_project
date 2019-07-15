@@ -75,7 +75,7 @@ class BudgetExecution extends Component {
         colored.color = "#fff";
         colored.background = "#64bd37";
       } else {
-        colored.background = "#fff200";
+        colored.background = "yellow";
       }
     }
 
@@ -84,7 +84,7 @@ class BudgetExecution extends Component {
   }
 
   cell(cellInfo) {
-    const newValue = cellInfo.value === 0 || cellInfo.value === "" ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     return newValue;
   }
 
@@ -111,7 +111,7 @@ class BudgetExecution extends Component {
   };
 
   cellNumberInput(cellInfo) {
-    const newValue = cellInfo.value === 0 || cellInfo.value === "" ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     return <input
       type="number"
       className="cellRender"
@@ -129,6 +129,7 @@ class BudgetExecution extends Component {
   };
 
   generateHeaders(months) {
+
     return [
       {
         Header: "",
@@ -330,7 +331,49 @@ class BudgetExecution extends Component {
               }}
               pageName={pageName}
             />
-            <DatePicker date={date} loadDataByDateHandler={this.loadBudgetExecutionsByDate} enableMonth={false} enableYear={true} enableQuarter={true} />
+            <DatePicker
+              data={{
+                years: [
+                  {
+                    id: 1,
+                    year: 2017
+                  },
+                  {
+                    id: 2,
+                    year: 2018
+                  },
+                  {
+                    id: 3,
+                    year: 2019
+                  }
+                ],
+                quarters: [
+                  /*   {
+                      id: 1,
+                      year: 2019,
+                      quarter: 1,
+                      quarterHeb: "רבעון 1"
+                    },
+                    {
+                      id: 2,
+                      year: 2019,
+                      quarter: 2,
+                      quarterHeb: "רבעון 2"
+                    },
+                    {
+                      id: 3,
+                      year: 2019,
+                      quarter: 3,
+                      quarterHeb: "רבעון 3"
+                    } */
+                ],
+              }}
+              date={date}
+              loadDataByDateHandler={this.loadBudgetExecutionsByDate}
+              enableMonth={false}
+              enableYear={true}
+              enableQuarter={true}
+            />
           </div>
         </WithHeaderWrapper>
 
