@@ -256,22 +256,20 @@ class SummarizedBudget extends Component {
               pageName={pageName}
             />
             <DatePicker
-              data={{
-                years: [
-                  {
-                    id: 1,
-                    year: 2017
-                  },
-                  {
-                    id: 2,
-                    year: 2018
-                  },
-                  {
-                    id: 3,
-                    year: 2019
-                  }
-                ]
-              }}
+              years={[
+                {
+                  id: 1,
+                  year: 2017
+                },
+                {
+                  id: 2,
+                  year: 2018
+                },
+                {
+                  id: 3,
+                  year: 2019
+                }
+              ]}
               date={date}
               loadDataByDateHandler={this.loadSummarizedBudgetsByDate}
               enableMonth={false}

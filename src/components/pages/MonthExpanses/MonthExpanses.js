@@ -20,6 +20,7 @@ class MonthExpanses extends Component {
     super(props);
     //state init
     this.state = {
+
     };
     //binds
     this.inputExpansesSubmit = this.inputExpansesSubmit.bind(this);
@@ -34,6 +35,42 @@ class MonthExpanses extends Component {
       buildingName: this.props.location.state.buildingNameEng,
       date: Helper.getCurrentDate()
     }
+
+    setTimeout(() => {
+      this.setState({
+        months: [
+          {
+            id: 1,
+            month: "may",
+            monthHeb: "מאי"
+          },
+          {
+            id: 2,
+            month: "june",
+            monthHeb: "יוני"
+          },
+          {
+            id: 3,
+            month: "july",
+            monthHeb: "דצמבר"
+          }
+        ],
+        years: [
+          {
+            id: 1,
+            year: 2017
+          },
+          {
+            id: 2,
+            year: 2018
+          },
+          {
+            id: 3,
+            year: 2019
+          }
+        ]
+      })
+    }, 1000);
 
     this.props.fetchSummarizedSections();
 
@@ -192,7 +229,7 @@ class MonthExpanses extends Component {
         accessor: "sum",
         Header: "סכום",
         headerStyle: { background: "#000", color: "#fff" },
-        Cell: (cellInfo) => cellInfo.value === 0 && cellInfo.value === undefined ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
+        Cell: (cellInfo) => cellInfo.value === 0 || cellInfo.value === undefined ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
       },
       {
         accessor: "notes",
@@ -236,43 +273,13 @@ class MonthExpanses extends Component {
               pageName={pageName}
             />
             <DatePicker
-              data={{
-                years: [
-                  {
-                    id: 1,
-                    year: 2017
-                  },
-                  {
-                    id: 2,
-                    year: 2018
-                  },
-                  {
-                    id: 3,
-                    year: 2019
-                  }
-                ],
-                months: [
-                  {
-                    id: 1,
-                    month: "may",
-                    monthHeb: "מאי"
-                  },
-                  {
-                    id: 2,
-                    month: "june",
-                    monthHeb: "יוני"
-                  },
-                  {
-                    id: 3,
-                    month: "july",
-                    monthHeb: "יולי"
-                  }
-                ]
-              }}
+              years={this.state.years}
+              months={this.state.months}
+              enableYear={true}
+              enableMonth={true}
+              enableQuarter={false}
               date={date}
               loadDataByDateHandler={this.loadExpansesByDate}
-              enableMonth={true} enableYear={true}
-              enableQuarter={false}
             />
           </div>
           <InputExpansesField summarizedSections={summarizedSections.data} data={expanses.data} submitData={this.inputExpansesSubmit} findData={this.findExpanseIndex} />

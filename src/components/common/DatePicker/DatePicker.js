@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { FormControl, Select, Button, MenuItem } from '@material-ui/core';
 import styles from './DatePicker.module.css';
-import { DotLoader } from 'react-spinners';
+import Spinner from '../Spinner/Spinner';
 
 class DatePicker extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      month: this.props.date.month,
-      year: this.props.date.year,
-      quarter: this.props.date.quarter
+      date: {
+        month: this.props.date.month,
+        year: this.props.date.year,
+        quarter: this.props.date.quarter
+      }
     }
     //binds
     this.handleChange = this.handleChange.bind(this);
+    this.spinnerWrapperStyle = { width: "110px" };
   }
 
   /* shouldComponentUpdate(nextProps, nextState) {
@@ -28,21 +31,26 @@ class DatePicker extends Component {
   handleChange(event) {
     const { name, value } = event.target;
     const newValue = name === "year" || name === "quarter" ? Number.parseInt(value) : value;
-    this.setState({ [name]: newValue });
+    this.setState({
+      date: {
+        ...this.state.date,
+        [name]: newValue
+      }
+    });
   }
 
   renderMonth() {
-
     if (this.props.enableMonth) {
+      if (!this.props.months || this.props.months.length === 0) {
+        return <div className={styles.formSelect} style={this.spinnerWrapperStyle}><Spinner loadingText={"חודשים"} size={20} /></div>;
+      }
       return <Select
         name="month"
         className={styles.formSelect}
-        value={this.state.month}
+        value={this.state.date.month}
         onChange={this.handleChange}
-        style={{ display: this.props.enableMonth ? "" : "none" }}
       >
-
-        {this.props.data.months.map((month) => {
+        {this.props.months.map((month) => {
           return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
         })}
       </Select>
@@ -51,19 +59,17 @@ class DatePicker extends Component {
   }
 
   renderQuarter() {
-
     if (this.props.enableQuarter) {
-      if (this.props.data.quarters.length === 0) {
-        return <DotLoader size={20} />;
+      if (!this.props.quarters || this.props.quarters.length === 0) {
+        return <div className={styles.formSelect} style={this.spinnerWrapperStyle}><Spinner loadingText={"רבעונים"} size={20} /></div>;
       }
       return <Select
         name="quarter"
         className={styles.formSelect}
-        value={this.state.quarter}
+        value={this.state.date.quarter}
         onChange={this.handleChange}
-        style={{ display: this.props.enableQuarter ? "" : "none" }}
       >
-        {this.props.data.quarters.map((quarter) => {
+        {this.props.quarters.map((quarter) => {
           return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
         })}
       </Select>
@@ -72,16 +78,17 @@ class DatePicker extends Component {
   }
 
   renderYear() {
-
     if (this.props.enableYear) {
+      if (!this.props.years || this.props.years.length === 0) {
+        return <div className={styles.formSelect} style={this.spinnerWrapperStyle}><Spinner loadingText={"שנים"} size={20} /></div>;
+      }
       return <Select
         name="year"
         className={styles.formSelect}
-        value={this.state.year}
+        value={this.state.date.year}
         onChange={this.handleChange}
-        style={{ display: this.props.enableYear ? "" : "none" }}
       >
-        {this.props.data.years.map((year) => {
+        {this.props.years.map((year) => {
           return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
         })}
       </Select>
@@ -101,7 +108,9 @@ class DatePicker extends Component {
           month: this.state.month,
           year: this.state.year,
           quarter: this.state.quarter
-        })}>
+        })}
+
+        >
           טען
           </Button>
       </form>

@@ -332,42 +332,40 @@ class BudgetExecution extends Component {
               pageName={pageName}
             />
             <DatePicker
-              data={{
-                years: [
-                  {
-                    id: 1,
-                    year: 2017
-                  },
-                  {
-                    id: 2,
-                    year: 2018
-                  },
-                  {
-                    id: 3,
-                    year: 2019
-                  }
-                ],
-                quarters: [
-                  /*   {
-                      id: 1,
-                      year: 2019,
-                      quarter: 1,
-                      quarterHeb: "רבעון 1"
-                    },
-                    {
-                      id: 2,
-                      year: 2019,
-                      quarter: 2,
-                      quarterHeb: "רבעון 2"
-                    },
-                    {
-                      id: 3,
-                      year: 2019,
-                      quarter: 3,
-                      quarterHeb: "רבעון 3"
-                    } */
-                ],
-              }}
+              years={[
+                {
+                  id: 1,
+                  year: 2017
+                },
+                {
+                  id: 2,
+                  year: 2018
+                },
+                {
+                  id: 3,
+                  year: 2019
+                }
+              ]}
+              quarters={[
+                {
+                  id: 1,
+                  year: 2019,
+                  quarter: 1,
+                  quarterHeb: "רבעון 1"
+                },
+                {
+                  id: 2,
+                  year: 2019,
+                  quarter: 2,
+                  quarterHeb: "רבעון 2"
+                },
+                {
+                  id: 3,
+                  year: 2019,
+                  quarter: 3,
+                  quarterHeb: "רבעון 3"
+                }
+              ]}
               date={date}
               loadDataByDateHandler={this.loadBudgetExecutionsByDate}
               enableMonth={false}

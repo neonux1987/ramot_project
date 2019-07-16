@@ -50,7 +50,7 @@ const styles = theme => ({
   }
 });
 
-const expanseObjKeys = ["code", "codeName", "summarized_section_id", "supplierName", "sum", "notes", "submit"];
+const expanseObjKeys = ["code", "codeName", "section", "supplierName", "sum", "notes", "submit"];
 
 class InputExpansesField extends Component {
 
@@ -61,11 +61,12 @@ class InputExpansesField extends Component {
         code: "",
         codeName: "",
         summarized_section_id: "",
+        section: "",
         supplierName: "",
         sum: "",
         notes: ""
       },
-      isNew: true
+      isNew: false
     };
     this.formChangeHandler = this.formChangeHandler.bind(this);
     this.reset = this.reset.bind(this);
@@ -124,6 +125,7 @@ class InputExpansesField extends Component {
             code: this.props.data[row].code,
             codeName: this.props.data[row].codeName,
             summarized_section_id: this.props.data[row].summarized_section_id,
+            section: this.props.data[row].section,
             supplierName: this.props.data[row].supplierName,
             sum: this.props.data[row].sum,
             notes: this.props.data[row].notes,
@@ -144,6 +146,7 @@ class InputExpansesField extends Component {
             code: row.code,
             codeName: row.codeName,
             summarized_section_id: row.summarized_section_id,
+            section: row.section,
             supplierName: row.supplierName,
             sum: row.sum,
             notes: row.notes
@@ -172,6 +175,7 @@ class InputExpansesField extends Component {
         code: "",
         codeName: "",
         summarized_section_id: "",
+        section: "",
         supplierName: "",
         sum: "",
         notes: ""
@@ -212,16 +216,16 @@ class InputExpansesField extends Component {
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
 
-        <TextField
+        {!this.state.isNew && <TextField
           name="summarized_section_id"
           label="מקושר לסעיף מסכם:"
           className={this.props.classes.textField}
-          value={this.state.formInputs.summarized_section_id}
+          value={this.state.formInputs.section}
           type="text"
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-        />
+        />}
 
-        {/* <FormControl className={this.props.classes.formControl}>
+        {this.state.isNew && <FormControl className={this.props.classes.formControl}>
           <InputLabel className={this.props.classes.inputLabel} htmlFor="age-helper">בחר סעיף:</InputLabel>
           <Select
             name="summarized_section_id"
@@ -235,7 +239,7 @@ class InputExpansesField extends Component {
             </MenuItem>
             {selectDataRender}
           </Select>
-        </FormControl> */}
+        </FormControl>}
 
         <TextField
           name="supplierName"

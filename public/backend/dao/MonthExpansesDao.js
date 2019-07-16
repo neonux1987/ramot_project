@@ -83,6 +83,7 @@ class MonthExpansesDao {
    * @param {*} expanse the expanse to update
    */
   updateMonthExpanseTrx(buildingName = String, id = Number, expanse = Object, trx) {
+    console.log(expanse);
     return trx(buildingName + "_month_expanses")
       .where({ id: id })
       .update(expanse);
