@@ -97,6 +97,7 @@ class MonthExpanses extends Component {
       copyData[rowIndex] = {
         ...copyData[rowIndex],
         ...parsedFormInputs,
+        codeName: copyData[rowIndex].codeName,//dont change the codeame field
         sum: parsedFormInputs.sum
       }
 

@@ -217,10 +217,11 @@ class InputExpansesField extends Component {
         />
 
         {!this.state.isNew && <TextField
-          name="summarized_section_id"
+          name="section"
           label="מקושר לסעיף מסכם:"
           className={this.props.classes.textField}
           value={this.state.formInputs.section}
+          readonly
           type="text"
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />}
