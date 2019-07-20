@@ -50,7 +50,17 @@ const styles = theme => ({
   }
 });
 
-const expanseObjKeys = ["code", "codeName", "section", "supplierName", "sum", "notes", "submit"];
+const expanseObjKeys = ["code", "codeName", "section", "summarized_section_id", "supplierName", "sum", "notes", "submit"];
+
+let keys = {
+  0: "code",
+  1: "codeName",
+  2: "section",
+  3: "supplierName",
+  4: "sum",
+  5: "notes",
+  6: "submit"
+}
 
 class InputExpansesField extends Component {
 
@@ -66,6 +76,7 @@ class InputExpansesField extends Component {
         sum: "",
         notes: ""
       },
+      selectOpened: false,
       isNew: false
     };
     this.formChangeHandler = this.formChangeHandler.bind(this);
@@ -80,12 +91,20 @@ class InputExpansesField extends Component {
   inputEnterPress(event) {
     //focus on next elemnt when finished by hitting enter or out of focus
     if (event.key === "Enter") {
-      let index = expanseObjKeys.indexOf(event.target.name);//current selected element index in the array of keys
-      let currentElement = event.target.form[expanseObjKeys[index]];//current selected form element
+      let index = Number.parseInt(event.target.dataset.order);//current selected element index in the array of keys
+      console.log(index);
+      let currentElement = event.target.form[keys[index]];//current selected form element
+      console.log(index + 1);
       //the next element to move the focus to
-      let nextElement = event.target.form[expanseObjKeys[index + 1]];
+      let nextElement = event.target.form[keys[index + 1]];
 
+      if (nextElement.name === "summarized_section_id") {
+        this.setState({ selectOpened: true });
+        keys[2] = "summarized_section_id";
+        console.log(keys);
+      }
       nextElement.focus();
+
       //auto complete the data in all input fields 
       //if the code or the codeName exist in the array or in db
       //and move the focus to the sum field which in most case the most used input
@@ -205,6 +224,7 @@ class InputExpansesField extends Component {
           value={this.state.formInputs.code}
           style={{ width: 160 }}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+          inputProps={{ 'data-order': 0 }}
         />
 
         <TextField
@@ -213,6 +233,7 @@ class InputExpansesField extends Component {
           className={this.props.classes.textField}
           value={this.state.formInputs.codeName}
           type="text"
+          inputProps={{ 'data-order': 1 }}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
 
@@ -221,8 +242,9 @@ class InputExpansesField extends Component {
           label="מקושר לסעיף מסכם:"
           className={this.props.classes.textField}
           value={this.state.formInputs.section}
-          readonly
+          inputProps={{ readOnly: true }}
           type="text"
+          inputProps={{ 'data-order': 2 }}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />}
 
@@ -232,8 +254,9 @@ class InputExpansesField extends Component {
             name="summarized_section_id"
             value={this.state.formInputs.summarized_section_id}
             onChange={this.formChangeHandler}
-            open={this.state.selectOpen}
+            open={this.state.selectOpened}
             onClose={(event) => { }}
+            inputProps={{ 'data-order': 2 }}
           >
             <MenuItem value="">
               <em></em>
@@ -247,6 +270,7 @@ class InputExpansesField extends Component {
           label="שם הספק:"
           className={this.props.classes.textField}
           type="text"
+          inputProps={{ 'data-order': 3 }}
           value={this.state.formInputs.supplierName}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
@@ -257,6 +281,7 @@ class InputExpansesField extends Component {
           className={this.props.classes.textField}
           value={this.state.formInputs.sum}
           type="number"
+          inputProps={{ 'data-order': 4 }}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
 
@@ -266,13 +291,14 @@ class InputExpansesField extends Component {
           className={this.props.classes.textFieldNotes}
           multiline
           value={this.state.formInputs.notes}
-
+          inputProps={{ 'data-order': 5 }}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />
 
         <FormControlLabel
           labelPlacement="start"
           label="מיוחד?"
+          data-order="6"
           control={
             <Checkbox
               checked={this.state.checkedB}
@@ -287,7 +313,7 @@ class InputExpansesField extends Component {
           אפס
         </Button>
 
-        <Button style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => this.props.submitData(this.state.formInputs, this.state.formInputs.index, this.reset, this.state.isNew)} className={this.props.classes.button}>
+        <Button data-order="7" style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => this.props.submitData(this.state.formInputs, this.state.formInputs.index, this.reset, this.state.isNew)} className={this.props.classes.button}>
           שמור
         </Button>
 
