@@ -77,6 +77,7 @@ class InputExpansesField extends Component {
         notes: ""
       },
       isNew: false,
+      selectOpen: false
     };
     this.formChangeHandler = this.formChangeHandler.bind(this);
     this.reset = this.reset.bind(this);
@@ -167,8 +168,7 @@ class InputExpansesField extends Component {
         formInputs: {
           ...prevState.formInputs,
           [target.name]: target.value
-        },
-        selectOpened: false
+        }
       };
     });
   }
@@ -243,7 +243,14 @@ class InputExpansesField extends Component {
             value={this.state.formInputs.summarized_section_id}
             onChange={this.formChangeHandler}
             inputProps={{ 'data-order': 2, name: "summarized_section_id" }}
-            onClose={(event) => this.inputEnterPress(event)}
+            open={this.state.selectOpen}
+            onClose={(event) => {
+              this.setState({ selectOpen: false });
+              console.log(event);
+            }}
+            onOpen={(event) => {
+              this.setState({ selectOpen: true });
+            }}
           >
             <MenuItem value="">
               <em></em>
