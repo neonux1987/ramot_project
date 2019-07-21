@@ -76,8 +76,7 @@ class InputExpansesField extends Component {
         sum: "",
         notes: ""
       },
-      selectOpened: false,
-      isNew: false
+      isNew: false,
     };
     this.formChangeHandler = this.formChangeHandler.bind(this);
     this.reset = this.reset.bind(this);
@@ -91,19 +90,21 @@ class InputExpansesField extends Component {
   inputEnterPress(event) {
     //focus on next elemnt when finished by hitting enter or out of focus
     if (event.key === "Enter") {
+      event.preventDefault();
       let index = Number.parseInt(event.target.dataset.order);//current selected element index in the array of keys
-      console.log(index);
       let currentElement = event.target.form[keys[index]];//current selected form element
-      console.log(index + 1);
       //the next element to move the focus to
       let nextElement = event.target.form[keys[index + 1]];
 
-      if (nextElement.name === "summarized_section_id") {
-        this.setState({ selectOpened: true });
-        keys[2] = "summarized_section_id";
-        console.log(keys);
+      if (keys[index + 1] === "summarized_section_id") {
+        //get the clickable div from the hidden input element
+        const clickableElement = nextElement.previousSibling;
+        clickableElement.focus();
+        clickableElement.click();
+      } else {
+        nextElement.focus();
       }
-      nextElement.focus();
+
 
       //auto complete the data in all input fields 
       //if the code or the codeName exist in the array or in db
@@ -117,7 +118,10 @@ class InputExpansesField extends Component {
           this.reset();
           this.formChangeHandler(event);
           //not found in the data, it's new to be added
-          this.setState({ isNew: true });
+          this.setState(() => {
+            keys[2] = "summarized_section_id";
+            return { isNew: true };
+          });
         }
       }
       //if the next element is the button with id submit
@@ -156,25 +160,6 @@ class InputExpansesField extends Component {
     }
   }
 
-  autoCompleteFormIndex(row = null) {
-    if (row !== null) {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          formInputs: {
-            code: row.code,
-            codeName: row.codeName,
-            summarized_section_id: row.summarized_section_id,
-            section: row.section,
-            supplierName: row.supplierName,
-            sum: row.sum,
-            notes: row.notes
-          }
-        };
-      })
-    }
-  }
-
   formChangeHandler(event) {
     let target = event.target;
     this.setState((prevState) => {
@@ -182,24 +167,28 @@ class InputExpansesField extends Component {
         formInputs: {
           ...prevState.formInputs,
           [target.name]: target.value
-        }
+        },
+        selectOpened: false
       };
     });
   }
 
   reset() {
-    this.setState({
-      ...this.state,
-      formInputs: {
-        code: "",
-        codeName: "",
-        summarized_section_id: "",
-        section: "",
-        supplierName: "",
-        sum: "",
-        notes: ""
-      },
-      isNew: true
+    this.setState(() => {
+      keys[2] = "section";
+      return {
+        ...this.state,
+        formInputs: {
+          code: "",
+          codeName: "",
+          summarized_section_id: "",
+          section: "",
+          supplierName: "",
+          sum: "",
+          notes: ""
+        },
+        isNew: false
+      }
     });
   }
 
@@ -251,12 +240,10 @@ class InputExpansesField extends Component {
         {this.state.isNew && <FormControl className={this.props.classes.formControl}>
           <InputLabel className={this.props.classes.inputLabel} htmlFor="age-helper">בחר סעיף:</InputLabel>
           <Select
-            name="summarized_section_id"
             value={this.state.formInputs.summarized_section_id}
             onChange={this.formChangeHandler}
-            open={this.state.selectOpened}
-            onClose={(event) => { }}
-            inputProps={{ 'data-order': 2 }}
+            inputProps={{ 'data-order': 2, name: "summarized_section_id" }}
+            onClose={(event) => this.inputEnterPress(event)}
           >
             <MenuItem value="">
               <em></em>
@@ -313,7 +300,7 @@ class InputExpansesField extends Component {
           אפס
         </Button>
 
-        <Button data-order="7" style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => this.props.submitData(this.state.formInputs, this.state.formInputs.index, this.reset, this.state.isNew)} className={this.props.classes.button}>
+        <Button data-order="7" style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => this.props.submitData(this.state.formInputs, this.reset, this.state.isNew)} className={this.props.classes.button}>
           שמור
         </Button>
 

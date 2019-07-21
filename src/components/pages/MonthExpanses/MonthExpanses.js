@@ -79,7 +79,7 @@ class MonthExpanses extends Component {
 
   }
 
-  inputExpansesSubmit(formInputs, rowIndex, reset, isNew) {
+  inputExpansesSubmit(formInputs, reset, isNew) {
     const { data } = this.props.monthExpanses.expanses;
     const valid = this.validateFormInputs(formInputs);
     if (!valid) {
@@ -94,16 +94,16 @@ class MonthExpanses extends Component {
       const parsedFormInputs = this.parseFormInputs(formInputs);
 
       //create a copy of the data
-      copyData[rowIndex] = {
-        ...copyData[rowIndex],
+      copyData[formInputs.index] = {
+        ...copyData[formInputs.index],
         ...parsedFormInputs,
-        codeName: copyData[rowIndex].codeName,//dont change the codeame field
+        codeName: copyData[formInputs.index].codeName,//dont change the codeame field
         sum: parsedFormInputs.sum
       }
 
       //prepare the expanse object 
       let params = {
-        expanse: copyData[rowIndex],
+        expanse: copyData[formInputs.index],
         buildingName: this.props.location.state.buildingNameEng,
         date: {
           ...this.props.monthExpanses.date
