@@ -11,6 +11,7 @@ import LoadingCircle from '../../common/LoadingCircle';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
+import EditControls from '../../common/EditControls/EditControls';
 
 const FIXED_FLOAT = 2;
 
@@ -52,7 +53,7 @@ class MonthExpanses extends Component {
           {
             id: 3,
             month: "july",
-            monthHeb: "דצמבר"
+            monthHeb: "יולי"
           }
         ],
         years: [
@@ -173,7 +174,8 @@ class MonthExpanses extends Component {
   }
 
   loadExpansesByDate({ month, year }) {
-
+    console.log(month);
+    console.log(year);
     const monthNum = Helper.convertEngToMonthNum(month);
     const quarter = Helper.getCurrentQuarter(monthNum);
 
@@ -284,6 +286,12 @@ class MonthExpanses extends Component {
             />
           </div>
           <InputExpansesField summarizedSections={summarizedSections.data} data={expanses.data} submitData={this.inputExpansesSubmit} findData={this.findExpanseIndex} />
+          <EditControls
+            editMode={this.state.editMode}
+            toggleEditMode={this.toggleEditMode}
+            addNewMode={this.state.addNewMode}
+            toggleAddNewMode={this.toggleAddNewMode}
+          />
         </WithHeaderWrapper>
 
         <ReactTable

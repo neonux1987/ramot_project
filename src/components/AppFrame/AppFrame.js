@@ -7,7 +7,7 @@ export default ({ handlers }) => {
       <div className={styles.section + " " + styles.header}>
         <span>NDT Solutions</span> - <span>ניהול דוחות</span>
       </div>
-      <div className={styles.section}>
+      <div style={{ float: "left" }} className={styles.section}>
         <div className={styles.controls}>
           <button onClick={handlers.minimize}>-</button>
           <button onClick={handlers.maximize}>+</button>

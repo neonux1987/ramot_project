@@ -10,6 +10,7 @@ import { Button } from '@material-ui/core';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 import styles from './ExpansesCodes.module.css';
+import EditControls from '../../../../common/EditControls/EditControls';
 
 class ExpansesCodes extends Component {
 
@@ -202,15 +203,12 @@ class ExpansesCodes extends Component {
     return (
       <Fragment>
 
-        <Button className={styles.editBtn} onClick={this.toggleEditMode} variant="contained" color="primary" >
-          {editBtnTitle}
-        </Button>
-
-        <Button className={styles.addNewBtn} onClick={this.toggleAddNewMode} variant="contained" color="primary" >
-          {addNewBtnTitle}
-        </Button>
-
-
+        <EditControls
+          editMode={this.state.editMode}
+          toggleEditMode={this.toggleEditMode}
+          addNewMode={this.state.addNewMode}
+          toggleAddNewMode={this.toggleAddNewMode}
+        />
 
         {renderAddewExpanse}
 

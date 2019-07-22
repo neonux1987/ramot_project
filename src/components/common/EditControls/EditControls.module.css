@@ -1,0 +1,12 @@
+.wrapper{
+  margin: 10px 0;
+}
+
+.editBtn{
+  min-width:90px;
+}
+
+.addNewBtn{
+  margin-right: 10px;
+  min-width:90px;
+}

@@ -77,10 +77,16 @@ class InputExpansesField extends Component {
         notes: ""
       },
       isNew: false,
-      selectOpen: false
+      isSpecial: false
     };
+    this.codeInput = React.createRef();
+    this.supplierInput = React.createRef();
     this.formChangeHandler = this.formChangeHandler.bind(this);
     this.reset = this.reset.bind(this);
+  }
+
+  componentDidMount() {
+    this.codeInput.focus();
   }
 
   /**
@@ -88,11 +94,11 @@ class InputExpansesField extends Component {
    * @param {*} event the event of the current clicked element
    * @param {*} nextElement the next element to forward to focus to
    */
-  inputEnterPress(event) {
+  inputEnterPress(event, dataOrder) {
     //focus on next elemnt when finished by hitting enter or out of focus
     if (event.key === "Enter") {
       event.preventDefault();
-      let index = Number.parseInt(event.target.dataset.order);//current selected element index in the array of keys
+      let index = Number.parseInt(event.target.dataset.order || dataOrder);//current selected element index in the array of keys
       let currentElement = event.target.form[keys[index]];//current selected form element
       //the next element to move the focus to
       let nextElement = event.target.form[keys[index + 1]];
@@ -118,10 +124,18 @@ class InputExpansesField extends Component {
         } else if (row === null && currentElement.name !== "codeName") {
           this.reset();
           this.formChangeHandler(event);
+          let isSpecial = false;
+          if (currentElement.value.startsWith(9, 0)) {
+            isSpecial = true;
+          }
+
           //not found in the data, it's new to be added
           this.setState(() => {
             keys[2] = "summarized_section_id";
-            return { isNew: true };
+            return {
+              isNew: true,
+              isSpecial: isSpecial
+            };
           });
         }
       }
@@ -214,6 +228,7 @@ class InputExpansesField extends Component {
           style={{ width: 160 }}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
           inputProps={{ 'data-order': 0 }}
+          inputRef={(input) => { this.codeInput = input; }}
         />
 
         <TextField
@@ -242,15 +257,11 @@ class InputExpansesField extends Component {
           <Select
             value={this.state.formInputs.summarized_section_id}
             onChange={this.formChangeHandler}
-            inputProps={{ 'data-order': 2, name: "summarized_section_id" }}
-            open={this.state.selectOpen}
-            onClose={(event) => {
-              this.setState({ selectOpen: false });
-              console.log(event);
+            inputProps={{
+              'data-order': 2,
+              name: "summarized_section_id"
             }}
-            onOpen={(event) => {
-              this.setState({ selectOpen: true });
-            }}
+            MenuProps={{ onExited: () => this.supplierInput.focus() }}//will handle moving the focus to the supplierName input
           >
             <MenuItem value="">
               <em></em>
@@ -267,6 +278,7 @@ class InputExpansesField extends Component {
           inputProps={{ 'data-order': 3 }}
           value={this.state.formInputs.supplierName}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+          inputRef={(input) => { this.supplierInput = input; }}
         />
 
         <TextField
@@ -287,20 +299,6 @@ class InputExpansesField extends Component {
           value={this.state.formInputs.notes}
           inputProps={{ 'data-order': 5 }}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-        />
-
-        <FormControlLabel
-          labelPlacement="start"
-          label="מיוחד?"
-          data-order="6"
-          control={
-            <Checkbox
-              checked={this.state.checkedB}
-              //onChange={this.handleChange('מיוחד?')}
-              value="checkedB"
-              color="primary"
-            />
-          }
         />
 
         <Button style={{ backgroundColor: "#fd5050" }} name="reset" type="reset" onClick={this.reset} variant="contained" color="primary" className={this.props.classes.button}>
