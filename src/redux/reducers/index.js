@@ -7,6 +7,7 @@ import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
 import generalSettings from './generalSettingsReducer';
 import summarizedBudget from './summarizedBudgetReducer';
+import notifications from './notificationsReducer';
 
 export default combineReducers({
   app,
@@ -16,5 +17,6 @@ export default combineReducers({
   summarizedSections,
   expansesCodes,
   generalSettings,
-  summarizedBudget
+  summarizedBudget,
+  notifications
 });

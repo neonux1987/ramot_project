@@ -11,6 +11,8 @@ import sidebarActions from './redux/actions/sidebarActions';
 import NotificationWrapper from './components/common/Notifications/NotificationWrapper';
 import LoadingCircle from './components/common/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
+import Notification from './components/common/Notifications/Notification';
+import notificationActions from './redux/actions/notificationsActions';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
 import AppFrame from './components/AppFrame/AppFrame';
@@ -62,6 +64,10 @@ class App extends Component {
   render() {
     this.toggleSidebarAnimation = !this.props.sidebar.toggleSidebar ? "hideAnimation" : "showAnimation";
     this.toggleSidebarButtonAnimation = !this.props.sidebar.toggleSidebar ? "hideButtonAnimation" : "showButtonAnimation";
+    const notificationsData = this.props.notifications.notifications.map((notification, index) => {
+      return <Notification id={notification.id} isError={notification.isError} message={notification.message} remove={this.props.removeNotification} key={index} />
+    })
+
     if (this.props.generalSettings.generalSettings.isFetching) {
       return <LoadingCircle loading={true} />;
     }
@@ -80,7 +86,9 @@ class App extends Component {
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
-            <NotificationWrapper notifications={this.props.app.notifications} />
+            <NotificationWrapper display={notificationsData.length > 0}>
+              {notificationsData}
+            </NotificationWrapper>
           </MemoryRouter>
         </MuiThemeProvider>
       </RTL>
@@ -94,7 +102,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings()),
-  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload))
+  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload)),
+  removeNotification: (id) => dispatch(notificationActions.removeNotification(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

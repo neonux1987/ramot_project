@@ -119,9 +119,10 @@ class InputExpansesField extends Component {
       if (currentElement.name === "code" || currentElement.name === "codeName") {
         let row = this.props.findData(currentElement.value, currentElement.value);
         if (row !== null) {
+          keys[2] = "section";
           this.autoCompleteForm(row);
           if (nextElement.name !== "submit") nextElement.select();
-        } else if (row === null && currentElement.name !== "codeName") {
+        } else if (row === null && currentElement.name !== "codeName" && currentElement.value !== "") {
           this.reset();
           this.formChangeHandler(event);
           let isSpecial = false;

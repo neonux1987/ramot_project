@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
 import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
+import notificationsActions from '../../../redux/actions/notificationsActions';
 import dateActions from '../../../redux/actions/dateActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
@@ -84,7 +85,10 @@ class MonthExpanses extends Component {
     const { data } = this.props.monthExpanses.expanses;
     const valid = this.validateFormInputs(formInputs);
     if (!valid) {
-      alert("קוד או שם חשבון לא יכולים להיות ריקים");
+      this.props.addNotification({
+        isError: true,
+        message: "קוד או שם חשבון לא יכולים להיות ריקים"
+      });
       return;
     }
 
@@ -342,7 +346,8 @@ const mapDispatchToProps = dispatch => ({
   updateExpanse: (payload, tableData) => dispatch(monthExpansesActions.updateExpanse(payload, tableData)),
   addExpanse: (payload, tableData) => dispatch(monthExpansesActions.addExpanse(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
-  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
+  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
+  addNotification: (notification) => dispatch(notificationsActions.addNotification(notification))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);
