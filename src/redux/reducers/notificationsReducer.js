@@ -15,9 +15,11 @@ export default (state = initState, action) => {
     }
     case "REMOVE_NOTIFICATION": {
       let copyData = [...state.notifications];
-      copyData = copyData.filter((value, index, arr) => {
-        return value === action.payload;
-      })
+      for (let i = 0; i < copyData.length; i++) {
+        if (copyData[i].id === action.payload) {
+          copyData.splice(i, 1);
+        }
+      }
       return {
         ...state,
         notifications: copyData

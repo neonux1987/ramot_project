@@ -67,7 +67,7 @@ class App extends Component {
     const notificationsData = this.props.notifications.notifications.map((notification, index) => {
       return <Notification id={notification.id} isError={notification.isError} message={notification.message} remove={this.props.removeNotification} key={index} />
     })
-
+    console.log(this.props.notifications.notifications)
     if (this.props.generalSettings.generalSettings.isFetching) {
       return <LoadingCircle loading={true} />;
     }

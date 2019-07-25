@@ -178,8 +178,6 @@ class MonthExpanses extends Component {
   }
 
   loadExpansesByDate({ month, year }) {
-    console.log(month);
-    console.log(year);
     const monthNum = Helper.convertEngToMonthNum(month);
     const quarter = Helper.getCurrentQuarter(monthNum);
 
