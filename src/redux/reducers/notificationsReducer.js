@@ -1,28 +1,30 @@
 const initState = {
   notificationCount: 0,
-  notifications: []
+  notification: {
+  }
 }
 
 export default (state = initState, action) => {
   switch (action.type) {
     case "SET_NOTIFICATION": {
-      const copyData = [...state.notifications];
-      copyData.push(action.payload);
+      console.log(action.payload);
+      /* const copyData = [...state.notifications];
+      copyData.push(action.payload); */
       return {
         ...state,
-        notifications: copyData
+        notification: action.payload
       }
     }
     case "REMOVE_NOTIFICATION": {
-      let copyData = [...state.notifications];
+      /* let copyData = [...state.notifications];
       for (let i = 0; i < copyData.length; i++) {
         if (copyData[i].id === action.payload) {
           copyData.splice(i, 1);
         }
-      }
+      } */
       return {
         ...state,
-        notifications: copyData
+        notification: {}
       }
     }
     case "INC_NOTIFICATION_COUNT": {

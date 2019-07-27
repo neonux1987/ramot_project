@@ -22,7 +22,37 @@ class MonthExpanses extends Component {
     super(props);
     //state init
     this.state = {
-
+      months: [
+        {
+          id: 1,
+          month: "may",
+          monthHeb: "מאי"
+        },
+        {
+          id: 2,
+          month: "june",
+          monthHeb: "יוני"
+        },
+        {
+          id: 3,
+          month: "july",
+          monthHeb: "יולי"
+        }
+      ],
+      years: [
+        {
+          id: 1,
+          year: 2017
+        },
+        {
+          id: 2,
+          year: 2018
+        },
+        {
+          id: 3,
+          year: 2019
+        }
+      ]
     };
     //binds
     this.inputExpansesSubmit = this.inputExpansesSubmit.bind(this);
@@ -37,42 +67,6 @@ class MonthExpanses extends Component {
       buildingName: this.props.location.state.buildingNameEng,
       date: Helper.getCurrentDate()
     }
-
-    setTimeout(() => {
-      this.setState({
-        months: [
-          {
-            id: 1,
-            month: "may",
-            monthHeb: "מאי"
-          },
-          {
-            id: 2,
-            month: "june",
-            monthHeb: "יוני"
-          },
-          {
-            id: 3,
-            month: "july",
-            monthHeb: "יולי"
-          }
-        ],
-        years: [
-          {
-            id: 1,
-            year: 2017
-          },
-          {
-            id: 2,
-            year: 2018
-          },
-          {
-            id: 3,
-            year: 2019
-          }
-        ]
-      })
-    }, 1000);
 
     this.props.fetchSummarizedSections();
 
@@ -179,7 +173,6 @@ class MonthExpanses extends Component {
 
   loadExpansesByDate({ month, year }) {
     const monthNum = Helper.convertEngToMonthNum(month);
-    const quarter = Helper.getCurrentQuarter(monthNum);
 
     //important params that allows to pull the current data by
     //building name, current month and year.
@@ -189,10 +182,7 @@ class MonthExpanses extends Component {
         year: year,
         month: month,
         monthNum: monthNum,
-        monthHeb: Helper.convertEngToHebMonth(month),
-        quarter: quarter,
-        quarterHeb: Helper.getQuarterHeb(quarter),
-        quarterEng: Helper.convertQuarterToEng(quarter)
+        monthHeb: Helper.convertEngToHebMonth(month)
       }
     }
 

@@ -64,10 +64,9 @@ class App extends Component {
   render() {
     this.toggleSidebarAnimation = !this.props.sidebar.toggleSidebar ? "hideAnimation" : "showAnimation";
     this.toggleSidebarButtonAnimation = !this.props.sidebar.toggleSidebar ? "hideButtonAnimation" : "showButtonAnimation";
-    const notificationsData = this.props.notifications.notifications.map((notification, index) => {
-      return <Notification id={notification.id} isError={notification.isError} message={notification.message} remove={this.props.removeNotification} key={index} />
-    })
-    console.log(this.props.notifications.notifications)
+    const { notification } = this.props.notifications;
+    const renderedNotif = notification ? <Notification id={notification.id} isError={notification.isError} message={notification.message} remove={this.props.removeNotification} /> : null;
+    console.log(notification)
     if (this.props.generalSettings.generalSettings.isFetching) {
       return <LoadingCircle loading={true} />;
     }
@@ -86,8 +85,8 @@ class App extends Component {
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
-            <NotificationWrapper display={notificationsData.length > 0}>
-              {notificationsData}
+            <NotificationWrapper display={notification.id !== null}>
+              {renderedNotif}
             </NotificationWrapper>
           </MemoryRouter>
         </MuiThemeProvider>
