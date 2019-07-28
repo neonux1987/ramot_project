@@ -8,10 +8,9 @@ import RTL from './components/RTL';
 import SidebarToggleButton from './components/layout/Sidebar/SidebarToggleButton';
 import { connect } from 'react-redux';
 import sidebarActions from './redux/actions/sidebarActions';
-import NotificationWrapper from './components/common/Notifications/NotificationWrapper';
 import LoadingCircle from './components/common/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
-import Notification from './components/common/Notifications/Notification';
+import Notification from './components/Notifications/Notification';
 import notificationActions from './redux/actions/notificationsActions';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
@@ -65,8 +64,6 @@ class App extends Component {
     this.toggleSidebarAnimation = !this.props.sidebar.toggleSidebar ? "hideAnimation" : "showAnimation";
     this.toggleSidebarButtonAnimation = !this.props.sidebar.toggleSidebar ? "hideButtonAnimation" : "showButtonAnimation";
     const { notification } = this.props.notifications;
-    const renderedNotif = notification ? <Notification id={notification.id} isError={notification.isError} message={notification.message} remove={this.props.removeNotification} /> : null;
-    console.log(notification)
     if (this.props.generalSettings.generalSettings.isFetching) {
       return <LoadingCircle loading={true} />;
     }
@@ -85,9 +82,7 @@ class App extends Component {
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
-            <NotificationWrapper display={notification.id !== null}>
-              {renderedNotif}
-            </NotificationWrapper>
+            <Notification id={notification.id} isError={notification.isError} message={notification.message} remove={this.props.removeNotification} />
           </MemoryRouter>
         </MuiThemeProvider>
       </RTL>

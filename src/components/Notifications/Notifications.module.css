@@ -1,0 +1,63 @@
+.notificationBox {
+  left: 30px;
+  z-index: 99;
+  position: absolute;
+  width: 460px;
+  min-height: 100px;
+  padding: 16px 15px 25px;
+  background: #141619e0;
+  box-shadow: 0 0 4px #333333;
+  border-radius: 4px;
+  margin-top: 10px;
+  transition: bottom 0.4s ease;
+  display: flex;
+}
+
+.close{
+  outline: none;
+  border: none;
+  position: absolute;
+  top: 7px;
+  left: 3px;
+  background: none;
+  color: #ccc;
+}
+
+.closeIcon{
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.iconWrapper{
+  display: inline-block;
+  background: #f9f9f9;
+  width: 64px;
+  height: 64px;
+}
+
+.icon{
+  display: flex;
+  vertical-align: middle;
+  font-size: 64px;
+}
+
+.content{
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.header{
+  align-items: center;
+  display: flex;
+}
+
+
+.headerTitle{
+  font-size: 22px;
+  color: #fff;
+}
+
+.body{
+  color: #c4d2de;
+  font-size: 16px;
+}

@@ -7,6 +7,7 @@
     "@material-ui/icons": "^3.0.2",
     "electron-context-menu": "^0.12.1",
     "electron-is-dev": "^1.1.0",
+    "event-emitter": "^0.3.5",
     "exceljs": "^1.13.0",
     "jss-rtl": "^0.2.3",
     "knex": "^0.17.6",

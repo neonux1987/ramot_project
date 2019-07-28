@@ -13,7 +13,7 @@ import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import EditControls from '../../common/EditControls/EditControls';
-
+import { notify, notificationTypes } from '../../Notifications/Notification';
 const FIXED_FLOAT = 2;
 
 class MonthExpanses extends Component {
@@ -79,9 +79,11 @@ class MonthExpanses extends Component {
     const { data } = this.props.monthExpanses.expanses;
     const valid = this.validateFormInputs(formInputs);
     if (!valid) {
-      this.props.addNotification({
+
+      notify({
         isError: true,
-        message: "קוד או שם חשבון לא יכולים להיות ריקים"
+        type: notificationTypes.validation,
+        message: "קוד או שם חשבון לא יכולים להיות ריקים קוד או שם חשבון לא יכולים להיות ריקים קוד או שם חשבון לא יכולים להיות ריקים קוד או שם חשבון לא יכולים להיות ריקים קוד או שם חשבון לא יכולים להיות ריקים"
       });
       return;
     }

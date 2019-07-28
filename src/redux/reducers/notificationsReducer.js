@@ -7,7 +7,6 @@ const initState = {
 export default (state = initState, action) => {
   switch (action.type) {
     case "SET_NOTIFICATION": {
-      console.log(action.payload);
       /* const copyData = [...state.notifications];
       copyData.push(action.payload); */
       return {
