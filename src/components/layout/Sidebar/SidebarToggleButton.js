@@ -12,9 +12,9 @@ const styles = theme => ({
     padding: "2px",
     minWidth: "initial",
     position: "absolute",
-    zIndex: 3,
+    zIndex: 1201,
     //top: "20px",
-    top: "49px",
+    top: "48px",
     left: "196px",
     boxShadow: "0px 0px 2px #868383"
   },

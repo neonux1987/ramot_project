@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Notifications.module.css';
 import { Typography } from '@material-ui/core';
 import { ErrorOutline, NotificationImportant, Close } from '@material-ui/icons';
+import Spinner from '../common/Spinner/Spinner';
 import Ee from 'event-emitter';
 
 export const notificationTypes = {
@@ -17,6 +18,7 @@ export const notify = (notification) => {
 
 const INIT_REMOVE_TIME = 5000; //in miliseconds
 const ON_LEAVE_REMOVE_TIME = 2000; //in miliseconds
+const BOTTOM_POS = -140;
 
 class Notification extends React.Component {
 
@@ -32,7 +34,7 @@ class Notification extends React.Component {
       isError: false,
       message: ""
     },
-    bottom: "-140px"
+    bottom: `${BOTTOM_POS}px`
   }
   timeout = null;
   box = React.createRef();
@@ -40,7 +42,7 @@ class Notification extends React.Component {
   onShow(notification) {
     if (this.timeout) {
       clearTimeout(this.timeout);
-      this.setState({ bottom: "-140px" }, () => {
+      this.setState({ bottom: `${-this.box.current.clientHeight - 10}px` }, () => {
         this.timeout = null;
         this.timeout = setTimeout(() => {
           this.showNotification(notification);
@@ -78,7 +80,7 @@ class Notification extends React.Component {
 
   initNotification() {
     this.setState({
-      bottom: "-140px"
+      bottom: `${-this.box.current.clientHeight - 10}px`
     });
     window.getSelection().empty();
   }
@@ -88,9 +90,11 @@ class Notification extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      height: this.box.current.clientHeight
-    })
+    if (this.box.current) {
+      this.setState({
+        bottom: `${-this.box.current.clientHeight - 10}px`
+      });
+    }
   }
 
   render() {

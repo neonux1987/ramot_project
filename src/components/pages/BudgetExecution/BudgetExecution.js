@@ -89,13 +89,22 @@ class BudgetExecution extends Component {
   }
 
   cellInputOnBlurHandler(e, cellInfo) {
+    //make the input read only again and disable outline
+    e.target.readOnly = "true";
+    e.target.style.outline = "none";
+
     const data = [...this.props.budgetExecution.budgetExecutions.data];
     data[cellInfo.index][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
-
     let params = {
       buildingName: this.props.location.state.buildingNameEng
     };
     this.props.updateBudgetExecution(params, data);
+  }
+
+  doubleClickHandler = (event) => {
+    event.target.readOnly = "";
+    event.target.style.outline = "1px solid blue";
+    event.target.select()
   }
 
   cellTextInput(cellInfo) {
@@ -104,9 +113,10 @@ class BudgetExecution extends Component {
       className="cellRender"
       defaultValue={cellInfo.value}
       onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      onClick={e => {
-        e.target.select()
-      }}
+      readOnly={true}
+      onDoubleClick={this.doubleClickHandler}
+      style={{ outline: "none", cursor: "initial" }}
+
     />
   };
 
@@ -117,9 +127,9 @@ class BudgetExecution extends Component {
       className="cellRender"
       defaultValue={newValue}
       onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      onClick={e => {
-        e.target.select()
-      }}
+      style={{ outline: "none", cursor: "initial" }}
+      readOnly={true}
+      onDoubleClick={this.doubleClickHandler}
       onKeyPress={(event) => {
         if (event.key === "Enter") {
           event.target.blur();
@@ -412,7 +422,7 @@ class BudgetExecution extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state
+  budgetExecution: state.budgetExecution
 });
 
 const mapDispatchToProps = dispatch => ({

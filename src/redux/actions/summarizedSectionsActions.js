@@ -1,4 +1,5 @@
 import { ipcRenderer } from 'electron';
+import { notify, notificationTypes } from '../../components/Notifications/Notification';
 
 /**
  * fetch summarized sections
@@ -17,6 +18,12 @@ const fetchSummarizedSections = (params = Object) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
+        //send the error to the notification center
+        notify({
+          isError: true,
+          type: notificationTypes.db,
+          message: arg.error
+        });
       } else {
         //success store the data
         dispatch(receiveSummarizedSections(arg.data));

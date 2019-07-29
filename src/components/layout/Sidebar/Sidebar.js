@@ -221,7 +221,7 @@ class Sidebar extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state
+  sidebar: state.sidebar
 });
 
 const mapDispatchToProps = dispatch => ({

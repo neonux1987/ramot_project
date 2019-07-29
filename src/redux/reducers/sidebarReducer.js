@@ -1,5 +1,5 @@
 const initState = {
-  toggleSidebar: true,
+  showSidebar: true,
   sidebar: {
     isFetching: true,
     status: "",
@@ -13,7 +13,7 @@ export default (state = initState, action) => {
     case "TOGGLE_SIDEBAR":
       return {
         ...state,
-        toggleSidebar: action.payload
+        showSidebar: action.payload
       }
     case "RECEIVE_SIDEBAR":
       return {

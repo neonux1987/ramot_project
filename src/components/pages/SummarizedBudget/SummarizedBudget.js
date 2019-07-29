@@ -316,7 +316,7 @@ class SummarizedBudget extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state
+  summarizedBudget: state.summarizedBudget
 });
 
 const mapDispatchToProps = dispatch => ({

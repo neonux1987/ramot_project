@@ -46,7 +46,6 @@ class App extends Component {
   }
 
   minimizeButtonHandler = () => {
-    console.log("hello");
     const window = remote.getCurrentWindow();
     window.minimize();
   }
@@ -61,8 +60,8 @@ class App extends Component {
   }
 
   render() {
-    this.toggleSidebarAnimation = !this.props.sidebar.toggleSidebar ? "hideAnimation" : "showAnimation";
-    this.toggleSidebarButtonAnimation = !this.props.sidebar.toggleSidebar ? "hideButtonAnimation" : "showButtonAnimation";
+    this.toggleSidebarAnimation = !this.props.sidebar.showSidebar ? "hideAnimation" : "showAnimation";
+    this.toggleSidebarButtonAnimation = !this.props.sidebar.showSidebar ? "hideButtonAnimation" : "showButtonAnimation";
     const { notification } = this.props.notifications;
     if (this.props.generalSettings.generalSettings.isFetching) {
       return <LoadingCircle loading={true} />;
@@ -78,7 +77,7 @@ class App extends Component {
             }} />
             <div style={{ display: "flex", height: "100%", padding: 0 }}>
               <CssBaseline />
-              <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebar(!this.props.sidebar.toggleSidebar)} />
+              <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebar(!this.props.sidebar.showSidebar)} />
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
@@ -91,7 +90,9 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state
+  generalSettings: state.generalSettings,
+  sidebar: state.sidebar,
+  notifications: state.notifications
 });
 
 const mapDispatchToProps = dispatch => ({

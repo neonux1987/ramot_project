@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import InputExpansesField from './InputExpansesField'
-import ReactTable from 'react-table';
+import ReactTableContainer from '../../common/table/ReactTableContainer';
 import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
 import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
@@ -83,7 +83,7 @@ class MonthExpanses extends Component {
       notify({
         isError: true,
         type: notificationTypes.validation,
-        message: "קוד או שם חשבון לא יכולים להיות ריקים קוד או שם חשבון לא יכולים להיות ריקים קוד או שם חשבון לא יכולים להיות ריקים קוד או שם חשבון לא יכולים להיות ריקים קוד או שם חשבון לא יכולים להיות ריקים"
+        message: "קוד או שם חשבון לא יכולים להיות ריקים"
       });
       return;
     }
@@ -288,7 +288,7 @@ class MonthExpanses extends Component {
           />
         </WithHeaderWrapper>
 
-        <ReactTable
+        <ReactTableContainer
           id={pageName}
           className="-striped"
           style={{
@@ -327,7 +327,8 @@ class MonthExpanses extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state
+  summarizedSections: state.summarizedSections,
+  monthExpanses: state.monthExpanses
 });
 
 const mapDispatchToProps = dispatch => ({
