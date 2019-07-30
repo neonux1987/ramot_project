@@ -14,6 +14,8 @@ import DatePicker from '../../common/DatePicker/DatePicker';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import EditControls from '../../common/EditControls/EditControls';
 import { notify, notificationTypes } from '../../Notifications/Notification';
+import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
+
 const FIXED_FLOAT = 2;
 
 class MonthExpanses extends Component {
@@ -85,6 +87,7 @@ class MonthExpanses extends Component {
         type: notificationTypes.validation,
         message: "קוד או שם חשבון לא יכולים להיות ריקים"
       });
+      playSound(soundTypes.error);
       return;
     }
 
@@ -328,7 +331,8 @@ class MonthExpanses extends Component {
 
 const mapStateToProps = state => ({
   summarizedSections: state.summarizedSections,
-  monthExpanses: state.monthExpanses
+  monthExpanses: state.monthExpanses,
+  generalSettings: state.generalSettings
 });
 
 const mapDispatchToProps = dispatch => ({

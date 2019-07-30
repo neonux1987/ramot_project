@@ -4,9 +4,11 @@
 
 .editBtn{
   min-width:90px;
+  background: #272931;
 }
 
 .addNewBtn{
   margin-right: 10px;
   min-width:90px;
+  background: #272931;
 }

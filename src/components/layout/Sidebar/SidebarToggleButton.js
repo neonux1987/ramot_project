@@ -14,7 +14,7 @@ const styles = theme => ({
     position: "absolute",
     zIndex: 1201,
     //top: "20px",
-    top: "48px",
+    top: "47px",
     left: "196px",
     boxShadow: "0px 0px 2px #868383"
   },

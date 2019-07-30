@@ -13,7 +13,7 @@ const styles = (theme) => ({
   header: {
     display: "inline-block",
     background: "#fff",
-    boxShadow: "0px 0px 2px #c5c5c5",
+    boxShadow: "0px 0px 2px #00000021",
     padding: "0 10px 6px"
   },
   headerTitle: {

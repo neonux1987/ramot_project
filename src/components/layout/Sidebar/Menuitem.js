@@ -68,7 +68,7 @@ const Menuitem = (props) => {
   return (
     <div className={props.classes.menuItemWrapper}>
 
-      <ListItem classes={{ root: props.classes.itemStyle }} onClick={() => props.expandClick(props.item.id)} button>
+      <ListItem classes={{ root: props.classes.itemStyle }} onClick={() => props.expandClick(props.item.id, props.item)} button>
         <ListItemIcon classes={{ root: props.classes.listItemIcon }}><Home /></ListItemIcon>
         <ListItemText classes={{ root: props.classes.listItemTextRoot, primary: props.classes.listItemText }} primary={props.item.label} />
         {expandedItem ? <ArrowDropUp className={props.classes.expander} /> : <ArrowDropDown className={props.classes.expander} />}

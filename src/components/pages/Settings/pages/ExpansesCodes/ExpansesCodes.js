@@ -6,11 +6,10 @@ import expansesCodesActions from '../../../../../redux/actions/expansesCodesActi
 import dateActions from '../../../../../redux/actions/dateActions';
 import LoadingCircle from '../../../../common/LoadingCircle';
 import SelectDropDown from '../../../../common/SelectDropDown/SelectDropDown';
-import { Button } from '@material-ui/core';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
-import styles from './ExpansesCodes.module.css';
 import EditControls from '../../../../common/EditControls/EditControls';
+import { notify, notificationTypes } from '../../../../Notifications/Notification';
 
 class ExpansesCodes extends Component {
 
@@ -103,7 +102,19 @@ class ExpansesCodes extends Component {
     this.setState({
       ...this.state,
       editMode: !this.state.editMode
-    })
+    }, () => {
+      if (this.state.editMode) {
+        notify({
+          type: notificationTypes.message,
+          message: "הופעל מצב עריכה"
+        });
+      } else {
+        notify({
+          type: notificationTypes.message,
+          message: "מצב עריכה בוטל"
+        });
+      }
+    });
   }
 
   toggleAddNewMode = () => {
@@ -192,8 +203,6 @@ class ExpansesCodes extends Component {
       expansesCodes,
       pageName
     } = this.props.expansesCodes;
-    const editBtnTitle = this.state.editMode ? "בטל עריכה" : "עריכה";
-    const addNewBtnTitle = this.state.addNewMode ? "סגור מצב הוספה" : "הוסף חדש";
 
     //give the box a form functionality
     const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);

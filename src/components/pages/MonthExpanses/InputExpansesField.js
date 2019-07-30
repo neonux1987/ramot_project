@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField, withStyles, Button, FormControlLabel, Checkbox, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import { TextField, withStyles, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 
 const styles = theme => ({
   container: {
@@ -49,8 +49,6 @@ const styles = theme => ({
     minWidth: 200,
   }
 });
-
-const expanseObjKeys = ["code", "codeName", "section", "summarized_section_id", "supplierName", "sum", "notes", "submit"];
 
 let keys = {
   0: "code",
@@ -247,9 +245,8 @@ class InputExpansesField extends Component {
           label="מקושר לסעיף מסכם:"
           className={this.props.classes.textField}
           value={this.state.formInputs.section}
-          inputProps={{ readOnly: true }}
           type="text"
-          inputProps={{ 'data-order': 2 }}
+          inputProps={{ 'data-order': 2, readOnly: true }}
           InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         />}
 

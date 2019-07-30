@@ -1,4 +1,3 @@
-const NOTIFICATION_TIMEOUT_SEC = 5000;
 
 const addNotification = (notification) => {
   return (dispatch, getState) => {

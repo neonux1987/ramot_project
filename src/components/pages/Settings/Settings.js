@@ -38,15 +38,55 @@ const Settings = ({ classes, match }, props) => {
 
   return (
     <div>
-      {/* <Typography className={classes.headerTitle} variant="h3">
-        הגדרות
-      </Typography> */}
       <AppBar position="static" style={{ marginBottom: "30px" }}>
         <Tabs classes={{ root: classes.tabs, indicator: classes.indicator }} value={value} onChange={handleChange}>
-          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="כללי" component={NavLink} to={{ pathname: `${match.path}/כללי` }} />
-          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="קודי הנהלת חשבונות" component={NavLink} to={{ pathname: `${match.path}/קודי הנהלת חשבונות` }} />
-          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="סעיפים מסכמים" component={NavLink} to={{ pathname: `${match.path}/סעיפים מסכמים` }} />
-          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="גיבוי" component={NavLink} to={{ pathname: `${match.path}/גיבוי` }} />
+          <Tab
+            classes={{ root: classes.tab, selected: classes.selected }}
+            label="כללי"
+            component={NavLink}
+            to={{
+              pathname: `${match.path}/כללי`,
+              state: {
+                page: "כללי",
+                buildingName: "הגדרות"
+              }
+            }}
+          />
+          <Tab
+            classes={{ root: classes.tab, selected: classes.selected }}
+            label="קודי הנהלת חשבונות"
+            component={NavLink}
+            to={{
+              pathname: `${match.path}/קודי הנהלת חשבונות`,
+              state: {
+                page: "קודי הנהלת חשבונות",
+                buildingName: "הגדרות"
+              }
+            }}
+          />
+          <Tab
+            classes={{ root: classes.tab, selected: classes.selected }}
+            label="סעיפים מסכמים" component={NavLink}
+            to={{
+              pathname: `${match.path}/סעיפים מסכמים`,
+              state: {
+                page: "סעיפים מסכמים",
+                buildingName: "הגדרות"
+              }
+            }}
+          />
+          <Tab
+            classes={{ root: classes.tab, selected: classes.selected }}
+            label="גיבוי"
+            component={NavLink}
+            to={{
+              pathname: `${match.path}/גיבוי`,
+              state: {
+                page: "גיבוי",
+                buildingName: "הגדרות"
+              }
+            }}
+          />
         </Tabs>
       </AppBar>
       <div>

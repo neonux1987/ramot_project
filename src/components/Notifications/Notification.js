@@ -2,13 +2,13 @@ import React from 'react';
 import styles from './Notifications.module.css';
 import { Typography } from '@material-ui/core';
 import { ErrorOutline, NotificationImportant, Close } from '@material-ui/icons';
-import Spinner from '../common/Spinner/Spinner';
 import Ee from 'event-emitter';
 
 export const notificationTypes = {
   db: "תקלת בסיס נתונים",
   server: "תקלת שרת",
-  validation: "תקלת אימות נתונים"
+  validation: "תקלת אימות נתונים",
+  message: "הודעה"
 }
 
 const emitter = new Ee();
@@ -16,7 +16,7 @@ export const notify = (notification) => {
   emitter.emit('notify', notification);
 }
 
-const INIT_REMOVE_TIME = 5000; //in miliseconds
+const INIT_REMOVE_TIME = 4000; //in miliseconds
 const ON_LEAVE_REMOVE_TIME = 2000; //in miliseconds
 const BOTTOM_POS = -140;
 
@@ -40,24 +40,34 @@ class Notification extends React.Component {
   box = React.createRef();
 
   onShow(notification) {
+    //if a notification already exist, clear the timeout
+    //and set the new notification
     if (this.timeout) {
       clearTimeout(this.timeout);
+      //set the bottom property to the size of the div plus 10 more pixels
       this.setState({ bottom: `${-this.box.current.clientHeight - 10}px` }, () => {
         this.timeout = null;
         this.timeout = setTimeout(() => {
           this.showNotification(notification);
-        }, 400);
+        }, 300);
       });
-    } else {
+    }
+    //otherwise just show the notification
+    else {
       this.showNotification(notification);
     }
   }
 
+  /**
+   * show the notification
+   * @param {*} notification 
+   */
   showNotification(notification) {
     this.setState({
       notification: notification,
       bottom: "30px"
     }, () => {
+      //set the time for the notification to disappear
       this.timeout = setTimeout(() => {
         this.initNotification();
       }, INIT_REMOVE_TIME);
@@ -98,8 +108,7 @@ class Notification extends React.Component {
   }
 
   render() {
-    const { isError, message, type } = this.state.notification;
-    const errorText = isError ? `שגיאה! ${type}` : "הודעה";
+    const { isError = false, message, type } = this.state.notification;
     const icon = isError ? <ErrorOutline style={{ color: "#ff0000" }} className={styles.icon} /> : <NotificationImportant style={{ color: "rgb(1, 167, 247)" }} className={styles.icon} />
     return (
       <div

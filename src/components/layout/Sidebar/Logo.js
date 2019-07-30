@@ -7,7 +7,7 @@ const styles = theme => ({
     color: "#f5f5f5",
     fontSize: "24px",
     borderRight: "2px solid #167db9",
-    width: "80px"
+    width: "70px"
   },
   toolbarRoot: {
     paddingLeft: "16px",

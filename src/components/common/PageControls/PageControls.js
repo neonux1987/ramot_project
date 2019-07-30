@@ -8,9 +8,12 @@ import defaultStyles from './PageControls.module.css';
 const PageControls = ({ excel, print, pageName, styles, ...props }) => {
   const exportToExcel = () => {
     saveToFile(excel.fileName, (fullPath) => {
-      if (fullPath)
+      if (fullPath) {
         excel.fileName = fullPath;
-      excelProcess(pageName, excel);
+        excelProcess(pageName, excel);
+      }
+
+
     });
   }
 

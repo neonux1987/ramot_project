@@ -12,6 +12,7 @@ import LoadingCircle from '../../common/LoadingCircle';
 import Toolbar from './Toolbar/Toolbar';
 import Helper from '../../../helpers/Helper';
 import sidebarActions from '../../../redux/actions/sidebarActions';
+import { withRouter } from 'react-router';
 
 const styles = theme => ({
   main: {
@@ -71,24 +72,32 @@ class Main extends Component {
     }
   }
 
-  componentWillUnmount() {
-
-  }
-
   render() {
+    let locationState = { ...this.props.location.state };
+    //set default state for default / root location
+    if (!this.props.location.state) {
+      locationState = {
+        page: "דף-הבית"
+      };
+    }
+    //const {buildingName,page} = this.props.location.state;
     const { generalSettings } = this.props.generalSettings;
     if (this.props.sidebar.sidebar.isFetching) {
       return <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} />;
     } else {
       return (
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
-          <Toolbar buildingName={"לב תל אביב"} header={"מעקב תקציב מול ביצוע"} year={Helper.getCurrentYear()} month={Helper.getCurrentMonthHeb()} tax={`${generalSettings.data[0].tax}%`} />
+          <Toolbar buildingName={locationState.buildingName} header={locationState.page} year={Helper.getCurrentYear()} month={Helper.getCurrentMonthHeb()} tax={`${generalSettings.data[0].tax}%`} />
           <div style={{ padding: "24px" }}>
             <Switch>
               {this.generateRoutes(this.props.sidebar.sidebar.data)}
               <Route path="/דף-הבית" component={Home} />
               <Route path="/הגדרות" component={Settings} />
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" component={Home} history={{
+                page: "דף-הבית",
+                buildingName: "דף הבית",
+                buildingNameEng: "home"
+              }} />
             </Switch>
           </div>
         </main>
@@ -99,11 +108,16 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state
+  generalSettings: state.generalSettings,
+  sidebar: state.sidebar
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchSidebar: () => dispatch(sidebarActions.fetchSidebar())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Main));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
+    withRouter(Main)
+  )
+);

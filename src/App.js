@@ -15,7 +15,9 @@ import notificationActions from './redux/actions/notificationsActions';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
 import AppFrame from './components/AppFrame/AppFrame';
+import { playSound, soundTypes } from './audioPlayer/audioPlayer';
 const remote = require('electron').remote;
+
 
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
@@ -66,6 +68,8 @@ class App extends Component {
     if (this.props.generalSettings.generalSettings.isFetching) {
       return <LoadingCircle loading={true} />;
     }
+    //play a welcome sound when the app is loading
+    playSound(soundTypes.welcome);
     return (
       <RTL>
         <MuiThemeProvider theme={theme}>

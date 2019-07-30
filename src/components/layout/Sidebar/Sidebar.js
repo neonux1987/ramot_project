@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import Menu from './Menu';
 import { ipcRenderer } from 'electron';
 import { withStyles, Drawer, Divider } from '@material-ui/core';
@@ -132,7 +133,7 @@ class Sidebar extends Component {
   }
 
   //handle menu button click to expand
-  expandMenuItem(id) {
+  expandMenuItem(id, menuItem) {
     //copy the menu and add the new value
     let copyMenu = [...this.state.menu];
 
@@ -163,7 +164,17 @@ class Sidebar extends Component {
           });
         }
         //update menu state
-        this.setState(() => ({ menu: copyMenu }));
+        this.setState(() => {
+          if (item.expanded) {
+            const state = {
+              page: menuItem.submenu[0].label,
+              buildingName: menuItem.label,
+              buildingNameEng: menuItem.engLabel,
+            }
+            this.props.history.replace(`/${menuItem.path}/הוצאות-חודשי`, state);
+          }
+          return { menu: copyMenu };
+        });
       }
     });
 
@@ -209,7 +220,7 @@ class Sidebar extends Component {
 
         <div className={this.props.classes.settingsWrapper}>
           <Divider className={this.props.classes.settingsDivider} />
-          <NavButton style={{ marginRight: 0 }} page="נהל הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
+          <NavButton style={{ marginRight: 0 }} page="הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
             activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.settingsButtonId, this.state.settingsButtonId))} >
             <Settings />
           </NavButton>
@@ -232,5 +243,9 @@ Sidebar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Sidebar));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
+    withRouter(Sidebar)
+  )
+);
 

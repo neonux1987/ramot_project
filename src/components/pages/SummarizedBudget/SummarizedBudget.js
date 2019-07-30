@@ -79,14 +79,14 @@ class SummarizedBudget extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(75, 145, 222)",
+          background: "rgb(251, 38, 38)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "quarter1_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(251, 38, 38)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               padding: 0
@@ -95,7 +95,7 @@ class SummarizedBudget extends Component {
           {
             accessor: "quarter1_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(75, 145, 222)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(251, 38, 38)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -105,14 +105,14 @@ class SummarizedBudget extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(150, 191, 60)",
+          background: "rgb(103, 101, 208)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "quarter2_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(150, 191, 60)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(103, 101, 208)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               padding: 0
@@ -121,7 +121,7 @@ class SummarizedBudget extends Component {
           {
             accessor: "quarter2_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(150, 191, 60)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(103, 101, 208)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -131,14 +131,14 @@ class SummarizedBudget extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(255, 99, 0)",
+          background: "rgb(24, 135, 199)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "quarter3_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(255, 99, 0)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(24, 135, 199)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               padding: 0
@@ -147,7 +147,7 @@ class SummarizedBudget extends Component {
           {
             accessor: "quarter3_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(255, 99, 0)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(24, 135, 199)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -157,14 +157,14 @@ class SummarizedBudget extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(42, 177, 218)",
+          background: "rgb(29, 186, 143)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "quarter4_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(42, 177, 218)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(29, 186, 143)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               padding: 0
@@ -173,7 +173,7 @@ class SummarizedBudget extends Component {
           {
             accessor: "quarter4_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(42, 177, 218)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(29, 186, 143)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -195,20 +195,20 @@ class SummarizedBudget extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(150, 0, 255)",
+          background: "rgb(143, 78, 191)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "year_total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(150, 0, 255)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           },
           {
             accessor: "year_total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(150, 0, 255)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -240,7 +240,7 @@ class SummarizedBudget extends Component {
             <Header
               title={headerTitle}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "rgb(253, 78, 78)" }}
+              textColor={{ color: "rgb(37, 189, 119)" }}
             >
             </Header>
             <PageControls
