@@ -1,0 +1,23 @@
+
+.dialog{
+  background-color: #f1f1f1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn{
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.close{
+  color: red;
+}
+
+.done{
+  color: green;
+}

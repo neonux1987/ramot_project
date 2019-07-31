@@ -15,7 +15,7 @@ import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import EditControls from '../../common/EditControls/EditControls';
 import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
-import TableActions from '../../common/table/TableActions';
+import TableActions from '../../common/table/TableActions/TableActions';
 
 const FIXED_FLOAT = 2;
 
@@ -208,7 +208,8 @@ class MonthExpanses extends Component {
         Header: "פעולות",
         width: 60,
         headerStyle: headerStyle,
-        Cell: <TableActions />
+        Cell: <TableActions />,
+        show: this.state.editMode
       },
       {
         accessor: "expanses_code_id",

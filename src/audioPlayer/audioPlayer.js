@@ -1,6 +1,6 @@
 import error from '../assets/audio/error.wav'
 import message from '../assets/audio/message.wav'
-import welcome from '../assets/audio/welcome2.wav'
+import welcome from '../assets/audio/welcome3.ogg'
 
 export const soundTypes = {
   error: "error",

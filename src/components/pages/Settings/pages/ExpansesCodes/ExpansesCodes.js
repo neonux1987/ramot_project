@@ -11,7 +11,7 @@ import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 import EditControls from '../../../../common/EditControls/EditControls';
 import { notify, notificationTypes } from '../../../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
-
+import TableActions from '../../../../common/table/TableActions/TableActions';
 class ExpansesCodes extends Component {
 
   state = {
@@ -131,6 +131,13 @@ class ExpansesCodes extends Component {
     const headerStyle = { background: "#000", color: "#fff" };
 
     return [
+      {
+        Header: "פעולות",
+        width: 60,
+        headerStyle: headerStyle,
+        Cell: <TableActions />,
+        show: this.state.editMode
+      },
       {
         accessor: "id",
         Header: "ספרור",

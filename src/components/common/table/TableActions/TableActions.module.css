@@ -1,0 +1,14 @@
+.wrapper{
+  position: relative;
+}
+
+.btn{
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.icon{
+  color: #dc2d2d;
+}
