@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import dateActions from './dateActions';
 import { notify, notificationTypes } from '../../components/Notifications/Notification';
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 /**
  * fetch month expanses
@@ -91,6 +92,11 @@ const updateBudgetExecution = (params = Object, tableData = Array) => {
     }); */
 
     dispatch(receiveBudgetExecutions(tableData));
+    notify({
+      type: notificationTypes.message,
+      message: "השורה עודכנה בהצלחה."
+    });
+    playSound(soundTypes.message);
   }
 };
 

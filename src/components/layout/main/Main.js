@@ -77,7 +77,7 @@ class Main extends Component {
     //set default state for default / root location
     if (!this.props.location.state) {
       locationState = {
-        page: "דף-הבית"
+        page: "דף הבית"
       };
     }
     //const {buildingName,page} = this.props.location.state;
@@ -117,7 +117,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(
-    withRouter(Main)
-  )
+  withRouter(withStyles(styles)(
+    Main
+  ))
 );

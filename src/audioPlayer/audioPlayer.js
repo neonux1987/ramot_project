@@ -10,39 +10,33 @@ export const soundTypes = {
 
 export const playSound = (type) => {
 
-  var audio = null;
+  var audio = new Audio();
+  audio.currentTime = 0;
+  let delayTime = 0;
 
   switch (type) {
     case "error":
-      setTimeout(() => {
-        audio = new Audio(error);
-        audio.volume = 0.1;
-        audio.currentTime = 0;
-        audio.play();
-      }, 200);
+      audio.src = error;
+      audio.volume = 0.1;
+      delayTime = 0;
       break;
     case "message":
-      setTimeout(() => {
-        audio = new Audio(message);
-        audio.volume = 0.15;
-        audio.currentTime = 0;
-        audio.play();
-      }, 200);
+      audio.src = message;
+      audio.volume = 0.15;
+      delayTime = 0;
       break;
     case "welcome":
-      audio = new Audio(welcome);
+      audio.src = welcome;
       audio.volume = 0.05;
-      audio.currentTime = 0;
-      audio.play();
       break;
     default:
-      setTimeout(() => {
-        audio = new Audio(message);
-        audio.volume = 0.15;
-        audio.currentTime = 0;
-        audio.play();
-      }, 200);
+      audio.src = message;
+      audio.volume = 0.15;
+      delayTime = 0;
   }
 
+  setTimeout(() => {
+    audio.play();
+  }, delayTime);
 
 }

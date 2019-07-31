@@ -10,6 +10,8 @@ import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import EditControls from '../../common/EditControls/EditControls';
+import { notify, notificationTypes } from '../../Notifications/Notification';
+import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 
 const FIXED_FLOAT = 2;
 
@@ -17,14 +19,12 @@ class BudgetExecution extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-    };
     this._isMounted = false;
-    //binds
-    this.generateHeaders = this.generateHeaders.bind(this);
-    this.cellTextInput = this.cellTextInput.bind(this);
-    this.cellNumberInput = this.cellNumberInput.bind(this);
-    this.cellInputOnBlurHandler = this.cellInputOnBlurHandler.bind(this);
+  }
+
+  state = {
+    editMode: false,
+    addNewMode: false
   }
 
   componentDidMount() {
@@ -88,57 +88,53 @@ class BudgetExecution extends Component {
     return newValue;
   }
 
-  cellInputOnBlurHandler(e, cellInfo) {
-    //make the input read only again and disable outline
-    e.target.readOnly = "true";
-    e.target.style.outline = "none";
-
+  cellInputOnBlurHandler = (e, cellInfo) => {
     const data = [...this.props.budgetExecution.budgetExecutions.data];
     data[cellInfo.index][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
     let params = {
       buildingName: this.props.location.state.buildingNameEng
     };
     this.props.updateBudgetExecution(params, data);
+    e.target.blur();
   }
 
-  doubleClickHandler = (event) => {
-    event.target.readOnly = "";
-    event.target.style.outline = "1px solid blue";
-    event.target.select()
-  }
-
-  cellTextInput(cellInfo) {
+  cellTextAreaInput = (cellInfo) => {
+    if (!this.state.editMode) {
+      return cellInfo.value;
+    }
     return <textarea
       type="text"
       className="cellRender"
       defaultValue={cellInfo.value}
       onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      readOnly={true}
-      onDoubleClick={this.doubleClickHandler}
-      style={{ outline: "none", cursor: "initial" }}
-
+      onClick={e => {
+        e.target.select()
+      }}
     />
   };
 
-  cellNumberInput(cellInfo) {
+  cellNumberInput = (cellInfo) => {
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    if (!this.state.editMode) {
+      return newValue;
+    }
     return <input
       type="number"
       className="cellRender"
       defaultValue={newValue}
       onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      style={{ outline: "none", cursor: "initial" }}
-      readOnly={true}
-      onDoubleClick={this.doubleClickHandler}
       onKeyPress={(event) => {
         if (event.key === "Enter") {
           event.target.blur();
         }
       }}
+      onClick={e => {
+        e.target.select()
+      }}
     />
   };
 
-  generateHeaders(months) {
+  generateHeaders = (months) => {
 
     return [
       {
@@ -266,7 +262,10 @@ class BudgetExecution extends Component {
             accessor: "total_budget",
             Header: "תקציב",
             headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
-            Cell: this.cell
+            Cell: this.cellNumberInput,
+            style: {
+              padding: 0
+            }
           },
           {
             accessor: "total_execution",
@@ -301,13 +300,40 @@ class BudgetExecution extends Component {
         accessor: "notes",
         Header: "הערות",
         headerStyle: { background: "#000", color: "#fff" },
-        Cell: this.cellTextInput,
+        Cell: this.cellTextAreaInput,
         style: {
           padding: 0
         }
       }
     ];
   }
+
+  toggleEditMode = () => {
+    this.setState({
+      ...this.state,
+      editMode: !this.state.editMode
+    }, () => {
+      if (this.state.editMode) {
+        notify({
+          type: notificationTypes.message,
+          message: "הופעל מצב עריכה"
+        });
+      } else {
+        notify({
+          type: notificationTypes.message,
+          message: "מצב עריכה בוטל"
+        });
+      }
+      playSound(soundTypes.message);
+    });
+  };
+
+  toggleAddNewMode = () => {
+    this.setState({
+      ...this.state,
+      addNewMode: !this.state.addNewMode
+    })
+  };
 
   render() {
     const {

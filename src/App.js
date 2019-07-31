@@ -5,9 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import RTL from './components/RTL';
-import SidebarToggleButton from './components/layout/Sidebar/SidebarToggleButton';
 import { connect } from 'react-redux';
-import sidebarActions from './redux/actions/sidebarActions';
 import LoadingCircle from './components/common/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
 import Notification from './components/Notifications/Notification';
@@ -62,8 +60,6 @@ class App extends Component {
   }
 
   render() {
-    this.toggleSidebarAnimation = !this.props.sidebar.showSidebar ? "hideAnimation" : "showAnimation";
-    this.toggleSidebarButtonAnimation = !this.props.sidebar.showSidebar ? "hideButtonAnimation" : "showButtonAnimation";
     const { notification } = this.props.notifications;
     if (this.props.generalSettings.generalSettings.isFetching) {
       return <LoadingCircle loading={true} />;
@@ -81,7 +77,7 @@ class App extends Component {
             }} />
             <div style={{ display: "flex", height: "100%", padding: 0 }}>
               <CssBaseline />
-              <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebar(!this.props.sidebar.showSidebar)} />
+
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
@@ -95,13 +91,11 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   generalSettings: state.generalSettings,
-  sidebar: state.sidebar,
   notifications: state.notifications
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings()),
-  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload)),
   removeNotification: (id) => dispatch(notificationActions.removeNotification(id))
 });
 

@@ -7,10 +7,6 @@ const styles = theme => ({
     flexWrap: 'wrap',
     alignItems: "baseline",
     width: "100%",
-    paddingRight: "10px",
-    //background: "#fff",
-    //borderTop: "1px solid #eaeaea",
-    //borderBottom: "1px solid #eaeaea",
     paddingTop: "7px"
   },
   textField: {

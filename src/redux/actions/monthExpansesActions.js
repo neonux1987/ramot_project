@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import dateActions from './dateActions';
 import { notify, notificationTypes } from '../../components/Notifications/Notification';
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 /**
  * fetch month expanses
@@ -25,6 +26,7 @@ const fetchExpanses = (params = Object) => {
           type: notificationTypes.db,
           message: arg.error
         });
+        playSound(soundTypes.error);
       } else {
         //success store the data
         dispatch(receiveExpanses(arg.data));
@@ -83,9 +85,19 @@ const updateExpanse = (params = Object, tableData = Array) => {
     //listen when the data comes back
     ipcRenderer.once("month-expanse-updated", (event, arg) => {
       if (arg.error) {
-        console.log(arg.error);
+        notify({
+          isError: true,
+          type: notificationTypes.db,
+          message: arg.error
+        });
+        playSound(soundTypes.error);
       } else {
         dispatch(receiveExpanses(tableData));
+        notify({
+          type: notificationTypes.message,
+          message: "השורה עודכנה בהצלחה."
+        });
+        playSound(soundTypes.message);
       }
     });
   }

@@ -10,6 +10,7 @@ import { Dashboard, Settings } from '@material-ui/icons';
 import LoadingCircle from '../../common/LoadingCircle';
 import sidebarActions from '../../../redux/actions/sidebarActions';
 import { connect } from 'react-redux';
+import SidebarToggleButton from './SidebarToggleButton';
 
 const drawerWidth = 240;
 
@@ -32,7 +33,7 @@ const styles = theme => ({
     //background: "#0000008f",
     backgroundColor: "#191b21",
     //padding: "0 10px",
-    overflow: "hidden",
+    overflow: "initial",
     position: "relative",
     border: "none"
   },
@@ -115,6 +116,7 @@ class Sidebar extends Component {
       sidebarOpen: true
     };
     this._isMounted = false;
+    this.toggleSidebarAnimation = "";
   }
 
   componentDidMount() {
@@ -198,13 +200,18 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { sidebar } = this.props.sidebar;
+    const { sidebar, showSidebar } = this.props.sidebar;
+    this.toggleSidebarAnimation = !showSidebar ? "hideAnimation" : "showAnimation";
+    this.toggleSidebarButtonAnimation = !showSidebar ? "hideButtonAnimation" : "showButtonAnimation";
     let render = <Menu menu={sidebar.data} active={this.state.active} clicked={this.activeItem} expandClick={this.expandMenuItem} />;
     if (sidebar.isFetching) {
       render = <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} textStyle={this.props.classes.loadingText} circleStyle={this.props.classes.loadingCircle} />;
     }
     return (
-      <Drawer id="sidebar" variant="permanent" classes={{ paper: this.props.classes.drawerPaper }} anchor="left" className={this.props.classes.drawer + this.props.toggleStyle}>
+      <Drawer id="sidebar" variant="permanent" classes={{ paper: this.props.classes.drawerPaper }} anchor="left" className={this.props.classes.drawer + " " + this.toggleSidebarAnimation}>
+
+        <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebar(!showSidebar)} />
+
         <Logo />
         {/* <Divider className={this.props.classes.logoDivider} /> */}
 
@@ -236,7 +243,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar())
+  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar()),
+  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload))
 });
 
 Sidebar.propTypes = {
@@ -244,8 +252,8 @@ Sidebar.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(
-    withRouter(Sidebar)
-  )
+  withRouter(withStyles(styles)(
+    Sidebar
+  ))
 );
 

@@ -10,6 +10,7 @@ import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 import EditControls from '../../../../common/EditControls/EditControls';
 import { notify, notificationTypes } from '../../../../Notifications/Notification';
+import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
 
 class ExpansesCodes extends Component {
 
@@ -114,6 +115,7 @@ class ExpansesCodes extends Component {
           message: "מצב עריכה בוטל"
         });
       }
+      playSound(soundTypes.message);
     });
   }
 

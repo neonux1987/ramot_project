@@ -5,7 +5,10 @@ export default ({ handlers }) => {
   return (
     <div className={styles.appFrame}>
       <div className={styles.section + " " + styles.header}>
-        <span>NDT Solutions</span> - <span>ניהול דוחות</span>
+        <span>NDT Solutions</span> - <span>מערכת לניהול דוחות דוחות</span>
+      </div>
+      <div className={styles.middleSection + " " + styles.header2}>
+        <span></span>
       </div>
       <div style={{ float: "left" }} className={styles.section}>
         <div className={styles.controls}>

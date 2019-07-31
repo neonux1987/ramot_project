@@ -15,6 +15,7 @@ import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import EditControls from '../../common/EditControls/EditControls';
 import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
+import TableActions from '../../common/table/TableActions';
 
 const FIXED_FLOAT = 2;
 
@@ -54,7 +55,9 @@ class MonthExpanses extends Component {
           id: 3,
           year: 2019
         }
-      ]
+      ],
+      editMode: false,
+      addNewMode: false
     };
     //binds
     this.inputExpansesSubmit = this.inputExpansesSubmit.bind(this);
@@ -198,47 +201,165 @@ class MonthExpanses extends Component {
 
   generateHeaders() {
 
+    const headerStyle = { background: "#000", color: "#fff" };
+
     return [
+      {
+        Header: "פעולות",
+        width: 60,
+        headerStyle: headerStyle,
+        Cell: <TableActions />
+      },
       {
         accessor: "expanses_code_id",
         Header: "ספרור",
         width: 100,
-        headerStyle: { background: "#000", color: "#fff" }
+        headerStyle: headerStyle
       },
       {
         accessor: "code",
         Header: "קוד הנהח\"ש",
-        headerStyle: { background: "#000", color: "#fff" }
+        headerStyle: headerStyle
       },
       {
         accessor: "codeName",
         Header: "שם חשבון",
-        headerStyle: { background: "#000", color: "#fff" }
+        headerStyle: headerStyle
       },
       {
         accessor: "section",
         Header: "מקושר לסעיף",
-        headerStyle: { background: "#000", color: "#fff" }
+        headerStyle: headerStyle
       },
       {
         accessor: "supplierName",
         Header: "שם הספק",
-        headerStyle: { background: "#000", color: "#fff" }
+        headerStyle: headerStyle,
+        Cell: this.cellTextInput,
+        style: {
+          padding: 0
+        }
       },
       {
         accessor: "sum",
         Header: "סכום",
-        headerStyle: { background: "#000", color: "#fff" },
-        Cell: (cellInfo) => cellInfo.value === 0 || cellInfo.value === undefined ? "" : cellInfo.value.toFixed(FIXED_FLOAT).replace(/[.,]00$/, "")
+        headerStyle: headerStyle,
+        Cell: this.cellNumberInput,
+        style: {
+          padding: 0
+        }
       },
       {
         accessor: "notes",
         Header: "הערות",
-        headerStyle: { background: "#000", color: "#fff" }
+        headerStyle: headerStyle,
+        Cell: this.cellTextAreaInput,
+        style: {
+          padding: 0
+        }
       }
     ]
 
   }
+
+  cellInputOnBlurHandler(e, cellInfo) {
+    const data = [...this.props.monthExpanses.expanses.data];
+    data[cellInfo.index][cellInfo.column.id] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
+    let params = {
+      expanse: Helper.findItemInArray(cellInfo.original.id, data),
+      buildingName: this.props.location.state.buildingNameEng,
+      date: {
+        ...this.props.monthExpanses.date
+      },
+      tax: Number.parseFloat(this.props.generalSettings.generalSettings.data[0].tax)
+    };
+    this.props.updateExpanse(params, data);
+    e.target.blur();
+  }
+
+  cellTextAreaInput = (cellInfo) => {
+    if (!this.state.editMode) {
+      return cellInfo.value;
+    }
+    return <textarea
+      type="text"
+      className="cellRender"
+      defaultValue={cellInfo.value}
+      onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onClick={e => {
+        e.target.select()
+      }}
+    />
+  };
+
+
+  cellTextInput = (cellInfo) => {
+    if (!this.state.editMode) {
+      return cellInfo.value;
+    }
+    return <input
+      type="text"
+      className="cellRender"
+      defaultValue={cellInfo.value}
+      onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onKeyPress={(event) => {
+        if (event.key === "Enter") {
+          event.target.blur();
+        }
+      }}
+      onClick={e => {
+        e.target.select()
+      }}
+    />
+  };
+
+  cellNumberInput = (cellInfo) => {
+    const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    if (!this.state.editMode) {
+      return newValue;
+    }
+    return <input
+      type="number"
+      className="cellRender"
+      defaultValue={newValue}
+      onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onKeyPress={(event) => {
+        if (event.key === "Enter") {
+          event.target.blur();
+        }
+      }}
+      onClick={e => {
+        e.target.select()
+      }}
+    />
+  };
+
+  toggleEditMode = () => {
+    this.setState({
+      ...this.state,
+      editMode: !this.state.editMode
+    }, () => {
+      if (this.state.editMode) {
+        notify({
+          type: notificationTypes.message,
+          message: "הופעל מצב עריכה"
+        });
+      } else {
+        notify({
+          type: notificationTypes.message,
+          message: "מצב עריכה בוטל"
+        });
+      }
+      playSound(soundTypes.message);
+    });
+  };
+
+  toggleAddNewMode = () => {
+    this.setState({
+      ...this.state,
+      addNewMode: !this.state.addNewMode
+    })
+  };
 
   render() {
     const {
@@ -307,11 +428,6 @@ class MonthExpanses extends Component {
               }
             }
           }}
-          getTdProps={(state, rowInfo, column) => {
-            return {
-              //onClick: () => console.log("")
-            }
-          }}
           loadingText={"טוען..."}
           noDataText={"לא נמצא מידע בבסיס נתונים."}
           loading={expanses.isFetching}
@@ -322,6 +438,7 @@ class MonthExpanses extends Component {
           columns={this.generateHeaders()}
           resizable={true}
           minRows={0}
+        //PaginationComponent={PaginationBar}
         />
       </Fragment>
     );

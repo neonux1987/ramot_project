@@ -15,6 +15,9 @@ const emitter = new Ee();
 export const notify = (notification) => {
   emitter.emit('notify', notification);
 }
+export const closeNotification = (notification) => {
+  emitter.emit('closeNotification', notification);
+}
 
 const INIT_REMOVE_TIME = 4000; //in miliseconds
 const ON_LEAVE_REMOVE_TIME = 2000; //in miliseconds
@@ -25,6 +28,9 @@ class Notification extends React.Component {
   constructor(props) {
     super(props);
     emitter.on("notify", (notification) => {
+      this.onShow(notification)
+    });
+    emitter.on("closeNotification", (notification) => {
       this.onShow(notification)
     });
   }
