@@ -137,7 +137,7 @@ class Transactions {
   * @param {*} buildingName the name of the building
   * @param {*} expanseToSave the record to update with
   */
-  updateMonthExpanse({ date = Object, buildingName = String, expanse = Object, tax = Number }) {
+  updateMonthExpanse({ date = Object, buildingName = String, expanse = Object }) {
 
     buildingName = Helper.trimSpaces(buildingName);
 
@@ -147,51 +147,14 @@ class Transactions {
       this.monthExpansesLogic.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx)
         .then((totalSum) => {
           //update budget execution table
-          return this.budgetExecutionLogic.updateBudgetExecutonTrx(buildingName, date, quarterQuery, expanse.summarized_section_id, trx);
+          return this.budgetExecutionLogic.updateBudgetExecutonTrx(totalSum, buildingName, date, expanse.summarized_section_id, trx);
         })
         .then((budgets) => {
-
-        });
-
-      then((budgets) => {
-        //prepare the params
-        const params = {
-          summarized_section_id: budgets[0].summarized_section_id,
-          buildingName,
-          date: {
-            year: date.year
-          }
-        }
-
-        return this.summarizedBudget.getBuildingSummarizedBudgetSingleTrx(params, trx).then((sumBudget) => {
-
-          const quarterBudgetLabel = `${date.quarterEng}_budget`;
-          const quarterExecutionLabel = `${date.quarterEng}_execution`;
-
-          //calculate year total budget
-          //substract the previous quarter budget that will be updated
-          //from total year budget and then add the new quarter budget to it
-          let year_total_budget = (sumBudget[0].year_total_budget - sumBudget[0][quarterBudgetLabel]) + budgets[0].total_budget;
-
-          //calculate year total execution
-          //substract the previous quarter execution that will be updated
-          //from total year execution and then add the new quarter execution to it
-          let year_total_execution = (sumBudget[0].year_total_execution - sumBudget[0][quarterExecutionLabel]) + budgets[0].total_execution;
-
-          //add the object tat will be added to the database to params
-          params.data = {
-            [quarterBudgetLabel]: budgets[0].total_budget,//quarter budget
-            [quarterExecutionLabel]: budgets[0].total_execution,//quarter execution
-            year_total_budget: year_total_budget,
-            year_total_execution: year_total_execution,//year execution
-            notes: budgets[0].notes//notes
-          };
-          return this.summarizedBudget.updateSummarizedBudgetTrx(params, trx)
-        }).catch(error => { console.log(error); throw error; });
-
-      })
+          return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(budgets, buildingName, date, trx);
+        })
         .then((result) => {
-          //console.log(result);
+          console.log("we made it, and the result is: ");
+          console.log(result);
         })
         .catch(error => { throw error });
 
@@ -205,16 +168,6 @@ class Transactions {
       .catch((error) => {
         throw new Error("קרתה תקלה בנסיון להוסיף הוצאה חדשה.");
       });;
-  }
-
-  generateTableData() {
-
-    buildingName = Helper.trimSpaces(buildingName);
-
-    return this.connection.transaction((trx) => {
-
-    });
-
   }
 
 }

@@ -1,4 +1,5 @@
 const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
+const GeneralSettingsDao = require('../dao/GeneralSettingsDao');
 
 class BudgetExecutionLogic {
 
@@ -18,16 +19,16 @@ class BudgetExecutionLogic {
     return this.bed.getBudgetExecution(params);
   }
 
-  updateBudgetExecutonTrx({ buildingName = String, date = Object, quarterQuery = String, summarized_section_id = Number, trx = Object }) {
+  updateBudgetExecutonTrx({ totalSum = Number, buildingName = String, date = Object, summarized_section_id = Number, trx = Object }) {
     //get the quarter months query
-    const quarterQuery = getQuarterQuery(date.quarter);
+    const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
     //get budget execution of the selected date
     return this.budgetExecutionDao.getBudgetExecution(buildingName, date, quarterQuery, summarized_section_id, trx)
       .then((budgets) => {
         //get the tax field from general settings
         return this.generalSettingsDao.getGeneralSettings().then((settings) => {
           //prepare budget execution object to be updated
-          let budgetExec = calculateBudget(budgets[0], totalSum, date, settings[0].tax);
+          let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date, settings[0].tax);
           //update budget execution
           return this.budgetExecutionDao.updateBudgetExecution(buildingName, date, expanse.summarized_section_id, budgetExec, trx).then(() => budgets);
         })
@@ -38,7 +39,7 @@ class BudgetExecutionLogic {
   /**
    * get the the desired quarter query to pull from the db
    */
-  getQuarterQuery(quarterNum) {
+  static getQuarterQuery(quarterNum) {
     switch (quarterNum) {
       case 1: return BudgetExecutionDao.getQuarter1Query()
       case 2: return BudgetExecutionDao.getQuarter2Query()
@@ -47,7 +48,7 @@ class BudgetExecutionLogic {
     }
   }
 
-  calculateBudget(budget, totalSum, date, tax) {
+  static calculateBudget(budget, totalSum, date, tax) {
     totalSum = totalSum - ((totalSum * tax) / 100);
     budget["total_execution"] -= budget[`${date.month}_budget_execution`];
     budget[`${date.month}_budget_execution`] = totalSum;
