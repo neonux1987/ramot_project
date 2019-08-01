@@ -284,12 +284,13 @@ class SummarizedBudget extends Component {
             width: "100%",
             textAlign: "center",
             borderRadius: "4px",
-            height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
+            //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
           }}
           getTbodyProps={(state, rowInfo, column, instance) => {
             return {
               style: {
-                overflow: "overlay"
+                overflow: "overlay",
+                height: "700px"
               }
             }
           }}

@@ -9,7 +9,7 @@
   box-shadow: 0 0 4px #333333;
   border-radius: 4px;
   margin-top: 10px;
-  transition: bottom 0.3s ease;
+  transition: bottom 0.2s ease;
   display: flex;
   max-height: 400px;
 }

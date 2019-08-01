@@ -175,6 +175,14 @@ textarea{
   color: #353535;
 }
 
+.ReactTable .rt-table{
+  display: block;
+}
+
+.rt-tbody{
+  height: 580px;
+}
+
 .rt-td{
   align-items: center;
     justify-content: center;

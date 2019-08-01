@@ -17,6 +17,10 @@ class SummarizedBudgetLogic {
     return this.sbd.updateSummarizedBudget(params);
   }
 
+  updateSummarizedBudgetTrx(params, trx) {
+
+  }
+
 }
 
 module.exports = SummarizedBudgetLogic;

@@ -4,6 +4,7 @@ class BudgetExecutionLogic {
 
   constructor(connection) {
     this.bed = new BudgetExecutionDao(connection);
+    this.generalSettingsDao = new GeneralSettingsDao(connection);
   }
 
   getAllBudgetExecutions(params) {
@@ -17,10 +18,27 @@ class BudgetExecutionLogic {
     return this.bed.getBudgetExecution(params);
   }
 
+  updateBudgetExecutonTrx({ buildingName = String, date = Object, quarterQuery = String, summarized_section_id = Number, trx = Object }) {
+    //get the quarter months query
+    const quarterQuery = getQuarterQuery(date.quarter);
+    //get budget execution of the selected date
+    return this.budgetExecutionDao.getBudgetExecution(buildingName, date, quarterQuery, summarized_section_id, trx)
+      .then((budgets) => {
+        //get the tax field from general settings
+        return this.generalSettingsDao.getGeneralSettings().then((settings) => {
+          //prepare budget execution object to be updated
+          let budgetExec = calculateBudget(budgets[0], totalSum, date, settings[0].tax);
+          //update budget execution
+          return this.budgetExecutionDao.updateBudgetExecution(buildingName, date, expanse.summarized_section_id, budgetExec, trx).then(() => budgets);
+        })
+      })
+      .catch(error => { throw error });
+  }
+
   /**
    * get the the desired quarter query to pull from the db
    */
-  static getQuarterQuery(quarterNum) {
+  getQuarterQuery(quarterNum) {
     switch (quarterNum) {
       case 1: return BudgetExecutionDao.getQuarter1Query()
       case 2: return BudgetExecutionDao.getQuarter2Query()
@@ -29,7 +47,7 @@ class BudgetExecutionLogic {
     }
   }
 
-  static calculateBudget(budget, totalSum, date, tax) {
+  calculateBudget(budget, totalSum, date, tax) {
     totalSum = totalSum - ((totalSum * tax) / 100);
     budget["total_execution"] -= budget[`${date.month}_budget_execution`];
     budget[`${date.month}_budget_execution`] = totalSum;

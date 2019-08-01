@@ -302,7 +302,8 @@ class BudgetExecution extends Component {
         headerStyle: { background: "#000", color: "#fff" },
         Cell: this.cellTextAreaInput,
         style: {
-          padding: 0
+          padding: 0,
+          paddingLeft: "10px"
         }
       }
     ];
@@ -422,12 +423,13 @@ class BudgetExecution extends Component {
             width: "100%",
             textAlign: "center",
             borderRadius: "4px",
-            height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
+            //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
           }}
           getTbodyProps={(state, rowInfo, column, instance) => {
             return {
               style: {
-                overflow: "overlay"
+                overflow: "overlay",
+                height: "630px"
               }
             }
           }}

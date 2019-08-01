@@ -16,7 +16,7 @@ export default () => {
   }
 
   return <div className={styles.wrapper}>
-    <button onClick={showDialogHandler} className={styles.btn}>
+    <button onClick={showDialogHandler} className={styles.btn} style={{ display: showDialog ? "none" : "block" }}>
       <DeleteForever className={styles.icon} />
     </button>
     <YesNoDialog closeDialog={closeDialogHandler} show={showDialog} />

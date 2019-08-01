@@ -6,7 +6,7 @@ export default ({ show, closeDialog }) => {
 
   const display = show ? "block" : "none";
   return <div className={styles.dialog} style={{ display: display }}>
-    <button onClick={closeDialog} className={styles.btn + " " + styles.done}><Done /></button>
-    <button onClick={closeDialog} className={styles.btn + " " + styles.close}><Close /></button>
+    <button onClick={closeDialog} className={styles.btn + " " + styles.done}><Done style={{ fontSize: "22px" }} /></button>
+    <button onClick={closeDialog} className={styles.btn + " " + styles.close}><Close style={{ fontSize: "22px" }} /></button>
   </div>
 }

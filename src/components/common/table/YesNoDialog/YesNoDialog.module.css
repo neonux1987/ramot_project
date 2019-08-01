@@ -1,6 +1,6 @@
 
 .dialog{
-  background-color: #f1f1f1;
+
   position: absolute;
   left: 50%;
   top: 50%;
@@ -12,6 +12,11 @@
   border: none;
   cursor: pointer;
   outline: none;
+  margin: 0 3px;
+  box-shadow: 0px 0px 2px #00000061;
+  background: #fff;
+  border-radius: 4px;
+  padding: 2px 5px;
 }
 
 .close{

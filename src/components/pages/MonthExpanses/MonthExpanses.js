@@ -40,6 +40,11 @@ class MonthExpanses extends Component {
           id: 3,
           month: "july",
           monthHeb: "יולי"
+        },
+        {
+          id: 4,
+          month: "august",
+          monthHeb: "אוגוסט"
         }
       ],
       years: [
@@ -181,7 +186,6 @@ class MonthExpanses extends Component {
 
   loadExpansesByDate({ month, year }) {
     const monthNum = Helper.convertEngToMonthNum(month);
-
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
@@ -190,7 +194,9 @@ class MonthExpanses extends Component {
         year: year,
         month: month,
         monthNum: monthNum,
-        monthHeb: Helper.convertEngToHebMonth(month)
+        monthHeb: Helper.convertEngToHebMonth(month),
+        quarterEng: Helper.convertMonthNumToQuarterEng(monthNum),
+        quarterHeb: Helper.getCurrentQuarterHeb(monthNum)
       }
     }
 
@@ -206,7 +212,7 @@ class MonthExpanses extends Component {
     return [
       {
         Header: "פעולות",
-        width: 60,
+        width: 80,
         headerStyle: headerStyle,
         Cell: <TableActions />,
         show: this.state.editMode
@@ -256,7 +262,8 @@ class MonthExpanses extends Component {
         headerStyle: headerStyle,
         Cell: this.cellTextAreaInput,
         style: {
-          padding: 0
+          padding: 0,
+          paddingLeft: "10px"
         }
       }
     ]
@@ -420,12 +427,13 @@ class MonthExpanses extends Component {
             width: "100%",
             textAlign: "center",
             borderRadius: "4px",
-            height: "700px" // This will force the table body to overflow and scroll, since there is not enough room
+            //height: "700px" // This will force the table body to overflow and scroll, since there is not enough room
           }}
           getTbodyProps={(state, rowInfo, column, instance) => {
             return {
               style: {
-                overflow: "overlay"
+                overflow: "overlay",
+                height: "590px"
               }
             }
           }}

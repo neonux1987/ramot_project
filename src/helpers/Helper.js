@@ -124,6 +124,24 @@ class Helper {
     }
   }
 
+  static convertMonthNumToQuarterEng(monthNum = (new Date()).getMonth()) {
+    switch (monthNum) {
+      case 0: return "quarter1"
+      case 1: return "quarter1"
+      case 2: return "quarter1"
+      case 3: return "quarter2"
+      case 4: return "quarter2"
+      case 5: return "quarter2"
+      case 6: return "quarter3"
+      case 7: return "quarter3"
+      case 8: return "quarter3"
+      case 9: return "quarter4"
+      case 10: return "quarter4"
+      case 11: return "quarter4"
+      default: return null
+    }
+  }
+
   static getQuarterHeb(quarter) {
     switch (quarter) {
       case 1: return "רבעון 1"

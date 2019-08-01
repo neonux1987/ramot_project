@@ -31,7 +31,7 @@ class Notification extends React.Component {
       this.onShow(notification)
     });
     emitter.on("closeNotification", (notification) => {
-      this.onShow(notification)
+      this.btnClick();
     });
   }
 
@@ -55,7 +55,7 @@ class Notification extends React.Component {
         this.timeout = null;
         this.timeout = setTimeout(() => {
           this.showNotification(notification);
-        }, 300);
+        }, 200);
       });
     }
     //otherwise just show the notification

@@ -133,7 +133,7 @@ class ExpansesCodes extends Component {
     return [
       {
         Header: "פעולות",
-        width: 60,
+        width: 80,
         headerStyle: headerStyle,
         Cell: <TableActions />,
         show: this.state.editMode
@@ -237,13 +237,14 @@ class ExpansesCodes extends Component {
             width: "100%",
             textAlign: "center",
             borderRadius: "4px",
-            height: "700px", // This will force the table body to overflow and scroll, since there is not enough room
+            //height: "700px", // This will force the table body to overflow and scroll, since there is not enough room
             marginTop: "10px"
           }}
           getTbodyProps={(state, rowInfo, column, instance) => {
             return {
               style: {
-                overflow: "overlay"
+                overflow: "overlay",
+                height: "650px"
               }
             }
           }}
