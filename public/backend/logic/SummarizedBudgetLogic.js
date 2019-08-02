@@ -17,7 +17,7 @@ class SummarizedBudgetLogic {
     return this.sbd.updateSummarizedBudget(params);
   }
 
-  updateSummarizedBudgetTrx({ budgets = Array, buildingName = String, date = Object, trx = Object }) {
+  updateSummarizedBudgetTrx(budgets = Array, buildingName = String, date = Object, trx) {
     //prepare the params
     const params = {
       summarized_section_id: budgets[0].summarized_section_id,
@@ -27,7 +27,7 @@ class SummarizedBudgetLogic {
       }
     }
 
-    return this.summarizedBudget.getBuildingSummarizedBudgetSingleTrx(params, trx).then((sumBudget) => {
+    return this.sbd.getBuildingSummarizedBudgetSingleTrx(params, trx).then((sumBudget) => {
 
       const quarterBudgetLabel = `${date.quarterEng}_budget`;
       const quarterExecutionLabel = `${date.quarterEng}_execution`;
@@ -50,7 +50,7 @@ class SummarizedBudgetLogic {
         year_total_execution: year_total_execution,//year execution
         notes: budgets[0].notes//notes
       };
-      return this.summarizedBudget.updateSummarizedBudgetTrx(params, trx)
+      return this.sbd.updateSummarizedBudgetTrx(params, trx)
     }).catch(error => { throw error; });
   }
 

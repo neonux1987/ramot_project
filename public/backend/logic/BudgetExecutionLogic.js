@@ -19,18 +19,18 @@ class BudgetExecutionLogic {
     return this.bed.getBudgetExecution(params);
   }
 
-  updateBudgetExecutonTrx({ totalSum = Number, buildingName = String, date = Object, summarized_section_id = Number, trx = Object }) {
+  updateBudgetExecutonTrx(totalSum = Number, buildingName = String, date = Object, summarized_section_id = Number, trx) {
     //get the quarter months query
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
     //get budget execution of the selected date
-    return this.budgetExecutionDao.getBudgetExecution(buildingName, date, quarterQuery, summarized_section_id, trx)
+    return this.bed.getBudgetExecution(buildingName, date, quarterQuery, summarized_section_id, trx)
       .then((budgets) => {
         //get the tax field from general settings
-        return this.generalSettingsDao.getGeneralSettings().then((settings) => {
+        return this.generalSettingsDao.getGeneralSettingsTrx(trx).then((settings) => {
           //prepare budget execution object to be updated
           let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date, settings[0].tax);
           //update budget execution
-          return this.budgetExecutionDao.updateBudgetExecution(buildingName, date, expanse.summarized_section_id, budgetExec, trx).then(() => budgets);
+          return this.bed.updateBudgetExecution(buildingName, date, summarized_section_id, budgetExec, trx).then(() => budgets);
         })
       })
       .catch(error => { throw error });

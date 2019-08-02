@@ -22,22 +22,21 @@ class MonthExpansesLogic {
     return this.med.getMonthExpansesBySummarizedSectionId(params);
   }
 
-  updateMonthExpanseTrx({ date = Object, buildingName = String, expanse = Object, tax = Number, trx = Object }) {
+  updateMonthExpanseTrx(date = Object, buildingName = String, expanse = Object, trx) {
 
     //prepare the expanse obejct, remove all the unneccessary 
     //fields so it can be saved.
     const expanseToUpdate = { supplierName: expanse.supplierName, sum: expanse.sum, notes: expanse.notes };
-
     //update the expanse
-    return this.monthExpansesDao.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx)
+    return this.med.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx)
       .then(() => {
         //get all the expanses by summarized sections id
-        return this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, expanse.summarized_section_id, trx);
+        return this.med.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, expanse.summarized_section_id, trx);
       })
       .then((expanses) => {
         //calculate total sum of the received expanses
         const totalSum = MonthExpansesLogic.calculateExpansesSum(expanses);
-        Promise.resolve(totalSum);
+        return totalSum;
       })
       .catch(error => { throw error });
 

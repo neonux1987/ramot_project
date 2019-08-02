@@ -18,6 +18,19 @@ class GeneralSettingsDao {
   }
 
   /**
+   * get general settings
+   */
+  getGeneralSettingsTrx(trx) {
+    return trx.select(
+      "*"
+    )
+      .from("general")
+      .catch((error) => {
+        throw new Error("קרתה תקלה בשליפת הגדרות.");
+      });
+  }
+
+  /**
    * update settings
    * @param {*} params
    */
