@@ -62,4 +62,5 @@
 .body{
   color: #c4d2de;
   font-size: 15px;
+  word-break: break-all;
 }

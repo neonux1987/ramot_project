@@ -84,7 +84,7 @@ class General extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state
+  generalSettings: state.generalSettings
 });
 
 const mapDispatchToProps = dispatch => ({

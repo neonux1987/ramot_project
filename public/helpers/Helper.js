@@ -165,5 +165,15 @@ class Helper {
     }
   }
 
+  static calculateWithoutTax(value, tax) {
+    const taxValue = (value * tax) / 100;
+    return value - taxValue;
+  }
+
+  static calculateWithTax(value, tax) {
+    const taxValue = (value * tax) / 100;
+    return value + taxValue;
+  }
+
 }
 module.exports = Helper;

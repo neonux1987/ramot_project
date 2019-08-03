@@ -13,7 +13,6 @@ import notificationActions from './redux/actions/notificationsActions';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
 import AppFrame from './components/AppFrame/AppFrame';
-import { playSound, soundTypes } from './audioPlayer/audioPlayer';
 const remote = require('electron').remote;
 
 
@@ -61,11 +60,10 @@ class App extends Component {
 
   render() {
     const { notification } = this.props.notifications;
-    if (this.props.generalSettings.generalSettings.isFetching) {
+    const { isFetching } = this.props.generalSettings.generalSettings;
+    if (isFetching) {
       return <LoadingCircle loading={true} />;
     }
-    //play a welcome sound when the app is loading
-    playSound(soundTypes.welcome);
     return (
       <RTL>
         <MuiThemeProvider theme={theme}>

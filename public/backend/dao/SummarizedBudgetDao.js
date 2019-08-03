@@ -127,7 +127,7 @@ class SummarizedBudgetDao {
         }
       })
       .catch((error) => {
-        throw new Error(error.message);
+        throw error;
       });
   }
 

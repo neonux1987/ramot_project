@@ -2,23 +2,15 @@ import Helper from '../../helpers/Helper';
 
 const initState = {
   date: Helper.getCurrentDate(),
-  settings: {
-    general: {
-      tax: 17,
-      dbPath: ""
-    }
-  },
-  notifications: [
-
-  ]
+  isLoading: true
 }
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "something":
+    case "SET_LOADING_STATUS":
       return {
         ...state,
-        toggleSidebar: action.payload
+        isLoading: action.payload
       }
     default: return state;
   }

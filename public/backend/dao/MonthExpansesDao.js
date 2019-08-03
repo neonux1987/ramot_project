@@ -50,7 +50,7 @@ class MonthExpansesDao {
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
     }).catch((error) => {
-      throw new Error("קרתה תקלה בשליפת הנתונים של מעקב הוצאות חודשיות.");
+      throw error;
     });
   }
 
@@ -73,7 +73,10 @@ class MonthExpansesDao {
       "sc.id AS summarized_section_id",
       "sc.section AS section",
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
-      .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id");
+      .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
+      .catch((error) => {
+        throw error;
+      });
   }
 
   /**
@@ -85,14 +88,17 @@ class MonthExpansesDao {
   updateMonthExpanseTrx(buildingName = String, id = Number, expanse = Object, trx) {
     return trx(buildingName + "_month_expanses")
       .where({ id: id })
-      .update(expanse);
+      .update(expanse)
+      .catch((error) => {
+        throw error;
+      });
   }
 
   addNewMonthExpanse(buildingName = String, record = Object) {
     return this.connection(buildingName + "_month_expanses").insert(record)
       .catch((error) => {
-        throw new Error("קרתה תקלה בנסיון להוסיף הוצאה חדשה.");
-      });;
+        throw error;
+      });
   }
 
 }

@@ -47,9 +47,10 @@ class SummarizedSectionsDao {
       .where({ id: id })
       .update(expanseToSave);
 
-    return data.then((result) => result).catch((error) => {
-      console.log(error);
-    })
+    return data.then((result) => result)
+      .catch((error) => {
+        throw error;
+      })
   }
 
   /**
@@ -57,7 +58,11 @@ class SummarizedSectionsDao {
    * @param {*} record 
    */
   addNewSummarizedSection(record = Object) {
-    return this.connection(buildingName + "_month_expanses").insert(record);
+    return this.connection(buildingName + "_month_expanses")
+      .insert(record)
+      .catch((error) => {
+        throw error;
+      });
   }
 
 }

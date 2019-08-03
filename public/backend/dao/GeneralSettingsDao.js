@@ -8,12 +8,10 @@ class GeneralSettingsDao {
    * get general settings
    */
   getGeneralSettings() {
-    return this.connection.select(
-      "*"
-    )
+    return this.connection.select("*")
       .from("general")
       .catch((error) => {
-        throw new Error("קרתה תקלה בשליפת הגדרות.");
+        throw error;
       });
   }
 
@@ -21,12 +19,10 @@ class GeneralSettingsDao {
    * get general settings
    */
   getGeneralSettingsTrx(trx) {
-    return trx.select(
-      "*"
-    )
+    return trx.select("*")
       .from("general")
       .catch((error) => {
-        throw new Error("קרתה תקלה בשליפת הגדרות.");
+        throw error;
       });
   }
 
@@ -39,7 +35,7 @@ class GeneralSettingsDao {
       .where({ id: id })
       .update(settings)
       .catch((error) => {
-        throw new Error(error.message);
+        throw error;
       });
   }
 

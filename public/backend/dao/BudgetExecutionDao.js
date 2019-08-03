@@ -111,8 +111,8 @@ class BudgetExecutionDao {
     return data.then((result) => {
       return result;
     }).catch((error) => {
-      throw new Error("קרתה תקלה בשליפת נתונים מטבלת ביצוע מול תקציב.");
-    });;
+      throw error;
+    });
   }
 
   /**
@@ -148,7 +148,10 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id");
+      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      .catch((error) => {
+        throw error;
+      });
   }
 
   /**
@@ -172,7 +175,10 @@ class BudgetExecutionDao {
   ) {
     return trx(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
       .where({ year: date.year, summarized_section_id: summarized_section_id })
-      .update(budgetExec);
+      .update(budgetExec)
+      .catch((error) => {
+        throw error;
+      });
   }
 
 }

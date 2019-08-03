@@ -30,7 +30,7 @@ class ExpansesCodesDao {
         }
       })
       .catch((error) => {
-        throw new Error(error.message);
+        throw error;
       });
   }
 
@@ -39,9 +39,11 @@ class ExpansesCodesDao {
    * @param {*} record 
    */
   addExpanseCode(data = { summarized_section_id: Number, code: Number, codeName: String }) {
-    return this.connection("expanses_codes").insert(data).catch((error) => {
-      throw new Error("קרתה תקלה בהוספת קוד הנהלת חשבון חדש.");
-    });;
+    return this.connection("expanses_codes")
+      .insert(data)
+      .catch((error) => {
+        throw error;
+      });
   }
 
 }

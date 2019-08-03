@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { notify, notificationTypes } from '../../components/Notifications/Notification';
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 /**
  * fetch general settings
@@ -28,6 +29,8 @@ const fetchGeneralSettings = () => {
       } else {
         //success store the data
         dispatch(receiveGeneralSettings(arg.data));
+        //set the app status to loaded
+        playSound(soundTypes.welcome);
       }
     });
   }

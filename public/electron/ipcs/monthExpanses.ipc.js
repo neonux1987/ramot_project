@@ -1,6 +1,6 @@
 const { ipcMain } = require('electron');
 const MonthExpansesLogic = require('../../backend/logic/MonthExpansesLogic');
-const Transactions = require('../../backend/dao/transactions/Transactions');
+const Transactions = require('../../backend/logic/transactions/Transactions');
 
 const monthExpansesIpc = (connection) => {
 
