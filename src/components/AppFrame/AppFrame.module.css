@@ -3,7 +3,7 @@
   /* background: rgb(204, 204, 204);
   background: linear-gradient(0deg, rgb(204, 204, 204) 0%, rgb(234, 234, 234) 43%, rgb(255, 255, 255) 100%); */
   background: rgb(216, 215, 215);
-    background: linear-gradient(0deg, rgb(216, 215, 215) 0%, rgb(243, 243, 243) 100%);
+    background: linear-gradient(0deg, #D2D0D2 0%, #E6E4E6 100%);
   position: relative;
   width: 100%;
   top: 0;
@@ -26,9 +26,9 @@
 }
 
 .header{
-  color: #000;
+  color: #1c1f23;
   -webkit-user-select: none;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
 }
 

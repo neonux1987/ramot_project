@@ -14,15 +14,15 @@ const styles = theme => ({
     padding: 0
   },
   listItemText: {
-    fontSize: "16px",
+    fontSize: "15px",
     color: "#f5f5f5"
   },
   icon: {
-    fontSize: "16px",
+    fontSize: "15px",
     color: "#5975ff"
   },
   listItemIcon: {
-    fontSize: "16px",
+    fontSize: "15px",
     color: "#fff"
   },
   listItem: {
