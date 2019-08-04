@@ -13,8 +13,9 @@ const styles = (theme) => ({
   header: {
     display: "inline-block",
     background: "#fff",
-    boxShadow: "0px 0px 2px #00000021",
-    padding: "0 10px 6px"
+    padding: "0 10px 6px",
+    border: "1px solid #e8e8e8",
+    boxShadow: "0px 0px 2px #0000000d"
   },
   headerTitle: {
     marginBottom: "0",

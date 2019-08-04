@@ -1,6 +1,6 @@
 const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
 const GeneralSettingsDao = require('../dao/GeneralSettingsDao');
-const MonthTotalExpansesLogic = require('./MonthTotalExpansesLogic');
+const MonthTotalBudgetAndExpansesLogic = require('./MonthTotalBudgetAndExpansesLogic');
 const Helper = require('../../helpers/Helper');
 
 class BudgetExecutionLogic {
@@ -8,7 +8,7 @@ class BudgetExecutionLogic {
   constructor(connection) {
     this.bed = new BudgetExecutionDao(connection);
     this.generalSettingsDao = new GeneralSettingsDao(connection);
-    this.monthTotalExpansesLogic = new MonthTotalExpansesLogic(connection);
+    this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
   }
 
   getAllBudgetExecutions(params) {
@@ -34,7 +34,10 @@ class BudgetExecutionLogic {
           let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date, settings[0].tax);
 
           //update month total expanses table
-          this.monthTotalExpansesLogic.updateMonthTotalExpansesTrx(buildingName, date, totalSum, budgets[0][`${date.month}_budget_execution`], settings[0].tax, trx);
+          this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, budgets[0][`${date.month}_budget`], settings[0].tax, trx)
+            .then((result) => {
+              console.log(result);
+            });
 
           //update budget execution
           return this.bed.updateBudgetExecution(buildingName, date, summarized_section_id, budgetExec, trx).then(() => budgets);

@@ -1,41 +1,41 @@
-class MonthTotalExpansesDao {
+class MonthTotalBudgetAndExpansesDao {
 
   constructor(connection) {
     this.connection = connection;
   }
 
-  getMonthTotalExpanses(
+  getMonthTotalBudgetAndExpanses(
     buildingName = String,
     date = Object
   ) {
     return this.connection.select("*")
       .where({ year: date.year, month: date.month })
-      .from(`${buildingName}_total_month_expanses`)
+      .from(`${buildingName}_month_total_budget_and_expanses`)
       .catch((error) => {
         throw error;
       });
   }
 
-  getMonthTotalExpansesTrx(
+  getMonthTotalBudgetAndExpansesTrx(
     buildingName = String,
     date = Object,
     trx
   ) {
     return trx("*")
       .where({ year: date.year, month: date.month })
-      .from(`${buildingName}_total_month_expanses`)
+      .from(`${buildingName}_month_total_budget_and_expanses`)
       .catch((error) => {
         throw error;
       });
   }
 
-  updateMonthTotalExpansesTrx(
+  updateMonthTotalBudgetAndExpansesTrx(
     buildingName = String,
     date = Object,
     totalMonthExpanses = Object,
     trx
   ) {
-    return trx(`${buildingName}_total_month_expanses`)
+    return trx(`${buildingName}_month_total_budget_and_expanses`)
       .where({ year: date.year, month: date.month })
       .update(totalMonthExpanses)
       .catch((error) => {
@@ -45,4 +45,4 @@ class MonthTotalExpansesDao {
 
 }
 
-module.exports = MonthTotalExpansesDao;
+module.exports = MonthTotalBudgetAndExpansesDao;

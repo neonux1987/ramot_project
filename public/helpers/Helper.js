@@ -171,7 +171,7 @@ class Helper {
   }
 
   static calculateWithTax(value, tax) {
-    const taxValue = (value * tax) / 100;
+    const taxValue = (value / 100) * tax;
     return value + taxValue;
   }
 

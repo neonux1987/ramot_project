@@ -56,6 +56,7 @@ function createWindow() {
       nodeIntegration: true
     },
     frame: false,
+    transparent: true
     //backgroundColor: '#191b21'
   });
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);

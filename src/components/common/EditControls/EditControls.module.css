@@ -1,8 +1,8 @@
 .wrapper{
   margin: 10px 0;
-  padding: 10px 0;
-  border-bottom: 1px dashed #ccc;
-  border-top: 1px dashed #ccc;
+  padding: 10px;
+  background: #f5f5f5;
+  border: 1px solid #e2e2e2;
 }
 
 .editBtn{

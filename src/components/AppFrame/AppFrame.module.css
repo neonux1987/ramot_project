@@ -2,17 +2,16 @@
   padding: 4px 6px;
   /* background: rgb(204, 204, 204);
   background: linear-gradient(0deg, rgb(204, 204, 204) 0%, rgb(234, 234, 234) 43%, rgb(255, 255, 255) 100%); */
-  background: rgb(216, 215, 215);
-    background: linear-gradient(0deg, #D2D0D2 0%, #E6E4E6 100%);
+  background: rgb(239, 239, 239);
+    background: linear-gradient(0deg, #e6e6e6 50%, #f5f5f5 100%);
   position: relative;
   width: 100%;
   top: 0;
   z-index: 999;
   height: 29px;
   -webkit-app-region: drag;
-  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+    border: 1px solid #afafaf;
 }
 
 .section{
