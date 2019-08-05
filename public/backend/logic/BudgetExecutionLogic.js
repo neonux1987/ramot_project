@@ -22,7 +22,7 @@ class BudgetExecutionLogic {
     return this.bed.getBudgetExecution(params);
   }
 
-  updateBudgetExecutionTrx(totalSum = Number, buildingName = String, date = Object, summarized_section_id = Number, trx) {
+  updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, trx) {
     //get the quarter months query
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
     //get budget execution of the selected date
@@ -30,14 +30,21 @@ class BudgetExecutionLogic {
       .then((budgets) => {
         //get the tax field from general settings
         return this.generalSettingsDao.getGeneralSettingsTrx(trx).then((settings) => {
-          //prepare budget execution object to be updated
-          let budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date, settings[0].tax);
+          let budgetExec;
+          if (totalSum) {
+            //prepare budget execution object to be updated
+            budgetExec = BudgetExecutionLogic.calculateBudget(budgets[0], totalSum, date, settings[0].tax);
 
-          //update month total expanses table
-          this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, budgets[0][`${date.month}_budget`], settings[0].tax, trx)
-            .then((result) => {
-              console.log(result);
-            });
+            //update month total expanses table
+            this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, budgets[0][`${date.month}_budget`], settings[0].tax, trx)
+              .then((result) => {
+                console.log(result);
+              });
+          }
+
+          if (budgetExec) {
+
+          }
 
           //update budget execution
           return this.bed.updateBudgetExecution(buildingName, date, summarized_section_id, budgetExec, trx).then(() => budgets);
@@ -78,6 +85,18 @@ class BudgetExecutionLogic {
 
     newData[date.month + "_budget_execution"] = budget[date.month + "_budget_execution"];
     return newData;
+  }
+
+  static prepareBudgeExecObj(budgetExec, date) {
+    let copyData = { ...budgetExec };
+    delete copyData.id;
+    delete copyData.quarter;
+    delete copyData.year;
+    delete copyData.section;
+    delete copyData.summarized_section_id;
+    delete copyData.id;
+
+
   }
 
   calculateTotalMonthExpanses(budgetExecutions, date) {

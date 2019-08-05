@@ -93,7 +93,7 @@ class BudgetExecution extends Component {
     data[cellInfo.index][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
     let params = {
       buildingName: this.props.location.state.buildingNameEng
-    };
+    }; console.log(data[cellInfo.index]);
     this.props.updateBudgetExecution(params, data);
     e.target.blur();
   }
