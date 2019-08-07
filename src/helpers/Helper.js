@@ -348,7 +348,23 @@ class Helper {
     return today;
   }
 
+  static findObjIndexById(id, arr) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].id === id) {
+        return i;
+      }
+    }
+  }
 
+  static getQuarterMonths(quarter) {
+    switch (quarter) {
+      case 1: return ["january", "february", "march"]
+      case 2: return ["april", "may", "june"]
+      case 3: return ["july", "august", "september"]
+      case 4: return ["october", "november", "december"]
+      default: return null
+    }
+  }
 
   static getMonthExpansesFilename(buildingName, date = { year: Number, month: String }) {
     let monthHebName = this.convertEngToHebMonth(date.month);

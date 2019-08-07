@@ -163,7 +163,7 @@ class BudgetExecutionDao {
    * budgetExecutionData
    * }
    */
-  updateBudgetExecution(
+  updateBudgetExecutionTrx(
     buildingName = String,
     date = {
       year: year = Number,

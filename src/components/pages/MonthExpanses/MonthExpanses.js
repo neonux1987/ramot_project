@@ -119,8 +119,7 @@ class MonthExpanses extends Component {
         buildingName: this.props.location.state.buildingNameEng,
         date: {
           ...this.props.monthExpanses.date
-        },
-        tax: Number.parseFloat(this.props.generalSettings.generalSettings.data[0].tax)
+        }
       };
       //add new expanse into the database
       this.props.updateExpanse(params, copyData);

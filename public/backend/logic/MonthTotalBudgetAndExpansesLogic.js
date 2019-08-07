@@ -15,7 +15,7 @@ class MonthTotalBudgetAndExpansesLogic {
     return this.monthTotalBudgetAndExpansesDao.getMonthTotalBudgetAndExpansesTrx(buildingName, date, trx);
   }
 
-  updateMonthTotalBudgetAndExpansesTrx(buildingName = String, date = Object, expanses = Number, tax, trx) {
+  updateMonthTotalBudgetAndExpansesTrx(buildingName = String, date = Object, expanses = Number, totalBudget = Number, tax, trx) {
 
     return this.monthTotalBudgetAndExpansesDao.getMonthTotalBudgetAndExpansesTrx(buildingName, date, trx)
       .then((expansesArr) => {
@@ -25,14 +25,11 @@ class MonthTotalBudgetAndExpansesLogic {
           //subtract the previous expanses value from total and then add the new value
           total_expanses_with_tax: (expansesArr[0].total_expanses_with_tax - expansesArr[0].last_expanses_input_with_tax) + expanses,
           //subtract the previous expanses value without a tax from total and then add the new value without a tax
-          total_expanses_without_tax: (expanses[0].total_expanses_without_tax - prev_without_tax) + expanses_without_tax,
+          total_expanses_without_tax: (expansesArr[0].total_expanses_without_tax - prev_without_tax) + expanses_without_tax,
           //save the new expanses value as last input for next update to play a role as previous value
           last_expanses_input_with_tax: expanses
         }
-        return this.monthTotalBudgetAndExpansesDao.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, monthTotalExpansesObj, trx)
-          .then(() => {
-            return
-          });
+        return this.monthTotalBudgetAndExpansesDao.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, monthTotalExpansesObj, trx);
       })
       .catch(error => { throw error });
 

@@ -116,6 +116,16 @@ class Helper {
     }
   }
 
+  static getQuarterMonths(quarter) {
+    switch (quarter) {
+      case 1: return ["january", "february", "march"]
+      case 2: return ["april", "may", "june"]
+      case 3: return ["july", "august", "september"]
+      case 4: return ["october", "november", "december"]
+      default: return null
+    }
+  }
+
   static getBudgetExecutionTableHeaders() {
     switch (this.getCurrentQuarter()) {
       case 1: return quarter1

@@ -27,7 +27,7 @@ class Transactions {
       return this.monthExpansesLogic.updateMonthExpanseTrx(date, buildingName, expanse, trx)
         .then((totalSum) => {
           //update budget execution table
-          return this.budgetExecutionLogic.updateBudgetExecutionTrx(totalSum, budgetExec, buildingName, date, expanse.summarized_section_id, trx);
+          return this.budgetExecutionLogic.updateBudgetExecutionTrx(totalSum, null, buildingName, date, expanse.summarized_section_id, trx);
         })
         .then((budgets) => {
           return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(budgets, buildingName, date, trx);
@@ -40,12 +40,10 @@ class Transactions {
     });
   }
 
-  updateBudgetExecution({ date = Object, buildingName = String, budgetExec = Object }) {
-
+  updateBudgetExecution({ date = Object, buildingName = String, budgetExec = Object, summarized_section_id = Number }) {
     return this.connection.transaction((trx) => {
-
-      //update month expanses table
-      return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, budgetExec, buildingName, date, expanse.summarized_section_id, trx)
+      //update budget execution table
+      return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, budgetExec, buildingName, date, summarized_section_id, trx)
         .then((budgets) => {
           return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(budgets, buildingName, date, trx);
         })

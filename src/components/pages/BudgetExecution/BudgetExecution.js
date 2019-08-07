@@ -89,13 +89,57 @@ class BudgetExecution extends Component {
   }
 
   cellInputOnBlurHandler = (e, cellInfo) => {
+    //copy data
     const data = [...this.props.budgetExecution.budgetExecutions.data];
-    data[cellInfo.index][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
+    //find the index of the object in the array
+    const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
+    //replace the value
+    data[objIndex][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
+
+    //prepare the budget execution object
+    const preparedObj = this.prepareBudgetExecObj(data[objIndex], this.props.budgetExecution.date.quarter);
+    data[objIndex] = {
+      ...data[objIndex],
+      ...preparedObj
+    };
+
+    //prepare the params object
     let params = {
-      buildingName: this.props.location.state.buildingNameEng
-    }; console.log(data[cellInfo.index]);
+      buildingName: this.props.location.state.buildingNameEng,
+      date: {
+        ...this.props.budgetExecution.date
+      },
+      budgetExec: preparedObj,
+      summarized_section_id: data[objIndex].summarized_section_id
+    };
+
     this.props.updateBudgetExecution(params, data);
     e.target.blur();
+  }
+
+  /**
+   * prepare budget executon object for update 
+   * calculate the total budget and difference
+   * @param {} budgetExec 
+   * @param {*} date 
+   */
+  prepareBudgetExecObj(budgetExec, quarter) {
+
+    const months = Helper.getQuarterMonths(quarter);
+    let totalBudget = 0;
+    const objToSave = {};
+
+    for (let monthName of months) {
+      totalBudget += Number.parseFloat(budgetExec[monthName + "_budget"]);
+      objToSave[monthName + "_budget"] = Number.parseFloat(budgetExec[monthName + "_budget"]);
+    }
+
+    objToSave["total_budget"] = totalBudget;
+    objToSave["difference"] = totalBudget - Number.parseFloat(budgetExec["total_execution"]);
+    objToSave["notes"] = budgetExec["notes"];
+
+    return objToSave;
+
   }
 
   cellTextAreaInput = (cellInfo) => {

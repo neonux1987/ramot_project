@@ -80,24 +80,27 @@ const addBudgetExecution = (params = Object, tableData) => {
  */
 const updateBudgetExecution = (params = Object, tableData = Array) => {
   return dispatch => {
-    /* //send a request to backend to get the data
+    //send a request to backend to get the data
     ipcRenderer.send("update-budget-execution", params);
     //listen when the data comes back
-    ipcRenderer.once("month-expanse-updated", (event, arg) => {
+    ipcRenderer.once("budget-execution-updated", (event, arg) => {
       if (arg.error) {
-        console.log(arg.error);
+        notify({
+          isError: true,
+          type: notificationTypes.db,
+          message: arg.error
+        });
+        playSound(soundTypes.error);
       } else {
-        
+        dispatch(receiveBudgetExecutions(tableData));
+        notify({
+          type: notificationTypes.message,
+          message: "השורה עודכנה בהצלחה."
+        });
+        playSound(soundTypes.message);
       }
-    }); */
-
-    dispatch(receiveBudgetExecutions(tableData));
-    notify({
-      type: notificationTypes.message,
-      message: "השורה עודכנה בהצלחה."
     });
-    playSound(soundTypes.message);
-  }
+  };
 };
 
 export default {
