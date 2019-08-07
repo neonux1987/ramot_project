@@ -32,6 +32,10 @@ class SummarizedBudgetLogic {
       const quarterBudgetLabel = `${date.quarterEng}_budget`;
       const quarterExecutionLabel = `${date.quarterEng}_execution`;
 
+      //const monthNames = Helper.getQuarterMonths(date.quarter);
+      console.log(params);
+      console.log(budgets[0]);
+
       //calculate year total budget
       //substract the previous quarter budget that will be updated
       //from total year budget and then add the new quarter budget to it
@@ -42,7 +46,7 @@ class SummarizedBudgetLogic {
       //from total year execution and then add the new quarter execution to it
       let year_total_execution = (sumBudget[0].year_total_execution - sumBudget[0][quarterExecutionLabel]) + budgets[0].total_execution;
 
-      //add the object tat will be added to the database to params
+      //add the object that will be added to the database to params
       params.data = {
         [quarterBudgetLabel]: budgets[0].total_budget,//quarter budget
         [quarterExecutionLabel]: budgets[0].total_execution,//quarter execution
