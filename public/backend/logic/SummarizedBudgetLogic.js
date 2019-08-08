@@ -33,8 +33,7 @@ class SummarizedBudgetLogic {
       const quarterExecutionLabel = `${date.quarterEng}_execution`;
 
       //const monthNames = Helper.getQuarterMonths(date.quarter);
-      console.log(params);
-      console.log(budgets[0]);
+
 
       //calculate year total budget
       //substract the previous quarter budget that will be updated

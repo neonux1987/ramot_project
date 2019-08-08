@@ -52,6 +52,7 @@ class BudgetExecution extends Component {
       date: {
         quarter: quarter,
         quarterHeb: Helper.getQuarterHeb(quarter),
+        quarterEng: Helper.getCurrentQuarterEng(quarter),
         year: year
       }
     };
@@ -306,7 +307,7 @@ class BudgetExecution extends Component {
             accessor: "total_budget",
             Header: "תקציב",
             headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
-            Cell: this.cellNumberInput,
+            Cell: this.cell,
             style: {
               padding: 0
             }

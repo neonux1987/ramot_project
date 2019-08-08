@@ -15,7 +15,7 @@ class MonthTotalBudgetAndExpansesLogic {
     return this.monthTotalBudgetAndExpansesDao.getMonthTotalBudgetAndExpansesTrx(buildingName, date, trx);
   }
 
-  updateMonthTotalBudgetAndExpansesTrx(buildingName = String, date = Object, expanses = Number, totalBudget = Number, tax, trx) {
+  updateMonthTotalBudgetAndExpansesTrx(buildingName = String, date = Object, expanses = Number, tax, trx) {
 
     return this.monthTotalBudgetAndExpansesDao.getMonthTotalBudgetAndExpansesTrx(buildingName, date, trx)
       .then((expansesArr) => {

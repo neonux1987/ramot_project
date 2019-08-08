@@ -1,6 +1,6 @@
 const { ipcMain } = require('electron');
 const MonthExpansesLogic = require('../../backend/logic/MonthExpansesLogic');
-const Transactions = require('../../backend/logic/transactions/Transactions');
+const Transactions = require('../../backend/transactions/MonthExpansesTransactions');
 
 const monthExpansesIpc = (connection) => {
 
@@ -33,6 +33,14 @@ const monthExpansesIpc = (connection) => {
       console.log(err)
     });
 
+  });
+
+  ipcMain.on('delete-month-expanse', (event, data) => {
+    monthExpansesLogic.deleteMonthExpanse(data).then((result) => {
+      event.reply("month-expanse-deleted", { data: result });
+    }).catch((error) => {
+      event.reply("month-expanse-deleted", { error: error.message });
+    });
   });
 
 }

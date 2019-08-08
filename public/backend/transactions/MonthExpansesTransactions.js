@@ -1,9 +1,9 @@
-const MonthExpansesLogic = require('../MonthExpansesLogic');
-const BudgetExecutionLogic = require('../BudgetExecutionLogic');
-const SummarizedBudgetLogic = require('../SummarizedBudgetLogic');
+const MonthExpansesLogic = require('../logic/MonthExpansesLogic');
+const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
+const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
 
 
-class Transactions {
+class MonthExpansesTransactions {
 
   constructor(connection) {
     this.connection = connection;
@@ -29,40 +29,27 @@ class Transactions {
           //update budget execution table
           return this.budgetExecutionLogic.updateBudgetExecutionTrx(totalSum, null, buildingName, date, expanse.summarized_section_id, trx);
         })
-        .then((budgets) => {
-          return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(budgets, buildingName, date, trx);
+        .then(() => {
+          //get budget execution data after it was updated
+          return this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx).then((data) => {
+            //update summarized budet table
+            return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(data, buildingName, date, trx);
+          });
         })
         .catch(error => { throw error });
 
     }).catch((error) => {
-      console.log(error);
       throw new Error(error.message)
     });
-  }
-
-  updateBudgetExecution({ date = Object, buildingName = String, budgetExec = Object, summarized_section_id = Number }) {
-    return this.connection.transaction((trx) => {
-      //update budget execution table
-      return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, budgetExec, buildingName, date, summarized_section_id, trx)
-        .then((budgets) => {
-          return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(budgets, buildingName, date, trx);
-        })
-        .catch(error => { throw error });
-
-    }).catch((error) => {
-      console.log(error);
-      throw new Error(error.message)
-    });
-
   }
 
   addNewMonthExpanse(buildingName = String, record = Object) {
     return this.connection(buildingName + "_month_expanses").insert(record)
       .catch((error) => {
         throw new Error("קרתה תקלה בנסיון להוסיף הוצאה חדשה.");
-      });;
+      });
   }
 
 }
 
-module.exports = Transactions;
+module.exports = MonthExpansesTransactions;

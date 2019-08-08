@@ -17,27 +17,27 @@ class BudgetExecutionLogic {
     return this.bed.getAllBudgetExecutions(params);
   }
 
-  getBudgetExecution(params) {
-    params.quarterQuery = BudgetExecutionLogic.getQuarterQuery(params.date.quarter);
-    return this.bed.getBudgetExecution(params);
+  getBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, trx) {
+    const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
+    return this.bed.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
   }
 
   updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, trx) {
-    //get the quarter months query
-    const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
     //get budget execution of the selected date
-    return this.bed.getBudgetExecution(buildingName, date, quarterQuery, summarized_section_id, trx)
+    return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
       .then((budgets) => {
         //get the tax field from general settings
         return this.generalSettingsDao.getGeneralSettingsTrx(trx).then((settings) => {
-          if (totalSum) {
+          if (totalSum !== null) {
             //prepare budget execution object to be updated
             budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], totalSum, date, settings[0].tax);
             //update month total expanses table
-            this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, totalBudget, settings[0].tax, trx);
+            this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, settings[0].tax, trx);
           }
           //update budget execution
-          return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then(() => budgets);
+          return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then(() => {
+            //return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx);
+          });
         })
       })
       .catch(error => { throw error });

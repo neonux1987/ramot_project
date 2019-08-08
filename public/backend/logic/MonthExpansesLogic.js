@@ -50,8 +50,8 @@ class MonthExpansesLogic {
     return totalSum;
   }
 
-  prepareExpanseObj(expanse) {
-    return { supplierName: expanse.supplierName, sum: expanse.sum, notes: expanse.notes };
+  deleteMonthExpanse(params) {
+    return this.med.deleteMonthExpanse(params);
   }
 
 }

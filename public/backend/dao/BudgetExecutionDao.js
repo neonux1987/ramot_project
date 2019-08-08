@@ -125,7 +125,7 @@ class BudgetExecutionDao {
    * quarterQuery - different months query
    * }
    */
-  getBudgetExecution(
+  getBudgetExecutionTrx(
     buildingName = String,
     date = {
       year: year = Number,
@@ -176,6 +176,15 @@ class BudgetExecutionDao {
     return trx(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
       .where({ year: date.year, summarized_section_id: summarized_section_id })
       .update(budgetExec)
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  deleteBudgetExecutionTrx(buildingName = String, date = Object, id = Number, trx) {
+    return trx(buildingName + "_budget_execution_quarter" + date.quarter)
+      .where({ id: id, year: date.year })
+      .del()
       .catch((error) => {
         throw error;
       });

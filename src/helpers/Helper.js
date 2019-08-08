@@ -401,15 +401,5 @@ class Helper {
     }
   }
 
-  static findItemInArray(id, arr) {
-    let item = null;
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].id === id) {
-        item = { ...arr[i] };
-      }
-    }
-    return item;
-  }
-
 }
 export default Helper;

@@ -204,7 +204,7 @@ class MonthExpanses extends Component {
 
   }
 
-  generateHeaders() {
+  generateHeaders = () => {
 
     const headerStyle = { background: "#000", color: "#fff" };
 
@@ -213,7 +213,7 @@ class MonthExpanses extends Component {
         Header: "פעולות",
         width: 80,
         headerStyle: headerStyle,
-        Cell: <TableActions />,
+        Cell: (cellInfo) => <TableActions deleteHandler={() => this.deleteExpanseHandler(cellInfo.original.id)} />,
         show: this.state.editMode
       },
       {
@@ -270,18 +270,43 @@ class MonthExpanses extends Component {
   }
 
   cellInputOnBlurHandler(e, cellInfo) {
+    //copy data
     const data = [...this.props.monthExpanses.expanses.data];
-    data[cellInfo.index][cellInfo.column.id] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
+
+    //find the index of the object in the array
+    const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
+    //replace the value
+    data[objIndex][cellInfo.column.id] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
+
+    //prepare the params
     let params = {
-      expanse: Helper.findItemInArray(cellInfo.original.id, data),
+      expanse: { ...data[objIndex] },
       buildingName: this.props.location.state.buildingNameEng,
       date: {
         ...this.props.monthExpanses.date
-      },
-      tax: Number.parseFloat(this.props.generalSettings.generalSettings.data[0].tax)
+      }
     };
+    //update expanse
     this.props.updateExpanse(params, data);
     e.target.blur();
+  }
+
+  deleteExpanseHandler = (id) => {
+    //copy data
+    const data = [...this.props.monthExpanses.expanses.data];
+
+    //find the index of the object in the array
+    const objIndex = Helper.findObjIndexById(id, data);
+
+    //remove from the array
+    data.splice(objIndex, 1);
+
+    //prepare the params
+    let params = {
+      id: id,
+      buildingName: this.props.location.state.buildingNameEng
+    };
+    this.props.deleteExpanse(params, data);
   }
 
   cellTextAreaInput = (cellInfo) => {
@@ -465,6 +490,7 @@ const mapDispatchToProps = dispatch => ({
   receiveExpanses: (payload) => dispatch(monthExpansesActions.receiveExpanses(payload)),
   updateExpanse: (payload, tableData) => dispatch(monthExpansesActions.updateExpanse(payload, tableData)),
   addExpanse: (payload, tableData) => dispatch(monthExpansesActions.addExpanse(payload, tableData)),
+  deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
   addNotification: (notification) => dispatch(notificationsActions.addNotification(notification))

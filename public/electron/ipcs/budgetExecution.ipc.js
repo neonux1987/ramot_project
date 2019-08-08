@@ -1,6 +1,6 @@
 const { ipcMain } = require('electron');
 const BudgetExecutionLogic = require('../../backend/logic/BudgetExecutionLogic');
-const Transactions = require('../../backend/logic/transactions/Transactions');
+const Transactions = require('../../backend/transactions/BudgetExecutionTransactions');
 
 const budgetExecutionIpc = (connection) => {
 

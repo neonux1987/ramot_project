@@ -103,11 +103,42 @@ const updateExpanse = (params = Object, tableData = Array) => {
   }
 };
 
+/**
+ * update expanse
+ * @param {*} payload 
+ * @param {*} tableData 
+ */
+const deleteExpanse = (params = Object, tableData = Array) => {
+  return dispatch => {
+    //send a request to backend to get the data
+    ipcRenderer.send("delete-month-expanse", params);
+    //listen when the data comes back
+    ipcRenderer.once("month-expanse-deleted", (event, arg) => {
+      if (arg.error) {
+        notify({
+          isError: true,
+          type: notificationTypes.db,
+          message: arg.error
+        });
+        playSound(soundTypes.error);
+      } else {
+        dispatch(receiveExpanses(tableData));
+        notify({
+          type: notificationTypes.message,
+          message: "השורה נמחקה בהצלחה."
+        });
+        playSound(soundTypes.message);
+      }
+    });
+  }
+};
+
 export default {
   fetchExpanses,
   addExpanse,
   updateExpanse,
   fetchingFailed,
   receiveExpanses,
-  requestExpanses
+  requestExpanses,
+  deleteExpanse
 };

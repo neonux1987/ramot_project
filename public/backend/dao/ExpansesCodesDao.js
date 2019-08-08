@@ -46,6 +46,15 @@ class ExpansesCodesDao {
       });
   }
 
+  deleteExpanseCodeTrx(id = Number, trx) {
+    return trx(expanses_codes)
+      .where({ id: id })
+      .del()
+      .catch((error) => {
+        throw error;
+      });
+  }
+
 }
 
 module.exports = ExpansesCodesDao;

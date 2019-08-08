@@ -101,6 +101,15 @@ class MonthExpansesDao {
       });
   }
 
+  deleteMonthExpanse({ buildingName = String, id = Number }) {
+    return this.connection(buildingName + "_month_expanses")
+      .where({ id: id })
+      .del()
+      .catch((error) => {
+        throw error;
+      });
+  }
+
 }
 
 module.exports = MonthExpansesDao;
