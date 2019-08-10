@@ -53,7 +53,7 @@ class SummarizedBudgetLogic {
         year_total_execution: year_total_execution,//year execution
         notes: budgets[0].notes//notes
       };
-      return this.sbd.updateSummarizedBudgetTrx(params, trx)
+      return this.sbd.updateSummarizedBudgetTrx(params, trx).then(() => params.data);
     }).catch(error => { throw error; });
   }
 

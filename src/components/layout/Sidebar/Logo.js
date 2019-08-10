@@ -6,7 +6,6 @@ const styles = theme => ({
     marginTop: "0.35em",
     color: "#f5f5f5",
     fontSize: "24px",
-    borderRight: "2px solid #167db9",
     width: "70px"
   },
   toolbarRoot: {

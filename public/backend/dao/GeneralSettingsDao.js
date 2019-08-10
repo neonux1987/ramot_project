@@ -7,18 +7,7 @@ class GeneralSettingsDao {
   /**
    * get general settings
    */
-  getGeneralSettings() {
-    return this.connection.select("*")
-      .from("general")
-      .catch((error) => {
-        throw error;
-      });
-  }
-
-  /**
-   * get general settings
-   */
-  getGeneralSettingsTrx(trx) {
+  getGeneralSettingsTrx(trx = this.connection) {
     return trx.select("*")
       .from("general")
       .catch((error) => {

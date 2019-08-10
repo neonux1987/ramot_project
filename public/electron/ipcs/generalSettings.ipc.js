@@ -7,7 +7,7 @@ const generalSettingsIpc = (connection) => {
   const generalSettingsLogic = new GeneralSettingsLogic(connection);
 
   ipcMain.on('get-general-settings', (event, arg) => {
-    generalSettingsLogic.getGeneralSettings().then((result) => {
+    generalSettingsLogic.getGeneralSettingsTrx().then((result) => {
       event.sender.send("general-settings-data", { data: result });
     }).catch((error) => {
       event.reply("general-settings-data", { error: error.message });

@@ -84,15 +84,17 @@ class BudgetExecutionDao {
    * quarterQuery - different months query
    * }
    */
-  getAllBudgetExecutions({
+  getAllBudgetExecutionsTrx({
     buildingName = String,
     date = {
       year: year = Number,
       quarter: quarter = String
     },
     quarterQuery = Array
-  }) {
-    let data = this.connection
+  },
+    trx = this.connection
+  ) {
+    let data = trx
       .where({ year: date.year, quarter: date.quarter })
       .select(
         "exec.id AS id",

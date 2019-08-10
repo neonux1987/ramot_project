@@ -11,10 +11,10 @@ class BudgetExecutionLogic {
     this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
   }
 
-  getAllBudgetExecutions(params) {
+  getAllBudgetExecutions(params, trx) {
     //params.buildingName = Helper.trimSpaces(params.buildingName);
     params.quarterQuery = BudgetExecutionLogic.getQuarterQuery(params.date.quarter);
-    return this.bed.getAllBudgetExecutions(params);
+    return this.bed.getAllBudgetExecutionsTrx(params, trx);
   }
 
   getBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, trx) {
@@ -22,7 +22,7 @@ class BudgetExecutionLogic {
     return this.bed.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
   }
 
-  updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, trx) {
+  /* updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, trx) {
     //get budget execution of the selected date
     return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
       .then((budgets) => {
@@ -32,13 +32,28 @@ class BudgetExecutionLogic {
             //prepare budget execution object to be updated
             budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], totalSum, date, settings[0].tax);
             //update month total expanses table
-            this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, settings[0].tax, trx);
+            this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, settings[0].tax, trx)
+              .catch(error => { throw error });
           }
           //update budget execution
           return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then(() => {
             //return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx);
           });
         })
+      })
+      .catch(error => { throw error });
+  } */
+
+  updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, tax = Number, trx) {
+    //get budget execution of the selected date
+    return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
+      .then((budgets) => {
+        if (totalSum !== null) {
+          //prepare budget execution object to be updated
+          budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], totalSum, date, tax);
+        }
+        //update budget execution
+        return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then((budget) => budget);
       })
       .catch(error => { throw error });
   }
@@ -74,6 +89,38 @@ class BudgetExecutionLogic {
     };
 
     newData[date.month + "_budget_execution"] = budget[date.month + "_budget_execution"];
+    return newData;
+  }
+
+  static prepareTotalBudgetObj(prevObj, newObj, totalBudgetExec, date) {
+
+    const monthNames = Helper.getQuarterMonths(date.quarterNum);
+    const saveObject = {};
+
+    for (let i = 0; i < monthNames.length; i++) {
+
+      saveObject[i][`${monthNames[i]}_budget`] = totalBudgetExec[`${monthNames[i]}_budget`] - prevObj[`${monthNames[i]}_budget`] + newObj[`${monthNames[i]}_budget`];
+
+    }
+
+    obj[`${date.month}_budget`] = obj[`${date.month}_budget`];
+    obj[`${date.month}_budget_execution`] = totalSum;
+    obj["total_execution"] += totalSum;
+    obj["difference"] = obj["total_budget"] - obj["total_execution"];
+
+    //if there is no value in the sum, reset
+    //the difference back to 0 too
+    if (totalSum === 0) {
+      obj["difference"] = 0.0;
+    }
+
+    let newData = {
+      [`${date.month}_budget`]: obj[`${date.month}_budget`],
+      total_execution: obj["total_execution"],
+      difference: obj["difference"]
+    };
+
+    newData[date.month + "_budget_execution"] = obj[date.month + "_budget_execution"];
     return newData;
   }
 

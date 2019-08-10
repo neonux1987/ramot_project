@@ -6,8 +6,8 @@ class GeneralSettingsLogic {
     this.gsd = new GeneralSettingsDao(connection);
   }
 
-  getGeneralSettings() {
-    return this.gsd.getGeneralSettings();
+  getGeneralSettingsTrx(trx) {
+    return this.gsd.getGeneralSettingsTrx(trx);
   }
 
   updateGeneralSettings(params) {
