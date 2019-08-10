@@ -163,6 +163,9 @@ class BudgetExecution extends Component {
     if (!this.state.editMode) {
       return newValue;
     }
+    if (cellInfo.row.summarized_section_id === 32 || cellInfo.row.summarized_section_id === 33) {
+      return this.cell(cellInfo);
+    }
     return <input
       type="number"
       className="cellRender"
@@ -217,11 +220,7 @@ class BudgetExecution extends Component {
             accessor: months[0].column1.accessor,
             Header: months[0].column1.header,
             headerStyle: { color: "#fff", background: "rgb(251, 38, 38)", fontWeight: "600" },
-            Cell: (cellInfo) => {
-              console.log(cellInfo.original.id === 32 ? "asdas" : "no");
-              return cellInfo.value;
-              //return cellInfo.orignal.id === 32 || cellInfo.orignal.id === 33 ? () => { this.cell(cellInfo) } : () => { this.cellNumberInput(cellInfo) }
-            },
+            Cell: this.cellNumberInput,
             style: {
               padding: 0
             }
