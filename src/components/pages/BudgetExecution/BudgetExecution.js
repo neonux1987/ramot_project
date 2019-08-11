@@ -94,6 +94,7 @@ class BudgetExecution extends Component {
     const data = [...this.props.budgetExecution.budgetExecutions.data];
     //find the index of the object in the array
     const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
+    let prevValue = data[objIndex][cellInfo.column.id];
     //replace the value
     data[objIndex][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
 
@@ -113,7 +114,7 @@ class BudgetExecution extends Component {
       budgetExec: preparedObj,
       summarized_section_id: data[objIndex].summarized_section_id
     };
-
+    this.calculateMonthTotalBudget(data, cellInfo.column.id, prevValue, data[objIndex][cellInfo.column.id]);
     this.props.updateBudgetExecution(params, data);
     e.target.blur();
   }
@@ -141,6 +142,16 @@ class BudgetExecution extends Component {
 
     return objToSave;
 
+  }
+
+  calculateMonthTotalBudget = (data, columnName, prevValue, newValue) => {
+    //find the index of the object in the array
+    const objIndex = Helper.findObjIndexById(33, data);
+    //get month names
+    const monthNames = Helper.getQuarterMonths(this.props.budgetExecution.date.quarter);
+
+    data[objIndex][columnName] = data[objIndex][columnName] - prevValue + newValue;
+    data[objIndex].total_budget = data[objIndex][`${monthNames[0]}_budget`] + data[objIndex][`${monthNames[1]}_budget`] + data[objIndex][`${monthNames[2]}_budget`];
   }
 
   cellTextAreaInput = (cellInfo) => {

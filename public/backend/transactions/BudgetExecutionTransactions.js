@@ -64,20 +64,23 @@ class BudgetExecutionTransactions {
               }
 
               for (let i = 0; i < result.length; i++) {
-                if (result[i].summarized_section_id !== 32 || result[i].summarized_section_id !== 33) {
-                  console.log(result[i].summarized_section_id);
+                if (result[i].summarized_section_id !== 32 && result[i].summarized_section_id !== 33) {
+                  //calculate budget
                   saveObject[`${monthNames[0]}_budget`] += result[i][`${monthNames[0]}_budget`];
                   saveObject[`${monthNames[1]}_budget`] += result[i][`${monthNames[1]}_budget`];
                   saveObject[`${monthNames[2]}_budget`] += result[i][`${monthNames[2]}_budget`];
                 }
               }
-
+              //calculate the total budget
               saveObject.total_budget = saveObject[`${monthNames[0]}_budget`] + saveObject[`${monthNames[1]}_budget`] + saveObject[`${monthNames[2]}_budget`];
 
               //update budget execution table
-              return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, saveObject, buildingName, date, 33, settings[0].tax, trx);
+              return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, saveObject, buildingName, date, 33, settings[0].tax, trx).then(() => saveObject[`${date.monthEng}_budget`]);
 
             });
+          })
+          .then((totalBudget) => {
+            console.log(totalBudget);
           });
 
       }).catch((error) => {
