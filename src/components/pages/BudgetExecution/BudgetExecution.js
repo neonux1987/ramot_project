@@ -95,8 +95,13 @@ class BudgetExecution extends Component {
     //find the index of the object in the array
     const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
     let prevValue = data[objIndex][cellInfo.column.id];
-    //replace the value
-    data[objIndex][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
+    if (cellInfo.column.id === "notes") {
+      //replace the value
+      data[objIndex][cellInfo.column.id] = e.target.value === "" ? "" : e.target.value;
+    } else {
+      //replace the value
+      data[objIndex][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
+    }
 
     //prepare the budget execution object
     const preparedObj = this.prepareBudgetExecObj(data[objIndex], this.props.budgetExecution.date.quarter);
@@ -137,7 +142,11 @@ class BudgetExecution extends Component {
     }
 
     objToSave["total_budget"] = totalBudget;
-    objToSave["difference"] = totalBudget - Number.parseFloat(budgetExec["total_execution"]);
+    //except the total month budget and total monh execution
+    //they don't need the difference calculation
+    if (budgetExec.summarized_section_id !== 32 && budgetExec.summarized_section_id !== 33) {
+      objToSave["difference"] = totalBudget - Number.parseFloat(budgetExec["total_execution"]);
+    }
     objToSave["notes"] = budgetExec["notes"];
 
     return objToSave;

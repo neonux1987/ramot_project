@@ -9,6 +9,7 @@ const DEFINITION = [{
   section: 'section',
   supplierName: 'supplierName',
   sum: { column: 'sum', type: 'REAL' },
+  tax: { column: 'tax', type: 'REAL' },
   notes: 'notes',
   month: 'month',
   year: { column: 'year', type: 'INTEGER' }
@@ -40,6 +41,7 @@ class MonthExpansesDao {
       "sc.section AS section",
       "building.supplierName AS supplierName",
       "building.sum AS sum",
+      "building.tax AS tax",
       "building.notes AS notes",
       "building.month AS month",
       "building.year AS year"
@@ -70,6 +72,7 @@ class MonthExpansesDao {
       "building.id AS id",
       "building.expanses_code_id AS expanses_code_id",
       "building.sum AS sum",
+      "building.tax AS tax",
       "sc.id AS summarized_section_id",
       "sc.section AS section",
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")

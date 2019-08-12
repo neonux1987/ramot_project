@@ -26,7 +26,7 @@ class MonthExpansesLogic {
 
     //prepare the expanse obejct, remove all the unneccessary 
     //fields so it can be saved.
-    const expanseToUpdate = { supplierName: expanse.supplierName, sum: expanse.sum, notes: expanse.notes };
+    const expanseToUpdate = { supplierName: expanse.supplierName, sum: expanse.sum, tax: expanse.tax, notes: expanse.notes };
     //update the expanse
     return this.med.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx)
       .then(() => {

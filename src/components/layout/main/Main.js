@@ -17,7 +17,8 @@ import { withRouter } from 'react-router';
 const styles = theme => ({
   main: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
+    //backgroundColor: theme.palette.background.default,
+    backgroundColor: "#f5f5f5",
     //padding: theme.spacing.unit * 3,
     overflow: "auto",
     display: "block",

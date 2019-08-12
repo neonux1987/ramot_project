@@ -5,7 +5,7 @@ import styles from './Spinner.module.css';
 export default (props) => {
   return (
     <div className={styles.spinner} style={{ color: props.color ? props.color : "#000000" }}>
-      <span style={{ margin: "0 5px" }}>{props.loadingText}</span>
+      <span style={{ margin: "0 5px", display: "flex", alignItems: "center" }}>{props.loadingText}</span>
       <DotLoader style={{ color: props.color ? props.color : "#000000" }} {...props} />
     </div>
   )

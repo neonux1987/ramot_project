@@ -15,11 +15,8 @@ const styles = theme => ({
     padding: "0",
     paddingTop: "10px",
     paddingBottom: "12px",
-    //backgroundColor: "#1fc8db",
-    //backgroundImage: "linear-gradient(141deg, #21bd99 0%, #14659e 75%)",
+    backgroundColor: "#22262E",
     marginBottom: "18px",
-    boxShadow: "inset 0px -1px 1px #050606",
-    borderBottom: "1px solid #262b2f",
   }
 });
 

@@ -32,12 +32,12 @@ const styles = theme => ({
     color: "#cbcdda"
   },
   collapse: {
-    background: "#22272f",
+    background: "#22262E",
     paddingTop: "10px",
     paddingBottom: "6px",
-    boxShadow: "inset 0px 1px 1px #050606, inset 0px -1px 1px #050606",
-    borderTop: "1px solid #262b2f",
-    borderBottom: "1px solid #262b2f"
+    //boxShadow: "inset 0px 1px 1px #050606, inset 0px -1px 1px #050606",
+    //borderTop: "1px solid #262b2f",
+    //borderBottom: "1px solid #262b2f"
   }
 });
 

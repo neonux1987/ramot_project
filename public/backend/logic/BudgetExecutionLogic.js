@@ -48,7 +48,9 @@ class BudgetExecutionLogic {
     //get budget execution of the selected date
     return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
       .then((budgets) => {
-        if (totalSum !== null) {
+        //except the total month budget and total monh execution
+        //they don't need the difference calculation
+        if (totalSum !== null && budgets[0].summarized_section_id !== 32 && budgets[0].summarized_section_id !== 33) {
           //prepare budget execution object to be updated
           budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], totalSum, date, tax);
         }

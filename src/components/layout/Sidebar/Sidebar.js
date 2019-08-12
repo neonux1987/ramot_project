@@ -31,7 +31,7 @@ const styles = theme => ({
     width: drawerWidth,
     /* boxShadow: "-22px 0px 4px #00000057", */
     //background: "#0000008f",
-    backgroundColor: "#191b21",
+    backgroundColor: "#1B1E24",
     //padding: "0 10px",
     overflow: "initial",
     position: "relative",

@@ -28,7 +28,8 @@ class MonthExpansesTransactions {
 
       //get the tax field from general settings
       return this.generalSettingsLogic.getGeneralSettingsTrx(trx).then((settings) => {
-
+        //update tax field to the last tax
+        expanse.tax = settings[0].tax;
         //update month expanses table
         return this.monthExpansesLogic.updateMonthExpanseTrx(date, buildingName, expanse, trx)
           .then((totalSum) => {

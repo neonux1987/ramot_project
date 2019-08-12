@@ -37,13 +37,13 @@ const LoadingCricle = (props) => {
   return (
     props.loading ? <div className={props.wrapperStyle ? props.wrapperStyle : props.classes.loadingWrapper}>
       <div style={{
-        background: "#fff",
-        border: "1px dashed rgb(154, 154, 154)",
+        background: "rgb(255, 255, 255)",
         padding: "20px",
-        margin: "0 auto",
-        width: "280px"
+        margin: "0px auto",
+        width: "110px",
+        boxShadow: "0px 0px 2px #00000026"
       }}>
-        <span className={props.textStyle ? props.textStyle : props.classes.loadingText}>טוען... </span>
+        {/* <span className={props.textStyle ? props.textStyle : props.classes.loadingText}>טוען... </span> */}
         <CircularProgress className={props.classes.circleStyle} />
       </div>
     </div > : null

@@ -277,6 +277,8 @@ class MonthExpanses extends Component {
     const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
     //replace the value
     data[objIndex][cellInfo.column.id] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
+    //update the tax to the current one
+    data[objIndex].tax = this.props.generalSettings.generalSettings.data[0].tax;
 
     //prepare the params
     let params = {
@@ -346,9 +348,10 @@ class MonthExpanses extends Component {
   };
 
   cellNumberInput = (cellInfo) => {
+    const { data } = this.props.monthExpanses.expanses;
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     if (!this.state.editMode) {
-      return newValue;
+      return <span title={`כולל ${data[cellInfo.index].tax}% מע"מ`}>{newValue}</span>;
     }
     return <input
       type="number"
@@ -390,7 +393,20 @@ class MonthExpanses extends Component {
     this.setState({
       ...this.state,
       addNewMode: !this.state.addNewMode
-    })
+    }, () => {
+      if (this.state.addNewMode) {
+        notify({
+          type: notificationTypes.message,
+          message: "מצב הוסף חדש הופעל"
+        });
+      } else {
+        notify({
+          type: notificationTypes.message,
+          message: "מצב הוסף חדש בוטל"
+        });
+      }
+      playSound(soundTypes.message);
+    });
   };
 
   render() {
@@ -435,12 +451,18 @@ class MonthExpanses extends Component {
               loadDataByDateHandler={this.loadExpansesByDate}
             />
           </div>
-          <InputExpansesField summarizedSections={summarizedSections.data} data={expanses.data} submitData={this.inputExpansesSubmit} findData={this.findExpanseIndex} />
           <EditControls
             editMode={this.state.editMode}
             toggleEditMode={this.toggleEditMode}
             addNewMode={this.state.addNewMode}
             toggleAddNewMode={this.toggleAddNewMode}
+          />
+          <InputExpansesField
+            show={this.state.addNewMode}
+            summarizedSections={summarizedSections.data}
+            data={expanses.data}
+            submitData={this.inputExpansesSubmit}
+            findData={this.findExpanseIndex}
           />
         </WithHeaderWrapper>
 

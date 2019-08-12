@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { TextField, withStyles, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import Spinner from '../../common/Spinner/Spinner';
+import ReactSelect from 'react-select';
 
 const styles = theme => ({
   container: {
@@ -43,6 +45,12 @@ const styles = theme => ({
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 200,
+  },
+  spinnnerWrapper: {
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+    width: "100%"
   }
 });
 
@@ -55,6 +63,12 @@ let keys = {
   5: "notes",
   6: "submit"
 }
+
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' },
+];
 
 class InputExpansesField extends Component {
 
@@ -71,7 +85,8 @@ class InputExpansesField extends Component {
         notes: ""
       },
       isNew: false,
-      isSpecial: false
+      isSpecial: false,
+      selectedOption: null
     };
     this.codeInput = React.createRef();
     this.supplierInput = React.createRef();
@@ -79,8 +94,13 @@ class InputExpansesField extends Component {
     this.reset = this.reset.bind(this);
   }
 
+  handleChange = selectedOption => {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
+  };
+
   componentDidMount() {
-    this.codeInput.focus();
+    //this.codeInput.focus();
   }
 
   /**
@@ -201,109 +221,128 @@ class InputExpansesField extends Component {
     });
   }
 
+  renderForm(selectDataRender) {
+    if (this.props.summarizedSections.length === 0 || !this.props.data.length === 0) {
+      return <div className={this.props.classes.spinnnerWrapper}><Spinner loadingText={"טוען נתונים של מצב הוספה..."} size={30} /></div>;
+    }
+    return <form
+      style={{ display: this.props.show ? "block" : "none" }}
+      id="inputExpanses"
+
+      noValidate
+      autoComplete="off"
+      onKeyPress={(event) => this.inputEnterPress(event)}
+      onChange={this.formChangeHandler} >
+      {/*  <ReactSelect
+    value={selectedOption}
+    onChange={this.handleChange}
+    options={options}
+  /> */}
+      <TextField
+        name="code"
+        label="הזן קוד:"
+        required
+        type="number"
+        className={this.props.classes.textField}
+        value={this.state.formInputs.code}
+        style={{ width: 160 }}
+        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        inputProps={{ 'data-order': 0 }}
+        inputRef={(input) => { this.codeInput = input; }}
+      />
+
+      <TextField
+        name="codeName"
+        label="הזן שם חשבון:"
+        className={this.props.classes.textField}
+        value={this.state.formInputs.codeName}
+        type="text"
+        inputProps={{ 'data-order': 1 }}
+        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+      />
+
+      {!this.state.isNew && <TextField
+        name="section"
+        label="מקושר לסעיף מסכם:"
+        className={this.props.classes.textField}
+        value={this.state.formInputs.section}
+        type="text"
+        inputProps={{ 'data-order': 2, readOnly: true }}
+        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+      />}
+
+      {this.state.isNew && <FormControl className={this.props.classes.formControl}>
+        <InputLabel className={this.props.classes.inputLabel} htmlFor="age-helper">בחר סעיף:</InputLabel>
+        <Select
+          value={this.state.formInputs.summarized_section_id}
+          onChange={this.formChangeHandler}
+          inputProps={{
+            'data-order': 2,
+            name: "summarized_section_id"
+          }}
+          MenuProps={{ onExited: () => this.supplierInput.focus() }}//will handle moving the focus to the supplierName input
+        >
+          <MenuItem value="">
+            <em></em>
+          </MenuItem>
+          {selectDataRender}
+        </Select>
+      </FormControl>}
+
+      <TextField
+        name="supplierName"
+        label="שם הספק:"
+        className={this.props.classes.textField}
+        type="text"
+        inputProps={{ 'data-order': 3 }}
+        value={this.state.formInputs.supplierName}
+        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        inputRef={(input) => { this.supplierInput = input; }}
+      />
+
+      <TextField
+        name="sum"
+        label="הזן סכום:"
+        className={this.props.classes.textField}
+        value={this.state.formInputs.sum}
+        type="number"
+        inputProps={{ 'data-order': 4 }}
+        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+      />
+
+      <TextField
+        name="notes"
+        label="הערות:"
+        className={this.props.classes.textFieldNotes}
+        multiline
+        value={this.state.formInputs.notes}
+        inputProps={{ 'data-order': 5 }}
+        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+      />
+
+      <Button style={{ backgroundColor: "#fd5050" }} name="reset" type="reset" onClick={this.reset} variant="contained" color="primary" className={this.props.classes.button}>
+        אפס
+  </Button>
+
+      <Button data-order="7" style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => this.props.submitData(this.state.formInputs, this.reset, this.state.isNew)} className={this.props.classes.button}>
+        שמור
+  </Button>
+
+    </form>;
+  }
+
   render() {
+    /* if (this.props.data.length !== 0 || this.props.summarizedSections.length === 0) {
+      return <LoadingCircle loading={true} />;
+    } */
+    const { selectedOption } = this.state;
     const selectDataRender = this.props.summarizedSections ? this.props.summarizedSections.map((summarizedSection) => {
       return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
     }) : "";
     return (
-      <form
-        id="inputExpanses"
-        className={this.props.classes.container}
-        noValidate
-        autoComplete="off"
-        onKeyPress={(event) => this.inputEnterPress(event)}
-        onChange={this.formChangeHandler} >
-        <TextField
-          name="code"
-          label="הזן קוד:"
-          required
-          type="number"
-          className={this.props.classes.textField}
-          value={this.state.formInputs.code}
-          style={{ width: 160 }}
-          InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-          inputProps={{ 'data-order': 0 }}
-          inputRef={(input) => { this.codeInput = input; }}
-        />
-
-        <TextField
-          name="codeName"
-          label="הזן שם חשבון:"
-          className={this.props.classes.textField}
-          value={this.state.formInputs.codeName}
-          type="text"
-          inputProps={{ 'data-order': 1 }}
-          InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-        />
-
-        {!this.state.isNew && <TextField
-          name="section"
-          label="מקושר לסעיף מסכם:"
-          className={this.props.classes.textField}
-          value={this.state.formInputs.section}
-          type="text"
-          inputProps={{ 'data-order': 2, readOnly: true }}
-          InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-        />}
-
-        {this.state.isNew && <FormControl className={this.props.classes.formControl}>
-          <InputLabel className={this.props.classes.inputLabel} htmlFor="age-helper">בחר סעיף:</InputLabel>
-          <Select
-            value={this.state.formInputs.summarized_section_id}
-            onChange={this.formChangeHandler}
-            inputProps={{
-              'data-order': 2,
-              name: "summarized_section_id"
-            }}
-            MenuProps={{ onExited: () => this.supplierInput.focus() }}//will handle moving the focus to the supplierName input
-          >
-            <MenuItem value="">
-              <em></em>
-            </MenuItem>
-            {selectDataRender}
-          </Select>
-        </FormControl>}
-
-        <TextField
-          name="supplierName"
-          label="שם הספק:"
-          className={this.props.classes.textField}
-          type="text"
-          inputProps={{ 'data-order': 3 }}
-          value={this.state.formInputs.supplierName}
-          InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-          inputRef={(input) => { this.supplierInput = input; }}
-        />
-
-        <TextField
-          name="sum"
-          label="הזן סכום:"
-          className={this.props.classes.textField}
-          value={this.state.formInputs.sum}
-          type="number"
-          inputProps={{ 'data-order': 4 }}
-          InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-        />
-
-        <TextField
-          name="notes"
-          label="הערות:"
-          className={this.props.classes.textFieldNotes}
-          multiline
-          value={this.state.formInputs.notes}
-          inputProps={{ 'data-order': 5 }}
-          InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-        />
-
-        <Button style={{ backgroundColor: "#fd5050" }} name="reset" type="reset" onClick={this.reset} variant="contained" color="primary" className={this.props.classes.button}>
-          אפס
-        </Button>
-
-        <Button data-order="7" style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => this.props.submitData(this.state.formInputs, this.reset, this.state.isNew)} className={this.props.classes.button}>
-          שמור
-        </Button>
-
-      </form>
+      <div className={this.props.classes.container}>
+        {this.renderForm(selectDataRender)}
+      </div>
     );
   }
 };
