@@ -221,7 +221,7 @@ class InputExpansesField extends Component {
     });
   }
 
-  renderForm(selectDataRender) {
+  renderForm(selectDataRender, selectedOption) {
     if (this.props.summarizedSections.length === 0 || !this.props.data.length === 0) {
       return <div className={this.props.classes.spinnnerWrapper}><Spinner loadingText={"טוען נתונים של מצב הוספה..."} size={30} /></div>;
     }
@@ -233,11 +233,11 @@ class InputExpansesField extends Component {
       autoComplete="off"
       onKeyPress={(event) => this.inputEnterPress(event)}
       onChange={this.formChangeHandler} >
-      {/*  <ReactSelect
-    value={selectedOption}
-    onChange={this.handleChange}
-    options={options}
-  /> */}
+      <ReactSelect
+        value={selectedOption}
+        onChange={this.handleChange}
+        options={options}
+      />
       <TextField
         name="code"
         label="הזן קוד:"
@@ -341,7 +341,7 @@ class InputExpansesField extends Component {
     }) : "";
     return (
       <div className={this.props.classes.container}>
-        {this.renderForm(selectDataRender)}
+        {this.renderForm(selectDataRender, selectedOption)}
       </div>
     );
   }
