@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
 import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
 import notificationsActions from '../../../redux/actions/notificationsActions';
+import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import dateActions from '../../../redux/actions/dateActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
@@ -82,6 +83,9 @@ class MonthExpanses extends Component {
 
     //get the building month expanses
     this.props.fetchExpanses(params);
+
+    //fetch expnases codes
+    this.props.fetchExpansesCodes(params);
 
   }
 
@@ -417,6 +421,7 @@ class MonthExpanses extends Component {
       headerTitle
     } = this.props.monthExpanses;
     const { summarizedSections } = this.props.summarizedSections;
+    const { expansesCodes } = this.props.expansesCodes;
     const buildingName = this.props.location.state.buildingName;
     return (
       <Fragment>
@@ -460,6 +465,7 @@ class MonthExpanses extends Component {
           <InputExpansesField
             show={this.state.addNewMode}
             summarizedSections={summarizedSections.data}
+            expansesCodes={expansesCodes.data}
             data={expanses.data}
             submitData={this.inputExpansesSubmit}
             findData={this.findExpanseIndex}
@@ -504,7 +510,8 @@ class MonthExpanses extends Component {
 const mapStateToProps = state => ({
   summarizedSections: state.summarizedSections,
   monthExpanses: state.monthExpanses,
-  generalSettings: state.generalSettings
+  generalSettings: state.generalSettings,
+  expansesCodes: state.expansesCodes
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -515,7 +522,8 @@ const mapDispatchToProps = dispatch => ({
   deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
-  addNotification: (notification) => dispatch(notificationsActions.addNotification(notification))
+  addNotification: (notification) => dispatch(notificationsActions.addNotification(notification)),
+  fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

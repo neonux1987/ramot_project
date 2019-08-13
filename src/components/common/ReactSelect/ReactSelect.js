@@ -1,12 +1,18 @@
+/* eslint-disable react/prop-types, react/jsx-handler-names */
+
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import Select from 'react-select';
-import { emphasize, makeStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
+import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
+import CancelIcon from '@material-ui/icons/Cancel';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
 const suggestions = [
   { label: 'Afghanistan' },
@@ -48,16 +54,18 @@ const suggestions = [
   label: suggestion.label,
 }));
 
-const useStyles = theme => ({
+const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
-    minWidth: 290,
+    width: 230,
+    display: "inline-block",
+    marginRight: "8px",
+    marginLeft: "8px"
   },
   input: {
     display: 'flex',
     padding: 0,
-    height: 'auto',
+    marginTop: "-3px"
   },
   valueContainer: {
     display: 'flex',
@@ -66,8 +74,17 @@ const useStyles = theme => ({
     alignItems: 'center',
     overflow: 'hidden',
   },
+  chip: {
+    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+  },
+  chipFocused: {
+    backgroundColor: emphasize(
+      theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+      0.08,
+    ),
+  },
   noOptionsMessage: {
-    //padding: theme.spacing.unit,
+    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
   },
   singleValue: {
     fontSize: 16,
@@ -75,18 +92,17 @@ const useStyles = theme => ({
   placeholder: {
     position: 'absolute',
     left: 2,
-    bottom: 6,
     fontSize: 16,
   },
   paper: {
     position: 'absolute',
     zIndex: 1,
-    //marginTop: theme.spacing(1),
+    marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
   },
   divider: {
-    //height: theme.spacing(2),
+    height: theme.spacing.unit * 2,
   },
 });
 
@@ -102,81 +118,32 @@ function NoOptionsMessage(props) {
   );
 }
 
-NoOptionsMessage.propTypes = {
-  /**
-   * The children to be rendered.
-   */
-  children: PropTypes.node,
-  /**
-   * Props to be passed on to the wrapper.
-   */
-  innerProps: PropTypes.object.isRequired,
-  selectProps: PropTypes.object.isRequired,
-};
-
 function inputComponent({ inputRef, ...props }) {
   return <div ref={inputRef} {...props} />;
 }
 
-inputComponent.propTypes = {
-  inputRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({
-      current: PropTypes.any.isRequired,
-    }),
-  ]),
-};
-
 function Control(props) {
-  const {
-    children,
-    innerProps,
-    innerRef,
-    selectProps: { classes, TextFieldProps },
-  } = props;
-
   return (
     <TextField
       fullWidth
       InputProps={{
         inputComponent,
         inputProps: {
-          className: classes.input,
-          ref: innerRef,
-          children,
-          ...innerProps,
+          className: props.selectProps.classes.input,
+          inputRef: props.innerRef,
+          children: props.children,
+          ...props.innerProps,
         },
       }}
-      {...TextFieldProps}
+      {...props.selectProps.textFieldProps}
     />
   );
 }
 
-Control.propTypes = {
-  /**
-   * Children to render.
-   */
-  children: PropTypes.node,
-  /**
-   * The mouse down event and the innerRef to pass down to the controller element.
-   */
-  innerProps: PropTypes.shape({
-    onMouseDown: PropTypes.func.isRequired,
-  }).isRequired,
-  innerRef: PropTypes.oneOfType([
-    PropTypes.oneOf([null]),
-    PropTypes.func,
-    PropTypes.shape({
-      current: PropTypes.any.isRequired,
-    }),
-  ]).isRequired,
-  selectProps: PropTypes.object.isRequired,
-};
-
 function Option(props) {
   return (
     <MenuItem
-      ref={props.innerRef}
+      buttonRef={props.innerRef}
       selected={props.isFocused}
       component="div"
       style={{
@@ -189,62 +156,17 @@ function Option(props) {
   );
 }
 
-Option.propTypes = {
-  /**
-   * The children to be rendered.
-   */
-  children: PropTypes.node,
-  /**
-   * props passed to the wrapping element for the group.
-   */
-  innerProps: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    key: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-    onMouseMove: PropTypes.func.isRequired,
-    onMouseOver: PropTypes.func.isRequired,
-    tabIndex: PropTypes.number.isRequired,
-  }).isRequired,
-  /**
-   * Inner ref to DOM Node
-   */
-  innerRef: PropTypes.oneOfType([
-    PropTypes.oneOf([null]),
-    PropTypes.func,
-    PropTypes.shape({
-      current: PropTypes.any.isRequired,
-    }),
-  ]).isRequired,
-  /**
-   * Whether the option is focused.
-   */
-  isFocused: PropTypes.bool.isRequired,
-  /**
-   * Whether the option is selected.
-   */
-  isSelected: PropTypes.bool.isRequired,
-};
-
 function Placeholder(props) {
-  const { selectProps, innerProps = {}, children } = props;
   return (
-    <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
-      {children}
+    <Typography
+      color="textSecondary"
+      className={props.selectProps.classes.placeholder}
+      {...props.innerProps}
+    >
+      {props.children}
     </Typography>
   );
 }
-
-Placeholder.propTypes = {
-  /**
-   * The children to be rendered.
-   */
-  children: PropTypes.node,
-  /**
-   * props passed to the wrapping element for the group.
-   */
-  innerProps: PropTypes.object,
-  selectProps: PropTypes.object.isRequired,
-};
 
 function SingleValue(props) {
   return (
@@ -254,29 +176,9 @@ function SingleValue(props) {
   );
 }
 
-SingleValue.propTypes = {
-  /**
-   * The children to be rendered.
-   */
-  children: PropTypes.node,
-  /**
-   * Props passed to the wrapping element for the group.
-   */
-  innerProps: PropTypes.any.isRequired,
-  selectProps: PropTypes.object.isRequired,
-};
-
 function ValueContainer(props) {
   return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
 }
-
-ValueContainer.propTypes = {
-  /**
-   * The children to be rendered.
-   */
-  children: PropTypes.node,
-  selectProps: PropTypes.object.isRequired,
-};
 
 function Menu(props) {
   return (
@@ -285,18 +187,6 @@ function Menu(props) {
     </Paper>
   );
 }
-
-Menu.propTypes = {
-  /**
-   * The children to be rendered.
-   */
-  children: PropTypes.element.isRequired,
-  /**
-   * Props to be passed to the menu wrapper.
-   */
-  innerProps: PropTypes.object.isRequired,
-  selectProps: PropTypes.object.isRequired,
-};
 
 const components = {
   Control,
@@ -308,47 +198,45 @@ const components = {
   ValueContainer,
 };
 
-export default function IntegrationReactSelect() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [single, setSingle] = React.useState(null);
+class IntegrationReactSelect extends React.Component {
 
-  function handleChangeSingle(value) {
-    setSingle(value);
+  render() {
+    const { classes, theme } = this.props;
+
+    const selectStyles = {
+      input: base => ({
+        ...base,
+        color: theme.palette.text.primary,
+        '& input': {
+          font: 'inherit',
+        },
+      }),
+    };
+    return (
+      <div className={classes.root}>
+        <NoSsr>
+          <Select
+            classes={classes}
+            styles={selectStyles}
+            options={this.props.options}
+            components={components}
+            value={this.props.inputValue}
+            onChange={this.props.onChangeHandler}
+            placeholder={this.props.placeholder}
+            isClearable
+            getOptionLabel={this.props.getOptionLabel}
+            getOptionValue={this.props.getOptionValue}
+          />
+          <div className={classes.divider} />
+        </NoSsr>
+      </div>
+    );
   }
-
-  const selectStyles = {
-    input: base => ({
-      ...base,
-      color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
-    }),
-  };
-
-  return (
-    <div className={classes.root}>
-      <NoSsr>
-        <Select
-          classes={classes}
-          styles={selectStyles}
-          inputId="react-select-single"
-          TextFieldProps={{
-            label: 'Country',
-            InputLabelProps: {
-              htmlFor: 'react-select-single',
-              shrink: true,
-            },
-          }}
-          placeholder="Search a country (start with a)"
-          options={suggestions}
-          components={components}
-          value={single}
-          onChange={handleChangeSingle}
-        />
-        <div className={classes.divider} />
-      </NoSsr>
-    </div>
-  );
 }
+
+IntegrationReactSelect.propTypes = {
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);

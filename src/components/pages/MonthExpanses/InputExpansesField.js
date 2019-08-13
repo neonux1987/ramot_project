@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TextField, withStyles, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import Spinner from '../../common/Spinner/Spinner';
-import ReactSelect from 'react-select';
+import ReactSelect from '../../common/ReactSelect/ReactSelect';
 
 const styles = theme => ({
   container: {
@@ -64,12 +64,6 @@ let keys = {
   6: "submit"
 }
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
-
 class InputExpansesField extends Component {
 
   constructor(props) {
@@ -94,9 +88,16 @@ class InputExpansesField extends Component {
     this.reset = this.reset.bind(this);
   }
 
-  handleChange = selectedOption => {
-    this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
+  reactSelectHandleChange = (selectedOption) => {
+    this.setState((prevState) => {
+      return {
+        formInputs: {
+          ...prevState.formInputs,
+          code: selectedOption.code,
+          codeName: selectedOption.codeName
+        }
+      };
+    });
   };
 
   componentDidMount() {
@@ -221,7 +222,7 @@ class InputExpansesField extends Component {
     });
   }
 
-  renderForm(selectDataRender, selectedOption) {
+  renderForm(selectDataRender) {
     if (this.props.summarizedSections.length === 0 || !this.props.data.length === 0) {
       return <div className={this.props.classes.spinnnerWrapper}><Spinner loadingText={"טוען נתונים של מצב הוספה..."} size={30} /></div>;
     }
@@ -234,11 +235,14 @@ class InputExpansesField extends Component {
       onKeyPress={(event) => this.inputEnterPress(event)}
       onChange={this.formChangeHandler} >
       <ReactSelect
-        value={selectedOption}
-        onChange={this.handleChange}
-        options={options}
+        inputValue={this.state.formInputs.code}
+        onChangeHandler={this.reactSelectHandleChange}
+        options={this.props.expansesCodes}
+        getOptionLabel={(option) => option.code}
+        getOptionValue={(option) => option.code}
+        placeholder="הזן קוד:"
       />
-      <TextField
+      {/* <TextField
         name="code"
         label="הזן קוד:"
         required
@@ -249,9 +253,18 @@ class InputExpansesField extends Component {
         InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         inputProps={{ 'data-order': 0 }}
         inputRef={(input) => { this.codeInput = input; }}
+      /> */}
+
+      <ReactSelect
+        inputValue={this.state.formInputs.codeName}
+        onChangeHandler={this.reactSelectHandleChange}
+        options={this.props.expansesCodes}
+        getOptionLabel={(option) => option.codeName}
+        getOptionValue={(option) => option.codeName}
+        placeholder="הזן שם חשבון:"
       />
 
-      <TextField
+      {/* <TextField
         name="codeName"
         label="הזן שם חשבון:"
         className={this.props.classes.textField}
@@ -259,7 +272,7 @@ class InputExpansesField extends Component {
         type="text"
         inputProps={{ 'data-order': 1 }}
         InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-      />
+      /> */}
 
       {!this.state.isNew && <TextField
         name="section"
@@ -335,13 +348,13 @@ class InputExpansesField extends Component {
     /* if (this.props.data.length !== 0 || this.props.summarizedSections.length === 0) {
       return <LoadingCircle loading={true} />;
     } */
-    const { selectedOption } = this.state;
+    console.log(this.state.formInputs);
     const selectDataRender = this.props.summarizedSections ? this.props.summarizedSections.map((summarizedSection) => {
       return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
     }) : "";
     return (
       <div className={this.props.classes.container}>
-        {this.renderForm(selectDataRender, selectedOption)}
+        {this.renderForm(selectDataRender)}
       </div>
     );
   }
