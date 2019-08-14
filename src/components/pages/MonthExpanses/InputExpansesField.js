@@ -70,8 +70,8 @@ class InputExpansesField extends Component {
     super(props);
     this.state = {
       formInputs: {
-        code: "",
-        codeName: "",
+        code: null,
+        codeName: null,
         summarized_section_id: "",
         section: "",
         supplierName: "",
@@ -79,10 +79,8 @@ class InputExpansesField extends Component {
         notes: ""
       },
       isNew: false,
-      isSpecial: false,
-      selectedOption: null
+      isSpecial: false
     };
-    this.codeInput = React.createRef();
     this.supplierInput = React.createRef();
     this.formChangeHandler = this.formChangeHandler.bind(this);
     this.reset = this.reset.bind(this);
@@ -93,78 +91,68 @@ class InputExpansesField extends Component {
       return {
         formInputs: {
           ...prevState.formInputs,
-          code: selectedOption.code,
-          codeName: selectedOption.codeName
+          code: selectedOption,
+          codeName: selectedOption
         }
       };
+    }, () => {
+      //find the section filld in the data
+      //and fill the input if section exist
+      const summarizedSection = this.findSection();
+      if (summarizedSection) {
+        this.setState({
+          formInputs: {
+            ...this.state.formInputs,
+            section: summarizedSection.section,
+            summarized_section_id: summarizedSection.id
+          }
+        });
+      }
     });
   };
 
-  componentDidMount() {
-    //this.codeInput.focus();
+  reactSelectOnBlurHandler = (event) => {
+    //this.supplierInput.focus();
   }
 
-  /**
-   * on key enter press, move to th next input element
-   * @param {*} event the event of the current clicked element
-   * @param {*} nextElement the next element to forward to focus to
-   */
-  inputEnterPress(event, dataOrder) {
-    //focus on next elemnt when finished by hitting enter or out of focus
-    if (event.key === "Enter") {
-      event.preventDefault();
-      let index = Number.parseInt(event.target.dataset.order || dataOrder);//current selected element index in the array of keys
-      let currentElement = event.target.form[keys[index]];//current selected form element
-      //the next element to move the focus to
-      let nextElement = event.target.form[keys[index + 1]];
+  reactSelectInputChangeHandler = (value, name) => {
 
-      if (keys[index + 1] === "summarized_section_id") {
-        //get the clickable div from the hidden input element
-        const clickableElement = nextElement.previousSibling;
-        clickableElement.focus();
-        clickableElement.click();
-      } else {
-        nextElement.focus();
-      }
-
-
-      //auto complete the data in all input fields 
-      //if the code or the codeName exist in the array or in db
-      //and move the focus to the sum field which in most case the most used input
-      if (currentElement.name === "code" || currentElement.name === "codeName") {
-        let row = this.props.findData(currentElement.value, currentElement.value);
-        if (row !== null) {
-          keys[2] = "section";
-          this.autoCompleteForm(row);
-          if (nextElement.name !== "submit") nextElement.select();
-        } else if (row === null && currentElement.name !== "codeName" && currentElement.value !== "") {
-          this.reset();
-          this.formChangeHandler(event);
-          let isSpecial = false;
-          if (currentElement.value.startsWith(9, 0)) {
-            isSpecial = true;
-          }
-
-          //not found in the data, it's new to be added
-          this.setState(() => {
-            keys[2] = "summarized_section_id";
-            return {
-              isNew: true,
-              isSpecial: isSpecial
-            };
-          });
+    /* this.setState({
+      formInputs: {
+        ...this.state.formInputs,
+        [name]: {
+          [name]: value
         }
       }
-      //if the next element is the button with id submit
-      //activate the click event to send the form data
-      else if (nextElement.name === "submit") {
-        nextElement.click();
-        nextElement.blur();
-      } else {
-        if (nextElement.name !== "submit") nextElement.select();
-      }
+    }, () => {
+      console.log(this.state.formInputs);
+    }); */
+  }
+
+  onMenuCloseHandler = () => {
+    this.supplierInput.focus();
+  }
+
+  findSection = () => {
+    const { code } = this.state.formInputs;
+    let foundObj = null;
+    if (code) {
+      foundObj = this.props.summarizedSections.find((section) => {
+        return section.id === code.summarized_section_id;
+      });
     }
-  };
+    return foundObj;
+  }
+
+  findExpanse = (code, codeName) => {
+    let foundObj = null;
+    if (code) {
+      foundObj = this.props.data.find((expanse) => {
+        if (code) return expanse.id === code.summarized_section_id;
+      });
+    }
+    return foundObj;
+  }
 
   /**
    * auto complete expanse into the form inputs
@@ -209,8 +197,8 @@ class InputExpansesField extends Component {
       return {
         ...this.state,
         formInputs: {
-          code: "",
-          codeName: "",
+          code: null,
+          codeName: null,
           summarized_section_id: "",
           section: "",
           supplierName: "",
@@ -227,12 +215,10 @@ class InputExpansesField extends Component {
       return <div className={this.props.classes.spinnnerWrapper}><Spinner loadingText={"טוען נתונים של מצב הוספה..."} size={30} /></div>;
     }
     return <form
-      style={{ display: this.props.show ? "block" : "none" }}
       id="inputExpanses"
-
       noValidate
       autoComplete="off"
-      onKeyPress={(event) => this.inputEnterPress(event)}
+      //onKeyPress={(event) => this.inputEnterPress(event)}
       onChange={this.formChangeHandler} >
       <ReactSelect
         inputValue={this.state.formInputs.code}
@@ -241,19 +227,17 @@ class InputExpansesField extends Component {
         getOptionLabel={(option) => option.code}
         getOptionValue={(option) => option.code}
         placeholder="הזן קוד:"
+        onBlurHandler={this.reactSelectOnBlurHandler}
+        autoFocus={true}
+        onMenuClose={this.onMenuCloseHandler}
+        //onInputChange={e => this.reactSelectInputChangeHandler(e, "code")}
+        inputId="code"
+        getNewOptionData={(inputValue, optionLabel) => ({
+          code: optionLabel,
+          code: inputValue,
+          __isNew__: true
+        })}
       />
-      {/* <TextField
-        name="code"
-        label="הזן קוד:"
-        required
-        type="number"
-        className={this.props.classes.textField}
-        value={this.state.formInputs.code}
-        style={{ width: 160 }}
-        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-        inputProps={{ 'data-order': 0 }}
-        inputRef={(input) => { this.codeInput = input; }}
-      /> */}
 
       <ReactSelect
         inputValue={this.state.formInputs.codeName}
@@ -262,17 +246,11 @@ class InputExpansesField extends Component {
         getOptionLabel={(option) => option.codeName}
         getOptionValue={(option) => option.codeName}
         placeholder="הזן שם חשבון:"
+        onBlurHandler={this.reactSelectOnBlurHandler}
+        onMenuClose={this.onMenuCloseHandler}
+        //onInputChange={e => this.reactSelectInputChangeHandler(e, "codeName")}
+        inputId="codeName"
       />
-
-      {/* <TextField
-        name="codeName"
-        label="הזן שם חשבון:"
-        className={this.props.classes.textField}
-        value={this.state.formInputs.codeName}
-        type="text"
-        inputProps={{ 'data-order': 1 }}
-        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-      /> */}
 
       {!this.state.isNew && <TextField
         name="section"
@@ -345,10 +323,6 @@ class InputExpansesField extends Component {
   }
 
   render() {
-    /* if (this.props.data.length !== 0 || this.props.summarizedSections.length === 0) {
-      return <LoadingCircle loading={true} />;
-    } */
-    console.log(this.state.formInputs);
     const selectDataRender = this.props.summarizedSections ? this.props.summarizedSections.map((summarizedSection) => {
       return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
     }) : "";

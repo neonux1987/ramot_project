@@ -98,6 +98,7 @@ class MonthExpansesDao {
   }
 
   addNewMonthExpanse(buildingName = String, record = Object) {
+    console.log(record);
     return this.connection(buildingName + "_month_expanses").insert(record)
       .catch((error) => {
         throw error;

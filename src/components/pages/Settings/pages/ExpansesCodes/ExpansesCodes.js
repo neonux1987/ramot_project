@@ -252,12 +252,13 @@ class ExpansesCodes extends Component {
           noDataText={"לא נמצא מידע בבסיס נתונים."}
           loading={expansesCodes.isFetching}
           LoadingComponent={LoadingCircle}
-          defaultPageSize={50}
+          defaultPageSize={100}
           showPagination={true}
           data={expansesCodes.data}
           columns={this.generateHeaders()}
           resizable={true}
-          minRows={0}
+          //minRows={0}
+          filterable
         />
       </Fragment>
     );

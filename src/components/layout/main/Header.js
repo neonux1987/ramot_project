@@ -12,10 +12,10 @@ const styles = (theme) => ({
   },
   header: {
     display: "inline-block",
-    background: "#fff",
-    padding: "0 10px 6px",
-    border: "1px solid #e8e8e8",
-    boxShadow: "0px 0px 2px #0000000d"
+    //background: "#fff",
+    padding: "0 0px 6px",
+    //border: "1px solid #e8e8e8",
+    //boxShadow: "0px 0px 2px #0000000d"
   },
   headerTitle: {
     marginBottom: "0",

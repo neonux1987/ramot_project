@@ -103,59 +103,34 @@ class MonthExpanses extends Component {
       return;
     }
 
-    if (!isNew) {
-      //copy state data
-      let copyData = [...data];
-      //parse form inputs
-      const parsedFormInputs = this.parseFormInputs(formInputs);
+    const copiedFormInputs = { ...formInputs };
+    copiedFormInputs.code = copiedFormInputs.code.code;
+    copiedFormInputs.codeName = copiedFormInputs.codeName.codeName;
+    copiedFormInputs.expanses_code_id = formInputs.code.id;
+    copiedFormInputs.year = this.props.monthExpanses.date.year;
+    copiedFormInputs.month = this.props.monthExpanses.date.month;
+    copiedFormInputs.tax = this.props.generalSettings.generalSettings.data[0].tax;
 
-      //create a copy of the data
-      copyData[formInputs.index] = {
-        ...copyData[formInputs.index],
-        ...parsedFormInputs,
-        codeName: copyData[formInputs.index].codeName,//dont change the codeame field
-        sum: parsedFormInputs.sum
-      }
+    //parse form inputs
+    const parsedFormInputs = this.parseFormInputs(copiedFormInputs);
+    console.log(formInputs)
+    //create a copy of the data
+    data.push(parsedFormInputs);
 
-      //prepare the expanse object 
-      let params = {
-        expanse: copyData[formInputs.index],
-        buildingName: this.props.location.state.buildingNameEng,
-        date: {
-          ...this.props.monthExpanses.date
-        }
-      };
-      //add new expanse into the database
-      this.props.updateExpanse(params, copyData);
-
-    } else {
-      /*
-              //prepare the expanse object 
-              let params = {
-                expanse: formInputs,
-                buildingName: this.props.location.state.engLabel,
-                ...this.props.monthExpanses.date
-              };
-      
-      
-              //add new expanse into the database
-               this.monthExpansesController.addExpanse(params, (result) => {
-                //copy state data
-                let copyData = [...this.state.data];
-                copyData.push(result);
-                this.setState(() => ({
-                  ...this.state,
-                  data: copyData
-                }));
-              }); */
+    const params = {
+      buildingName: this.props.location.state.buildingNameEng,
+      expanse: parsedFormInputs
     }
+
+    this.props.addExpanse(params, data);
+
     //reset form state
     reset();
 
   }
 
   validateFormInputs(formInputs) {
-    if (formInputs.code === "" || formInputs.codeName === "") {
+    if (!formInputs.code && !formInputs.codeName) {
       return false;
     }
     return true;
@@ -167,6 +142,8 @@ class MonthExpanses extends Component {
     copyFormInputs.code = Number.parseInt(copyFormInputs.code);
     copyFormInputs.sum = copyFormInputs.sum === "" ? 0 : Number.parseFloat(copyFormInputs.sum);
     copyFormInputs.summarized_section_id = Number.parseInt(copyFormInputs.summarized_section_id);
+    copyFormInputs.year = Number.parseInt(formInputs.year);
+    copyFormInputs.tax = Number.parseFloat(formInputs.tax);
 
     return copyFormInputs;
   }
@@ -221,9 +198,11 @@ class MonthExpanses extends Component {
         show: this.state.editMode
       },
       {
-        accessor: "expanses_code_id",
         Header: "ספרור",
         width: 100,
+        Cell: (row) => {
+          return <span>{row.index + 1}</span>;
+        },
         headerStyle: headerStyle
       },
       {
@@ -423,6 +402,13 @@ class MonthExpanses extends Component {
     const { summarizedSections } = this.props.summarizedSections;
     const { expansesCodes } = this.props.expansesCodes;
     const buildingName = this.props.location.state.buildingName;
+    const addNewBox = this.state.addNewMode ? <InputExpansesField
+      summarizedSections={summarizedSections.data}
+      expansesCodes={expansesCodes.data}
+      data={expanses.data}
+      submitData={this.inputExpansesSubmit}
+      findData={this.findExpanseIndex}
+    /> : null;
     return (
       <Fragment>
 
@@ -430,7 +416,7 @@ class MonthExpanses extends Component {
           <div style={{ paddingBottom: "10px" }}>
             <Header
               title={headerTitle}
-              textColor={{ color: "rgb(17, 164, 220)" }}
+              textColor={{ color: "rgb(30, 110, 193)" }}
               subTitle={buildingName + " / " + date.monthHeb + " / " + date.year}
             />
             <PageControls
@@ -462,14 +448,7 @@ class MonthExpanses extends Component {
             addNewMode={this.state.addNewMode}
             toggleAddNewMode={this.toggleAddNewMode}
           />
-          <InputExpansesField
-            show={this.state.addNewMode}
-            summarizedSections={summarizedSections.data}
-            expansesCodes={expansesCodes.data}
-            data={expanses.data}
-            submitData={this.inputExpansesSubmit}
-            findData={this.findExpanseIndex}
-          />
+          {addNewBox}
         </WithHeaderWrapper>
 
         <ReactTableContainer
@@ -481,6 +460,7 @@ class MonthExpanses extends Component {
             borderRadius: "4px",
             //height: "700px" // This will force the table body to overflow and scroll, since there is not enough room
           }}
+          //table body props, set the height of the table
           getTbodyProps={(state, rowInfo, column, instance) => {
             return {
               style: {
@@ -489,16 +469,25 @@ class MonthExpanses extends Component {
               }
             }
           }}
+          //filter props set the filter inputs style
+          getTheadFilterThProps={(state, rowInfo, column) => {
+            return {
+              style: {
+                background: "#ffffff"
+              }
+            };
+          }}
           loadingText={"טוען..."}
-          noDataText={"לא נמצא מידע בבסיס נתונים."}
+          noDataText={"לא נמצא מידע"}
           loading={expanses.isFetching}
           LoadingComponent={LoadingCircle}
-          defaultPageSize={50}
+          defaultPageSize={100}
           showPagination={true}
           data={expanses.data}
           columns={this.generateHeaders()}
           resizable={true}
-          minRows={0}
+          //minRows={0}
+          filterable
         //PaginationComponent={PaginationBar}
         />
       </Fragment>

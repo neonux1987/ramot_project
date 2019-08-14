@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Menu from './Menu';
 import { ipcRenderer } from 'electron';
-import { withStyles, Drawer, Divider } from '@material-ui/core';
+import { withStyles, Drawer } from '@material-ui/core';
 import Logo from './Logo'
 import PropTypes from 'prop-types';
 import NavButton from './NavButton';
@@ -226,7 +226,6 @@ class Sidebar extends Component {
         {render}
 
         <div className={this.props.classes.settingsWrapper}>
-          <Divider className={this.props.classes.settingsDivider} />
           <NavButton style={{ marginRight: 0 }} page="הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
             activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.settingsButtonId, this.state.settingsButtonId))} >
             <Settings />

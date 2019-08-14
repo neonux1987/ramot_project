@@ -510,12 +510,12 @@ class BudgetExecution extends Component {
           noDataText={"המידע לא נמצא"}
           loading={budgetExecutions.isFetching}
           LoadingComponent={LoadingCircle}
-          defaultPageSize={50}
+          defaultPageSize={100}
           showPagination={true}
           data={budgetExecutions.data}
           columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
           resizable={true}
-          minRows={0}
+        //minRows={0}
         />
       </div>
     );

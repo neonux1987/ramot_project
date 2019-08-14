@@ -22,6 +22,21 @@ class MonthExpansesLogic {
     return this.med.getMonthExpansesBySummarizedSectionId(params);
   }
 
+  addNewMonthExpanse(params) {
+    //prepare the expanse obejct, remove all the unneccessary 
+    //fields so it can be saved.
+    const expanseToInsert = {
+      year: params.expanse.year,
+      month: params.expanse.month,
+      supplierName: params.expanse.supplierName,
+      expanses_code_id: params.expanse.expanses_code_id,
+      sum: params.expanse.sum,
+      tax: params.expanse.tax,
+      notes: params.expanse.notes
+    };
+    return this.med.addNewMonthExpanse(params.buildingName, expanseToInsert);
+  }
+
   updateMonthExpanseTrx(date = Object, buildingName = String, expanse = Object, trx) {
 
     //prepare the expanse obejct, remove all the unneccessary 

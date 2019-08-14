@@ -67,8 +67,21 @@ const addExpanse = (params = Object, tableData) => {
     //send a request to backend to get the data
     ipcRenderer.send("add-new-month-expanse", params);
     //listen when the data comes back
-    ipcRenderer.once("month-expanse-added", () => {
-      dispatch(receiveExpanses(tableData));
+    ipcRenderer.once("month-expanse-added", (arg) => {
+      if (arg.error) {
+        //let react know that an erro occured while trying to fetch
+        dispatch(fetchingFailed(arg.error));
+        //send the error to the notification center
+        notify({
+          isError: true,
+          type: notificationTypes.db,
+          message: arg.error
+        });
+        playSound(soundTypes.error);
+      } else {
+        //success store the data
+        dispatch(receiveExpanses(tableData));
+      }
     });
   }
 };
