@@ -201,7 +201,7 @@ class MonthExpanses extends Component {
         Header: "ספרור",
         width: 100,
         Cell: (row) => {
-          return <span>{row.index + 1}</span>;
+          return <span>{row.viewIndex + 1}</span>;
         },
         headerStyle: headerStyle
       },
@@ -488,7 +488,13 @@ class MonthExpanses extends Component {
           resizable={true}
           //minRows={0}
           filterable
-        //PaginationComponent={PaginationBar}
+          //PaginationComponent={PaginationBar}
+          defaultSorted={[
+            {
+              id: "code",
+              asc: true
+            }
+          ]}
         />
       </Fragment>
     );

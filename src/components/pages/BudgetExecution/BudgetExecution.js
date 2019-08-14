@@ -179,12 +179,13 @@ class BudgetExecution extends Component {
   };
 
   cellNumberInput = (cellInfo) => {
+    if (cellInfo.row.summarized_section_id === 32 || cellInfo.row.summarized_section_id === 33) {
+
+      return this.cell(cellInfo);
+    }
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     if (!this.state.editMode) {
       return newValue;
-    }
-    if (cellInfo.row.summarized_section_id === 32 || cellInfo.row.summarized_section_id === 33) {
-      return this.cell(cellInfo);
     }
     return <input
       type="number"
@@ -213,7 +214,10 @@ class BudgetExecution extends Component {
             accessor: "summarized_section_id",
             Header: "ספרור",
             headerStyle: { background: "#000", color: "#fff" },
-            width: 100
+            width: 100,
+            Cell: (row) => {
+              return <span>{row.viewIndex + 1}</span>;
+            },
           }
         ]
       },
@@ -411,7 +415,7 @@ class BudgetExecution extends Component {
       budgetExecutions,
       headerTitle
     } = this.props.budgetExecution;
-    const buildingName = this.props.location.state.buildingName;
+    const buildingName = this.props.location.state.buildingName; console.log(budgetExecutions.data);
     return (
       <div>
         <WithHeaderWrapper>
