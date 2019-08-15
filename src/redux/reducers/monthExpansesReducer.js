@@ -32,10 +32,22 @@ export default (state = initState, action) => {
           isFetching: true,
         }
       }
-    case "UPDATE_MONTH_EXPANSES":
-      return {
-        ...state,
-        tableData: action.payload
+    case "UPDATE_MONTH_EXPANSE":
+      {
+        const expanse = action.payload.expanse;//expanse object to update
+        const index = action.payload.index;//index number of the expanse object in the array of data
+        const copyData = [...state.expanses.data];//copy data to not mess with the original
+
+        //replace the old object with the updated object
+        copyData[index] = expanse;
+
+        return {
+          ...state,
+          expanses: {
+            ...state.expanses,
+            data: copyData
+          }
+        }
       }
     case "FETCHING_FAILED":
       return {

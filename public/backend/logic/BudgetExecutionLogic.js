@@ -94,36 +94,26 @@ class BudgetExecutionLogic {
     return newData;
   }
 
-  static prepareTotalBudgetObj(prevObj, newObj, totalBudgetExec, date) {
+  static calculateTotalExec(quarter, result) {
+    const monthNames = Helper.getQuarterMonths(quarter);
 
-    const monthNames = Helper.getQuarterMonths(date.quarterNum);
-    const saveObject = {};
-
-    for (let i = 0; i < monthNames.length; i++) {
-
-      saveObject[i][`${monthNames[i]}_budget`] = totalBudgetExec[`${monthNames[i]}_budget`] - prevObj[`${monthNames[i]}_budget`] + newObj[`${monthNames[i]}_budget`];
-
+    const saveObject = {
+      [`${monthNames[0]}_budget_execution`]: 0,
+      [`${monthNames[1]}_budget_execution`]: 0,
+      [`${monthNames[2]}_budget_execution`]: 0
     }
 
-    obj[`${date.month}_budget`] = obj[`${date.month}_budget`];
-    obj[`${date.month}_budget_execution`] = totalSum;
-    obj["total_execution"] += totalSum;
-    obj["difference"] = obj["total_budget"] - obj["total_execution"];
-
-    //if there is no value in the sum, reset
-    //the difference back to 0 too
-    if (totalSum === 0) {
-      obj["difference"] = 0.0;
+    for (let i = 0; i < result.length; i++) {
+      if (result[i].summarized_section_id !== 32 && result[i].summarized_section_id !== 33) {
+        //calculate budget
+        saveObject[`${monthNames[0]}_budget_execution`] += result[i][`${monthNames[0]}_budget_execution`];
+        saveObject[`${monthNames[1]}_budget_execution`] += result[i][`${monthNames[1]}_budget_execution`];
+        saveObject[`${monthNames[2]}_budget_execution`] += result[i][`${monthNames[2]}_budget_execution`];
+      }
     }
-
-    let newData = {
-      [`${date.month}_budget`]: obj[`${date.month}_budget`],
-      total_execution: obj["total_execution"],
-      difference: obj["difference"]
-    };
-
-    newData[date.month + "_budget_execution"] = obj[date.month + "_budget_execution"];
-    return newData;
+    //calculate the total budget
+    saveObject.total_execution = saveObject[`${monthNames[0]}_budget_execution`] + saveObject[`${monthNames[1]}_budget_execution`] + saveObject[`${monthNames[2]}_budget_execution`];
+    return saveObject;
   }
 
 }

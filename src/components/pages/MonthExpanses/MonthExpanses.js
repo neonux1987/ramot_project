@@ -113,16 +113,16 @@ class MonthExpanses extends Component {
 
     //parse form inputs
     const parsedFormInputs = this.parseFormInputs(copiedFormInputs);
-    console.log(formInputs)
-    //create a copy of the data
-    data.push(parsedFormInputs);
 
     const params = {
       buildingName: this.props.location.state.buildingNameEng,
-      expanse: parsedFormInputs
+      expanse: parsedFormInputs,
+      date: {
+        ...this.props.monthExpanses.date
+      }
     }
 
-    this.props.addExpanse(params, data);
+    this.props.addExpanse(params, data, params.expanse);
 
     //reset form state
     reset();
@@ -253,26 +253,33 @@ class MonthExpanses extends Component {
   }
 
   cellInputOnBlurHandler(e, cellInfo) {
-    //copy data
-    const data = [...this.props.monthExpanses.expanses.data];
+    //the data
+    const { data } = this.props.monthExpanses.expanses;
 
-    //find the index of the object in the array
-    const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
+    //index of the expanse in the data array
+    const index = cellInfo.index;
+    //the name of the field in the expanse object
+    const fieldName = cellInfo.column.id;
+
+    const expanse = { ...data[index] };
+
     //replace the value
-    data[objIndex][cellInfo.column.id] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
+    expanse[fieldName] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
+
     //update the tax to the current one
-    data[objIndex].tax = this.props.generalSettings.generalSettings.data[0].tax;
+    expanse.tax = this.props.generalSettings.generalSettings.data[0].tax;
 
     //prepare the params
     let params = {
-      expanse: { ...data[objIndex] },
+      index: index,
+      expanse: expanse,
       buildingName: this.props.location.state.buildingNameEng,
       date: {
         ...this.props.monthExpanses.date
       }
     };
     //update expanse
-    this.props.updateExpanse(params, data);
+    this.props.updateExpanse(params, data, e.target, fieldName);
     e.target.blur();
   }
 
@@ -512,8 +519,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchExpanses: (payload) => dispatch(monthExpansesActions.fetchExpanses(payload)),
   receiveExpanses: (payload) => dispatch(monthExpansesActions.receiveExpanses(payload)),
-  updateExpanse: (payload, tableData) => dispatch(monthExpansesActions.updateExpanse(payload, tableData)),
-  addExpanse: (payload, tableData) => dispatch(monthExpansesActions.addExpanse(payload, tableData)),
+  updateExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesActions.updateExpanse(payload, tableData, target, fieldName)),
+  addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),
   deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),

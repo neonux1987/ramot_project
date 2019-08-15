@@ -180,7 +180,6 @@ class BudgetExecution extends Component {
 
   cellNumberInput = (cellInfo) => {
     if (cellInfo.row.summarized_section_id === 32 || cellInfo.row.summarized_section_id === 33) {
-
       return this.cell(cellInfo);
     }
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
@@ -415,7 +414,7 @@ class BudgetExecution extends Component {
       budgetExecutions,
       headerTitle
     } = this.props.budgetExecution;
-    const buildingName = this.props.location.state.buildingName; console.log(budgetExecutions.data);
+    const buildingName = this.props.location.state.buildingName; console.log("yes");
     return (
       <div>
         <WithHeaderWrapper>
@@ -428,7 +427,7 @@ class BudgetExecution extends Component {
             </Header>
             <PageControls
               excel={{
-                data: budgetExecutions.data,
+                data: [...budgetExecutions.data],
                 fileName: Helper.getBudgetExecutionFilename(buildingName, date),
                 sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
                 header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,

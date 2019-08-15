@@ -27,7 +27,7 @@ const monthExpansesIpc = (connection) => {
   });
 
   ipcMain.on('add-new-month-expanse', (event, data) => {
-    monthExpansesLogic.addNewMonthExpanse(data).then((result) => {
+    transactions.addNewMonthExpanse(data).then((result) => {
       event.reply("month-expanse-added", result);
     }).catch((err) => {
       console.log(err)

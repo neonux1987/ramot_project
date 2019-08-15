@@ -13,28 +13,31 @@ class MonthExpansesLogic {
   }
 
   getAllMonthExpanses(params) {
-    params.buildingName = Helper.trimSpaces(params.buildingName);
     return this.med.getAllMonthExpanses(params);
   }
 
-  getMonthExpansesBySummarizedSectionId(params) {
-    params.buildingName = Helper.trimSpaces(params.buildingName);
-    return this.med.getMonthExpansesBySummarizedSectionId(params);
+  getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, summarized_section_id, trx) {
+    return this.med.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, summarized_section_id, trx);
   }
 
-  addNewMonthExpanse(params) {
+  addNewMonthExpanseTrx(date, buildingName, expanse, trx) {
     //prepare the expanse obejct, remove all the unneccessary 
     //fields so it can be saved.
     const expanseToInsert = {
-      year: params.expanse.year,
-      month: params.expanse.month,
-      supplierName: params.expanse.supplierName,
-      expanses_code_id: params.expanse.expanses_code_id,
-      sum: params.expanse.sum,
-      tax: params.expanse.tax,
-      notes: params.expanse.notes
+      year: expanse.year,
+      month: expanse.month,
+      supplierName: expanse.supplierName,
+      expanses_code_id: expanse.expanses_code_id,
+      sum: expanse.sum,
+      tax: expanse.tax,
+      notes: expanse.notes
     };
-    return this.med.addNewMonthExpanse(params.buildingName, expanseToInsert);
+    return this.med.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx)
+      .then((returnedExpanse) => {
+        //get all the expanses by summarized sections id
+        return returnedExpanse;
+      })
+      .catch(error => { throw error });
   }
 
   updateMonthExpanseTrx(date = Object, buildingName = String, expanse = Object, trx) {

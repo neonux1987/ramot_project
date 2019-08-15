@@ -62,12 +62,12 @@ const fetchingFailed = function (error) {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const addExpanse = (params = Object, tableData) => {
+const addExpanse = (params = Object, tableData, expanse) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("add-new-month-expanse", params);
     //listen when the data comes back
-    ipcRenderer.once("month-expanse-added", (arg) => {
+    ipcRenderer.once("month-expanse-added", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
@@ -79,8 +79,11 @@ const addExpanse = (params = Object, tableData) => {
         });
         playSound(soundTypes.error);
       } else {
+        expanse.id = arg[0];
+        tableData.push(expanse);
         //success store the data
         dispatch(receiveExpanses(tableData));
+        //dispatch(fetchExpanses(params));
       }
     });
   }
@@ -91,13 +94,26 @@ const addExpanse = (params = Object, tableData) => {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const updateExpanse = (params = Object, tableData = Array) => {
+const updateExpanse = (params = Object, tableData = Array, target, fieldName) => {
   return dispatch => {
+
+    //first update the store for fast user respond
+    dispatch({
+      type: "UPDATE_MONTH_EXPANSE",
+      payload: {
+        index: params.index,
+        expanse: params.expanse
+      }
+    });
     //send a request to backend to get the data
     ipcRenderer.send("update-month-expanse", params);
     //listen when the data comes back
     ipcRenderer.once("month-expanse-updated", (event, arg) => {
       if (arg.error) {
+        //reverse the changes to the old data
+        dispatch(receiveExpanses(tableData));
+        //set the input field value back to the old value
+        target.value = tableData[params.index][fieldName];
         notify({
           isError: true,
           type: notificationTypes.db,
@@ -105,7 +121,6 @@ const updateExpanse = (params = Object, tableData = Array) => {
         });
         playSound(soundTypes.error);
       } else {
-        dispatch(receiveExpanses(tableData));
         notify({
           type: notificationTypes.message,
           message: "השורה עודכנה בהצלחה."

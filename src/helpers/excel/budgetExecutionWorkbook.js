@@ -103,6 +103,7 @@ export default (
     sheetTitle: String,
     header: String,
     date: Object,
+    data: Array
   }) => {
   //workbook properties
   workbook.creator = 'NDT Solutions';
