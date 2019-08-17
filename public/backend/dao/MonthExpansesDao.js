@@ -113,6 +113,17 @@ class MonthExpansesDao {
       });
   }
 
+  createDatabaseTable() {
+    return this.connection.schema.createTable('users', function (table) {
+      table.increments();
+      table.string('name');
+      table.timestamps();
+    })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
 }
 
 module.exports = MonthExpansesDao;

@@ -109,7 +109,7 @@ class MonthExpanses extends Component {
     copiedFormInputs.expanses_code_id = formInputs.code.id;
     copiedFormInputs.year = this.props.monthExpanses.date.year;
     copiedFormInputs.month = this.props.monthExpanses.date.month;
-    copiedFormInputs.tax = this.props.generalSettings.generalSettings.data[0].tax;
+    copiedFormInputs.tax = this.props.generalSettings.tax;
 
     //parse form inputs
     const parsedFormInputs = this.parseFormInputs(copiedFormInputs);
@@ -151,7 +151,7 @@ class MonthExpanses extends Component {
   componentWillUnmount() {
     this.props.setCurrentDate();
     //on exit init table data
-    this.props.receiveExpanses([]);
+    this.props.initState();
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -213,18 +213,21 @@ class MonthExpanses extends Component {
       {
         accessor: "codeName",
         Header: "שם חשבון",
-        headerStyle: headerStyle
+        headerStyle: headerStyle,
+        filterMethod: Helper.reactTableFilterMethod
       },
       {
         accessor: "section",
         Header: "מקושר לסעיף",
-        headerStyle: headerStyle
+        headerStyle: headerStyle,
+        filterMethod: Helper.reactTableFilterMethod
       },
       {
         accessor: "supplierName",
         Header: "שם הספק",
         headerStyle: headerStyle,
         Cell: this.cellTextInput,
+        filterMethod: Helper.reactTableFilterMethod,
         style: {
           padding: 0
         }
@@ -243,6 +246,7 @@ class MonthExpanses extends Component {
         Header: "הערות",
         headerStyle: headerStyle,
         Cell: this.cellTextAreaInput,
+        filterMethod: Helper.reactTableFilterMethod,
         style: {
           padding: 0,
           paddingLeft: "10px"
@@ -267,7 +271,7 @@ class MonthExpanses extends Component {
     expanse[fieldName] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
 
     //update the tax to the current one
-    expanse.tax = this.props.generalSettings.generalSettings.data[0].tax;
+    expanse.tax = this.props.generalSettings.tax;
 
     //prepare the params
     let params = {
@@ -400,6 +404,7 @@ class MonthExpanses extends Component {
   };
 
   render() {
+    //vars
     const {
       date,
       expanses,
@@ -409,6 +414,8 @@ class MonthExpanses extends Component {
     const { summarizedSections } = this.props.summarizedSections;
     const { expansesCodes } = this.props.expansesCodes;
     const buildingName = this.props.location.state.buildingName;
+
+    //add new month expanse box
     const addNewBox = this.state.addNewMode ? <InputExpansesField
       summarizedSections={summarizedSections.data}
       expansesCodes={expansesCodes.data}
@@ -416,6 +423,11 @@ class MonthExpanses extends Component {
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
     /> : null;
+    console.log(expanses);
+    if (!expanses.isFetching && expanses.status === "success" && expanses.data.length === 0) {
+      console.log("yaya");
+    }
+
     return (
       <Fragment>
 
@@ -512,13 +524,14 @@ class MonthExpanses extends Component {
 const mapStateToProps = state => ({
   summarizedSections: state.summarizedSections,
   monthExpanses: state.monthExpanses,
-  generalSettings: state.generalSettings,
+  generalSettings: { tax: state.generalSettings.generalSettings.data[0].tax },
   expansesCodes: state.expansesCodes
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchExpanses: (payload) => dispatch(monthExpansesActions.fetchExpanses(payload)),
   receiveExpanses: (payload) => dispatch(monthExpansesActions.receiveExpanses(payload)),
+  initState: () => dispatch(monthExpansesActions.initState()),
   updateExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesActions.updateExpanse(payload, tableData, target, fieldName)),
   addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),
   deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),

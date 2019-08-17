@@ -43,6 +43,14 @@ const monthExpansesIpc = (connection) => {
     });
   });
 
+  ipcMain.on('create-month-expanses-database-table', (event, data) => {
+    monthExpansesLogic.deleteMonthExpanse(data).then((result) => {
+      event.reply("month-expanses-database-table-created", { data: result });
+    }).catch((error) => {
+      event.reply("month-expanses-database-table-created", { error: error.message });
+    });
+  });
+
 }
 
 module.exports = monthExpansesIpc;

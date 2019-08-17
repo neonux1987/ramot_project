@@ -50,7 +50,7 @@ class BudgetExecutionLogic {
       .then((budgets) => {
         //except the total month budget and total monh execution
         //they don't need the difference calculation
-        if (totalSum !== null && budgets[0].summarized_section_id !== 32 && budgets[0].summarized_section_id !== 33) {
+        if (totalSum !== null) {
           //prepare budget execution object to be updated
           budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], totalSum, date, tax);
         }
@@ -94,7 +94,7 @@ class BudgetExecutionLogic {
     return newData;
   }
 
-  static calculateTotalExec(quarter, result) {
+  static calculateTotalExec(quarter, budgetExecArr) {
     const monthNames = Helper.getQuarterMonths(quarter);
 
     const saveObject = {
@@ -103,12 +103,12 @@ class BudgetExecutionLogic {
       [`${monthNames[2]}_budget_execution`]: 0
     }
 
-    for (let i = 0; i < result.length; i++) {
-      if (result[i].summarized_section_id !== 32 && result[i].summarized_section_id !== 33) {
+    for (let i = 0; i < budgetExecArr.length; i++) {
+      if (budgetExecArr[i].summarized_section_id !== 32 && budgetExecArr[i].summarized_section_id !== 33) {
         //calculate budget
-        saveObject[`${monthNames[0]}_budget_execution`] += result[i][`${monthNames[0]}_budget_execution`];
-        saveObject[`${monthNames[1]}_budget_execution`] += result[i][`${monthNames[1]}_budget_execution`];
-        saveObject[`${monthNames[2]}_budget_execution`] += result[i][`${monthNames[2]}_budget_execution`];
+        saveObject[`${monthNames[0]}_budget_execution`] += budgetExecArr[i][`${monthNames[0]}_budget_execution`];
+        saveObject[`${monthNames[1]}_budget_execution`] += budgetExecArr[i][`${monthNames[1]}_budget_execution`];
+        saveObject[`${monthNames[2]}_budget_execution`] += budgetExecArr[i][`${monthNames[2]}_budget_execution`];
       }
     }
     //calculate the total budget

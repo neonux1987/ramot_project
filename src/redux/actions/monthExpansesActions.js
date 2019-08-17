@@ -50,6 +50,16 @@ const receiveExpanses = function (data) {
   }
 }
 
+const initState = function () {
+  return dispatch => {
+    dispatch({
+      type: "INIT_STATE"
+    });
+  }
+
+
+};
+
 const fetchingFailed = function (error) {
   return {
     type: "FETCHING_FAILED",
@@ -168,5 +178,6 @@ export default {
   fetchingFailed,
   receiveExpanses,
   requestExpanses,
-  deleteExpanse
+  deleteExpanse,
+  initState
 };

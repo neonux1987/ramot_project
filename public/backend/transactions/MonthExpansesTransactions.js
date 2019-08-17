@@ -3,7 +3,8 @@ const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const MonthTotalBudgetAndExpansesLogic = require('../logic/MonthTotalBudgetAndExpansesLogic');
-const Helper = require('../../helpers/Helper');
+
+const SPECIAL_CODE_PREFIX = "9";
 
 class MonthExpansesTransactions {
 
@@ -50,13 +51,19 @@ class MonthExpansesTransactions {
               buildingName,
               date
             }
-            return this.budgetExecutionLogic.getAllBudgetExecutions(params, trx).then((result) => {
-              //calculate total execution for quarter months
-              const saveObject = BudgetExecutionLogic.calculateTotalExec(date.quarter, result);
-              //update budget execution table
-              return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, saveObject, buildingName, date, 32, settings[0].tax, trx).then(() => saveObject[`${date.monthEng}_budget`]);
+            //convert the code to string in order to use the startsWith method
+            //to find if it's a special code
+            const code = expanse.code + "";
+            //basically don't count the special codes in the total execution row
+            if (!code.startsWith(SPECIAL_CODE_PREFIX)) {
+              return this.budgetExecutionLogic.getAllBudgetExecutions(params, trx).then((result) => {
+                //calculate total execution for quarter months
+                const saveObject = BudgetExecutionLogic.calculateTotalExec(date.quarter, result);
+                //update budget execution table
+                return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, saveObject, buildingName, date, 32, settings[0].tax, trx).then(() => saveObject[`${date.monthEng}_budget`]);
 
-            });
+              });
+            }
 
           })
 
@@ -137,6 +144,16 @@ class MonthExpansesTransactions {
 
 
     });//end transaction
+  }
+
+  populateTableWithNewData() {
+
+    return this.connection.transaction((trx) => {
+
+
+
+    });//end transaction
+
   }
 
 }

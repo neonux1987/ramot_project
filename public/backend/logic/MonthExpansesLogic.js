@@ -1,14 +1,9 @@
-const Helper = require('../../helpers/Helper');
 const MonthExpansesDao = require('../dao/MonthExpansesDao');
-const BudgetExecutionLogic = require('./BudgetExecutionLogic');
-const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
 
 class MonthExpansesLogic {
 
   constructor(connection) {
     this.connection = connection;
-    this.bel = new BudgetExecutionLogic(connection);
-    this.bed = new BudgetExecutionDao(connection);
     this.med = new MonthExpansesDao(connection);
   }
 
@@ -70,6 +65,10 @@ class MonthExpansesLogic {
 
   deleteMonthExpanse(params) {
     return this.med.deleteMonthExpanse(params);
+  }
+
+  createDatabaseTable() {
+    this.med.createDatabaseTable();
   }
 
 }

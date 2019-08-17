@@ -414,7 +414,7 @@ class BudgetExecution extends Component {
       budgetExecutions,
       headerTitle
     } = this.props.budgetExecution;
-    const buildingName = this.props.location.state.buildingName; console.log("yes");
+    const buildingName = this.props.location.state.buildingName;
     return (
       <div>
         <WithHeaderWrapper>

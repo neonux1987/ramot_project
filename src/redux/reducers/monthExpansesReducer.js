@@ -68,6 +68,17 @@ export default (state = initState, action) => {
           quarterHeb: Helper.getQuarterHeb(Helper.getCurrentQuarter(action.payload.monthNum))
         }
       }
+    case "INIT_STATE":
+      return {
+        ...state,
+        date: Helper.getCurrentDate(),
+        expanses: {
+          isFetching: true,
+          status: "",
+          error: "",
+          data: []
+        }
+      }
     case "SET_CURRENT_DATE": return {
       ...state,
       date: Helper.getCurrentDate()

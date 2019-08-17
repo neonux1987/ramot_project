@@ -1,4 +1,3 @@
-const { quarter1, quarter2, quarter3, quarter4, budget_summarized_headers } = require('./Headers');
 
 class Helper {
 
@@ -126,20 +125,6 @@ class Helper {
     }
   }
 
-  static getBudgetExecutionTableHeaders() {
-    switch (this.getCurrentQuarter()) {
-      case 1: return quarter1
-      case 2: return quarter2
-      case 3: return quarter3
-      case 4: return quarter4
-      default: return null
-    }
-  };
-
-  static getSummarizedBudgetTableHeaders() {
-    return budget_summarized_headers;
-  };
-
   static getCurrentDatePresentation() {
     let today = new Date();
     let dd = today.getDate();
@@ -176,8 +161,7 @@ class Helper {
   }
 
   static calculateWithoutTax(value, tax) {
-    const taxValue = (value * tax) / 100;
-    return value - taxValue;
+    return Math.round(value / ((tax / 100) + 1));
   }
 
   static calculateWithTax(value, tax) {
