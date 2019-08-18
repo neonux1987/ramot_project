@@ -423,10 +423,6 @@ class MonthExpanses extends Component {
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
     /> : null;
-    console.log(expanses);
-    if (!expanses.isFetching && expanses.status === "success" && expanses.data.length === 0) {
-      console.log("yaya");
-    }
 
     return (
       <Fragment>

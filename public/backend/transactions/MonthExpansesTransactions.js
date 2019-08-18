@@ -3,6 +3,7 @@ const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const MonthTotalBudgetAndExpansesLogic = require('../logic/MonthTotalBudgetAndExpansesLogic');
+const Helper = require('../../helpers/Helper');
 
 const SPECIAL_CODE_PREFIX = "9";
 
@@ -10,11 +11,27 @@ class MonthExpansesTransactions {
 
   constructor(connection) {
     this.connection = connection;
-    this.monthExpansesLogic = new MonthExpansesLogic();
-    this.budgetExecutionLogic = new BudgetExecutionLogic();
-    this.summarizedBudgetLogic = new SummarizedBudgetLogic();
-    this.generalSettingsLogic = new GeneralSettingsLogic();
-    this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic();
+    this.monthExpansesLogic = new MonthExpansesLogic(connection);
+    this.budgetExecutionLogic = new BudgetExecutionLogic(connection);
+    this.summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
+    this.generalSettingsLogic = new GeneralSettingsLogic(connection);
+    this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
+  }
+
+  getAllMonthExpanses({ buildingName, date }) {
+    return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, undefined)
+      .then((expanses) => {
+        //that means the data does not exist and need to be created
+        if (expanses.length === 0) {
+          return this.createMonthEmptyExpanses(buildingName, date);
+        }
+        //else return the expanses
+        return expanses;
+      })//end of get all month expanses trx
+      .catch((error) => {
+        console.log(error);
+        throw new Error(error.message)
+      });
   }
 
   /**
@@ -146,11 +163,22 @@ class MonthExpansesTransactions {
     });//end transaction
   }
 
-  populateTableWithNewData() {
+  createMonthEmptyExpanses(buildingName, date) {
 
     return this.connection.transaction((trx) => {
 
+      const monthNum = date.monthNum > 0 ? date.monthNum - 1 : 12;//if the month is 0 january, then go to month 12 december of previous year
+      const year = monthNum === 12 ? date.year - 1 : date.year;//if the month is 12 december, go to previous year
 
+      const newDate = {
+        month: Helper.getCurrentMonthEng(monthNum),
+        year: year
+      }
+
+      return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx).then((expanses) => {
+
+        return expanses;
+      })
 
     });//end transaction
 

@@ -25,14 +25,15 @@ class MonthExpansesDao {
   /**
    * get all month expanses records
    */
-  getAllMonthExpanses({
+  getAllMonthExpansesTrx = (
     buildingName = String,
     date = {
       year: year = Number,
       month: month = String
-    }
-  }) {
-    let data = this.connection.where({ year: date.year, month: date.month }).select(
+    },
+    trx = this.connection
+  ) => {
+    let data = trx.where({ year: date.year, month: date.month }).select(
       "building.id AS id",
       "building.expanses_code_id AS expanses_code_id",
       "ec.code AS code",

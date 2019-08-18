@@ -64,7 +64,7 @@ class Helper {
       case 8: return "september"
       case 9: return "october"
       case 10: return "november"
-      case 12: return "december"
+      case 11: return "december"
       default: return null
     }
   }

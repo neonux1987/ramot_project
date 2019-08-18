@@ -10,7 +10,7 @@ const monthExpansesIpc = (connection) => {
   const transactions = new Transactions(connection);
 
   ipcMain.on('get-month-expanses-data', (event, arg) => {
-    monthExpansesLogic.getAllMonthExpanses(arg).then((result) => {
+    transactions.getAllMonthExpanses(arg).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("month-expanses-data", { data: result });
     }).catch((error) => {

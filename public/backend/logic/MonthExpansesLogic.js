@@ -7,8 +7,8 @@ class MonthExpansesLogic {
     this.med = new MonthExpansesDao(connection);
   }
 
-  getAllMonthExpanses(params) {
-    return this.med.getAllMonthExpanses(params);
+  getAllMonthExpansesTrx(buildingName, date, trx) {
+    return this.med.getAllMonthExpansesTrx(buildingName, date, trx);
   }
 
   getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, summarized_section_id, trx) {
