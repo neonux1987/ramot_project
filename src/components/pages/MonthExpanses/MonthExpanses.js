@@ -411,10 +411,10 @@ class MonthExpanses extends Component {
       pageName,
       headerTitle
     } = this.props.monthExpanses;
+
     const { summarizedSections } = this.props.summarizedSections;
     const { expansesCodes } = this.props.expansesCodes;
     const buildingName = this.props.location.state.buildingName;
-
     //add new month expanse box
     const addNewBox = this.state.addNewMode ? <InputExpansesField
       summarizedSections={summarizedSections.data}

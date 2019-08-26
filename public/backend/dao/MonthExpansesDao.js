@@ -114,12 +114,12 @@ class MonthExpansesDao {
       });
   }
 
-  createDatabaseTable() {
-    return this.connection.schema.createTable('users', function (table) {
-      table.increments();
-      table.string('name');
-      table.timestamps();
-    })
+  batchInsert(
+    buildingName,
+    rows,
+    trx
+  ) {
+    return trx.batchInsert(`${buildingName}_month_expanses`, rows, rows.length)
       .catch((error) => {
         throw error;
       });

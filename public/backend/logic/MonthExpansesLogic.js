@@ -67,8 +67,8 @@ class MonthExpansesLogic {
     return this.med.deleteMonthExpanse(params);
   }
 
-  createDatabaseTable() {
-    this.med.createDatabaseTable();
+  batchInsert(buildingName, rows, trx) {
+    return this.med.batchInsert(buildingName, rows, trx);
   }
 
 }

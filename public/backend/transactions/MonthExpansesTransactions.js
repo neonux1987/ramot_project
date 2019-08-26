@@ -3,6 +3,7 @@ const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const MonthTotalBudgetAndExpansesLogic = require('../logic/MonthTotalBudgetAndExpansesLogic');
+const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const Helper = require('../../helpers/Helper');
 
 const SPECIAL_CODE_PREFIX = "9";
@@ -16,6 +17,7 @@ class MonthExpansesTransactions {
     this.summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
     this.generalSettingsLogic = new GeneralSettingsLogic(connection);
     this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
+    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
   }
 
   getAllMonthExpanses({ buildingName, date }) {
@@ -23,10 +25,12 @@ class MonthExpansesTransactions {
       .then((expanses) => {
         //that means the data does not exist and need to be created
         if (expanses.length === 0) {
+          console.log("yes");
           return this.createMonthEmptyExpanses(buildingName, date);
+        } else {
+          //else return the expanses
+          return expanses;
         }
-        //else return the expanses
-        return expanses;
       })//end of get all month expanses trx
       .catch((error) => {
         console.log(error);
@@ -176,9 +180,26 @@ class MonthExpansesTransactions {
       }
 
       return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx).then((expanses) => {
+        if (expanses.length === 0) {
+          return this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx).then((defaultCodes) => {
+            //prepare the data for insertion
+            this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
+            //insert the batch
+            return this.monthExpansesLogic.batchInsert(buildingName, defaultCodes, trx).then(() => {
+              console.log(this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx));
+              return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx);
+            });
+          });//end default expanses codes logic
+        } else {
+          //prepare the data for insertion
+          this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
+          //insert the batch
+          return this.monthExpansesLogic.batchInsert(buildingName, expanses, trx).then(() => {
+            return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx);
+          });
+        }
 
-        return expanses;
-      })
+      });//end month expanses logic
 
     });//end transaction
 

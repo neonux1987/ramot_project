@@ -19,14 +19,32 @@ class DatePicker extends Component {
     this.spinnerWrapperStyle = { width: "110px" };
   }
 
-  /* shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.month === nextProps.date.month &&
-      nextState.year === nextProps.date.year &&
-      nextState.quarter === nextProps.date.quarter) {
-      return false
+  componentDidUpdate(prevProps) {
+    if (prevProps.date.month !== this.props.date.month ||
+      prevProps.date.year !== this.props.date.year ||
+      prevProps.date.quarter !== this.props.date.quarter) {
+      this.setState({
+        date: {
+          month: this.props.date.month,
+          year: this.props.date.year,
+          quarter: this.props.date.quarter
+        }
+      });
     }
-    return true;
-  } */
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.date.month !== nextProps.date.month ||
+      this.state.date.year !== nextProps.date.year ||
+      this.state.date.quarter !== nextProps.date.quarter) {
+      return true;
+    } else if (this.state.date.month !== nextState.date.month ||
+      this.state.date.year !== nextState.date.year ||
+      this.state.date.quarter !== nextState.date.quarter) {
+      return true;
+    }
+    return false;
+  }
 
   handleChange(event) {
     const { name, value } = event.target;
