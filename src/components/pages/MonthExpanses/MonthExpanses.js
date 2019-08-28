@@ -24,6 +24,7 @@ class MonthExpanses extends Component {
 
   constructor(props) {
     super(props);
+    console.log(this.props.location.state);
     //state init
     this.state = {
       months: [
