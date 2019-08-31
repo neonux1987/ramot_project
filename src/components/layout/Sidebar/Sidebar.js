@@ -222,7 +222,7 @@ class Sidebar extends Component {
 
         {/* <Divider className={this.props.classes.homeDivider} /> */}
 
-        <span className={this.props.classes.buildingsTitle}></span>
+        {/* <span className={this.props.classes.buildingsTitle}></span> */}
         {render}
 
         <div className={this.props.classes.settingsWrapper}>

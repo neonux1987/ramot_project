@@ -1,0 +1,9 @@
+.wrapper{
+  width: 24%;
+  min-height: 150px;
+  margin: 0 1%;
+  padding: 10px;
+  background: #f1f1f1;
+  display: inline-block;
+  box-shadow: initial;
+}

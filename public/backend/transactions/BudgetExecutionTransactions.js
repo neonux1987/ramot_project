@@ -92,6 +92,49 @@ class BudgetExecutionTransactions {
 
   }
 
+  /**
+   * creates empty report for the new budget execution table
+   * @param {*} buildingName 
+   * @param {*} date 
+   */
+  createBudgetExecEmptyExpanses(buildingName, date) {
+
+    return this.connection.transaction((trx) => {
+
+      const quarter = date.quarter > 0 ? date.quarter - 1 : 4;//if quarter is 0 then set to quarter 4 of previous year
+      const year = quarter === 4 ? date.year - 1 : date.year;//if the quarter is 4, go to previous year
+
+      const newDate = {
+        month: Helper.getCurrentMonthEng(monthNum),
+        year: year
+      }
+
+      return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx).then((expanses) => {
+        if (expanses.length === 0) {
+          return this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx).then((defaultCodes) => {
+            //prepare the data for insertion
+            this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
+            //insert the batch
+            return this.budgetExecutionLogic.batchInsert(buildingName, defaultCodes, trx).then(() => {
+              console.log(this.budgetExecutionLogic.getAllMonthExpansesTrx(buildingName, newDate, trx));
+              return this.budgetExecutionLogic.getAllMonthExpansesTrx(buildingName, newDate, trx);
+            });
+          });//end default expanses codes logic
+        } else {
+          //prepare the data for insertion
+          this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
+          //insert the batch
+          return this.budgetExecutionLogic.batchInsert(buildingName, expanses, trx).then(() => {
+            return this.budgetExecutionLogic.getAllMonthExpansesTrx(buildingName, newDate, trx);
+          });
+        }
+
+      });//end month expanses logic
+
+    });//end transaction
+
+  }
+
 }
 
 module.exports = BudgetExecutionTransactions;

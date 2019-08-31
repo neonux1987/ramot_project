@@ -167,12 +167,17 @@ class MonthExpansesTransactions {
     });//end transaction
   }
 
+  /**
+   * creates empty report for the new month
+   * @param {*} buildingName 
+   * @param {*} date 
+   */
   createMonthEmptyExpanses(buildingName, date) {
 
     return this.connection.transaction((trx) => {
 
-      const monthNum = date.monthNum > 0 ? date.monthNum - 1 : 12;//if the month is 0 january, then go to month 12 december of previous year
-      const year = monthNum === 12 ? date.year - 1 : date.year;//if the month is 12 december, go to previous year
+      const monthNum = date.monthNum > 0 ? date.monthNum - 1 : 11;//if the month is 0 january, then go to month 11 december of previous year
+      const year = monthNum === 11 ? date.year - 1 : date.year;//if the month is 11 december, go to previous year
 
       const newDate = {
         month: Helper.getCurrentMonthEng(monthNum),

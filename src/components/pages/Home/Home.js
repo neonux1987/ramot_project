@@ -1,32 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles, Paper, Typography } from '@material-ui/core';
-
-const styles = theme => ({
-  titleBox: {
-    background: "linear-gradient(60deg, #66bb6a, #43a047)",
-    padding: "10px 20px",
-    display: "inline-block",
-    top: "-30px",
-    left: "10px",
-    position: "relative"
-  },
-  titleBoxText: {
-    color: "#fff"
-  },
-  titleBoxExpanses: {
-    color: "#000",
-    fontSize: "24px"
-  },
-  box: {
-    width: "370px",
-    height: "150px",
-    display: "inline-block",
-    marginRight: "30px"
-  },
-  root: {
-    paddingTop: "30px"
-  }
-})
+import InfoBox from '../../common/InfoBox/InfoBox';
+import styles from './Home.module.css';
 
 class Home extends Component {
 
@@ -38,55 +13,63 @@ class Home extends Component {
 
   render() {
     return (
-      <div className={this.props.classes.root}>
+      <div className={styles.wrapper}>
 
-        <Paper className={this.props.classes.box} elevation={1}>
-          <Paper className={this.props.classes.titleBox} elevation={1}>
-            <Typography className={this.props.classes.titleBoxText} variant="h5" gutterBottom>
+        <InfoBox wrapper={styles.infoBox} boxColor={"#f94c4c"}>
+          <Paper className={styles.header} elevation={1}>
+            <Typography variant="h5" className={styles.title} gutterBottom>
               לב תל אביב
-                        </Typography>
+        </Typography>
           </Paper>
 
-          <Typography className={this.props.classes.titleBoxExpanses} variant="h6" gutterBottom>
-            סה"כ הוצאות: 33,456 שקל
-                    </Typography>
-        </Paper>
+          <Paper className={styles.body}>
+            <Typography variant="h6" className={styles.expansesTitle} gutterBottom>
+              סה"כ הוצאות: 33,456 שקל
+        </Typography>
+          </Paper>
+        </InfoBox>
 
-        <Paper className={this.props.classes.box} elevation={1}>
-          <Paper className={this.props.classes.titleBox} elevation={1}>
-            <Typography className={this.props.classes.titleBoxText} variant="h5" gutterBottom>
+        <InfoBox wrapper={styles.infoBox} boxColor={"rgb(55, 156, 228)"}>
+          <Paper className={styles.header} elevation={1}>
+            <Typography variant="h5" className={styles.title} gutterBottom>
               מונטיפיורי 39
-                        </Typography>
+        </Typography>
           </Paper>
 
-          <Typography className={this.props.classes.titleBoxExpanses} variant="h6" gutterBottom>
-            סה"כ הוצאות: 33,456 שקל
-                    </Typography>
-        </Paper>
+          <Paper className={styles.body}>
+            <Typography variant="h6" className={styles.expansesTitle} gutterBottom>
+              סה"כ הוצאות: 33,456 שקל
+        </Typography>
+          </Paper>
+        </InfoBox>
 
-        <Paper className={this.props.classes.box} elevation={1}>
-          <Paper className={this.props.classes.titleBox} elevation={1}>
-            <Typography className={this.props.classes.titleBoxText} variant="h5" gutterBottom>
-              אלנבי 105
-                        </Typography>
+        <InfoBox wrapper={styles.infoBox} boxColor={"rgb(169, 55, 228)"}>
+          <Paper className={styles.header} elevation={1}>
+            <Typography variant="h5" className={styles.title} gutterBottom>
+              מונטיפיורי 39
+        </Typography>
           </Paper>
 
-          <Typography className={this.props.classes.titleBoxExpanses} variant="h6" gutterBottom>
-            סה"כ הוצאות: 33,456 שקל
-                    </Typography>
-        </Paper>
+          <Paper className={styles.body}>
+            <Typography variant="h6" className={styles.expansesTitle} gutterBottom>
+              סה"כ הוצאות: 33,456 שקל
+        </Typography>
+          </Paper>
+        </InfoBox>
 
-        <Paper className={this.props.classes.box} elevation={1}>
-          <Paper className={this.props.classes.titleBox} elevation={1}>
-            <Typography className={this.props.classes.titleBoxText} variant="h5" gutterBottom>
-              בית מוזס
-                        </Typography>
+        <InfoBox wrapper={styles.infoBox} boxColor={"rgb(46, 185, 102)"}>
+          <Paper className={styles.header} elevation={1}>
+            <Typography variant="h5" className={styles.title} gutterBottom>
+              מונטיפיורי 39
+        </Typography>
           </Paper>
 
-          <Typography className={this.props.classes.titleBoxExpanses} variant="h6" gutterBottom>
-            סה"כ הוצאות: 33,456 שקל
-                    </Typography>
-        </Paper>
+          <Paper className={styles.body}>
+            <Typography variant="h6" className={styles.expansesTitle} gutterBottom>
+              סה"כ הוצאות: 33,456 שקל
+        </Typography>
+          </Paper>
+        </InfoBox>
 
       </div>
     );
