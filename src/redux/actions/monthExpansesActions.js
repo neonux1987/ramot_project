@@ -7,11 +7,14 @@ import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
  * fetch month expanses
  * @param {*} params 
  */
-const fetchExpanses = (params = Object) => {
-  return dispatch => {
+const fetchExpanses = (params = Object, page) => {
+  return (dispatch, getState) => {
+    const { monthExpanses } = getState();
+
+    dispatch(initState(page));
 
     //let react know that the fetching is started
-    dispatch(requestExpanses());
+    dispatch(requestExpanses(page));
 
     //request request to backend to get the data
     ipcRenderer.send("get-month-expanses-data", params);
@@ -29,7 +32,7 @@ const fetchExpanses = (params = Object) => {
         playSound(soundTypes.error);
       } else {
         //success store the data
-        dispatch(receiveExpanses(arg.data));
+        dispatch(receiveExpanses(arg.data, page));
         //update the date to he requested date in the params of the data
         dispatch(dateActions.updateDate(params.date));
       }
@@ -37,27 +40,26 @@ const fetchExpanses = (params = Object) => {
   }
 };
 
-const requestExpanses = function () {
+const requestExpanses = function (page) {
   return {
-    type: "REQUEST_MONTH_EXPANSES"
+    type: "REQUEST_MONTH_EXPANSES",
+    page
   }
 };
 
-const receiveExpanses = function (data) {
+const receiveExpanses = function (data, page) {
   return {
     type: "RECEIVE_MONTH_EXPANSES",
-    data: data
+    data,
+    page
   }
 }
 
-const initState = function () {
-  return dispatch => {
-    dispatch({
-      type: "INIT_STATE"
-    });
+const initState = function (page) {
+  return {
+    type: "INIT_STATE",
+    page: page
   }
-
-
 };
 
 const fetchingFailed = function (error) {

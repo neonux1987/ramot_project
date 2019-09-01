@@ -24,7 +24,6 @@ class MonthExpanses extends Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.location.state);
     //state init
     this.state = {
       months: [
@@ -80,13 +79,17 @@ class MonthExpanses extends Component {
       date: Helper.getCurrentDate()
     }
 
-    this.props.fetchSummarizedSections();
+    //this.props.initState(this.props.location.state.buildingNameEng);
+
+    //this.props.fetchSummarizedSections();
+
+    console.log(this.props);
 
     //get the building month expanses
-    this.props.fetchExpanses(params);
+    this.props.fetchExpanses(params, params.buildingName);
 
     //fetch expnases codes
-    this.props.fetchExpansesCodes(params);
+    //this.props.fetchExpansesCodes(params);
 
   }
 
@@ -152,7 +155,7 @@ class MonthExpanses extends Component {
   componentWillUnmount() {
     this.props.setCurrentDate();
     //on exit init table data
-    this.props.initState();
+    //this.props.initState();
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -410,12 +413,12 @@ class MonthExpanses extends Component {
       date,
       expanses,
       pageName,
-      headerTitle
+      headerTitle,
+      pages
     } = this.props.monthExpanses;
-
     const { summarizedSections } = this.props.summarizedSections;
     const { expansesCodes } = this.props.expansesCodes;
-    const buildingName = this.props.location.state.buildingName;
+    const { buildingName, buildingNameEng } = this.props.location.state;
     //add new month expanse box
     const addNewBox = this.state.addNewMode ? <InputExpansesField
       summarizedSections={summarizedSections.data}
@@ -424,7 +427,10 @@ class MonthExpanses extends Component {
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
     /> : null;
-
+    if (Helper.isEmpty(pages[buildingNameEng])) {
+      return "loading";
+    }
+    console.log(pages);
     return (
       <Fragment>
 
@@ -499,7 +505,7 @@ class MonthExpanses extends Component {
           LoadingComponent={LoadingCircle}
           defaultPageSize={100}
           showPagination={true}
-          data={expanses.data}
+          data={[]}
           columns={this.generateHeaders()}
           resizable={true}
           //minRows={0}
@@ -526,9 +532,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchExpanses: (payload) => dispatch(monthExpansesActions.fetchExpanses(payload)),
-  receiveExpanses: (payload) => dispatch(monthExpansesActions.receiveExpanses(payload)),
-  initState: () => dispatch(monthExpansesActions.initState()),
+  fetchExpanses: (payload, page) => dispatch(monthExpansesActions.fetchExpanses(payload, page)),
+  initState: (page) => dispatch(monthExpansesActions.initState(page)),
   updateExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesActions.updateExpanse(payload, tableData, target, fieldName)),
   addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),
   deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),

@@ -9,6 +9,9 @@ const initState = {
     status: "",
     error: "",
     data: []
+  },
+
+  pages: {
   }
 }
 
@@ -17,19 +20,25 @@ export default (state = initState, action) => {
     case "RECEIVE_MONTH_EXPANSES":
       return {
         ...state,
-        expanses: {
-          ...state.expanses,
-          isFetching: false,
-          status: "success",
-          data: action.data
+        pages: {
+          ...state.pages,
+          [action.page]: {
+            ...state.pages[action.page],
+            isFetching: false,
+            status: "success",
+            data: action.data
+          }
         }
       }
     case "REQUEST_MONTH_EXPANSES":
       return {
         ...state,
-        expanses: {
-          ...state.expanses,
-          isFetching: true,
+        pages: {
+          ...state.pages,
+          [action.page]: {
+            ...state.pages[action.page],
+            isFetching: true,
+          }
         }
       }
     case "UPDATE_MONTH_EXPANSE":
@@ -71,12 +80,16 @@ export default (state = initState, action) => {
     case "INIT_STATE":
       return {
         ...state,
-        date: Helper.getCurrentDate(),
-        expanses: {
-          isFetching: true,
-          status: "",
-          error: "",
-          data: []
+        pages: {
+          ...state.pages,
+          [action.page]: {
+            date: Helper.getCurrentDate(),
+            isFetching: false,
+            status: "",
+            error: "",
+            data: []
+          },
+          haha: "asd"
         }
       }
     case "SET_CURRENT_DATE": return {

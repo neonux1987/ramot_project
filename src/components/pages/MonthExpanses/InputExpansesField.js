@@ -230,13 +230,7 @@ class InputExpansesField extends Component {
         onBlurHandler={this.reactSelectOnBlurHandler}
         autoFocus={true}
         onMenuClose={this.onMenuCloseHandler}
-        //onInputChange={e => this.reactSelectInputChangeHandler(e, "code")}
         inputId="code"
-        getNewOptionData={(inputValue, optionLabel) => ({
-          code: optionLabel,
-          code: inputValue,
-          __isNew__: true
-        })}
       />
 
       <ReactSelect
