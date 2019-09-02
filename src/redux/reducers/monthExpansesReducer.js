@@ -88,13 +88,16 @@ export default (state = initState, action) => {
             status: "",
             error: "",
             data: []
-          },
-          haha: "asd"
+          }
         }
       }
     case "SET_CURRENT_DATE": return {
       ...state,
       date: Helper.getCurrentDate()
+    }
+    case "SET_NUMBER": return {
+      ...state,
+      number: state.number + 1
     }
     default: return state;
   }

@@ -8,10 +8,7 @@ import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
  * @param {*} params 
  */
 const fetchExpanses = (params = Object, page) => {
-  return (dispatch, getState) => {
-    const { monthExpanses } = getState();
-
-    dispatch(initState(page));
+  return dispatch => {
 
     //let react know that the fetching is started
     dispatch(requestExpanses(page));
@@ -59,7 +56,7 @@ const initState = function (page) {
   return {
     type: "INIT_STATE",
     page: page
-  }
+  };
 };
 
 const fetchingFailed = function (error) {

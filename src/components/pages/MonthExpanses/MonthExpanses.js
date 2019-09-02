@@ -79,11 +79,8 @@ class MonthExpanses extends Component {
       date: Helper.getCurrentDate()
     }
 
-    //this.props.initState(this.props.location.state.buildingNameEng);
-
+    this.props.initState(this.props.location.state.buildingNameEng);
     //this.props.fetchSummarizedSections();
-
-    console.log(this.props);
 
     //get the building month expanses
     this.props.fetchExpanses(params, params.buildingName);
@@ -427,10 +424,11 @@ class MonthExpanses extends Component {
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
     /> : null;
+    console.log(pages);
     if (Helper.isEmpty(pages[buildingNameEng])) {
       return "loading";
     }
-    console.log(pages);
+
     return (
       <Fragment>
 
