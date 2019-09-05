@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron';
 import dateActions from './dateActions';
 import { notify, notificationTypes } from '../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { promised } from 'q';
 
 /**
  * fetch month expanses
@@ -16,7 +17,7 @@ const fetchExpanses = (params = Object, page) => {
     //request request to backend to get the data
     ipcRenderer.send("get-month-expanses-data", params);
     //listen when the data comes back
-    ipcRenderer.once("month-expanses-data", (event, arg) => {
+    return ipcRenderer.once("month-expanses-data", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
@@ -52,12 +53,34 @@ const receiveExpanses = function (data, page) {
   }
 }
 
+/**
+ * init the state
+ */
 const initState = function (page) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      if (page) {
+        dispatch(setInitialState(page));
+        resolve();
+      } else {
+        reject("page canot be empty/undefined or null");
+      }
+    });
+  };
+};
+
+const setInitialState = function (page) {
   return {
     type: "INIT_STATE",
     page: page
   };
 };
+
+const setNumber = () => {
+  return {
+    type: "SET_NUMBER"
+  }
+}
 
 const fetchingFailed = function (error) {
   return {
@@ -178,5 +201,6 @@ export default {
   receiveExpanses,
   requestExpanses,
   deleteExpanse,
-  initState
+  initState,
+  setNumber
 };

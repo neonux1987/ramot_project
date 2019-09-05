@@ -78,15 +78,17 @@ class MonthExpanses extends Component {
       buildingName: this.props.location.state.buildingNameEng,
       date: Helper.getCurrentDate()
     }
-
-    this.props.initState(this.props.location.state.buildingNameEng);
-    //this.props.fetchSummarizedSections();
-
-    //get the building month expanses
-    this.props.fetchExpanses(params, params.buildingName);
+    console.log(this.props.location.state);
+    this.props.initState(this.props.location.state.buildingNameEng).then(() => {
+      //get the building month expanses
+      this.props.fetchExpanses(params, params.buildingName);
+    });
 
     //fetch expnases codes
-    //this.props.fetchExpansesCodes(params);
+    this.props.fetchExpansesCodes(params);
+
+    //fetch summarized sections
+    this.props.fetchSummarizedSections();
 
   }
 
@@ -343,7 +345,7 @@ class MonthExpanses extends Component {
   };
 
   cellNumberInput = (cellInfo) => {
-    const { data } = this.props.monthExpanses.expanses;
+    const { data } = this.props.monthExpanses.pages[this.props.location.state.buildingNameEng];
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     if (!this.state.editMode) {
       return <span title={`כולל ${data[cellInfo.index].tax}% מע"מ`}>{newValue}</span>;
@@ -413,8 +415,11 @@ class MonthExpanses extends Component {
       headerTitle,
       pages
     } = this.props.monthExpanses;
+    //summarized sections data
     const { summarizedSections } = this.props.summarizedSections;
+    //expanses codes data
     const { expansesCodes } = this.props.expansesCodes;
+    //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
     //add new month expanse box
     const addNewBox = this.state.addNewMode ? <InputExpansesField
@@ -425,13 +430,12 @@ class MonthExpanses extends Component {
       findData={this.findExpanseIndex}
     /> : null;
     console.log(pages);
-    if (Helper.isEmpty(pages[buildingNameEng])) {
+    if (pages === null || (!pages[buildingNameEng].isFetching && pages[buildingNameEng].status === "")) {
       return "loading";
     }
 
     return (
       <Fragment>
-
         <WithHeaderWrapper>
           <div style={{ paddingBottom: "10px" }}>
             <Header
@@ -499,11 +503,11 @@ class MonthExpanses extends Component {
           }}
           loadingText={"טוען..."}
           noDataText={"לא נמצא מידע"}
-          loading={expanses.isFetching}
+          loading={pages[buildingNameEng].isFetching}
           LoadingComponent={LoadingCircle}
           defaultPageSize={100}
           showPagination={true}
-          data={[]}
+          data={pages[buildingNameEng].data}
           columns={this.generateHeaders()}
           resizable={true}
           //minRows={0}
@@ -531,6 +535,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchExpanses: (payload, page) => dispatch(monthExpansesActions.fetchExpanses(payload, page)),
+  setNumber: () => dispatch(monthExpansesActions.setNumber()),
   initState: (page) => dispatch(monthExpansesActions.initState(page)),
   updateExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesActions.updateExpanse(payload, tableData, target, fieldName)),
   addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),

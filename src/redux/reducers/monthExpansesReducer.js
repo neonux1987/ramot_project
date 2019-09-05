@@ -11,8 +11,7 @@ const initState = {
     data: []
   },
 
-  pages: {
-  }
+  pages: null
 }
 
 export default (state = initState, action) => {
@@ -81,7 +80,6 @@ export default (state = initState, action) => {
       return {
         ...state,
         pages: {
-          ...state.pages,
           [action.page]: {
             date: Helper.getCurrentDate(),
             isFetching: false,
@@ -94,10 +92,6 @@ export default (state = initState, action) => {
     case "SET_CURRENT_DATE": return {
       ...state,
       date: Helper.getCurrentDate()
-    }
-    case "SET_NUMBER": return {
-      ...state,
-      number: state.number + 1
     }
     default: return state;
   }
