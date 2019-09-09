@@ -10,36 +10,40 @@ const initState = {
     error: "",
     data: []
   },
-
-  pages: null
+  prevPageIndex: -1,
+  pageIndex: -1,
+  pages: []
 }
 
 export default (state = initState, action) => {
   switch (action.type) {
     case "RECEIVE_MONTH_EXPANSES":
-      return {
-        ...state,
-        pages: {
-          ...state.pages,
-          [action.page]: {
-            ...state.pages[action.page],
-            isFetching: false,
-            status: "success",
-            data: action.data
-          }
+      {
+        const copyPages = [...state.pages];
+        copyPages[state.pageIndex] = {
+          ...copyPages[state.pageIndex],
+          isFetching: false,
+          status: "success",
+          data: action.data
+        }
+        return {
+          ...state,
+          pages: copyPages
         }
       }
     case "REQUEST_MONTH_EXPANSES":
-      return {
-        ...state,
-        pages: {
-          ...state.pages,
-          [action.page]: {
-            ...state.pages[action.page],
-            isFetching: true,
-          }
+      {
+        const copyPages = [...state.pages];
+        copyPages[state.pageIndex] = {
+          ...copyPages[state.pageIndex],
+          isFetching: true,
+        }
+        return {
+          ...state,
+          pages: copyPages
         }
       }
+
     case "UPDATE_MONTH_EXPANSE":
       {
         const expanse = action.payload.expanse;//expanse object to update
@@ -77,22 +81,39 @@ export default (state = initState, action) => {
         }
       }
     case "INIT_STATE":
-      return {
-        ...state,
-        pages: {
-          [action.page]: {
-            date: Helper.getCurrentDate(),
-            isFetching: false,
-            status: "",
-            error: "",
-            data: []
-          }
+      {
+        const initPages = [...state.pages];
+        const page = {
+          buildingNameEng: action.page,
+          date: Helper.getCurrentDate(),
+          isFetching: false,
+          status: "",
+          error: "",
+          data: []
+        }
+        const pageIndex = initPages.push(page) - 1;
+        return {
+          ...state,
+          prevPageIndex: state.pageIndex,
+          pageIndex: pageIndex,
+          pages: initPages
         }
       }
     case "SET_CURRENT_DATE": return {
       ...state,
       date: Helper.getCurrentDate()
     }
+    case "CLEANUP":
+      {
+        if (state.prevPageIndex === -1) return state;
+        const copyPages = [...state.pages];
+        copyPages.slice(state.prevPageIndex, 1);
+        return {
+          ...state,
+          prevPageIndex: -1,
+          pages: copyPages
+        }
+      }
     default: return state;
   }
 }

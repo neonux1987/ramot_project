@@ -76,9 +76,9 @@ const setInitialState = function (page) {
   };
 };
 
-const setNumber = () => {
+const cleanup = function () {
   return {
-    type: "SET_NUMBER"
+    type: "CLEANUP"
   }
 }
 
@@ -202,5 +202,5 @@ export default {
   requestExpanses,
   deleteExpanse,
   initState,
-  setNumber
+  cleanup
 };

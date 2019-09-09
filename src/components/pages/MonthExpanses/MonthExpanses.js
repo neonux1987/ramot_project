@@ -46,6 +46,11 @@ class MonthExpanses extends Component {
           id: 4,
           month: "august",
           monthHeb: "אוגוסט"
+        },
+        {
+          id: 5,
+          month: "september",
+          monthHeb: "ספטמבר"
         }
       ],
       years: [
@@ -78,7 +83,7 @@ class MonthExpanses extends Component {
       buildingName: this.props.location.state.buildingNameEng,
       date: Helper.getCurrentDate()
     }
-    console.log(this.props.location.state);
+
     this.props.initState(this.props.location.state.buildingNameEng).then(() => {
       //get the building month expanses
       this.props.fetchExpanses(params, params.buildingName);
@@ -154,7 +159,7 @@ class MonthExpanses extends Component {
   componentWillUnmount() {
     this.props.setCurrentDate();
     //on exit init table data
-    //this.props.initState();
+    this.props.cleanup();
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -345,7 +350,7 @@ class MonthExpanses extends Component {
   };
 
   cellNumberInput = (cellInfo) => {
-    const { data } = this.props.monthExpanses.pages[this.props.location.state.buildingNameEng];
+    const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     if (!this.state.editMode) {
       return <span title={`כולל ${data[cellInfo.index].tax}% מע"מ`}>{newValue}</span>;
@@ -413,14 +418,15 @@ class MonthExpanses extends Component {
       expanses,
       pageName,
       headerTitle,
-      pages
+      pages,
+      pageIndex
     } = this.props.monthExpanses;
     //summarized sections data
     const { summarizedSections } = this.props.summarizedSections;
     //expanses codes data
     const { expansesCodes } = this.props.expansesCodes;
     //building names
-    const { buildingName, buildingNameEng } = this.props.location.state;
+    const { buildingName } = this.props.location.state;
     //add new month expanse box
     const addNewBox = this.state.addNewMode ? <InputExpansesField
       summarizedSections={summarizedSections.data}
@@ -429,8 +435,9 @@ class MonthExpanses extends Component {
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
     /> : null;
-    console.log(pages);
-    if (pages === null || (!pages[buildingNameEng].isFetching && pages[buildingNameEng].status === "")) {
+    // console.log(pageIndex);
+    if (pageIndex === -1 ||
+      (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
       return "loading";
     }
 
@@ -503,11 +510,11 @@ class MonthExpanses extends Component {
           }}
           loadingText={"טוען..."}
           noDataText={"לא נמצא מידע"}
-          loading={pages[buildingNameEng].isFetching}
+          loading={pages[pageIndex].isFetching}
           LoadingComponent={LoadingCircle}
           defaultPageSize={100}
           showPagination={true}
-          data={pages[buildingNameEng].data}
+          data={pages[pageIndex].data}
           columns={this.generateHeaders()}
           resizable={true}
           //minRows={0}
@@ -535,7 +542,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchExpanses: (payload, page) => dispatch(monthExpansesActions.fetchExpanses(payload, page)),
-  setNumber: () => dispatch(monthExpansesActions.setNumber()),
+  cleanup: () => dispatch(monthExpansesActions.cleanup()),
   initState: (page) => dispatch(monthExpansesActions.initState(page)),
   updateExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesActions.updateExpanse(payload, tableData, target, fieldName)),
   addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),
