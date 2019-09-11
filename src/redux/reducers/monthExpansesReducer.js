@@ -10,7 +10,6 @@ const initState = {
     error: "",
     data: []
   },
-  prevPageIndex: -1,
   pageIndex: -1,
   pages: []
 }
@@ -34,8 +33,9 @@ export default (state = initState, action) => {
     case "REQUEST_MONTH_EXPANSES":
       {
         const copyPages = [...state.pages];
-        copyPages[state.pageIndex] = {
-          ...copyPages[state.pageIndex],
+        const index = Helper.findIndexOfPage(action.page, copyPages);
+        copyPages[index] = {
+          ...copyPages[index],
           isFetching: true,
         }
         return {
@@ -91,11 +91,9 @@ export default (state = initState, action) => {
           error: "",
           data: []
         }
-        const pageIndex = initPages.push(page) - 1;
+        initPages.push(page);
         return {
           ...state,
-          prevPageIndex: state.pageIndex,
-          pageIndex: pageIndex,
           pages: initPages
         }
       }
@@ -105,13 +103,12 @@ export default (state = initState, action) => {
     }
     case "CLEANUP":
       {
-        if (state.prevPageIndex === -1) return state;
-        const copyPages = [...state.pages];
-        copyPages.slice(state.prevPageIndex, 1);
+        let copiedPages = [...state.pages];
+        Helper.removePageFromArray(action.page, copiedPages);
+        const pageIndex = Helper.findIndexOfPage(state.pages[state.pageIndex], copiedPages);
         return {
           ...state,
-          prevPageIndex: -1,
-          pages: copyPages
+          pages: copiedPages
         }
       }
     default: return state;

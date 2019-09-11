@@ -70,15 +70,18 @@ const initState = function (page) {
 };
 
 const setInitialState = function (page) {
-  return {
-    type: "INIT_STATE",
-    page: page
-  };
+  return dispatch => {
+    dispatch({
+      type: "INIT_STATE",
+      page: page
+    });
+  }
 };
 
-const cleanup = function () {
+const cleanup = function (buldingNameEng) {
   return {
-    type: "CLEANUP"
+    type: "CLEANUP",
+    page: buldingNameEng
   }
 }
 

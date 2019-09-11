@@ -159,7 +159,7 @@ class MonthExpanses extends Component {
   componentWillUnmount() {
     this.props.setCurrentDate();
     //on exit init table data
-    this.props.cleanup();
+    this.props.cleanup(this.props.location.state.buildingNameEng);
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -434,7 +434,7 @@ class MonthExpanses extends Component {
       data={expanses.data}
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
-    /> : null;
+    /> : null; //console.log(pages);
     // console.log(pageIndex);
     if (pageIndex === -1 ||
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
@@ -542,7 +542,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchExpanses: (payload, page) => dispatch(monthExpansesActions.fetchExpanses(payload, page)),
-  cleanup: () => dispatch(monthExpansesActions.cleanup()),
+  cleanup: (buildingNameEng) => dispatch(monthExpansesActions.cleanup(buildingNameEng)),
   initState: (page) => dispatch(monthExpansesActions.initState(page)),
   updateExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesActions.updateExpanse(payload, tableData, target, fieldName)),
   addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),

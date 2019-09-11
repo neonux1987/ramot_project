@@ -415,7 +415,21 @@ class Helper {
     return true;
   }
 
+  static findIndexOfPage(page, array) {
+    for (let i = 0; i < array.length; i++) {
+      if (page.buildingNameEng === array[i].buildingNameEng) {
+        return i;
+      }
+    }
+  }
 
+  static removePageFromArray(buildingNameEng, array) {
+    for (let i = 0; i < array.length; i++) {
+      if (buildingNameEng === array[i].buildingNameEng) {
+        array.splice(i, 1);
+      }
+    }
+  }
 
 }
 export default Helper;
