@@ -189,7 +189,7 @@ class MonthExpanses extends Component {
     }
 
     //get the building month expanses
-    this.props.fetchExpanses(params);
+    this.props.fetchExpanses(params, params.buildingName);
 
   }
 
@@ -436,7 +436,8 @@ class MonthExpanses extends Component {
       findData={this.findExpanseIndex}
     /> : null; //console.log(pages);
     // console.log(pageIndex);
-    if (pageIndex === -1 ||
+    if (pages.length === 0 ||
+      pages[pageIndex] === undefined ||
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
       return "loading";
     }

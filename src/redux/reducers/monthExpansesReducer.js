@@ -92,8 +92,10 @@ export default (state = initState, action) => {
           data: []
         }
         initPages.push(page);
+        const pageIndex = Helper.findIndexOfPage(page, initPages);
         return {
           ...state,
+          pageIndex: pageIndex,
           pages: initPages
         }
       }
@@ -108,6 +110,7 @@ export default (state = initState, action) => {
         const pageIndex = Helper.findIndexOfPage(state.pages[state.pageIndex], copiedPages);
         return {
           ...state,
+          pageIndex: pageIndex,
           pages: copiedPages
         }
       }

@@ -9,7 +9,8 @@ const initState = {
     status: "",
     error: "",
     data: []
-  }
+  },
+  pages: []
 }
 
 export default (state = initState, action) => {
@@ -58,6 +59,17 @@ export default (state = initState, action) => {
       ...state,
       date: Helper.getCurrentDate()
     }
+    case "CLEANUP":
+      {
+        let copiedPages = [...state.pages];
+        Helper.removePageFromArray(action.page, copiedPages);
+        const pageIndex = Helper.findIndexOfPage(state.pages[state.pageIndex], copiedPages);
+        return {
+          ...state,
+          pageIndex: pageIndex,
+          pages: copiedPages
+        }
+      }
     default: return state;
   }
 }
