@@ -12,6 +12,8 @@ import DatePicker from '../../common/DatePicker/DatePicker';
 import EditControls from '../../common/EditControls/EditControls';
 import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
+import Spinner from '../../common/Spinner/Spinner';
+import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 
 const FIXED_FLOAT = 2;
 
@@ -35,13 +37,16 @@ class BudgetExecution extends Component {
       buildingName: this.props.location.state.buildingNameEng,
       date: Helper.getCurrentDate(),
     }
-    this.props.fetchBudgetExecutions(params);
+    this.props.initState(this.props.location.state.buildingNameEng).then(() => {
+      //get the building budget executions
+      this.props.fetchBudgetExecutions(params);
+    });
 
   }
 
   componentWillUnmount() {
     //on exit init table data
-    this.props.receiveBudgetExecutions([]);
+    this.props.cleanup(this.props.location.state.buildingNameEng);
   }
 
   loadBudgetExecutionsByDate = ({ year, quarter }) => {
@@ -91,7 +96,7 @@ class BudgetExecution extends Component {
 
   cellInputOnBlurHandler = (e, cellInfo) => {
     //copy data
-    const data = [...this.props.budgetExecution.budgetExecutions.data];
+    const data = [...this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex].data];
     //find the index of the object in the array
     const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
     let prevValue = data[objIndex][cellInfo.column.id];
@@ -409,12 +414,21 @@ class BudgetExecution extends Component {
 
   render() {
     const {
-      date,
       pageName,
       budgetExecutions,
-      headerTitle
+      headerTitle,
+      pages,
+      pageIndex
     } = this.props.budgetExecution;
     const buildingName = this.props.location.state.buildingName;
+    if (pages.length === 0 ||
+      pages[pageIndex] === undefined ||
+      (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
+      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
+    }
+    const {
+      date
+    } = pages[pageIndex];
     return (
       <div>
         <WithHeaderWrapper>
@@ -427,7 +441,7 @@ class BudgetExecution extends Component {
             </Header>
             <PageControls
               excel={{
-                data: [...budgetExecutions.data],
+                data: [...pages[pageIndex].data],
                 fileName: Helper.getBudgetExecutionFilename(buildingName, date),
                 sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
                 header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
@@ -511,11 +525,11 @@ class BudgetExecution extends Component {
           }}
           loadingText={"טוען..."}
           noDataText={"המידע לא נמצא"}
-          loading={budgetExecutions.isFetching}
+          loading={pages[pageIndex].isFetching}
           LoadingComponent={LoadingCircle}
           defaultPageSize={100}
           showPagination={true}
-          data={budgetExecutions.data}
+          data={pages[pageIndex].data}
           columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
           resizable={true}
         //minRows={0}
@@ -532,6 +546,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchBudgetExecutions: (payload) => dispatch(budgetExecutionActions.fetchBudgetExecutions(payload)),
+  cleanup: (buildingNameEng) => dispatch(budgetExecutionActions.cleanup(buildingNameEng)),
+  initState: (page) => dispatch(budgetExecutionActions.initState(page)),
   receiveBudgetExecutions: (payload) => dispatch(budgetExecutionActions.receiveBudgetExecutions(payload)),
   updateBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.updateBudgetExecution(payload, tableData)),
   addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData)),

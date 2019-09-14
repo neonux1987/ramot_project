@@ -43,41 +43,49 @@ export default (state = initState, action) => {
           pages: copyPages
         }
       }
-
     case "UPDATE_MONTH_EXPANSE":
       {
+
         const expanse = action.payload.expanse;//expanse object to update
         const index = action.payload.index;//index number of the expanse object in the array of data
-        const copyData = [...state.expanses.data];//copy data to not mess with the original
+        const copyPages = [...state.pages];//copy data to not mess with the original
 
         //replace the old object with the updated object
-        copyData[index] = expanse;
+        copyPages[state.pageIndex].data[index] = expanse;
 
         return {
           ...state,
-          expanses: {
-            ...state.expanses,
-            data: copyData
-          }
+          pages: copyPages
         }
       }
     case "FETCHING_FAILED":
-      return {
-        ...state,
-        expanses: {
-          ...state.expanses,
+      {
+        const copyPages = [...state.pages];//copy data to not mess with the original
+        copyPages[state.pageIndex] = {
+          ...copyPages[state.pageIndex],
           status: "error",
           error: action.payload
         }
+        return {
+          ...state,
+          pages: copyPages
+        }
       }
     case "UPDATE_DATE":
-      return {
-        ...state,
-        date: {
-          ...state.date,
-          ...action.payload,
-          quarter: Helper.getCurrentQuarter(action.payload.monthNum),
-          quarterHeb: Helper.getQuarterHeb(Helper.getCurrentQuarter(action.payload.monthNum))
+      {
+        const copyPages = [...state.pages];//copy data to not mess with the original
+        copyPages[state.pageIndex] = {
+          ...copyPages[state.pageIndex],
+          date: {
+            ...state.date,
+            ...action.payload,
+            quarter: Helper.getCurrentQuarter(action.payload.monthNum),
+            quarterHeb: Helper.getQuarterHeb(Helper.getCurrentQuarter(action.payload.monthNum))
+          }
+        }
+        return {
+          ...state,
+          pages: copyPages
         }
       }
     case "INIT_STATE":
@@ -99,10 +107,18 @@ export default (state = initState, action) => {
           pages: initPages
         }
       }
-    case "SET_CURRENT_DATE": return {
-      ...state,
-      date: Helper.getCurrentDate()
-    }
+    case "SET_CURRENT_DATE":
+      {
+        const copyPages = [...state.pages];//copy data to not mess with the original
+        copyPages[state.pageIndex] = {
+          ...copyPages[state.pageIndex],
+          date: Helper.getCurrentDate()
+        }
+        return {
+          ...state,
+          pages: copyPages
+        }
+      }
     case "CLEANUP":
       {
         let copiedPages = [...state.pages];

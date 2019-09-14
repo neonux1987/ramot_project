@@ -8,11 +8,11 @@ import { promised } from 'q';
  * fetch month expanses
  * @param {*} params 
  */
-const fetchExpanses = (params = Object, page) => {
+const fetchExpanses = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestExpanses(page));
+    dispatch(requestExpanses(params.buildingName));
 
     //request request to backend to get the data
     ipcRenderer.send("get-month-expanses-data", params);
@@ -30,7 +30,7 @@ const fetchExpanses = (params = Object, page) => {
         playSound(soundTypes.error);
       } else {
         //success store the data
-        dispatch(receiveExpanses(arg.data, page));
+        dispatch(receiveExpanses(arg.data, params.buildingName));
         //update the date to he requested date in the params of the data
         dispatch(dateActions.updateDate(params.date));
       }
@@ -117,8 +117,12 @@ const addExpanse = (params = Object, tableData, expanse) => {
         expanse.id = arg[0];
         tableData.push(expanse);
         //success store the data
-        dispatch(receiveExpanses(tableData));
-        //dispatch(fetchExpanses(params));
+        dispatch(receiveExpanses(tableData, params.buildingName));
+        notify({
+          type: notificationTypes.message,
+          message: "השורה נוספה בהצלחה."
+        });
+        playSound(soundTypes.message);
       }
     });
   }
@@ -146,7 +150,7 @@ const updateExpanse = (params = Object, tableData = Array, target, fieldName) =>
     ipcRenderer.once("month-expanse-updated", (event, arg) => {
       if (arg.error) {
         //reverse the changes to the old data
-        dispatch(receiveExpanses(tableData));
+        dispatch(receiveExpanses(tableData, params.buildingName));
         //set the input field value back to the old value
         target.value = tableData[params.index][fieldName];
         notify({
@@ -185,7 +189,7 @@ const deleteExpanse = (params = Object, tableData = Array) => {
         });
         playSound(soundTypes.error);
       } else {
-        dispatch(receiveExpanses(tableData));
+        dispatch(receiveExpanses(tableData, params.buildingName));
         notify({
           type: notificationTypes.message,
           message: "השורה נמחקה בהצלחה."

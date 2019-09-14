@@ -17,6 +17,8 @@ import EditControls from '../../common/EditControls/EditControls';
 import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import TableActions from '../../common/table/TableActions/TableActions';
+import Spinner from '../../common/Spinner/Spinner';
+import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 
 const FIXED_FLOAT = 2;
 
@@ -98,7 +100,7 @@ class MonthExpanses extends Component {
   }
 
   inputExpansesSubmit(formInputs, reset, isNew) {
-    const { data } = this.props.monthExpanses.expanses;
+    const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
     const valid = this.validateFormInputs(formInputs);
     if (!valid) {
 
@@ -266,7 +268,7 @@ class MonthExpanses extends Component {
 
   cellInputOnBlurHandler(e, cellInfo) {
     //the data
-    const { data } = this.props.monthExpanses.expanses;
+    const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
 
     //index of the expanse in the data array
     const index = cellInfo.index;
@@ -297,7 +299,7 @@ class MonthExpanses extends Component {
 
   deleteExpanseHandler = (id) => {
     //copy data
-    const data = [...this.props.monthExpanses.expanses.data];
+    const data = [...this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex].data];
 
     //find the index of the object in the array
     const objIndex = Helper.findObjIndexById(id, data);
@@ -414,7 +416,6 @@ class MonthExpanses extends Component {
   render() {
     //vars
     const {
-      date,
       expanses,
       pageName,
       headerTitle,
@@ -439,9 +440,11 @@ class MonthExpanses extends Component {
     if (pages.length === 0 ||
       pages[pageIndex] === undefined ||
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
-      return "loading";
+      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
-
+    const {
+      date
+    } = pages[pageIndex];
     return (
       <Fragment>
         <WithHeaderWrapper>

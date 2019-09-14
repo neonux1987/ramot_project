@@ -11,7 +11,7 @@ const fetchBudgetExecutions = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestBudgetExecutions());
+    dispatch(requestBudgetExecutions(params.buildingName));
 
     //request request to backend to get the data
     ipcRenderer.send("get-budget-execution-data", params);
@@ -28,7 +28,7 @@ const fetchBudgetExecutions = (params = Object) => {
         });
       } else {
         //success store the data
-        dispatch(receiveBudgetExecutions(arg.data));
+        dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
         //update the date to he requested date in the params of the data
         dispatch(dateActions.updateDate(params.date));
       }
@@ -37,16 +37,18 @@ const fetchBudgetExecutions = (params = Object) => {
   }
 };
 
-const requestBudgetExecutions = function () {
+const requestBudgetExecutions = function (page) {
   return {
-    type: "REQUEST_BUDGET_EXECUTIONS"
+    type: "REQUEST_BUDGET_EXECUTIONS",
+    page
   }
 };
 
-const receiveBudgetExecutions = function (data) {
+const receiveBudgetExecutions = function (data, page) {
   return {
     type: "RECEIVE_BUDGET_EXECUTIONS",
-    data: data
+    data: data,
+    page
   }
 }
 
@@ -56,6 +58,38 @@ const fetchingFailed = function (error) {
     payload: error
   }
 };
+
+/**
+ * init the state
+ */
+const initState = function (page) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      if (page) {
+        dispatch(setInitialState(page));
+        resolve();
+      } else {
+        reject("page canot be empty/undefined or null");
+      }
+    });
+  };
+};
+
+const setInitialState = function (page) {
+  return dispatch => {
+    dispatch({
+      type: "INIT_STATE",
+      page: page
+    });
+  }
+};
+
+const cleanup = function (buldingNameEng) {
+  return {
+    type: "CLEANUP",
+    page: buldingNameEng
+  }
+}
 
 /**
  * add budget execution
@@ -68,7 +102,7 @@ const addBudgetExecution = (params = Object, tableData) => {
     ipcRenderer.send("add-new-month-expanse", params);
     //listen when the data comes back
     ipcRenderer.once("month-expanse-added", () => {
-      dispatch(receiveBudgetExecutions(tableData));
+      dispatch(receiveBudgetExecutions(tableData, params.buildingName));
     });
   }
 };
@@ -92,7 +126,7 @@ const updateBudgetExecution = (params = Object, tableData = Array) => {
         });
         playSound(soundTypes.error);
       } else {
-        dispatch(receiveBudgetExecutions(tableData));
+        dispatch(receiveBudgetExecutions(tableData, params.buildingName));
         notify({
           type: notificationTypes.message,
           message: "השורה עודכנה בהצלחה."
@@ -109,5 +143,7 @@ export default {
   updateBudgetExecution,
   fetchingFailed,
   receiveBudgetExecutions,
-  requestBudgetExecutions
+  requestBudgetExecutions,
+  initState,
+  cleanup
 };
