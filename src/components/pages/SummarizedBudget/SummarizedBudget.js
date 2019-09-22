@@ -8,6 +8,8 @@ import summarizedBudgetActions from '../../../redux/actions/summarizedBudgetActi
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
+import Spinner from '../../common/Spinner/Spinner';
+import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 
 const FIXED_FLOAT = 2;
 
@@ -27,10 +29,16 @@ class SummarizedBudget extends Component {
       date: Helper.getCurrentDate(),
     }
 
-    this.props.fetchSummarizeBudgets(params);
+    this.props.initState(this.props.location.state.buildingNameEng).then(() => {
+      //get the summarized budgets
+      this.props.fetchSummarizeBudgets(params);
+    });
+
   }
 
   componentWillUnmount() {
+    //on exit init table data
+    this.props.cleanup(this.props.location.state.buildingNameEng);
   }
 
   loadSummarizedBudgetsByDate = ({ year }) => {
@@ -227,12 +235,21 @@ class SummarizedBudget extends Component {
 
   render() {
     const {
-      date,
       pageName,
       summarizedBudgets,
-      headerTitle
+      headerTitle,
+      pages,
+      pageIndex
     } = this.props.summarizedBudget;
     const buildingName = this.props.location.state.buildingName;
+    if (pages.length === 0 ||
+      pages[pageIndex] === undefined ||
+      (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
+      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
+    }
+    const {
+      date
+    } = pages[pageIndex];
     return (
       <div>
         <WithHeaderWrapper>
@@ -245,7 +262,7 @@ class SummarizedBudget extends Component {
             </Header>
             <PageControls
               excel={{
-                data: summarizedBudgets.data,
+                data: pages[pageIndex].data,
                 fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
                 tabName: `שנה ${date.year}`
               }}
@@ -301,11 +318,11 @@ class SummarizedBudget extends Component {
           }}
           loadingText={"טוען..."}
           noDataText={"המידע לא נמצא"}
-          loading={summarizedBudgets.isFetching}
+          loading={pages[pageIndex].isFetching}
           LoadingComponent={LoadingCircle}
           defaultPageSize={50}
           showPagination={true}
-          data={summarizedBudgets.data}
+          data={pages[pageIndex].data}
           columns={this.generateHeaders()}
           resizable={true}
           minRows={0}
@@ -321,7 +338,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSummarizeBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload))
+  fetchSummarizeBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload)),
+  cleanup: (buildingNameEng) => dispatch(summarizedBudgetActions.cleanup(buildingNameEng)),
+  initState: (page) => dispatch(summarizedBudgetActions.initState(page))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummarizedBudget);

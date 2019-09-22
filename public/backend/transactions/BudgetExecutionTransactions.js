@@ -1,6 +1,9 @@
 const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
+const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
+const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
+const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
 const Helper = require('../../helpers/Helper');
 
 class BudgetExecutionTransactions {
@@ -10,28 +13,10 @@ class BudgetExecutionTransactions {
     this.budgetExecutionLogic = new BudgetExecutionLogic();
     this.summarizedBudgetLogic = new SummarizedBudgetLogic();
     this.generalSettingsLogic = new GeneralSettingsLogic();
+    this.summarizedSectionsLogic = new SummarizedSectionsLogic();
+    this.registeredMonthsLogic = new RegisteredMonthsLogic();
+    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
   }
-
-  /*  updateBudgetExecution({ date = Object, buildingName = String, budgetExec = Object, summarized_section_id = Number }) {
-     return this.connection.transaction((trx) => {
-       //update budget execution table
-       return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, budgetExec, buildingName, date, summarized_section_id, trx)
-         .then(() => {
-           //get budget execution data after it was updated
-           return this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx).then((data) => {
-             //update summarized budet table
-             return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(data, buildingName, date, trx);
-           });
-         })
-         .catch(error => { throw error });
- 
-     }).catch((error) => {
-       console.log("month total budget failed");
-       console.log(error.message);
-       throw new Error(error.message)
-     });
- 
-   } */
 
   updateBudgetExecution({ date = Object, buildingName = String, budgetExec = Object, summarized_section_id = Number }) {
     return this.connection.transaction((trx) => {
@@ -54,7 +39,7 @@ class BudgetExecutionTransactions {
               buildingName,
               date
             }
-            return this.budgetExecutionLogic.getAllBudgetExecutions(params, trx).then((result) => {
+            return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(params, trx).then((result) => {
               const monthNames = Helper.getQuarterMonths(date.quarter);
 
               const saveObject = {
@@ -84,7 +69,6 @@ class BudgetExecutionTransactions {
           });
 
       }).catch((error) => {
-        console.log("failed");
         console.log(error);
         throw new Error(error.message)
       });
@@ -97,39 +81,45 @@ class BudgetExecutionTransactions {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  createBudgetExecEmptyExpanses(buildingName, date) {
+  createEmptyBudgetExec(buildingName, date) {
 
     return this.connection.transaction((trx) => {
 
-      const quarter = date.quarter > 0 ? date.quarter - 1 : 4;//if quarter is 0 then set to quarter 4 of previous year
+      const quarter = date.quarter > 1 ? date.quarter - 1 : 4;//if quarter is 0 then set to quarter 4 of previous year
       const year = quarter === 4 ? date.year - 1 : date.year;//if the quarter is 4, go to previous year
 
       const newDate = {
-        month: Helper.getCurrentMonthEng(monthNum),
+        quarter: quarter,
         year: year
       }
 
-      return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx).then((expanses) => {
-        if (expanses.length === 0) {
-          return this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx).then((defaultCodes) => {
+      return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, newDate, trx).then((budgetExec) => {
+        if (budgetExec.length === 0) {
+          return this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx).then((defaultSections) => {
             //prepare the data for insertion
-            this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
+            const preparedDefaultSections = this.summarizedSectionsLogic.prepareDefaultBatchInsertion(defaultSections, date);
             //insert the batch
-            return this.budgetExecutionLogic.batchInsert(buildingName, defaultCodes, trx).then(() => {
-              console.log(this.budgetExecutionLogic.getAllMonthExpansesTrx(buildingName, newDate, trx));
-              return this.budgetExecutionLogic.getAllMonthExpansesTrx(buildingName, newDate, trx);
+            return this.budgetExecutionLogic.batchInsert(buildingName, date.quarter, preparedDefaultSections, trx).then(() => {
+              return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx);
             });
           });//end default expanses codes logic
         } else {
           //prepare the data for insertion
-          this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
+          const preparedSections = this.summarizedSectionsLogic.prepareBatchInsertion(budgetExec, date);
           //insert the batch
-          return this.budgetExecutionLogic.batchInsert(buildingName, expanses, trx).then(() => {
-            return this.budgetExecutionLogic.getAllMonthExpansesTrx(buildingName, newDate, trx);
+          return this.budgetExecutionLogic.batchInsert(buildingName, date.quarter, preparedSections, trx).then(() => {
+            return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx);
           });
         }
 
-      });//end month expanses logic
+      })//end month expanses logic
+        .then(() => {
+          return this.registeredMonthsLogic.registerNewMonth(buildingName, { year: date.year, month: date.month });
+        })
+        .catch((error) => {
+          console.log(error);
+          throw new Error(error.message)
+        });
 
     });//end transaction
 

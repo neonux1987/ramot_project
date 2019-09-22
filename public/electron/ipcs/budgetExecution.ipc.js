@@ -10,7 +10,7 @@ const budgetExecutionIpc = (connection) => {
   const transactions = new Transactions(connection);
 
   ipcMain.on('get-budget-execution-data', (event, arg) => {
-    budgetExecutionLogic.getAllBudgetExecutions(arg).then((result) => {
+    budgetExecutionLogic.getAllBudgetExecutionsTrx(arg.buildingName, arg.date).then((result) => {
       event.sender.send("budget-execution-data", { data: result });
     }).catch((error) => {
       event.reply("budget-execution-data", { error: error.message });
@@ -22,6 +22,14 @@ const budgetExecutionIpc = (connection) => {
       event.sender.send("budget-execution-updated", { data: result });
     }).catch((error) => {
       event.reply("budget-execution-updated", { error: error.message });
+    });
+  });
+
+  ipcMain.on('generate-budget-execution-report', (event, arg) => {
+    transactions.createEmptyBudgetExec(arg.buildingName, arg.date).then((result) => {
+      event.sender.send("generated-budget-execution-data", { data: result });
+    }).catch((error) => {
+      event.reply("generated-budget-execution-data", { error: error.message });
     });
   });
 

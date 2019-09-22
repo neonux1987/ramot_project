@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import dateActions from './dateActions';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
+import { notify, notifyTimeless, notificationTypes } from '../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 /**
@@ -27,6 +27,19 @@ const fetchBudgetExecutions = (params = Object) => {
           message: arg.error
         });
       } else {
+        //if there is no data, that means it's a new month and 
+        //and empty report should be generated.
+        if (arg.data.length === 0) {
+          //show a notification that the generation of 
+          //the empty report has started
+          notifyTimeless({
+            isError: false,
+            type: notificationTypes.message,
+            message: "מייצר דוח חדש לחודש הנוכחי...",
+            spinner: true
+          });
+          generateEmptyReport(params, dispatch);
+        }
         //success store the data
         dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
         //update the date to he requested date in the params of the data
@@ -36,6 +49,34 @@ const fetchBudgetExecutions = (params = Object) => {
 
   }
 };
+
+const generateEmptyReport = (params, dispatch) => {
+  //request request to backend to get the data
+  ipcRenderer.send("generate-budget-execution-report", params);
+  return ipcRenderer.once("generated-budget-execution-data", (event, arg) => {
+    if (arg.error) {
+      //let react know that an erro occured while trying to fetch
+      dispatch(fetchingFailed(arg.error));
+      //send the error to the notification center
+      notify({
+        isError: true,
+        type: notificationTypes.db,
+        message: arg.error
+      });
+      playSound(soundTypes.error);
+    } else {
+      //success store the data
+      dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
+      //update the date to he requested date in the params of the data
+      dispatch(dateActions.updateDate(params.date));
+      notify({
+        isError: false,
+        type: notificationTypes.message,
+        message: "הדוח לחודש החדש נוצר בהצלחה."
+      });
+    }
+  });
+}
 
 const requestBudgetExecutions = function (page) {
   return {

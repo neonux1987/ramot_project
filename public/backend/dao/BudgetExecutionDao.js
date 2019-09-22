@@ -84,14 +84,14 @@ class BudgetExecutionDao {
    * quarterQuery - different months query
    * }
    */
-  getAllBudgetExecutionsTrx({
+  getAllBudgetExecutionsTrx(
     buildingName = String,
     date = {
       year: year = Number,
       quarter: quarter = String
     },
     quarterQuery = Array
-  },
+    ,
     trx = this.connection
   ) {
     let data = trx
@@ -187,6 +187,18 @@ class BudgetExecutionDao {
     return trx(buildingName + "_budget_execution_quarter" + date.quarter)
       .where({ id: id, year: date.year })
       .del()
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  batchInsert(
+    buildingName,
+    quarter,
+    rows,
+    trx
+  ) {
+    return trx.batchInsert(`${buildingName}_budget_execution_quarter${quarter}`, rows, rows.length)
       .catch((error) => {
         throw error;
       });

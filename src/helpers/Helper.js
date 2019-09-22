@@ -415,9 +415,9 @@ class Helper {
     return true;
   }
 
-  static findIndexOfPage(page, array) {
+  static findIndexOfPage(buildingNameEng, array) {
     for (let i = 0; i < array.length; i++) {
-      if (page.buildingNameEng === array[i].buildingNameEng) {
+      if (buildingNameEng === array[i].buildingNameEng) {
         return i;
       }
     }

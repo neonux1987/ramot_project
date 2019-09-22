@@ -10,7 +10,7 @@ const monthExpansesIpc = (connection) => {
   const transactions = new Transactions(connection);
 
   ipcMain.on('get-month-expanses-data', (event, arg) => {
-    transactions.getAllMonthExpanses(arg).then((result) => {
+    monthExpansesLogic.getAllMonthExpansesTrx(arg.buildingName, arg.date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("month-expanses-data", { data: result });
     }).catch((error) => {
@@ -48,6 +48,15 @@ const monthExpansesIpc = (connection) => {
       event.reply("month-expanses-database-table-created", { data: result });
     }).catch((error) => {
       event.reply("month-expanses-database-table-created", { error: error.message });
+    });
+  });
+
+  ipcMain.on('generate-empty-month-expanses-report', (event, arg) => {
+    transactions.createMonthEmptyExpanses(arg.buildingName, arg.date).then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("generated-empty-month-expanses-data", { data: result });
+    }).catch((error) => {
+      event.reply("generated-empty-month-expanses-data", { error: error.message });
     });
   });
 

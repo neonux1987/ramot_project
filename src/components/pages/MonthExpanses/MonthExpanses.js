@@ -191,7 +191,7 @@ class MonthExpanses extends Component {
     }
 
     //get the building month expanses
-    this.props.fetchExpanses(params, params.buildingName);
+    this.props.fetchExpanses(params);
 
   }
 
@@ -435,8 +435,8 @@ class MonthExpanses extends Component {
       data={expanses.data}
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
-    /> : null; //console.log(pages);
-    // console.log(pageIndex);
+    /> : null;
+    //console.log(pages);
     if (pages.length === 0 ||
       pages[pageIndex] === undefined ||
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
@@ -456,7 +456,7 @@ class MonthExpanses extends Component {
             />
             <PageControls
               excel={{
-                data: expanses.data,
+                data: pages[pageIndex].data,
                 fileName: Helper.getMonthExpansesFilename(buildingName, date),
                 sheetTitle: `שנה ${date.year} חודש ${date.monthHeb}`,
                 header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,

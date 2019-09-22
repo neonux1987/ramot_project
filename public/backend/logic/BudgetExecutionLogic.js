@@ -11,10 +11,10 @@ class BudgetExecutionLogic {
     this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
   }
 
-  getAllBudgetExecutions(params, trx) {
+  getAllBudgetExecutionsTrx(buildingName, date, trx) {
     //params.buildingName = Helper.trimSpaces(params.buildingName);
-    params.quarterQuery = BudgetExecutionLogic.getQuarterQuery(params.date.quarter);
-    return this.bed.getAllBudgetExecutionsTrx(params, trx);
+    const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
+    return this.bed.getAllBudgetExecutionsTrx(buildingName, date, quarterQuery, trx);
   }
 
   getBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, trx) {
@@ -114,6 +114,10 @@ class BudgetExecutionLogic {
     //calculate the total budget
     saveObject.total_execution = saveObject[`${monthNames[0]}_budget_execution`] + saveObject[`${monthNames[1]}_budget_execution`] + saveObject[`${monthNames[2]}_budget_execution`];
     return saveObject;
+  }
+
+  batchInsert(buildingName, quarter, rows, trx) {
+    return this.bed.batchInsert(buildingName, quarter, rows, trx);
   }
 
 }

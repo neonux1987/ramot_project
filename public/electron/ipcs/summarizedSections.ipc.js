@@ -8,7 +8,7 @@ const summarizedSectionsIpc = (connection) => {
 
   ipcMain.on('get-summarized-sections-data', (event, arg) => {
 
-    summarizedSectionsLogic.getAllSummarizedSections().then((result) => {
+    summarizedSectionsLogic.getAllSummarizedSectionsTrx().then((result) => {
       event.sender.send("summarized-sections-data", { data: result });
     }).catch((error) => {
       event.reply("summarized-sections-data", { error: error.message });

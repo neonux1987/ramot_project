@@ -3,13 +3,6 @@ import Helper from '../../helpers/Helper';
 const initState = {
   pageName: "monthExpanses",
   headerTitle: "מעקב הוצאות חודשיות",
-  date: Helper.getCurrentDate(),
-  expanses: {
-    isFetching: true,
-    status: "",
-    error: "",
-    data: []
-  },
   pageIndex: -1,
   pages: []
 }
@@ -37,7 +30,7 @@ export default (state = initState, action) => {
         copyPages[index] = {
           ...copyPages[index],
           isFetching: true,
-        }
+        };
         return {
           ...state,
           pages: copyPages
@@ -100,7 +93,7 @@ export default (state = initState, action) => {
           data: []
         }
         initPages.push(page);
-        const pageIndex = Helper.findIndexOfPage(page, initPages);
+        const pageIndex = Helper.findIndexOfPage(action.page, initPages);
         return {
           ...state,
           pageIndex: pageIndex,
@@ -123,7 +116,7 @@ export default (state = initState, action) => {
       {
         let copiedPages = [...state.pages];
         Helper.removePageFromArray(action.page, copiedPages);
-        const pageIndex = Helper.findIndexOfPage(state.pages[state.pageIndex], copiedPages);
+        const pageIndex = Helper.findIndexOfPage(state.pages[state.pageIndex].buildingNameEng, copiedPages);
         return {
           ...state,
           pageIndex: pageIndex,

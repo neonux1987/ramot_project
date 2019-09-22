@@ -8,8 +8,8 @@ class SummarizedSectionsDao {
   /**
    * get all summarized sections
    */
-  getAllSummarizedSections() {
-    return this.connection.select().from("summarized_sections")
+  getAllSummarizedSectionsTrx(trx = this.connection) {
+    return trx.select().from("summarized_sections")
       .orderBy('section', 'asc')
       .catch((error) => {
         throw error;

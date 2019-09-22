@@ -20,24 +20,6 @@ class MonthExpansesTransactions {
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
   }
 
-  getAllMonthExpanses({ buildingName, date }) {
-    return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, undefined)
-      .then((expanses) => {
-        //that means the data does not exist and need to be created
-        if (expanses.length === 0) {
-          console.log("yes");
-          return this.createMonthEmptyExpanses(buildingName, date);
-        } else {
-          //else return the expanses
-          return expanses;
-        }
-      })//end of get all month expanses trx
-      .catch((error) => {
-        console.log(error);
-        throw new Error(error.message)
-      });
-  }
-
   /**
   * update month expanse transaction
   * @param {*} id the id of the month expanse to update
@@ -191,8 +173,7 @@ class MonthExpansesTransactions {
             this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
             //insert the batch
             return this.monthExpansesLogic.batchInsert(buildingName, defaultCodes, trx).then(() => {
-              console.log(this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx));
-              return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx);
+              return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, trx);
             });
           });//end default expanses codes logic
         } else {
@@ -200,13 +181,17 @@ class MonthExpansesTransactions {
           this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
           //insert the batch
           return this.monthExpansesLogic.batchInsert(buildingName, expanses, trx).then(() => {
-            return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx);
+            return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, trx);
           });
         }
 
       });//end month expanses logic
 
-    });//end transaction
+    })//end transaction
+      .catch((error) => {
+        console.log(error);
+        throw new Error(error.message)
+      });
 
   }
 

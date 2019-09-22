@@ -3,6 +3,7 @@ import styles from './Notifications.module.css';
 import { Typography } from '@material-ui/core';
 import { ErrorOutline, NotificationImportant, Close } from '@material-ui/icons';
 import Ee from 'event-emitter';
+import Spinner from '../common/Spinner/Spinner';
 
 export const notificationTypes = {
   db: "תקלת בסיס נתונים",
@@ -14,6 +15,9 @@ export const notificationTypes = {
 const emitter = new Ee();
 export const notify = (notification) => {
   emitter.emit('notify', notification);
+}
+export const notifyTimeless = (notification) => {
+  emitter.emit('notifyTimeless', notification);
 }
 export const closeNotification = (notification) => {
   emitter.emit('closeNotification', notification);
@@ -29,6 +33,9 @@ class Notification extends React.Component {
     super(props);
     emitter.on("notify", (notification) => {
       this.onShow(notification)
+    });
+    emitter.on("notifyTimeless", (notification) => {
+      this.onShowTimeless(notification)
     });
     emitter.on("closeNotification", (notification) => {
       this.btnClick();
@@ -64,6 +71,15 @@ class Notification extends React.Component {
     }
   }
 
+  onShowTimeless(notification) {
+    this.setState({ bottom: `${-this.box.current.clientHeight - 10}px` }, () => {
+      this.timeout = null;
+      this.timeout = setTimeout(() => {
+        this.showNotificationTimeless(notification);
+      }, 200);
+    });
+  }
+
   /**
    * show the notification
    * @param {*} notification 
@@ -76,32 +92,48 @@ class Notification extends React.Component {
       //set the time for the notification to disappear
       this.timeout = setTimeout(() => {
         this.initNotification();
-      }, INIT_REMOVE_TIME);
+      }, notification.delayTime || INIT_REMOVE_TIME);
+    });
+  }
+
+  /**
+ * show the notification without delay time
+ * @param {*} notification 
+ */
+  showNotificationTimeless(notification) {
+    this.setState({
+      notification: notification,
+      bottom: "30px",
+      timeless: true
     });
   }
 
   onMouseEnterHandler = (event) => {
-    if (this.timeout) {
+    if (this.timeout && !this.state.timeless) {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
   }
 
   onMouseLeaveHandler = (event) => {
-    this.timeout = setTimeout(() => {
-      //this.props.remove(this.props.id);
-      this.initNotification();
-    }, ON_LEAVE_REMOVE_TIME);
+    if (!this.state.timeless) {
+      this.timeout = setTimeout(() => {
+        //this.props.remove(this.props.id);
+        this.initNotification();
+      }, ON_LEAVE_REMOVE_TIME);
+    }
   }
 
   initNotification() {
     this.setState({
-      bottom: `${-this.box.current.clientHeight - 10}px`
+      bottom: `${-this.box.current.clientHeight - 10}px`,
+      timeless: false
     });
     window.getSelection().empty();
   }
 
   btnClick = () => {
+    console.log("hell");
     this.initNotification();
   }
 
@@ -114,8 +146,12 @@ class Notification extends React.Component {
   }
 
   render() {
-    const { isError = false, message, type } = this.state.notification;
+    const { isError = false, message, type, spinner = false } = this.state.notification;
     const icon = isError ? <ErrorOutline style={{ color: "#ff0000" }} className={styles.icon} /> : <NotificationImportant style={{ color: "rgb(1, 167, 247)" }} className={styles.icon} />
+    const showSpinner = spinner ? <Spinner color="#ffffff" /> : null;
+    const showIcon = spinner ? null : <div className={styles.iconWrapper}>
+      {icon}
+    </div>;
     return (
       <div
         style={{ bottom: this.state.bottom }}
@@ -127,9 +163,8 @@ class Notification extends React.Component {
         {/* close button */}
         <button onClick={this.btnClick} className={styles.close}><Close classes={{ root: styles.closeIcon }} /></button>
         {/* icon */}
-        <div className={styles.iconWrapper}>
-          {icon}
-        </div>
+        {showIcon}
+        {showSpinner}
         {/* content */}
         <div className={styles.content}>
           <div className={styles.header}>

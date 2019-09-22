@@ -15,7 +15,7 @@ const Toolbar = (props) => {
       </div>
 
       <div className={styles.section + " " + styles.alignLeft}>
-        {`מע"מ: ${props.tax}`}
+        {`מע"מ נוכחי: ${props.tax}`}
       </div>
 
     </div>
