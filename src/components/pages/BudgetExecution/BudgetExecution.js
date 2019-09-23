@@ -97,6 +97,8 @@ class BudgetExecution extends Component {
   cellInputOnBlurHandler = (e, cellInfo) => {
     //copy data
     const data = [...this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex].data];
+    //data date
+    const { date } = this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex];
     //find the index of the object in the array
     const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
     let prevValue = data[objIndex][cellInfo.column.id];
@@ -109,7 +111,7 @@ class BudgetExecution extends Component {
     }
 
     //prepare the budget execution object
-    const preparedObj = this.prepareBudgetExecObj(data[objIndex], this.props.budgetExecution.date.quarter);
+    const preparedObj = this.prepareBudgetExecObj(data[objIndex], date.quarter);
     data[objIndex] = {
       ...data[objIndex],
       ...preparedObj
@@ -119,7 +121,7 @@ class BudgetExecution extends Component {
     let params = {
       buildingName: this.props.location.state.buildingNameEng,
       date: {
-        ...this.props.budgetExecution.date
+        ...date
       },
       budgetExec: preparedObj,
       summarized_section_id: data[objIndex].summarized_section_id
@@ -159,10 +161,12 @@ class BudgetExecution extends Component {
   }
 
   calculateMonthTotalBudget = (data, columnName, prevValue, newValue) => {
+    //data date
+    const { date } = this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex];
     //find the index of the object in the array
     const objIndex = Helper.findObjIndexById(33, data);
     //get month names
-    const monthNames = Helper.getQuarterMonths(this.props.budgetExecution.date.quarter);
+    const monthNames = Helper.getQuarterMonths(date.quarter);
 
     data[objIndex][columnName] = data[objIndex][columnName] - prevValue + newValue;
     data[objIndex].total_budget = data[objIndex][`${monthNames[0]}_budget`] + data[objIndex][`${monthNames[1]}_budget`] + data[objIndex][`${monthNames[2]}_budget`];

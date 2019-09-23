@@ -4,6 +4,7 @@ const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const MonthTotalBudgetAndExpansesLogic = require('../logic/MonthTotalBudgetAndExpansesLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
+const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
 const Helper = require('../../helpers/Helper');
 
 const SPECIAL_CODE_PREFIX = "9";
@@ -17,6 +18,7 @@ class MonthExpansesTransactions {
     this.summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
     this.generalSettingsLogic = new GeneralSettingsLogic(connection);
     this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
+    this.registeredMonthsLogic = new RegisteredMonthsLogic(connection);
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
   }
 
@@ -59,7 +61,7 @@ class MonthExpansesTransactions {
             const code = expanse.code + "";
             //basically don't count the special codes in the total execution row
             if (!code.startsWith(SPECIAL_CODE_PREFIX)) {
-              return this.budgetExecutionLogic.getAllBudgetExecutions(params, trx).then((result) => {
+              return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx).then((result) => {
                 //calculate total execution for quarter months
                 const saveObject = BudgetExecutionLogic.calculateTotalExec(date.quarter, result);
                 //update budget execution table
@@ -116,7 +118,7 @@ class MonthExpansesTransactions {
                   buildingName,
                   date
                 }
-                return this.budgetExecutionLogic.getAllBudgetExecutions(params, trx).then((result) => {
+                return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx).then((result) => {
                   //calculate total execution for quarter months
                   const saveObject = BudgetExecutionLogic.calculateTotalExec(date.quarter, result);
                   //update budget execution table
@@ -185,7 +187,15 @@ class MonthExpansesTransactions {
           });
         }
 
-      });//end month expanses logic
+      })//end month expanses logic
+        .then((expanses) => {
+          return this.registeredMonthsLogic.registerNewMonth(buildingName, {
+            year: date.year,
+            month: date.month,
+            monthHeb: date.monthHeb
+          },
+            trx).then(() => expanses);
+        });
 
     })//end transaction
       .catch((error) => {

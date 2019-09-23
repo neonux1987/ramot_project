@@ -8,6 +8,7 @@ import expansesCodes from './expansesCodesReducer';
 import generalSettings from './generalSettingsReducer';
 import summarizedBudget from './summarizedBudgetReducer';
 import notifications from './notificationsReducer';
+import registeredMonths from './registeredMonthsReducer';
 
 export default combineReducers({
   app,
@@ -18,5 +19,6 @@ export default combineReducers({
   expansesCodes,
   generalSettings,
   summarizedBudget,
-  notifications
+  notifications,
+  registeredMonths
 });

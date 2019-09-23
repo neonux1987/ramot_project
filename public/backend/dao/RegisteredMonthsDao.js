@@ -1,6 +1,10 @@
 
 class RegisteredMonthsDao {
 
+  constructor(connection) {
+    this.connection = connection;
+  }
+
   /**
    * get all the months
    * @param {*} buildingName 
@@ -17,6 +21,7 @@ class RegisteredMonthsDao {
    * @param {*} record 
    */
   registerNewMonth(
+    buildingName,
     data = {
       year: Number,
       month: String

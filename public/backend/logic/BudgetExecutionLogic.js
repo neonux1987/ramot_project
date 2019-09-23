@@ -12,7 +12,6 @@ class BudgetExecutionLogic {
   }
 
   getAllBudgetExecutionsTrx(buildingName, date, trx) {
-    //params.buildingName = Helper.trimSpaces(params.buildingName);
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
     return this.bed.getAllBudgetExecutionsTrx(buildingName, date, quarterQuery, trx);
   }

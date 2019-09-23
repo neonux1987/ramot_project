@@ -39,7 +39,7 @@ class BudgetExecutionTransactions {
               buildingName,
               date
             }
-            return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(params, trx).then((result) => {
+            return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx).then((result) => {
               const monthNames = Helper.getQuarterMonths(date.quarter);
 
               const saveObject = {

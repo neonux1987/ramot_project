@@ -42,6 +42,12 @@ class DatePicker extends Component {
       this.state.date.year !== nextState.date.year ||
       this.state.date.quarter !== nextState.date.quarter) {
       return true;
+    } else if (this.props.enableMonth && (this.props.months.length !== nextProps.months.length)) {
+      return true;
+    } else if (this.props.enableYear && (this.props.years.length !== nextProps.years.length)) {
+      return true;
+    } else if (this.props.enableQuarter && (this.props.quarters.length !== nextProps.quarters.length)) {
+      return true;
     }
     return false;
   }

@@ -6,6 +6,7 @@ import summarizedSectionsActions from '../../../redux/actions/summarizedSections
 import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
 import notificationsActions from '../../../redux/actions/notificationsActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
+import registeredMonthsActions from '../../../redux/actions/registeredMonthsActions';
 import dateActions from '../../../redux/actions/dateActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
@@ -97,6 +98,9 @@ class MonthExpanses extends Component {
     //fetch summarized sections
     this.props.fetchSummarizedSections();
 
+    //fetch date registered months
+    this.props.fetchRegisteredMonths(params);
+
   }
 
   inputExpansesSubmit(formInputs, reset, isNew) {
@@ -162,6 +166,8 @@ class MonthExpanses extends Component {
     this.props.setCurrentDate();
     //on exit init table data
     this.props.cleanup(this.props.location.state.buildingNameEng);
+    //cleanup months
+    this.props.cleanupMonths();
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -268,7 +274,7 @@ class MonthExpanses extends Component {
 
   cellInputOnBlurHandler(e, cellInfo) {
     //the data
-    const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
+    const { data, date } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
 
     //index of the expanse in the data array
     const index = cellInfo.index;
@@ -289,7 +295,7 @@ class MonthExpanses extends Component {
       expanse: expanse,
       buildingName: this.props.location.state.buildingNameEng,
       date: {
-        ...this.props.monthExpanses.date
+        ...date
       }
     };
     //update expanse
@@ -422,6 +428,11 @@ class MonthExpanses extends Component {
       pages,
       pageIndex
     } = this.props.monthExpanses;
+    if (pages.length === 0 ||
+      pages[pageIndex] === undefined ||
+      (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
+      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
+    }
     //summarized sections data
     const { summarizedSections } = this.props.summarizedSections;
     //expanses codes data
@@ -432,19 +443,18 @@ class MonthExpanses extends Component {
     const addNewBox = this.state.addNewMode ? <InputExpansesField
       summarizedSections={summarizedSections.data}
       expansesCodes={expansesCodes.data}
-      data={expanses.data}
+      data={pages[pageIndex].data}
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
     /> : null;
-    //console.log(pages);
-    if (pages.length === 0 ||
-      pages[pageIndex] === undefined ||
-      (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
-      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
-    }
+    //date
     const {
       date
     } = pages[pageIndex];
+    //registered months of month expanse of a building
+    //used for date picker
+    const months = this.props.registeredMonths.registeredMonths.data;
+    //console.log(months);
     return (
       <Fragment>
         <WithHeaderWrapper>
@@ -469,12 +479,13 @@ class MonthExpanses extends Component {
             />
             <DatePicker
               years={this.state.years}
-              months={this.state.months}
+              months={months}
               enableYear={true}
               enableMonth={true}
               enableQuarter={false}
               date={date}
               loadDataByDateHandler={this.loadExpansesByDate}
+              cleanupMonthsHandler={this.props.cleanupMonths}
             />
           </div>
           <EditControls
@@ -541,7 +552,8 @@ const mapStateToProps = state => ({
   summarizedSections: state.summarizedSections,
   monthExpanses: state.monthExpanses,
   generalSettings: { tax: state.generalSettings.generalSettings.data[0].tax },
-  expansesCodes: state.expansesCodes
+  expansesCodes: state.expansesCodes,
+  registeredMonths: state.registeredMonths
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -555,6 +567,8 @@ const mapDispatchToProps = dispatch => ({
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
   addNotification: (notification) => dispatch(notificationsActions.addNotification(notification)),
   fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
+  fetchRegisteredMonths: (buildingName) => dispatch(registeredMonthsActions.fetchRegisteredMonths(buildingName)),
+  cleanupMonths: () => dispatch(registeredMonthsActions.cleanupMonths())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

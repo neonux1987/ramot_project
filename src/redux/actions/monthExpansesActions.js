@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import dateActions from './dateActions';
+import registeredMonthsActions from './registeredMonthsActions';
 import { notify, notifyTimeless, notificationTypes } from '../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
@@ -36,15 +37,16 @@ const fetchExpanses = (params = Object) => {
           notifyTimeless({
             isError: false,
             type: notificationTypes.message,
-            message: "מייצר דוח חדש לחודש הנוכחי...",
+            message: `מייצר דוח חדש לחודש ${params.date.monthHeb}.`,
             spinner: true
           });
           generateEmptyReport(params, dispatch);
+        } else {
+          //success store the data
+          dispatch(receiveExpanses(arg.data, params.buildingName));
+          //update the date to he requested date in the params of the data
+          dispatch(dateActions.updateDate(params.date));
         }
-        //success store the data
-        dispatch(receiveExpanses(arg.data, params.buildingName));
-        //update the date to he requested date in the params of the data
-        dispatch(dateActions.updateDate(params.date));
       }
     });
   }
@@ -69,10 +71,11 @@ const generateEmptyReport = (params, dispatch) => {
       dispatch(receiveExpanses(arg.data, params.buildingName));
       //update the date to he requested date in the params of the data
       dispatch(dateActions.updateDate(params.date));
+      dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
       notify({
         isError: false,
         type: notificationTypes.message,
-        message: "הדוח לחודש החדש נוצר בהצלחה."
+        message: `דוח חדש לחודש ${params.date.monthHeb} נוצר בהצלחה.`
       });
     }
   });
@@ -175,7 +178,6 @@ const addExpanse = (params = Object, tableData, expanse) => {
  */
 const updateExpanse = (params = Object, tableData = Array, target, fieldName) => {
   return dispatch => {
-
     //first update the store for fast user respond
     dispatch({
       type: "UPDATE_MONTH_EXPANSE",
