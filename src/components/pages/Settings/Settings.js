@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles, Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import { Route, Switch, NavLink } from 'react-router-dom';
-import Home from '../Home/Home';
+import Backup from './pages/Backup/Backup';
 import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
 import General from './pages/General/General';
 
@@ -94,7 +94,7 @@ const Settings = ({ classes, match }, props) => {
           <Route path={`${match.path}/כללי`} component={General} />
           <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
           <Route path={`${match.path}/סעיפים מסכמים`} component={ExpansesCodes} />
-          <Route path={`${match.path}/גיבוי`} component={Home} />
+          <Route path={`${match.path}/גיבוי`} component={Backup} />
           <Route component={General} />
         </Switch>
       </div>

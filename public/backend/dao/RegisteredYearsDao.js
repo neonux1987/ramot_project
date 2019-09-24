@@ -1,6 +1,10 @@
 
 class RegisteredYearsDao {
 
+  constructor(connection) {
+    this.connection = connection;
+  }
+
   /**
    * get all the years
    * @param {*} buildingName 
@@ -16,7 +20,8 @@ class RegisteredYearsDao {
    * add new year
    * @param {*} record 
    */
-  addNewYear(
+  registerNewYear(
+    buildingName,
     data = {
       year: Number
     },

@@ -5,6 +5,7 @@ const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const MonthTotalBudgetAndExpansesLogic = require('../logic/MonthTotalBudgetAndExpansesLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
+const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
 const Helper = require('../../helpers/Helper');
 
 const SPECIAL_CODE_PREFIX = "9";
@@ -19,6 +20,7 @@ class MonthExpansesTransactions {
     this.generalSettingsLogic = new GeneralSettingsLogic(connection);
     this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
     this.registeredMonthsLogic = new RegisteredMonthsLogic(connection);
+    this.registeredYearsLogic = new RegisteredYearsLogic(connection);
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
   }
 
@@ -194,7 +196,10 @@ class MonthExpansesTransactions {
             month: date.month,
             monthHeb: date.monthHeb
           },
-            trx).then(() => expanses);
+            trx).then(() => {
+              return this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
+                .then(() => expanses);
+            });
         });
 
     })//end transaction

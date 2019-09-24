@@ -8,6 +8,7 @@ const summarizedSectionsIpc = require('./electron/ipcs/summarizedSections.ipc');
 const expansesCodesIpc = require('./electron/ipcs/expansesCodes.ipc');
 const generalSettingsIpc = require('./electron/ipcs/generalSettings.ipc');
 const registeredMonthsIpc = require('./electron/ipcs/registeredMonths.ipc');
+const registeredYearsIpc = require('./electron/ipcs/registeredYears.ipc');
 const contextMenu = require('electron-context-menu');
 
 const path = require('path');
@@ -103,3 +104,5 @@ expansesCodesIpc(knex);
 generalSettingsIpc(knex);
 
 registeredMonthsIpc(knex);
+
+registeredYearsIpc(knex);

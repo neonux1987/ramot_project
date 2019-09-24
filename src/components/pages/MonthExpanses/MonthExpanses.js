@@ -7,6 +7,7 @@ import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
 import notificationsActions from '../../../redux/actions/notificationsActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import registeredMonthsActions from '../../../redux/actions/registeredMonthsActions';
+import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 import dateActions from '../../../redux/actions/dateActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
@@ -101,6 +102,9 @@ class MonthExpanses extends Component {
     //fetch date registered months
     this.props.fetchRegisteredMonths(params);
 
+    //fetch date registered months
+    this.props.fetchRegisteredYears(params);
+
   }
 
   inputExpansesSubmit(formInputs, reset, isNew) {
@@ -168,6 +172,8 @@ class MonthExpanses extends Component {
     this.props.cleanup(this.props.location.state.buildingNameEng);
     //cleanup months
     this.props.cleanupMonths();
+    //cleanup years
+    this.props.cleanupYears();
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -454,7 +460,9 @@ class MonthExpanses extends Component {
     //registered months of month expanse of a building
     //used for date picker
     const months = this.props.registeredMonths.registeredMonths.data;
-    //console.log(months);
+    //registered months of month expanse of a building
+    //used for date picker
+    const years = this.props.registeredYears.registeredYears.data;
     return (
       <Fragment>
         <WithHeaderWrapper>
@@ -478,7 +486,7 @@ class MonthExpanses extends Component {
               pageName={pageName}
             />
             <DatePicker
-              years={this.state.years}
+              years={years}
               months={months}
               enableYear={true}
               enableMonth={true}
@@ -553,7 +561,8 @@ const mapStateToProps = state => ({
   monthExpanses: state.monthExpanses,
   generalSettings: { tax: state.generalSettings.generalSettings.data[0].tax },
   expansesCodes: state.expansesCodes,
-  registeredMonths: state.registeredMonths
+  registeredMonths: state.registeredMonths,
+  registeredYears: state.registeredYears
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -568,7 +577,9 @@ const mapDispatchToProps = dispatch => ({
   addNotification: (notification) => dispatch(notificationsActions.addNotification(notification)),
   fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
   fetchRegisteredMonths: (buildingName) => dispatch(registeredMonthsActions.fetchRegisteredMonths(buildingName)),
-  cleanupMonths: () => dispatch(registeredMonthsActions.cleanupMonths())
+  cleanupMonths: () => dispatch(registeredMonthsActions.cleanupMonths()),
+  fetchRegisteredYears: (buildingName) => dispatch(registeredYearsActions.fetchRegisteredYears(buildingName)),
+  cleanupYears: () => dispatch(registeredYearsActions.cleanupYears())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

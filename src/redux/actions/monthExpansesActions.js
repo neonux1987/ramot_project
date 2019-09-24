@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import dateActions from './dateActions';
 import registeredMonthsActions from './registeredMonthsActions';
+import registeredYearsActions from './registeredYearsActions';
 import { notify, notifyTimeless, notificationTypes } from '../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
@@ -72,6 +73,7 @@ const generateEmptyReport = (params, dispatch) => {
       //update the date to he requested date in the params of the data
       dispatch(dateActions.updateDate(params.date));
       dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
+      dispatch(registeredYearsActions.fetchRegisteredYears(params));
       notify({
         isError: false,
         type: notificationTypes.message,

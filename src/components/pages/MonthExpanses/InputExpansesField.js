@@ -148,7 +148,7 @@ class InputExpansesField extends Component {
     let foundObj = null;
     if (code) {
       foundObj = this.props.data.find((expanse) => {
-        if (code) return expanse.id === code.summarized_section_id;
+        return expanse.id === code.summarized_section_id;
       });
     }
     return foundObj;

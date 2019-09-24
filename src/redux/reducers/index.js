@@ -9,6 +9,7 @@ import generalSettings from './generalSettingsReducer';
 import summarizedBudget from './summarizedBudgetReducer';
 import notifications from './notificationsReducer';
 import registeredMonths from './registeredMonthsReducer';
+import registeredYears from './registeredYearsReducer';
 
 export default combineReducers({
   app,
@@ -20,5 +21,6 @@ export default combineReducers({
   generalSettings,
   summarizedBudget,
   notifications,
-  registeredMonths
+  registeredMonths,
+  registeredYears
 });

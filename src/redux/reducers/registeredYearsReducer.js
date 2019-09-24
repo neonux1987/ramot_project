@@ -1,6 +1,6 @@
 
 const initState = {
-  registeredMonths: {
+  registeredYears: {
     isFetching: false,
     status: "",
     error: "",
@@ -10,37 +10,37 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_REGISTERED_MONTHS":
+    case "RECEIVE_REGISTERED_YEARS":
       return {
         ...state,
-        registeredMonths: {
-          ...state.registeredMonths,
+        registeredYears: {
+          ...state.registeredYears,
           isFetching: false,
           status: "success",
           data: action.data
         }
       }
-    case "REQUEST_REGISTERED_MONTHS":
+    case "REQUEST_REGISTERED_YEARS":
       return {
         ...state,
-        registeredMonths: {
-          ...state.registeredMonths,
+        registeredYears: {
+          ...state.registeredYears,
           isFetching: true
         }
       }
     case "FETCHING_FAILED":
       return {
         ...state,
-        registeredMonths: {
-          ...state.registeredMonths,
+        registeredYears: {
+          ...state.registeredYears,
           status: "error",
           error: action.payload
         }
       }
-    case "CLEANUP_MONTHS":
+    case "CLEANUP_YEARS":
       return {
         ...state,
-        registeredMonths: {
+        registeredYears: {
           isFetching: false,
           status: "",
           error: "",

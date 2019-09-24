@@ -17,7 +17,8 @@ const persistConfig = {
     "generalSettings",
     "summarizedBudget",
     "notifications",
-    "registeredMonths"
+    "registeredMonths",
+    "registeredYears"
   ]
 
 }
