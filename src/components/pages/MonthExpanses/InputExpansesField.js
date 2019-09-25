@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField, withStyles, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import { TextField, withStyles, Button, Select, InputLabel, MenuItem } from '@material-ui/core';
 import Spinner from '../../common/Spinner/Spinner';
 import ReactSelect from '../../common/ReactSelect/ReactSelect';
 

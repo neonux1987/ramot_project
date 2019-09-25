@@ -236,7 +236,6 @@ class SummarizedBudget extends Component {
   render() {
     const {
       pageName,
-      summarizedBudgets,
       headerTitle,
       pages,
       pageIndex

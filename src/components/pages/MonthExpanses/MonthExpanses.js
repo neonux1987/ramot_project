@@ -428,7 +428,6 @@ class MonthExpanses extends Component {
   render() {
     //vars
     const {
-      expanses,
       pageName,
       headerTitle,
       pages,

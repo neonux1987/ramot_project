@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormControl, Select, Button, MenuItem } from '@material-ui/core';
+import { Select, Button, MenuItem } from '@material-ui/core';
 import styles from './DatePicker.module.css';
 import Spinner from '../Spinner/Spinner';
 

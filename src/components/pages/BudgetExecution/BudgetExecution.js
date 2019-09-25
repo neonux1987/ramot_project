@@ -419,7 +419,6 @@ class BudgetExecution extends Component {
   render() {
     const {
       pageName,
-      budgetExecutions,
       headerTitle,
       pages,
       pageIndex
