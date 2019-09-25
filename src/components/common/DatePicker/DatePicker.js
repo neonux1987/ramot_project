@@ -122,18 +122,18 @@ class DatePicker extends Component {
 
   render() {
     return (
-      <form id="dates" className={styles.dates}>
-        <FormControl className={styles.formControl}>
+      <div id="dates" className={styles.dates}>
+        <form className={styles.formControl}>
           {this.renderMonth()}
           {this.renderQuarter()}
           {this.renderYear()}
-        </FormControl>
+        </form>
         <Button variant="contained" color="secondary" className={styles.button} onClick={() => this.props.loadDataByDateHandler(this.state.date)}
 
         >
           טען
           </Button>
-      </form>
+      </div>
     );
   }
 

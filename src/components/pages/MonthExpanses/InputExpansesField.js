@@ -12,13 +12,13 @@ const styles = theme => ({
     paddingTop: "7px"
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(),
+    marginRight: theme.spacing(),
     width: 200,
   },
   textFieldNotes: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(),
+    marginRight: theme.spacing(),
     width: 300,
   },
   dense: {
@@ -28,7 +28,7 @@ const styles = theme => ({
     width: 200,
   },
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   inputLabel: {
     color: "#000"
@@ -43,7 +43,7 @@ const styles = theme => ({
     width: "200px"
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     minWidth: 200,
   },
   spinnnerWrapper: {
@@ -256,7 +256,7 @@ class InputExpansesField extends Component {
         InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
       />}
 
-      {this.state.isNew && <FormControl className={this.props.classes.formControl}>
+      {this.state.isNew && <form className={this.props.classes.formControl}>
         <InputLabel className={this.props.classes.inputLabel} htmlFor="age-helper">בחר סעיף:</InputLabel>
         <Select
           value={this.state.formInputs.summarized_section_id}
@@ -272,7 +272,7 @@ class InputExpansesField extends Component {
           </MenuItem>
           {selectDataRender}
         </Select>
-      </FormControl>}
+      </form>}
 
       <TextField
         name="supplierName"

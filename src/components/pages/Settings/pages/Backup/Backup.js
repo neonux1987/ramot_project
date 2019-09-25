@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import generalSettingsActions from '../../../../../redux/actions/generalSettingsActions';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button,Typography } from '@material-ui/core';
 import LoadingCircle from '../../../../common/LoadingCircle';
 import styles from './Backup.module.css';
+import { MuiPickersUtilsProvider, DateTimePicker,TimePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 class Backup extends Component {
 
@@ -19,20 +21,14 @@ class Backup extends Component {
   componentWillUnmount() {
   }
 
-  formOnChange = (event) => {
-    let target = event.target;
-    const date = new Date(target.value);
-    const currentDate = new Date();
-    if (currentDate > date) {
-      console.log("לא ניתן להזין");
-      return;
-    }
+  formOnChange = (name,value) => {
+    console.log(value);
     this.setState(() => {
       return {
         ...this.state,
         formInputs: {
           ...this.formInputs,
-          [target.name]: target.value
+          [name]: value
         }
       }
     })
@@ -63,27 +59,38 @@ class Backup extends Component {
     if (generalSettings.isFetching) {
       return <LoadingCircle loading={generalSettings.isFetching} />
     }
-    console.log(this.props.generalSettings.generalSettings);
-    return (
-      <Fragment>
 
-        <form className={styles.form} onChange={(event) => this.formOnChange(event)} onSubmit={(event) => event.preventDefault()}>
-          <label>בחר תאריך וזמן לביצוע הגיבוי:</label>
-          <TextField
-            name="backup_datetime"
-            type="datetime-local"
-            value={this.state.formInputs.backup_datetime}
+    return (
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Fragment>
+
+        <form className={styles.form}>
+        <Typography variant="h5" gutterBottom>
+        גיבוי בסיס נתונים
+        </Typography>
+          <TimePicker
+            clearable
+            ampm={false}
+            label="בחר שעה לביצוע הגיבוי:"
             classes={{ root: styles.textField }}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            value={this.state.formInputs.backup_datetime} 
+              onChange={(event)=>this.formOnChange("backup_datetime",event)}
           />
           <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={(event) => this.saveSettings(event)}>
             שמור
         </Button>
         </form>
 
-      </Fragment>
+          {/* <DateTimePicker 
+          value={this.state.formInputs.backup_datetime} 
+          onChange={(event)=>this.formOnChange("backup_datetime",event)}
+          disablePast={true}
+          /> */}
+
+    
+
+        </Fragment>
+      </MuiPickersUtilsProvider>
     );
   }
 

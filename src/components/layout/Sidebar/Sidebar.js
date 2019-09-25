@@ -57,7 +57,7 @@ const styles = theme => ({
     fontSize: "22px"
   },
   loadingCircle: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing() * 2,
     color: "#fff"
   },
   homeDivider: {
