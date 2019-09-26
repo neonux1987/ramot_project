@@ -1,13 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import saveToFile from '../../../helpers/saveToFile';
+import saveToFileDialog from '../../../helpers/saveToFileDialog';
 import { default as excelProcess } from '../../../helpers/excel';
 import { default as printProcess } from 'print-js';
 import defaultStyles from './PageControls.module.css';
 
+let options = {
+  //Placeholder 3
+  filters: [
+    { name: 'Excel', extensions: ['xlsx'] }
+  ]
+};
+
 const PageControls = ({ excel, print, pageName, styles, ...props }) => {
   const exportToExcel = () => {
-    saveToFile(excel.fileName, (fullPath) => {
+    saveToFileDialog(excel.fileName, options, (fullPath) => {
       if (fullPath) {
         excel.fileName = fullPath;
         excelProcess(pageName, excel);

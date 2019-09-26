@@ -2,8 +2,37 @@
   padding-right: 5px;
 }
 
-.textField{
-  width: 240px;
+.dbBackupTitle{
+  display: inline-block;
+  margin-bottom: 0;
+  padding-top: 2px;
+}
+
+.dbBackupStatus{
+  display: inline-block;
+  color: green;
+  margin-right: 8px;
+  margin-bottom: 0;
+  padding-top: 2px;
+}
+
+.dbFileTextFieldLocationWrapper{
+  margin-top: 0px;
+  width: 480px;
+}
+
+.dbFileTextFieldLocationInput{
+  padding: 9px 14px;
+  direction: ltr;
+}
+
+.divider{
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
+.time{
+  width: 200px;
   display: flex;
   margin-top: 10px;
 }

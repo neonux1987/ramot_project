@@ -558,7 +558,9 @@ class MonthExpanses extends Component {
 const mapStateToProps = state => ({
   summarizedSections: state.summarizedSections,
   monthExpanses: state.monthExpanses,
-  generalSettings: { tax: state.generalSettings.generalSettings.data[0].tax },
+  generalSettings: {
+    tax: state.generalSettings.generalSettings.data[0].tax
+  },
   expansesCodes: state.expansesCodes,
   registeredMonths: state.registeredMonths,
   registeredYears: state.registeredYears

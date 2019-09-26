@@ -1,38 +1,23 @@
-const { ipcMain, BrowserWindow } = require('electron');
+const { ipcMain } = require('electron');
+const IOLogic = require('../../backend/logic/IOLogic');
 
+const saveFileIpc = (connection) => {
 
-const IOIpc = () => {
+  //prepare renderer menu
+  const iOLogic = new IOLogic(connection);
 
-  let workerWindow;
-  ipcMain.on('print', (event, content) => {
-    workerWindow = new BrowserWindow();
-    workerWindow.loadURL("file://" + __dirname + "/../printWorkerHtml/printWorker.html");
-    // workerWindow.hide();
-    workerWindow.webContents.openDevTools();
-    workerWindow.on("closed", () => {
-      workerWindow = undefined;
-    });
-    console.log(content);
-    workerWindow.webContents.on("did-finish-load", () => {
-      workerWindow.webContents.send("worker-data", content);
-    });
-  });
+  ipcMain.on("save-file", (event, filePath) => {
 
-  //console.log(contents);
-  ipcMain.on('print-worker-data', (event, content) => {
-    workerWindow.print({ silent: false, printBackground: false, deviceName: '' }, (error, data) => {
-      console.log("asdasdas");
-
-
-      if (error) throw error;
-      else console.log(data);
-
-
-    })
-
-
+    console.log(iOLogic.saveFile(filePath));
+    /* menuDao.getMenu().then((result) => {
+      //converts the result to support nested array of objects
+      //if an innerJoin is used
+      event.sender.send("file-saved", { data: result });
+    }).catch((error) => {
+      event.reply("file-saved", { error: error.message });
+    }); */
   });
 
 }
 
-module.exports = IOIpc;
+module.exports = saveFileIpc;
