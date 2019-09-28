@@ -1,6 +1,8 @@
 const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
 const GeneralSettingsDao = require('../dao/GeneralSettingsDao');
 const MonthTotalBudgetAndExpansesLogic = require('./MonthTotalBudgetAndExpansesLogic');
+const SummarizedSectionsLogic = require('./SummarizedSectionsLogic');
+const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
 const Helper = require('../../helpers/Helper');
 
 class BudgetExecutionLogic {
@@ -9,6 +11,8 @@ class BudgetExecutionLogic {
     this.bed = new BudgetExecutionDao(connection);
     this.generalSettingsDao = new GeneralSettingsDao(connection);
     this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
+    this.summarizedSectionsLogic = new SummarizedSectionsLogic();
+    this.registeredQuartersLogic = new RegisteredQuartersLogic();
   }
 
   getAllBudgetExecutionsTrx(buildingName, date, trx) {
@@ -117,6 +121,59 @@ class BudgetExecutionLogic {
 
   batchInsert(buildingName, quarter, rows, trx) {
     return this.bed.batchInsert(buildingName, quarter, rows, trx);
+  }
+
+  /**
+   * creates empty report for the new budget execution table
+   * @param {*} buildingName 
+   * @param {*} date 
+   */
+  createEmptyBudgetExec(buildingName, date, trx) {
+
+    const quarter = date.quarter > 1 ? date.quarter - 1 : 4;//if quarter is 0 then set to quarter 4 of previous year
+    const year = quarter === 4 ? date.year - 1 : date.year;//if the quarter is 4, go to previous year
+
+    const newDate = {
+      quarter: quarter,
+      year: year
+    }
+
+    return this.registeredQuarters.getRegisteredQuarter(buildingName, date.month, date.year).then((quarter) => {
+
+      if (quarter.length === 0) {
+        return this.getAllBudgetExecutionsTrx(buildingName, newDate, trx).then((budgetExec) => {
+          if (budgetExec.length === 0) {
+            return this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx).then((defaultSections) => {
+              //prepare the data for insertion
+              const preparedDefaultSections = this.summarizedSectionsLogic.prepareDefaultBatchInsertion(defaultSections, date);
+              //insert the batch
+              return this.batchInsert(buildingName, date.quarter, preparedDefaultSections, trx).then(() => {
+                return this.getAllBudgetExecutionsTrx(buildingName, date, trx);
+              });
+            });//end default expanses codes logic
+          } else {
+            //prepare the data for insertion
+            const preparedSections = this.summarizedSectionsLogic.prepareBatchInsertion(budgetExec, date);
+            //insert the batch
+            return this.batchInsert(buildingName, date.quarter, preparedSections, trx).then(() => {
+              return this.getAllBudgetExecutionsTrx(buildingName, date, trx);
+            });
+          }
+
+        });
+      } else {
+        return this.getAllBudgetExecutionsTrx(buildingName, date, trx).then((budgetExec) => budgetExec);
+      }
+
+    })//end month expanses logic
+      .then(() => {
+        return this.registeredQuartersLogic.registerNewQuarter(buildingName, { year: date.year, month: date.month });
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new Error(error.message)
+      });
+
   }
 
 }

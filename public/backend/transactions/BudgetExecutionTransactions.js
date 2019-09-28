@@ -114,7 +114,7 @@ class BudgetExecutionTransactions {
 
       })//end month expanses logic
         .then(() => {
-          return this.registeredMonthsLogic.registerNewMonth(buildingName, { year: date.year, month: date.month });
+          return this.registeredQuartersLogic.registerNewQuarter(buildingName, { year: date.year, month: date.month });
         })
         .catch((error) => {
           console.log(error);

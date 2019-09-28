@@ -11,6 +11,10 @@ class RegisteredMonthsLogic {
     return this.registeredMonthsDao.getAllRegisteredMonths(buildingName);
   }
 
+  getAllRegisteredMonthsByMonth(buildingName) {
+    return this.registeredMonthsDao.getAllRegisteredMonthsByMonth(buildingName, month);
+  }
+
   registerNewMonth(buildingName, data, trx) {
     return this.registeredMonthsDao.registerNewMonth(buildingName, data, trx);
   }

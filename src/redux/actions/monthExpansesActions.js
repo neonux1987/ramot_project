@@ -32,7 +32,7 @@ const fetchExpanses = (params = Object) => {
       } else {
         //if there is no data, that means it's a new month and 
         //and empty report should be generated.
-        if (arg.data.length === 0) {
+        if (0 === 0) {
           //show a notification that the generation of 
           //the empty report has started
           notifyTimeless({

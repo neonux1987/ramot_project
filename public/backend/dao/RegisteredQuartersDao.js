@@ -1,6 +1,10 @@
 
 class RegisteredQuartersDao {
 
+  constructor(connection) {
+    this.connection = connection;
+  }
+
   /**
    * get all the quarters
    * @param {*} buildingName 
@@ -17,6 +21,7 @@ class RegisteredQuartersDao {
    * @param {*} record 
    */
   addNewQuarter(
+    buildingName,
     data = {
       year: Number,
       quarter: Number

@@ -162,45 +162,10 @@ class MonthExpansesTransactions {
 
     return this.connection.transaction((trx) => {
 
-      const monthNum = date.monthNum > 0 ? date.monthNum - 1 : 11;//if the month is 0 january, then go to month 11 december of previous year
-      const year = monthNum === 11 ? date.year - 1 : date.year;//if the month is 11 december, go to previous year
-
-      const newDate = {
-        month: Helper.getCurrentMonthEng(monthNum),
-        year: year
-      }
-
-      return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, newDate, trx).then((expanses) => {
-        if (expanses.length === 0) {
-          return this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx).then((defaultCodes) => {
-            //prepare the data for insertion
-            this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
-            //insert the batch
-            return this.monthExpansesLogic.batchInsert(buildingName, defaultCodes, trx).then(() => {
-              return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, trx);
-            });
-          });//end default expanses codes logic
-        } else {
-          //prepare the data for insertion
-          this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
-          //insert the batch
-          return this.monthExpansesLogic.batchInsert(buildingName, expanses, trx).then(() => {
-            return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, trx);
-          });
-        }
-
-      })//end month expanses logic
+      return this.monthExpansesLogic.createMonthEmptyExpanses(buildingName, date, trx)
         .then((expanses) => {
-          return this.registeredMonthsLogic.registerNewMonth(buildingName, {
-            year: date.year,
-            month: date.month,
-            monthHeb: date.monthHeb
-          },
-            trx).then(() => {
-              return this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
-                .then(() => expanses);
-            });
-        });
+          return expanses;
+        })
 
     })//end transaction
       .catch((error) => {
