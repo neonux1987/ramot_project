@@ -68,7 +68,10 @@ class SummarizedBudget extends Component {
             accessor: "summarized_section_id",
             Header: "ספרור",
             headerStyle: { background: "#000", color: "#fff" },
-            width: 100
+            width: 100,
+            Cell: (row) => {
+              return <span>{row.viewIndex + 1}</span>;
+            }
           }
         ]
       },

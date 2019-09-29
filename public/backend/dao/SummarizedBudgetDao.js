@@ -21,13 +21,14 @@ class SummarizedBudgetDao {
     this.nestHydrationJS = new NestHydrationJS();
   }
 
-  getBuildingSummarizedBudget({
+  getBuildingSummarizedBudgetTrx(
     buildingName = String,
     date = {
       year: Number
-    }
-  }) {
-    let data = this.connection.select(
+    },
+    trx = this.connection
+  ) {
+    return trx.select(
       "building.id AS id",
       "building.year AS year",
       "sc.id AS summarized_section_id",
@@ -46,13 +47,10 @@ class SummarizedBudgetDao {
       "building.notes AS notes"
     )
       .where({ year: date.year })
-      .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id");
-
-    return data.then((result) => {
-      return result;
-    }).catch((error) => {
-      throw error;
-    });
+      .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id")
+      .catch((error) => {
+        throw error;
+      });
   }
 
   getBuildingSummarizedBudgetSingleTrx({
@@ -126,6 +124,17 @@ class SummarizedBudgetDao {
           throw new Error(`${summarized_section_id} לא קיימת רשומה עם מספר זיהוי`);
         }
       })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  batchInsert(
+    buildingName,
+    rows,
+    trx
+  ) {
+    return trx.batchInsert(`${buildingName}_summarized_budget`, rows, rows.length)
       .catch((error) => {
         throw error;
       });

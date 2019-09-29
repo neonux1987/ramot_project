@@ -17,10 +17,21 @@ class RegisteredQuartersDao {
   }
 
   /**
+ * get all the quarters
+ * @param {*} buildingName 
+ */
+  getRegisteredQuarterTrx(buildingName, quarter, year, trx = this.connection) {
+    return trx.select().from(`${buildingName}_registered_quarters`).where({ quarter: quarter, year: year })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /**
    * add new quarter
    * @param {*} record 
    */
-  addNewQuarter(
+  registerNewQuarter(
     buildingName,
     data = {
       year: Number,

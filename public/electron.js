@@ -12,6 +12,7 @@ const registeredYearsIpc = require('./electron/ipcs/registeredYears.ipc');
 const IOIpc = require('./electron/ipcs/IO.ipc');
 const contextMenu = require('electron-context-menu');
 const DbBackupSvc = require('./backend/services/DbBackupSvc');
+const SettingsLogic = require('./backend/logic/SettingsLogic');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -112,3 +113,7 @@ registeredYearsIpc(knex);
 IOIpc();
 
 const dbBackupSvc = new DbBackupSvc();
+
+const settingsLogic = new SettingsLogic();
+
+settingsLogic.getSettings();

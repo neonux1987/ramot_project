@@ -119,10 +119,7 @@ class MonthExpansesDao {
     rows,
     trx
   ) {
-    return trx.insert(rows).into(`${buildingName}_month_expanses`)
-      .whereNotExists(function () {
-        trx.select('year').from(`${buildingName}_month_expanses`).whereRaw('year = 2019');
-      })
+    return trx.batchInsert(`${buildingName}_month_expanses`, rows, rows.length)
       .catch((error) => {
         throw error;
       });

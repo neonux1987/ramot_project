@@ -8,6 +8,17 @@ class SummarizedSectionsDao {
   /**
    * get all summarized sections
    */
+  getAllSummarizedSectionsOrderedTrx(trx = this.connection) {
+    return trx.select().from("summarized_sections")
+      .orderBy('section', 'asc')
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /**
+ * get all summarized sections
+ */
   getAllSummarizedSectionsTrx(trx = this.connection) {
     return trx.select().from("summarized_sections")
       .orderBy('section', 'asc')

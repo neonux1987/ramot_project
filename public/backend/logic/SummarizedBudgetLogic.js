@@ -1,15 +1,20 @@
 const Helper = require('../../helpers/Helper');
 const SummarizedBudgetDao = require('../dao/SummarizedBudgetDao');
+const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
+const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
+const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
 
 class SummarizedBudgetLogic {
 
   constructor(connection) {
     this.sbd = new SummarizedBudgetDao(connection);
+    this.registeredYearsLogic = new RegisteredYearsLogic();
+    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
+    this.summarizedSectionsLogic = new SummarizedSectionsLogic();
   }
 
-  getBuildingSummarizedBudget(params) {
-    params.buildingName = Helper.trimSpaces(params.buildingName);
-    return this.sbd.getBuildingSummarizedBudget(params);
+  getBuildingSummarizedBudgetTrx(buildingName, date, trx) {
+    return this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
   }
 
   updateSummarizedBudget(params) {
@@ -55,6 +60,85 @@ class SummarizedBudgetLogic {
       };
       return this.sbd.updateSummarizedBudgetTrx(params, trx).then(() => params.data);
     }).catch(error => { throw error; });
+  }
+
+  batchInsert(buildingName, rows, trx) {
+    return this.sbd.batchInsert(buildingName, rows, trx);
+  }
+
+  prepareDefaultBatchInsertion(data, date) {
+    const newData = [];
+    for (let i = 0; i < data.length; i++) {
+      newData.push({
+        summarized_section_id: data[i].id,
+        year: date.year
+      })
+    }
+    return newData;
+  }
+
+  prepareBatchInsertion(data, date) {
+    const newData = [];
+    for (let i = 0; i < data.length; i++) {
+      newData.push({
+        summarized_section_id: data[i].summarized_section_id,
+        year: date.year
+      })
+    }
+    return newData;
+  }
+
+  /**
+   * creates empty report for the new month
+   * @param {*} buildingName 
+   * @param {*} date 
+   */
+  createEmptySummarizedBudget(buildingName, date, trx) {
+
+    const newDate = {
+      year: date.year - 1
+    }
+
+    return this.getBuildingSummarizedBudgetTrx(buildingName, date, trx).then((sumBudgets) => {
+
+      if (sumBudgets.length === 0) {
+        return this.getBuildingSummarizedBudgetTrx(buildingName, newDate, trx).then((sumBudgets) => {
+          if (sumBudgets.length === 0) {
+            return this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx).then((defaultSections) => {
+              //prepare the data for insertion
+              const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
+              //insert the batch
+              return this.batchInsert(buildingName, preparedDefaultSections, trx).then(() => {
+                return this.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
+              });
+            });//end default expanses codes logic
+          } else {
+            //prepare the data for insertion
+            const preparedSections = this.prepareBatchInsertion(sumBudgets, date);
+            //insert the batch
+            return this.batchInsert(buildingName, preparedSections, trx).then(() => {
+              return this.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
+            });
+          }
+
+        })//end month expanses logic
+          .then((sumBudgets) => {
+            return this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx)
+              .then((years) => {
+                if (years.length === 0) {
+                  return this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
+                    .then(() => sumBudgets);
+                } else {
+                  return sumBudgets;
+                }
+              });
+          });
+      } else {
+        return sumBudgets;
+      }
+
+    });
+
   }
 
 }

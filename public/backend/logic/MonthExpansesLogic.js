@@ -93,37 +93,45 @@ class MonthExpansesLogic {
       year: year
     }
 
-    return this.getAllMonthExpansesTrx(buildingName, newDate, trx).then((expanses) => {
+    return this.getAllMonthExpansesTrx(buildingName, date, trx).then((expanses) => {
+
       if (expanses.length === 0) {
-        return this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx).then((defaultCodes) => {
-          //prepare the data for insertion
-          this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
-          //insert the batch
-          return this.med.batchInsert(buildingName, defaultCodes, trx).then(() => {
-            return this.getAllMonthExpansesTrx(buildingName, date, trx);
+        return this.getAllMonthExpansesTrx(buildingName, newDate, trx).then((expanses) => {
+          if (expanses.length === 0) {
+            return this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx).then((defaultCodes) => {
+              //prepare the data for insertion
+              this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
+              //insert the batch
+              return this.batchInsert(buildingName, defaultCodes, trx).then(() => {
+                return this.getAllMonthExpansesTrx(buildingName, date, trx);
+              });
+            });//end default expanses codes logic
+          } else {
+            //prepare the data for insertion
+            this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
+            //insert the batch
+            return this.batchInsert(buildingName, expanses, trx).then(() => {
+              return this.getAllMonthExpansesTrx(buildingName, date, trx);
+            });
+          }
+
+        })//end month expanses logic
+          .then((expanses) => {
+            return this.registeredMonthsLogic.registerNewMonth(buildingName, {
+              year: date.year,
+              month: date.month,
+              monthHeb: date.monthHeb
+            },
+              trx).then(() => {
+                return this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
+                  .then(() => expanses);
+              });
           });
-        });//end default expanses codes logic
       } else {
-        //prepare the data for insertion
-        this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
-        //insert the batch
-        return this.med.batchInsert(buildingName, expanses, trx).then(() => {
-          return this.getAllMonthExpansesTrx(buildingName, date, trx);
-        });
+        return expanses;
       }
 
-    })//end month expanses logic
-      .then((expanses) => {
-        return this.registeredMonthsLogic.registerNewMonth(buildingName, {
-          year: date.year,
-          month: date.month,
-          monthHeb: date.monthHeb
-        },
-          trx).then(() => {
-            return this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
-              .then(() => expanses);
-          });
-      });
+    });
 
   }
 

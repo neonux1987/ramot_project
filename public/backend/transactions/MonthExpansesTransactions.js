@@ -164,7 +164,12 @@ class MonthExpansesTransactions {
 
       return this.monthExpansesLogic.createMonthEmptyExpanses(buildingName, date, trx)
         .then((expanses) => {
-          return expanses;
+          return this.budgetExecutionLogic.createEmptyBudgetExec(buildingName, date, trx).then(() => {
+          })
+            .then(() => {
+              return this.summarizedBudgetLogic.createEmptySummarizedBudget(buildingName, date, trx).then(() => expanses);
+            });
+
         })
 
     })//end transaction

@@ -85,43 +85,15 @@ class BudgetExecutionTransactions {
 
     return this.connection.transaction((trx) => {
 
-      const quarter = date.quarter > 1 ? date.quarter - 1 : 4;//if quarter is 0 then set to quarter 4 of previous year
-      const year = quarter === 4 ? date.year - 1 : date.year;//if the quarter is 4, go to previous year
+      return this.budgetExecutionLogic.createEmptyBudgetExec(buildingName, date, trx).then((budgetExec) => {
+        return this.summarizedBudgetLogic.createEmptySummarizedBudget(buildingName, date, trx).then(() => budgetExec);
+      })
 
-      const newDate = {
-        quarter: quarter,
-        year: year
-      }
-
-      return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, newDate, trx).then((budgetExec) => {
-        if (budgetExec.length === 0) {
-          return this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx).then((defaultSections) => {
-            //prepare the data for insertion
-            const preparedDefaultSections = this.summarizedSectionsLogic.prepareDefaultBatchInsertion(defaultSections, date);
-            //insert the batch
-            return this.budgetExecutionLogic.batchInsert(buildingName, date.quarter, preparedDefaultSections, trx).then(() => {
-              return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx);
-            });
-          });//end default expanses codes logic
-        } else {
-          //prepare the data for insertion
-          const preparedSections = this.summarizedSectionsLogic.prepareBatchInsertion(budgetExec, date);
-          //insert the batch
-          return this.budgetExecutionLogic.batchInsert(buildingName, date.quarter, preparedSections, trx).then(() => {
-            return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx);
-          });
-        }
-
-      })//end month expanses logic
-        .then(() => {
-          return this.registeredQuartersLogic.registerNewQuarter(buildingName, { year: date.year, month: date.month });
-        })
-        .catch((error) => {
-          console.log(error);
-          throw new Error(error.message)
-        });
-
-    });//end transaction
+    })//end transaction
+      .catch((error) => {
+        console.log(error);
+        throw new Error(error.message)
+      });
 
   }
 

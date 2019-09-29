@@ -17,6 +17,17 @@ class RegisteredYearsDao {
   }
 
   /**
+ * get registered year
+ * @param {*} buildingName 
+ */
+  getRegisteredYearTrx(buildingName, year, trx = this.connection) {
+    return trx.select().from(`${buildingName}_registered_years`).where({ year: year })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /**
    * add new year
    * @param {*} record 
    */

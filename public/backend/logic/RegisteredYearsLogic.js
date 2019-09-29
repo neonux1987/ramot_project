@@ -11,6 +11,10 @@ class RegisteredYearsLogic {
     return this.registeredYearsDao.getAllRegisteredYears(buildingName);
   }
 
+  getRegisteredYearTrx(buildingName, year, trx) {
+    return this.registeredYearsDao.getRegisteredYearTrx(buildingName, year, trx);
+  }
+
   registerNewYear(buildingName, data, trx) {
     return this.registeredYearsDao.registerNewYear(buildingName, data, trx);
   }
