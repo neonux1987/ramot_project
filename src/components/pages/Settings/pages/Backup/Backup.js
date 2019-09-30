@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import generalSettingsActions from '../../../../../redux/actions/generalSettingsActions';
+import settingsActions from '../../../../../redux/actions/settingsActions';
 import { FormControlLabel, Checkbox, Box, Button, Typography, Divider, TextField } from '@material-ui/core';
 import LoadingCircle from '../../../../common/LoadingCircle';
 import styles from './Backup.module.css';
@@ -25,7 +25,7 @@ class Backup extends Component {
 
   state = {
     formInputs: {
-      backup_datetime: this.props.generalSettings.generalSettings.data[0].backup_datetime
+      backup_datetime: "10:23"
     },
     dbBackupLocation: ""
   }
@@ -33,22 +33,17 @@ class Backup extends Component {
   dbBackupLocationInputRef = React.createRef();
 
   componentDidMount() {
+    this.props.fetchSettings();
   }
 
   componentWillUnmount() {
   }
 
-  formOnChange = (name, value) => {
-    console.log(value);
-    this.setState(() => {
-      return {
-        ...this.state,
-        formInputs: {
-          ...this.formInputs,
-          [name]: value
-        }
-      }
-    })
+  onTimeChange = (name, value) => {
+
+    const db_backup = { ...this.props.settings.settings.data.db_backup };
+    db_backup.time = value;
+    this.props.updateSettings(name, db_backup);
   }
 
   saveSettings = (event) => {
@@ -60,7 +55,7 @@ class Backup extends Component {
         ...this.state.formInputs
       }
     };
-    this.props.updateGeneralSettings(params, data);
+    this.props.updateSettings(params, data);
   }
 
   parseFormInputs(formInputs) {
@@ -71,7 +66,7 @@ class Backup extends Component {
 
   saveToFileHandler = () => {
     //location od the backup database folder
-    options.defaultPath = this.props.generalSettings.generalSettings.data[0].db_backup_location;
+    options.defaultPath = this.props.settings.settings.data[0].db_backup_location;
     saveToFileDialog("nds-frms-db-26-09-2019", options, (fullPath) => {
       if (fullPath) {
         ioSvc(fullPath);
@@ -81,12 +76,15 @@ class Backup extends Component {
 
   render() {
     const {
-      generalSettings
-    } = this.props.generalSettings;
-    if (generalSettings.isFetching) {
-      return <LoadingCircle loading={generalSettings.isFetching} />
+      settings
+    } = this.props.settings;
+    if (settings.isFetching) {
+      return <LoadingCircle loading={settings.isFetching} />
     }
-
+    const {
+      db_backup,
+      reports_backup
+    } = settings.data;
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap["he"]}>
         <Fragment>
@@ -116,8 +114,8 @@ class Backup extends Component {
                 clearable
                 ampm={false}
                 classes={{ root: styles.time }}
-                value={this.state.formInputs.backup_datetime}
-                onChange={(event) => this.formOnChange("backup_datetime", event)}
+                value={db_backup.time}
+                onChange={(event) => this.props.onTimeChange("db_backup", event)}
               />
             </div>
 
@@ -244,12 +242,11 @@ class Backup extends Component {
 
               <input
                 ref={this.dbBackupLocationInputRef}
-                value={this.state.dbBackupLocation}
                 id="file" type="file"
                 style={{ visibility: "hidden" }}
                 onChange={(event) => {
                   console.log(event.target.value);
-                  this.setState({ dbbackupLocation: event.target.value })
+                  //this.setState({ dbbackupLocation: event.target.value })
                 }}
               />
               <Button variant="contained" color="primary" onClick={() => this.saveToFileHandler()}>בחר מיקום</Button>
@@ -257,7 +254,7 @@ class Backup extends Component {
                 id="outlined-bare"
                 disabled
                 classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-                value={this.state.dbBackupLocation}
+                value={db_backup.path}
                 onChange={() => { }}
                 variant="outlined"
                 inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
@@ -279,13 +276,13 @@ class Backup extends Component {
 }
 
 const mapStateToProps = state => ({
-  generalSettings: state.generalSettings
+  settings: state.settings
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings()),
-  receiveGeneralSettings: (data) => dispatch(generalSettingsActions.receiveGeneralSettings(data)),
-  updateGeneralSettings: (payload, data) => dispatch(generalSettingsActions.updateGeneralSettings(payload, data)),
+  fetchSettings: () => dispatch(settingsActions.fetchSettings()),
+  saveSettings: (key, data) => dispatch(settingsActions.saveSettings()),
+  onTimeChange: (key, data) => dispatch(settingsActions.onTimeChange(key, data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Backup);

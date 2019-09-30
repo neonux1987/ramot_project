@@ -10,10 +10,20 @@ class SettingsLogic {
     this.iOLogic = new IOLogic();
   }
 
-  async getSettings() {
-    const settings = await this.iOLogic.readFile(CONFIG_LOCATION);
-    console.log(JSON.parse(settings));
-    return JSON.parse(settings);
+  getSettings() {
+    return this.iOLogic.readFile(CONFIG_LOCATION).then((settings) => {
+      return JSON.parse(settings);
+    });
+  }
+
+  async updateSettings(key, data) {
+
+    const settings = await this.getSettings();
+    console.log(data);
+    settings[key] = data;
+
+    return this.iOLogic.writeFile(CONFIG_LOCATION, JSON.stringify(settings, null, 2));
+
   }
 
 }

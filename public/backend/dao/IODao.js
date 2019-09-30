@@ -1,18 +1,17 @@
 const fs = require('fs');
+const util = require('util');
+
+const readFilePromise = util.promisify(fs.readFile);
+const writeFilePromise = util.promisify(fs.writeFile);
 
 class IODao {
 
   readFile(filePath, settings) {
-    return fs.readFile(filePath, settings, (err, data) => {
-      if (err) throw err;
-    });
+    return readFilePromise(filePath, settings);
   }
 
-  saveFile(filePath, data) {
-    return fs.writeFile(filePath, data, function (err) {
-      if (err) throw err;
-      console.log('Saved!');
-    });
+  writeFile(filePath, data) {
+    return writeFilePromise(filePath, data);
   }
 
 }

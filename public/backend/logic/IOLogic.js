@@ -6,12 +6,12 @@ class IOLogic {
     this.iODao = new IODao()
   }
 
-  saveFile(filePath, data) {
-    this.iODao.saveFile(filePath, data);
+  writeFile(filePath, data) {
+    return this.iODao.writeFile(filePath, data);
   }
 
   readFile(filePath, settings) {
-    this.iODao.readFile(filePath);
+    return this.iODao.readFile(filePath, settings);
   }
 
 }
