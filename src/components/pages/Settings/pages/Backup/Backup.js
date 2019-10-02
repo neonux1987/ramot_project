@@ -7,28 +7,14 @@ import styles from './Backup.module.css';
 import { MuiPickersUtilsProvider, DateTimePicker, TimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import heLocale from "date-fns/locale/he";
-import saveToFileDialog from '../../../../../helpers/saveToFileDialog';
-import { ioSvc } from '../../../../../services/ioSvc';
+import { selectFolderDialog } from '../../../../../services/electronDialogsSvc';
+import { activateDbBackup, disableDbBackup, updateDbBackupSettings } from '../../../../../services/backupDBSvc';
 
 const localeMap = {
   he: heLocale
 };
 
-let options = {
-  //Placeholder 3
-  filters: [
-    { name: 'sqlite', extensions: ['sqlite'] }
-  ]
-};
-
 class Backup extends Component {
-
-  state = {
-    formInputs: {
-      backup_datetime: "10:23"
-    },
-    dbBackupLocation: ""
-  }
 
   dbBackupLocationInputRef = React.createRef();
 
@@ -39,39 +25,75 @@ class Backup extends Component {
   componentWillUnmount() {
   }
 
-  onTimeChange = (name, value) => {
-
+  onDbTimeChange = (name, value) => {
     const db_backup = { ...this.props.settings.settings.data.db_backup };
     db_backup.time = value;
     this.props.updateSettings(name, db_backup);
   }
 
-  saveSettings = (event) => {
-    const data = [...this.props.generalSettings.generalSettings.data];
-
-    const params = {
-      id: data[0].id,
-      settings: {
-        ...this.state.formInputs
+  onDbDayChange = (event) => {
+    const db_backup = { ...this.props.settings.settings.data.db_backup };
+    const { name, checked } = event.target;
+    const keys = Object.keys(db_backup.days_of_week);
+    if (name === "everything" && checked === true) {
+      for (let i = 0; i < keys.length; i++) {
+        db_backup.days_of_week[keys[i]] = true;
       }
-    };
-    this.props.updateSettings(params, data);
+    } else if (name === "everything" && checked === false) {
+      const keys = Object.keys(db_backup.days_of_week);
+      for (let i = 0; i < keys.length; i++) {
+        db_backup.days_of_week[keys[i]] = false;
+      }
+    }
+    else {
+      db_backup.days_of_week = {
+        ...db_backup.days_of_week,
+        [name]: checked,
+        ["everything"]: checked ? db_backup.days_of_week["everything"] : false
+      };
+
+      let fullDays = true;
+      for (let i = 0; i < keys.length; i++) {
+        if (!db_backup.days_of_week[keys[i]]) {
+          fullDays = false;
+        }
+      }
+      if (fullDays) {
+        db_backup.days_of_week["everything"] = true
+      }
+
+    }
+
+    this.props.updateSettings("db_backup", db_backup);
   }
 
-  parseFormInputs(formInputs) {
-    const copyFormInputs = { ...formInputs };
-    copyFormInputs.tax = Number.parseFloat(copyFormInputs.tax);
-    return copyFormInputs;
+  saveSettings = (message, enableSound) => {
+    this.props.saveSettings(this.props.settings.settings.data, message, enableSound);
   }
 
-  saveToFileHandler = () => {
-    //location od the backup database folder
-    options.defaultPath = this.props.settings.settings.data[0].db_backup_location;
-    saveToFileDialog("nds-frms-db-26-09-2019", options, (fullPath) => {
+  dbSelectFolderHandler = () => {
+    const options = {
+      defaultPath: this.props.settings.settings.data.db_backup.path
+    }
+    selectFolderDialog(options, (fullPath) => {
       if (fullPath) {
-        ioSvc(fullPath);
+        const db_backup = { ...this.props.settings.settings.data.db_backup };
+        db_backup.path = fullPath[0];
+        this.props.updateSettings("db_backup", db_backup);
+        //`ndts-frms-db-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
       }
     });
+  }
+
+  toggleDbBackupActivation = () => {
+    const db_backup = { ...this.props.settings.settings.data.db_backup };
+    db_backup.active = !db_backup.active;
+    this.props.updateSettings("db_backup", db_backup);
+    /* if (db_backup.active) {
+      this.props.activateDbBackup();
+    } else {
+      this.props.disableDbBackup();
+    } */
   }
 
   render() {
@@ -85,20 +107,25 @@ class Backup extends Component {
       db_backup,
       reports_backup
     } = settings.data;
+
+    let dbActiveButton = !db_backup.active ? <Button style={{ float: "left" }} onClick={this.toggleDbBackupActivation} variant="contained" color="primary">הפעל</Button> :
+      <Button style={{ float: "left" }} onClick={this.toggleDbBackupActivation} variant="contained" color="secondary">השבת</Button>;
+
+    let dbActiveText = db_backup.active ? <Typography variant="h5" className={styles.dbBackupStatus + " " + styles.dbBackupActive}>פעיל</Typography> :
+      <Typography variant="h5" className={styles.dbBackupStatus + " " + styles.dbBackupDisabled}>מושבת</Typography>
+
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap["he"]}>
         <Fragment>
 
-          <div className={styles.form}>
+          <div className={styles.form} disabled>
 
             <div style={{ paddingBottom: "5px" }}>
               <Typography variant="h5" className={styles.dbBackupTitle}>
                 גיבוי בסיס נתונים
             </Typography>
-              <Typography variant="h5" className={styles.dbBackupStatus}>
-                פעיל
-            </Typography>
-              <Button style={{ float: "left" }} variant="contained" color="secondary">כבה</Button>
+              {dbActiveText}
+              {dbActiveButton}
             </div>
 
             <Divider className={styles.divider} />
@@ -115,7 +142,7 @@ class Backup extends Component {
                 ampm={false}
                 classes={{ root: styles.time }}
                 value={db_backup.time}
-                onChange={(event) => this.props.onTimeChange("db_backup", event)}
+                onChange={(event) => this.onDbTimeChange("db_backup", event)}
               />
             </div>
 
@@ -132,8 +159,9 @@ class Backup extends Component {
                 style={{ marginRight: "-8px", borderLeft: "1px solid #808080", paddingLeft: "25px" }}
                 control={
                   <Checkbox
-                    checked={false}
-                    onChange={() => { }}
+                    name="everything"
+                    checked={db_backup.days_of_week["everything"]}
+                    onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
                   />
@@ -145,8 +173,9 @@ class Backup extends Component {
                 label="יום א'"
                 control={
                   <Checkbox
-                    checked={true}
-                    onChange={() => { }}
+                    name="0"
+                    checked={db_backup.days_of_week["0"]}
+                    onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
                   />
@@ -158,8 +187,9 @@ class Backup extends Component {
                 label="יום ב'"
                 control={
                   <Checkbox
-                    checked={true}
-                    onChange={() => { }}
+                    name="1"
+                    checked={db_backup.days_of_week["1"]}
+                    onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
                   />
@@ -171,8 +201,9 @@ class Backup extends Component {
                 label="יום ג'"
                 control={
                   <Checkbox
-                    checked={true}
-                    onChange={() => { }}
+                    name="2"
+                    checked={db_backup.days_of_week["2"]}
+                    onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
                   />
@@ -184,8 +215,9 @@ class Backup extends Component {
                 label="יום ד'"
                 control={
                   <Checkbox
-                    checked={true}
-                    onChange={() => { }}
+                    name="3"
+                    checked={db_backup.days_of_week["3"]}
+                    onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
                   />
@@ -197,8 +229,9 @@ class Backup extends Component {
                 label="יום ה'"
                 control={
                   <Checkbox
-                    checked={true}
-                    onChange={() => { }}
+                    name="4"
+                    checked={db_backup.days_of_week["4"]}
+                    onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
                   />
@@ -210,8 +243,9 @@ class Backup extends Component {
                 label="יום ו'"
                 control={
                   <Checkbox
-                    checked={false}
-                    onChange={() => { }}
+                    name="5"
+                    checked={db_backup.days_of_week["5"]}
+                    onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
                   />
@@ -223,8 +257,9 @@ class Backup extends Component {
                 label="יום ש'"
                 control={
                   <Checkbox
-                    checked={false}
-                    onChange={() => { }}
+                    name="6"
+                    checked={db_backup.days_of_week["6"]}
+                    onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
                   />
@@ -244,12 +279,8 @@ class Backup extends Component {
                 ref={this.dbBackupLocationInputRef}
                 id="file" type="file"
                 style={{ visibility: "hidden" }}
-                onChange={(event) => {
-                  console.log(event.target.value);
-                  //this.setState({ dbbackupLocation: event.target.value })
-                }}
               />
-              <Button variant="contained" color="primary" onClick={() => this.saveToFileHandler()}>בחר מיקום</Button>
+              <Button variant="contained" color="primary" onClick={this.dbSelectFolderHandler}>בחר מיקום</Button>
               <TextField
                 id="outlined-bare"
                 disabled
@@ -264,7 +295,7 @@ class Backup extends Component {
 
 
 
-            <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={(event) => this.saveSettings(event)}>
+            <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={this.saveSettings}>
               שמור
             </Button>
           </div>
@@ -281,8 +312,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchSettings: () => dispatch(settingsActions.fetchSettings()),
-  saveSettings: (key, data) => dispatch(settingsActions.saveSettings()),
-  onTimeChange: (key, data) => dispatch(settingsActions.onTimeChange(key, data))
+  saveSettings: (data) => dispatch(settingsActions.saveSettings(data)),
+  updateSettings: (key, data) => dispatch(settingsActions.updateSettings(key, data)),
+  activateDbBackup: () => dispatch(settingsActions.activateDbBackup()),
+  disableDbBackup: () => dispatch(settingsActions.disableDbBackup()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Backup);

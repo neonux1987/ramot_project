@@ -11,7 +11,7 @@ const Toolbar = (props) => {
       </div>
 
       <div className={styles.section + " " + styles.alignCenter}>
-        {`שנה ${props.year} / חודש ${props.month}`}
+        {`שנה ${props.year} / ${props.quarter} / חודש ${props.month}`}
       </div>
 
       <div className={styles.section + " " + styles.alignLeft}>

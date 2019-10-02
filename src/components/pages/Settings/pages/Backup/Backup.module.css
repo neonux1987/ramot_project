@@ -10,15 +10,23 @@
 
 .dbBackupStatus{
   display: inline-block;
-  color: green;
   margin-right: 8px;
   margin-bottom: 0;
   padding-top: 2px;
 }
 
+.dbBackupActive{
+  color: green;
+}
+
+.dbBackupDisabled{
+  color: red;
+}
+
 .dbFileTextFieldLocationWrapper{
   margin-top: 0px;
-  width: 480px;
+  width: 580px;
+  background-color: #ffffff;
 }
 
 .dbFileTextFieldLocationInput{

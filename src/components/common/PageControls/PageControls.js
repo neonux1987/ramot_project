@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import saveToFileDialog from '../../../helpers/saveToFileDialog';
+import { saveToFileDialog } from '../../../services/electronDialogsSvc';
 import { default as excelProcess } from '../../../helpers/excel';
 import { default as printProcess } from 'print-js';
 import defaultStyles from './PageControls.module.css';

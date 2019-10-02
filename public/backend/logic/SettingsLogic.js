@@ -16,14 +16,8 @@ class SettingsLogic {
     });
   }
 
-  async updateSettings(key, data) {
-
-    const settings = await this.getSettings();
-    console.log(data);
-    settings[key] = data;
-
-    return this.iOLogic.writeFile(CONFIG_LOCATION, JSON.stringify(settings, null, 2));
-
+  updateSettings(data) {
+    return this.iOLogic.writeFile(CONFIG_LOCATION, JSON.stringify(data, null, 2));
   }
 
 }

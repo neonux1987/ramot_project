@@ -15,12 +15,12 @@ const settingsIpc = (connection) => {
     });
   });
 
-  ipcMain.on('update-settings', (event, key, data) => {
+  ipcMain.on('save-settings', (event, data) => {
     console.log(data);
-    settingsLogic.updateSettings(key, data).then((result) => {
-      event.reply("updated-settings", { data: result });
+    settingsLogic.updateSettings(data).then((result) => {
+      event.reply("saved-settings", { data: result });
     }).catch((error) => {
-      event.reply("updated-settings", { error: error.message });
+      event.reply("saved-settings", { error: error.message });
     });
   });
 

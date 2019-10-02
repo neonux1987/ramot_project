@@ -66,7 +66,7 @@ const updateSettingsInStore = function (name, data) {
  * update general settings
  * @param {*} params 
  */
-const onTimeChange = (key, data) => {
+const updateSettings = (key, data) => {
   return dispatch => {
     dispatch(updateSettingsInStore(key, data));
   }
@@ -76,26 +76,114 @@ const onTimeChange = (key, data) => {
  * update general settings
  * @param {*} params 
  */
-const updateSettings = (key, data) => {
+const saveSettings = (data) => {
   return dispatch => {
     //send a request to backend to get the data
-    ipcRenderer.send("update-settings", key, data);
+    ipcRenderer.send("save-settings", data);
     //listen when the data comes back
-    ipcRenderer.once("updated-settings", (event, arg) => {
+    ipcRenderer.once("saved-settings", (event, arg) => {
       if (arg.error) {
-        console.log(arg.error);
+        //send the error to the notification center
+        notify({
+          isError: true,
+          type: notificationTypes.message,
+          message: arg.error
+        });
       } else {
-        dispatch(updateSettingsInStore(key, data));
+        //success
+        notify({
+          type: notificationTypes.message,
+          message: "ההגדרות נשמרו בהצלחה."
+        });
+        playSound(soundTypes.message);
       }
     });
   }
 };
 
+const activateDbBackup = (db_backup) => {
+  //send a request to backend to get the data
+  ipcRenderer.send("activate-db-backup");
+  return new Promise((resolve, reject) => {
+    //listen when the data comes back
+    ipcRenderer.once("db-backup-activated", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        notify({
+          isError: true,
+          type: notificationTypes.message,
+          message: arg.error
+        });
+        reject();
+      } else {
+        //success
+        notify({
+          type: notificationTypes.message,
+          message: "גיבוי בסיס הנתונים הופעל."
+        });
+        playSound(soundTypes.message);
+        resolve();
+      }
+    });
+  })
+}
+
+const disableDbBackup = (db_backup) => {
+  //send a request to backend to get the data
+  ipcRenderer.send("disable-db-backup");
+  return new Promise((resolve, reject) => {
+    //listen when the data comes back
+    ipcRenderer.once("db-backup-disabled", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        notify({
+          isError: true,
+          type: notificationTypes.message,
+          message: arg.error
+        });
+      } else {
+        updateSettings("db_backup", db_backup)
+        //send the error to the notification center
+        notify({
+          type: notificationTypes.message,
+          message: "גיבוי בסיס הנתונים הושבת."
+        });
+        playSound(soundTypes.message);
+      }
+    });
+  });
+}
+
+const updateDbBackupSettings = () => {
+  //send a request to backend to get the data
+  ipcRenderer.send("update-db-backup");
+  //listen when the data comes back
+  ipcRenderer.once("db-backup-updated", (event, arg) => {
+    if (arg.error) {
+      //send the error to the notification center
+      notify({
+        isError: true,
+        type: notificationTypes.message,
+        message: arg.error
+      });
+    } else {
+      //send the error to the notification center
+      notify({
+        type: notificationTypes.message,
+        message: "גיבוי בסיס הנתונים הושבת."
+      });
+      playSound(soundTypes.message);
+    }
+  });
+}
+
 export default {
   fetchSettings,
-  updateSettings,
+  saveSettings,
   fetchingFailed,
   receiveSettings,
   requestSettings,
-  onTimeChange
+  updateSettings,
+  activateDbBackup,
+  disableDbBackup
 };

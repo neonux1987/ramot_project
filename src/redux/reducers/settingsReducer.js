@@ -6,7 +6,7 @@ const initState = {
     isFetching: true,
     status: "",
     error: "",
-    data: []
+    data: {}
   }
 }
 
