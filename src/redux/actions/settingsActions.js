@@ -101,12 +101,13 @@ const saveSettings = (data) => {
   }
 };
 
-const activateDbBackup = (db_backup) => {
-  //send a request to backend to get the data
-  ipcRenderer.send("activate-db-backup");
-  return new Promise((resolve, reject) => {
+const enableDbBackup = (db_backup) => {
+  return dispatch => {
+    //send a request to backend to get the data
+    ipcRenderer.send("enable-db-backup");
     //listen when the data comes back
-    ipcRenderer.once("db-backup-activated", (event, arg) => {
+    ipcRenderer.once("db-backup-enabled", (event, arg) => {
+
       if (arg.error) {
         //send the error to the notification center
         notify({
@@ -114,7 +115,6 @@ const activateDbBackup = (db_backup) => {
           type: notificationTypes.message,
           message: arg.error
         });
-        reject();
       } else {
         //success
         notify({
@@ -122,16 +122,16 @@ const activateDbBackup = (db_backup) => {
           message: "גיבוי בסיס הנתונים הופעל."
         });
         playSound(soundTypes.message);
-        resolve();
+        dispatch(updateSettingsInStore("db_backup", db_backup));
       }
     });
-  })
+  }
 }
 
 const disableDbBackup = (db_backup) => {
-  //send a request to backend to get the data
-  ipcRenderer.send("disable-db-backup");
-  return new Promise((resolve, reject) => {
+  return dispatch => {
+    //send a request to backend to get the data
+    ipcRenderer.send("disable-db-backup");
     //listen when the data comes back
     ipcRenderer.once("db-backup-disabled", (event, arg) => {
       if (arg.error) {
@@ -142,16 +142,16 @@ const disableDbBackup = (db_backup) => {
           message: arg.error
         });
       } else {
-        updateSettings("db_backup", db_backup)
         //send the error to the notification center
         notify({
           type: notificationTypes.message,
           message: "גיבוי בסיס הנתונים הושבת."
         });
         playSound(soundTypes.message);
+        dispatch(updateSettingsInStore("db_backup", db_backup));
       }
     });
-  });
+  }
 }
 
 const updateDbBackupSettings = () => {
@@ -184,6 +184,6 @@ export default {
   receiveSettings,
   requestSettings,
   updateSettings,
-  activateDbBackup,
+  enableDbBackup,
   disableDbBackup
 };

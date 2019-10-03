@@ -27,7 +27,8 @@ class Backup extends Component {
 
   onDbTimeChange = (name, value) => {
     const db_backup = { ...this.props.settings.settings.data.db_backup };
-    db_backup.time = value;
+    //must convert it to string to ensure electron won't change it to different time zone
+    db_backup.time = String(value);
     this.props.updateSettings(name, db_backup);
   }
 
@@ -48,16 +49,18 @@ class Backup extends Component {
     else {
       db_backup.days_of_week = {
         ...db_backup.days_of_week,
-        [name]: checked,
+        [name]: checked,//set the selected day
         ["everything"]: checked ? db_backup.days_of_week["everything"] : false
       };
 
       let fullDays = true;
+      //iterate and find if all days are selected
       for (let i = 0; i < keys.length; i++) {
-        if (!db_backup.days_of_week[keys[i]]) {
+        if (!db_backup.days_of_week[keys[i]] && keys[i] !== "everything") {
           fullDays = false;
         }
       }
+      //if all the days selected then select everything checkbox
       if (fullDays) {
         db_backup.days_of_week["everything"] = true
       }
@@ -89,11 +92,11 @@ class Backup extends Component {
     const db_backup = { ...this.props.settings.settings.data.db_backup };
     db_backup.active = !db_backup.active;
     this.props.updateSettings("db_backup", db_backup);
-    /* if (db_backup.active) {
-      this.props.activateDbBackup();
+    if (db_backup.active) {
+      this.props.enableDbBackup(db_backup);
     } else {
-      this.props.disableDbBackup();
-    } */
+      this.props.disableDbBackup(db_backup);
+    }
   }
 
   render() {
@@ -314,8 +317,8 @@ const mapDispatchToProps = dispatch => ({
   fetchSettings: () => dispatch(settingsActions.fetchSettings()),
   saveSettings: (data) => dispatch(settingsActions.saveSettings(data)),
   updateSettings: (key, data) => dispatch(settingsActions.updateSettings(key, data)),
-  activateDbBackup: () => dispatch(settingsActions.activateDbBackup()),
-  disableDbBackup: () => dispatch(settingsActions.disableDbBackup()),
+  enableDbBackup: (data) => dispatch(settingsActions.enableDbBackup(data)),
+  disableDbBackup: (data) => dispatch(settingsActions.disableDbBackup(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Backup);

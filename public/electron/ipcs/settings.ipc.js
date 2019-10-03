@@ -1,10 +1,10 @@
 const { ipcMain } = require('electron');
 const SettingsLogic = require('../../backend/logic/SettingsLogic');
 
-const settingsIpc = (connection) => {
+const settingsIpc = () => {
 
   //fetch month expanses data
-  const settingsLogic = new SettingsLogic(connection);
+  const settingsLogic = new SettingsLogic();
 
   ipcMain.on('get-settings', (event) => {
     settingsLogic.getSettings().then((result) => {
@@ -16,15 +16,12 @@ const settingsIpc = (connection) => {
   });
 
   ipcMain.on('save-settings', (event, data) => {
-    console.log(data);
     settingsLogic.updateSettings(data).then((result) => {
       event.reply("saved-settings", { data: result });
     }).catch((error) => {
       event.reply("saved-settings", { error: error.message });
     });
   });
-
-
 
 }
 
