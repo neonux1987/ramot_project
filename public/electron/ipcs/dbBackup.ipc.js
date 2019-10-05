@@ -1,10 +1,7 @@
 const { ipcMain } = require('electron');
-const DbBackupSvc = require('../../backend/services/DbBackupSvc');
+const dbBackupSvc = require('../../backend/services/DbBackupSvc');
 
 const dbBackupIpc = () => {
-
-  //fetch month expanses data
-  const dbBackupSvc = new DbBackupSvc();
 
   ipcMain.on('enable-db-backup', (event) => {
     dbBackupSvc.activate().then((result) => {

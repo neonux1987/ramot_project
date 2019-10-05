@@ -1,5 +1,6 @@
 const { ipcMain } = require('electron');
 const SettingsLogic = require('../../backend/logic/SettingsLogic');
+const dbBackupSvc = require('../../backend/services/DbBackupSvc');
 
 const settingsIpc = () => {
 
@@ -17,8 +18,13 @@ const settingsIpc = () => {
 
   ipcMain.on('save-settings', (event, data) => {
     settingsLogic.updateSettings(data).then((result) => {
+      //re-schedule backup date and time
+      dbBackupSvc.modifySchedule(data);
+      return result;
+    }).then((result) => {
       event.reply("saved-settings", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("saved-settings", { error: error.message });
     });
   });

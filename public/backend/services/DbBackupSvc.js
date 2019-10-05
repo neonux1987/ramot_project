@@ -2,21 +2,16 @@ const schedule = require('node-schedule');
 const SettingsLogic = require('../logic/SettingsLogic');
 const IOLogic = require('../logic/IOLogic');
 
+const DB_BACKUP_FILENAME = "ndts-frms-db-backup";
+
 class DbBackupSvc {
 
   constructor() {
-    if (!!DbBackupSvc.instance) {
-      return DbBackupSvc.instance;
-    }
 
-    DbBackupSvc.instance = this;
     this.settingsLogic = new SettingsLogic();
     this.ioLogic = new IOLogic();
     this.rule = new schedule.RecurrenceRule();
     this.backupSchedule = null;
-    this.init();
-    return this;
-
   }
 
   async init() {
@@ -36,7 +31,12 @@ class DbBackupSvc {
           this.rule.dayOfWeek.push(i)
         }
       }
-
+      //if non of the days selected, we must
+      //set the dayOfWeek to null otherwise
+      //the node-schedule module will crash for some reason
+      if (this.rule.dayOfWeek.length === 0) {
+        this.rule.dayOfWeek = null;
+      }
       //execute scheduler
       this.backupSchedule = schedule.scheduleJob(this.rule, () => {
         this.backupDbCallback(settings);
@@ -67,6 +67,13 @@ class DbBackupSvc {
       }
     }
 
+    //if non of the days selected, we must
+    //set the dayOfWeek to null otherwise
+    //the node-schedule module will crash for some reason
+    if (this.rule.dayOfWeek.length === 0) {
+      this.rule.dayOfWeek = null;
+    }
+
     //execute scheduler
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
       this.backupDbCallback(settings, lastUpdated);
@@ -84,7 +91,52 @@ class DbBackupSvc {
     });
   }
 
-  modifySchedule(time, days) {
+  modifySchedule(settings) {
+
+    //dont do anything if the db backup is 
+    //not active
+    if (!settings.db_backup.active) {
+      return Promise.resolve();
+    }
+
+    //cancel the job
+    this.backupSchedule.cancel();
+    this.backupSchedule = null;
+
+    const backupTime = new Date(settings.db_backup.time);
+    let lastUpdated = null;
+
+    //apply the settings to the scheduler
+    this.rule.hours = backupTime.getHours();
+    this.rule.minute = backupTime.getMinutes();
+    this.rule.dayOfWeek = [];
+    //convert the enabled days of week from object to array
+    for (let i = 0; i < 7; i++) {
+      if (settings.db_backup.days_of_week[i]) {
+        this.rule.dayOfWeek.push(i)
+      }
+    }
+
+    //if non of the days selected, we must
+    //set the dayOfWeek to null otherwise
+    //the node-schedule module will crash for some reason
+    if (this.rule.dayOfWeek.length === 0) {
+      this.rule.dayOfWeek = null;
+    }
+
+    //execute scheduler
+    this.backupSchedule = schedule.scheduleJob(this.rule, () => {
+      this.backupDbCallback(settings, lastUpdated);
+    });
+
+    return new Promise((resolve, reject) => {
+      if (this.backupSchedule.nextInvocation()) {
+        //settings.db_backup.last_updated = lastUpdated;
+        resolve();
+      } else {
+        reject("unable to change the schedule.");
+      }
+    });
 
   }
 
@@ -100,6 +152,8 @@ class DbBackupSvc {
       //basically if the next invocation date object is null
       //that means the job is cancelled
       if (!this.backupSchedule.nextInvocation()) {
+        //init scheduler
+        this.backupSchedule = null;
         //save settings
         this.settingsLogic.updateSettings(settings);
         resolve("the job is cancelled.");
@@ -113,7 +167,7 @@ class DbBackupSvc {
     //fetch db backup settings
     let fileToBackup = await this.ioLogic.readFile(settings.general.db_path);
     const date = new Date();
-    this.ioLogic.writeFile(`${settings.db_backup.path}ndts-frms-db-backup-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}.sqlite`, fileToBackup).then(() => {
+    this.ioLogic.writeFile(`${settings.db_backup.path}${DB_BACKUP_FILENAME}.sqlite`, fileToBackup).then(() => {
 
     }).catch((error) => {
       console.log(error);
@@ -125,4 +179,4 @@ class DbBackupSvc {
 
 }
 
-module.exports = DbBackupSvc;
+module.exports = new DbBackupSvc();

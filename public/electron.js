@@ -13,7 +13,7 @@ const IOIpc = require('./electron/ipcs/IO.ipc');
 const settingsIpc = require('./electron/ipcs/settings.ipc');
 const contextMenu = require('electron-context-menu');
 const dbBackupIpc = require('./electron/ipcs/dbBackup.ipc');
-const DbBackupSvc = require('./backend/services/DbBackupSvc');
+const dbBackupSvc = require('./backend/services/DbBackupSvc');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -118,7 +118,7 @@ settingsIpc();
 dbBackupIpc();
 
 //start the backup service
-new DbBackupSvc();
+dbBackupSvc.init();
 
 
 

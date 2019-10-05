@@ -8,7 +8,8 @@ import { MuiPickersUtilsProvider, DateTimePicker, TimePicker } from '@material-u
 import DateFnsUtils from '@date-io/date-fns';
 import heLocale from "date-fns/locale/he";
 import { selectFolderDialog } from '../../../../../services/electronDialogsSvc';
-import { activateDbBackup, disableDbBackup, updateDbBackupSettings } from '../../../../../services/backupDBSvc';
+import { notify, notificationTypes } from '../../../../Notifications/Notification';
+import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
 
 const localeMap = {
   he: heLocale
@@ -36,6 +37,7 @@ class Backup extends Component {
     const db_backup = { ...this.props.settings.settings.data.db_backup };
     const { name, checked } = event.target;
     const keys = Object.keys(db_backup.days_of_week);
+
     if (name === "everything" && checked === true) {
       for (let i = 0; i < keys.length; i++) {
         db_backup.days_of_week[keys[i]] = true;
@@ -71,7 +73,43 @@ class Backup extends Component {
   }
 
   saveSettings = (message, enableSound) => {
-    this.props.saveSettings(this.props.settings.settings.data, message, enableSound);
+    const { db_backup } = this.props.settings.settings.data;
+    //the init that it's not valid
+    let valid = this.isDaysOfWeekValid(db_backup.days_of_week);
+    //if the backup is active and noValid is true
+    //based on the no days were selected
+    if (!valid && db_backup.active) {
+      //send the error to the notification center
+      notify({
+        isError: true,
+        type: notificationTypes.validation,
+        message: "חייב לבחור לפחות יום אחד."
+      });
+      playSound(soundTypes.error);
+    } else {
+      this.props.saveSettings(this.props.settings.settings.data, message, enableSound);
+    }
+  }
+
+  isDaysOfWeekValid = (days_of_week) => {
+    //get the keys of the object
+    const keys = Object.keys(days_of_week);
+    //the init that it's not valid
+    let notValid = true;
+    //if at least on of the days
+    //is checked, then it's valid and notValid should be false
+    for (let i = 0; i < keys.length; i++) {
+      if (days_of_week[keys[i]]) {
+        notValid = false;
+      }
+    }
+    //if the backup is active and noValid is true
+    //based on the no days were selected
+    if (notValid) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   dbSelectFolderHandler = () => {
@@ -90,13 +128,33 @@ class Backup extends Component {
 
   toggleDbBackupActivation = () => {
     const db_backup = { ...this.props.settings.settings.data.db_backup };
+
+    //the init that it's not valid
+    let valid = this.isDaysOfWeekValid(db_backup.days_of_week);
+
+    //if the backup is active and noValid is true
+    //based on the no days were selected
+    if (!valid && db_backup.active === false) {
+      //send the error to the notification center
+      notify({
+        isError: true,
+        type: notificationTypes.validation,
+        message: "לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד."
+      });
+      playSound(soundTypes.error);
+      return;
+    }
+
     db_backup.active = !db_backup.active;
+
     this.props.updateSettings("db_backup", db_backup);
     if (db_backup.active) {
       this.props.enableDbBackup(db_backup);
     } else {
       this.props.disableDbBackup(db_backup);
     }
+
+
   }
 
   render() {
@@ -176,20 +234,6 @@ class Backup extends Component {
                 label="יום א'"
                 control={
                   <Checkbox
-                    name="0"
-                    checked={db_backup.days_of_week["0"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="יום ב'"
-                control={
-                  <Checkbox
                     name="1"
                     checked={db_backup.days_of_week["1"]}
                     onChange={this.onDbDayChange}
@@ -201,7 +245,7 @@ class Backup extends Component {
 
               <FormControlLabel
                 labelPlacement="top"
-                label="יום ג'"
+                label="יום ב'"
                 control={
                   <Checkbox
                     name="2"
@@ -215,7 +259,7 @@ class Backup extends Component {
 
               <FormControlLabel
                 labelPlacement="top"
-                label="יום ד'"
+                label="יום ג'"
                 control={
                   <Checkbox
                     name="3"
@@ -229,7 +273,7 @@ class Backup extends Component {
 
               <FormControlLabel
                 labelPlacement="top"
-                label="יום ה'"
+                label="יום ד'"
                 control={
                   <Checkbox
                     name="4"
@@ -243,7 +287,7 @@ class Backup extends Component {
 
               <FormControlLabel
                 labelPlacement="top"
-                label="יום ו'"
+                label="יום ה'"
                 control={
                   <Checkbox
                     name="5"
@@ -257,11 +301,25 @@ class Backup extends Component {
 
               <FormControlLabel
                 labelPlacement="top"
-                label="יום ש'"
+                label="יום ו'"
                 control={
                   <Checkbox
                     name="6"
                     checked={db_backup.days_of_week["6"]}
+                    onChange={this.onDbDayChange}
+                    value="checkedB"
+                    color="primary"
+                  />
+                }
+              />
+
+              <FormControlLabel
+                labelPlacement="top"
+                label="יום ש'"
+                control={
+                  <Checkbox
+                    name="7"
+                    checked={db_backup.days_of_week["7"]}
                     onChange={this.onDbDayChange}
                     value="checkedB"
                     color="primary"
