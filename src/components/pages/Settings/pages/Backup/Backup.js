@@ -10,6 +10,7 @@ import heLocale from "date-fns/locale/he";
 import { selectFolderDialog } from '../../../../../services/electronDialogsSvc';
 import { notify, notificationTypes } from '../../../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
+import { Prompt } from 'react-router'
 
 const localeMap = {
   he: heLocale
@@ -18,6 +19,10 @@ const localeMap = {
 class Backup extends Component {
 
   dbBackupLocationInputRef = React.createRef();
+  state = {
+    settingsSaved: true
+  }
+
 
   componentDidMount() {
     this.props.fetchSettings();
@@ -30,6 +35,7 @@ class Backup extends Component {
     const db_backup = { ...this.props.settings.settings.data.db_backup };
     //must convert it to string to ensure electron won't change it to different time zone
     db_backup.time = String(value);
+    this.setState({ settingsSaved: false });
     this.props.updateSettings(name, db_backup);
   }
 
@@ -68,7 +74,7 @@ class Backup extends Component {
       }
 
     }
-
+    this.setState({ settingsSaved: false });
     this.props.updateSettings("db_backup", db_backup);
   }
 
@@ -87,6 +93,7 @@ class Backup extends Component {
       });
       playSound(soundTypes.error);
     } else {
+      this.setState({ settingsSaved: true });
       this.props.saveSettings(this.props.settings.settings.data, message, enableSound);
     }
   }
@@ -120,6 +127,7 @@ class Backup extends Component {
       if (fullPath) {
         const db_backup = { ...this.props.settings.settings.data.db_backup };
         db_backup.path = fullPath[0];
+        this.setState({ settingsSaved: false });
         this.props.updateSettings("db_backup", db_backup);
         //`ndts-frms-db-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
       }
@@ -129,31 +137,13 @@ class Backup extends Component {
   toggleDbBackupActivation = () => {
     const db_backup = { ...this.props.settings.settings.data.db_backup };
 
-    //the init that it's not valid
-    let valid = this.isDaysOfWeekValid(db_backup.days_of_week);
-
-    //if the backup is active and noValid is true
-    //based on the no days were selected
-    if (!valid && db_backup.active === false) {
-      //send the error to the notification center
-      notify({
-        isError: true,
-        type: notificationTypes.validation,
-        message: "לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד."
-      });
-      playSound(soundTypes.error);
-      return;
-    }
-
     db_backup.active = !db_backup.active;
 
-    this.props.updateSettings("db_backup", db_backup);
     if (db_backup.active) {
       this.props.enableDbBackup(db_backup);
     } else {
       this.props.disableDbBackup(db_backup);
     }
-
 
   }
 
@@ -360,6 +350,7 @@ class Backup extends Component {
               שמור
             </Button>
           </div>
+          <Prompt when={this.settingsSaved} message="האם אתה בטוח שברצונך לצאת בלי לשמור הגדרות?" />
         </Fragment>
       </MuiPickersUtilsProvider>
     );

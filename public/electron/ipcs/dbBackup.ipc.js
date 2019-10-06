@@ -8,7 +8,6 @@ const dbBackupIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("db-backup-enabled", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("db-backup-enabled", { error: error.message });
     });
   });
@@ -18,7 +17,6 @@ const dbBackupIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("db-backup-disabled", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("db-backup-disabled", { error: error.message });
     });
   });

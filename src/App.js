@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Sidebar from "./components/layout/Sidebar/Sidebar";
 import Main from "./components/layout/main/Main";
 import { MemoryRouter } from 'react-router-dom';
@@ -10,10 +11,12 @@ import LoadingCircle from './components/common/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
 import Notification from './components/Notifications/Notification';
 import notificationActions from './redux/actions/notificationsActions';
+import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';
 import 'react-table/react-table.css';
 import './assets/css/style.css';
 import AppFrame from './components/AppFrame/AppFrame';
 const remote = require('electron').remote;
+const { ipcRenderer } = require('electron');
 
 
 const theme = createMuiTheme({
@@ -33,6 +36,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.toggleSidebarAnimation = "";
+    //listen when the data comes back
+    ipcRenderer.on("hello", (event, arg) => {
+      console.log(arg);
+    });
   }
 
   componentDidMount() {

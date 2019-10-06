@@ -47,9 +47,16 @@ class DbBackupSvc {
   }
 
   async activate() {
-
     //fetch db backup settings
     let settings = await this.settingsLogic.getSettings();
+
+    //check if none of te days are selected, if none
+    //selected, don't allow to activate the backup service
+    const valid = this.validateDaysOfWeek(settings.db_backup.days_of_week);
+    if (!valid) {
+      return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעת שמירה."));
+    }
+
     //activate the backup
     settings.db_backup.active = true;
 
@@ -79,20 +86,17 @@ class DbBackupSvc {
       this.backupDbCallback(settings, lastUpdated);
     });
 
-    return new Promise((resolve, reject) => {
-      if (this.backupSchedule.nextInvocation()) {
-        //settings.db_backup.last_updated = lastUpdated;
-        //save settings
-        this.settingsLogic.updateSettings(settings);
-        resolve();
-      } else {
-        reject("unable to schedule a job.");
-      }
-    });
+    if (this.backupSchedule.nextInvocation()) {
+      //settings.db_backup.last_updated = lastUpdated;
+      //save settings
+      this.settingsLogic.updateSettings(settings);
+      return Promise.resolve();
+    } else {
+      return Promise.reject(new Error("unable to schedule a job."));
+    }
   }
 
   modifySchedule(settings) {
-
     //dont do anything if the db backup is 
     //not active
     if (!settings.db_backup.active) {
@@ -145,6 +149,12 @@ class DbBackupSvc {
     let settings = await this.settingsLogic.getSettings();
     //activate the backup
     settings.db_backup.active = false;
+
+    //make sure that the scheduler object in not null
+    if (this.backupSchedule === null) {
+      return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעתי שמירה."));
+    }
+
     //cancel the job
     this.backupSchedule.cancel();
 
@@ -167,7 +177,7 @@ class DbBackupSvc {
     //fetch db backup settings
     let fileToBackup = await this.ioLogic.readFile(settings.general.db_path);
     const date = new Date();
-    this.ioLogic.writeFile(`${settings.db_backup.path}${DB_BACKUP_FILENAME}.sqlite`, fileToBackup).then(() => {
+    this.ioLogic.writeFile(`${settings.db_backup.path}/${DB_BACKUP_FILENAME}.sqlite`, fileToBackup).then(() => {
 
     }).catch((error) => {
       console.log(error);
@@ -175,6 +185,17 @@ class DbBackupSvc {
     //console.log(lastUpdated);
     //set the last time the db backup was executed
     //lastUpdated = new Date();
+  }
+
+  validateDaysOfWeek(daysOfWeek) {
+    const keys = Object.keys(daysOfWeek);
+    let valid = false;
+    for (let i = 0; i < keys.length; i++) {
+      if (daysOfWeek[keys[i]]) {
+        valid = true;
+      }
+    }
+    return valid;
   }
 
 }

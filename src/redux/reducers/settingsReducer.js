@@ -4,6 +4,7 @@ const initState = {
   headerTitle: "כללי",
   settings: {
     isFetching: true,
+    saved: true,
     status: "",
     error: "",
     data: {}
