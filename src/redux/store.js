@@ -16,7 +16,6 @@ const persistConfig = {
     "expansesCodes",
     "generalSettings",
     "summarizedBudget",
-    "notifications",
     "registeredMonths",
     "registeredYears",
     "settings"

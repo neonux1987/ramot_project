@@ -1,6 +1,7 @@
 const schedule = require('node-schedule');
 const SettingsLogic = require('../logic/SettingsLogic');
 const IOLogic = require('../logic/IOLogic');
+const rendererNotificationSvc = require('./RendererNotificationSvc');
 
 const DB_BACKUP_FILENAME = "ndts-frms-db-backup";
 
@@ -152,7 +153,7 @@ class DbBackupSvc {
 
     //make sure that the scheduler object in not null
     if (this.backupSchedule === null) {
-      return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעתי שמירה."));
+      return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעת שמירה."));
     }
 
     //cancel the job
@@ -177,8 +178,11 @@ class DbBackupSvc {
     //fetch db backup settings
     let fileToBackup = await this.ioLogic.readFile(settings.general.db_path);
     const date = new Date();
-    this.ioLogic.writeFile(`${settings.db_backup.path}/${DB_BACKUP_FILENAME}.sqlite`, fileToBackup).then(() => {
 
+    rendererNotificationSvc.notifyRenderer("dbBackupStarted", "מתבצע כעת גיבוי בסיס נתונים...");
+
+    this.ioLogic.writeFile(`${settings.db_backup.path}/${DB_BACKUP_FILENAME}.sqlite`, fileToBackup).then(() => {
+      rendererNotificationSvc.notifyRenderer("dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
     }).catch((error) => {
       console.log(error);
     });

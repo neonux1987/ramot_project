@@ -190,4 +190,21 @@ textarea{
     justify-content: center;
     vertical-align: middle;
     display: flex;
+    font-size: 15px;
+}
+
+/******** Toastify override ********/
+.Toastify__toast--success {
+  font-size: 16px;
+  background: #199e3c;
+}
+
+.Toastify__toast--info {
+  background: #207ea2;
+  font-size: 16px;
+}
+
+.Toastify__toast--error {
+  background: #e44534;
+  font-size: 16px;
 }

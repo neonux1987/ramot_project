@@ -14,6 +14,7 @@ const settingsIpc = require('./electron/ipcs/settings.ipc');
 const contextMenu = require('electron-context-menu');
 const dbBackupIpc = require('./electron/ipcs/dbBackup.ipc');
 const dbBackupSvc = require('./backend/services/DbBackupSvc');
+const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -72,6 +73,9 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   }
   mainWindow.on('closed', () => mainWindow = null);
+
+  //init the renderer notification service
+  rendererotificationSvc.setWebContents(mainWindow.webContents);
 }
 
 app.on('ready', createWindow);

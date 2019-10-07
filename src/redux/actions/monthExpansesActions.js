@@ -4,6 +4,7 @@ import registeredMonthsActions from './registeredMonthsActions';
 import registeredYearsActions from './registeredYearsActions';
 import { notify, notifyTimeless, notificationTypes } from '../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
 
 /**
  * fetch month expanses
@@ -23,12 +24,9 @@ const fetchExpanses = (params = Object) => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
-        playSound(soundTypes.error);
       } else {
         //if there is no data, that means it's a new month and 
         //and empty report should be generated.

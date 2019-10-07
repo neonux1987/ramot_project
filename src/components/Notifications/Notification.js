@@ -38,6 +38,9 @@ class Notification extends React.Component {
       this.onShowTimeless(notification)
     });
     emitter.on("closeNotification", (notification) => {
+      this.setState({
+        notification: notification
+      });
       this.btnClick();
     });
   }
@@ -45,8 +48,9 @@ class Notification extends React.Component {
   state = {
     notification: {
       isError: false,
-      message: ""
+      message: "",
     },
+    timeless: false,
     bottom: `${BOTTOM_POS}px`
   }
   timeout = null;
@@ -125,6 +129,7 @@ class Notification extends React.Component {
   }
 
   initNotification() {
+    console.log("yes");
     this.setState({
       bottom: `${-this.box.current.clientHeight - 10}px`,
       timeless: false
@@ -133,7 +138,6 @@ class Notification extends React.Component {
   }
 
   btnClick = () => {
-    console.log("hell");
     this.initNotification();
   }
 

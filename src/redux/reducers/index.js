@@ -7,7 +7,6 @@ import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
 import generalSettings from './generalSettingsReducer';
 import summarizedBudget from './summarizedBudgetReducer';
-import notifications from './notificationsReducer';
 import registeredMonths from './registeredMonthsReducer';
 import registeredYears from './registeredYearsReducer';
 import settings from './settingsReducer';
@@ -21,7 +20,6 @@ export default combineReducers({
   expansesCodes,
   generalSettings,
   summarizedBudget,
-  notifications,
   registeredMonths,
   registeredYears,
   settings

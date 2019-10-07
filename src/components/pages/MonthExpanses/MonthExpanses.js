@@ -4,7 +4,6 @@ import ReactTableContainer from '../../common/table/ReactTableContainer';
 import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
 import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
-import notificationsActions from '../../../redux/actions/notificationsActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import registeredMonthsActions from '../../../redux/actions/registeredMonthsActions';
 import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
@@ -575,7 +574,6 @@ const mapDispatchToProps = dispatch => ({
   deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),
   setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
-  addNotification: (notification) => dispatch(notificationsActions.addNotification(notification)),
   fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
   fetchRegisteredMonths: (buildingName) => dispatch(registeredMonthsActions.fetchRegisteredMonths(buildingName)),
   cleanupMonths: () => dispatch(registeredMonthsActions.cleanupMonths()),

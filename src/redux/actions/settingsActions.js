@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
 
 /**
  * fetch general settings
@@ -21,10 +21,8 @@ const fetchSettings = () => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //success store the data
@@ -84,18 +82,14 @@ const saveSettings = (data) => {
     ipcRenderer.once("saved-settings", (event, arg) => {
       if (arg.error) {
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.message,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //success
-        notify({
-          type: notificationTypes.message,
-          message: "ההגדרות נשמרו בהצלחה."
+        toast.success("ההגדרות נשמרו בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
         });
-        playSound(soundTypes.message);
       }
     });
   }
@@ -110,18 +104,14 @@ const enableDbBackup = (db_backup) => {
 
       if (arg.error) {
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.message,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //success
-        notify({
-          type: notificationTypes.message,
-          message: "גיבוי בסיס הנתונים הופעל."
+        toast.success("גיבוי בסיס הנתונים הופעל.", {
+          onOpen: () => playSound(soundTypes.message)
         });
-        playSound(soundTypes.message);
         dispatch(updateSettingsInStore("db_backup", db_backup));
       }
     });
@@ -136,18 +126,14 @@ const disableDbBackup = (db_backup) => {
     ipcRenderer.once("db-backup-disabled", (event, arg) => {
       if (arg.error) {
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.message,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //send the error to the notification center
-        notify({
-          type: notificationTypes.message,
-          message: "גיבוי בסיס הנתונים הושבת."
+        toast.success("גיבוי בסיס הנתונים הושבת.", {
+          onOpen: () => playSound(soundTypes.message)
         });
-        playSound(soundTypes.message);
         dispatch(updateSettingsInStore("db_backup", db_backup));
       }
     });
@@ -161,18 +147,14 @@ const updateDbBackupSettings = () => {
   ipcRenderer.once("db-backup-updated", (event, arg) => {
     if (arg.error) {
       //send the error to the notification center
-      notify({
-        isError: true,
-        type: notificationTypes.message,
-        message: arg.error
+      toast.error(arg.error, {
+        onOpen: () => playSound(soundTypes.error)
       });
     } else {
       //send the error to the notification center
-      notify({
-        type: notificationTypes.message,
-        message: "גיבוי בסיס הנתונים הושבת."
+      toast.success("גיבוי בסיס הנתונים הושבת.", {
+        onOpen: () => playSound(soundTypes.message)
       });
-      playSound(soundTypes.message);
     }
   });
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Sidebar from "./components/layout/Sidebar/Sidebar";
 import Main from "./components/layout/main/Main";
 import { MemoryRouter } from 'react-router-dom';
@@ -9,12 +8,15 @@ import RTL from './components/RTL';
 import { connect } from 'react-redux';
 import LoadingCircle from './components/common/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
-import Notification from './components/Notifications/Notification';
-import notificationActions from './redux/actions/notificationsActions';
-import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';
-import 'react-table/react-table.css';
-import './assets/css/style.css';
+import Spinner from './components/common/Spinner/Spinner';
+//import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';
 import AppFrame from './components/AppFrame/AppFrame';
+import { playSound, soundTypes } from './audioPlayer/audioPlayer';
+import { ToastContainer, toast } from 'react-toastify';
+import DoneIcon from '@material-ui/icons/Done';
+import 'react-table/react-table.css';
+import 'react-toastify/dist/ReactToastify.css';
+import './assets/css/style.css';
 const remote = require('electron').remote;
 const { ipcRenderer } = require('electron');
 
@@ -31,19 +33,60 @@ const theme = createMuiTheme({
   }
 });
 
+const TOAST_AUTO_CLOSE = 3000;
+
+const ToastRender = ({ message = "", spinner = false, done = false, spinnerColor = "#ffffff" }) => {
+  let renderSpinner = spinner ? <Spinner color={spinnerColor} size={24} /> : null;
+  let renderDoneIcon = done ? <DoneIcon /> : null;
+  return (<div style={{
+    justifyContent: "center",
+    display: "inline-flex",
+    alignItems: "center",
+    textAlign: "right",
+  }}>
+    <div style={{ marginLeft: "5px" }}>{renderDoneIcon}{renderSpinner}</div><span>{message}</span>
+  </div>)
+}
+
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.toggleSidebarAnimation = "";
-    //listen when the data comes back
-    ipcRenderer.on("hello", (event, arg) => {
-      console.log(arg);
-    });
+  }
+
+  state = {
+    toastId: null
   }
 
   componentDidMount() {
     this.props.fetchGeneralSettings();
+    //listen when the data comes back
+    ipcRenderer.on("notify-renderer", (event, type, arg) => {
+      let toastId = null;
+      switch (type) {
+        case "dbBackupStarted":
+          toastId = toast.info(<ToastRender spinner={true} message={arg} />, {
+            autoClose: false,
+            onOpen: () => playSound(soundTypes.message)
+          });
+          this.setState({ toastId: toastId });
+          break;
+        case "dbBackupFinished":
+          toast.update(this.state.toastId, {
+            render: <ToastRender done={true} message={arg} />,
+            type: toast.TYPE.INFO,
+            delay: 2000,
+            autoClose: TOAST_AUTO_CLOSE,
+            onOpen: () => {
+              playSound(soundTypes.message)
+            }
+          });
+          break;
+        default: return null;
+      }
+
+    });
   }
 
   closeButtonHandler = () => {
@@ -66,7 +109,6 @@ class App extends Component {
   }
 
   render() {
-    const { notification } = this.props.notifications;
     const { isFetching } = this.props.generalSettings.generalSettings;
     if (isFetching) {
       return <LoadingCircle loading={true} />;
@@ -86,7 +128,17 @@ class App extends Component {
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
               <Main toggleMain={" showMainAnimation"} />
             </div>
-            <Notification id={notification.id} isError={notification.isError} message={notification.message} remove={this.props.removeNotification} />
+            <ToastContainer
+              position="bottom-left"
+              autoClose={TOAST_AUTO_CLOSE}
+              hideProgressBar={true}
+              newestOnTop={false}
+              closeOnClick
+              rtl
+              pauseOnVisibilityChange
+              draggable={false}
+              pauseOnHover
+            />
           </MemoryRouter>
         </MuiThemeProvider>
       </RTL>
@@ -95,13 +147,11 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  generalSettings: state.generalSettings,
-  notifications: state.notifications
+  generalSettings: state.generalSettings
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings()),
-  removeNotification: (id) => dispatch(notificationActions.removeNotification(id))
+  fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
