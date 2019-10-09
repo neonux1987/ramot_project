@@ -1,20 +1,22 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import settingsActions from '../../../../../redux/actions/settingsActions';
-import { FormControlLabel, Checkbox, Box, Button, Typography, Divider, TextField } from '@material-ui/core';
+import { FormControlLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
 import LoadingCircle from '../../../../common/LoadingCircle';
 import styles from './Backup.module.css';
 import { MuiPickersUtilsProvider, DateTimePicker, TimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import heLocale from "date-fns/locale/he";
-import { selectFolderDialog } from '../../../../../services/electronDialogsSvc';
-import { notify, notificationTypes } from '../../../../Notifications/Notification';
+import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogsSvc';
+import { toast } from 'react-toastify';
 import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
 import { Prompt } from 'react-router'
 
 const localeMap = {
   he: heLocale
 };
+
+const MAX_BACKUPS_TO_SAVE = 7;
 
 class Backup extends Component {
 
@@ -86,12 +88,9 @@ class Backup extends Component {
     //based on the no days were selected
     if (!valid && db_backup.active) {
       //send the error to the notification center
-      notify({
-        isError: true,
-        type: notificationTypes.validation,
-        message: "חייב לבחור לפחות יום אחד."
+      toast.error("חייב לבחור לפחות יום אחד.", {
+        onOpen: () => playSound(soundTypes.error)
       });
-      playSound(soundTypes.error);
     } else {
       this.setState({ settingsSaved: true });
       this.props.saveSettings(this.props.settings.settings.data, message, enableSound);
@@ -124,14 +123,27 @@ class Backup extends Component {
       defaultPath: this.props.settings.settings.data.db_backup.path
     }
     selectFolderDialog(options, (fullPath) => {
-      if (fullPath) {
+      if (fullPath.length > 0) {
         const db_backup = { ...this.props.settings.settings.data.db_backup };
         db_backup.path = fullPath[0];
         this.setState({ settingsSaved: false });
         this.props.updateSettings("db_backup", db_backup);
-        //`ndts-frms-db-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
       }
     });
+  }
+
+  dbIndependentBackup = () => {
+
+    const currentDate = new Date();
+
+    const fileName = `ndts-frms-db-backup-${currentDate.getDay()}-${currentDate.getDate()}-${currentDate.getFullYear()}.sqlite`;
+
+    saveToFileDialog(fileName, undefined, (fullPath) => {
+      if (fullPath) {
+        this.props.dbIndependentBackup(fullPath);
+      }
+    });
+
   }
 
   toggleDbBackupActivation = () => {
@@ -147,6 +159,13 @@ class Backup extends Component {
 
   }
 
+  backupsToSaveChangeHandler = (event) => {
+    const { value } = event.target;
+    const db_backup = { ...this.props.settings.settings.data.db_backup };
+    db_backup.backups_to_save = value;
+    this.props.updateSettings("db_backup", db_backup);
+  }
+
   render() {
     const {
       settings
@@ -159,11 +178,19 @@ class Backup extends Component {
       reports_backup
     } = settings.data;
 
+    const BackupDateTime = new Date(db_backup.last_update);
+    const backupTimeRender = `${BackupDateTime.getDay()}/${BackupDateTime.getDate()}/${BackupDateTime.getFullYear()}`;
+
     let dbActiveButton = !db_backup.active ? <Button style={{ float: "left" }} onClick={this.toggleDbBackupActivation} variant="contained" color="primary">הפעל</Button> :
       <Button style={{ float: "left" }} onClick={this.toggleDbBackupActivation} variant="contained" color="secondary">השבת</Button>;
 
     let dbActiveText = db_backup.active ? <Typography variant="h5" className={styles.dbBackupStatus + " " + styles.dbBackupActive}>פעיל</Typography> :
       <Typography variant="h5" className={styles.dbBackupStatus + " " + styles.dbBackupDisabled}>מושבת</Typography>
+
+    let backups_to_save = [];
+    for (let i = 1; i <= MAX_BACKUPS_TO_SAVE; i++) {
+      backups_to_save.push(<MenuItem value={i} key={i}>{i}</MenuItem>)
+    }
 
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap["he"]}>
@@ -171,179 +198,223 @@ class Backup extends Component {
 
           <div className={styles.form} disabled>
 
-            <div style={{ paddingBottom: "5px" }}>
-              <Typography variant="h5" className={styles.dbBackupTitle}>
-                גיבוי בסיס נתונים
+            {/* db backup start */}
+            <div>
+              <div style={{ paddingBottom: "0px", fontSize: "28px" }}>
+                <Typography variant="h5" className={styles.dbBackupTitle}>
+                  גיבוי בסיס נתונים
             </Typography>
-              {dbActiveText}
-              {dbActiveButton}
-            </div>
+                {dbActiveText}
+                {dbActiveButton}
+              </div>
 
-            <Divider className={styles.divider} />
+              <Divider className={styles.divider} />
 
-            <div style={{ marginBottom: "30px" }}>
-              <Typography variant="subtitle1">
-                <Box fontWeight="600">
-                  בחר שעה לביצוע הגיבוי:
+              <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע ב- ${backupTimeRender}`}</Typography>
+
+              <div style={{ marginBottom: "40px" }}>
+                <Typography variant="subtitle1">
+                  <Box fontWeight="600">
+                    בחר שעה לביצוע הגיבוי:
                 </Box>
+                </Typography>
+
+                <TimePicker
+                  ampm={false}
+                  classes={{ root: styles.time }}
+                  value={db_backup.time}
+                  onChange={(event) => this.onDbTimeChange("db_backup", event)}
+                />
+              </div>
+
+              <div style={{ marginBottom: "40px" }}>
+                <Typography variant="subtitle1">
+                  <Box fontWeight="600">
+                    בחר כמה גיבויים לשמור לאחור:
+                </Box>
+                </Typography>
+
+                <Select
+                  value={db_backup.backups_to_save}
+                  onChange={this.backupsToSaveChangeHandler}
+                  inputProps={{
+                    name: 'age',
+                    id: 'age-simple',
+                  }}
+                >
+                  {backups_to_save}
+                </Select>
+              </div>
+
+
+
+              <div style={{ marginBottom: "40px" }}>
+                <Typography variant="subtitle1" style={{ marginBottom: "20px" }}>
+                  <Box fontWeight="600">
+                    בחר באיזה ימים הנך מעוניין שהגיבוי יתבצע:
+                </Box>
+                </Typography>
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="הכל"
+                  style={{ marginRight: "-8px", borderLeft: "1px solid #808080", paddingLeft: "25px" }}
+                  control={
+                    <Checkbox
+                      name="everything"
+                      checked={db_backup.days_of_week["everything"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="יום א'"
+                  control={
+                    <Checkbox
+                      name="1"
+                      checked={db_backup.days_of_week["1"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="יום ב'"
+                  control={
+                    <Checkbox
+                      name="2"
+                      checked={db_backup.days_of_week["2"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="יום ג'"
+                  control={
+                    <Checkbox
+                      name="3"
+                      checked={db_backup.days_of_week["3"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="יום ד'"
+                  control={
+                    <Checkbox
+                      name="4"
+                      checked={db_backup.days_of_week["4"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="יום ה'"
+                  control={
+                    <Checkbox
+                      name="5"
+                      checked={db_backup.days_of_week["5"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="יום ו'"
+                  control={
+                    <Checkbox
+                      name="6"
+                      checked={db_backup.days_of_week["6"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="יום ש'"
+                  control={
+                    <Checkbox
+                      name="7"
+                      checked={db_backup.days_of_week["7"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+              </div>
+
+              <div style={{ marginBottom: "40px" }}>
+                <Typography variant="subtitle1" style={{ marginBottom: "10px" }}>
+                  <Box fontWeight="600">
+                    בחר מיקום לשמירת הגיבוי:
+                </Box>
+                </Typography>
+
+                <Button variant="contained" color="primary" onClick={this.dbSelectFolderHandler}>בחר מיקום</Button>
+                <TextField
+                  id="outlined-bare"
+                  disabled
+                  classes={{ root: styles.dbFileTextFieldLocationWrapper }}
+                  value={db_backup.path}
+                  onChange={() => { }}
+                  variant="outlined"
+                  inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
+                />
+              </div>
+
+              <div style={{ marginBottom: "40px" }}>
+                <Typography variant="subtitle1" style={{ display: "inline-flex" }}>
+                  <Box fontWeight="600">לגיבוי באופן יזום לחץ</Box>
+                </Typography>
+                <Button style={{ marginRight: "10px", display: "inline-flex" }} variant="contained" color="primary" onClick={this.dbIndependentBackup}>גבה בסיס נתונים</Button>
+              </div>
+
+            </div>{/* db backup end */}
+
+            {/* db restore start */}
+            <div style={{ marginTop: "60px" }}>
+              <div style={{ paddingBottom: "5px" }}>
+                <Typography variant="h5" className={styles.dbBackupTitle}>
+                  שיחזור בסיס נתונים
+               </Typography>
+              </div>
+
+              <Divider className={styles.divider} />
+
+              <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע ב- ${backupTimeRender}`}</Typography>
+
+              <Typography variant="body1">
+                לתשומת ליבך, לפני שאתה מבצע שיחזור אנא גבה את בסיס הנתונים הנוכחי באופן יזום למקרי חירום.
               </Typography>
 
-              <TimePicker
-                clearable
-                ampm={false}
-                classes={{ root: styles.time }}
-                value={db_backup.time}
-                onChange={(event) => this.onDbTimeChange("db_backup", event)}
-              />
-            </div>
-
-            <div style={{ marginBottom: "30px" }}>
-              <Typography variant="subtitle1" style={{ marginBottom: "20px" }}>
-                <Box fontWeight="600">
-                  בחר באיזה ימים הנך מעוניין שהגיבוי יתבצע:
-                </Box>
-              </Typography>
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="הכל"
-                style={{ marginRight: "-8px", borderLeft: "1px solid #808080", paddingLeft: "25px" }}
-                control={
-                  <Checkbox
-                    name="everything"
-                    checked={db_backup.days_of_week["everything"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="יום א'"
-                control={
-                  <Checkbox
-                    name="1"
-                    checked={db_backup.days_of_week["1"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="יום ב'"
-                control={
-                  <Checkbox
-                    name="2"
-                    checked={db_backup.days_of_week["2"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="יום ג'"
-                control={
-                  <Checkbox
-                    name="3"
-                    checked={db_backup.days_of_week["3"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="יום ד'"
-                control={
-                  <Checkbox
-                    name="4"
-                    checked={db_backup.days_of_week["4"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="יום ה'"
-                control={
-                  <Checkbox
-                    name="5"
-                    checked={db_backup.days_of_week["5"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="יום ו'"
-                control={
-                  <Checkbox
-                    name="6"
-                    checked={db_backup.days_of_week["6"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-              <FormControlLabel
-                labelPlacement="top"
-                label="יום ש'"
-                control={
-                  <Checkbox
-                    name="7"
-                    checked={db_backup.days_of_week["7"]}
-                    onChange={this.onDbDayChange}
-                    value="checkedB"
-                    color="primary"
-                  />
-                }
-              />
-
-            </div>
-
-            <div style={{ marginBottom: "30px" }}>
-              <Typography variant="subtitle1" style={{ marginBottom: "10px" }}>
-                <Box fontWeight="600">
-                  בחר מיקום לשמירת הגיבוי:
-                </Box>
-              </Typography>
-
-              <input
-                ref={this.dbBackupLocationInputRef}
-                id="file" type="file"
-                style={{ visibility: "hidden" }}
-              />
-              <Button variant="contained" color="primary" onClick={this.dbSelectFolderHandler}>בחר מיקום</Button>
-              <TextField
-                id="outlined-bare"
-                disabled
-                classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-                value={db_backup.path}
-                onChange={() => { }}
-                variant="outlined"
-                inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
-              />
-            </div>
-
-
+            </div>{/* db restore end */}
 
 
             <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={this.saveSettings}>
@@ -368,6 +439,7 @@ const mapDispatchToProps = dispatch => ({
   updateSettings: (key, data) => dispatch(settingsActions.updateSettings(key, data)),
   enableDbBackup: (data) => dispatch(settingsActions.enableDbBackup(data)),
   disableDbBackup: (data) => dispatch(settingsActions.disableDbBackup(data)),
+  dbIndependentBackup: (filePath) => dispatch(settingsActions.dbIndependentBackup(filePath)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Backup);

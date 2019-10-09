@@ -1,7 +1,7 @@
 import { remote } from 'electron';
 import os from 'os';
 
-export const saveToFileDialog = (defaultFileName = "", options, callback) => {
+export const saveToFileDialog = (defaultFileName = "", options = {}, callback) => {
 
   const dialog = remote.dialog;
   const WIN = remote.getCurrentWindow();

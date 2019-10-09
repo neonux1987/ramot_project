@@ -8,12 +8,11 @@ import RTL from './components/RTL';
 import { connect } from 'react-redux';
 import LoadingCircle from './components/common/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
-import Spinner from './components/common/Spinner/Spinner';
+import ToastRender from './components/ToastRender/ToastRender';
 //import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';
 import AppFrame from './components/AppFrame/AppFrame';
 import { playSound, soundTypes } from './audioPlayer/audioPlayer';
 import { ToastContainer, toast } from 'react-toastify';
-import DoneIcon from '@material-ui/icons/Done';
 import 'react-table/react-table.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/css/style.css';
@@ -34,19 +33,6 @@ const theme = createMuiTheme({
 });
 
 const TOAST_AUTO_CLOSE = 3000;
-
-const ToastRender = ({ message = "", spinner = false, done = false, spinnerColor = "#ffffff" }) => {
-  let renderSpinner = spinner ? <Spinner color={spinnerColor} size={24} /> : null;
-  let renderDoneIcon = done ? <DoneIcon /> : null;
-  return (<div style={{
-    justifyContent: "center",
-    display: "inline-flex",
-    alignItems: "center",
-    textAlign: "right",
-  }}>
-    <div style={{ marginLeft: "5px" }}>{renderDoneIcon}{renderSpinner}</div><span>{message}</span>
-  </div>)
-}
 
 class App extends Component {
 

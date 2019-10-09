@@ -14,6 +14,10 @@ class IOLogic {
     return this.iODao.readFile(filePath, settings);
   }
 
+  removeFile(filePath) {
+    return this.iODao.readFile(filePath);
+  }
+
 }
 
 

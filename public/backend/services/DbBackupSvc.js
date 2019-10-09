@@ -88,9 +88,6 @@ class DbBackupSvc {
     });
 
     if (this.backupSchedule.nextInvocation()) {
-      //settings.db_backup.last_updated = lastUpdated;
-      //save settings
-      this.settingsLogic.updateSettings(settings);
       return Promise.resolve();
     } else {
       return Promise.reject(new Error("unable to schedule a job."));
@@ -128,7 +125,7 @@ class DbBackupSvc {
     if (this.rule.dayOfWeek.length === 0) {
       this.rule.dayOfWeek = null;
     }
-
+    console.log(this.rule);
     //execute scheduler
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
       this.backupDbCallback(settings, lastUpdated);
@@ -136,7 +133,6 @@ class DbBackupSvc {
 
     return new Promise((resolve, reject) => {
       if (this.backupSchedule.nextInvocation()) {
-        //settings.db_backup.last_updated = lastUpdated;
         resolve();
       } else {
         reject("unable to change the schedule.");
@@ -174,21 +170,85 @@ class DbBackupSvc {
     });
   }
 
-  async backupDbCallback(settings, lastUpdated) {
-    //fetch db backup settings
-    let fileToBackup = await this.ioLogic.readFile(settings.general.db_path);
-    const date = new Date();
+  async backupDbCallback(settings) {
 
+    const { db_backup, general } = settings;
+
+    //fetch db backup settings
+    let fileToBackup = await this.ioLogic.readFile(general.db_path);
+
+    //current date
+    let date = new Date();
+
+    //filename of thefile to save
+    const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDay()}-${date.getDate()}-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}.sqlite`;
+
+    //handle last update
+    const dateLocalString = date.toLocaleString("he-IL");
+    date = new Date(dateLocalString);
+
+    //notify that the backup process started
     rendererNotificationSvc.notifyRenderer("dbBackupStarted", "מתבצע כעת גיבוי בסיס נתונים...");
 
-    this.ioLogic.writeFile(`${settings.db_backup.path}/${DB_BACKUP_FILENAME}.sqlite`, fileToBackup).then(() => {
+    if (db_backup.saved_backups.length <= db_backup.backups_to_save) {
+
+      //push the new file to the array
+      db_backup.saved_backups.push(fileName);
+
+      //write the file physically to the drive
+      this.saveDbFile(`${db_backup.path}/${fileName}`, settings, fileToBackup, date, rendererNotificationSvc);
+
+    } else {
+
+      //remove the filename from the array
+      const removedFileName = db_backup.saved_backups.shift();
+
+      //remove the file physically from the drive
+      this.ioLogic.removeFile(`${db_backup.path}/${removedFileName}`)
+        .then(() => {
+          //push the new file to the array
+          db_backup.saved_backups.push(fileName);
+
+          //write the file physically to the drive
+          this.saveDbFile(`${db_backup.path}/${fileName}`, settings, fileToBackup, date, rendererNotificationSvc);
+
+        }).catch((error) => {
+          console.log(error);
+          throw error;
+        });
+
+    }
+
+  }
+
+  saveDbFile(path, settings, fileToBackup, date, rendererNotificationSvc) {
+
+    //write the file physically to the drive
+    this.ioLogic.writeFile(path, fileToBackup).then(() => {
+
+      //save it to the settings obj
+      settings.db_backup.last_update = date.toString();
+
+      //write the new settings
+      this.settingsLogic.updateSettings(settings);
+
+      //notify that the backup process ended
       rendererNotificationSvc.notifyRenderer("dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
     }).catch((error) => {
       console.log(error);
+      throw error;
     });
-    //console.log(lastUpdated);
-    //set the last time the db backup was executed
-    //lastUpdated = new Date();
+  }
+
+  async independentBackup(fullPath) {
+    console.log(fullPath);
+    if (fullPath) {
+
+      console.log("yes");
+      return Promise.resolve();
+    } else {
+      return Promise.reject("something went wrong!")
+    }
   }
 
   validateDaysOfWeek(daysOfWeek) {
