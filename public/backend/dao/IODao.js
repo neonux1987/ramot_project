@@ -8,15 +8,21 @@ const removeFilePromise = util.promisify(fs.unlink);
 class IODao {
 
   readFile(filePath, settings) {
-    return readFilePromise(filePath, settings);
+    return readFilePromise(filePath, settings).catch(() => {
+      throw new Error("קרתה תקלה, לא ניתן לקרוא את הקובץ.");
+    });;
   }
 
   writeFile(filePath, data) {
-    return writeFilePromise(filePath, data);
+    return writeFilePromise(filePath, data).catch(() => {
+      throw new Error("כתיבת הקובץ לא הצליחה.");
+    });
   }
 
   removeFile(filePath) {
-    return removeFilePromise(filePath);
+    return removeFilePromise(filePath).catch(() => {
+      throw new Error("מחיקת הקובץ לא הצליחה.");
+    });
   }
 
 }

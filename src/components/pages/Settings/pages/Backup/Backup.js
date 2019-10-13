@@ -35,8 +35,14 @@ class Backup extends Component {
 
   onDbTimeChange = (name, value) => {
     const db_backup = { ...this.props.settings.settings.data.db_backup };
+
     //must convert it to string to ensure electron won't change it to different time zone
-    db_backup.time = String(value);
+    let date = new Date(value);
+    const localeString = date.toLocaleString();
+    date = new Date(localeString);
+
+    db_backup.time = date.toString();
+
     this.setState({ settingsSaved: false });
     this.props.updateSettings(name, db_backup);
   }
@@ -178,8 +184,10 @@ class Backup extends Component {
       reports_backup
     } = settings.data;
 
+    //to render the last update of the backup
     const BackupDateTime = new Date(db_backup.last_update);
-    const backupTimeRender = `${BackupDateTime.getDay()}/${BackupDateTime.getDate()}/${BackupDateTime.getFullYear()}`;
+    const backupDateRender = `${BackupDateTime.getDate()}/${BackupDateTime.getMonth() + 1}/${BackupDateTime.getFullYear()}`;
+    const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
 
     let dbActiveButton = !db_backup.active ? <Button style={{ float: "left" }} onClick={this.toggleDbBackupActivation} variant="contained" color="primary">הפעל</Button> :
       <Button style={{ float: "left" }} onClick={this.toggleDbBackupActivation} variant="contained" color="secondary">השבת</Button>;
@@ -210,7 +218,7 @@ class Backup extends Component {
 
               <Divider className={styles.divider} />
 
-              <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע ב- ${backupTimeRender}`}</Typography>
+              <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography>
 
               <div style={{ marginBottom: "40px" }}>
                 <Typography variant="subtitle1">
@@ -275,6 +283,20 @@ class Backup extends Component {
                   label="יום א'"
                   control={
                     <Checkbox
+                      name="0"
+                      checked={db_backup.days_of_week["0"]}
+                      onChange={this.onDbDayChange}
+                      value="checkedB"
+                      color="primary"
+                    />
+                  }
+                />
+
+                <FormControlLabel
+                  labelPlacement="top"
+                  label="יום ב'"
+                  control={
+                    <Checkbox
                       name="1"
                       checked={db_backup.days_of_week["1"]}
                       onChange={this.onDbDayChange}
@@ -286,7 +308,7 @@ class Backup extends Component {
 
                 <FormControlLabel
                   labelPlacement="top"
-                  label="יום ב'"
+                  label="יום ג'"
                   control={
                     <Checkbox
                       name="2"
@@ -300,7 +322,7 @@ class Backup extends Component {
 
                 <FormControlLabel
                   labelPlacement="top"
-                  label="יום ג'"
+                  label="יום ד'"
                   control={
                     <Checkbox
                       name="3"
@@ -314,7 +336,7 @@ class Backup extends Component {
 
                 <FormControlLabel
                   labelPlacement="top"
-                  label="יום ד'"
+                  label="יום ה'"
                   control={
                     <Checkbox
                       name="4"
@@ -328,7 +350,7 @@ class Backup extends Component {
 
                 <FormControlLabel
                   labelPlacement="top"
-                  label="יום ה'"
+                  label="יום ו'"
                   control={
                     <Checkbox
                       name="5"
@@ -342,25 +364,11 @@ class Backup extends Component {
 
                 <FormControlLabel
                   labelPlacement="top"
-                  label="יום ו'"
+                  label="יום ש'"
                   control={
                     <Checkbox
                       name="6"
                       checked={db_backup.days_of_week["6"]}
-                      onChange={this.onDbDayChange}
-                      value="checkedB"
-                      color="primary"
-                    />
-                  }
-                />
-
-                <FormControlLabel
-                  labelPlacement="top"
-                  label="יום ש'"
-                  control={
-                    <Checkbox
-                      name="7"
-                      checked={db_backup.days_of_week["7"]}
                       onChange={this.onDbDayChange}
                       value="checkedB"
                       color="primary"

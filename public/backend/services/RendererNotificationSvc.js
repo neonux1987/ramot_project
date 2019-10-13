@@ -13,6 +13,7 @@ class RendererNotificationSvc {
       return Promise.reject("You must set the web contents first using setWebContents method.");
     }
     this.webContents.send('notify-renderer', type, arg);
+    return Promise.resolve();
   }
 
 }

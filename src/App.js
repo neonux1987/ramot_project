@@ -69,6 +69,17 @@ class App extends Component {
             }
           });
           break;
+        case "dbBackupError":
+          toast.update(this.state.toastId, {
+            render: <ToastRender done={true} message={arg} />,
+            type: toast.TYPE.ERROR,
+            delay: 2000,
+            autoClose: TOAST_AUTO_CLOSE,
+            onOpen: () => {
+              playSound(soundTypes.message)
+            }
+          });
+          break;
         default: return null;
       }
 
