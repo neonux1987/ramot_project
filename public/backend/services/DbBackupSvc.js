@@ -51,7 +51,10 @@ class DbBackupSvc {
           this.backupDbCallback(settings).then(() => {
             resolve();
           }).catch((error) => {
-            reject(error);
+            rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
+              reject(error);
+            }).catch(() => reject(error));
+
           });
         });
       });
@@ -100,10 +103,14 @@ class DbBackupSvc {
     return new Promise((resolve, reject) => {
       //execute scheduler
       this.backupSchedule = schedule.scheduleJob(this.rule, () => {
+        console.log("asdsad");
         this.backupDbCallback(settings).then(() => {
           resolve();
         }).catch((error) => {
-          reject(error);
+          rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
+            reject(error);
+          }).catch(() => reject(error));
+
         });
       });
     });
@@ -201,11 +208,14 @@ class DbBackupSvc {
     //fetch db backup settings
     let fileToBackup = await this.ioLogic.readFile(general.db_path);
 
+    //fetch db backup settings
+    const backupsNames = await this.settingsLogic.getBackupsNames();
+
     //current date
     let date = new Date();
     //convert date to local date he-il to
     //get the correct time
-    const dateLocalString = date;
+    const dateLocalString = date.toLocaleString();
     //set the curret time in the new date
     date = new Date(dateLocalString);
 
@@ -216,34 +226,31 @@ class DbBackupSvc {
     try {
       //notify that the backup process started
       await rendererNotificationSvc.notifyRenderer("dbBackupStarted", "מתבצע כעת גיבוי בסיס נתונים...");
-      console.log(db_backup);
-      if (db_backup.saved_backups.length < db_backup.backups_to_save) {
+      if (backupsNames.length < db_backup.backups_to_save) {
 
         //write the file physically to the drive
         await this.ioLogic.writeFile(path, fileToBackup);
 
         //push the new file to the array
-        db_backup.saved_backups.push(fileName);
+        backupsNames.push({ backupDateTime: date, fileName: fileName });
 
-        console.log("inside if");
       } else {
 
 
         //filename of the file to remove, the first and oldest in the array
-        const removedFileName = db_backup.saved_backups[0];
-        console.log("inside else");
-        console.log(`${db_backup.path}/${removedFileName}`);
+        const removedFileName = backupsNames[0];
+
         //remove the file physically from the drive
         await this.ioLogic.removeFile(`${db_backup.path}/${removedFileName}`);
 
         //remove the filename from the array
-        db_backup.saved_backups.shift();
+        backupsNames.shift();
 
         //write the file physically to the drive
         await this.ioLogic.writeFile(path, fileToBackup);
 
         //push the new file to the array
-        db_backup.saved_backups.push(fileName);
+        backupsNames.push({ backupDateTime: date, fileName: fileName });
       }
 
       //save it to the settings obj
@@ -251,6 +258,8 @@ class DbBackupSvc {
 
       //write the new settings
       await this.settingsLogic.updateSettings(settings);
+
+      await this.settingsLogic.updateBackupsNames(backupsNames);
 
       //notify that the backup process ended
       await rendererNotificationSvc.notifyRenderer("dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
@@ -263,14 +272,25 @@ class DbBackupSvc {
 
 
   async independentBackup(fullPath) {
-    console.log(fullPath);
-    if (fullPath) {
 
-      console.log("yes");
-      return Promise.resolve();
-    } else {
-      return Promise.reject("something went wrong!")
+    if (!fullPath) {
+      throw new Error("the path can not be null or undefined.")
     }
+
+    let settings = null;
+    try {
+      //fetch db backup settings
+      settings = await this.settingsLogic.getSettings();
+    } catch (e) {
+      throw e;
+    }
+
+    //fetch db backup settings
+    let fileToBackup = await this.ioLogic.readFile(settings.general.db_path);
+
+    //write the file physically to the drive
+    await this.ioLogic.writeFile(fullPath, fileToBackup);
+
   }
 
   validateDaysOfWeek(daysOfWeek) {

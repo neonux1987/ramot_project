@@ -32,6 +32,15 @@ const settingsIpc = () => {
     });
   });
 
+  ipcMain.on('get-backups-names', (event) => {
+    settingsLogic.getBackupsNames().then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("backups-names-data", { data: result });
+    }).catch((error) => {
+      event.reply("backups-names-data", { error: error.message });
+    });
+  });
+
 }
 
 module.exports = settingsIpc;

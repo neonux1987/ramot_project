@@ -98,6 +98,7 @@ const saveSettings = (data) => {
 };
 
 const enableDbBackup = (db_backup) => {
+
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("enable-db-backup");

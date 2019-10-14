@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import settingsActions from '../../../../../redux/actions/settingsActions';
-import { FormControlLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
+import backupsNamesActions from '../../../../../redux/actions/backupsNamesActions';
+import { FormControlLabel, FormControl, InputLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
 import LoadingCircle from '../../../../common/LoadingCircle';
 import styles from './Backup.module.css';
-import { MuiPickersUtilsProvider, DateTimePicker, TimePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import heLocale from "date-fns/locale/he";
 import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogsSvc';
@@ -28,6 +29,7 @@ class Backup extends Component {
 
   componentDidMount() {
     this.props.fetchSettings();
+    this.props.fetchBackupsNames();
   }
 
   componentWillUnmount() {
@@ -176,12 +178,16 @@ class Backup extends Component {
     const {
       settings
     } = this.props.settings;
-    if (settings.isFetching) {
-      return <LoadingCircle loading={settings.isFetching} />
+
+    const {
+      backupsNames
+    } = this.props.backupsNames;
+
+    if (settings.isFetching || backupsNames.isFetching) {
+      return <LoadingCircle loading={settings.isFetching || backupsNames.isFetching} />
     }
     const {
       db_backup,
-      reports_backup
     } = settings.data;
 
     //to render the last update of the backup
@@ -199,6 +205,14 @@ class Backup extends Component {
     for (let i = 1; i <= MAX_BACKUPS_TO_SAVE; i++) {
       backups_to_save.push(<MenuItem value={i} key={i}>{i}</MenuItem>)
     }
+
+    const backupsNamesRender = backupsNames.data.map((backup, index) => {
+      const date = new Date(backup.backupDateTime);
+      const locale = date.toLocaleString();
+      //to get rid off of the AM or PM
+      const newLocaleDateTime = locale.slice(0, locale.length - 3);
+      return <MenuItem value={backup.backupDateTime} key={index}>{newLocaleDateTime}</MenuItem>
+    });
 
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap["he"]}>
@@ -399,7 +413,7 @@ class Backup extends Component {
 
               <div style={{ marginBottom: "40px" }}>
                 <Typography variant="subtitle1" style={{ display: "inline-flex" }}>
-                  <Box fontWeight="600">לגיבוי באופן יזום לחץ</Box>
+                  <Box fontWeight="600">לגיבוי ידני ושמירת הגיבוי במקום אחר לחץ</Box>
                 </Typography>
                 <Button style={{ marginRight: "10px", display: "inline-flex" }} variant="contained" color="primary" onClick={this.dbIndependentBackup}>גבה בסיס נתונים</Button>
               </div>
@@ -418,14 +432,36 @@ class Backup extends Component {
 
               <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע ב- ${backupTimeRender}`}</Typography>
 
-              <Typography variant="body1">
-                לתשומת ליבך, לפני שאתה מבצע שיחזור אנא גבה את בסיס הנתונים הנוכחי באופן יזום למקרי חירום.
+              <FormControl className={styles.backupDateSelect}>
+                <InputLabel shrink htmlFor="age-label-placeholder">
+                  בחר גיבוי לפי תאריך
+                </InputLabel>
+                <Select
+                  value={""}
+                  onChange={() => { }}
+                  inputProps={{
+                    name: 'backupsDates',
+                    id: 'backupsDates-label-placeholder',
+                  }}
+                  displayEmpty
+                  name="backupsDates"
+                >
+                  <MenuItem value="">
+                    <em></em>
+                  </MenuItem>
+                  {backupsNamesRender}
+                </Select>
+
+              </FormControl>
+
+              <Typography variant="body2">
+                *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה חירום.
               </Typography>
 
             </div>{/* db restore end */}
 
 
-            <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={this.saveSettings}>
+            <Button className={styles.saveBtn} style={{ margin: "80px 0" }} name="submit" variant="contained" color="primary" onClick={this.saveSettings}>
               שמור
             </Button>
           </div>
@@ -438,7 +474,8 @@ class Backup extends Component {
 }
 
 const mapStateToProps = state => ({
-  settings: state.settings
+  settings: state.settings,
+  backupsNames: state.backupsNames
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -448,6 +485,7 @@ const mapDispatchToProps = dispatch => ({
   enableDbBackup: (data) => dispatch(settingsActions.enableDbBackup(data)),
   disableDbBackup: (data) => dispatch(settingsActions.disableDbBackup(data)),
   dbIndependentBackup: (filePath) => dispatch(settingsActions.dbIndependentBackup(filePath)),
+  fetchBackupsNames: () => dispatch(backupsNamesActions.fetchBackupsNames()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Backup);
