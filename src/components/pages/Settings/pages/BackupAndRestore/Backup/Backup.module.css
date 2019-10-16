@@ -52,14 +52,3 @@
   display: flex;
   margin-top: 10px;
 }
-
-.saveBtn{
-  background-color: #439dd2;
-  display: flex;
-  margin-top: 40px;
-}
-
-.backupDateSelect{
-  min-width: 200px;
-  margin-bottom: 30px;
-}

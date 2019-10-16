@@ -134,7 +134,7 @@ const disableDbBackup = (db_backup) => {
         });
       } else {
         //send the error to the notification center
-        toast.success("גיבוי בסיס הנתונים הושבת.", {
+        toast.warn("גיבוי בסיס הנתונים הושבת.", {
           onOpen: () => playSound(soundTypes.message)
         });
         dispatch(updateSettingsInStore("db_backup", db_backup));

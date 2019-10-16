@@ -27,8 +27,14 @@ const fetchBackupsNames = () => {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
+        //sort the date
+        const newDataArr = arg.data.sort((backup1, backup2) => {
+          const date1 = new Date(backup1.backupDateTime);
+          const date2 = new Date(backup2.backupDateTime);
+          return date1.getTime() < date2.getTime() ? 1 : -1;
+        });
         //success store the data
-        dispatch(receiveSettings(arg.data));
+        dispatch(receiveSettings(newDataArr));
       }
     });
   }

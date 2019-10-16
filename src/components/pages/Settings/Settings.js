@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles, Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import { Route, Switch, NavLink } from 'react-router-dom';
-import Backup from './pages/Backup/Backup';
+import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
 import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
 import General from './pages/General/General';
 
@@ -77,12 +77,12 @@ const Settings = ({ classes, match }, props) => {
           />
           <Tab
             classes={{ root: classes.tab, selected: classes.selected }}
-            label="גיבוי"
+            label="גיבוי ושחזור"
             component={NavLink}
             to={{
-              pathname: `${match.path}/גיבוי`,
+              pathname: `${match.path}/גיבוי ושחזור`,
               state: {
-                page: "גיבוי",
+                page: "גיבוי ושחזור",
                 buildingName: "הגדרות"
               }
             }}
@@ -94,7 +94,7 @@ const Settings = ({ classes, match }, props) => {
           <Route path={`${match.path}/כללי`} component={General} />
           <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
           <Route path={`${match.path}/סעיפים מסכמים`} component={ExpansesCodes} />
-          <Route path={`${match.path}/גיבוי`} component={Backup} />
+          <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
           <Route component={General} />
         </Switch>
       </div>

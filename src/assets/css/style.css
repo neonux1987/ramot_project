@@ -208,3 +208,8 @@ textarea{
   background: #e44534;
   font-size: 16px;
 }
+
+.Toastify__toast--warning {
+  background: #f18d12;
+  font-size: 16px;
+}

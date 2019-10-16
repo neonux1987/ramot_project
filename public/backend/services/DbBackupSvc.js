@@ -45,20 +45,22 @@ class DbBackupSvc {
         this.rule.dayOfWeek = null;
       }
 
-      return new Promise((resolve, reject) => {
-        //execute scheduler
-        this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-          this.backupDbCallback(settings).then(() => {
-            resolve();
-          }).catch((error) => {
-            rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
-              reject(error);
-            }).catch(() => reject(error));
+      //execute scheduler
+      this.backupSchedule = schedule.scheduleJob(this.rule, () => {
+        this.backupDbCallback(settings).catch((error) => {
+          console.log(error);
+          rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
+          }).catch(() => console.log(error));
 
-          });
         });
       });
+
+      if (this.backupSchedule.nextInvocation() === null) {
+        return Promise.reject();
+      }
+      return Promise.resolve();
     }
+
   }
 
   async activate() {
@@ -100,20 +102,20 @@ class DbBackupSvc {
       this.rule.dayOfWeek = null;
     }
 
-    return new Promise((resolve, reject) => {
-      //execute scheduler
-      this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-        console.log("asdsad");
-        this.backupDbCallback(settings).then(() => {
-          resolve();
-        }).catch((error) => {
-          rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
-            reject(error);
-          }).catch(() => reject(error));
+    //execute scheduler
+    this.backupSchedule = schedule.scheduleJob(this.rule, () => {
 
-        });
+      this.backupDbCallback(settings).catch((error) => {
+        rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
+        }).catch(() => console.log(error));
+
       });
     });
+
+    if (this.backupSchedule.nextInvocation() === null) {
+      return Promise.reject();
+    }
+    return this.settingsLogic.updateSettings(settings);
   }
 
   async modifySchedule() {
@@ -155,19 +157,20 @@ class DbBackupSvc {
       this.rule.dayOfWeek = null;
     }
 
-    return new Promise((resolve, reject) => {
-      //execute scheduler
-      this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-        this.backupDbCallback(settings).then(() => {
-          resolve();
-        }).catch((error) => {
-          rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
-            reject(error);
-          }).catch(() => reject(error));
+    //execute scheduler
+    this.backupSchedule = schedule.scheduleJob(this.rule, () => {
 
-        });
+      this.backupDbCallback(settings).catch((error) => {
+        rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
+        }).catch(() => console.log(error));
+
       });
     });
+
+    if (this.backupSchedule.nextInvocation() === null) {
+      return Promise.reject();
+    }
+    return this.settingsLogic.updateSettings(settings);
   }
 
   async stop() {
