@@ -14,6 +14,7 @@ import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
 import { Prompt } from 'react-router'
 import Backup from './Backup/Backup';
 import Restore from './Restore/Restore';
+const { ipcRenderer } = require('electron');
 
 const localeMap = {
   he: heLocale
@@ -31,6 +32,11 @@ class BackupAndRestore extends Component {
   componentDidMount() {
     this.props.fetchSettings();
     this.props.fetchBackupsNames();
+    ipcRenderer.on("settings-updated", (event, type, settings) => {
+      this.props.updateBackupSettings("last_update", settings.db_backup.last_update);
+      console.log(settings);
+
+    });
   }
 
   componentWillUnmount() {
@@ -236,7 +242,8 @@ const mapDispatchToProps = dispatch => ({
   enableDbBackup: (data) => dispatch(settingsActions.enableDbBackup(data)),
   disableDbBackup: (data) => dispatch(settingsActions.disableDbBackup(data)),
   dbIndependentBackup: (filePath) => dispatch(settingsActions.dbIndependentBackup(filePath)),
-  fetchBackupsNames: () => dispatch(backupsNamesActions.fetchBackupsNames()),
+  updateBackupSettings: (key, data) => dispatch(settingsActions.updateBackupSettings(key, data)),
+  fetchBackupsNames: () => dispatch(backupsNamesActions.fetchBackupsNames())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BackupAndRestore);

@@ -3,7 +3,7 @@ const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
-const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
+const RegisteredQuartersLogic = require('../logic/RegisteredQuartersLogic');
 const Helper = require('../../helpers/Helper');
 
 class BudgetExecutionTransactions {
@@ -14,7 +14,7 @@ class BudgetExecutionTransactions {
     this.summarizedBudgetLogic = new SummarizedBudgetLogic();
     this.generalSettingsLogic = new GeneralSettingsLogic();
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
-    this.registeredMonthsLogic = new RegisteredMonthsLogic();
+    this.registeredQuartersLogic = new RegisteredQuartersLogic();
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
   }
 
@@ -81,19 +81,27 @@ class BudgetExecutionTransactions {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  createEmptyBudgetExec(buildingName, date) {
+  async createEmptyBudgetExec(buildingName, date) {
 
-    return this.connection.transaction((trx) => {
+    // Using trx as a transaction object:
+    const trx = await this.connection.transaction();
 
-      return this.budgetExecutionLogic.createEmptyBudgetExec(buildingName, date, trx).then((budgetExec) => {
-        return this.summarizedBudgetLogic.createEmptySummarizedBudget(buildingName, date, trx).then(() => budgetExec);
-      })
+    const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingName, date.quarter, date.year, trx);
 
-    })//end transaction
-      .catch((error) => {
-        console.log(error);
-        throw new Error(error.message)
-      });
+    //if we get a result it means the month
+    //is already created
+    if (registeredQuarter.length > 0) {
+      trx.commit();
+      return;
+    }
+
+    await this.budgetExecutionLogic.createEmptyBudgetExec(buildingName, date, trx);
+
+    await this.summarizedBudgetLogic.createEmptySummarizedBudget(buildingName, date, trx);
+
+    trx.commit();
+
+    return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx);
 
   }
 

@@ -1,10 +1,12 @@
 import { ipcRenderer } from 'electron';
-import dateActions from './dateActions';
 import registeredMonthsActions from './registeredMonthsActions';
 import registeredYearsActions from './registeredYearsActions';
-import { notify, notifyTimeless, notificationTypes } from '../../components/Notifications/Notification';
+import React from 'react';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
+import ToastRender from '../../components/ToastRender/ToastRender';
+
+const TOAST_AUTO_CLOSE = 3000;
 
 /**
  * fetch month expanses
@@ -31,20 +33,11 @@ const fetchExpanses = (params = Object) => {
         //if there is no data, that means it's a new month and 
         //and empty report should be generated.
         if (arg.data.length === 0) {
-          //show a notification that the generation of 
-          //the empty report has started
-          notifyTimeless({
-            isError: false,
-            type: notificationTypes.message,
-            message: `מייצר דוח חדש לחודש ${params.date.monthHeb}.`,
-            spinner: true
-          });
+          //generate empty report
           generateEmptyReport(params, dispatch);
         } else {
           //success store the data
           dispatch(receiveExpanses(arg.data, params.buildingName));
-          //update the date to he requested date in the params of the data
-          dispatch(dateActions.updateDate(params.date));
         }
       }
     });
@@ -52,30 +45,43 @@ const fetchExpanses = (params = Object) => {
 };
 
 const generateEmptyReport = (params, dispatch) => {
+  //empty report process started
+  const toastId = toast.info(<ToastRender spinner={true} message={"מייצר דוח רבעוני חדש..."} />, {
+    autoClose: false,
+    onOpen: () => playSound(soundTypes.message)
+  });
+
   //request request to backend to get the data
   ipcRenderer.send("generate-empty-month-expanses-report", params);
   return ipcRenderer.once("generated-empty-month-expanses-data", (event, arg) => {
     if (arg.error) {
       //let react know that an erro occured while trying to fetch
       dispatch(fetchingFailed(arg.error));
-      //send the error to the notification center
-      notify({
-        isError: true,
-        type: notificationTypes.db,
-        message: arg.error
+
+      //empty report process finished
+      toast.update(toastId, , {
+        render: <ToastRender done={true} message={arg.error} />,
+        type: toast.TYPE.ERROR,
+        delay: 2000,
+        autoClose: TOAST_AUTO_CLOSE,
+        onOpen: () => {
+          playSound(soundTypes.error)
+        }
       });
-      playSound(soundTypes.error);
     } else {
       //success store the data
       dispatch(receiveExpanses(arg.data, params.buildingName));
-      //update the date to he requested date in the params of the data
-      dispatch(dateActions.updateDate(params.date));
       dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
       dispatch(registeredYearsActions.fetchRegisteredYears(params));
-      notify({
-        isError: false,
-        type: notificationTypes.message,
-        message: `דוח חדש לחודש ${params.date.monthHeb} נוצר בהצלחה.`
+      //empty report process finished
+      toast.update(toastId, {
+        render: <ToastRender done={true} message={"דוח רבעוני חדש נוצר בהצלחה."} />,
+        type: toast.TYPE.SUCCESS,
+        delay: 2000,
+        autoClose: TOAST_AUTO_CLOSE,
+        onOpen: () => {
+          playSound(soundTypes.message)
+        }
       });
     }
   });
@@ -150,10 +156,8 @@ const addExpanse = (params = Object, tableData, expanse) => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
         playSound(soundTypes.error);
       } else {
@@ -161,11 +165,11 @@ const addExpanse = (params = Object, tableData, expanse) => {
         tableData.push(expanse);
         //success store the data
         dispatch(receiveExpanses(tableData, params.buildingName));
-        notify({
-          type: notificationTypes.message,
-          message: "השורה נוספה בהצלחה."
+
+        //send success notification
+        toast.success("השורה נוספה בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
         });
-        playSound(soundTypes.message);
       }
     });
   }
@@ -195,18 +199,15 @@ const updateExpanse = (params = Object, tableData = Array, target, fieldName) =>
         dispatch(receiveExpanses(tableData, params.buildingName));
         //set the input field value back to the old value
         target.value = tableData[params.index][fieldName];
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
-        playSound(soundTypes.error);
       } else {
-        notify({
-          type: notificationTypes.message,
-          message: "השורה עודכנה בהצלחה."
+        //send success notification
+        toast.success("השורה עודכנה בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
         });
-        playSound(soundTypes.message);
       }
     });
   }
@@ -224,19 +225,17 @@ const deleteExpanse = (params = Object, tableData = Array) => {
     //listen when the data comes back
     ipcRenderer.once("month-expanse-deleted", (event, arg) => {
       if (arg.error) {
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
-        playSound(soundTypes.error);
       } else {
         dispatch(receiveExpanses(tableData, params.buildingName));
-        notify({
-          type: notificationTypes.message,
-          message: "השורה נמחקה בהצלחה."
+
+        //send success notification
+        toast.success("השורה נמחקה בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
         });
-        playSound(soundTypes.message);
       }
     });
   }

@@ -52,6 +52,18 @@ export default (state = initState, action) => {
           }
         }
       }
+    case "UPDATE_DB_BACKUP_SETTINGS":
+      {
+        const data = { ...state.settings.data };
+        data.db_backup[action.key] = action.data;
+        return {
+          ...state,
+          settings: {
+            ...state.settings,
+            data: data
+          }
+        }
+      }
     default: return state;
   }
 }

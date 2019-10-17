@@ -6,16 +6,16 @@ import { toast } from 'react-toastify';
  * fetch month expanses
  * @param {*} params 
  */
-const fetchRegisteredYears = (params = Object) => {
+const fetchRegisteredQuarters = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestRegisteredYears(params.buildingName));
+    dispatch(requestRegisteredQuarters(params.buildingName));
 
     //request request to backend to get the data
-    ipcRenderer.send("get-registered-years", params);
+    ipcRenderer.send("get-registered-quarters", params);
     //listen when the data comes back
-    return ipcRenderer.once("registered-years-data", (event, arg) => {
+    return ipcRenderer.once("registered-quarters-data", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
@@ -25,22 +25,22 @@ const fetchRegisteredYears = (params = Object) => {
         });
       } else {
         //success store the data
-        dispatch(receiveRegisteredYears(arg.data, params.buildingName));
+        dispatch(receiveRegisteredQuarters(arg.data, params.buildingName));
       }
     });
   }
 };
 
-const requestRegisteredYears = function (page) {
+const requestRegisteredQuarters = function (page) {
   return {
-    type: "REQUEST_REGISTERED_YEARS",
+    type: "REQUEST_REGISTERED_QUARTERS",
     page
   }
 };
 
-const receiveRegisteredYears = function (data, page) {
+const receiveRegisteredQuarters = function (data, page) {
   return {
-    type: "RECEIVE_REGISTERED_YEARS",
+    type: "RECEIVE_REGISTERED_QUARTERS",
     data,
     page
   }
@@ -48,21 +48,21 @@ const receiveRegisteredYears = function (data, page) {
 
 const fetchingFailed = function (error) {
   return {
-    type: "REGISTERED_YEARS_FETCHING_FAILED",
+    type: "REGISTERED_QUARTERS_FETCHING_FAILED",
     payload: error
   }
 };
 
-const cleanupYears = () => {
+const cleanupQuarters = () => {
   return {
-    type: "CLEANUP_YEARS"
+    type: "CLEANUP_QUARTERS"
   }
 }
 
 export default {
-  fetchRegisteredYears,
+  fetchRegisteredQuarters,
   fetchingFailed,
-  receiveRegisteredYears,
-  requestRegisteredYears,
-  cleanupYears
+  receiveRegisteredQuarters,
+  requestRegisteredQuarters,
+  cleanupQuarters
 };

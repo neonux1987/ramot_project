@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import budgetExecutionActions from '../../../redux/actions/budgetExecutionActions';
-import dateActions from '../../../redux/actions/dateActions';
 import Helper from '../../../helpers/Helper';
 import ReactTable from 'react-table';
 import Header from '../../layout/main/Header';
@@ -10,6 +9,8 @@ import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import EditControls from '../../common/EditControls/EditControls';
+import registeredQuartersActions from '../../../redux/actions/registeredQuartersActions';
+import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import Spinner from '../../common/Spinner/Spinner';
@@ -42,11 +43,20 @@ class BudgetExecution extends Component {
       this.props.fetchBudgetExecutions(params);
     });
 
+    //fetch date registered months
+    this.props.fetchRegisteredQuarters(params);
+
+    //fetch date registered months
+    this.props.fetchRegisteredYears(params);
+
   }
 
   componentWillUnmount() {
     //on exit init table data
     this.props.cleanup(this.props.location.state.buildingNameEng);
+
+    //cleanup quarters
+    this.props.cleanupQuarters();
   }
 
   loadBudgetExecutionsByDate = ({ year, quarter }) => {
@@ -432,6 +442,13 @@ class BudgetExecution extends Component {
     const {
       date
     } = pages[pageIndex];
+
+    //used for date picker
+    const quarters = this.props.registeredQuarters.registeredQuarters.data;
+
+    //used for date picker
+    const years = this.props.registeredYears.registeredYears.data;
+
     return (
       <div>
         <WithHeaderWrapper>
@@ -457,40 +474,8 @@ class BudgetExecution extends Component {
               pageName={pageName}
             />
             <DatePicker
-              years={[
-                {
-                  id: 1,
-                  year: 2017
-                },
-                {
-                  id: 2,
-                  year: 2018
-                },
-                {
-                  id: 3,
-                  year: 2019
-                }
-              ]}
-              quarters={[
-                {
-                  id: 1,
-                  year: 2019,
-                  quarter: 1,
-                  quarterHeb: "רבעון 1"
-                },
-                {
-                  id: 2,
-                  year: 2019,
-                  quarter: 2,
-                  quarterHeb: "רבעון 2"
-                },
-                {
-                  id: 3,
-                  year: 2019,
-                  quarter: 3,
-                  quarterHeb: "רבעון 3"
-                }
-              ]}
+              years={years}
+              quarters={quarters}
               date={date}
               loadDataByDateHandler={this.loadBudgetExecutionsByDate}
               enableMonth={false}
@@ -544,7 +529,9 @@ class BudgetExecution extends Component {
 }
 
 const mapStateToProps = state => ({
-  budgetExecution: state.budgetExecution
+  budgetExecution: state.budgetExecution,
+  registeredQuarters: state.registeredQuarters,
+  registeredYears: state.registeredYears
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -554,7 +541,10 @@ const mapDispatchToProps = dispatch => ({
   receiveBudgetExecutions: (payload) => dispatch(budgetExecutionActions.receiveBudgetExecutions(payload)),
   updateBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.updateBudgetExecution(payload, tableData)),
   addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData)),
-  setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload))
+  fetchRegisteredQuarters: (buildingName) => dispatch(registeredQuartersActions.fetchRegisteredQuarters(buildingName)),
+  cleanupQuarters: () => dispatch(registeredQuartersActions.cleanupQuarters()),
+  fetchRegisteredYears: (buildingName) => dispatch(registeredYearsActions.fetchRegisteredYears(buildingName)),
+  cleanupYears: () => dispatch(registeredYearsActions.cleanupYears())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecution);

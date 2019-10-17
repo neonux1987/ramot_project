@@ -97,6 +97,21 @@ const saveSettings = (data) => {
   }
 };
 
+/**
+ * update db backup specific settings
+ * @param {*} key 
+ * @param {*} data 
+ */
+const updateBackupSettings = (key, data) => {
+  return dispatch => {
+    dispatch({
+      type: "UPDATE_DB_BACKUP_SETTINGS",
+      key,
+      data
+    });
+  }
+}
+
 const enableDbBackup = (db_backup) => {
 
   return dispatch => {
@@ -183,5 +198,6 @@ export default {
   updateSettings,
   enableDbBackup,
   disableDbBackup,
-  dbIndependentBackup
+  dbIndependentBackup,
+  updateBackupSettings
 };

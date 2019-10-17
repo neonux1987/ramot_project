@@ -56,6 +56,7 @@ const monthExpansesIpc = (connection) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-month-expanses-data", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("generated-empty-month-expanses-data", { error: error.message });
     });
   });

@@ -154,29 +154,34 @@ class MonthExpansesTransactions {
   }
 
   /**
-   * creates empty report for the new month
-   * @param {*} buildingName 
-   * @param {*} date 
-   */
-  createMonthEmptyExpanses(buildingName, date) {
+  * creates empty report for the new month
+  * @param {*} buildingName 
+  * @param {*} date 
+  */
+  async createMonthEmptyExpanses(buildingName, date) {
 
-    return this.connection.transaction((trx) => {
+    // Using trx as a transaction object:
+    const trx = await this.connection.transaction();
 
-      return this.monthExpansesLogic.createMonthEmptyExpanses(buildingName, date, trx)
-        .then((expanses) => {
-          return this.budgetExecutionLogic.createEmptyBudgetExec(buildingName, date, trx).then(() => {
-          })
-            .then(() => {
-              return this.summarizedBudgetLogic.createEmptySummarizedBudget(buildingName, date, trx).then(() => expanses);
-            });
+    const registeredMonth = await this.registeredMonthsLogic.getRegisteredMonthTrx(buildingName, date.month, date.year, trx);
 
-        })
+    //if we get a result it means the month
+    //is already created
+    if (registeredMonth.length > 0) {
+      trx.commit();
+      return;
+    }
 
-    })//end transaction
-      .catch((error) => {
-        console.log(error);
-        throw new Error(error.message)
-      });
+    //create month expanses
+    await this.monthExpansesLogic.createEmptyReport(buildingName, date, trx);
+
+    await this.budgetExecutionLogic.createEmptyReport(buildingName, date, trx);
+
+    await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx).then(() => expanses);
+
+    trx.commit();
+
+    return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, trx);
 
   }
 

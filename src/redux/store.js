@@ -18,6 +18,7 @@ const persistConfig = {
     "summarizedBudget",
     "registeredMonths",
     "registeredYears",
+    "registeredQuarters",
     "settings",
     "backupsNames"
   ]

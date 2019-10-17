@@ -3,7 +3,6 @@ import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../../../../redux/actions/summarizedSectionsActions';
 import expansesCodesActions from '../../../../../redux/actions/expansesCodesActions';
-import dateActions from '../../../../../redux/actions/dateActions';
 import LoadingCircle from '../../../../common/LoadingCircle';
 import SelectDropDown from '../../../../common/SelectDropDown/SelectDropDown';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
@@ -275,7 +274,6 @@ const mapDispatchToProps = dispatch => ({
   receiveExpansesCodes: (payload) => dispatch(expansesCodesActions.receiveExpansesCodes(payload)),
   updateExpanseCode: (payload, tableData) => dispatch(expansesCodesActions.updateExpanseCode(payload, tableData)),
   addExpanseCode: (payload, tableData) => dispatch(expansesCodesActions.addExpanseCode(payload, tableData)),
-  setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
 });
 

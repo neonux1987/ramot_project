@@ -28,7 +28,7 @@ export default (state = initState, action) => {
           isFetching: true
         }
       }
-    case "FETCHING_FAILED":
+    case "REGISTERED_MONTHS_FETCHING_FAILED":
       return {
         ...state,
         registeredMonths: {

@@ -5,7 +5,7 @@ const RegisteredQuartersIpc = (connection) => {
 
   const registeredQuartersLogic = new RegisteredQuartersLogic(connection);
 
-  ipcMain.on('get-registered-months', (event, arg) => {
+  ipcMain.on('get-registered-quarters', (event, arg) => {
     registeredQuartersLogic.getAllRegisteredQuarters(arg.buildingName).then((result) => {
       event.sender.send("registered-quarters-data", { data: result });
     }).catch((error) => {

@@ -1,7 +1,8 @@
 import { ipcRenderer } from 'electron';
-import dateActions from './dateActions';
-import { notify, notifyTimeless, notificationTypes } from '../../components/Notifications/Notification';
+import React from 'react';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
+import ToastRender from '../../components/ToastRender/ToastRender';
 
 /**
  * fetch month expanses
@@ -21,29 +22,18 @@ const fetchBudgetExecutions = (params = Object) => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //if there is no data, that means it's a new month and 
         //and empty report should be generated.
         if (arg.data.length === 0) {
           //show a notification that the generation of 
-          //the empty report has started
-          notifyTimeless({
-            isError: false,
-            type: notificationTypes.message,
-            message: "מייצר דוח חדש לחודש הנוכחי...",
-            spinner: true
-          });
           generateEmptyReport(params, dispatch);
         }
         //success store the data
         dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
-        //update the date to he requested date in the params of the data
-        dispatch(dateActions.updateDate(params.date));
       }
     });
 
@@ -51,6 +41,11 @@ const fetchBudgetExecutions = (params = Object) => {
 };
 
 const generateEmptyReport = (params, dispatch) => {
+  //empty report process started
+  const toastId = toast.info(<ToastRender spinner={true} message={"מייצר דוח רבעוני חדש..."} />, {
+    autoClose: false,
+    onOpen: () => playSound(soundTypes.message)
+  });
   //request request to backend to get the data
   ipcRenderer.send("generate-budget-execution-report", params);
   return ipcRenderer.once("generated-budget-execution-data", (event, arg) => {
@@ -58,21 +53,20 @@ const generateEmptyReport = (params, dispatch) => {
       //let react know that an erro occured while trying to fetch
       dispatch(fetchingFailed(arg.error));
       //send the error to the notification center
-      notify({
-        isError: true,
-        type: notificationTypes.db,
-        message: arg.error
+      toast.error(arg.error, {
+        onOpen: () => playSound(soundTypes.error)
       });
-      playSound(soundTypes.error);
     } else {
       //success store the data
       dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
-      //update the date to he requested date in the params of the data
-      dispatch(dateActions.updateDate(params.date));
-      notify({
-        isError: false,
-        type: notificationTypes.message,
-        message: "הדוח לחודש החדש נוצר בהצלחה."
+      //send success message
+      toast.success(<ToastRender done={true} message={"דוח רבעוני חדש נוצר בהצלחה."} />, {
+        delay: 2000,
+        autoClose: 3000,
+        onOpen: () => {
+          toast.dismiss(toastId);
+          playSound(soundTypes.message)
+        }
       });
     }
   });
@@ -160,19 +154,16 @@ const updateBudgetExecution = (params = Object, tableData = Array) => {
     //listen when the data comes back
     ipcRenderer.once("budget-execution-updated", (event, arg) => {
       if (arg.error) {
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
-        playSound(soundTypes.error);
       } else {
+        //success
         dispatch(receiveBudgetExecutions(tableData, params.buildingName));
-        notify({
-          type: notificationTypes.message,
-          message: "השורה עודכנה בהצלחה."
+        toast.success("השורה עודכנה בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
         });
-        playSound(soundTypes.message);
       }
     });
   };

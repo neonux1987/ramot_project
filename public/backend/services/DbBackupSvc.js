@@ -49,9 +49,7 @@ class DbBackupSvc {
       this.backupSchedule = schedule.scheduleJob(this.rule, () => {
         this.backupDbCallback(settings).catch((error) => {
           console.log(error);
-          rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
-          }).catch(() => console.log(error));
-
+          rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
         });
       });
 
@@ -106,9 +104,7 @@ class DbBackupSvc {
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
 
       this.backupDbCallback(settings).catch((error) => {
-        rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
-        }).catch(() => console.log(error));
-
+        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
       });
     });
 
@@ -161,9 +157,7 @@ class DbBackupSvc {
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
 
       this.backupDbCallback(settings).catch((error) => {
-        rendererNotificationSvc.notifyRenderer("dbBackupError", "קרתה תקלה, הגיבוי נכשל.").then(() => {
-        }).catch(() => console.log(error));
-
+        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
       });
     });
 
@@ -228,7 +222,8 @@ class DbBackupSvc {
 
     try {
       //notify that the backup process started
-      await rendererNotificationSvc.notifyRenderer("dbBackupStarted", "מתבצע כעת גיבוי בסיס נתונים...");
+      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "מתבצע כעת גיבוי בסיס נתונים...");
+
       if (backupsNames.length < db_backup.backups_to_save) {
 
         //write the file physically to the drive
@@ -260,12 +255,16 @@ class DbBackupSvc {
       settings.db_backup.last_update = date.toString();
 
       //write the new settings
-      await this.settingsLogic.updateSettings(settings);
+      await this.settingsLogic.updateSettings(settings).then((result) => {
+        //notify that the backup process ended
+        rendererNotificationSvc.notifyRenderer("settings-updated", null, settings);
+        return result;
+      });
 
       await this.settingsLogic.updateBackupsNames(backupsNames);
 
       //notify that the backup process ended
-      await rendererNotificationSvc.notifyRenderer("dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
+      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
 
     } catch (e) {
       throw new Error(e);

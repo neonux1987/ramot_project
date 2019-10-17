@@ -7,7 +7,6 @@ import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import registeredMonthsActions from '../../../redux/actions/registeredMonthsActions';
 import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
-import dateActions from '../../../redux/actions/dateActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
 import LoadingCircle from '../../common/LoadingCircle';
@@ -572,7 +571,6 @@ const mapDispatchToProps = dispatch => ({
   updateExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesActions.updateExpanse(payload, tableData, target, fieldName)),
   addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),
   deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),
-  setCurrentDate: (payload) => dispatch(dateActions.setCurrentDate(payload)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
   fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
   fetchRegisteredMonths: (buildingName) => dispatch(registeredMonthsActions.fetchRegisteredMonths(buildingName)),

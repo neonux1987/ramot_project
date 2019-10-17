@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
 
 /**
  * fetch summarized sections
@@ -19,10 +20,8 @@ const fetchSummarizedSections = (params = Object) => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //success store the data
@@ -58,13 +57,23 @@ const fetchingFailed = function (error) {
  * @param {*} params 
  * @param {*} tableData 
  */
-const addSummarizedSection = (params = Object, tableData) => {
+const addSummarizedSection = (params = Object) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("add-summarized-section", params);
     //listen when the data comes back
-    ipcRenderer.once("summarized-section-added", () => {
-      dispatch(receiveSummarizedSections(tableData));
+    ipcRenderer.once("summarized-section-added", (event, arg) => {
+      if (arg.error) {
+        //let react know that an erro occured while trying to fetch
+        dispatch(fetchingFailed(arg.error));
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        //success store the data
+        dispatch(receiveSummarizedSections(arg.data));
+      }
     });
   }
 };

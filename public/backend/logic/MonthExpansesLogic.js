@@ -83,55 +83,46 @@ class MonthExpansesLogic {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  createMonthEmptyExpanses(buildingName, date, trx) {
+  async createEmptyReport(buildingName, date, trx) {
 
     const monthNum = date.monthNum > 0 ? date.monthNum - 1 : 11;//if the month is 0 january, then go to month 11 december of previous year
     const year = monthNum === 11 ? date.year - 1 : date.year;//if the month is 11 december, go to previous year
 
+    //previous date
     const newDate = {
       month: Helper.getCurrentMonthEng(monthNum),
       year: year
     }
 
-    return this.getAllMonthExpansesTrx(buildingName, date, trx).then((expanses) => {
+    //get all the expanses of the previous month if exists
+    const expanses = this.getAllMonthExpansesTrx(buildingName, newDate, trx);
 
-      if (expanses.length === 0) {
-        return this.getAllMonthExpansesTrx(buildingName, newDate, trx).then((expanses) => {
-          if (expanses.length === 0) {
-            return this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx).then((defaultCodes) => {
-              //prepare the data for insertion
-              this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
-              //insert the batch
-              return this.batchInsert(buildingName, defaultCodes, trx).then(() => {
-                return this.getAllMonthExpansesTrx(buildingName, date, trx);
-              });
-            });//end default expanses codes logic
-          } else {
-            //prepare the data for insertion
-            this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
-            //insert the batch
-            return this.batchInsert(buildingName, expanses, trx).then(() => {
-              return this.getAllMonthExpansesTrx(buildingName, date, trx);
-            });
-          }
+    //0 means there is no previous month
+    if (expanses.length === 0) {
+      //get the default codes
+      const defaultCodes = await this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx);
+      //prepare the data for insertion
+      this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
+      //insert the batch
+      await this.batchInsert(buildingName, defaultCodes, trx);
+    } else {
+      //prepare the data for insertion
+      this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
+      //insert the batch
+      await this.batchInsert(buildingName, expanses, trx);
 
-        })//end month expanses logic
-          .then((expanses) => {
-            return this.registeredMonthsLogic.registerNewMonth(buildingName, {
-              year: date.year,
-              month: date.month,
-              monthHeb: date.monthHeb
-            },
-              trx).then(() => {
-                return this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
-                  .then(() => expanses);
-              });
-          });
-      } else {
-        return expanses;
-      }
+    }
 
-    });
+    await this.registeredMonthsLogic.registerNewMonth(buildingName, {
+      year: date.year,
+      month: date.month,
+      monthHeb: date.monthHeb
+    },
+      trx);
+
+    await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx);
+
+    return this.getAllMonthExpansesTrx(buildingName, date, trx);
 
   }
 

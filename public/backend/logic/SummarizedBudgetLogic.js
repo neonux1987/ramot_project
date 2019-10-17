@@ -93,51 +93,37 @@ class SummarizedBudgetLogic {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  createEmptySummarizedBudget(buildingName, date, trx) {
+  async createEmptyReport(buildingName, date, trx) {
 
     const newDate = {
       year: date.year - 1
     }
 
-    return this.getBuildingSummarizedBudgetTrx(buildingName, date, trx).then((sumBudgets) => {
+    //get all the budgets of the previous year if exists
+    const sumBudgets = this.getBuildingSummarizedBudgetTrx(buildingName, newDate, trx);
 
-      if (sumBudgets.length === 0) {
-        return this.getBuildingSummarizedBudgetTrx(buildingName, newDate, trx).then((sumBudgets) => {
-          if (sumBudgets.length === 0) {
-            return this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx).then((defaultSections) => {
-              //prepare the data for insertion
-              const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
-              //insert the batch
-              return this.batchInsert(buildingName, preparedDefaultSections, trx).then(() => {
-                return this.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
-              });
-            });//end default expanses codes logic
-          } else {
-            //prepare the data for insertion
-            const preparedSections = this.prepareBatchInsertion(sumBudgets, date);
-            //insert the batch
-            return this.batchInsert(buildingName, preparedSections, trx).then(() => {
-              return this.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
-            });
-          }
+    if (sumBudgets.length === 0) {
+      await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
+      //prepare the data for insertion
+      const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
+      //insert the batch
+      await this.batchInsert(buildingName, preparedDefaultSections, trx);
+    } else {
+      //prepare the data for insertion
+      const preparedSections = this.prepareBatchInsertion(sumBudgets, date);
+      //insert the batch
+      await this.batchInsert(buildingName, preparedSections, trx);
+    }
 
-        })//end month expanses logic
-          .then((sumBudgets) => {
-            return this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx)
-              .then((years) => {
-                if (years.length === 0) {
-                  return this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
-                    .then(() => sumBudgets);
-                } else {
-                  return sumBudgets;
-                }
-              });
-          });
-      } else {
-        return sumBudgets;
-      }
+    //get registered year
+    const registeredYears = await this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx);
 
-    });
+    //0 means the year does not exist and needs to be created
+    if (registeredYears.length === 0) {
+      await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
+    }
+
+    return Promise.resolve();
 
   }
 

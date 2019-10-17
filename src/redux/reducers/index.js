@@ -9,6 +9,7 @@ import generalSettings from './generalSettingsReducer';
 import summarizedBudget from './summarizedBudgetReducer';
 import registeredMonths from './registeredMonthsReducer';
 import registeredYears from './registeredYearsReducer';
+import registeredQuarters from './registeredQuartersReducer';
 import settings from './settingsReducer';
 import backupsNames from './backupsNamesReducer';
 
@@ -23,6 +24,7 @@ export default combineReducers({
   summarizedBudget,
   registeredMonths,
   registeredYears,
+  registeredQuarters,
   settings,
   backupsNames
 });

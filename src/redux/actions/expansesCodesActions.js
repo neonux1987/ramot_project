@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
-import dateActions from './dateActions';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
 
 /**
  * fetch expanses codes
@@ -21,16 +21,12 @@ const fetchExpansesCodes = (params = Object) => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //success store the data
         dispatch(receiveExpansesCodes(arg.data));
-        //update the date to he requested date in the params of the data
-        dispatch(dateActions.updateDate(params.date));
       }
     });
   }
@@ -68,13 +64,20 @@ const addExpanseCode = (params = Object, tableData) => {
     //listen when the data comes back
     ipcRenderer.once("expanse-code-added", (event, arg) => {
       if (arg.error) {
-        console.log(arg.error);
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
       } else {
         params.id = arg.data;
         dispatch({
           type: "ADD_EXPANSE_CODE",
           payload: params
-        })
+        });
+        //send success notification
+        toast.success("הקוד נוסף בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
       }
     });
   }
@@ -92,9 +95,16 @@ const updateExpanseCode = (params = Object, tableData = Array) => {
     //listen when the data comes back
     ipcRenderer.once("expanse-code-updated", (event, arg) => {
       if (arg.error) {
-        console.log(arg.error);
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
       } else {
         dispatch(receiveExpansesCodes(tableData));
+        //send success notification
+        toast.success("הקוד עודכן בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
       }
     });
   }

@@ -10,7 +10,7 @@ const summarizedBudgetIpc = (connection) => {
   const transactions = new Transactions(connection);
 
   ipcMain.on('get-summarized-budget-data', (event, arg) => {
-    summarizedBudgetLogic.getBuildingSummarizedBudgetOrderedTrx(arg.buildingName, arg.date, undefined).then((result) => {
+    summarizedBudgetLogic.getBuildingSummarizedBudgetTrx(arg.buildingName, arg.date, undefined).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.sender.send("summarized-budget-data", { data: result });
     }).catch((error) => {

@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
 
 /**
  * fetch general settings
@@ -21,15 +21,13 @@ const fetchGeneralSettings = () => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //success store the data
         dispatch(receiveGeneralSettings(arg.data));
-        //set the app status to loaded
+        //play welcome sound when settings loaded
         playSound(soundTypes.welcome);
       }
     });
@@ -67,9 +65,16 @@ const updateGeneralSettings = (params = Object, tableData) => {
     //listen when the data comes back
     ipcRenderer.once("updated-general-settings", (event, arg) => {
       if (arg.error) {
-        console.log(arg.error);
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
       } else {
         dispatch(receiveGeneralSettings(tableData));
+        //send success notification
+        toast.success("ההגדרות עודכנו בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
       }
     });
   }

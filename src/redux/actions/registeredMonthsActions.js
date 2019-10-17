@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
 
 /**
  * fetch month expanses
@@ -20,12 +20,9 @@ const fetchRegisteredMonths = (params = Object) => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
-        playSound(soundTypes.error);
       } else {
         //success store the data
         dispatch(receiveRegisteredMonths(arg.data, params.buildingName));
@@ -51,7 +48,7 @@ const receiveRegisteredMonths = function (data, page) {
 
 const fetchingFailed = function (error) {
   return {
-    type: "FETCHING_FAILED",
+    type: "REGISTERED_MONTHS_FETCHING_FAILED",
     payload: error
   }
 };

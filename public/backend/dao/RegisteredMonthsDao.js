@@ -20,7 +20,7 @@ class RegisteredMonthsDao {
    * get all the months
    * @param {*} buildingName 
    */
-  getRegisteredMonth(buildingName, month, year, trx = this.connection) {
+  getRegisteredMonthTrx(buildingName, month, year, trx = this.connection) {
     return trx.select().from(`${buildingName}_registered_months`).where({ month: month, year: year })
       .catch((error) => {
         throw error;

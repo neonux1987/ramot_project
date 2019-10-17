@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
 
 /**
  * toggle sidebar
@@ -29,10 +30,8 @@ const fetchSidebar = () => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
         //send the error to the notification center
-        notify({
-          isError: true,
-          type: notificationTypes.db,
-          message: arg.error
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //success store the data

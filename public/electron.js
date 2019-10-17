@@ -9,6 +9,7 @@ const expansesCodesIpc = require('./electron/ipcs/expansesCodes.ipc');
 const generalSettingsIpc = require('./electron/ipcs/generalSettings.ipc');
 const registeredMonthsIpc = require('./electron/ipcs/registeredMonths.ipc');
 const registeredYearsIpc = require('./electron/ipcs/registeredYears.ipc');
+const registeredQuartersIpc = require('./electron/ipcs/registeredQuarters.ipc');
 const IOIpc = require('./electron/ipcs/IO.ipc');
 const settingsIpc = require('./electron/ipcs/settings.ipc');
 const contextMenu = require('electron-context-menu');
@@ -114,6 +115,8 @@ generalSettingsIpc(knex);
 registeredMonthsIpc(knex);
 
 registeredYearsIpc(knex);
+
+registeredQuartersIpc(knex);
 
 IOIpc();
 

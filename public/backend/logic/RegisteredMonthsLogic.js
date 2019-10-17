@@ -11,8 +11,8 @@ class RegisteredMonthsLogic {
     return this.registeredMonthsDao.getAllRegisteredMonths(buildingName);
   }
 
-  getRegisteredMonth(buildingName, month, year, trx) {
-    return this.registeredMonthsDao.getRegisteredMonth(buildingName, month, year, trx);
+  getRegisteredMonthTrx(buildingName, month, year, trx) {
+    return this.registeredMonthsDao.getRegisteredMonthTrx(buildingName, month, year, trx);
   }
 
   registerNewMonth(buildingName, data, trx) {
