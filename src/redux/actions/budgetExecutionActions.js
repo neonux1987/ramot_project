@@ -1,8 +1,12 @@
 import { ipcRenderer } from 'electron';
 import React from 'react';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import registeredQuartersActions from './registeredQuartersActions';
+import registeredYearsActions from './registeredYearsActions';
 import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
+
+const TOAST_AUTO_CLOSE = 3000;
 
 /**
  * fetch month expanses
@@ -50,24 +54,33 @@ const generateEmptyReport = (params, dispatch) => {
   ipcRenderer.send("generate-budget-execution-report", params);
   return ipcRenderer.once("generated-budget-execution-data", (event, arg) => {
     if (arg.error) {
-      //let react know that an erro occured while trying to fetch
-      dispatch(fetchingFailed(arg.error));
-      //send the error to the notification center
-      toast.error(arg.error, {
-        onOpen: () => playSound(soundTypes.error)
-      });
-    } else {
-      //success store the data
-      dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
-      //send success message
-      toast.success(<ToastRender done={true} message={"דוח רבעוני חדש נוצר בהצלחה."} />, {
+      playSound(soundTypes.error);
+      //empty report process finished
+      toast.update(toastId, {
+        render: <ToastRender done={true} message={arg.error} />,
+        type: toast.TYPE.ERROR,
         delay: 2000,
-        autoClose: 3000,
-        onOpen: () => {
-          toast.dismiss(toastId);
-          playSound(soundTypes.message)
+        autoClose: TOAST_AUTO_CLOSE,
+        onClose: () => {
+          //let react know that an erro occured while trying to fetch
+          dispatch(fetchingFailed(arg.error));
         }
       });
+    } else {
+      //empty report process finished
+      toast.update(toastId, {
+        render: <ToastRender done={true} message={"דוח רבעוני חדש נוצר בהצלחה."} />,
+        type: toast.TYPE.SUCCESS,
+        autoClose: TOAST_AUTO_CLOSE,
+        delay: 2000,
+        onClose: () => {
+          //success store the data
+          dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
+          dispatch(registeredQuartersActions.fetchRegisteredQuarters(params));
+          dispatch(registeredYearsActions.fetchRegisteredYears(params));
+        }
+      });
+
     }
   });
 }

@@ -74,8 +74,8 @@ class MonthExpansesLogic {
     return this.med.deleteMonthExpanse(params);
   }
 
-  batchInsert(buildingName, month, rows, trx) {
-    return this.med.batchInsert(buildingName, month, rows, trx);
+  batchInsert(buildingName, rows, trx) {
+    return this.med.batchInsert(buildingName, rows, trx);
   }
 
   /**
@@ -95,7 +95,7 @@ class MonthExpansesLogic {
     }
 
     //get all the expanses of the previous month if exists
-    const expanses = this.getAllMonthExpansesTrx(buildingName, newDate, trx);
+    const expanses = await this.getAllMonthExpansesTrx(buildingName, newDate, trx);
 
     //0 means there is no previous month
     if (expanses.length === 0) {
@@ -113,16 +113,13 @@ class MonthExpansesLogic {
 
     }
 
+    //can safely register new year, it's not registered from other reports
     await this.registeredMonthsLogic.registerNewMonth(buildingName, {
       year: date.year,
       month: date.month,
       monthHeb: date.monthHeb
     },
       trx);
-
-    await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx);
-
-    return this.getAllMonthExpansesTrx(buildingName, date, trx);
 
   }
 

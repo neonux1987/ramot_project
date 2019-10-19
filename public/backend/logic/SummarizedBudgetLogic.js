@@ -100,10 +100,10 @@ class SummarizedBudgetLogic {
     }
 
     //get all the budgets of the previous year if exists
-    const sumBudgets = this.getBuildingSummarizedBudgetTrx(buildingName, newDate, trx);
+    const sumBudgets = await this.getBuildingSummarizedBudgetTrx(buildingName, newDate, trx);
 
     if (sumBudgets.length === 0) {
-      await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
+      const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
       //prepare the data for insertion
       const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
       //insert the batch
@@ -115,13 +115,8 @@ class SummarizedBudgetLogic {
       await this.batchInsert(buildingName, preparedSections, trx);
     }
 
-    //get registered year
-    const registeredYears = await this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx);
-
-    //0 means the year does not exist and needs to be created
-    if (registeredYears.length === 0) {
-      await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
-    }
+    //register the new year
+    await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
 
     return Promise.resolve();
 

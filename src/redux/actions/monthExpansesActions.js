@@ -55,34 +55,33 @@ const generateEmptyReport = (params, dispatch) => {
   ipcRenderer.send("generate-empty-month-expanses-report", params);
   return ipcRenderer.once("generated-empty-month-expanses-data", (event, arg) => {
     if (arg.error) {
-      //let react know that an erro occured while trying to fetch
-      dispatch(fetchingFailed(arg.error));
-
+      playSound(soundTypes.error);
       //empty report process finished
-      toast.update(toastId, , {
+      toast.update(toastId, {
         render: <ToastRender done={true} message={arg.error} />,
         type: toast.TYPE.ERROR,
         delay: 2000,
         autoClose: TOAST_AUTO_CLOSE,
-        onOpen: () => {
-          playSound(soundTypes.error)
+        onClose: () => {
+          //let react know that an erro occured while trying to fetch
+          dispatch(fetchingFailed(arg.error));
         }
       });
     } else {
-      //success store the data
-      dispatch(receiveExpanses(arg.data, params.buildingName));
-      dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
-      dispatch(registeredYearsActions.fetchRegisteredYears(params));
       //empty report process finished
       toast.update(toastId, {
         render: <ToastRender done={true} message={"דוח רבעוני חדש נוצר בהצלחה."} />,
         type: toast.TYPE.SUCCESS,
-        delay: 2000,
         autoClose: TOAST_AUTO_CLOSE,
-        onOpen: () => {
-          playSound(soundTypes.message)
+        delay: 2000,
+        onClose: () => {
+          //success store the data
+          dispatch(receiveExpanses(arg.data, params.buildingName));
+          dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
+          dispatch(registeredYearsActions.fetchRegisteredYears(params));
         }
       });
+
     }
   });
 }

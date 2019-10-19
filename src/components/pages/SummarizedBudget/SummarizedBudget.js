@@ -5,6 +5,7 @@ import Header from '../../layout/main/Header';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import summarizedBudgetActions from '../../../redux/actions/summarizedBudgetActions';
+import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
@@ -34,11 +35,16 @@ class SummarizedBudget extends Component {
       this.props.fetchSummarizeBudgets(params);
     });
 
+    //fetch date registered months
+    this.props.fetchRegisteredYears(params);
+
   }
 
   componentWillUnmount() {
     //on exit init table data
     this.props.cleanup(this.props.location.state.buildingNameEng);
+    //cleanup years
+    this.props.cleanupYears();
   }
 
   loadSummarizedBudgetsByDate = ({ year }) => {
@@ -252,6 +258,10 @@ class SummarizedBudget extends Component {
     const {
       date
     } = pages[pageIndex];
+
+    //registered years used for date picker
+    const years = this.props.registeredYears.registeredYears.data;
+
     return (
       <div>
         <WithHeaderWrapper>
@@ -275,20 +285,7 @@ class SummarizedBudget extends Component {
               pageName={pageName}
             />
             <DatePicker
-              years={[
-                {
-                  id: 1,
-                  year: 2017
-                },
-                {
-                  id: 2,
-                  year: 2018
-                },
-                {
-                  id: 3,
-                  year: 2019
-                }
-              ]}
+              years={years}
               date={date}
               loadDataByDateHandler={this.loadSummarizedBudgetsByDate}
               enableMonth={false}
@@ -336,13 +333,16 @@ class SummarizedBudget extends Component {
 }
 
 const mapStateToProps = state => ({
-  summarizedBudget: state.summarizedBudget
+  summarizedBudget: state.summarizedBudget,
+  registeredYears: state.registeredYears
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchSummarizeBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload)),
   cleanup: (buildingNameEng) => dispatch(summarizedBudgetActions.cleanup(buildingNameEng)),
-  initState: (page) => dispatch(summarizedBudgetActions.initState(page))
+  initState: (page) => dispatch(summarizedBudgetActions.initState(page)),
+  fetchRegisteredYears: (buildingName) => dispatch(registeredYearsActions.fetchRegisteredYears(buildingName)),
+  cleanupYears: () => dispatch(registeredYearsActions.cleanupYears())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummarizedBudget);

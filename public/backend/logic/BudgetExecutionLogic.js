@@ -47,6 +47,27 @@ class BudgetExecutionLogic {
       .catch(error => { throw error });
   } */
 
+  /**
+   * update execution
+   * @param {*} totalSum 
+   * @param {*} buildingName 
+   * @param {*} date 
+   * @param {*} summarized_section_id 
+   * @param {*} tax 
+   * @param {*} trx 
+   */
+  updateExecutionTrx(monthExpanses = Array, buildingName = String, date = Object, summarized_section_id = Number, tax = Number, trx) {
+    //get budget execution of the selected date
+    return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
+      .then((budgets) => {
+        //prepare budget execution object to be updated
+        budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], monthExpanses, date, tax);
+        //update budget execution
+        return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then((budget) => budget);
+      })
+      .catch(error => { throw error });
+  }
+
   updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, tax = Number, trx) {
     //get budget execution of the selected date
     return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
@@ -75,7 +96,7 @@ class BudgetExecutionLogic {
     }
   }
 
-  static calculateExecution(budget, totalSum, date, tax) {
+  /* static calculateExecution(budget, totalSum, date, tax) {
     totalSum = Helper.calculateWithoutTax(totalSum, tax);
     budget["total_execution"] -= budget[`${date.month}_budget_execution`];
     budget[`${date.month}_budget_execution`] = totalSum;
@@ -95,6 +116,42 @@ class BudgetExecutionLogic {
 
     newData[date.month + "_budget_execution"] = budget[date.month + "_budget_execution"];
     return newData;
+  } */
+
+  static calculateExecution(budget = Object, monthExpanses = Array, date = Object) {
+
+    const totalSum = 0;
+
+    //we need to calculate each expanse seperately 
+    //because in a rare case, they could have 
+    //different tax values
+    for (let i = 0; i < monthExpanses.length; i++) {
+      totalSum = Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax)
+    }
+
+    //subtract month's old execution value from the total execution
+    budget["total_execution"] -= budget[`${date.month}_budget_execution`];
+    //update month's exectuion with the new value
+    budget[`${date.month}_budget_execution`] = totalSum;
+    //update the total execuion wit the new month's execution value
+    budget["total_execution"] += totalSum;
+    //caluclate difference
+    budget["difference"] = budget["total_budget"] - budget["total_execution"];
+
+    //if there is no value in the sum, reset
+    //the difference back to 0 too
+    if (totalSum === 0) {
+      budget["difference"] = 0.0;
+    }
+
+    //prepare budget execution object
+    let BudgetExecutionObj = {
+      total_execution: budget["total_execution"],
+      difference: budget["difference"],
+      [date.month + "_budget_execution"]: budget[date.month + "_budget_execution"]
+    };
+
+    return BudgetExecutionObj;
   }
 
   static calculateTotalExec(quarter, budgetExecArr) {
@@ -163,7 +220,7 @@ class BudgetExecutionLogic {
       year: year
     };
 
-    //get all the expanses of the previous quarter if exists
+    //get all the budget executions of the previous quarter if exists
     const budgetExec = await this.getAllBudgetExecutionsTrx(buildingName, newDate, trx);
 
     //0 means no budget execuion exist of previous quarter
@@ -181,7 +238,7 @@ class BudgetExecutionLogic {
     }
 
     //register quarter
-    await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, year: date.year }, trx);
+    await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
 
     return Promise.resolve();
 

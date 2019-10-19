@@ -19,25 +19,22 @@ class SummarizedBudgetTransactions {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  async createEmptyBudgetExec(buildingName, date) {
+  async createEmptyReport(buildingName, date) {
 
     // Using trx as a transaction object:
     const trx = await this.connection.transaction();
 
     const registeredYear = await this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx);
 
-    //if we get a result it means the month
-    //is already created
-    if (registeredYear.length > 0) {
-      trx.commit();
-      return;
+    if (registeredYear.length === 0) {
+      await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx);
     }
 
-    await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx);
+    const summarizedBudgets = await this.summarizedBudgetLogic.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
 
     trx.commit();
 
-    return this.summarizedBudgetLogic.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
+    return summarizedBudgets;
 
   }
 

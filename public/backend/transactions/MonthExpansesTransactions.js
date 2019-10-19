@@ -5,8 +5,8 @@ const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const MonthTotalBudgetAndExpansesLogic = require('../logic/MonthTotalBudgetAndExpansesLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
+const RegisteredQuartersLogic = require('../logic/RegisteredQuartersLogic');
 const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
-const Helper = require('../../helpers/Helper');
 
 const SPECIAL_CODE_PREFIX = "9";
 
@@ -20,6 +20,7 @@ class MonthExpansesTransactions {
     this.generalSettingsLogic = new GeneralSettingsLogic(connection);
     this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
     this.registeredMonthsLogic = new RegisteredMonthsLogic(connection);
+    this.registeredQuartersLogic = new RegisteredQuartersLogic();
     this.registeredYearsLogic = new RegisteredYearsLogic(connection);
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
   }
@@ -30,57 +31,124 @@ class MonthExpansesTransactions {
   * @param {*} buildingName the name of the building
   * @param {*} expanseToSave the record to update with
   */
-  updateMonthExpanse({ date = Object, buildingName = String, expanse = Object }) {
-
-    return this.connection.transaction((trx) => {
-
-      //get the tax field from general settings
-      return this.generalSettingsLogic.getGeneralSettingsTrx(trx).then((settings) => {
-        //update tax field to the last tax
-        expanse.tax = settings[0].tax;
-        //update month expanses table
-        return this.monthExpansesLogic.updateMonthExpanseTrx(date, buildingName, expanse, trx)
-          .then((totalSum) => {
-            //update budget execution table
-            return this.budgetExecutionLogic.updateBudgetExecutionTrx(totalSum, null, buildingName, date, expanse.summarized_section_id, settings[0].tax, trx)
-              .then(() => {
-                return this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, null, settings[0].tax, trx);
+  /*   updateMonthExpanse({ date = Object, buildingName = String, expanse = Object }) {
+  
+      return this.connection.transaction((trx) => {
+  
+        //get the tax field from general settings
+        return this.generalSettingsLogic.getGeneralSettingsTrx(trx).then((settings) => {
+          //update tax field to the last tax
+          expanse.tax = settings[0].tax;
+          //update month expanses table
+          return this.monthExpansesLogic.updateMonthExpanseTrx(date, buildingName, expanse, trx)
+            .then((totalSum) => {
+              //update budget execution table
+              return this.budgetExecutionLogic.updateBudgetExecutionTrx(totalSum, null, buildingName, date, expanse.summarized_section_id, settings[0].tax, trx)
+                .then(() => {
+                  return this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, null, settings[0].tax, trx);
+                });
+            })
+            .then(() => {
+              //get budget execution data after it was updated
+              return this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx).then((data) => {
+                //update summarized budet table
+                return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(data, buildingName, date, trx);
               });
-          })
-          .then(() => {
-            //get budget execution data after it was updated
-            return this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx).then((data) => {
-              //update summarized budet table
-              return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(data, buildingName, date, trx);
-            });
-          }).then(() => {
-            const params = {
-              buildingName,
-              date
-            }
-            //convert the code to string in order to use the startsWith method
-            //to find if it's a special code
-            const code = expanse.code + "";
-            //basically don't count the special codes in the total execution row
-            if (!code.startsWith(SPECIAL_CODE_PREFIX)) {
-              return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx).then((result) => {
-                //calculate total execution for quarter months
-                const saveObject = BudgetExecutionLogic.calculateTotalExec(date.quarter, result);
-                //update budget execution table
-                return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, saveObject, buildingName, date, 32, settings[0].tax, trx).then(() => saveObject[`${date.monthEng}_budget`]);
-
-              });
-            }
-
-          })
-
-      }).catch((error) => {
-        console.log(error);
-        throw new Error(error.message)
+            }).then(() => {
+              const params = {
+                buildingName,
+                date
+              }
+              //convert the code to string in order to use the startsWith method
+              //to find if it's a special code
+              const code = expanse.code + "";
+              //basically don't count the special codes in the total execution row
+              if (!code.startsWith(SPECIAL_CODE_PREFIX)) {
+                return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx).then((result) => {
+                  //calculate total execution for quarter months
+                  const saveObject = BudgetExecutionLogic.calculateTotalExec(date.quarter, result);
+                  //update budget execution table
+                  return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, saveObject, buildingName, date, 32, settings[0].tax, trx).then(() => saveObject[`${date.monthEng}_budget`]);
+  
+                });
+              }
+  
+            })
+  
+        }).catch((error) => {
+          console.log(error);
+          throw new Error(error.message)
+        });
+  
+  
       });
+    } */
 
+  /**
+  * update month expanse transaction
+  * @param {*} id the id of the month expanse to update
+  * @param {*} buildingName the name of the building
+  * @param {*} expanseToSave the record to update with
+  */
+  async updateMonthExpanse({ date = Object, buildingName = String, expanse = Object }) {
 
-    });
+    // Using trx as a transaction object:
+    const trx = await this.connection.transaction();
+
+    //get settings to get th tax value
+    const settings = await this.generalSettingsLogic.getGeneralSettingsTrx(trx);
+
+    const { tax } = settings;
+
+    //update expanse object tax field to the latest current tax value
+    expanse.tax = tax;
+
+    //update month expanse
+    //await this.monthExpansesLogic.updateMonthExpanseTrx(date, buildingName, expanse, trx);
+
+    //get the total sum of expanses that are related
+    //o the same summarized section id
+    const monthExpanses = await this.monthExpansesLogic.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, expanse.summarized_section_id, trx);
+    console.log(monthExpanses);
+    //update execution in budget execution table
+    //await this.budgetExecutionLogic.updateExecutionTrx(monthExpanses, buildingName, date, expanse.summarized_section_id, tax, trx);
+
+    //update month expanses table
+    /* return this.monthExpansesLogic.updateMonthExpanseTrx(date, buildingName, expanse, trx)
+      .then((totalSum) => {
+        //update budget execution table
+        return this.budgetExecutionLogic.updateBudgetExecutionTrx(totalSum, null, buildingName, date, expanse.summarized_section_id, tax, trx)
+          .then(() => {
+            return this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, null, tax, trx);
+          });
+      })
+      .then(() => {
+        //get budget execution data after it was updated
+        return this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx).then((data) => {
+          //update summarized budet table
+          return this.summarizedBudgetLogic.updateSummarizedBudgetTrx(data, buildingName, date, trx);
+        });
+      }).then(() => {
+        const params = {
+          buildingName,
+          date
+        }
+        //convert the code to string in order to use the startsWith method
+        //to find if it's a special code
+        const code = expanse.code + "";
+        //basically don't count the special codes in the total execution row
+        if (!code.startsWith(SPECIAL_CODE_PREFIX)) {
+          return this.budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingName, date, trx).then((result) => {
+            //calculate total execution for quarter months
+            const saveObject = BudgetExecutionLogic.calculateTotalExec(date.quarter, result);
+            //update budget execution table
+            return this.budgetExecutionLogic.updateBudgetExecutionTrx(null, saveObject, buildingName, date, 32, tax, trx).then(() => saveObject[`${date.monthEng}_budget`]);
+
+          });
+        }
+
+      }) */
+
   }
 
   addNewMonthExpanse({ date = Object, buildingName = String, expanse = Object }) {
@@ -158,30 +226,33 @@ class MonthExpansesTransactions {
   * @param {*} buildingName 
   * @param {*} date 
   */
-  async createMonthEmptyExpanses(buildingName, date) {
+  async createEmptyReport(buildingName, date) {
 
     // Using trx as a transaction object:
     const trx = await this.connection.transaction();
 
     const registeredMonth = await this.registeredMonthsLogic.getRegisteredMonthTrx(buildingName, date.month, date.year, trx);
+    const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingName, date.quarter, date.year, trx);
+    const registeredYear = await this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx);
 
-    //if we get a result it means the month
-    //is already created
-    if (registeredMonth.length > 0) {
-      trx.commit();
-      return;
+    if (registeredMonth.length === 0) {
+      //create month expanses
+      await this.monthExpansesLogic.createEmptyReport(buildingName, date, trx);
     }
 
-    //create month expanses
-    await this.monthExpansesLogic.createEmptyReport(buildingName, date, trx);
+    if (registeredQuarter.length === 0) {
+      await this.budgetExecutionLogic.createEmptyReport(buildingName, date, trx);
+    }
 
-    await this.budgetExecutionLogic.createEmptyReport(buildingName, date, trx);
+    if (registeredYear.length === 0) {
+      await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx);
+    }
 
-    await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx).then(() => expanses);
+    const monthExpanses = await this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, trx);
 
     trx.commit();
 
-    return this.monthExpansesLogic.getAllMonthExpansesTrx(buildingName, date, trx);
+    return monthExpanses;
 
   }
 

@@ -165,7 +165,6 @@ class MonthExpanses extends Component {
   }
 
   componentWillUnmount() {
-    this.props.setCurrentDate();
     //on exit init table data
     this.props.cleanup(this.props.location.state.buildingNameEng);
     //cleanup months
@@ -457,8 +456,7 @@ class MonthExpanses extends Component {
     //registered months of month expanse of a building
     //used for date picker
     const months = this.props.registeredMonths.registeredMonths.data;
-    //registered months of month expanse of a building
-    //used for date picker
+    //registered years used for date picker
     const years = this.props.registeredYears.registeredYears.data;
     return (
       <Fragment>

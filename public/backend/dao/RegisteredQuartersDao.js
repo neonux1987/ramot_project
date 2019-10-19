@@ -35,7 +35,8 @@ class RegisteredQuartersDao {
     buildingName,
     data = {
       year: Number,
-      quarter: Number
+      quarter: Number,
+      quarterHeb: String
     },
     trx = this.connection
   ) {

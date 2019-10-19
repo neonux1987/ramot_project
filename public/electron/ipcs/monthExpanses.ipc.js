@@ -43,16 +43,8 @@ const monthExpansesIpc = (connection) => {
     });
   });
 
-  ipcMain.on('create-month-expanses-database-table', (event, data) => {
-    monthExpansesLogic.deleteMonthExpanse(data).then((result) => {
-      event.reply("month-expanses-database-table-created", { data: result });
-    }).catch((error) => {
-      event.reply("month-expanses-database-table-created", { error: error.message });
-    });
-  });
-
   ipcMain.on('generate-empty-month-expanses-report', (event, arg) => {
-    transactions.createMonthEmptyExpanses(arg.buildingName, arg.date).then((result) => {
+    transactions.createEmptyReport(arg.buildingName, arg.date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-month-expanses-data", { data: result });
     }).catch((error) => {

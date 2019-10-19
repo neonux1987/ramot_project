@@ -136,7 +136,7 @@ class BudgetExecution extends Component {
       budgetExec: preparedObj,
       summarized_section_id: data[objIndex].summarized_section_id
     };
-    this.calculateMonthTotalBudget(data, cellInfo.column.id, prevValue, data[objIndex][cellInfo.column.id]);
+    //this.calculateMonthTotalBudget(data, cellInfo.column.id, prevValue, data[objIndex][cellInfo.column.id]);
     this.props.updateBudgetExecution(params, data);
     e.target.blur();
   }

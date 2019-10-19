@@ -14,15 +14,17 @@ const summarizedBudgetIpc = (connection) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.sender.send("summarized-budget-data", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("summarized-budget-data", { error: error.message });
     });
   });
 
   ipcMain.on('generate-empty-summarized-budget-report', (event, arg) => {
-    transactions.createEmptySummarizedBudget(arg.buildingName, arg.date).then((result) => {
+    transactions.createEmptyReport(arg.buildingName, arg.date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-summarized-budget-data", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("generated-empty-summarized-budget-data", { error: error.message });
     });
   });
