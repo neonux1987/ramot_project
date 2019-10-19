@@ -3,7 +3,7 @@ const os = require('os');
 const platform = os.platform();
 const homedir = os.homedir();
 
-const dbPath = platform === "linux" ? path.join(homedir, "Dropbox/ndts/db/ndts-frms-db.sqlite") : "E:/Dropbox/ndts/db/ndts-frms-db.sqlite";
+const dbPath = platform === "linux" ? path.join(homedir, "Dropbox/ndts/db/ndts-frms-db.sqlite") : "C:/Users/ag1987/Dropbox/ndts/db/ndts-frms-db.sqlite";
 
 const createDBConnection = () => {
   //create database connection

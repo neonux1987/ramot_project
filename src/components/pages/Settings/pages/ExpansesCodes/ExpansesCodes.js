@@ -25,7 +25,6 @@ class ExpansesCodes extends Component {
   }
 
   componentWillUnmount() {
-    this.props.setCurrentDate();
     //on exit init table data
     this.props.receiveExpansesCodes([]);
   }
