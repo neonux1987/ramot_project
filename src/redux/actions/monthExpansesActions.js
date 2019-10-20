@@ -46,7 +46,7 @@ const fetchExpanses = (params = Object) => {
 
 const generateEmptyReport = (params, dispatch) => {
   //empty report process started
-  const toastId = toast.info(<ToastRender spinner={true} message={"מייצר דוח רבעוני חדש..."} />, {
+  const toastId = toast.info(<ToastRender spinner={true} message={"מייצר דוח חודשי חדש..."} />, {
     autoClose: false,
     onOpen: () => playSound(soundTypes.message)
   });
@@ -70,7 +70,7 @@ const generateEmptyReport = (params, dispatch) => {
     } else {
       //empty report process finished
       toast.update(toastId, {
-        render: <ToastRender done={true} message={"דוח רבעוני חדש נוצר בהצלחה."} />,
+        render: <ToastRender done={true} message={"דוח חודש חדש נוצר בהצלחה."} />,
         type: toast.TYPE.SUCCESS,
         autoClose: TOAST_AUTO_CLOSE,
         delay: 2000,

@@ -1,31 +1,31 @@
-class MonthTotalBudgetDao {
+class MonthTotalBudgetExpansesDao {
 
   constructor(connection) {
     this.connection = connection;
   }
 
-  getMonthTotalBudgetTrx(
+  getMonthTotalTrx(
     buildingName = String,
     date = Object,
     trx = this.connection
   ) {
     return trx("*")
       .where({ year: date.year, month: date.month })
-      .from(`${buildingName}_month_total_budget`)
+      .from(`${buildingName}_month_total`)
       .catch((error) => {
         throw error;
       });
   }
 
-  updateMonthTotalBudgetTrx(
+  updateMonthTotalTrx(
     buildingName = String,
     date = Object,
-    totalBudget = Object,
+    data = Object,
     trx = this.connection
   ) {
-    return trx(`${buildingName}_month_total_budget`)
-      .where({ year: date.year, quarter: date.quarter, month: date.month })
-      .update(totalBudget)
+    return trx(`${buildingName}_month_total`)
+      .where({ year: date.year, month: date.month })
+      .update(data)
       .catch((error) => {
         throw error;
       });
@@ -33,4 +33,4 @@ class MonthTotalBudgetDao {
 
 }
 
-module.exports = MonthTotalBudgetDao;
+module.exports = MonthTotalBudgetExpansesDao;

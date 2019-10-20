@@ -1,6 +1,6 @@
 const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
 const GeneralSettingsDao = require('../dao/GeneralSettingsDao');
-const MonthTotalBudgetAndExpansesLogic = require('./MonthTotalBudgetAndExpansesLogic');
+const MonthTotalLogic = require('./MonthTotalLogic');
 const SummarizedSectionsLogic = require('./SummarizedSectionsLogic');
 const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
 const Helper = require('../../helpers/Helper');
@@ -10,7 +10,7 @@ class BudgetExecutionLogic {
   constructor(connection) {
     this.bed = new BudgetExecutionDao(connection);
     this.generalSettingsDao = new GeneralSettingsDao(connection);
-    this.monthTotalBudgetAndExpansesLogic = new MonthTotalBudgetAndExpansesLogic(connection);
+    this.monthTotalLogic = new MonthTotalLogic(connection);
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
     this.registeredQuartersLogic = new RegisteredQuartersLogic();
   }
@@ -61,11 +61,10 @@ class BudgetExecutionLogic {
     return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
       .then((budgets) => {
         //prepare budget execution object to be updated
-        budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], monthExpanses, date, tax);
+        const budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], monthExpanses, date, tax);
         //update budget execution
-        return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then((budget) => budget);
-      })
-      .catch(error => { throw error });
+        return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then(() => budgetExec);
+      });
   }
 
   updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, tax = Number, trx) {
@@ -118,15 +117,22 @@ class BudgetExecutionLogic {
     return newData;
   } */
 
+  /**
+   * calculate and create a budget execution object
+   * with the new execution value total execution and difference
+   * @param {*} budget 
+   * @param {*} monthExpanses 
+   * @param {*} date 
+   */
   static calculateExecution(budget = Object, monthExpanses = Array, date = Object) {
 
-    const totalSum = 0;
+    let totalSum = 0;
 
     //we need to calculate each expanse seperately 
     //because in a rare case, they could have 
     //different tax values
     for (let i = 0; i < monthExpanses.length; i++) {
-      totalSum = Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax)
+      totalSum += Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax)
     }
 
     //subtract month's old execution value from the total execution
@@ -154,26 +160,26 @@ class BudgetExecutionLogic {
     return BudgetExecutionObj;
   }
 
-  static calculateTotalExec(quarter, budgetExecArr) {
-    const monthNames = Helper.getQuarterMonths(quarter);
+  static calculateTotalExec(monthEng, budgetExecArr) {
 
-    const saveObject = {
-      [`${monthNames[0]}_budget_execution`]: 0,
-      [`${monthNames[1]}_budget_execution`]: 0,
-      [`${monthNames[2]}_budget_execution`]: 0
-    }
+    let monthTotalExecution = 0;
+    let totalExecution = 0;
+    let totalBudget = 0;
 
     for (let i = 0; i < budgetExecArr.length; i++) {
-      if (budgetExecArr[i].summarized_section_id !== 32 && budgetExecArr[i].summarized_section_id !== 33) {
-        //calculate budget
-        saveObject[`${monthNames[0]}_budget_execution`] += budgetExecArr[i][`${monthNames[0]}_budget_execution`];
-        saveObject[`${monthNames[1]}_budget_execution`] += budgetExecArr[i][`${monthNames[1]}_budget_execution`];
-        saveObject[`${monthNames[2]}_budget_execution`] += budgetExecArr[i][`${monthNames[2]}_budget_execution`];
-      }
+      //calculate month total execution
+      monthTotalExecution += budgetExecArr[i][`${monthEng}_budget_execution`];
+      //calculate quarter total execution
+      totalExecution += budgetExecArr[i]["total_execution"];
+      //calculate total budget
+      totalBudget += budgetExecArr[i]["total_budget"];
     }
-    //calculate the total budget
-    saveObject.total_execution = saveObject[`${monthNames[0]}_budget_execution`] + saveObject[`${monthNames[1]}_budget_execution`] + saveObject[`${monthNames[2]}_budget_execution`];
-    return saveObject;
+
+    return {
+      monthTotalExecution,
+      totalExecution,
+      totalBudget
+    };
   }
 
   batchInsert(buildingName, quarter, rows, trx) {

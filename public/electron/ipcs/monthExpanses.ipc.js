@@ -22,6 +22,7 @@ const monthExpansesIpc = (connection) => {
     transactions.updateMonthExpanse(data).then((result) => {
       event.reply("month-expanse-updated", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("month-expanse-updated", { error: error.message });
     });
   });

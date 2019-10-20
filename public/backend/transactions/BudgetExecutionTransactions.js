@@ -3,7 +3,7 @@ const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const RegisteredQuartersLogic = require('../logic/RegisteredQuartersLogic');
 const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
-const MonthTotalBudgetLogic = require('../logic/MonthTotalBudgetLogic');
+const MonthTotalLogic = require('../logic/MonthTotalLogic');
 const Helper = require('../../helpers/Helper');
 
 class BudgetExecutionTransactions {
@@ -15,7 +15,7 @@ class BudgetExecutionTransactions {
     this.generalSettingsLogic = new GeneralSettingsLogic();
     this.registeredQuartersLogic = new RegisteredQuartersLogic();
     this.registeredYearsLogic = new RegisteredYearsLogic(connection);
-    this.monthTotalBudgetLogic = new MonthTotalBudgetLogic();
+    this.monthTotalLogic = new MonthTotalLogic();
   }
 
   /* updateBudgetExecution({ date = Object, buildingName = String, budgetExec = Object, summarized_section_id = Number }) {
@@ -130,7 +130,7 @@ class BudgetExecutionTransactions {
         });
       })
       .then((totalBudget) => {
-        return this.monthTotalBudgetLogic.updateMonthTotalBudgetTrx(buildingName, date, totalBudget, trx);
+        return this.monthTotalLogic.updateMonthTotalTrx(buildingName, date, totalBudget, trx);
       });
 
   }

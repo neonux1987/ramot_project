@@ -448,7 +448,7 @@ class BudgetExecution extends Component {
 
     //used for date picker
     const years = this.props.registeredYears.registeredYears.data;
-
+    console.log(pages[pageIndex].data);
     return (
       <div>
         <WithHeaderWrapper>

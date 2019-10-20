@@ -88,6 +88,24 @@ class SummarizedBudgetLogic {
     return newData;
   }
 
+  static calculateTotalExec(monthEng, dataArr) {
+
+    let totalBudget = 0;
+    let totalExecution = 0;
+
+    for (let i = 0; i < dataArr.length; i++) {
+      //calculate month total execution
+      totalBudget += dataArr[i]["year_total_budget"];
+      //calculate quarter total execution
+      totalExecution += dataArr[i]["year_total_execution"];
+    }
+
+    return {
+      totalExecution,
+      totalBudget
+    };
+  }
+
   /**
    * creates empty report for the new month
    * @param {*} buildingName 
