@@ -62,6 +62,20 @@ class SummarizedBudgetLogic {
     }).catch(error => { throw error; });
   }
 
+  updateSummarizedBudgetTrx(budgets = Array, buildingName = String, date = Object, trx) {
+
+    await this.updateSummarizedBudgetTrx(params, trx);
+
+    trx.commit();
+
+  }
+
+  calculateExecution() {
+
+
+
+  }
+
   batchInsert(buildingName, rows, trx) {
     return this.sbd.batchInsert(buildingName, rows, trx);
   }

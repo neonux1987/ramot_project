@@ -8,7 +8,8 @@ const Helper = require('../../helpers/Helper');
 class BudgetExecutionLogic {
 
   constructor(connection) {
-    this.bed = new BudgetExecutionDao(connection);
+    this.connection = connection;
+    this.budgetExecutionDao = new BudgetExecutionDao(connection);
     this.generalSettingsDao = new GeneralSettingsDao(connection);
     this.monthTotalLogic = new MonthTotalLogic(connection);
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
@@ -17,35 +18,13 @@ class BudgetExecutionLogic {
 
   getAllBudgetExecutionsTrx(buildingName, date, trx) {
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
-    return this.bed.getAllBudgetExecutionsTrx(buildingName, date, quarterQuery, trx);
+    return this.budgetExecutionDao.getAllBudgetExecutionsTrx(buildingName, date, quarterQuery, trx);
   }
 
   getBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, trx) {
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
-    return this.bed.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
+    return this.budgetExecutionDao.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
   }
-
-  /* updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, trx) {
-    //get budget execution of the selected date
-    return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
-      .then((budgets) => {
-        //get the tax field from general settings
-        return this.generalSettingsDao.getGeneralSettingsTrx(trx).then((settings) => {
-          if (totalSum !== null) {
-            //prepare budget execution object to be updated
-            budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], totalSum, date, settings[0].tax);
-            //update month total expanses table
-            this.monthTotalBudgetAndExpansesLogic.updateMonthTotalBudgetAndExpansesTrx(buildingName, date, totalSum, settings[0].tax, trx)
-              .catch(error => { throw error });
-          }
-          //update budget execution
-          return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then(() => {
-            //return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx);
-          });
-        })
-      })
-      .catch(error => { throw error });
-  } */
 
   /**
    * update execution
@@ -63,24 +42,25 @@ class BudgetExecutionLogic {
         //prepare budget execution object to be updated
         const budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], monthExpanses, date, tax);
         //update budget execution
-        return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then(() => budgetExec);
+        return this.budgetExecutionDao.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then(() => budgetExec);
       });
   }
 
-  updateBudgetExecutionTrx(totalSum = Number, budgetExec = Object, buildingName = String, date = Object, summarized_section_id = Number, tax = Number, trx) {
-    //get budget execution of the selected date
-    return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
-      .then((budgets) => {
-        //except the total month budget and total monh execution
-        //they don't need the difference calculation
-        if (totalSum !== null) {
-          //prepare budget execution object to be updated
-          budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], totalSum, date, tax);
-        }
-        //update budget execution
-        return this.bed.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then((budget) => budget);
-      })
-      .catch(error => { throw error });
+  async updateBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, trx = await this.connection.transaction()) {
+
+    //update budget execution
+    await this.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx);
+
+    //get budget execution after it was updated
+    const budgetExecution = await this.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx);
+
+    //update summarized budget data
+    await this.summarizedBudgetLogic.updateSummarizedBudgetTrx(summarizedBudgetObj, buildingName, date, trx);
+
+  }
+
+  calculateExecution() {
+
   }
 
   /**
@@ -95,69 +75,38 @@ class BudgetExecutionLogic {
     }
   }
 
-  /* static calculateExecution(budget, totalSum, date, tax) {
-    totalSum = Helper.calculateWithoutTax(totalSum, tax);
-    budget["total_execution"] -= budget[`${date.month}_budget_execution`];
-    budget[`${date.month}_budget_execution`] = totalSum;
-    budget["total_execution"] += totalSum;
-    budget["difference"] = budget["total_budget"] - budget["total_execution"];
+  static deductExpanse(expanse, budgetExecObj) {
 
-    //if there is no value in the sum, reset
-    //the difference back to 0 too
-    if (totalSum === 0) {
-      budget["difference"] = 0.0;
+    //convert sum to sum without a tax fee
+    const expanseValTaxless = Helper.calculateWithoutTax(expanse.sum, expanse.tax);
+
+    //get rid of the old month execution from the total execution
+    let budgetExecTotalExec = budgetExecObj["total_execution"] - budgetExecObj[`${expanse.month}_budget_execution`];
+    //deduct the expanse from month execuion
+    const budgetExec = budgetExecObj[`${expanse.month}_budget_execution`] - expanseValTaxless;
+    //add the new month execution
+    budgetExecTotalExec = budgetExecTotalExec + budgetExec;
+    //calculate the difference
+    const budgetExecDiff = budgetExecObj["total_budget"] - budgetExecTotalExec;
+
+    return {
+      [`${expanse.month}_budget_execution`]: budgetExec,
+      total_execution: budgetExecTotalExec,
+      difference: budgetExecDiff
     }
 
-    let newData = {
-      total_execution: budget["total_execution"],
-      difference: budget["difference"]
-    };
-
-    newData[date.month + "_budget_execution"] = budget[date.month + "_budget_execution"];
-    return newData;
-  } */
+  }
 
   /**
-   * calculate and create a budget execution object
-   * with the new execution value total execution and difference
+   * calculate and create a summarized budget object
    * @param {*} budget 
    * @param {*} monthExpanses 
    * @param {*} date 
    */
-  static calculateExecution(budget = Object, monthExpanses = Array, date = Object) {
+  static calculateExecution(budgetExec = Object, summarizedBudgets = Array, date = Object) {
 
     let totalSum = 0;
 
-    //we need to calculate each expanse seperately 
-    //because in a rare case, they could have 
-    //different tax values
-    for (let i = 0; i < monthExpanses.length; i++) {
-      totalSum += Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax)
-    }
-
-    //subtract month's old execution value from the total execution
-    budget["total_execution"] -= budget[`${date.month}_budget_execution`];
-    //update month's exectuion with the new value
-    budget[`${date.month}_budget_execution`] = totalSum;
-    //update the total execuion wit the new month's execution value
-    budget["total_execution"] += totalSum;
-    //caluclate difference
-    budget["difference"] = budget["total_budget"] - budget["total_execution"];
-
-    //if there is no value in the sum, reset
-    //the difference back to 0 too
-    if (totalSum === 0) {
-      budget["difference"] = 0.0;
-    }
-
-    //prepare budget execution object
-    let BudgetExecutionObj = {
-      total_execution: budget["total_execution"],
-      difference: budget["difference"],
-      [date.month + "_budget_execution"]: budget[date.month + "_budget_execution"]
-    };
-
-    return BudgetExecutionObj;
   }
 
   static calculateTotalExec(monthEng, budgetExecArr) {
@@ -183,7 +132,7 @@ class BudgetExecutionLogic {
   }
 
   batchInsert(buildingName, quarter, rows, trx) {
-    return this.bed.batchInsert(buildingName, quarter, rows, trx);
+    return this.budgetExecutionDao.batchInsert(buildingName, quarter, rows, trx);
   }
 
   prepareDefaultBatchInsertion(data, date) {

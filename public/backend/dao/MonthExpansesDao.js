@@ -84,6 +84,28 @@ class MonthExpansesDao {
   }
 
   /**
+   * get month expanse record by summarized section id
+   */
+  getMonthExpansesByIdTrx(
+    id = Number,
+    buildingName = String,
+    trx
+  ) {
+    return trx.where({ id: id }).select(
+      "building.id AS id",
+      "building.expanses_code_id AS expanses_code_id",
+      "building.sum AS sum",
+      "building.tax AS tax",
+      "sc.id AS summarized_section_id",
+      "sc.section AS section",
+    ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
+      .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /**
    * update month expanse record
    * @param {*} id the id of the expanse to update
    * @param {*} buildingName the name of the building

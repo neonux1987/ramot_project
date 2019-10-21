@@ -106,7 +106,7 @@ class MonthExpanses extends Component {
   }
 
   inputExpansesSubmit(formInputs, reset, isNew) {
-    const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
+    const { data, date } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
     const valid = this.validateFormInputs(formInputs);
     if (!valid) {
 
@@ -123,8 +123,8 @@ class MonthExpanses extends Component {
     copiedFormInputs.code = copiedFormInputs.code.code;
     copiedFormInputs.codeName = copiedFormInputs.codeName.codeName;
     copiedFormInputs.expanses_code_id = formInputs.code.id;
-    copiedFormInputs.year = this.props.monthExpanses.date.year;
-    copiedFormInputs.month = this.props.monthExpanses.date.month;
+    copiedFormInputs.year = date.year;
+    copiedFormInputs.month = date.month;
     copiedFormInputs.tax = this.props.generalSettings.tax;
 
     //parse form inputs
@@ -133,9 +133,7 @@ class MonthExpanses extends Component {
     const params = {
       buildingName: this.props.location.state.buildingNameEng,
       expanse: parsedFormInputs,
-      date: {
-        ...this.props.monthExpanses.date
-      }
+      date: date
     }
 
     this.props.addExpanse(params, data, params.expanse);
