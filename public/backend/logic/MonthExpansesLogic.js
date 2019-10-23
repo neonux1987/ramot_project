@@ -66,13 +66,16 @@ class MonthExpansesLogic {
     const monthExpanses = await this.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, expanse.summarized_section_id, trx);
 
     //get budget execution after it was updated
-    const budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx);
+    let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx);
 
     //caluclate execution and prepare an object for te insertion or update
-    const budgetExec = this.calculateExecution(budgetExecution, monthExpanses, date, tax);
+    const budgetExec = this.prepareBudgetExecutionObj(budgetExecution, monthExpanses, date, tax);
 
     //update execution
     await this.budgetExecutionLogic.updateBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, budgetExec, trx);
+
+    //get budget execution after it was updated
+    budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx);
 
   }
 
@@ -83,7 +86,7 @@ class MonthExpansesLogic {
      * @param {*} monthExpanses 
      * @param {*} date 
      */
-  calculateExecution(budget = Object, monthExpanses = Array, date = Object) {
+  prepareBudgetExecutionObj(budget = Object, monthExpanses = Array, date = Object) {
 
     let totalSum = 0;
 
@@ -94,43 +97,17 @@ class MonthExpansesLogic {
       totalSum += Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax)
     }
 
-    //subtract month's old execution value from the total execution
-    budget["total_execution"] -= budget[`${date.month}_budget_execution`];
     //update month's exectuion with the new value
     budget[`${date.month}_budget_execution`] = totalSum;
-    //update the total execuion wit the new month's execution value
-    budget["total_execution"] += totalSum;
-    //caluclate difference
-    budget["difference"] = budget["total_budget"] - budget["total_execution"];
-
-    //if there is no value in the sum, reset
-    //the difference back to 0 too
-    if (totalSum === 0) {
-      budget["difference"] = 0.0;
-    }
 
     //prepare budget execution object
     let BudgetExecutionObj = {
-      total_execution: budget["total_execution"],
-      difference: budget["difference"],
-      [date.month + "_budget_execution"]: budget[date.month + "_budget_execution"]
+      [date.month + "_budget_execution"]: budget[date.month + "_budget_execution"],
+      [date.month + "_budget"]: budget[date.month + "_budget"]
     };
 
     return BudgetExecutionObj;
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

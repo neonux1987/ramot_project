@@ -51,16 +51,74 @@ class BudgetExecutionLogic {
     //update budget execution
     await this.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx);
 
+    //get all budget executions
+    const allBudgetExecutions = await this.getAllBudgetExecutionsTrx(buildingName, date, trx);
+
+    const calculatedObj = this.calculateTotalExec(date.month, allBudgetExecutions);
+
+    //update month total execution (total expanses)
+    await this.updateMonthTotalTrx(buildingName, date, {
+      total_expanses: calculatedObj.monthTotalExecution
+    }, trx);
+
+    //update quarter total execution (total expanses)
+    await this.quarterTotalLogic.updateQuarterTotalTrx(buildingName, date, {
+      total_expanses: calculatedObj.totalExecution,
+      total_budget: calculatedObj.totalBudget
+    }, trx);
+
     //get budget execution after it was updated
-    const budgetExecution = await this.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx);
+    const budgetExecution = await this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx);
+
+    const summarizedBudgetObj = this.prepareSummarizedBudgetObj(quarter, budgetExecution);
 
     //update summarized budget data
     await this.summarizedBudgetLogic.updateSummarizedBudgetTrx(summarizedBudgetObj, buildingName, date, trx);
 
   }
 
-  calculateExecution() {
+  static prepareSummarizedBudgetObj(quarter, budgetExecution) {
 
+    return {
+      [`quarter${quarter}_budget`]: budgetExecution.total_budget,
+      [`quarter${quarter}_execution`]: budgetExecution.total_execution,
+    }
+
+  }
+
+  prepareBudgetExecutonObj(budget = Object, date = Object) {
+
+    let totalSum = 0;
+
+    //we need to calculate each expanse seperately 
+    //because in a rare case, they could have 
+    //different tax values
+    for (let i = 0; i < monthExpanses.length; i++) {
+      totalSum += Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax)
+    }
+
+    //subtract month's old execution value from the total execution
+    budget["total_execution"] -= budget[`${date.month}_budget_execution`];
+    //update the total execuion wit the new month's execution value
+    budget["total_execution"] += totalSum;
+    //caluclate difference
+    budget["difference"] = budget["total_budget"] - budget["total_execution"];
+
+    //if there is no value in the sum, reset
+    //the difference back to 0 too
+    if (totalSum === 0) {
+      budget["difference"] = 0.0;
+    }
+
+    //prepare budget execution object
+    let BudgetExecutionObj = {
+      total_execution: budget["total_execution"],
+      total_execution: budget["total_budget"],
+      difference: budget["difference"],
+      [date.month + "_budget_execution"]: budget[date.month + "_budget_execution"]
+    };
+
+    return BudgetExecutionObj;
   }
 
   /**
@@ -97,19 +155,7 @@ class BudgetExecutionLogic {
 
   }
 
-  /**
-   * calculate and create a summarized budget object
-   * @param {*} budget 
-   * @param {*} monthExpanses 
-   * @param {*} date 
-   */
-  static calculateExecution(budgetExec = Object, summarizedBudgets = Array, date = Object) {
-
-    let totalSum = 0;
-
-  }
-
-  static calculateTotalExec(monthEng, budgetExecArr) {
+  calculateTotalExec(monthEng, budgetExecArr) {
 
     let monthTotalExecution = 0;
     let totalExecution = 0;

@@ -15,6 +15,10 @@ class SummarizedBudgetLogic {
 
   getBuildingSummarizedBudgetTrx(buildingName, date, trx) {
     return this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
+  } getBuildingSummarizedBudgetSingleTrx
+
+  getSummarizedBudgetByIdTrx(summarized_section_id, date, trx) {
+    return this.sbd.getSummarizedBudgetByIdTrx(summarized_section_id, date, trx);
   }
 
   updateSummarizedBudget(params) {

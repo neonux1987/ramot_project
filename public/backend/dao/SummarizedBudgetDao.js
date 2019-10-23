@@ -53,13 +53,11 @@ class SummarizedBudgetDao {
       });
   }
 
-  getBuildingSummarizedBudgetSingleTrx({
+  getSummarizedBudgetByIdTrx(
     summarized_section_id = Number,
-    buildingName = String,
     date = {
       year: Number
-    }
-  },
+    },
     trx = Function
   ) {
     let data = trx(
