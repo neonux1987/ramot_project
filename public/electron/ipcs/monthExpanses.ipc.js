@@ -19,7 +19,7 @@ const monthExpansesIpc = (connection) => {
   });
 
   ipcMain.on('update-month-expanse', (event, data) => {
-    transactions.updateMonthExpanse(data).then((result) => {
+    monthExpansesLogic.updateMonthExpanse(data).then((result) => {
       event.reply("month-expanse-updated", { data: result });
     }).catch((error) => {
       console.log(error);
@@ -28,7 +28,7 @@ const monthExpansesIpc = (connection) => {
   });
 
   ipcMain.on('add-new-month-expanse', (event, data) => {
-    transactions.addNewMonthExpanse(data).then((result) => {
+    monthExpansesLogic.addNewMonthExpanse(data).then((result) => {
       event.reply("month-expanse-added", result);
     }).catch((err) => {
       console.log(err)
