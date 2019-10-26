@@ -1,7 +1,9 @@
 const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
 const GeneralSettingsDao = require('../dao/GeneralSettingsDao');
 const MonthTotalLogic = require('./MonthTotalLogic');
+const QuarterTotalLogic = require('./QuarterTotalLogic');
 const SummarizedSectionsLogic = require('./SummarizedSectionsLogic');
+const SummarizedBudgetLogic = require('./SummarizedBudgetLogic');
 const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
 const Helper = require('../../helpers/Helper');
 
@@ -12,6 +14,8 @@ class BudgetExecutionLogic {
     this.budgetExecutionDao = new BudgetExecutionDao(connection);
     this.generalSettingsDao = new GeneralSettingsDao(connection);
     this.monthTotalLogic = new MonthTotalLogic(connection);
+    this.summarizedBudgetLogic = new SummarizedBudgetLogic();
+    this.quarterTotalLogic = new QuarterTotalLogic(connection);
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
     this.registeredQuartersLogic = new RegisteredQuartersLogic();
   }
@@ -53,15 +57,16 @@ class BudgetExecutionLogic {
     }
 
     //update budget execution
-    await this.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx);
+    await this.budgetExecutionDao.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx);
 
     //get all budget executions
     const allBudgetExecutions = await this.getAllBudgetExecutionsTrx(buildingName, date, trx);
 
+    //calculate month total
     const calculatedObj = this.calculateMonthTotal(date.month, allBudgetExecutions);
 
     //update month total execution (total expanses)
-    await this.updateMonthTotalTrx(buildingName, date, {
+    await this.monthTotalLogic.updateMonthTotalTrx(buildingName, date, {
       total_expanses: calculatedObj.monthTotalExecution
     }, trx);
 
@@ -75,16 +80,16 @@ class BudgetExecutionLogic {
     const budgetExecution = await this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx);
 
     //get budget execution after it was updated
-    const summarizedBudgetObj = await this.summarizedBudgetLogic.getSummarizedBudgetByIdTrx(summarized_section_id, date, trx);
+    const summarizedBudgetObj = await this.summarizedBudgetLogic.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
 
-    const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(quarter, budgetExecution.total_budget, budgetExecution.total_execution, summarizedBudgetObj);
+    const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(date.quarter, budgetExecution.total_budget, budgetExecution.total_execution, summarizedBudgetObj);
 
     //update summarized budget data
     await this.summarizedBudgetLogic.updateSummarizedBudgetTrx(summarized_section_id, preparedSumBudgetObj, buildingName, date, trx);
 
   }
 
-  static prepareSummarizedBudgetObj(quarter, totalBudget, totalExecution, SummarizedBudgetObj) {
+  prepareSummarizedBudgetObj(quarter, totalBudget, totalExecution, summarizedBudgetObj) {
 
     let total_execution = 0;
     let total_budget = 0;
@@ -93,8 +98,8 @@ class BudgetExecutionLogic {
     summarizedBudgetObj[`quarter${quarter}_execution`] = totalExecution;
 
     for (let i = 1; i <= 4; i++) {
-      total_execution += SummarizedBudgetObj[`quarter${i}_execution`];
-      total_budget += SummarizedBudgetObj[`quarter${i}_budget`];
+      total_execution += summarizedBudgetObj[`quarter${i}_execution`];
+      total_budget += summarizedBudgetObj[`quarter${i}_budget`];
     }
 
     return {

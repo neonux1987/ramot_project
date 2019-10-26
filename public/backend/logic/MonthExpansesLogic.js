@@ -2,6 +2,8 @@ const MonthExpansesDao = require('../dao/MonthExpansesDao');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
 const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
+const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
+const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const Helper = require('../../helpers/Helper');
 
 class MonthExpansesLogic {
@@ -10,8 +12,10 @@ class MonthExpansesLogic {
     this.connection = connection;
     this.monthExpansesDao = new MonthExpansesDao(connection);
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
+    this.budgetExecutionLogic = new BudgetExecutionLogic();
     this.registeredMonthsLogic = new RegisteredMonthsLogic();
     this.registeredYearsLogic = new RegisteredYearsLogic();
+    this.generalSettingsLogic = new GeneralSettingsLogic();
   }
 
   getAllMonthExpansesTrx(buildingName, date, trx) {
@@ -33,7 +37,7 @@ class MonthExpansesLogic {
     * @param {*} expanseToSave the record to update with
     */
   updateMonthExpanse(params) {
-    return this.updateExecution("update", params);
+    return this.saveExpanse("update", params);
   }
 
   /**
@@ -55,10 +59,24 @@ class MonthExpansesLogic {
     const { tax } = settings[0];
 
     if (action === "update") {
+      //prepare the expanse obejct, remove all the unneccessary 
+      //fields so it can be saved.
+      const expanseToUpdate = { supplierName: expanse.supplierName, sum: expanse.sum, tax: expanse.tax, notes: expanse.notes };
       //update month expanse
-      await this.updateMonthExpanseTrx(date, buildingName, expanse, trx);
+      await this.monthExpansesDao.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx);
     } else {
-      await this.addNewMonthExpanseTrx(date, buildingName, expanse, trx);
+      //prepare the expanse obejct, remove all the unneccessary 
+      //fields so it can be saved.
+      const expanseToInsert = {
+        year: expanse.year,
+        month: expanse.month,
+        supplierName: expanse.supplierName,
+        expanses_code_id: expanse.expanses_code_id,
+        sum: expanse.sum,
+        tax: expanse.tax,
+        notes: expanse.notes
+      };
+      await this.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx);
     }
 
     //get the total sum of expanses that are related
@@ -69,7 +87,7 @@ class MonthExpansesLogic {
     let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx);
 
     //caluclate execution and prepare an object for te insertion or update
-    const budgetExec = this.prepareBudgetExecutionObj(budgetExecution, monthExpanses, date, tax);
+    const budgetExec = this.prepareBudgetExecutionObj(budgetExecution[0], monthExpanses, date, tax);
 
     //update execution
     await this.budgetExecutionLogic.updateBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, budgetExec, trx);
@@ -95,22 +113,23 @@ class MonthExpansesLogic {
     }
 
     //subtract month's old execution value from the total execution
-    budget["total_execution"] -= budget[`${date.month}_budget_execution`];
+    budget["total_execution"] = budget["total_execution"] - budget[`${date.month}_budget_execution`];
     //update the total execuion wit the new month's execution value
-    budget["total_execution"] += totalSum;
+    budget["total_execution"] = budget["total_execution"] + totalSum;
+    //set month budget execution
+    budget[date.month + "_budget_execution"] = totalSum;
     //caluclate difference
     budget["difference"] = budget["total_budget"] - budget["total_execution"];
-
+    console.log(budget["total_execution"]);
     //if there is no value in the sum, reset
     //the difference back to 0 too
-    if (totalSum === 0) {
-      budget["difference"] = 0.0;
-    }
+    //if (totalSum === 0) {
+    //  budget["difference"] = 0;
+    //}
 
     //prepare budget execution object
     return {
       total_execution: budget["total_execution"],
-      total_execution: budget["total_budget"],
       difference: budget["difference"],
       [date.month + "_budget_execution"]: budget[date.month + "_budget_execution"]
     };
@@ -135,26 +154,6 @@ class MonthExpansesLogic {
       notes: expanse.notes
     };
     return this.med.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx);
-  }
-
-  updateMonthExpanseTrx(date = Object, buildingName = String, expanse = Object, trx) {
-
-    //prepare the expanse obejct, remove all the unneccessary 
-    //fields so it can be saved.
-    const expanseToUpdate = { supplierName: expanse.supplierName, sum: expanse.sum, tax: expanse.tax, notes: expanse.notes };
-    //update the expanse
-    return this.med.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx)
-      .then(() => {
-        //get all the expanses by summarized sections id
-        return this.med.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, expanse.summarized_section_id, trx);
-      })
-      .then((expanses) => {
-        //calculate total sum of the received expanses
-        const totalSum = MonthExpansesLogic.calculateExpansesSum(expanses);
-        return totalSum;
-      })
-      .catch(error => { throw error });
-
   }
 
   static calculateExpansesSum(expanses) {

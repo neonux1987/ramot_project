@@ -55,6 +55,7 @@ class SummarizedBudgetDao {
 
   getSummarizedBudgetByIdTrx(
     summarized_section_id = Number,
+    buildingName = String,
     date = {
       year: Number
     },
@@ -92,7 +93,7 @@ class SummarizedBudgetDao {
    * update expanse code record
    * @param {*} data 
    */
-  updateSummarizedBudgetTrx({
+  updateSummarizedBudgetTrx(
     summarized_section_id = Number,
     buildingName = String,
     data = {
@@ -110,9 +111,8 @@ class SummarizedBudgetDao {
     },
     date = {
       year: Number
-    }
-  },
-    trx = Function
+    },
+    trx = this.connection
   ) {
     return trx(`${buildingName}_summarized_budget`)
       .where({ summarized_section_id: summarized_section_id, year: date.year })

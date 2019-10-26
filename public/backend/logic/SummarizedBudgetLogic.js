@@ -1,6 +1,7 @@
 const Helper = require('../../helpers/Helper');
 const SummarizedBudgetDao = require('../dao/SummarizedBudgetDao');
 const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
+const YearTotalLogic = require('../logic/YearTotalLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
 
@@ -9,6 +10,7 @@ class SummarizedBudgetLogic {
   constructor(connection) {
     this.sbd = new SummarizedBudgetDao(connection);
     this.registeredYearsLogic = new RegisteredYearsLogic();
+    this.yearTotalLogic = new YearTotalLogic();
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
   }
@@ -17,21 +19,21 @@ class SummarizedBudgetLogic {
     return this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
   }
 
-  getSummarizedBudgetByIdTrx(summarized_section_id, date, trx) {
-    return this.sbd.getSummarizedBudgetByIdTrx(summarized_section_id, date, trx);
+  getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx) {
+    return this.sbd.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
   }
 
   async updateSummarizedBudgetTrx(summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object, trx) {
 
     if (trx === undefined) {
-      trx = await this.connection.transaction()
+      trx = await this.connection.transaction();
     }
 
     await this.sbd.updateSummarizedBudgetTrx(summarized_section_id, buildingName, summarizedBudget, date, trx);
 
     const allSummarizedBudgets = await this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
 
-    const yearTotal = this.prepareYearTotal = this.prepareQuarterTotal(quarter, allSummarizedBudgets);
+    const yearTotal = this.prepareYearTotal(allSummarizedBudgets);
 
     //update year total execution
     const returnedPromise = await this.yearTotalLogic.updateYearTotalTrx(buildingName, date, {
@@ -46,14 +48,14 @@ class SummarizedBudgetLogic {
 
   }
 
-  prepareYearTotal(quarter, allSummarizedBudgets) {
+  prepareYearTotal(allSummarizedBudgets) {
 
     let year_total_execution = 0;
     let year_total_budget = 0;
 
     for (let i = 0; i < allSummarizedBudgets.length; i++) {
-      year_total_execution = allSummarizedBudgets.year_total_execution;
-      year_total_budget = allSummarizedBudgets.year_total_budget;
+      year_total_execution = allSummarizedBudgets[i].year_total_execution;
+      year_total_budget = allSummarizedBudgets[i].year_total_budget;
     }
 
     return {
