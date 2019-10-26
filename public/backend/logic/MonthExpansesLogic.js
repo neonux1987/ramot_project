@@ -111,7 +111,7 @@ class MonthExpansesLogic {
     for (let i = 0; i < monthExpanses.length; i++) {
       totalSum += Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax)
     }
-
+    console.log(budget);
     //subtract month's old execution value from the total execution
     budget["total_execution"] = budget["total_execution"] - budget[`${date.month}_budget_execution`];
     //update the total execuion wit the new month's execution value
@@ -120,7 +120,7 @@ class MonthExpansesLogic {
     budget[date.month + "_budget_execution"] = totalSum;
     //caluclate difference
     budget["difference"] = budget["total_budget"] - budget["total_execution"];
-    console.log(budget["total_execution"]);
+
     //if there is no value in the sum, reset
     //the difference back to 0 too
     //if (totalSum === 0) {
