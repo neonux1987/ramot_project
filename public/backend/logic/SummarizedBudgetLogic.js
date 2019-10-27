@@ -145,6 +145,9 @@ class SummarizedBudgetLogic {
 
     trx.commit();
 
+    //get all the budgets of the previous year if exists
+    return await this.getBuildingSummarizedBudgetTrx(buildingName, data, undefined);
+
   }
 
 }

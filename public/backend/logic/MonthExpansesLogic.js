@@ -212,6 +212,9 @@ class MonthExpansesLogic {
     //call to create budget execution empty report data
     await this.budgetExecutionLogic.createEmptyReport(buildingName, date, trx);
 
+    //return the new added data
+    return await this.getAllMonthExpansesTrx(buildingName, date, undefined);
+
   }
 
 }

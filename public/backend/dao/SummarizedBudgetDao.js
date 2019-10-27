@@ -26,7 +26,7 @@ class SummarizedBudgetDao {
     date = {
       year: Number
     },
-    trx = this.connection
+    trx = this.connection 
   ) {
     return trx.select(
       "building.id AS id",

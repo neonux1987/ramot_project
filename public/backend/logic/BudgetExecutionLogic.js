@@ -214,6 +214,9 @@ class BudgetExecutionLogic {
     //call to create summarized budget report data
     await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx);
 
+    //return the new added data
+    return await this.getAllBudgetExecutionsTrx(buildingName, date, undefined);
+
   }
 
 }
