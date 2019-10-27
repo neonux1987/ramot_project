@@ -14,6 +14,10 @@ class QuarterTotalLogic {
     return this.quarterTotalDao.updateQuarterTotalTrx(buildingName, date, budgetExpanse, trx);
   }
 
+  insertQuartertotal(buildingName, data, trx) {
+    return this.quarterTotalDao.insertQuartertotal(buildingName, data, trx);
+  }
+
 }
 
 module.exports = QuarterTotalLogic;

@@ -8,6 +8,7 @@ const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
 class SummarizedBudgetLogic {
 
   constructor(connection) {
+    this.connection = connection;
     this.sbd = new SummarizedBudgetDao(connection);
     this.registeredYearsLogic = new RegisteredYearsLogic();
     this.yearTotalLogic = new YearTotalLogic();
@@ -23,7 +24,7 @@ class SummarizedBudgetLogic {
     return this.sbd.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
   }
 
-  async updateSummarizedBudgetTrx(summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object, trx) {
+  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object }, trx) {
 
     if (trx === undefined) {
       trx = await this.connection.transaction();
@@ -54,8 +55,8 @@ class SummarizedBudgetLogic {
     let year_total_budget = 0;
 
     for (let i = 0; i < allSummarizedBudgets.length; i++) {
-      year_total_execution = allSummarizedBudgets[i].year_total_execution;
-      year_total_budget = allSummarizedBudgets[i].year_total_budget;
+      year_total_execution += allSummarizedBudgets[i].year_total_execution;
+      year_total_budget += allSummarizedBudgets[i].year_total_budget;
     }
 
     return {
@@ -91,30 +92,25 @@ class SummarizedBudgetLogic {
     return newData;
   }
 
-  static calculateTotalExec(monthEng, dataArr) {
-
-    let totalBudget = 0;
-    let totalExecution = 0;
-
-    for (let i = 0; i < dataArr.length; i++) {
-      //calculate month total execution
-      totalBudget += dataArr[i]["year_total_budget"];
-      //calculate quarter total execution
-      totalExecution += dataArr[i]["year_total_execution"];
-    }
-
-    return {
-      totalExecution,
-      totalBudget
-    };
-  }
-
   /**
    * creates empty report for the new month
    * @param {*} buildingName 
    * @param {*} date 
    */
   async createEmptyReport(buildingName, date, trx) {
+
+    if (trx === undefined) {
+      trx = await this.connection.transaction()
+    }
+
+    const registeredYear = await this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx);
+
+    //if the year is already registered
+    //return empty promise
+    if (registeredYear.length > 0) {
+      trx.commit();
+      return Promise.resolve([]);
+    }
 
     const newDate = {
       year: date.year - 1
@@ -136,10 +132,18 @@ class SummarizedBudgetLogic {
       await this.batchInsert(buildingName, preparedSections, trx);
     }
 
-    //register the new year
-    await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx)
+    //insert empty month total row
+    await this.yearTotalLogic.insertYeartotal(buildingName, {
+      year: 0,
+      total_budget: 0,
+      total_expanses: 0
+    },
+      trx);
 
-    return Promise.resolve();
+    //register the new year
+    await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx);
+
+    trx.commit();
 
   }
 

@@ -31,6 +31,17 @@ class MonthTotalBudgetExpansesDao {
       });
   }
 
+  insertMonthtotal(
+    buildingName = String,
+    data = Object,
+    trx = this.connection
+  ) {
+    return trx(buildingName + "_month_total").insert(data)
+      .catch((error) => {
+        throw error;
+      });
+  }
+
 }
 
 module.exports = MonthTotalBudgetExpansesDao;

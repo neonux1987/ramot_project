@@ -1,7 +1,7 @@
 const MonthExpansesDao = require('../dao/MonthExpansesDao');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
-const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
+const MonthTotalLogic = require('../logic/MonthTotalLogic');
 const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const Helper = require('../../helpers/Helper');
@@ -14,7 +14,7 @@ class MonthExpansesLogic {
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
     this.budgetExecutionLogic = new BudgetExecutionLogic();
     this.registeredMonthsLogic = new RegisteredMonthsLogic();
-    this.registeredYearsLogic = new RegisteredYearsLogic();
+    this.monthTotalLogic = new MonthTotalLogic();
     this.generalSettingsLogic = new GeneralSettingsLogic();
   }
 
@@ -111,7 +111,7 @@ class MonthExpansesLogic {
     for (let i = 0; i < monthExpanses.length; i++) {
       totalSum += Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax)
     }
-    console.log(budget);
+
     //subtract month's old execution value from the total execution
     budget["total_execution"] = budget["total_execution"] - budget[`${date.month}_budget_execution`];
     //update the total execuion wit the new month's execution value
@@ -136,40 +136,12 @@ class MonthExpansesLogic {
 
   }
 
-
-
-
-
-
-  addNewMonthExpanseTrx(date, buildingName, expanse, trx) {
-    //prepare the expanse obejct, remove all the unneccessary 
-    //fields so it can be saved.
-    const expanseToInsert = {
-      year: expanse.year,
-      month: expanse.month,
-      supplierName: expanse.supplierName,
-      expanses_code_id: expanse.expanses_code_id,
-      sum: expanse.sum,
-      tax: expanse.tax,
-      notes: expanse.notes
-    };
-    return this.med.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx);
-  }
-
-  static calculateExpansesSum(expanses) {
-    let totalSum = 0;
-    for (let i = 0; i < expanses.length; i++) {
-      totalSum += expanses[i].sum;
-    }
-    return totalSum;
-  }
-
   deleteMonthExpanse(params) {
-    return this.med.deleteMonthExpanse(params);
+    return this.monthExpansesDao.deleteMonthExpanse(params);
   }
 
   batchInsert(buildingName, rows, trx) {
-    return this.med.batchInsert(buildingName, rows, trx);
+    return this.monthExpansesDao.batchInsert(buildingName, rows, trx);
   }
 
   /**
@@ -177,7 +149,19 @@ class MonthExpansesLogic {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  async createEmptyReport(buildingName, date, trx) {
+  async createEmptyReport(buildingName, date) {
+
+    // Using trx as a transaction object:
+    const trx = await this.connection.transaction();
+
+    const registeredMonth = await this.registeredMonthsLogic.getRegisteredMonthTrx(buildingName, date.month, date.year, trx);
+
+    //if the month is already registered
+    //return empty promise
+    if (registeredMonth.length > 0) {
+      trx.commit();
+      return Promise.resolve([]);
+    }
 
     const monthNum = date.monthNum > 0 ? date.monthNum - 1 : 11;//if the month is 0 january, then go to month 11 december of previous year
     const year = monthNum === 11 ? date.year - 1 : date.year;//if the month is 11 december, go to previous year
@@ -207,6 +191,16 @@ class MonthExpansesLogic {
 
     }
 
+    //insert empty month total row
+    await this.monthTotalLogic.insertMonthtotal(buildingName, {
+      year: 0,
+      quarter: 0,
+      month: "",
+      total_budget: 0,
+      total_expanses: 0
+    },
+      trx);
+
     //can safely register new year, it's not registered from other reports
     await this.registeredMonthsLogic.registerNewMonth(buildingName, {
       year: date.year,
@@ -214,6 +208,9 @@ class MonthExpansesLogic {
       monthHeb: date.monthHeb
     },
       trx);
+
+    //call to create budget execution empty report data
+    await this.budgetExecutionLogic.createEmptyReport(buildingName, date, trx);
 
   }
 

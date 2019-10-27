@@ -1,13 +1,10 @@
 const { ipcMain } = require('electron');
 const SummarizedBudgetLogic = require('../../backend/logic/SummarizedBudgetLogic');
-const Transactions = require('../../backend/transactions/SummarizedBudgetTransactions');
 
 const summarizedBudgetIpc = (connection) => {
 
   //fetch month expanses data
   const summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
-  //create transactions layer
-  const transactions = new Transactions(connection);
 
   ipcMain.on('get-summarized-budget-data', (event, arg) => {
     summarizedBudgetLogic.getBuildingSummarizedBudgetTrx(arg.buildingName, arg.date, undefined).then((result) => {
@@ -20,7 +17,7 @@ const summarizedBudgetIpc = (connection) => {
   });
 
   ipcMain.on('generate-empty-summarized-budget-report', (event, arg) => {
-    transactions.createEmptyReport(arg.buildingName, arg.date).then((result) => {
+    summarizedBudgetLogic.createEmptyReport(arg.buildingName, arg.date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-summarized-budget-data", { data: result });
     }).catch((error) => {

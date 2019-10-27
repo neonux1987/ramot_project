@@ -31,6 +31,17 @@ class QuarterTotalBudgetExpansesDao {
       });
   }
 
+  insertQuartertotal(
+    buildingName = String,
+    data = Object,
+    trx = this.connection
+  ) {
+    return trx(buildingName + "_quarter_total").insert(data)
+      .catch((error) => {
+        throw error;
+      });
+  }
+
 }
 
 module.exports = QuarterTotalBudgetExpansesDao;

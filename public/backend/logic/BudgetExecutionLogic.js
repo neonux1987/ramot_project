@@ -30,27 +30,7 @@ class BudgetExecutionLogic {
     return this.budgetExecutionDao.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
   }
 
-  /**
-   * update execution
-   * @param {*} totalSum 
-   * @param {*} buildingName 
-   * @param {*} date 
-   * @param {*} summarized_section_id 
-   * @param {*} tax 
-   * @param {*} trx 
-   */
-  updateExecutionTrx(monthExpanses = Array, buildingName = String, date = Object, summarized_section_id = Number, tax = Number, trx) {
-    //get budget execution of the selected date
-    return this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx)
-      .then((budgets) => {
-        //prepare budget execution object to be updated
-        const budgetExec = BudgetExecutionLogic.calculateExecution(budgets[0], monthExpanses, date, tax);
-        //update budget execution
-        return this.budgetExecutionDao.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx).then(() => budgetExec);
-      });
-  }
-
-  async updateBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, trx) {
+  async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object }, trx) {
 
     if (trx === undefined) {
       trx = await this.connection.transaction()
@@ -63,17 +43,17 @@ class BudgetExecutionLogic {
     const allBudgetExecutions = await this.getAllBudgetExecutionsTrx(buildingName, date, trx);
 
     //calculate month total
-    const calculatedObj = this.calculateMonthTotal(date.month, allBudgetExecutions);
+    const preparedMonthTotalObj = this.prepareMonthTotalObj(date.month, allBudgetExecutions);
 
     //update month total execution (total expanses)
     await this.monthTotalLogic.updateMonthTotalTrx(buildingName, date, {
-      total_expanses: calculatedObj.monthTotalExecution
+      total_expanses: preparedMonthTotalObj.monthTotalExecution
     }, trx);
 
     //update quarter total execution (total expanses)
     await this.quarterTotalLogic.updateQuarterTotalTrx(buildingName, date, {
-      total_expanses: calculatedObj.totalExecution,
-      total_budget: calculatedObj.totalBudget
+      total_expanses: preparedMonthTotalObj.totalExecution,
+      total_budget: preparedMonthTotalObj.totalBudget
     }, trx);
 
     //get budget execution after it was updated
@@ -82,7 +62,7 @@ class BudgetExecutionLogic {
     //get budget execution after it was updated
     const summarizedBudgetObj = await this.summarizedBudgetLogic.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
 
-    const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(date.quarter, budgetExecution.total_budget, budgetExecution.total_execution, summarizedBudgetObj);
+    const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(date.quarter, budgetExecution[0].total_budget, budgetExecution[0].total_execution, summarizedBudgetObj[0]);
 
     //update summarized budget data
     await this.summarizedBudgetLogic.updateSummarizedBudgetTrx(summarized_section_id, preparedSumBudgetObj, buildingName, date, trx);
@@ -106,7 +86,7 @@ class BudgetExecutionLogic {
       [`quarter${quarter}_budget`]: summarizedBudgetObj[`quarter${quarter}_budget`],
       [`quarter${quarter}_execution`]: summarizedBudgetObj[`quarter${quarter}_execution`],
       year_total_execution: total_execution,
-      year_total_execution: total_budget
+      year_total_budget: total_budget
     }
 
   }
@@ -123,29 +103,7 @@ class BudgetExecutionLogic {
     }
   }
 
-  static deductExpanse(expanse, budgetExecObj) {
-
-    //convert sum to sum without a tax fee
-    const expanseValTaxless = Helper.calculateWithoutTax(expanse.sum, expanse.tax);
-
-    //get rid of the old month execution from the total execution
-    let budgetExecTotalExec = budgetExecObj["total_execution"] - budgetExecObj[`${expanse.month}_budget_execution`];
-    //deduct the expanse from month execuion
-    const budgetExec = budgetExecObj[`${expanse.month}_budget_execution`] - expanseValTaxless;
-    //add the new month execution
-    budgetExecTotalExec = budgetExecTotalExec + budgetExec;
-    //calculate the difference
-    const budgetExecDiff = budgetExecObj["total_budget"] - budgetExecTotalExec;
-
-    return {
-      [`${expanse.month}_budget_execution`]: budgetExec,
-      total_execution: budgetExecTotalExec,
-      difference: budgetExecDiff
-    }
-
-  }
-
-  calculateMonthTotal(monthEng, budgetExecArr) {
+  prepareMonthTotalObj(monthEng, budgetExecArr) {
 
     let monthTotalExecution = 0;
     let totalExecution = 0;
@@ -202,6 +160,19 @@ class BudgetExecutionLogic {
    */
   async createEmptyReport(buildingName, date, trx) {
 
+    if (trx === undefined) {
+      trx = await this.connection.transaction()
+    }
+
+    const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingName, date.quarter, date.year, trx);
+
+    //if the quarter is already registered
+    //return empty promise
+    if (registeredQuarter.length > 0) {
+      trx.commit();
+      return Promise.resolve([]);
+    }
+
     const quarter = date.quarter > 1 ? date.quarter - 1 : 4;//if quarter is 0 then set to quarter 4 of previous year
     const year = quarter === 4 ? date.year - 1 : date.year;//if the quarter is 4, go to previous year
 
@@ -228,10 +199,20 @@ class BudgetExecutionLogic {
       await this.batchInsert(buildingName, date.quarter, preparedSections, trx);
     }
 
+    //insert empty quarter total row
+    await this.quarterTotalLogic.insertQuartertotal(buildingName, {
+      year: 0,
+      quarter: 0,
+      total_budget: 0,
+      total_expanses: 0
+    },
+      trx);
+
     //register quarter
     await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
 
-    return Promise.resolve();
+    //call to create summarized budget report data
+    await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx);
 
   }
 

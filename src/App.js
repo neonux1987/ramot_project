@@ -48,11 +48,11 @@ class App extends Component {
   componentDidMount() {
     this.props.fetchGeneralSettings();
     //listen when the data comes back
-    ipcRenderer.on("notify-renderer", (event, type, arg) => {
+    ipcRenderer.on("notify-renderer", (event, action, message) => {
       let toastId = null;
-      switch (type) {
+      switch (action) {
         case "dbBackupStarted":
-          toastId = toast.info(<ToastRender spinner={true} message={arg} />, {
+          toastId = toast.info(<ToastRender spinner={true} message={message} />, {
             autoClose: false,
             onOpen: () => playSound(soundTypes.message)
           });
@@ -60,7 +60,7 @@ class App extends Component {
           break;
         case "dbBackupFinished":
           toast.update(this.state.toastId, {
-            render: <ToastRender done={true} message={arg} />,
+            render: <ToastRender done={true} message={message} />,
             type: toast.TYPE.INFO,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE,
@@ -71,7 +71,7 @@ class App extends Component {
           break;
         case "dbBackupError":
           toast.update(this.state.toastId, {
-            render: <ToastRender done={true} message={arg} />,
+            render: <ToastRender done={true} message={message} />,
             type: toast.TYPE.ERROR,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE,

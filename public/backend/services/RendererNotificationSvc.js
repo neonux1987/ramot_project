@@ -8,8 +8,8 @@ class RendererNotificationSvc {
     this.webContents = webContents;
   }
 
-  notifyRenderer(channel, type, arg) {
-    this.webContents.send(channel, type, arg);
+  notifyRenderer(channel, action, message) {
+    this.webContents.send(channel, action, message);
   }
 
 }

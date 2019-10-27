@@ -14,6 +14,10 @@ class YearTotalLogic {
     return this.yearTotalDao.updateYearTotalTrx(buildingName, date, budgetExpanse, trx);
   }
 
+  insertYeartotal(buildingName, data, trx) {
+    return this.yearTotalDao.insertYeartotal(buildingName, data, trx);
+  }
+
 }
 
 module.exports = YearTotalLogic;

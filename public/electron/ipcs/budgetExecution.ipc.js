@@ -1,13 +1,10 @@
 const { ipcMain } = require('electron');
 const BudgetExecutionLogic = require('../../backend/logic/BudgetExecutionLogic');
-const Transactions = require('../../backend/transactions/BudgetExecutionTransactions');
 
 const budgetExecutionIpc = (connection) => {
 
   //fetch month expanses data
   const budgetExecutionLogic = new BudgetExecutionLogic(connection);
-  //create transactions layer
-  const transactions = new Transactions(connection);
 
   ipcMain.on('get-budget-execution-data', (event, arg) => {
     budgetExecutionLogic.getAllBudgetExecutionsTrx(arg.buildingName, arg.date).then((result) => {
@@ -19,7 +16,7 @@ const budgetExecutionIpc = (connection) => {
   });
 
   ipcMain.on('update-budget-execution', (event, arg) => {
-    transactions.updateBudgetExecution(arg).then((result) => {
+    budgetExecutionLogic.updateBudgetExecutionTrx(arg).then((result) => {
       event.sender.send("budget-execution-updated", { data: result });
     }).catch((error) => {
       console.log(error);
@@ -28,7 +25,7 @@ const budgetExecutionIpc = (connection) => {
   });
 
   ipcMain.on('generate-budget-execution-report', (event, arg) => {
-    transactions.createEmptyReport(arg.buildingName, arg.date).then((result) => {
+    budgetExecutionLogic.createEmptyReport(arg.buildingName, arg.date).then((result) => {
       event.sender.send("generated-budget-execution-data", { data: result });
     }).catch((error) => {
       console.log(error);

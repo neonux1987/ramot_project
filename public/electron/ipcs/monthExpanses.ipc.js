@@ -1,13 +1,10 @@
 const { ipcMain } = require('electron');
 const MonthExpansesLogic = require('../../backend/logic/MonthExpansesLogic');
-const Transactions = require('../../backend/transactions/MonthExpansesTransactions');
 
 const monthExpansesIpc = (connection) => {
 
   //fetch month expanses data
   const monthExpansesLogic = new MonthExpansesLogic(connection);
-  //create transactions layer
-  const transactions = new Transactions(connection);
 
   ipcMain.on('get-month-expanses-data', (event, arg) => {
     monthExpansesLogic.getAllMonthExpansesTrx(arg.buildingName, arg.date).then((result) => {
@@ -45,7 +42,7 @@ const monthExpansesIpc = (connection) => {
   });
 
   ipcMain.on('generate-empty-month-expanses-report', (event, arg) => {
-    transactions.createEmptyReport(arg.buildingName, arg.date).then((result) => {
+    monthExpansesLogic.createEmptyReport(arg.buildingName, arg.date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-month-expanses-data", { data: result });
     }).catch((error) => {

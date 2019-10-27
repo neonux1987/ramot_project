@@ -14,6 +14,10 @@ class MonthTotalLogic {
     return this.monthTotalDao.updateMonthTotalTrx(buildingName, date, budgetExpanse, trx);
   }
 
+  insertMonthtotal(buildingName, data, trx) {
+    return this.monthTotalDao.insertMonthtotal(buildingName, data, trx);
+  }
+
 }
 
 module.exports = MonthTotalLogic;
