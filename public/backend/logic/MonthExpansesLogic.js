@@ -11,11 +11,11 @@ class MonthExpansesLogic {
   constructor(connection) {
     this.connection = connection;
     this.monthExpansesDao = new MonthExpansesDao(connection);
-    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
-    this.budgetExecutionLogic = new BudgetExecutionLogic();
-    this.registeredMonthsLogic = new RegisteredMonthsLogic();
-    this.monthTotalLogic = new MonthTotalLogic();
-    this.generalSettingsLogic = new GeneralSettingsLogic();
+    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
+    this.budgetExecutionLogic = new BudgetExecutionLogic(connection);
+    this.registeredMonthsLogic = new RegisteredMonthsLogic(connection);
+    this.monthTotalLogic = new MonthTotalLogic(connection);
+    this.generalSettingsLogic = new GeneralSettingsLogic(connection);
   }
 
   getAllMonthExpansesTrx(buildingName, date, trx) {
@@ -90,7 +90,7 @@ class MonthExpansesLogic {
     const budgetExec = this.prepareBudgetExecutionObj(budgetExecution[0], monthExpanses, date, tax);
 
     //update execution
-    await this.budgetExecutionLogic.updateBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, budgetExec, trx);
+    await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingName, date, summarized_section_id: expanse.summarized_section_id, budgetExec }, trx);
 
   }
 
@@ -193,9 +193,9 @@ class MonthExpansesLogic {
 
     //insert empty month total row
     await this.monthTotalLogic.insertMonthtotal(buildingName, {
-      year: 0,
-      quarter: 0,
-      month: "",
+      year: date.year,
+      quarter: date.quarter,
+      month: date.month,
       total_budget: 0,
       total_expanses: 0
     },
@@ -209,11 +209,13 @@ class MonthExpansesLogic {
     },
       trx);
 
+    //new data
+    const returnData = await this.getAllMonthExpansesTrx(buildingName, date, trx);
+
     //call to create budget execution empty report data
     await this.budgetExecutionLogic.createEmptyReport(buildingName, date, trx);
 
-    //return the new added data
-    return await this.getAllMonthExpansesTrx(buildingName, date, undefined);
+    return returnData;
 
   }
 

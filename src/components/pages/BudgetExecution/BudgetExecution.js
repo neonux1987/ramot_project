@@ -15,6 +15,8 @@ import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
+import Stats from './Stats/Stats';
+import quarterMonthsTotalStatsActions from '../../../redux/actions/quarterMonthsTotalStatsActions';
 
 const FIXED_FLOAT = 2;
 
@@ -48,6 +50,9 @@ class BudgetExecution extends Component {
 
     //fetch date registered months
     this.props.fetchRegisteredYears(params);
+
+    //fetch quarter months total stats
+    this.props.fetchQuarterMonthsTotalStats(params);
 
   }
 
@@ -448,7 +453,7 @@ class BudgetExecution extends Component {
 
     //used for date picker
     const years = this.props.registeredYears.registeredYears.data;
-    console.log(pages[pageIndex].data);
+
     return (
       <div>
         <WithHeaderWrapper>
@@ -456,7 +461,7 @@ class BudgetExecution extends Component {
             <Header
               title={headerTitle}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "rgb(255, 46, 46)" }}
+              textColor={{ color: "rgb(89, 124, 169)" }}
             >
             </Header>
             <PageControls
@@ -489,6 +494,8 @@ class BudgetExecution extends Component {
             addNewMode={this.state.addNewMode}
             toggleAddNewMode={this.toggleAddNewMode}
           />
+
+          <Stats />
         </WithHeaderWrapper>
 
         <ReactTable className="-striped"
@@ -531,7 +538,8 @@ class BudgetExecution extends Component {
 const mapStateToProps = state => ({
   budgetExecution: state.budgetExecution,
   registeredQuarters: state.registeredQuarters,
-  registeredYears: state.registeredYears
+  registeredYears: state.registeredYears,
+  quarterMonthsTotal: state.quarterMonthsTotal
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -544,7 +552,9 @@ const mapDispatchToProps = dispatch => ({
   fetchRegisteredQuarters: (buildingName) => dispatch(registeredQuartersActions.fetchRegisteredQuarters(buildingName)),
   cleanupQuarters: () => dispatch(registeredQuartersActions.cleanupQuarters()),
   fetchRegisteredYears: (buildingName) => dispatch(registeredYearsActions.fetchRegisteredYears(buildingName)),
-  cleanupYears: () => dispatch(registeredYearsActions.cleanupYears())
+  cleanupYears: () => dispatch(registeredYearsActions.cleanupYears()),
+  fetchQuarterMonthsTotalStats: (params) => dispatch(quarterMonthsTotalStatsActions.fetchQuarterMonthsTotalStats(params)),
+  cleanupQuarterMonthsTotal: () => dispatch(quarterMonthsTotalStatsActions.cleanupQuarterMonthsTotal()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecution);

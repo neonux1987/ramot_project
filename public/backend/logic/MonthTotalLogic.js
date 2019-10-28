@@ -10,6 +10,10 @@ class MonthTotalLogic {
     return this.monthTotalDao.getMonthTotalTrx(buildingName, date, trx);
   }
 
+  getAllMonthsTotalByQuarterTrx(buildingName = String, date = Object, trx) {
+    return this.monthTotalDao.getAllMonthsTotalByQuarterTrx(buildingName, date, trx);
+  }
+
   updateMonthTotalTrx(buildingName = String, date = Object, budgetExpanse = null, trx) {
     return this.monthTotalDao.updateMonthTotalTrx(buildingName, date, budgetExpanse, trx);
   }

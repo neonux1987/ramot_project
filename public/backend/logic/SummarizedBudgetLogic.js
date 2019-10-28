@@ -10,10 +10,10 @@ class SummarizedBudgetLogic {
   constructor(connection) {
     this.connection = connection;
     this.sbd = new SummarizedBudgetDao(connection);
-    this.registeredYearsLogic = new RegisteredYearsLogic();
-    this.yearTotalLogic = new YearTotalLogic();
-    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
-    this.summarizedSectionsLogic = new SummarizedSectionsLogic();
+    this.registeredYearsLogic = new RegisteredYearsLogic(connection);
+    this.yearTotalLogic = new YearTotalLogic(connection);
+    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
+    this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
   }
 
   getBuildingSummarizedBudgetTrx(buildingName, date, trx) {
@@ -44,7 +44,7 @@ class SummarizedBudgetLogic {
 
     //commit changes
     trx.commit();
-
+    console.log("finished sum");
     return returnedPromise;
 
   }
@@ -134,7 +134,7 @@ class SummarizedBudgetLogic {
 
     //insert empty month total row
     await this.yearTotalLogic.insertYeartotal(buildingName, {
-      year: 0,
+      year: date.year,
       total_budget: 0,
       total_expanses: 0
     },
@@ -143,10 +143,12 @@ class SummarizedBudgetLogic {
     //register the new year
     await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx);
 
+    //get all the budgets of the previous year if exists
+    const returnData = await this.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
+
     trx.commit();
 
-    //get all the budgets of the previous year if exists
-    return await this.getBuildingSummarizedBudgetTrx(buildingName, data, undefined);
+    return returnData;
 
   }
 

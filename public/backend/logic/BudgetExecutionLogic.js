@@ -14,10 +14,10 @@ class BudgetExecutionLogic {
     this.budgetExecutionDao = new BudgetExecutionDao(connection);
     this.generalSettingsDao = new GeneralSettingsDao(connection);
     this.monthTotalLogic = new MonthTotalLogic(connection);
-    this.summarizedBudgetLogic = new SummarizedBudgetLogic();
+    this.summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
     this.quarterTotalLogic = new QuarterTotalLogic(connection);
-    this.summarizedSectionsLogic = new SummarizedSectionsLogic();
-    this.registeredQuartersLogic = new RegisteredQuartersLogic();
+    this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
+    this.registeredQuartersLogic = new RegisteredQuartersLogic(connection);
   }
 
   getAllBudgetExecutionsTrx(buildingName, date, trx) {
@@ -33,7 +33,7 @@ class BudgetExecutionLogic {
   async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object }, trx) {
 
     if (trx === undefined) {
-      trx = await this.connection.transaction()
+      trx = await this.connection.transaction();
     }
 
     //update budget execution
@@ -65,7 +65,7 @@ class BudgetExecutionLogic {
     const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(date.quarter, budgetExecution[0].total_budget, budgetExecution[0].total_execution, summarizedBudgetObj[0]);
 
     //update summarized budget data
-    await this.summarizedBudgetLogic.updateSummarizedBudgetTrx(summarized_section_id, preparedSumBudgetObj, buildingName, date, trx);
+    await this.summarizedBudgetLogic.updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget: preparedSumBudgetObj, buildingName, date }, trx);
 
   }
 
@@ -201,8 +201,8 @@ class BudgetExecutionLogic {
 
     //insert empty quarter total row
     await this.quarterTotalLogic.insertQuartertotal(buildingName, {
-      year: 0,
-      quarter: 0,
+      year: date.year,
+      quarter: date.quarter,
       total_budget: 0,
       total_expanses: 0
     },
@@ -211,11 +211,14 @@ class BudgetExecutionLogic {
     //register quarter
     await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
 
+    //new data
+    const returnData = await this.getAllBudgetExecutionsTrx(buildingName, date, trx);
+
     //call to create summarized budget report data
     await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx);
 
     //return the new added data
-    return await this.getAllBudgetExecutionsTrx(buildingName, date, undefined);
+    return returnData;
 
   }
 

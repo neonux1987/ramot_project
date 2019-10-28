@@ -496,6 +496,7 @@ class MonthExpanses extends Component {
             toggleAddNewMode={this.toggleAddNewMode}
           />
           {addNewBox}
+
         </WithHeaderWrapper>
 
         <ReactTableContainer

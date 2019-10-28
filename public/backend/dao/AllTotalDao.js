@@ -1,42 +1,42 @@
-class YearTotalBudgetExpansesDao {
+class AllTotalDao {
 
   constructor(connection) {
     this.connection = connection;
   }
 
-  getYearTotalTrx(
+  getQuarterTotalTrx(
     buildingName = String,
     date = Object,
     trx = this.connection
   ) {
     return trx("*")
-      .where({ year: date.year })
-      .from(`${buildingName}_year_total`)
+      .where({ year: date.year, quarter: date.quarter })
+      .from(`${buildingName}_quarter_total`)
       .catch((error) => {
         throw error;
       });
   }
 
-  updateYearTotalTrx(
+  updateQuarterTotalTrx(
     buildingName = String,
     date = Object,
     data = Object,
     trx = this.connection
   ) {
-    return trx(`${buildingName}_year_total`)
-      .where({ year: date.year })
+    return trx(`${buildingName}_quarter_total`)
+      .where({ year: date.year, quarter: date.quarter })
       .update(data)
       .catch((error) => {
         throw error;
       });
   }
 
-  insertYeartotal(
+  insertQuartertotal(
     buildingName = String,
     data = Object,
     trx = this.connection
   ) {
-    return trx(buildingName + "_year_total").insert(data)
+    return trx(buildingName + "_quarter_total").insert(data)
       .catch((error) => {
         throw error;
       });
@@ -44,4 +44,4 @@ class YearTotalBudgetExpansesDao {
 
 }
 
-module.exports = YearTotalBudgetExpansesDao;
+module.exports = AllTotalDao;

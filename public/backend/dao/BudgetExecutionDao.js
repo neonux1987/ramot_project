@@ -173,7 +173,7 @@ class BudgetExecutionDao {
     },
     summarized_section_id = Number,
     budgetExec = Object,
-    trx
+    trx = this.connection
   ) {
     return trx(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
       .where({ year: date.year, summarized_section_id: summarized_section_id })

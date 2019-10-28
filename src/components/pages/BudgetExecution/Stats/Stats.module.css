@@ -1,0 +1,42 @@
+.wrapper{
+  padding-top: 30px;
+}
+
+.infoBox{
+  margin: 0 0 0 1%;
+  padding: 10px 105px;
+  display: inline-block;
+  box-shadow: none;
+}
+
+.infoBox:first-child{
+  margin-right: 0.5%;
+}
+
+.infoBox:last-child{
+  margin-left: 0;
+}
+
+.infoBox .header{
+  background-color: initial;
+  box-shadow: initial;
+  border-bottom: 1px solid #323a3c;
+  margin-bottom: 5px;
+  border-radius: initial;
+}
+
+.header .title{
+  color: #323a3c;
+}
+
+.infoBox .body{
+  background-color: initial;
+  box-shadow: initial;
+  border-radius: initial;
+}
+
+.body .expansesTitle{
+  color: #323a3c;
+  font-size: 16px;
+}
+

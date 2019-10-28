@@ -17,6 +17,20 @@ class MonthTotalBudgetExpansesDao {
       });
   }
 
+  getAllMonthsTotalByQuarterTrx(
+    buildingName = String,
+    date = Object,
+    trx = this.connection
+  ) {
+    console.log(buildingName); console.log(date); console.log(trx);
+    return trx("*")
+      .where({ year: date.year, quarter: date.quarter })
+      .from(`${buildingName}_month_total`)
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   updateMonthTotalTrx(
     buildingName = String,
     date = Object,
