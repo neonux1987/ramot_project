@@ -462,7 +462,7 @@ class MonthExpanses extends Component {
           <div style={{ paddingBottom: "10px" }}>
             <Header
               title={headerTitle}
-              textColor={{ color: "rgb(30, 110, 193)" }}
+              textColor={{ color: "#3491c7" }}
               subTitle={buildingName + " / " + date.monthHeb + " / " + date.year}
             />
             <PageControls

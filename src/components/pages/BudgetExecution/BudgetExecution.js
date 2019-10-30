@@ -16,7 +16,8 @@ import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 import Stats from './Stats/Stats';
-import quarterMonthsTotalStatsActions from '../../../redux/actions/quarterMonthsTotalStatsActions';
+import monthTotalActions from '../../../redux/actions/monthTotalActions';
+import quarterTotalActions from '../../../redux/actions/quarterTotalActions';
 
 const FIXED_FLOAT = 2;
 
@@ -54,6 +55,9 @@ class BudgetExecution extends Component {
     //fetch quarter months total stats
     this.props.fetchQuarterMonthsTotalStats(params);
 
+    //fetch quarter total
+    this.props.fetchQuarterTotalStats(params);
+
   }
 
   componentWillUnmount() {
@@ -62,6 +66,10 @@ class BudgetExecution extends Component {
 
     //cleanup quarters
     this.props.cleanupQuarters();
+
+    this.props.cleanupMonthTotal();
+
+    this.props.cleanupQuarterTotal();
   }
 
   loadBudgetExecutionsByDate = ({ year, quarter }) => {
@@ -231,13 +239,13 @@ class BudgetExecution extends Component {
     return [
       {
         Header: "",
-        width: 100,
+        width: 80,
         columns: [
           {
             accessor: "summarized_section_id",
             Header: "ספרור",
             headerStyle: { background: "#000", color: "#fff" },
-            width: 100,
+            width: 80,
             Cell: (row) => {
               return <span>{row.viewIndex + 1}</span>;
             },
@@ -259,14 +267,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(251, 38, 38)",
+          background: "rgb(241, 59, 59)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[0].column1.accessor,
             Header: months[0].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(251, 38, 38)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(241, 59, 59)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -275,7 +283,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(251, 38, 38)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(241, 59, 59)", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -285,14 +293,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(24, 135, 199)",
+          background: "rgb(57, 130, 173)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[1].column1.accessor,
             Header: months[1].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(24, 135, 199)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(57, 130, 173)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -301,7 +309,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[1].column2.accessor,
             Header: months[1].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(24, 135, 199)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(57, 130, 173)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -311,14 +319,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "#1dba8f",
+          background: "rgb(41, 169, 134)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "#1dba8f", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(41, 169, 134)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -327,7 +335,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "#1dba8f", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(41, 169, 134)", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -349,14 +357,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "18px",
-          background: "rgb(143, 78, 191)",
+          background: "rgb(126, 91, 183)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(126, 91, 183)", fontWeight: "600" },
             Cell: this.cell,
             style: {
               padding: 0
@@ -365,7 +373,7 @@ class BudgetExecution extends Component {
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(126, 91, 183)", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -453,7 +461,7 @@ class BudgetExecution extends Component {
 
     //used for date picker
     const years = this.props.registeredYears.registeredYears.data;
-
+    console.log(this.props.quarterTotal);
     return (
       <div>
         <WithHeaderWrapper>
@@ -461,7 +469,7 @@ class BudgetExecution extends Component {
             <Header
               title={headerTitle}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "rgb(89, 124, 169)" }}
+              textColor={{ color: "rgb(46, 151, 191)" }}
             >
             </Header>
             <PageControls
@@ -495,7 +503,13 @@ class BudgetExecution extends Component {
             toggleAddNewMode={this.toggleAddNewMode}
           />
 
-          <Stats />
+          <Stats
+            monthStats={this.props.monthTotal.monthTotal.data}
+            quarterStats={this.props.quarterTotal.quarterTotal.data}
+            quarter={date.quarter}
+            isFetching={this.props.monthTotal.monthTotal.isFetching && this.props.quarterTotal.quarterTotal.isFetching}
+          />
+
         </WithHeaderWrapper>
 
         <ReactTable className="-striped"
@@ -539,7 +553,8 @@ const mapStateToProps = state => ({
   budgetExecution: state.budgetExecution,
   registeredQuarters: state.registeredQuarters,
   registeredYears: state.registeredYears,
-  quarterMonthsTotal: state.quarterMonthsTotal
+  monthTotal: state.monthTotal,
+  quarterTotal: state.quarterTotal
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -553,8 +568,10 @@ const mapDispatchToProps = dispatch => ({
   cleanupQuarters: () => dispatch(registeredQuartersActions.cleanupQuarters()),
   fetchRegisteredYears: (buildingName) => dispatch(registeredYearsActions.fetchRegisteredYears(buildingName)),
   cleanupYears: () => dispatch(registeredYearsActions.cleanupYears()),
-  fetchQuarterMonthsTotalStats: (params) => dispatch(quarterMonthsTotalStatsActions.fetchQuarterMonthsTotalStats(params)),
-  cleanupQuarterMonthsTotal: () => dispatch(quarterMonthsTotalStatsActions.cleanupQuarterMonthsTotal()),
+  fetchQuarterMonthsTotalStats: (params) => dispatch(monthTotalActions.fetchQuarterMonthsTotalStats(params)),
+  cleanupMonthTotal: () => dispatch(monthTotalActions.cleanupMonthTotal()),
+  fetchQuarterTotalStats: (params) => dispatch(quarterTotalActions.fetchQuarterTotalStats(params)),
+  cleanupQuarterTotal: () => dispatch(quarterTotalActions.cleanupQuarterTotal())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecution);

@@ -11,6 +11,7 @@ const registeredMonthsIpc = require('./electron/ipcs/registeredMonths.ipc');
 const registeredYearsIpc = require('./electron/ipcs/registeredYears.ipc');
 const registeredQuartersIpc = require('./electron/ipcs/registeredQuarters.ipc');
 const monthTotalIpc = require('./electron/ipcs/monthTotal.ipc');
+const quarterTotalIpc = require('./electron/ipcs/quarterTotal.ipc');
 const IOIpc = require('./electron/ipcs/IO.ipc');
 const settingsIpc = require('./electron/ipcs/settings.ipc');
 const contextMenu = require('electron-context-menu');
@@ -121,6 +122,8 @@ registeredYearsIpc(knex);
 registeredQuartersIpc(knex);
 
 monthTotalIpc(knex);
+
+quarterTotalIpc(knex);
 
 IOIpc();
 

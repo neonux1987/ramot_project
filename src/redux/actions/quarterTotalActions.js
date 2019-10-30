@@ -6,16 +6,16 @@ import { toast } from 'react-toastify';
  * fetch month expanses
  * @param {*} params 
  */
-const fetchQuarterMonthsTotalStats = (params = Object) => {
+const fetchQuarterTotalStats = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestQuarterMonthsTotalStats(params.buildingName));
+    dispatch(requestQuarterTotal(params.buildingName));
 
     //request request to backend to get the data
-    ipcRenderer.send("get-quarter-months-total-stats", params);
+    ipcRenderer.send("get-quarter-total-stats", params);
     //listen when the data comes back
-    return ipcRenderer.once("quarter-months-total-stats", (event, arg) => {
+    return ipcRenderer.once("quarter-total-stats", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
@@ -24,45 +24,45 @@ const fetchQuarterMonthsTotalStats = (params = Object) => {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
+        console.log(arg);
         //success store the data
-        dispatch(receiveQuarterMonthsTotalStats(arg.data, params.buildingName));
+        dispatch(receiveQuarterTotal(arg.data));
       }
     });
   }
 };
 
-const requestQuarterMonthsTotalStats = function (page) {
+const requestQuarterTotal = function (page) {
   return {
-    type: "REQUEST_QUARTER_MONTHS_TOTAL",
+    type: "REQUEST_QUARTER_TOTAL",
     page
   }
 };
 
-const receiveQuarterMonthsTotalStats = function (data, page) {
+const receiveQuarterTotal = function (data) {
   return {
-    type: "RECEIVE_QUARTER_MONTHS_TOTAL",
-    data,
-    page
+    type: "RECEIVE_QUARTER_TOTAL",
+    data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "QUARTER_MONTHS_TOTAL_FETCHING_FAILED",
+    type: "QUARTER_TOTAL_FETCHING_FAILED",
     payload: error
   }
 };
 
-const cleanupQuarterMonthsTotal = () => {
+const cleanupQuarterTotal = () => {
   return {
-    type: "CLEANUP_QUARTER_MONTHS_TOTAL"
+    type: "CLEANUP_QUARTER_TOTAL"
   }
 }
 
 export default {
-  fetchQuarterMonthsTotalStats,
+  fetchQuarterTotalStats,
   fetchingFailed,
-  receiveQuarterMonthsTotalStats,
-  requestQuarterMonthsTotalStats,
-  cleanupQuarterMonthsTotal
+  receiveQuarterTotal,
+  requestQuarterTotal,
+  cleanupQuarterTotal
 };

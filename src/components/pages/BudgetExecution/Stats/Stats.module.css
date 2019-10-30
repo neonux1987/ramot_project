@@ -4,13 +4,15 @@
 
 .infoBox{
   margin: 0 0 0 1%;
-  padding: 10px 105px;
-  display: inline-block;
+  /* padding: 10px 105px; */
+  width: 24.24%;
+  display: inline-flex;
   box-shadow: none;
+  height: 120px;
 }
 
 .infoBox:first-child{
-  margin-right: 0.5%;
+  margin-right: 0;
 }
 
 .infoBox:last-child{
@@ -20,23 +22,36 @@
 .infoBox .header{
   background-color: initial;
   box-shadow: initial;
-  border-bottom: 1px solid #323a3c;
-  margin-bottom: 5px;
   border-radius: initial;
+  display: inline-flex;
+    border-left: 1px solid #eef3f7;
+    padding: 5px 5px 5px 8px;
 }
 
 .header .title{
   color: #323a3c;
+  writing-mode: vertical-rl;
+text-orientation: mixed;
+vertical-align: middle;
+text-align: center;
+justify-content: center;
+
 }
 
 .infoBox .body{
   background-color: initial;
   box-shadow: initial;
   border-radius: initial;
+  display: inline-flex;
+  flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 85%;
 }
 
 .body .expansesTitle{
   color: #323a3c;
   font-size: 16px;
 }
+
 

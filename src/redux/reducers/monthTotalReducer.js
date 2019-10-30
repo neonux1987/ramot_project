@@ -1,6 +1,6 @@
 
 const initState = {
-  registeredMonths: {
+  monthTotal: {
     isFetching: false,
     status: "",
     error: "",
@@ -10,37 +10,37 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_QUARTER_MONTHS_TOTAL":
+    case "RECEIVE_MONTH_TOTAL":
       return {
         ...state,
-        quarterMonthsTotal: {
-          ...state.quarterMonthsTotal,
+        monthTotal: {
+          ...state.monthTotal,
           isFetching: false,
           status: "success",
           data: action.data
         }
       }
-    case "REQUEST__QUARTER_MONTHS_TOTAL":
+    case "REQUEST_MONTH_TOTAL":
       return {
         ...state,
-        quarterMonthsTotal: {
-          ...state.quarterMonthsTotal,
+        monthTotal: {
+          ...state.monthTotal,
           isFetching: true
         }
       }
-    case "REGISTERED_MONTHS_FETCHING_FAILED":
+    case "MONTH_TOTAL_FETCHING_FAILED":
       return {
         ...state,
-        quarterMonthsTotal: {
-          ...state.quarterMonthsTotal,
+        monthTotal: {
+          ...state.monthTotal,
           status: "error",
           error: action.payload
         }
       }
-    case "CLEANUP_QUARTER_MONTHS_TOTAL":
+    case "CLEANUP_MONTH_TOTAL":
       return {
         ...state,
-        quarterMonthsTotal: {
+        monthTotal: {
           isFetching: false,
           status: "",
           error: "",

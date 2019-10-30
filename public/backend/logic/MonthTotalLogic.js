@@ -10,7 +10,7 @@ class MonthTotalLogic {
     return this.monthTotalDao.getMonthTotalTrx(buildingName, date, trx);
   }
 
-  getAllMonthsTotalByQuarterTrx(buildingName = String, date = Object, trx) {
+  getAllMonthsTotalByQuarterTrx({ buildingName = String, date = Object, trx }) {
     return this.monthTotalDao.getAllMonthsTotalByQuarterTrx(buildingName, date, trx);
   }
 

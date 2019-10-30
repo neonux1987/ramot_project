@@ -6,7 +6,7 @@ class QuarterTotalLogic {
     this.quarterTotalDao = new QuarterTotalDao(connection);
   }
 
-  getQuarterTotalTrx(buildingName = String, date = Object, trx) {
+  getQuarterTotalTrx({ buildingName = String, date = Object }, trx) {
     return this.quarterTotalDao.getQuarterTotalTrx(buildingName, date, trx);
   }
 
