@@ -29,9 +29,10 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    /* boxShadow: "-22px 0px 4px #00000057", */
+    //boxShadow: "-22px 0px 4px #00000057",
     //background: "#0000008f",
-    backgroundColor: "#1B1E24",
+    //backgroundColor: "#1B1E24",
+    backgroundColor: "#00152a",
     //padding: "0 10px",
     overflow: "initial",
     position: "relative",
@@ -91,7 +92,11 @@ const styles = theme => ({
     bottom: "0",
     width: "220px",
     marginLeft: "10px"
-  }
+  },
+  listItemIcon: {
+    color: "#cbcdda",
+    fontSize: "22px"
+  },
 });
 
 const activeButtonClass = "activeButton";
@@ -217,7 +222,7 @@ class Sidebar extends Component {
 
         <NavButton page="דף הבית" path="דף-הבית" active={this.state.active.subMenuItemId === this.state.homeButtonId || this.state.active.subMenuItemId === 0}
           activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.homeButtonId, this.state.homeButtonId))} >
-          <Dashboard />
+          <Dashboard classes={{ root: this.props.classes.listItemIcon }} />
         </NavButton>
 
         {/* <Divider className={this.props.classes.homeDivider} /> */}
@@ -228,7 +233,7 @@ class Sidebar extends Component {
         <div className={this.props.classes.settingsWrapper}>
           <NavButton style={{ marginRight: 0 }} page="הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
             activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.settingsButtonId, this.state.settingsButtonId))} >
-            <Settings />
+            <Settings classes={{ root: this.props.classes.listItemIcon }} />
           </NavButton>
         </div>
       </Drawer>

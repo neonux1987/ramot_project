@@ -11,11 +11,12 @@ const styles = theme => ({
     //marginBottom: "10px"
   },
   listItemText: {
-    fontSize: "16px",
+    fontSize: "15px",
     color: "#cbcdda"
   },
   listItemIcon: {
-    color: "#cbcdda"
+    color: "#cbcdda",
+    fontSize: "22px"
   },
   listItem: {
     '&:hover': {
@@ -32,7 +33,8 @@ const styles = theme => ({
     color: "#cbcdda"
   },
   collapse: {
-    background: "#22262E",
+    //background: "#22262E",
+    backgroundColor: "#000c18",
     paddingTop: "10px",
     paddingBottom: "6px",
     //boxShadow: "inset 0px 1px 1px #050606, inset 0px -1px 1px #050606",
@@ -69,7 +71,7 @@ const Menuitem = (props) => {
     <div className={props.classes.menuItemWrapper}>
 
       <ListItem classes={{ root: props.classes.itemStyle }} onClick={() => props.expandClick(props.item.id, props.item)} button>
-        <ListItemIcon classes={{ root: props.classes.listItemIcon }}><Home /></ListItemIcon>
+        <ListItemIcon classes={{ root: props.classes.listItemIcon }}><Home classes={{ root: props.classes.listItemIcon }} /></ListItemIcon>
         <ListItemText classes={{ root: props.classes.listItemTextRoot, primary: props.classes.listItemText }} primary={props.item.label} />
         {expandedItem ? <ArrowDropUp className={props.classes.expander} /> : <ArrowDropDown className={props.classes.expander} />}
       </ListItem>

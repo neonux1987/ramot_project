@@ -18,7 +18,7 @@ const styles = theme => ({
     color: "#f5f5f5"
   },
   icon: {
-    fontSize: "15px",
+    fontSize: "14px",
     color: "#5975ff"
   },
   listItemIcon: {

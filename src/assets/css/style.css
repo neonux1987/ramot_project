@@ -178,16 +178,12 @@ textarea{
   border:none;
 }
 
-.ReactTable .rt-tbody .rt-td{
-  border-right: 1px solid rgba(0, 0, 0, 0.14);
-}
-
 .ReactTable.-striped .rt-tr.-odd{
-  background: initial;
+  background: rgb(249, 250, 251);
 }
 
 .ReactTable .rt-tbody .rt-tr-group{
-  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
 }
 
 .ReactTable .rt-noData{

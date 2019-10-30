@@ -9,6 +9,29 @@
   display: inline-flex;
   box-shadow: none;
   height: 120px;
+  border: 1px solid #eaeaea;
+}
+
+.loadingWrapper{
+  margin: 0 0 0 1%;
+  width: 24.24%;
+  display: inline-flex;
+  box-shadow: none;
+  height: 120px;
+  border: 1px solid #eaeaea;
+  vertical-align: middle;
+text-align: center;
+justify-content: center;
+background: #fff;
+align-items: center;
+}
+
+.loadingWrapper:first-child{
+  margin-right: 0;
+}
+
+.loadingWrapper:last-child{
+  margin-left: 0;
 }
 
 .infoBox:first-child{

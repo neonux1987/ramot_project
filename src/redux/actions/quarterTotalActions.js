@@ -24,7 +24,6 @@ const fetchQuarterTotalStats = (params = Object) => {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
-        console.log(arg);
         //success store the data
         dispatch(receiveQuarterTotal(arg.data));
       }

@@ -266,7 +266,7 @@ class BudgetExecution extends Component {
         Header: months[0].header,
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(241, 59, 59)",
           color: "#fff"
         },
@@ -292,7 +292,7 @@ class BudgetExecution extends Component {
         Header: months[1].header,
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(57, 130, 173)",
           color: "#fff"
         },
@@ -318,7 +318,7 @@ class BudgetExecution extends Component {
         Header: months[2].header,
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(41, 169, 134)",
           color: "#fff"
         },
@@ -356,7 +356,7 @@ class BudgetExecution extends Component {
         Header: "סוף רבעון",
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(126, 91, 183)",
           color: "#fff"
         },
@@ -461,7 +461,7 @@ class BudgetExecution extends Component {
 
     //used for date picker
     const years = this.props.registeredYears.registeredYears.data;
-    console.log(this.props.quarterTotal);
+
     return (
       <div>
         <WithHeaderWrapper>
@@ -507,12 +507,12 @@ class BudgetExecution extends Component {
             monthStats={this.props.monthTotal.monthTotal.data}
             quarterStats={this.props.quarterTotal.quarterTotal.data}
             quarter={date.quarter}
-            isFetching={this.props.monthTotal.monthTotal.isFetching && this.props.quarterTotal.quarterTotal.isFetching}
+            isFetching={this.props.monthTotal.monthTotal.isFetching || this.props.quarterTotal.quarterTotal.isFetching}
           />
 
         </WithHeaderWrapper>
 
-        <ReactTable className="-striped"
+        <ReactTable className="-highlight -striped"
           style={{
             width: "100%",
             textAlign: "center",

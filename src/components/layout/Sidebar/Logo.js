@@ -3,19 +3,23 @@ import { Toolbar, Typography, withStyles } from '@material-ui/core';
 
 const styles = theme => ({
   typography: {
-    marginTop: "0.35em",
-    color: "#f5f5f5",
+    color: "#6057ec",
+    width: "70px",
     fontSize: "24px",
-    width: "70px"
+    fontWeight: "600",
+    marginTop: "0.35em",
+    fontFamily: 'Roboto',
+    fontStyle: "italic",
   },
   toolbarRoot: {
-    paddingLeft: "16px",
+    paddingLeft: "18px",
     display: "initial",
     minHeight: "initial",
     padding: "0",
     paddingTop: "10px",
     paddingBottom: "12px",
-    backgroundColor: "#22262E",
+    //backgroundColor: "#22262E",
+    backgroundColor: "#000c18",
     marginBottom: "18px",
   }
 });
