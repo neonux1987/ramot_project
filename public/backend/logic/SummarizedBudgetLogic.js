@@ -44,7 +44,7 @@ class SummarizedBudgetLogic {
 
     //commit changes
     trx.commit();
-    console.log("finished sum");
+
     return returnedPromise;
 
   }

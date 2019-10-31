@@ -3,10 +3,10 @@ import { withRouter } from 'react-router';
 import Menu from './Menu';
 import { ipcRenderer } from 'electron';
 import { withStyles, Drawer } from '@material-ui/core';
-import Logo from './Logo'
+import Logo from './Logo/Logo'
 import PropTypes from 'prop-types';
 import NavButton from './NavButton';
-import { Dashboard, Settings } from '@material-ui/icons';
+import { Dashboard, Tune } from '@material-ui/icons';
 import LoadingCircle from '../../common/LoadingCircle';
 import sidebarActions from '../../../redux/actions/sidebarActions';
 import { connect } from 'react-redux';
@@ -233,7 +233,7 @@ class Sidebar extends Component {
         <div className={this.props.classes.settingsWrapper}>
           <NavButton style={{ marginRight: 0 }} page="הגדרות" path="הגדרות" active={this.state.active.subMenuItemId === this.state.settingsButtonId}
             activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.settingsButtonId, this.state.settingsButtonId))} >
-            <Settings classes={{ root: this.props.classes.listItemIcon }} />
+            <Tune classes={{ root: this.props.classes.listItemIcon }} />
           </NavButton>
         </div>
       </Drawer>

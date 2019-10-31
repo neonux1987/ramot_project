@@ -1,0 +1,21 @@
+.typography {
+  color: #6057ec;
+  width: 70px;
+  font-size: 28px;
+  font-weight: 600;
+  margin-top: 0.21em;
+  font-family: 'Roboto';
+  font-style: italic;
+}
+
+.toolbarRoot {
+  padding-left: 20px;
+  display: initial;
+  min-height: initial;
+  padding-top: 10px;
+  padding-bottom: 12px;
+  background-color: #000c18;
+  margin-bottom: 18px;
+  direction: ltr;
+}
+

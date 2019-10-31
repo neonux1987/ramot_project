@@ -267,14 +267,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(241, 59, 59)",
+          background: "#fb434a",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[0].column1.accessor,
             Header: months[0].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(241, 59, 59)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#fb434a", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -283,7 +283,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(241, 59, 59)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#fb434a", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -293,14 +293,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(57, 130, 173)",
+          background: "#0290fe",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[1].column1.accessor,
             Header: months[1].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(57, 130, 173)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#0290fe", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -309,7 +309,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[1].column2.accessor,
             Header: months[1].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(57, 130, 173)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#0290fe", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -319,14 +319,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(41, 169, 134)",
+          background: "#46bf8a",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(41, 169, 134)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#46bf8a", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -335,7 +335,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(41, 169, 134)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#46bf8a", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -357,14 +357,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(126, 91, 183)",
+          background: "rgb(150, 70, 191)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(126, 91, 183)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(150, 70, 191)", fontWeight: "600" },
             Cell: this.cell,
             style: {
               padding: 0
@@ -373,7 +373,7 @@ class BudgetExecution extends Component {
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(126, 91, 183)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(150, 70, 191)", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -469,7 +469,7 @@ class BudgetExecution extends Component {
             <Header
               title={headerTitle}
               subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "rgb(46, 151, 191)" }}
+              textColor={{ color: "#6057ec" }}
             >
             </Header>
             <PageControls
@@ -507,7 +507,8 @@ class BudgetExecution extends Component {
             monthStats={this.props.monthTotal.monthTotal.data}
             quarterStats={this.props.quarterTotal.quarterTotal.data}
             quarter={date.quarter}
-            isFetching={this.props.monthTotal.monthTotal.isFetching || this.props.quarterTotal.quarterTotal.isFetching}
+            isFetchingMonthStats={this.props.monthTotal.monthTotal.isFetching}
+            isFetchingQuarterStats={this.props.quarterTotal.quarterTotal.isFetching}
           />
 
         </WithHeaderWrapper>

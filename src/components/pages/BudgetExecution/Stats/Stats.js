@@ -7,23 +7,31 @@ import Spinner from '../../../common/Spinner/Spinner';
 
 export default (props) => {
 
+  //background color of the boxes
   const boxColor = "#fff";
 
+  //where the boxes will be stored fo render
   const renderMonthStatsBoxes = [];
 
+  //list of strings of qurter months
   const quarterMonths = Helper.getQuarterMonths(props.quarter);
 
-  const monthColors = ["rgb(241, 59, 59)", "rgb(57, 130, 173)", "rgb(41, 169, 134)", "rgb(126, 91, 183)"]
+  //the colors for the text of the month titles
+  const monthColors = ["rgb(251, 67, 74)", "rgb(2, 144, 254)", "rgb(41, 169, 134)", "rgb(70, 191, 138)"];
+
+  //unicode shekel icon
+  const shekelUnicode = '\u20AA';
 
   for (let i = 0; i < quarterMonths.length; i++) {
 
-    if (props.isFetching) {
-      renderMonthStatsBoxes[i] = <div key={i} className={styles.loadingWrapper}><Spinner style={{fontWeight: 600}} loadingText={`טוען נתוני חודש ${Helper.convertEngToHebMonth(quarterMonths[i])}`} size={20} /></div>;
-    }else{
+    //render loading if still fetching the stats
+    if (props.isFetchingMonthStats) {
+      renderMonthStatsBoxes[i] = <div key={i} className={styles.loadingWrapper}><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני חודש ${Helper.convertEngToHebMonth(quarterMonths[i])}`} size={20} /></div>;
+    } else {
 
       const monthTitle = Helper.convertEngToHebMonth(props.monthStats[i] ? props.monthStats[i].month : quarterMonths[i]);
-      const totalExpanses = props.monthStats[i] ? props.monthStats[i].total_expanses : 0;
-      const totalBudget = props.monthStats[i] ? props.monthStats[i].total_budget : 0;
+      const outcome = props.monthStats[i] ? props.monthStats[i].outcome : 0;
+      const income = props.monthStats[i] ? props.monthStats[i].income : 0;
 
       renderMonthStatsBoxes[i] = <InfoBox key={i} wrapper={styles.infoBox} boxColor={boxColor}>
         <Paper className={styles.header} elevation={1}>
@@ -33,36 +41,44 @@ export default (props) => {
         </Paper>
 
         <Paper className={styles.body}>
-          <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-            הכנסות: <span style={{ color: "green" }}>{totalBudget} ש"ח</span>
-          </Typography>
-          <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-            הוצאות: <span style={{ color: "red" }}>{totalExpanses} ש"ח</span>
-          </Typography>
+
+          <div>
+            <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
+              הכנסות: <span style={{ color: "rgb(0, 164, 91)" }}>{income} {shekelUnicode}</span>
+            </Typography>
+          </div>
+
+          <div>
+            <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
+              הוצאות: <span style={{ color: "rgb(247, 85, 53)" }}>{outcome} {shekelUnicode}</span>
+            </Typography>
+          </div>
+
+
         </Paper>
       </InfoBox>;
 
     }
 
-    
+
   }
 
-  const renderQuarterStatsBox = props.isFetching ? <div className={styles.loadingWrapper}><Spinner style={{fontWeight: 600}} loadingText={"טוען נתוני סוף רבעון"} size={20} /></div> : <InfoBox wrapper={styles.infoBox} boxColor={boxColor}>
-  <Paper className={styles.header} elevation={1}>
-    <Typography variant="h6" style={{ color: "rgb(126, 91, 183)" }} className={styles.title} gutterBottom>
-      סוף רבעון
+  const renderQuarterStatsBox = props.isFetchingQuarterStats ? <div className={styles.loadingWrapper}><Spinner style={{ fontWeight: 600 }} loadingText={"טוען נתוני סוף רבעון"} size={20} /></div> : <InfoBox wrapper={styles.infoBox} boxColor={boxColor}>
+    <Paper className={styles.header} elevation={1}>
+      <Typography variant="h6" style={{ color: "rgb(150, 70, 191)" }} className={styles.title} gutterBottom>
+        סוף רבעון
       </Typography>
-  </Paper>
+    </Paper>
 
-  <Paper className={styles.body}>
-    <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-      הכנסות: <span style={{ color: "green" }}>{props.quarterStats[0].total_budget} ש"ח</span>
-    </Typography>
-    <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-      הוצאות: <span style={{ color: "red" }}>{props.quarterStats[0].total_expanses} ש"ח</span>
-    </Typography>
-  </Paper>
-</InfoBox>;
+    <Paper className={styles.body}>
+      <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
+        הכנסות: <span style={{ color: "rgb(0, 164, 91)" }}>{props.quarterStats[0].income || 0} {shekelUnicode}</span>
+      </Typography>
+      <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
+        הוצאות: <span style={{ color: "rgb(247, 85, 53)" }}>{props.quarterStats[0].outcome || 0} {shekelUnicode}</span>
+      </Typography>
+    </Paper>
+  </InfoBox>;
 
   return (
     <div>

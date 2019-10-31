@@ -9,7 +9,6 @@
   display: inline-flex;
   box-shadow: none;
   height: 120px;
-  border: 1px solid #eaeaea;
 }
 
 .loadingWrapper{
@@ -18,7 +17,6 @@
   display: inline-flex;
   box-shadow: none;
   height: 120px;
-  border: 1px solid #eaeaea;
   vertical-align: middle;
 text-align: center;
 justify-content: center;

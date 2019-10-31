@@ -47,13 +47,13 @@ class BudgetExecutionLogic {
 
     //update month total execution (total expanses)
     await this.monthTotalLogic.updateMonthTotalTrx(buildingName, date, {
-      total_expanses: preparedMonthTotalObj.monthTotalExecution
+      outcome: preparedMonthTotalObj.totalOutcome
     }, trx);
 
     //update quarter total execution (total expanses)
     await this.quarterTotalLogic.updateQuarterTotalTrx(buildingName, date, {
-      total_expanses: preparedMonthTotalObj.totalExecution,
-      total_budget: preparedMonthTotalObj.totalBudget
+      outcome: preparedMonthTotalObj.outcome,
+      income: preparedMonthTotalObj.income
     }, trx);
 
     //get budget execution after it was updated
@@ -105,23 +105,23 @@ class BudgetExecutionLogic {
 
   prepareMonthTotalObj(monthEng, budgetExecArr) {
 
-    let monthTotalExecution = 0;
-    let totalExecution = 0;
-    let totalBudget = 0;
+    let totalOutcome = 0;
+    let outcome = 0;
+    let income = 0;
 
     for (let i = 0; i < budgetExecArr.length; i++) {
       //calculate month total execution
-      monthTotalExecution += budgetExecArr[i][`${monthEng}_budget_execution`];
+      totalOutcome += budgetExecArr[i][`${monthEng}_budget_execution`];
       //calculate quarter total execution
-      totalExecution += budgetExecArr[i]["total_execution"];
+      outcome += budgetExecArr[i]["total_execution"];
       //calculate total budget
-      totalBudget += budgetExecArr[i]["total_budget"];
+      income += budgetExecArr[i]["total_budget"];
     }
 
     return {
-      monthTotalExecution,
-      totalExecution,
-      totalBudget
+      totalOutcome,
+      outcome,
+      income
     };
   }
 

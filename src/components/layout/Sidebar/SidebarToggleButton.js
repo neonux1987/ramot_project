@@ -15,7 +15,7 @@ const styles = theme => ({
     zIndex: 1201,
     //top: "20px",
     top: "17px",
-    left: "196px"
+    left: "16px"
   },
   keyboardArrowRoot: {
     color: "#6057ec"

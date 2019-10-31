@@ -2,12 +2,12 @@ import React from "react";
 import styles from './Toolbar.module.css';
 
 const Toolbar = (props) => {
-  const location = props.buildingName && props.header ? `${props.buildingName} / ${props.header}` : props.header;
+  const location = props.buildingName && props.header ? `${props.buildingName} > ${props.header}` : props.header;
   return (
     <div className={styles.wrapper}>
 
       <div className={styles.section}>
-        {`מיקום: ${location}`}
+        {`${location}`}
       </div>
 
       <div className={styles.section + " " + styles.alignCenter}>
