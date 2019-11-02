@@ -1,0 +1,8 @@
+.fadingLine{ 
+  display:block;
+  border:none;
+  color:white;
+  height:1px;
+  background:#eaeaea;
+  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 210, from(#eaeaea), to(#fff));
+}

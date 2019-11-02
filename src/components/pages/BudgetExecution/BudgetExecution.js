@@ -18,6 +18,7 @@ import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMid
 import Stats from './Stats/Stats';
 import monthTotalActions from '../../../redux/actions/monthTotalActions';
 import quarterTotalActions from '../../../redux/actions/quarterTotalActions';
+import { Typography } from '@material-ui/core';
 
 const FIXED_FLOAT = 2;
 
@@ -412,12 +413,15 @@ class BudgetExecution extends Component {
     ];
   }
 
-  toggleEditMode = () => {
+  toggleEditMode = (event) => {
+    const target = event.target;
     this.setState({
       ...this.state,
       editMode: !this.state.editMode
     }, () => {
       if (this.state.editMode) {
+        target.scrollIntoView();
+        console.log(target);
         notify({
           type: notificationTypes.message,
           message: "הופעל מצב עריכה"
@@ -503,6 +507,10 @@ class BudgetExecution extends Component {
             toggleAddNewMode={this.toggleAddNewMode}
           />
 
+          <Typography variant="h5" style={{ fontSize: "28px" }} gutterBottom>
+            סטטיסטיקה
+          </Typography>
+
           <Stats
             monthStats={this.props.monthTotal.monthTotal.data}
             quarterStats={this.props.quarterTotal.quarterTotal.data}
@@ -513,7 +521,7 @@ class BudgetExecution extends Component {
 
         </WithHeaderWrapper>
 
-        <ReactTable className="-highlight -striped"
+        <ReactTable id={"react-table"} className="-highlight -striped"
           style={{
             width: "100%",
             textAlign: "center",

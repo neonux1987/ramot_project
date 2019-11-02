@@ -1,14 +1,14 @@
 .wrapper{
-  padding-top: 30px;
+  display: flex;
 }
 
 .infoBox{
   margin: 0 0 0 1%;
   /* padding: 10px 105px; */
   width: 24.24%;
-  display: inline-flex;
+  /* display: flex; */
   box-shadow: none;
-  height: 120px;
+  height: 160px;
 }
 
 .loadingWrapper{
@@ -16,7 +16,7 @@
   width: 24.24%;
   display: inline-flex;
   box-shadow: none;
-  height: 120px;
+  height: 160px;
   vertical-align: middle;
 text-align: center;
 justify-content: center;
@@ -44,35 +44,44 @@ align-items: center;
   background-color: initial;
   box-shadow: initial;
   border-radius: initial;
-  display: inline-flex;
-    border-left: 1px solid #eef3f7;
-    padding: 5px 5px 5px 8px;
+  padding: 5px 3px 20px;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .header .title{
   color: #323a3c;
-  writing-mode: vertical-rl;
-text-orientation: mixed;
-vertical-align: middle;
-text-align: center;
-justify-content: center;
+/*   border-bottom: 1px solid #e0e0e0; */
 
 }
 
 .infoBox .body{
   background-color: initial;
-  box-shadow: initial;
-  border-radius: initial;
-  display: inline-flex;
-  flex-flow: column;
-    justify-content: center;
-    align-items: center;
-    width: 85%;
+    box-shadow: initial;
+    border-radius: initial;
+    display: flex;
 }
 
 .body .expansesTitle{
   color: #323a3c;
   font-size: 16px;
+  text-align: center;
+  margin-bottom: 0;
 }
 
+.content{
+  width: 50%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.alignCenter{
+  text-align: center;
+}
+
+.fontSize20{
+  font-size: 20px;
+}
 

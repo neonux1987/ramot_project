@@ -74,7 +74,7 @@
     "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "npm run build",
-    "electron-pack": "build"
+    "electron-pack": "electron-builder"
   },
   "eslintConfig": {
     "extends": "react-app"

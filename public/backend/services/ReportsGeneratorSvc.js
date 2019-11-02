@@ -26,9 +26,9 @@ class ReportsGenerator {
     const cron = "0 22 2 1 * *"
 
     //execute scheduler
-    //this.backupSchedule = schedule.scheduleJob(cron, () => {
-    //  console.log(this.backupSchedule);
-    //});
+    this.backupSchedule = schedule.scheduleJob(cron, () => {
+      console.log(this.backupSchedule);
+    });
 
   }
 

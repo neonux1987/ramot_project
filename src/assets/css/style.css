@@ -7,6 +7,10 @@ html,body{
     /* background: #191b21; */
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 #root{
   height: 100%;
 }

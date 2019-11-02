@@ -38,8 +38,8 @@ class SummarizedBudgetLogic {
 
     //update year total execution
     const returnedPromise = await this.yearTotalLogic.updateYearTotalTrx(buildingName, date, {
-      total_expanses: yearTotal.year_total_execution,
-      total_budget: yearTotal.year_total_budget
+      outcome: yearTotal.year_total_execution,
+      income: yearTotal.year_total_budget
     }, trx);
 
     //commit changes
@@ -135,8 +135,8 @@ class SummarizedBudgetLogic {
     //insert empty month total row
     await this.yearTotalLogic.insertYeartotal(buildingName, {
       year: date.year,
-      total_budget: 0,
-      total_expanses: 0
+      income: 0,
+      outcome: 0
     },
       trx);
 

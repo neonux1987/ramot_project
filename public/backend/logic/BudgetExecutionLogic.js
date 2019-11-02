@@ -203,8 +203,8 @@ class BudgetExecutionLogic {
     await this.quarterTotalLogic.insertQuartertotal(buildingName, {
       year: date.year,
       quarter: date.quarter,
-      total_budget: 0,
-      total_expanses: 0
+      income: 0,
+      outcome: 0
     },
       trx);
 
