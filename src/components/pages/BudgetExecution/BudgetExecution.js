@@ -414,14 +414,11 @@ class BudgetExecution extends Component {
   }
 
   toggleEditMode = (event) => {
-    const target = event.target;
     this.setState({
       ...this.state,
       editMode: !this.state.editMode
     }, () => {
       if (this.state.editMode) {
-        target.scrollIntoView();
-        console.log(target);
         notify({
           type: notificationTypes.message,
           message: "הופעל מצב עריכה"
@@ -469,37 +466,7 @@ class BudgetExecution extends Component {
     return (
       <div>
         <WithHeaderWrapper>
-          <div style={{ paddingBottom: "10px" }}>
-            <Header
-              title={headerTitle}
-              subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "#6057ec" }}
-            >
-            </Header>
-            <PageControls
-              excel={{
-                data: [...pages[pageIndex].data],
-                fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-                sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
-                header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
-                date: date
-              }}
-              print={{
-                title: headerTitle,
-                pageTitle: headerTitle + " - " + buildingName
-              }}
-              pageName={pageName}
-            />
-            <DatePicker
-              years={years}
-              quarters={quarters}
-              date={date}
-              loadDataByDateHandler={this.loadBudgetExecutionsByDate}
-              enableMonth={false}
-              enableYear={true}
-              enableQuarter={true}
-            />
-          </div>
+
           <EditControls
             editMode={this.state.editMode}
             toggleEditMode={this.toggleEditMode}
@@ -507,19 +474,48 @@ class BudgetExecution extends Component {
             toggleAddNewMode={this.toggleAddNewMode}
           />
 
-          <Typography variant="h5" style={{ fontSize: "28px" }} gutterBottom>
-            סטטיסטיקה
-          </Typography>
+          <DatePicker
+            years={years}
+            quarters={quarters}
+            date={date}
+            loadDataByDateHandler={this.loadBudgetExecutionsByDate}
+            enableMonth={false}
+            enableYear={true}
+            enableQuarter={true}
+          />
 
-          <Stats
-            monthStats={this.props.monthTotal.monthTotal.data}
-            quarterStats={this.props.quarterTotal.quarterTotal.data}
-            quarter={date.quarter}
-            isFetchingMonthStats={this.props.monthTotal.monthTotal.isFetching}
-            isFetchingQuarterStats={this.props.quarterTotal.quarterTotal.isFetching}
+          <PageControls
+            excel={{
+              data: [...pages[pageIndex].data],
+              fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+              sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
+              header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
+              date: date
+            }}
+            print={{
+              title: headerTitle,
+              pageTitle: headerTitle + " - " + buildingName
+            }}
+            pageName={pageName}
           />
 
         </WithHeaderWrapper>
+
+        <Typography variant="h5" style={{ fontSize: "28px" }} gutterBottom>
+          סיכום הוצאות והכנסות
+          </Typography>
+
+        <Stats
+          monthStats={this.props.monthTotal.monthTotal.data}
+          quarterStats={this.props.quarterTotal.quarterTotal.data}
+          quarter={date.quarter}
+          isFetchingMonthStats={this.props.monthTotal.monthTotal.isFetching}
+          isFetchingQuarterStats={this.props.quarterTotal.quarterTotal.isFetching}
+        />
+
+        <Typography variant="h5" style={{ fontSize: "28px" }} gutterBottom>
+          טבלת מעקב וביצוע
+          </Typography>
 
         <ReactTable id={"react-table"} className="-highlight -striped"
           style={{

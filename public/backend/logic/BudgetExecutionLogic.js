@@ -47,7 +47,8 @@ class BudgetExecutionLogic {
 
     //update month total execution (total expanses)
     await this.monthTotalLogic.updateMonthTotalTrx(buildingName, date, {
-      outcome: preparedMonthTotalObj.totalOutcome
+      outcome: preparedMonthTotalObj.totalOutcome,
+      income: preparedMonthTotalObj.income
     }, trx);
 
     //update quarter total execution (total expanses)

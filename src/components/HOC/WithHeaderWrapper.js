@@ -3,11 +3,12 @@ import { withStyles } from '@material-ui/core';
 
 const styles = (theme) => ({
   headerWrapper: {
-    //background: "#fff",
-    //border: "1px solid #eaeaea",
     borderRadius: "4px",
-    //paddingTop: "10px",
-    marginBottom: "20px"
+    marginBottom: "20px",
+    borderBottom: "1px dashed #ccc",
+    display: "flex",
+    alignItems: "center",
+    paddingBottom: "10px"
   }
 });
 
