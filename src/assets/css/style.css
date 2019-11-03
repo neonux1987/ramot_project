@@ -1,8 +1,22 @@
+@font-face {
+  font-family: "NotoSans";
+  font-weight: 400;
+  src: url("../fonts/NotoSansHebrew/NotoSansHebrew-Regular.ttf");
+}
+
+
+@font-face {
+  font-family: "NotoSans";
+  font-weight: 600;
+  src: url("../fonts/NotoSansHebrew/NotoSansHebrew-SemiBold.ttf");
+}
+
 html,body{
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'NotoSans', sans-serif;
     overflow: hidden;
     /* background: #191b21; */
 }
