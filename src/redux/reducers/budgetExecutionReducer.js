@@ -11,13 +11,15 @@ export default (state = initState, action) => {
   switch (action.type) {
     case "RECEIVE_BUDGET_EXECUTIONS":
       {
+        //copy data to avoid mutating the state directly
         const copyPages = [...state.pages];
-        copyPages[state.pageIndex] = {
-          ...copyPages[state.pageIndex],
-          isFetching: false,
-          status: "success",
-          data: action.data
-        }
+
+        //make the changes
+        copyPages[state.pageIndex].isFetching = false;
+        copyPages[state.pageIndex].status = "success";
+        copyPages[state.pageIndex].data = action.data;
+        copyPages[state.pageIndex].date = action.date;
+
         return {
           ...state,
           pages: copyPages
@@ -25,12 +27,13 @@ export default (state = initState, action) => {
       }
     case "REQUEST_BUDGET_EXECUTIONS":
       {
+        //copy data to avoid mutating the state directly
         const copyPages = [...state.pages];
+        //find the index of the current page in the array of pages
         const index = Helper.findIndexOfPage(action.page, copyPages);
-        copyPages[index] = {
-          ...copyPages[index],
-          isFetching: true,
-        }
+        //make the changes
+        copyPages[index].isFetching = true;
+
         return {
           ...state,
           pages: copyPages
@@ -41,29 +44,27 @@ export default (state = initState, action) => {
         ...state,
         tableData: action.payload
       }
-    case "FETCHING_FAILED":
+    case "BUDGET_EXECUTION_FETCHING_FAILED":
       {
-        const copyPages = [...state.pages];//copy data to not mess with the original
-        copyPages[state.pageIndex] = {
-          ...copyPages[state.pageIndex],
-          status: "error",
-          error: action.payload
-        }
+        //copy data to avoid mutating the state directly
+        const copyPages = [...state.pages];
+
+        //make the changes
+        copyPages[state.pageIndex].status = "error";
+        copyPages[state.pageIndex].error = action.error;
+
         return {
           ...state,
           pages: copyPages
         }
       }
-    case "UPDATE_DATE":
+    case "UPDATE_SINGLE_BUDGET_EXECUTION":
       {
-        const copyPages = [...state.pages];//copy data to not mess with the original
-        copyPages[state.pageIndex] = {
-          ...copyPages[state.pageIndex],
-          date: {
-            ...state.date,
-            ...action.payload
-          }
-        }
+        //copy data to avoid mutating the state directly
+        const copyPages = [...state.pages];
+        //make the changes
+        copyPages[state.pageIndex].data[action.index] = action.newBudgetExecution;
+
         return {
           ...state,
           pages: copyPages
@@ -74,7 +75,9 @@ export default (state = initState, action) => {
         const initPages = [...state.pages];
         const page = {
           buildingNameEng: action.page,
-          date: Helper.getCurrentDate(),
+          date: {
+            ...Helper.getCurrentQuarterDate(),
+          },
           isFetching: false,
           status: "",
           error: "",
@@ -86,18 +89,6 @@ export default (state = initState, action) => {
           ...state,
           pageIndex: pageIndex,
           pages: initPages
-        }
-      }
-    case "SET_CURRENT_DATE":
-      {
-        const copyPages = [...state.pages];//copy data to not mess with the original
-        copyPages[state.pageIndex] = {
-          ...copyPages[state.pageIndex],
-          date: Helper.getCurrentDate()
-        }
-        return {
-          ...state,
-          pages: copyPages
         }
       }
     case "CLEANUP":

@@ -401,6 +401,15 @@ class Helper {
     }
   }
 
+  static getCurrentQuarterDate() {
+    return {
+      quarter: this.getCurrentQuarter(),
+      quarterEng: this.getCurrentQuarterEng(),
+      quarterHeb: this.getCurrentQuarterHeb(),
+      year: this.getCurrentYear()
+    }
+  }
+
   static reactTableFilterMethod(filter, row) {
     return row[filter.id].includes(filter.value);
 

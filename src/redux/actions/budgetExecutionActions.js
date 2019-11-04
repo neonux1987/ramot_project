@@ -5,6 +5,8 @@ import registeredQuartersActions from './registeredQuartersActions';
 import registeredYearsActions from './registeredYearsActions';
 import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
+import monthTotalActions from './monthTotalActions';
+import quarterTotalActions from './quarterTotalActions';
 
 const TOAST_AUTO_CLOSE = 3000;
 
@@ -37,7 +39,7 @@ const fetchBudgetExecutions = (params = Object) => {
           generateEmptyReport(params, dispatch);
         }
         //success store the data
-        dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
+        dispatch(receiveBudgetExecutions(arg.data, params.buildingName, params.date));
       }
     });
 
@@ -92,18 +94,19 @@ const requestBudgetExecutions = function (page) {
   }
 };
 
-const receiveBudgetExecutions = function (data, page) {
+const receiveBudgetExecutions = function (data, page, date) {
   return {
     type: "RECEIVE_BUDGET_EXECUTIONS",
-    data: data,
-    page
+    data,
+    page,
+    date
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "FETCHING_FAILED",
-    payload: error
+    type: "BUDGET_EXECUTION_FETCHING_FAILED",
+    error
   }
 };
 
@@ -155,13 +158,68 @@ const addBudgetExecution = (params = Object, tableData) => {
   }
 };
 
+const updateSingleBudgetExecution = (newBudgetExecution, index) => {
+  return {
+    type: "UPDATE_SINGLE_BUDGET_EXECUTION",
+    newBudgetExecution,
+    index
+  }
+}
+
 /**
  * update budget execution
  * @param {*} payload 
  * @param {*} tableData 
  */
-const updateBudgetExecution = (params = Object, tableData = Array) => {
-  return dispatch => {
+const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudgetExec = Object, index = Number) => {
+  return (dispatch, getState) => {
+
+    //get te state
+    const state = getState();
+
+    //stats of all months
+    const monthTotalDataArr = [...state.monthTotal.monthTotal.data];
+
+    let monthTotalIndex = null;
+
+    //quarter total stats
+    const quarterTotalData = { ...state.quarterTotal.quarterTotal.data[0] };
+
+    if (params.date.month) {
+
+      for (let i = 0; i < monthTotalDataArr.length; i++) {
+        if (monthTotalDataArr[i].month === params.date.month) {
+          monthTotalIndex = i;
+        }
+      }
+
+      const monthTotalObject = { ...monthTotalDataArr[monthTotalIndex] };
+
+      //subtract the old month budge value from
+      //total budget and then add the new month budget value
+      monthTotalObject.income = monthTotalObject.income - oldBudgetExec[`${params.date.month}_budget`] + newBudgetExec[`${params.date.month}_budget`];
+
+      //subtract the old quarter budget value from
+      //total budget and then add the new quarter budget value
+      quarterTotalData.income = quarterTotalData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
+
+      dispatch(monthTotalActions.updateSingleMonthTotal(monthTotalObject, monthTotalIndex));
+
+    }
+
+
+
+    //create a a budget execution object
+    //with full properties to be saved in the store
+    const budgetExecStoreObj = {
+      ...oldBudgetExec,
+      ...newBudgetExec
+    }
+
+    //update the new data in the store first for
+    //better and fast user experience
+    dispatch(updateSingleBudgetExecution(budgetExecStoreObj, index));
+
     //send a request to backend to get the data
     ipcRenderer.send("update-budget-execution", params);
     //listen when the data comes back
@@ -171,9 +229,10 @@ const updateBudgetExecution = (params = Object, tableData = Array) => {
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
         });
+        //rollback to the old budget execution object
+        dispatch(updateSingleBudgetExecution(oldBudgetExec, index));
       } else {
-        //success
-        dispatch(receiveBudgetExecutions(tableData, params.buildingName));
+
         toast.success("השורה עודכנה בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)
         });

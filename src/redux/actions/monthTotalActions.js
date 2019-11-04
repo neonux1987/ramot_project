@@ -31,6 +31,16 @@ const fetchQuarterMonthsTotalStats = (params = Object) => {
   }
 };
 
+const updateSingleMonthTotal = (monthTotalObj, index) => {
+  return dispatch => {
+    dispatch({
+      type: "UPDATE_SINGLE_MONTH_TOTAL",
+      monthTotalObj,
+      index
+    });
+  }
+}
+
 const requestMonthTotal = function (page) {
   return {
     type: "REQUEST_MONTH_TOTAL",
@@ -63,5 +73,6 @@ export default {
   fetchingFailed,
   receiveMonthTotal,
   requestMonthTotal,
-  cleanupMonthTotal
+  cleanupMonthTotal,
+  updateSingleMonthTotal
 };

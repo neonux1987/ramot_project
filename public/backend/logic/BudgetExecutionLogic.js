@@ -42,20 +42,25 @@ class BudgetExecutionLogic {
     //get all budget executions
     const allBudgetExecutions = await this.getAllBudgetExecutionsTrx(buildingName, date, trx);
 
-    //calculate month total
-    const preparedMonthTotalObj = this.prepareMonthTotalObj(date.month, allBudgetExecutions);
+    //if a budget of specific month was updated
+    //then month will exist
+    if (date.month) {
 
-    //update month total execution (total expanses)
-    await this.monthTotalLogic.updateMonthTotalTrx(buildingName, date, {
-      outcome: preparedMonthTotalObj.totalOutcome,
-      income: preparedMonthTotalObj.income
-    }, trx);
+      //calculate month total
+      const preparedMonthTotalObj = this.prepareMonthTotalObj(date.month, allBudgetExecutions);
 
-    //update quarter total execution (total expanses)
-    await this.quarterTotalLogic.updateQuarterTotalTrx(buildingName, date, {
-      outcome: preparedMonthTotalObj.outcome,
-      income: preparedMonthTotalObj.income
-    }, trx);
+      //update month total execution (total expanses)
+      await this.monthTotalLogic.updateMonthTotalTrx(buildingName, date, {
+        outcome: preparedMonthTotalObj.outcome,
+        income: preparedMonthTotalObj.income
+      }, trx);
+
+      //update quarter total execution (total expanses)
+      await this.quarterTotalLogic.updateQuarterTotalTrx(buildingName, date, {
+        outcome: preparedMonthTotalObj.totalOutcome,
+        income: preparedMonthTotalObj.totalIncome
+      }, trx);
+    }
 
     //get budget execution after it was updated
     const budgetExecution = await this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx);
@@ -107,20 +112,25 @@ class BudgetExecutionLogic {
   prepareMonthTotalObj(monthEng, budgetExecArr) {
 
     let totalOutcome = 0;
+    let totalIncome = 0;
     let outcome = 0;
     let income = 0;
 
     for (let i = 0; i < budgetExecArr.length; i++) {
+
       //calculate month total execution
-      totalOutcome += budgetExecArr[i][`${monthEng}_budget_execution`];
+      outcome += budgetExecArr[i][`${monthEng}_budget_execution`];
+      //calculate month total budget
+      income += budgetExecArr[i][`${monthEng}_budget`];
       //calculate quarter total execution
-      outcome += budgetExecArr[i]["total_execution"];
+      totalOutcome += budgetExecArr[i]["total_execution"];
       //calculate total budget
-      income += budgetExecArr[i]["total_budget"];
+      totalIncome += budgetExecArr[i]["total_budget"];
     }
 
     return {
       totalOutcome,
+      totalIncome,
       outcome,
       income
     };

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import budgetExecutionActions from '../../../redux/actions/budgetExecutionActions';
 import Helper from '../../../helpers/Helper';
 import ReactTable from 'react-table';
-import Header from '../../layout/main/Header';
 import LoadingCircle from '../../common/LoadingCircle';
 import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
 import PageControls from '../../common/PageControls/PageControls';
@@ -40,7 +39,7 @@ class BudgetExecution extends Component {
     //current quarter, month and year.
     let params = {
       buildingName: this.props.location.state.buildingNameEng,
-      date: Helper.getCurrentDate(),
+      date: Helper.getCurrentQuarterDate(),
     }
     this.props.initState(this.props.location.state.buildingNameEng).then(() => {
       //get the building budget executions
@@ -74,7 +73,7 @@ class BudgetExecution extends Component {
   }
 
   loadBudgetExecutionsByDate = ({ year, quarter }) => {
-    //important params that allows to pull the current data by
+    //important params that allow to pull the current data by
     //current quarter, month and year.
     let params = {
       buildingName: this.props.location.state.buildingNameEng,
@@ -85,6 +84,7 @@ class BudgetExecution extends Component {
         year: year
       }
     };
+
     this.props.fetchBudgetExecutions(params);
   }
 
@@ -100,12 +100,12 @@ class BudgetExecution extends Component {
     if (title === "difference") {
       if (value < 0) {
         colored.color = "#fff";
-        colored.background = "#ff4444";
+        colored.background = "rgb(249, 83, 83)";
       } else if (value > 0) {
         colored.color = "#fff";
-        colored.background = "#64bd37";
+        colored.background = "rgb(18, 195, 118)";
       } else {
-        colored.background = "yellow";
+        colored.background = "#ffff45";
       }
     }
 
@@ -123,23 +123,25 @@ class BudgetExecution extends Component {
     const data = [...this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex].data];
     //data date
     const { date } = this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex];
-    //find the index of the object in the array
-    const objIndex = Helper.findObjIndexById(cellInfo.original.id, data);
-    let prevValue = data[objIndex][cellInfo.column.id];
-    if (cellInfo.column.id === "notes") {
+    //index of the object in the array
+    const objIndex = cellInfo.index;
+    //column id, the title of the column
+    const columnId = cellInfo.column.id;
+
+    //copy old object so rollback would be possible
+    const oldBudgetExecutionObj = { ...data[objIndex] };
+
+    if (columnId === "notes") {
       //replace the value
-      data[objIndex][cellInfo.column.id] = e.target.value === "" ? "" : e.target.value;
+      data[objIndex][columnId] = e.target.value === "" ? "" : e.target.value;
     } else {
       //replace the value
-      data[objIndex][cellInfo.column.id] = e.target.value === "" ? 0 : e.target.value;
+      data[objIndex][columnId] = e.target.value === "" ? 0 : parseFloat(e.target.value);
     }
 
+
     //prepare the budget execution object
-    const preparedObj = this.prepareBudgetExecObj(data[objIndex], date.quarter);
-    data[objIndex] = {
-      ...data[objIndex],
-      ...preparedObj
-    };
+    const newBudgetExecutionObj = this.prepareBudgetExecObj(data[objIndex], date.quarter);
 
     //prepare the params object
     let params = {
@@ -147,11 +149,20 @@ class BudgetExecution extends Component {
       date: {
         ...date
       },
-      budgetExec: preparedObj,
+      budgetExec: newBudgetExecutionObj,
       summarized_section_id: data[objIndex].summarized_section_id
     };
+
+
+    //check if it's a month budget column,
+    //if it is set the date month params to the month
+    //column that was updated
+    if (columnId.includes("_budget")) {
+      params.date.month = columnId.substring(0, columnId.length - 7);
+    }
+
     //this.calculateMonthTotalBudget(data, cellInfo.column.id, prevValue, data[objIndex][cellInfo.column.id]);
-    this.props.updateBudgetExecution(params, data);
+    this.props.updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, objIndex);
     e.target.blur();
   }
 
@@ -285,7 +296,7 @@ class BudgetExecution extends Component {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
             headerStyle: { color: "#fff", background: "#fb434a", fontWeight: "600" },
-            Cell: this.cell
+            Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
@@ -337,7 +348,7 @@ class BudgetExecution extends Component {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
             headerStyle: { color: "#fff", background: "#46bf8a", fontWeight: "600" },
-            Cell: this.cell
+            Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
@@ -462,7 +473,7 @@ class BudgetExecution extends Component {
 
     //used for date picker
     const years = this.props.registeredYears.registeredYears.data;
-
+    console.log(this.props.monthTotal.monthTotal.data);
     return (
       <div>
         <WithHeaderWrapper>
@@ -567,7 +578,7 @@ const mapDispatchToProps = dispatch => ({
   cleanup: (buildingNameEng) => dispatch(budgetExecutionActions.cleanup(buildingNameEng)),
   initState: (page) => dispatch(budgetExecutionActions.initState(page)),
   receiveBudgetExecutions: (payload) => dispatch(budgetExecutionActions.receiveBudgetExecutions(payload)),
-  updateBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.updateBudgetExecution(payload, tableData)),
+  updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
   addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData)),
   fetchRegisteredQuarters: (buildingName) => dispatch(registeredQuartersActions.fetchRegisteredQuarters(buildingName)),
   cleanupQuarters: () => dispatch(registeredQuartersActions.cleanupQuarters()),

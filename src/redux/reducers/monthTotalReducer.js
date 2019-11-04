@@ -28,6 +28,19 @@ export default (state = initState, action) => {
           isFetching: true
         }
       }
+    case "UPDATE_SINGLE_MONTH_TOTAL": {
+
+      const monthTotalArr = [...state.monthTotal.data];
+      monthTotalArr[action.index] = action.monthTotalObj;
+
+      return {
+        ...state,
+        monthTotal: {
+          ...state.monthTotal,
+          data: monthTotalArr
+        }
+      }
+    }
     case "MONTH_TOTAL_FETCHING_FAILED":
       return {
         ...state,

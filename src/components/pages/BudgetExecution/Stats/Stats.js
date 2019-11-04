@@ -24,9 +24,9 @@ export default (props) => {
   const shekelUnicode = '\u20AA';
 
   for (let i = 0; i < quarterMonths.length; i++) {
-
+    
     //render loading if still fetching the stats
-    if (props.isFetchingMonthStats) {
+    if (props.isFetchingMonthStats && props.monthStats[i] === undefined) {
       renderMonthStatsBoxes[i] = <div key={i} className={styles.loadingWrapper}><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני חודש ${Helper.convertEngToHebMonth(quarterMonths[i])}`} size={20} /></div>;
     } else {
 
