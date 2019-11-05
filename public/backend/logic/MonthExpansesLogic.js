@@ -191,16 +191,6 @@ class MonthExpansesLogic {
 
     }
 
-    //insert empty month total row
-    await this.monthTotalLogic.insertMonthtotal(buildingName, {
-      year: date.year,
-      quarter: date.quarter,
-      month: date.month,
-      total_budget: 0,
-      total_expanses: 0
-    },
-      trx);
-
     //can safely register new year, it's not registered from other reports
     await this.registeredMonthsLogic.registerNewMonth(buildingName, {
       year: date.year,

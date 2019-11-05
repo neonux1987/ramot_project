@@ -187,14 +187,25 @@ textarea{
 .ReactTable{
   background: #fff;
   border:none;
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .ReactTable.-striped .rt-tr.-odd{
   background: rgb(249, 250, 251);
 }
 
+/** change body row parameters **/
 .ReactTable .rt-tbody .rt-tr-group{
-  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/** change body cell paramters **/
+.ReactTable .rt-tbody .rt-td{
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ReactTable .rt-tbody .rt-td:first-child{
+  border-right: none;
 }
 
 .ReactTable .rt-noData{
@@ -204,6 +215,10 @@ textarea{
 
 .ReactTable .rt-table{
   display: block;
+}
+
+.rt-table{
+  border-radius: 4px;
 }
 
 .rt-tbody{
@@ -216,6 +231,11 @@ textarea{
     vertical-align: middle;
     display: flex;
     font-size: 15px;
+}
+
+.ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td{
+  background: #ebeef1;
+  border-right: none;
 }
 
 /******** Toastify override ********/

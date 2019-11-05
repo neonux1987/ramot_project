@@ -55,6 +55,18 @@ class MonthTotalBudgetExpansesDao {
       });
   }
 
+  batchInsert(
+    buildingName = String,
+    rows,
+    trx
+  ) {
+    return trx.batchInsert(`${buildingName}_month_total`, rows, rows.length)
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+
 }
 
 module.exports = MonthTotalBudgetExpansesDao;

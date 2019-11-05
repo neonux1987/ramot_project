@@ -26,7 +26,7 @@ export default (props) => {
   for (let i = 0; i < quarterMonths.length; i++) {
     
     //render loading if still fetching the stats
-    if (props.isFetchingMonthStats && props.monthStats[i] === undefined) {
+    if (props.isFetchingMonthStats) {
       renderMonthStatsBoxes[i] = <div key={i} className={styles.loadingWrapper}><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני חודש ${Helper.convertEngToHebMonth(quarterMonths[i])}`} size={20} /></div>;
     } else {
 
@@ -51,7 +51,7 @@ export default (props) => {
           <div className={styles.content}>
             <div className={styles.alignCenter}>
               <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-                <span className={styles.fontSize20} style={{ color: "rgb(0, 164, 91)" }}>{income} {shekelUnicode}</span>
+                <span className={styles.fontSize20} style={{ color: "rgb(53, 154, 109)" }}>{income} {shekelUnicode}</span>
               </Typography>
               <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
                 הכנסות
@@ -63,7 +63,7 @@ export default (props) => {
           <div className={styles.content}>
             <div className={styles.alignCenter}>
               <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-                <span className={styles.fontSize20} style={{ color: "rgb(247, 85, 53)" }}>{outcome} {shekelUnicode}</span>
+                <span className={styles.fontSize20} style={{ color: "rgb(232, 46, 106)" }}>{outcome} {shekelUnicode}</span>
               </Typography>
               <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
                 הוצאות
@@ -97,7 +97,7 @@ export default (props) => {
       <div className={styles.content}>
         <div className={styles.alignCenter}>
           <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-            <span className={styles.fontSize20} style={{ color: "rgb(0, 164, 91)" }}>{props.quarterStats[0].income || 0} {shekelUnicode}</span>
+            <span className={styles.fontSize20} style={{ color: "rgb(53, 154, 109)" }}>{props.quarterStats[0].income || 0} {shekelUnicode}</span>
           </Typography>
           <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
             הכנסות
@@ -109,7 +109,7 @@ export default (props) => {
       <div className={styles.content}>
         <div className={styles.alignCenter}>
           <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-            <span className={styles.fontSize20} style={{ color: "rgb(247, 85, 53)" }}>{props.quarterStats[0].outcome || 0} {shekelUnicode}</span>
+            <span className={styles.fontSize20} style={{ color: "rgb(232, 46, 106)" }}>{props.quarterStats[0].outcome || 0} {shekelUnicode}</span>
           </Typography>
           <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
             הוצאות

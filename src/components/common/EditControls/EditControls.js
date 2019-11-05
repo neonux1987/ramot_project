@@ -2,13 +2,13 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import styles from './EditControls.module.css';
 
-export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode }) => {
+export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode,style }) => {
 
   const editBtnTitle = editMode ? "בטל עריכה" : "עריכה";
   const addNewBtnTitle = addNewMode ? "בטל הוספה" : "הוסף חדש";
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} style={style}>
       <Button className={styles.editBtn} onClick={toggleEditMode} variant="contained" color="primary" >
         {editBtnTitle}
       </Button>

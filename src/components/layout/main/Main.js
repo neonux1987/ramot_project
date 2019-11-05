@@ -89,7 +89,7 @@ class Main extends Component {
       return (
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
           <Toolbar buildingName={locationState.buildingName} header={locationState.page} year={Helper.getCurrentYear()} quarter={Helper.getCurrentQuarterHeb()} month={Helper.getCurrentMonthHeb()} tax={`${generalSettings.data[0].tax}%`} />
-          <div style={{ padding: "24px" }}>
+          <div style={{ padding: "15px 24px 24px 24px" }}>
             <Switch>
               {this.generateRoutes(this.props.sidebar.sidebar.data)}
               <Route path="/דף-הבית" component={Home} />

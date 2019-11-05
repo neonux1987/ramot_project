@@ -22,6 +22,11 @@ class MonthTotalLogic {
     return this.monthTotalDao.insertMonthtotal(buildingName, data, trx);
   }
 
+  batchInsert(buildingName, rows, trx) {
+    return this.monthTotalDao.batchInsert(buildingName, rows, trx);
+  }
+
+
 }
 
 module.exports = MonthTotalLogic;

@@ -29,8 +29,9 @@ export default (state = initState, action) => {
         }
       }
     case "UPDATE_SINGLE_MONTH_TOTAL": {
-
+      //copy the array
       const monthTotalArr = [...state.monthTotal.data];
+      //set the new object
       monthTotalArr[action.index] = action.monthTotalObj;
 
       return {

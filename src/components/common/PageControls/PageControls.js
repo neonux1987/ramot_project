@@ -25,7 +25,7 @@ const PageControls = ({ excel, print, pageName, styles, ...props }) => {
   }
 
   return (
-    <div id="page-controls" className={styles && styles.pageControls ? styles.pageControls : defaultStyles.pageControls}>
+    <div id="page-controls" className={styles && styles.pageControls ? styles.pageControls : defaultStyles.pageControls} style={props.style}>
       <button className={styles && styles.pageControlsButton ? styles.pageControlsButton : defaultStyles.pageControlsButton} onClick={excel.handler ? excel.handler : exportToExcel}>
         <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="-1 -1 16 16">
           <path id="file_type_excel.svg" fill="#37a777"
@@ -34,7 +34,12 @@ const PageControls = ({ excel, print, pageName, styles, ...props }) => {
         </svg>
 
       </button>
-      <button className={styles && styles.pageControlsButton ? styles.pageControlsButton : defaultStyles.pageControlsButton} onClick={() => printProcess({
+      <button style={{    
+        margin: "0 6px 0 0",
+        paddingLeft: 0
+      }} 
+      className={styles && styles.pageControlsButton ? styles.pageControlsButton : defaultStyles.pageControlsButton} 
+      onClick={() => printProcess({
         documentTitle: print.title,
         printable: pageName,
         type: 'html',

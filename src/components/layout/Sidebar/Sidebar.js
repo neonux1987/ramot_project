@@ -21,6 +21,7 @@ const styles = theme => ({
     //background: "url('https://c.wallhere.com/photos/44/47/1600x900_px_mountain_night_sky_stars_Trees-517931.jpg!d')",
     //background: "url('https://sfilev2.f-static.com/image/users/441204/departAlbum/441204/normal/4252487.jpg')",
     //background: "url('https://i.pinimg.com/originals/79/a5/b7/79a5b7eb6d5ba37b8179562f045a2be2.jpg')",
+    background: "url('https://ak6.picdn.net/shutterstock/videos/28467886/thumb/1.jpg')",
     //background: `url('${bgImg}')`,
     //backgroundPosition: "center top",
     //backgroundSize: "cover",
@@ -29,11 +30,8 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    //boxShadow: "-22px 0px 4px #00000057",
-    //background: "#0000008f",
-    //backgroundColor: "#1B1E24",
-    backgroundColor: "#00152a",
-    //padding: "0 10px",
+    backgroundColor: "#00152ad6",
+    //background: "linear-gradient(90deg, #18002a 0%, rgba(0,21,42,1) 100%)",
     overflow: "initial",
     position: "relative",
     border: "none"

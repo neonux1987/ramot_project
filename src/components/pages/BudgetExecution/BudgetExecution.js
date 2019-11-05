@@ -4,7 +4,7 @@ import budgetExecutionActions from '../../../redux/actions/budgetExecutionAction
 import Helper from '../../../helpers/Helper';
 import ReactTable from 'react-table';
 import LoadingCircle from '../../common/LoadingCircle';
-import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
+import WithTableControlsWrapper from '../../HOC/WithTableControlsWrapper';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import EditControls from '../../common/EditControls/EditControls';
@@ -18,6 +18,8 @@ import Stats from './Stats/Stats';
 import monthTotalActions from '../../../redux/actions/monthTotalActions';
 import quarterTotalActions from '../../../redux/actions/quarterTotalActions';
 import { Typography } from '@material-ui/core';
+import WithTableWrapper from '../../HOC/WithTableWrapper';
+import Header from '../../layout/main/Header';
 
 const FIXED_FLOAT = 2;
 
@@ -100,12 +102,12 @@ class BudgetExecution extends Component {
     if (title === "difference") {
       if (value < 0) {
         colored.color = "#fff";
-        colored.background = "rgb(249, 83, 83)";
+        colored.background = "rgb(232, 46, 106)";
       } else if (value > 0) {
         colored.color = "#fff";
         colored.background = "rgb(18, 195, 118)";
       } else {
-        colored.background = "#ffff45";
+        colored.background = "rgb(248, 251, 75)";
       }
     }
 
@@ -279,14 +281,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "#fb434a",
+          background: "rgb(139, 100, 202)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[0].column1.accessor,
             Header: months[0].column1.header,
-            headerStyle: { color: "#fff", background: "#fb434a", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(139, 100, 202)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -295,7 +297,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
-            headerStyle: { color: "#fff", background: "#fb434a", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(139, 100, 202)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -305,14 +307,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "#0290fe",
+          background: "rgb(44, 153, 206)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[1].column1.accessor,
             Header: months[1].column1.header,
-            headerStyle: { color: "#fff", background: "#0290fe", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(44, 153, 206)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -321,7 +323,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[1].column2.accessor,
             Header: months[1].column2.header,
-            headerStyle: { color: "#fff", background: "#0290fe", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(44, 153, 206)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -331,14 +333,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "#46bf8a",
+          background: "rgb(88, 177, 165)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "#46bf8a", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(88, 177, 165)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -347,7 +349,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "#46bf8a", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(88, 177, 165)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -369,14 +371,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(150, 70, 191)",
+          background: "rgb(232, 46, 106)",
           color: "#fff"
         },
         columns: [
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(150, 70, 191)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(232, 46, 106)", fontWeight: "600" },
             Cell: this.cell,
             style: {
               padding: 0
@@ -385,7 +387,7 @@ class BudgetExecution extends Component {
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(150, 70, 191)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(232, 46, 106)", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -473,46 +475,16 @@ class BudgetExecution extends Component {
 
     //used for date picker
     const years = this.props.registeredYears.registeredYears.data;
-    console.log(this.props.monthTotal.monthTotal.data);
+    
     return (
       <div>
-        <WithHeaderWrapper>
+        <Header
+          title={headerTitle}
+          style={{ color: "#000",fontSize: "42px",fontWeight: "600" }}
+          subTitle={""}
+        />
 
-          <EditControls
-            editMode={this.state.editMode}
-            toggleEditMode={this.toggleEditMode}
-            addNewMode={this.state.addNewMode}
-            toggleAddNewMode={this.toggleAddNewMode}
-          />
-
-          <DatePicker
-            years={years}
-            quarters={quarters}
-            date={date}
-            loadDataByDateHandler={this.loadBudgetExecutionsByDate}
-            enableMonth={false}
-            enableYear={true}
-            enableQuarter={true}
-          />
-
-          <PageControls
-            excel={{
-              data: [...pages[pageIndex].data],
-              fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-              sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
-              header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
-              date: date
-            }}
-            print={{
-              title: headerTitle,
-              pageTitle: headerTitle + " - " + buildingName
-            }}
-            pageName={pageName}
-          />
-
-        </WithHeaderWrapper>
-
-        <Typography variant="h5" style={{ fontSize: "28px" }} gutterBottom>
+        <Typography variant="h5" style={{ fontSize: "18px" }} gutterBottom>
           סיכום הוצאות והכנסות
           </Typography>
 
@@ -524,41 +496,89 @@ class BudgetExecution extends Component {
           isFetchingQuarterStats={this.props.quarterTotal.quarterTotal.isFetching}
         />
 
-        <Typography variant="h5" style={{ fontSize: "28px" }} gutterBottom>
+        <Typography variant="h5" style={{ fontSize: "18px",marginTop: "20px" }} gutterBottom>
           טבלת מעקב וביצוע
           </Typography>
 
-        <ReactTable id={"react-table"} className="-highlight -striped"
-          style={{
-            width: "100%",
-            textAlign: "center",
-            borderRadius: "4px",
-            //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
-          }}
-          getTbodyProps={(state, rowInfo, column, instance) => {
-            return {
-              style: {
-                overflow: "overlay",
-                height: "630px"
+        <WithTableWrapper>
+
+          <WithTableControlsWrapper>
+
+            <EditControls
+            style={{width: "33%"}}
+              editMode={this.state.editMode}
+              toggleEditMode={this.toggleEditMode}
+              addNewMode={this.state.addNewMode}
+              toggleAddNewMode={this.toggleAddNewMode}
+            />
+
+            <DatePicker
+            style={{width: "34%"}}
+              years={years}
+              quarters={quarters}
+              date={date}
+              loadDataByDateHandler={this.loadBudgetExecutionsByDate}
+              enableMonth={false}
+              enableYear={true}
+              enableQuarter={true}
+            />
+
+            <PageControls
+              style={{
+                width: "34%",
+                justifyContent: "flex-end",
+                display: "flex"
+              }}
+              excel={{
+                data: [...pages[pageIndex].data],
+                fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+                sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
+                header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
+                date: date
+              }}
+              print={{
+                title: headerTitle,
+                pageTitle: headerTitle + " - " + buildingName
+              }}
+              pageName={pageName}
+            />
+
+          </WithTableControlsWrapper>
+
+          <ReactTable id={"react-table"} className="-highlight"
+            style={{
+              width: "100%",
+              textAlign: "center",
+              borderRadius: "4px",
+              //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
+            }}
+            getTbodyProps={(state, rowInfo, column, instance) => {
+              return {
+                style: {
+                  overflow: "overlay",
+                  height: "630px"
+                }
               }
-            }
-          }}
-          getTdProps={(state, rowInfo, column) => {
-            return {
-              //onClick: () => console.log(rowInfo)
-            }
-          }}
-          loadingText={"טוען..."}
-          noDataText={"המידע לא נמצא"}
-          loading={pages[pageIndex].isFetching}
-          LoadingComponent={LoadingCircle}
-          defaultPageSize={100}
-          showPagination={true}
-          data={pages[pageIndex].data}
-          columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
-          resizable={true}
-        //minRows={0}
-        />
+            }}
+            getTdProps={(state, rowInfo, column) => {
+              return {
+                //onClick: () => console.log(rowInfo)
+              }
+            }}
+            loadingText={"טוען..."}
+            noDataText={"המידע לא נמצא"}
+            loading={pages[pageIndex].isFetching}
+            LoadingComponent={LoadingCircle}
+            defaultPageSize={100}
+            showPagination={true}
+            data={pages[pageIndex].data}
+            columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
+            resizable={true}
+          //minRows={0}
+          />
+        </WithTableWrapper>
+
+
       </div>
     );
   }

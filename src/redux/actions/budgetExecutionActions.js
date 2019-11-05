@@ -185,6 +185,9 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
     //quarter total stats
     const quarterTotalData = { ...state.quarterTotal.quarterTotal.data[0] };
 
+    //copy for rollback
+    const quarterTotalOld = {...quarterTotalData};
+
     if (params.date.month) {
 
       for (let i = 0; i < monthTotalDataArr.length; i++) {
@@ -193,6 +196,7 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
         }
       }
 
+      //make a copy of month total object to avoid mutating the original
       const monthTotalObject = { ...monthTotalDataArr[monthTotalIndex] };
 
       //subtract the old month budge value from
@@ -203,11 +207,15 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
       //total budget and then add the new quarter budget value
       quarterTotalData.income = quarterTotalData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
 
+      //update month total
       dispatch(monthTotalActions.updateSingleMonthTotal(monthTotalObject, monthTotalIndex));
 
+      //update quarter total
+      dispatch(quarterTotalActions.updateSingleQuarterTotal(quarterTotalData));
     }
 
-
+    //copy of the un-modified month total object for rollback
+    const oldMonthTotalObj = {...monthTotalDataArr[monthTotalIndex]};
 
     //create a a budget execution object
     //with full properties to be saved in the store
@@ -229,10 +237,16 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
         });
+
         //rollback to the old budget execution object
         dispatch(updateSingleBudgetExecution(oldBudgetExec, index));
-      } else {
 
+        //rollback to the old month total stats
+        dispatch(monthTotalActions.updateSingleMonthTotal(oldMonthTotalObj, monthTotalIndex));
+
+        //rollback to old quarter total
+      dispatch(quarterTotalActions.updateSingleQuarterTotal(quarterTotalOld));
+      } else {
         toast.success("השורה עודכנה בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)
         });

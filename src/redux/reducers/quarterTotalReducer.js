@@ -28,6 +28,17 @@ export default (state = initState, action) => {
           isFetching: true
         }
       }
+      case "UPDATE_SINGLE_QUARTER_TOTAL": {
+        //create new array with the new object
+        const newDataArray = [action.quarterTotalObj];
+        return {
+          ...state,
+          quarterTotal: {
+            ...state.quarterTotal,
+            data: newDataArray
+          }
+        }
+      }
     case "QUARTER_TOTAL_FETCHING_FAILED":
       return {
         ...state,

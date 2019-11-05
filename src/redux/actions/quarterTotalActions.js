@@ -45,6 +45,15 @@ const receiveQuarterTotal = function (data) {
   }
 }
 
+const updateSingleQuarterTotal = (quarterTotalObj) => {
+  return dispatch => {
+    dispatch({
+      type: "UPDATE_SINGLE_QUARTER_TOTAL",
+      quarterTotalObj
+    });
+  }
+}
+
 const fetchingFailed = function (error) {
   return {
     type: "QUARTER_TOTAL_FETCHING_FAILED",
@@ -63,5 +72,6 @@ export default {
   fetchingFailed,
   receiveQuarterTotal,
   requestQuarterTotal,
-  cleanupQuarterTotal
+  cleanupQuarterTotal,
+  updateSingleQuarterTotal
 };

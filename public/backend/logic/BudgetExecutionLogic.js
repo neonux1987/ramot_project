@@ -219,6 +219,25 @@ class BudgetExecutionLogic {
     },
       trx);
 
+    //all the months of a specific quarter
+    const months = Helper.getQuarterMonths(date.quarter);
+    //empty month total objects will be stores here
+    const monthTotalArr = [];
+
+    //populate the array with empty month total objects
+    for(let i=0;i<months.length;i++){console.log(months[i]);
+      monthTotalArr.push({
+        year: date.year,
+        quarter: date.quarter,
+        month: months[i],
+        income: 0,
+        outcome: 0
+      });
+    }
+
+    //insert empty month total rows
+    await this.monthTotalLogic.batchInsert(buildingName,monthTotalArr,trx);
+
     //register quarter
     await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
 

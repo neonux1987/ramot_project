@@ -122,7 +122,7 @@ class DatePicker extends Component {
 
   render() {
     return (
-      <div id="dates" className={styles.dates}>
+      <div id="dates" className={styles.dates} style={this.props.style}>
         <form className={styles.formControl}>
           {this.renderMonth()}
           {this.renderQuarter()}

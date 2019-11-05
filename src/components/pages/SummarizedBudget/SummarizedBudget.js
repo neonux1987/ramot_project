@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import LoadingCircle from '../../common/LoadingCircle';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
@@ -8,9 +8,10 @@ import summarizedBudgetActions from '../../../redux/actions/summarizedBudgetActi
 import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
-import WithHeaderWrapper from '../../HOC/WithHeaderWrapper';
+import WithTableControlsWrapper from '../../HOC/WithTableControlsWrapper';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
+import WithTableWrapper from '../../HOC/WithTableWrapper';
 
 const FIXED_FLOAT = 2;
 
@@ -95,7 +96,7 @@ class SummarizedBudget extends Component {
         Header: "רבעון 1",
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(251, 38, 38)",
           color: "#fff"
         },
@@ -121,7 +122,7 @@ class SummarizedBudget extends Component {
         Header: "רבעון 2",
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(103, 101, 208)",
           color: "#fff"
         },
@@ -147,7 +148,7 @@ class SummarizedBudget extends Component {
         Header: "רבעון 3",
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(24, 135, 199)",
           color: "#fff"
         },
@@ -173,7 +174,7 @@ class SummarizedBudget extends Component {
         Header: "רבעון 4",
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(29, 186, 143)",
           color: "#fff"
         },
@@ -211,7 +212,7 @@ class SummarizedBudget extends Component {
         Header: "סוף שנה",
         headerStyle: {
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
           background: "rgb(143, 78, 191)",
           color: "#fff"
         },
@@ -263,15 +264,17 @@ class SummarizedBudget extends Component {
     const years = this.props.registeredYears.registeredYears.data;
 
     return (
-      <div>
-        <WithHeaderWrapper>
+      <Fragment>
+
+        <Header
+          title={headerTitle}
+          style={{ color: "#000",fontSize: "42px",fontWeight: "600" }}
+          subTitle={""}
+        />
+
+        <WithTableWrapper>
+        <WithTableControlsWrapper>
           <div style={{ paddingBottom: "10px" }}>
-            <Header
-              title={headerTitle}
-              subTitle={buildingName + " / " + date.quarterHeb + " / " + date.year}
-              textColor={{ color: "rgb(37, 189, 119)" }}
-            >
-            </Header>
             <PageControls
               excel={{
                 data: pages[pageIndex].data,
@@ -293,40 +296,42 @@ class SummarizedBudget extends Component {
               enableQuarter={false}
             />
           </div>
-        </WithHeaderWrapper>
+        </WithTableControlsWrapper>
 
-        <ReactTable className="-striped"
-          style={{
-            width: "100%",
-            textAlign: "center",
-            borderRadius: "4px",
-            //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
-          }}
-          getTbodyProps={(state, rowInfo, column, instance) => {
-            return {
-              style: {
-                overflow: "overlay",
-                height: "700px"
+          <ReactTable 
+            style={{
+              width: "100%",
+              textAlign: "center",
+              borderRadius: "4px",
+              //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
+            }}
+            getTbodyProps={(state, rowInfo, column, instance) => {
+              return {
+                style: {
+                  overflow: "overlay",
+                  height: "700px"
+                }
               }
-            }
-          }}
-          getTdProps={(state, rowInfo, column) => {
-            return {
-              //onClick: () => console.log(rowInfo)
-            }
-          }}
-          loadingText={"טוען..."}
-          noDataText={"המידע לא נמצא"}
-          loading={pages[pageIndex].isFetching}
-          LoadingComponent={LoadingCircle}
-          defaultPageSize={50}
-          showPagination={true}
-          data={pages[pageIndex].data}
-          columns={this.generateHeaders()}
-          resizable={true}
-          minRows={0}
-        />
-      </div>
+            }}
+            getTdProps={(state, rowInfo, column) => {
+              return {
+                //onClick: () => console.log(rowInfo)
+              }
+            }}
+            loadingText={"טוען..."}
+            noDataText={"המידע לא נמצא"}
+            loading={pages[pageIndex].isFetching}
+            LoadingComponent={LoadingCircle}
+            defaultPageSize={50}
+            showPagination={true}
+            data={pages[pageIndex].data}
+            columns={this.generateHeaders()}
+            resizable={true}
+            minRows={0}
+          />
+        </WithTableWrapper>
+
+      </Fragment>
     );
   }
 
