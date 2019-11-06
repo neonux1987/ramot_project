@@ -141,8 +141,12 @@ class MonthExpansesLogic {
     // Using trx as a transaction object:
     const trx = await this.connection.transaction();
 
-
+    //get the month expanses object that about to be deleting
     const monthExpanseObj = await this.monthExpansesDao.getMonthExpansesByIdTrx(params.id, params.buildingName, trx);
+
+    //get all the month expanses by summarized section id
+    //in order to calculate the total outcome
+    const monthExpansesList = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(monthExpanseObj.summarized_section_id, params.buildingName, trx);
 
     console.log(monthExpanseObj);
     if (monthExpanseObj.length === 0) {
