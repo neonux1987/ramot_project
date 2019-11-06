@@ -6,15 +6,17 @@ import ReactSelect from '../../common/ReactSelect/ReactSelect';
 const styles = theme => ({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: "baseline",
-    width: "100%",
-    paddingTop: "7px"
+    justifyContent: 'center',
+    margin: "10px 0 30px"
   },
   textField: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
     width: 200,
+  },
+  codeTextField: {
+    width: "212px",
+    marginLeft: "0px"
   },
   textFieldNotes: {
     marginLeft: theme.spacing(),
@@ -28,7 +30,7 @@ const styles = theme => ({
     width: 200,
   },
   button: {
-    margin: theme.spacing()
+    margin: "8px 0 8px 8px"
   },
   inputLabel: {
     color: "#000"
@@ -221,6 +223,7 @@ class InputExpansesField extends Component {
       //onKeyPress={(event) => this.inputEnterPress(event)}
       onChange={this.formChangeHandler} >
       <ReactSelect
+        classes={{ root: this.props.classes.codeTextField }}
         inputValue={this.state.formInputs.code}
         onChangeHandler={this.reactSelectHandleChange}
         options={this.props.expansesCodes}
@@ -309,7 +312,15 @@ class InputExpansesField extends Component {
         אפס
   </Button>
 
-      <Button data-order="7" style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => this.props.submitData(this.state.formInputs, this.reset, this.state.isNew)} className={this.props.classes.button}>
+      <Button
+        data-order="7"
+        style={{ backgroundColor: "#439dd2" }}
+        name="submit"
+        variant="contained"
+        color="primary"
+        onClick={(event) => this.props.submitData(this.state.formInputs, this.reset, this.state.isNew)}
+        className={this.props.classes.button}
+      >
         שמור
   </Button>
 

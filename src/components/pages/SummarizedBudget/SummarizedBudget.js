@@ -1,17 +1,17 @@
-import React, { Component,Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import LoadingCircle from '../../common/LoadingCircle';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
+import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import summarizedBudgetActions from '../../../redux/actions/summarizedBudgetActions';
 import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
-import WithTableControlsWrapper from '../../HOC/WithTableControlsWrapper';
+import TableControls from '../../common/table/TableControls/TableControls';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import WithTableWrapper from '../../HOC/WithTableWrapper';
+import EditControls from '../../common/EditControls/EditControls';
 
 const FIXED_FLOAT = 2;
 
@@ -268,68 +268,80 @@ class SummarizedBudget extends Component {
 
         <Header
           title={headerTitle}
-          style={{ color: "#000",fontSize: "42px",fontWeight: "600" }}
+          style={{ color: "#000", fontSize: "42px", fontWeight: "600" }}
           subTitle={""}
         />
 
-        <WithTableWrapper>
-        <WithTableControlsWrapper>
-          <div style={{ paddingBottom: "10px" }}>
-            <PageControls
-              excel={{
-                data: pages[pageIndex].data,
-                fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
-                tabName: `שנה ${date.year}`
-              }}
-              print={{
-                title: headerTitle,
-                pageTitle: headerTitle + " - " + buildingName
-              }}
-              pageName={pageName}
-            />
-            <DatePicker
-              years={years}
-              date={date}
-              loadDataByDateHandler={this.loadSummarizedBudgetsByDate}
-              enableMonth={false}
-              enableYear={true}
-              enableQuarter={false}
-            />
-          </div>
-        </WithTableControlsWrapper>
+        <ReactTableContainer
+          style={{
+            width: "100%",
+            textAlign: "center",
+            borderRadius: "4px",
+            //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
+          }}
+          getTbodyProps={(state, rowInfo, column, instance) => {
+            return {
+              style: {
+                overflow: "overlay",
+                height: "700px"
+              }
+            }
+          }}
+          getTdProps={(state, rowInfo, column) => {
+            return {
+              //onClick: () => console.log(rowInfo)
+            }
+          }}
+          loadingText={"טוען..."}
+          noDataText={"המידע לא נמצא"}
+          loading={pages[pageIndex].isFetching}
+          LoadingComponent={LoadingCircle}
+          defaultPageSize={50}
+          showPagination={true}
+          data={pages[pageIndex].data}
+          columns={this.generateHeaders()}
+          resizable={true}
+          minRows={0}
+          headerControlsComponent={
+            <TableControls
 
-          <ReactTable 
-            style={{
-              width: "100%",
-              textAlign: "center",
-              borderRadius: "4px",
-              //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
-            }}
-            getTbodyProps={(state, rowInfo, column, instance) => {
-              return {
-                style: {
-                  overflow: "overlay",
-                  height: "700px"
-                }
+              rightPane={
+                <EditControls
+                  editMode={this.state.editMode}
+                  toggleEditMode={this.toggleEditMode}
+                  addNewMode={this.state.addNewMode}
+                  toggleAddNewMode={this.toggleAddNewMode}
+                />
               }
-            }}
-            getTdProps={(state, rowInfo, column) => {
-              return {
-                //onClick: () => console.log(rowInfo)
+
+              middlePane={
+                <DatePicker
+                  years={years}
+                  date={date}
+                  loadDataByDateHandler={this.loadSummarizedBudgetsByDate}
+                  enableMonth={false}
+                  enableYear={true}
+                  enableQuarter={false}
+                />
               }
-            }}
-            loadingText={"טוען..."}
-            noDataText={"המידע לא נמצא"}
-            loading={pages[pageIndex].isFetching}
-            LoadingComponent={LoadingCircle}
-            defaultPageSize={50}
-            showPagination={true}
-            data={pages[pageIndex].data}
-            columns={this.generateHeaders()}
-            resizable={true}
-            minRows={0}
-          />
-        </WithTableWrapper>
+
+              leftPane={<PageControls
+                excel={{
+                  data: pages[pageIndex].data,
+                  fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
+                  tabName: `שנה ${date.year}`
+                }}
+                print={{
+                  title: headerTitle,
+                  pageTitle: headerTitle + " - " + buildingName
+                }}
+                pageName={pageName}
+              />}
+
+            />
+          }
+        />
+
 
       </Fragment>
     );

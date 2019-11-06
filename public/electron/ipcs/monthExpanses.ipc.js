@@ -26,15 +26,16 @@ const monthExpansesIpc = (connection) => {
 
   ipcMain.on('add-new-month-expanse', (event, data) => {
     monthExpansesLogic.addNewMonthExpanse(data).then((result) => {
-      event.reply("month-expanse-added", result);
+      event.reply("month-expanse-added", { data: result });
     }).catch((err) => {
-      console.log(err)
+      console.log(err);
+      event.reply("month-expanse-updated", { error: error.message });
     });
 
   });
 
   ipcMain.on('delete-month-expanse', (event, data) => {
-    monthExpansesLogic.deleteMonthExpanse(data).then((result) => {
+    monthExpansesLogic.deleteMonthExpanseTrx(data).then((result) => {
       event.reply("month-expanse-deleted", { data: result });
     }).catch((error) => {
       event.reply("month-expanse-deleted", { error: error.message });

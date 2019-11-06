@@ -6,7 +6,6 @@ const styles = theme => ({
   navLinkHome: {
     display: "block",
     marginBottom: "10px",
-    width: "220px",
     paddingLeft: "9px",
     borderRadius: "4px"
   },

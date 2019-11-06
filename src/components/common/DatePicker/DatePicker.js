@@ -128,9 +128,7 @@ class DatePicker extends Component {
           {this.renderQuarter()}
           {this.renderYear()}
         </form>
-        <Button variant="contained" color="secondary" className={styles.button} onClick={() => this.props.loadDataByDateHandler(this.state.date)}
-
-        >
+        <Button variant="contained" color="secondary" className={styles.button} onClick={() => this.props.loadDataByDateHandler(this.state.date)}>
           טען
           </Button>
       </div>

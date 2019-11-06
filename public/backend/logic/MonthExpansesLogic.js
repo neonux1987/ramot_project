@@ -76,7 +76,7 @@ class MonthExpansesLogic {
         tax: expanse.tax,
         notes: expanse.notes
       };
-      await this.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx);
+      await this.monthExpansesDao.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx);
     }
 
     //get the total sum of expanses that are related
@@ -136,7 +136,20 @@ class MonthExpansesLogic {
 
   }
 
-  deleteMonthExpanse(params) {
+  async deleteMonthExpanseTrx(params) {
+
+    // Using trx as a transaction object:
+    const trx = await this.connection.transaction();
+
+
+    const monthExpanseObj = await this.monthExpansesDao.getMonthExpansesByIdTrx(params.id, params.buildingName, trx);
+
+    console.log(monthExpanseObj);
+    if (monthExpanseObj.length === 0) {
+
+      throw new Error("משהו קרה");
+    }
+
     return this.monthExpansesDao.deleteMonthExpanse(params);
   }
 

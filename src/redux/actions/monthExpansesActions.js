@@ -68,7 +68,6 @@ const generateEmptyReport = (params, dispatch) => {
         }
       });
     } else {
-      console.log(arg);
       //empty report process finished
       toast.update(toastId, {
         render: <ToastRender done={true} message={"דוח חודש חדש נוצר בהצלחה."} />,
