@@ -1,9 +1,62 @@
-.wrapper{
-  width: 24%;
+.infoBox{
+  width: 24.24%;
   min-height: 150px;
-  margin: 0 1%;
-  padding: 10px;
-  background: #f1f1f1;
+  margin: 0 0 0 1%;
+  background: #ffffff;
   display: inline-block;
+  height: 160px;
+  border-radius: 4px;
+}
+
+.infoBox:first-child{
+  margin-right: 0;
+}
+
+.infoBox:last-child{
+  margin-left: 0;
+}
+
+.infoBox .header{
+  background-color: initial;
   box-shadow: initial;
+  border-radius: initial;
+  padding: 5px 3px 20px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.header .title{
+  color: #323a3c;
+/*   border-bottom: 1px solid #e0e0e0; */
+
+}
+
+.infoBox .body{
+  background-color: initial;
+    box-shadow: initial;
+    border-radius: initial;
+    display: flex;
+}
+
+.body .expansesTitle{
+  color: #323a3c;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.content{
+  width: 50%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.alignCenter{
+  text-align: center;
+}
+
+.fontSize20{
+  font-size: 20px;
 }

@@ -19,6 +19,7 @@ import quarterTotalActions from '../../../redux/actions/quarterTotalActions';
 import { Typography } from '@material-ui/core';
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import Header from '../../layout/main/Header';
+import Section from '../../common/Section/Section';
 
 const FIXED_FLOAT = 2;
 
@@ -280,14 +281,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(139, 100, 202)",
+          background: "#6057ec",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[0].column1.accessor,
             Header: months[0].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(139, 100, 202)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#6057ec", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -296,7 +297,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(139, 100, 202)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#6057ec", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -306,14 +307,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(44, 153, 206)",
+          background: "rgb(56, 138, 195)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[1].column1.accessor,
             Header: months[1].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(44, 153, 206)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(56, 138, 195)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -322,7 +323,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[1].column2.accessor,
             Header: months[1].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(44, 153, 206)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(56, 138, 195)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -332,14 +333,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(79, 177, 123)",
+          background: "rgb(99, 171, 168)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(79, 177, 123)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(99, 171, 168)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -348,7 +349,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(79, 177, 123)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(99, 171, 168)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -452,6 +453,35 @@ class BudgetExecution extends Component {
     })
   };
 
+  generateStatsComponents(list, isFetching, quarter) {
+
+    //list of names of all the months in a specific quarter
+    const quarterMonths = Helper.getQuarterMonths(quarter);
+
+    for (let i = 0; i < quarterMonths.length; i++) {
+
+      //render loading if still fetching the stats
+      if (isFetching) {
+        list[i] = <div key={i} /* className={styles.loadingWrapper} */><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני חודש ${title}`} size={20} /></div>;
+      } else {
+
+        let {
+          month,
+          outcome,
+          income
+        } = props.monthStats[i];
+
+        outcome = props.monthStats[i] ? outcome : 0;
+        income = props.monthStats[i] ? income : 0;
+
+        renderMonthStatsBoxes[i] = <StatBox key={i} title={month} outcome={`${outcome} ${shekelUnicode}`} income={`${income} ${Helper.shekelUnicode}`} />;
+
+      }
+
+    }
+
+  }
+
   render() {
     const {
       pageName,
@@ -483,95 +513,95 @@ class BudgetExecution extends Component {
           subTitle={""}
         />
 
-        <Typography variant="h5" style={{ fontSize: "18px" }} gutterBottom>
-          סיכום הוצאות והכנסות
-          </Typography>
+        <Section title={"סיכום הוצאות והכנסות"}>
+          <Stats
+            monthStats={this.props.monthTotal.monthTotal.data}
+            quarterStats={this.props.quarterTotal.quarterTotal.data}
+            quarter={date.quarter}
+            isFetchingMonthStats={this.props.monthTotal.monthTotal.isFetching}
+            isFetchingQuarterStats={this.props.quarterTotal.quarterTotal.isFetching}
+          />
+        </Section>
 
-        <Stats
-          monthStats={this.props.monthTotal.monthTotal.data}
-          quarterStats={this.props.quarterTotal.quarterTotal.data}
-          quarter={date.quarter}
-          isFetchingMonthStats={this.props.monthTotal.monthTotal.isFetching}
-          isFetchingQuarterStats={this.props.quarterTotal.quarterTotal.isFetching}
-        />
 
-        <Typography variant="h5" style={{ fontSize: "18px", marginTop: "20px" }} gutterBottom>
-          טבלת מעקב וביצוע
-          </Typography>
 
-        <ReactTableContainer id={"react-table"} className="-highlight"
-          style={{
-            width: "100%",
-            textAlign: "center",
-            borderRadius: "4px",
-            //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
-          }}
-          getTbodyProps={(state, rowInfo, column, instance) => {
-            return {
-              style: {
-                overflow: "overlay",
-                height: "630px"
+        <Section title={"טבלת מעקב וביצוע"}>
+          <ReactTableContainer id={"react-table"} className="-highlight"
+            style={{
+              width: "100%",
+              textAlign: "center",
+              borderRadius: "4px",
+              //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
+            }}
+            getTbodyProps={(state, rowInfo, column, instance) => {
+              return {
+                style: {
+                  overflow: "overlay",
+                  height: "630px"
+                }
               }
+            }}
+            getTdProps={(state, rowInfo, column) => {
+              return {
+                //onClick: () => console.log(rowInfo)
+              }
+            }}
+            loadingText={"טוען..."}
+            noDataText={"המידע לא נמצא"}
+            loading={pages[pageIndex].isFetching}
+            LoadingComponent={LoadingCircle}
+            defaultPageSize={100}
+            showPagination={true}
+            data={pages[pageIndex].data}
+            columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
+            resizable={true}
+            //minRows={0}
+            headerControlsComponent={
+              <TableControls
+                rightPane={
+                  <EditControls
+                    editMode={this.state.editMode}
+                    toggleEditMode={this.toggleEditMode}
+                    addNewMode={this.state.addNewMode}
+                    toggleAddNewMode={this.toggleAddNewMode}
+                  />
+                }
+                middlePane={
+                  <DatePicker
+                    years={years}
+                    quarters={quarters}
+                    date={date}
+                    loadDataByDateHandler={this.loadBudgetExecutionsByDate}
+                    enableMonth={false}
+                    enableYear={true}
+                    enableQuarter={true}
+                  />
+                }
+                leftPane={
+                  <PageControls
+                    excel={{
+                      data: [...pages[pageIndex].data],
+                      fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+                      sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
+                      header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
+                      date: date
+                    }}
+                    print={{
+                      title: headerTitle,
+                      pageTitle: headerTitle + " - " + buildingName
+                    }}
+                    pageName={pageName}
+                  />
+                }
+
+              />
             }
-          }}
-          getTdProps={(state, rowInfo, column) => {
-            return {
-              //onClick: () => console.log(rowInfo)
-            }
-          }}
-          loadingText={"טוען..."}
-          noDataText={"המידע לא נמצא"}
-          loading={pages[pageIndex].isFetching}
-          LoadingComponent={LoadingCircle}
-          defaultPageSize={100}
-          showPagination={true}
-          data={pages[pageIndex].data}
-          columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
-          resizable={true}
-          //minRows={0}
-          headerControlsComponent={
-            <TableControls
-              rightPane={
-                <EditControls
-                  editMode={this.state.editMode}
-                  toggleEditMode={this.toggleEditMode}
-                  addNewMode={this.state.addNewMode}
-                  toggleAddNewMode={this.toggleAddNewMode}
-                />
-              }
-              middlePane={
-                <DatePicker
-                  years={years}
-                  quarters={quarters}
-                  date={date}
-                  loadDataByDateHandler={this.loadBudgetExecutionsByDate}
-                  enableMonth={false}
-                  enableYear={true}
-                  enableQuarter={true}
-                />
-              }
-              leftPane={
-                <PageControls
-                  excel={{
-                    data: [...pages[pageIndex].data],
-                    fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-                    sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
-                    header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
-                    date: date
-                  }}
-                  print={{
-                    title: headerTitle,
-                    pageTitle: headerTitle + " - " + buildingName
-                  }}
-                  pageName={pageName}
-                />
-              }
+          >
 
-            />
-          }
-        >
+          </ReactTableContainer>
+        </Section>
 
-        </ReactTableContainer>
+
 
       </div>
     );

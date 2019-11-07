@@ -198,9 +198,11 @@ class Sidebar extends Component {
 
   };
 
+  //======================= componentWillUnmount ======================= //
   componentWillUnmount() {
     this._isMounted = false;
   }
+  //======================= end componentWillUnmount ======================= //
 
   render() {
     const { sidebar, showSidebar } = this.props.sidebar;

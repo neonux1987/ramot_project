@@ -25,7 +25,7 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
     fontFamily: [
-      'NotoSans',
+      'Rubik',
       'sans-serif'
     ].join(',')
   }

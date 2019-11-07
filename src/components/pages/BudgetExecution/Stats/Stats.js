@@ -5,6 +5,7 @@ import styles from './Stats.module.css';
 import utilStyles from '../../../../assets/css/util.module.css';
 import Helper from '../../../../helpers/Helper';
 import Spinner from '../../../common/Spinner/Spinner';
+import StatBox from '../../../common/InfoBox/StatBox';
 
 export default (props) => {
 
@@ -17,62 +18,26 @@ export default (props) => {
   //list of strings of qurter months
   const quarterMonths = Helper.getQuarterMonths(props.quarter);
 
-  //the colors for the text of the month titles
-  const monthColors = ["#000", "#000", "#000", "#000"];
-
   //unicode shekel icon
   const shekelUnicode = '\u20AA';
 
   for (let i = 0; i < quarterMonths.length; i++) {
-    
+
     //render loading if still fetching the stats
     if (props.isFetchingMonthStats) {
       renderMonthStatsBoxes[i] = <div key={i} className={styles.loadingWrapper}><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני חודש ${Helper.convertEngToHebMonth(quarterMonths[i])}`} size={20} /></div>;
     } else {
 
-      const monthTitle = Helper.convertEngToHebMonth(props.monthStats[i] ? props.monthStats[i].month : quarterMonths[i]);
-      const outcome = props.monthStats[i] ? props.monthStats[i].outcome : 0;
-      const income = props.monthStats[i] ? props.monthStats[i].income : 0;
+      let {
+        month,
+        outcome,
+        income
+      } = props.monthStats[i];
 
-      renderMonthStatsBoxes[i] = <InfoBox key={i} wrapper={styles.infoBox} boxColor={boxColor}>
-        {/* header */}
-        <div className={styles.header} elevation={1}>
-          {/* header title */}
-          <Typography variant="h6" style={{ color: monthColors[i] }} className={styles.title} gutterBottom>
-            {monthTitle}
-          </Typography>
-          {/* header faded line */}
-          <span data-line={200} className={utilStyles.fadingLine}></span>
-        </div>
+      outcome = props.monthStats[i] ? outcome : 0;
+      income = props.monthStats[i] ? income : 0;
 
-        {/* body */}
-        <div className={styles.body}>
-          {/* income */}
-          <div className={styles.content}>
-            <div className={styles.alignCenter}>
-              <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-                <span className={styles.fontSize20} style={{ color: "rgb(53, 154, 109)" }}>{income} {shekelUnicode}</span>
-              </Typography>
-              <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-                הכנסות
-            </Typography>
-            </div>
-          </div>
-
-          {/* outcome */}
-          <div className={styles.content}>
-            <div className={styles.alignCenter}>
-              <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-                <span className={styles.fontSize20} style={{ color: "rgb(232, 46, 106)" }}>{outcome} {shekelUnicode}</span>
-              </Typography>
-              <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-                הוצאות
-              </Typography>
-            </div>
-          </div>
-
-        </div>
-      </InfoBox>;
+      renderMonthStatsBoxes[i] = <StatBox key={i} title={month} outcome={`${outcome} ${shekelUnicode}`} income={`${income} ${shekelUnicode}`} />;
 
     }
 

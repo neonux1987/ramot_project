@@ -1,4 +1,5 @@
 const { quarter1, quarter2, quarter3, quarter4, budget_summarized_headers } = require('./Headers');
+export const shekelUnicode = '\u20AA';
 
 class Helper {
 
