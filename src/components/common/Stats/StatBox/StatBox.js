@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@material-ui/core';
-import styles from './InfoBox.module.css';
-import utilStyles from '../../../assets/css/util.module.css';
+import styles from './StatBox.module.css';
+import utilStyles from '../../../../assets/css/util.module.css';
 
 export default ({ title, income, outcome, unicodeSymbol }) => {
 
@@ -36,7 +36,7 @@ export default ({ title, income, outcome, unicodeSymbol }) => {
         <div className={styles.content}>
           <div className={styles.alignCenter}>
             <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
-              <span className={styles.fontSize20} style={{ color: "rgb(232, 46, 106)" }}>{outcome} {unicodeSymbol}</span>
+              <span className={styles.fontSize20} style={{ color: "rgb(255, 55, 92)" }}>{outcome} {unicodeSymbol}</span>
             </Typography>
             <Typography variant="subtitle2" className={styles.expansesTitle} gutterBottom>
               הוצאות

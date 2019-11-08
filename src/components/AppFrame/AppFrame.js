@@ -1,20 +1,21 @@
 import React from 'react';
 import styles from './AppFrame.module.css';
+import classnames from 'classnames';
+import { Minimize, CheckBoxOutlineBlank, Close } from '@material-ui/icons';
 
 export default ({ handlers }) => {
   return (
     <div className={styles.appFrame}>
-      <div className={styles.section + " " + styles.header}>
-        <span>NDT Solutions</span> - <span>מערכת לניהול דוחות דוחות</span>
+      <div className={styles.section}>
+        <div className={styles.header}>
+        {/* <span>NDTS</span>&nbsp; */}<span>מערכת לניהול דוחות כספיים</span>
+        </div>
       </div>
-      <div className={styles.middleSection + " " + styles.header2}>
-        <span></span>
-      </div>
-      <div style={{ float: "left" }} className={styles.section}>
+      <div className={styles.section}>
         <div className={styles.controls}>
-          <button onClick={handlers.minimize}>-</button>
-          <button onClick={handlers.maximize}>+</button>
-          <button onClick={handlers.close}>x</button>
+          <button className={styles.button} onClick={handlers.minimize}><Minimize /></button>
+          <button className={styles.button} onClick={handlers.maximize}><CheckBoxOutlineBlank /></button>
+          <button className={classnames(styles.button,styles.close)} onClick={handlers.close}><Close /></button>
         </div>
       </div>
     </div>

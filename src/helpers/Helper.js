@@ -1,7 +1,9 @@
 const { quarter1, quarter2, quarter3, quarter4, budget_summarized_headers } = require('./Headers');
-export const shekelUnicode = '\u20AA';
 
 class Helper {
+
+  //consts
+  static shekelUnicode = '\u20AA';
 
   static trimSpaces(name) {
     return name.replace(new RegExp(" ", 'g'), "_");
@@ -359,10 +361,10 @@ class Helper {
 
   static getQuarterMonths(quarter) {
     switch (quarter) {
-      case 1: return ["january", "february", "march"]
-      case 2: return ["april", "may", "june"]
-      case 3: return ["july", "august", "september"]
-      case 4: return ["october", "november", "december"]
+      case 1: return ["ינואר", "פברואר", "מרץ"]
+      case 2: return ["אפריל", "מאי", "יוני"]
+      case 3: return ["יולי", "אוגוסט", "ספטמבר"]
+      case 4: return ["אוקטובר", "נובמבר", "דצמבר"]
       default: return null
     }
   }

@@ -13,13 +13,15 @@ import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import Stats from './Stats/Stats';
+//import Stats from './Stats/Stats';
 import monthTotalActions from '../../../redux/actions/monthTotalActions';
 import quarterTotalActions from '../../../redux/actions/quarterTotalActions';
-import { Typography } from '@material-ui/core';
+import StatBox from '../../common/Stats/StatBox/StatBox';
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import Header from '../../layout/main/Header';
 import Section from '../../common/Section/Section';
+import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
+import Stats from '../../common/Stats/Stats';
 
 const FIXED_FLOAT = 2;
 
@@ -102,12 +104,12 @@ class BudgetExecution extends Component {
     if (title === "difference") {
       if (value < 0) {
         colored.color = "#fff";
-        colored.background = "rgb(232, 46, 106)";
+        colored.background = "rgb(234, 70, 70)";
       } else if (value > 0) {
         colored.color = "#fff";
-        colored.background = "rgb(18, 195, 118)";
+        colored.background = "rgb(129, 199, 74)";
       } else {
-        colored.background = "rgb(248, 251, 75)";
+        colored.background = "rgb(236, 249, 54)";
       }
     }
 
@@ -307,14 +309,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(56, 138, 195)",
+          background: "#4e89d4",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[1].column1.accessor,
             Header: months[1].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(56, 138, 195)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#4e89d4", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -323,7 +325,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[1].column2.accessor,
             Header: months[1].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(56, 138, 195)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "#4e89d4", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -333,14 +335,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(99, 171, 168)",
+          background: "rgb(60, 160, 199)",
           color: "#fff"
         },
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(99, 171, 168)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(60, 160, 199)", fontWeight: "600" },
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -349,7 +351,7 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(99, 171, 168)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(60, 160, 199)", fontWeight: "600" },
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -371,14 +373,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(255, 55, 92)",
+          background: "rgb(234, 70, 107)",//rgb(255, 55, 92)
           color: "#fff"
         },
         columns: [
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(255, 55, 92)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(234, 70, 107)", fontWeight: "600" },
             Cell: this.cell,
             style: {
               padding: 0
@@ -387,7 +389,7 @@ class BudgetExecution extends Component {
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(255, 55, 92)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(234, 70, 107)", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -453,33 +455,54 @@ class BudgetExecution extends Component {
     })
   };
 
-  generateStatsComponents(list, isFetching, quarter) {
+  /******************************************************************
+   * generates month stats
+   * @param {*} monthStats list of month stats
+   * @param {*} quarter the quarter which the months belong to
+   * @param {*} isFetching if the data is fetching
+   ******************************************************************/
+  generateMonthStats(monthStats,quarter, isFetching) {
 
-    //list of names of all the months in a specific quarter
+    // list of strings of qurter months
     const quarterMonths = Helper.getQuarterMonths(quarter);
+
+    // where the boxes will be stored fo render
+    const returnStats = [];
 
     for (let i = 0; i < quarterMonths.length; i++) {
 
-      //render loading if still fetching the stats
+      // render loading if still fetching the stats
       if (isFetching) {
-        list[i] = <div key={i} /* className={styles.loadingWrapper} */><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני חודש ${title}`} size={20} /></div>;
+        returnStats[i] = <StatLoadingBox key={i} title={`טוען נתוני חודש ${quarterMonths[i]}`} />;
       } else {
 
-        let {
-          month,
-          outcome,
-          income
-        } = props.monthStats[i];
+        returnStats[i] = <StatBox 
+          key={i} 
+          title={monthStats[i].month} 
+          outcome={`${monthStats[i].outcome} ${Helper.shekelUnicode}`} 
+          income={`${monthStats[i].income} ${Helper.shekelUnicode}`} 
+        />;
 
-        outcome = props.monthStats[i] ? outcome : 0;
-        income = props.monthStats[i] ? income : 0;
+      } 
 
-        renderMonthStatsBoxes[i] = <StatBox key={i} title={month} outcome={`${outcome} ${shekelUnicode}`} income={`${income} ${Helper.shekelUnicode}`} />;
+    } // end loop
 
-      }
+    return returnStats;
 
+  }
+
+  generateQuarterStats(quarterStat,quarter, isFetching) {
+    //render loading if still fetching the stats
+    if (isFetching) {
+      return <StatLoadingBox key={3} title={`טוען נתוני סוף רבעון ${quarter}`} />
+    } else {
+      return <StatBox 
+        key={3} 
+        title={`רבעון ${quarterStat.quarter}`} 
+        outcome={`${quarterStat.outcome} ${Helper.shekelUnicode}`} 
+        income={`${quarterStat.income} ${Helper.shekelUnicode}`} 
+        />;
     }
-
   }
 
   render() {
@@ -489,21 +512,39 @@ class BudgetExecution extends Component {
       pages,
       pageIndex
     } = this.props.budgetExecution;
+
+    // building name
     const buildingName = this.props.location.state.buildingName;
+
     if (pages.length === 0 ||
       pages[pageIndex] === undefined ||
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
-    const {
-      date
-    } = pages[pageIndex];
+
+    //date
+    const { date } = pages[pageIndex];
 
     //used for date picker
     const quarters = this.props.registeredQuarters.registeredQuarters.data;
 
     //used for date picker
     const years = this.props.registeredYears.registeredYears.data;
+
+    //month stats
+    const {monthTotal} = this.props.monthTotal;
+
+    //month stats
+    const {quarterTotal} = this.props.quarterTotal;
+
+    //month stats generated components
+    const monthStats = this.generateMonthStats(monthTotal.data,date.quarter,monthTotal.isFetching);
+
+    //quarter stats generated components
+    const quarterStats = this.generateQuarterStats(quarterTotal.data[0],date.quarter,quarterTotal.isFetching);
+
+    //combine stats
+    monthStats.push(quarterStats);
 
     return (
       <div>
@@ -514,16 +555,8 @@ class BudgetExecution extends Component {
         />
 
         <Section title={"סיכום הוצאות והכנסות"}>
-          <Stats
-            monthStats={this.props.monthTotal.monthTotal.data}
-            quarterStats={this.props.quarterTotal.quarterTotal.data}
-            quarter={date.quarter}
-            isFetchingMonthStats={this.props.monthTotal.monthTotal.isFetching}
-            isFetchingQuarterStats={this.props.quarterTotal.quarterTotal.isFetching}
-          />
+          <Stats stats={monthStats} />
         </Section>
-
-
 
         <Section title={"טבלת מעקב וביצוע"}>
           <ReactTableContainer id={"react-table"} className="-highlight"

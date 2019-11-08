@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles, Paper, Typography } from '@material-ui/core';
-import InfoBox from '../../common/InfoBox/InfoBox';
+//import InfoBox from '../../common/InfoBox/InfoBox';
 import styles from './Home.module.css';
 
 class Home extends Component {
@@ -15,7 +15,7 @@ class Home extends Component {
     return (
       <div className={styles.wrapper}>
 
-        <InfoBox wrapper={styles.infoBox} boxColor={"#f94c4c"}>
+        {/* <InfoBox wrapper={styles.infoBox} boxColor={"#f94c4c"}>
           <Paper className={styles.header} elevation={1}>
             <Typography variant="h5" className={styles.title} gutterBottom>
               לב תל אביב
@@ -69,7 +69,7 @@ class Home extends Component {
               סה"כ הוצאות: 33,456 שקל
         </Typography>
           </Paper>
-        </InfoBox>
+        </InfoBox> */}
 
       </div>
     );
