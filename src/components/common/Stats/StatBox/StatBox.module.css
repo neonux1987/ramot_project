@@ -1,10 +1,9 @@
 .infoBox{
-  width: 24.24%;
-  min-height: 150px;
-  margin: 0 0 0 1%;
   background: #ffffff;
-  height: 160px;
-  border-radius: 4px;
+    height: 160px;
+    border-radius: 4px;
+    flex: 1;
+    margin: 0 0 0 15px;
 }
 
 .infoBox:first-child{

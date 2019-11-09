@@ -20,6 +20,7 @@ import Section from '../../common/Section/Section';
 import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
 import Stats from '../../common/Stats/Stats';
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
+import TotalStatsFetcher from '../../dataFetchers/TotalStatsFetcher';
 
 const FIXED_FLOAT = 2;
 
@@ -98,7 +99,7 @@ class BudgetExecution extends Component {
         colored.color = "#fff";
         colored.background = "rgb(72, 187, 91)";
       } else {
-        colored.background = "rgb(238, 255, 0)";
+        colored.background = "rgb(242, 255, 59)";
       }
     }
 
@@ -362,14 +363,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(234, 70, 70)",//rgb(255, 55, 92)
+          background: "rgb(232, 87, 87)",//rgb(255, 55, 92)
           color: "#fff"
         },
         columns: [
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(234, 70, 70)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(232, 87, 87)", fontWeight: "600" },
             Cell: this.cell,
             style: {
               padding: 0
@@ -378,7 +379,7 @@ class BudgetExecution extends Component {
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(234, 70, 70)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(232, 87, 87)", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -538,7 +539,15 @@ class BudgetExecution extends Component {
         />
 
         <Section title={"סיכום הוצאות והכנסות"}>
-          <Stats stats={monthStats} />
+          <TotalStatsFetcher fetchMonthStats fetchQuarterStats>
+            {({ monthStats, quarterStats }) => {
+              //generate quarter months stats
+              const renderMonthStats = this.generateMonthStats(monthStats.data, date.quarter, monthStats.isFetching);
+              //generate quarter total stats
+              renderMonthStats.push(this.generateQuarterStats(quarterStats.data[0], date.quarter, quarterStats.isFetching))
+              return <Stats stats={renderMonthStats} />;
+            }}
+          </TotalStatsFetcher>
         </Section>
 
         <Section title={"טבלת מעקב וביצוע"}>
