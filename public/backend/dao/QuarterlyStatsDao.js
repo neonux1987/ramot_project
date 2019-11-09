@@ -1,29 +1,42 @@
-class QuarterTotalBudgetExpansesDao {
+class QuarterlyStatsDao {
 
   constructor(connection) {
     this.connection = connection;
   }
 
-  getQuarterTotalTrx(
+  getQuarterStatsTrx(
     buildingName = String,
     date = Object,
     trx = this.connection
   ) {
     return trx("*")
       .where({ year: date.year, quarter: date.quarter })
-      .from(`${buildingName}_quarter_total`)
+      .from(`${buildingName}_quarterly_stats`)
       .catch((error) => {
         throw error;
       });
   }
 
-  updateQuarterTotalTrx(
+  getAllQuartersStatsByYearTrx(
+    buildingName = String,
+    date = Object,
+    trx = this.connection
+  ) {
+    return trx("*")
+      .where({ year: date.year })
+      .from(`${buildingName}_quarterly_stats`)
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  updateQuarterStatsTrx(
     buildingName = String,
     date = Object,
     data = Object,
     trx = this.connection
   ) {
-    return trx(`${buildingName}_quarter_total`)
+    return trx(`${buildingName}_quarterly_stats`)
       .where({ year: date.year, quarter: date.quarter })
       .update(data)
       .catch((error) => {
@@ -31,12 +44,12 @@ class QuarterTotalBudgetExpansesDao {
       });
   }
 
-  insertQuartertotal(
+  insertQuarterStats(
     buildingName = String,
     data = Object,
     trx = this.connection
   ) {
-    return trx(buildingName + "_quarter_total").insert(data)
+    return trx(buildingName + "_quarterly_stats").insert(data)
       .catch((error) => {
         throw error;
       });
@@ -44,4 +57,4 @@ class QuarterTotalBudgetExpansesDao {
 
 }
 
-module.exports = QuarterTotalBudgetExpansesDao;
+module.exports = QuarterlyStatsDao;

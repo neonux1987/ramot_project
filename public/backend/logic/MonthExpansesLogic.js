@@ -1,7 +1,7 @@
 const MonthExpansesDao = require('../dao/MonthExpansesDao');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
-const MonthTotalLogic = require('../logic/MonthTotalLogic');
+const MonthStatsLogic = require('../logic/MonthStatsLogic');
 const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const Helper = require('../../helpers/Helper');
@@ -14,7 +14,7 @@ class MonthExpansesLogic {
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
     this.budgetExecutionLogic = new BudgetExecutionLogic(connection);
     this.registeredMonthsLogic = new RegisteredMonthsLogic(connection);
-    this.monthTotalLogic = new MonthTotalLogic(connection);
+    this.monthStatsLogic = new MonthStatsLogic(connection);
     this.generalSettingsLogic = new GeneralSettingsLogic(connection);
   }
 

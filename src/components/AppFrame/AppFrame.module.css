@@ -29,6 +29,7 @@
   font-size: 14px;
   display: flex;
   font-weight: 600;
+  padding-right: 4px;
 }
 
 .bold{
@@ -38,6 +39,7 @@
 .controls{
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
+  display: flex;
 }
 
 .button{

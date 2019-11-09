@@ -1,7 +1,7 @@
 const Helper = require('../../helpers/Helper');
 const SummarizedBudgetDao = require('../dao/SummarizedBudgetDao');
 const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
-const YearTotalLogic = require('../logic/YearTotalLogic');
+const YearlyStatsLogic = require('../logic/YearlyStatsLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
 
@@ -11,7 +11,7 @@ class SummarizedBudgetLogic {
     this.connection = connection;
     this.sbd = new SummarizedBudgetDao(connection);
     this.registeredYearsLogic = new RegisteredYearsLogic(connection);
-    this.yearTotalLogic = new YearTotalLogic(connection);
+    this.yearlyStatsLogic = new YearlyStatsLogic(connection);
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
     this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
   }
@@ -34,12 +34,12 @@ class SummarizedBudgetLogic {
 
     const allSummarizedBudgets = await this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
 
-    const yearTotal = this.prepareYearTotal(allSummarizedBudgets);
+    const yearStats = this.prepareYearStats(allSummarizedBudgets);
 
-    //update year total execution
-    const returnedPromise = await this.yearTotalLogic.updateYearTotalTrx(buildingName, date, {
-      outcome: yearTotal.year_total_execution,
-      income: yearTotal.year_total_budget
+    //update year stats
+    const returnedPromise = await this.yearlyStatsLogic.updateYearStatsTrx(buildingName, date, {
+      outcome: yearStats.year_total_execution,
+      income: yearStats.year_total_budget
     }, trx);
 
     //commit changes
@@ -49,7 +49,7 @@ class SummarizedBudgetLogic {
 
   }
 
-  prepareYearTotal(allSummarizedBudgets) {
+  prepareYearStats(allSummarizedBudgets) {
 
     let year_total_execution = 0;
     let year_total_budget = 0;
@@ -133,7 +133,7 @@ class SummarizedBudgetLogic {
     }
 
     //insert empty month total row
-    await this.yearTotalLogic.insertYeartotal(buildingName, {
+    await this.yearlyStatsLogic.insertYearStatsTrx(buildingName, {
       year: date.year,
       income: 0,
       outcome: 0

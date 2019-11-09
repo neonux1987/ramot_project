@@ -1,42 +1,42 @@
-class MonthTotalBudgetExpansesDao {
+class MonthlyStatsDao {
 
   constructor(connection) {
     this.connection = connection;
   }
 
-  getMonthTotalTrx(
+  getMonthStatsTrx(
     buildingName = String,
     date = Object,
     trx = this.connection
   ) {
     return trx("*")
       .where({ year: date.year, month: date.month })
-      .from(`${buildingName}_month_total`)
+      .from(`${buildingName}_monthly_stats`)
       .catch((error) => {
         throw error;
       });
   }
 
-  getAllMonthsTotalByQuarterTrx(
+  getAllMonthsStatsByQuarterTrx(
     buildingName = String,
     date = Object,
     trx = this.connection
   ) {
     return trx("*")
       .where({ year: date.year, quarter: date.quarter })
-      .from(`${buildingName}_month_total`)
+      .from(`${buildingName}_monthly_stats`)
       .catch((error) => {
         throw error;
       });
   }
 
-  updateMonthTotalTrx(
+  updateMonthStatsTrx(
     buildingName = String,
     date = Object,
     data = Object,
     trx = this.connection
   ) {
-    return trx(`${buildingName}_month_total`)
+    return trx(`${buildingName}_monthly_stats`)
       .where({ year: date.year, month: date.month })
       .update(data)
       .catch((error) => {
@@ -44,12 +44,12 @@ class MonthTotalBudgetExpansesDao {
       });
   }
 
-  insertMonthtotal(
+  insertMonthStats(
     buildingName = String,
     data = Object,
     trx = this.connection
   ) {
-    return trx(buildingName + "_month_total").insert(data)
+    return trx(buildingName + "_monthly_stats").insert(data)
       .catch((error) => {
         throw error;
       });
@@ -60,7 +60,7 @@ class MonthTotalBudgetExpansesDao {
     rows,
     trx
   ) {
-    return trx.batchInsert(`${buildingName}_month_total`, rows, rows.length)
+    return trx.batchInsert(`${buildingName}_monthly_stats`, rows, rows.length)
       .catch((error) => {
         throw error;
       });
@@ -69,4 +69,4 @@ class MonthTotalBudgetExpansesDao {
 
 }
 
-module.exports = MonthTotalBudgetExpansesDao;
+module.exports = MonthlyStatsDao;

@@ -539,12 +539,14 @@ class BudgetExecution extends Component {
         />
 
         <Section title={"סיכום הוצאות והכנסות"}>
-          <TotalStatsFetcher fetchMonthStats fetchQuarterStats>
-            {({ monthStats, quarterStats }) => {
+          <TotalStatsFetcher fetchQuarterMonthsStats fetchQuarterTotalStats params={{
+              buildingName: buildingNameEng
+            }}>
+            {({ quarterMonthsStats, quarterTotalStats }) => {
               //generate quarter months stats
-              const renderMonthStats = this.generateMonthStats(monthStats.data, date.quarter, monthStats.isFetching);
+              const renderMonthStats = this.generateMonthStats(quarterMonthsStats.data, date.quarter, quarterMonthsStats.isFetching);
               //generate quarter total stats
-              renderMonthStats.push(this.generateQuarterStats(quarterStats.data[0], date.quarter, quarterStats.isFetching))
+              renderMonthStats.push(this.generateQuarterStats(quarterTotalStats.data[0], date.quarter, quarterTotalStats.isFetching))
               return <Stats stats={renderMonthStats} />;
             }}
           </TotalStatsFetcher>

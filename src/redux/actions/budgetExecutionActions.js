@@ -5,7 +5,7 @@ import registeredQuartersActions from './registeredQuartersActions';
 import registeredYearsActions from './registeredYearsActions';
 import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
-import monthTotalActions from './monthTotalActions';
+import monthlyStatsActions from './monthlyStatsActions';
 import quarterTotalActions from './quarterTotalActions';
 
 const TOAST_AUTO_CLOSE = 3000;
@@ -242,7 +242,7 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
         dispatch(updateSingleBudgetExecution(oldBudgetExec, index));
 
         //rollback to the old month total stats
-        dispatch(monthTotalActions.updateSingleMonthTotal(oldMonthTotalObj, monthTotalIndex));
+        dispatch(monthlyStatsActions.updateSingleMonthTotal(oldMonthTotalObj, monthTotalIndex));
 
         //rollback to old quarter total
       dispatch(quarterTotalActions.updateSingleQuarterTotal(quarterTotalOld));

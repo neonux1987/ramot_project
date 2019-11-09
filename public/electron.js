@@ -1,5 +1,10 @@
+//========================= electron imports =========================//
 const { app, BrowserWindow } = require('electron');
+
+//========================= my db config imports =========================//
 const createDBConnection = require('./backend/dao/connection/dbconfig');
+
+//========================= my ipc's imports =========================//
 const monthExpansesIpc = require('./electron/ipcs/monthExpanses.ipc');
 const budgetExecutionIpc = require('./electron/ipcs/budgetExecution.ipc');
 const summarizedBudgetIpc = require('./electron/ipcs/SummarizedBudget.ipc');
@@ -10,13 +15,16 @@ const generalSettingsIpc = require('./electron/ipcs/generalSettings.ipc');
 const registeredMonthsIpc = require('./electron/ipcs/registeredMonths.ipc');
 const registeredYearsIpc = require('./electron/ipcs/registeredYears.ipc');
 const registeredQuartersIpc = require('./electron/ipcs/registeredQuarters.ipc');
-const monthTotalIpc = require('./electron/ipcs/monthTotal.ipc');
-const quarterTotalIpc = require('./electron/ipcs/quarterTotal.ipc');
+const monthlyStatsIpc = require('./electron/ipcs/monthlyStats.ipc');
+const quarterlyStatsIpc = require('./electron/ipcs/quarterlyStats.ipc');
+const yearlyStatsIpc = require('./electron/ipcs/yearlyStats.ipc');
 const IOIpc = require('./electron/ipcs/IO.ipc');
 const settingsIpc = require('./electron/ipcs/settings.ipc');
 const contextMenu = require('electron-context-menu');
 const dbBackupIpc = require('./electron/ipcs/dbBackup.ipc');
 const dbBackupSvc = require('./backend/services/DbBackupSvc');
+
+//========================= services =========================//
 const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
 
@@ -99,10 +107,8 @@ app.on('activate', () => {
 //create db connection
 let knex = createDBConnection();
 
-//execute sidebar ipcs
 sidebarIpc(knex);
 
-//execute month expanses ipcs
 monthExpansesIpc(knex);
 
 budgetExecutionIpc(knex);
@@ -121,9 +127,11 @@ registeredYearsIpc(knex);
 
 registeredQuartersIpc(knex);
 
-monthTotalIpc(knex);
+monthlyStatsIpc(knex);
 
-quarterTotalIpc(knex);
+quarterlyStatsIpc(knex);
+
+yearlyStatsIpc(knex);
 
 IOIpc();
 

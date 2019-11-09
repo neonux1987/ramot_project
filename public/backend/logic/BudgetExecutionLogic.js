@@ -1,7 +1,7 @@
 const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
 const GeneralSettingsDao = require('../dao/GeneralSettingsDao');
-const MonthTotalLogic = require('./MonthTotalLogic');
-const QuarterTotalLogic = require('./QuarterTotalLogic');
+const MonthStatsLogic = require('./MonthStatsLogic');
+const QuarterStatsLogic = require('./QuarterStatsLogic');
 const SummarizedSectionsLogic = require('./SummarizedSectionsLogic');
 const SummarizedBudgetLogic = require('./SummarizedBudgetLogic');
 const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
@@ -13,9 +13,9 @@ class BudgetExecutionLogic {
     this.connection = connection;
     this.budgetExecutionDao = new BudgetExecutionDao(connection);
     this.generalSettingsDao = new GeneralSettingsDao(connection);
-    this.monthTotalLogic = new MonthTotalLogic(connection);
+    this.monthStatsLogic = new MonthStatsLogic(connection);
     this.summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
-    this.quarterTotalLogic = new QuarterTotalLogic(connection);
+    this.quarterStatsLogic = new QuarterStatsLogic(connection);
     this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
     this.registeredQuartersLogic = new RegisteredQuartersLogic(connection);
   }
@@ -46,19 +46,19 @@ class BudgetExecutionLogic {
     //then month will exist
     if (date.month) {
 
-      //calculate month total
-      const preparedMonthTotalObj = this.prepareMonthTotalObj(date.month, allBudgetExecutions);
+      //calculate month stats
+      const preparedMonthStatsObj = this.prepareMonthStatsObj(date.month, allBudgetExecutions);
 
-      //update month total execution (total expanses)
-      await this.monthTotalLogic.updateMonthTotalTrx(buildingName, date, {
-        outcome: preparedMonthTotalObj.outcome,
-        income: preparedMonthTotalObj.income
+      //update month stats
+      await this.monthStatsLogic.updateMonthStatsTrx(buildingName, date, {
+        outcome: preparedMonthStatsObj.outcome,
+        income: preparedMonthStatsObj.income
       }, trx);
 
-      //update quarter total execution (total expanses)
-      await this.quarterTotalLogic.updateQuarterTotalTrx(buildingName, date, {
-        outcome: preparedMonthTotalObj.totalOutcome,
-        income: preparedMonthTotalObj.totalIncome
+      //update quarter stats
+      await this.quarterStatsLogic.updateQuarterStatsTrx(buildingName, date, {
+        outcome: preparedMonthStatsObj.totalOutcome,
+        income: preparedMonthStatsObj.totalIncome
       }, trx);
     }
 
@@ -109,7 +109,7 @@ class BudgetExecutionLogic {
     }
   }
 
-  prepareMonthTotalObj(monthEng, budgetExecArr) {
+  prepareMonthStatsObj(monthEng, budgetExecArr) {
 
     let totalOutcome = 0;
     let totalIncome = 0;
@@ -118,13 +118,13 @@ class BudgetExecutionLogic {
 
     for (let i = 0; i < budgetExecArr.length; i++) {
 
-      //calculate month total execution
+      //calculate month outcome
       outcome += budgetExecArr[i][`${monthEng}_budget_execution`];
-      //calculate month total budget
+      //calculate month income
       income += budgetExecArr[i][`${monthEng}_budget`];
-      //calculate quarter total execution
+      //calculate quarter outcome
       totalOutcome += budgetExecArr[i]["total_execution"];
-      //calculate total budget
+      //calculate quarter income
       totalIncome += budgetExecArr[i]["total_budget"];
     }
 
@@ -211,7 +211,7 @@ class BudgetExecutionLogic {
     }
 
     //insert empty quarter total row
-    await this.quarterTotalLogic.insertQuartertotal(buildingName, {
+    await this.quarterStatsLogic.insertQuarterStats(buildingName, {
       year: date.year,
       quarter: date.quarter,
       income: 0,
@@ -221,12 +221,13 @@ class BudgetExecutionLogic {
 
     //all the months of a specific quarter
     const months = Helper.getQuarterMonths(date.quarter);
-    //empty month total objects will be stores here
-    const monthTotalArr = [];
 
-    //populate the array with empty month total objects
+    //empty month stats objects will be stores here
+    const monthStatsArr = [];
+
+    //populate the array with empty month stats objects
     for(let i=0;i<months.length;i++){console.log(months[i]);
-      monthTotalArr.push({
+      monthStatsArr.push({
         year: date.year,
         quarter: date.quarter,
         month: months[i],
@@ -235,8 +236,8 @@ class BudgetExecutionLogic {
       });
     }
 
-    //insert empty month total rows
-    await this.monthTotalLogic.batchInsert(buildingName,monthTotalArr,trx);
+    //insert empty month stats rows
+    await this.monthStatsLogic.batchInsert(buildingName,monthStatsArr,trx);
 
     //register quarter
     await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);

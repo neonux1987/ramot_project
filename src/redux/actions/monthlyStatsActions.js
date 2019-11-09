@@ -6,16 +6,16 @@ import { toast } from 'react-toastify';
  * fetch month expanses
  * @param {*} params 
  */
-const fetchQuarterMonthsTotalStats = (params = Object) => {
+const fetchAllMonthsStatsByQuarter = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestMonthTotal(params.buildingName));
+    dispatch(requestMonthStats(params.buildingName));
 
     //request request to backend to get the data
-    ipcRenderer.send("get-quarter-months-total-stats", params);
+    ipcRenderer.send("get-all-months-stats-by-quarter", params);
     //listen when the data comes back
-    return ipcRenderer.once("quarter-months-total-stats", (event, arg) => {
+    return ipcRenderer.once("all-months-stats-by-quarter", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
@@ -25,54 +25,54 @@ const fetchQuarterMonthsTotalStats = (params = Object) => {
         });
       } else {
         //success store the data
-        dispatch(receiveMonthTotal(arg.data));
+        dispatch(receiveMonthStats(arg.data));
       }
     });
   }
 };
 
-const updateSingleMonthTotal = (monthTotalObj, index) => {
+const updateMonthStatsStoreOnly = (monthStatsObj, index) => {
   return dispatch => {
     dispatch({
-      type: "UPDATE_SINGLE_MONTH_TOTAL",
-      monthTotalObj,
+      type: "UPDATE_MONTH_STATS_STORE_ONLY",
+      monthStatsObj,
       index
     });
   }
 }
 
-const requestMonthTotal = function (page) {
+const requestMonthStats = function (page) {
   return {
-    type: "REQUEST_MONTH_TOTAL",
+    type: "REQUEST_MONTH_STATS",
     page
   }
 };
 
-const receiveMonthTotal = function (data) {
+const receiveMonthStats = function (data) {
   return {
-    type: "RECEIVE_MONTH_TOTAL",
+    type: "RECEIVE_MONTH_STATS",
     data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "MONTH_TOTAL_FETCHING_FAILED",
+    type: "MONTH_STATS_FETCHING_FAILED",
     payload: error
   }
 };
 
-const cleanupMonthTotal = () => {
+const cleanupMonthStats = () => {
   return {
-    type: "CLEANUP_MONTH_TOTAL"
+    type: "CLEANUP_MONTH_STATS"
   }
 }
 
 export default {
-  fetchQuarterMonthsTotalStats,
+  fetchAllMonthsStatsByQuarter,
   fetchingFailed,
-  receiveMonthTotal,
-  requestMonthTotal,
-  cleanupMonthTotal,
-  updateSingleMonthTotal
+  receiveMonthStats,
+  requestMonthStats,
+  cleanupMonthStats,
+  updateMonthStatsStoreOnly
 };

@@ -1,6 +1,6 @@
 
 const initState = {
-  monthTotal: {
+  monthStats: {
     isFetching: false,
     status: "",
     error: "",
@@ -10,51 +10,51 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_MONTH_TOTAL":
+    case "RECEIVE_MONTH_STATS":
       return {
         ...state,
-        monthTotal: {
-          ...state.monthTotal,
+        monthStats: {
+          ...state.monthStats,
           isFetching: false,
           status: "success",
           data: action.data
         }
       }
-    case "REQUEST_MONTH_TOTAL":
+    case "REQUEST_MONTH_STATS":
       return {
         ...state,
-        monthTotal: {
-          ...state.monthTotal,
+        monthStats: {
+          ...state.monthStats,
           isFetching: true
         }
       }
-    case "UPDATE_SINGLE_MONTH_TOTAL": {
+    case "UPDATE_MONTH_STATS_STORE_ONLY": {
       //copy the array
-      const monthTotalArr = [...state.monthTotal.data];
+      const monthStatsArr = [...state.monthStats.data];
       //set the new object
-      monthTotalArr[action.index] = action.monthTotalObj;
+      monthStatsArr[action.index] = action.monthStatsObj;
 
       return {
         ...state,
-        monthTotal: {
-          ...state.monthTotal,
-          data: monthTotalArr
+        monthStats: {
+          ...state.monthStats,
+          data: monthStatsArr
         }
       }
     }
-    case "MONTH_TOTAL_FETCHING_FAILED":
+    case "MONTH_STATS_FETCHING_FAILED":
       return {
         ...state,
-        monthTotal: {
-          ...state.monthTotal,
+        monthStats: {
+          ...state.monthStats,
           status: "error",
           error: action.payload
         }
       }
-    case "CLEANUP_MONTH_TOTAL":
+    case "CLEANUP_MONTH_STATS":
       return {
         ...state,
-        monthTotal: {
+        monthStats: {
           isFetching: false,
           status: "",
           error: "",
