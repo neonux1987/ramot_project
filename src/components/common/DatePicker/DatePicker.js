@@ -1,140 +1,80 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Select, Button, MenuItem } from '@material-ui/core';
 import styles from './DatePicker.module.css';
 import Spinner from '../Spinner/Spinner';
 
-class DatePicker extends Component {
+export default ({ months, quarters, years, date, loadDataByDateHandler }) => {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: {
-        month: this.props.date.month,
-        year: this.props.date.year,
-        quarter: this.props.date.quarter
-      }
-    }
-    //binds
-    this.handleChange = this.handleChange.bind(this);
-    this.spinnerWrapperStyle = { width: "110px" };
-  }
+  const [selectDate, setDate] = useState({
+    month: date.month,
+    year: date.year,
+    quarter: date.quarter
+  })
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.date.month !== this.props.date.month ||
-      prevProps.date.year !== this.props.date.year ||
-      prevProps.date.quarter !== this.props.date.quarter) {
-      this.setState({
-        date: {
-          month: this.props.date.month,
-          year: this.props.date.year,
-          quarter: this.props.date.quarter
-        }
-      });
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.date.month !== nextProps.date.month ||
-      this.state.date.year !== nextProps.date.year ||
-      this.state.date.quarter !== nextProps.date.quarter) {
-      return true;
-    } else if (this.state.date.month !== nextState.date.month ||
-      this.state.date.year !== nextState.date.year ||
-      this.state.date.quarter !== nextState.date.quarter) {
-      return true;
-    } else if (this.props.enableMonth && (this.props.months.length !== nextProps.months.length)) {
-      return true;
-    } else if (this.props.enableYear && (this.props.years.length !== nextProps.years.length)) {
-      return true;
-    } else if (this.props.enableQuarter && (this.props.quarters.length !== nextProps.quarters.length)) {
-      return true;
-    }
-    return false;
-  }
-
-  handleChange(event) {
+  const onChangeHandler = (event) => {
     const { name, value } = event.target;
     const newValue = name === "year" || name === "quarter" ? Number.parseInt(value) : value;
-    this.setState({
-      date: {
-        ...this.state.date,
+    setDate({
+      selectDate: {
+        ...selectDate,
         [name]: newValue
       }
     });
   }
 
-  renderMonth() {
-    if (this.props.enableMonth) {
-      if (!this.props.months || this.props.months.length === 0) {
-        return <div className={styles.formSelect} style={this.spinnerWrapperStyle}><Spinner loadingText={"חודשים"} size={20} /></div>;
-      }
-      return <Select
-        name="month"
-        className={styles.formSelect}
-        value={this.state.date.month}
-        onChange={this.handleChange}
-      >
-        {this.props.months.map((month) => {
-          return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
-        })}
-      </Select>
-    }
-    return null;
-  }
+  //if months data exist, render it
+  const renderMonths = months && months.data.length > 0 ? <Select
+    name="month"
+    className={styles.formSelect}
+    value={date.month}
+    onChange={onChangeHandler}
+  >
+    {months.data.map((month) => {
+      return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
+    })}
+  </Select> : null;
 
-  renderQuarter() {
-    if (this.props.enableQuarter) {
-      if (!this.props.quarters || this.props.quarters.length === 0) {
-        return <div className={styles.formSelect} style={this.spinnerWrapperStyle}><Spinner loadingText={"רבעונים"} size={20} /></div>;
-      }
-      return <Select
-        name="quarter"
-        className={styles.formSelect}
-        value={this.state.date.quarter}
-        onChange={this.handleChange}
-      >
-        {this.props.quarters.map((quarter) => {
-          return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
-        })}
-      </Select>
-    }
-    return null;
-  }
+  //if quarters data exist, render it
+  const renderQuarters = quarters && quarters.data.length > 0 ? <Select
+    name="quarter"
+    className={styles.formSelect}
+    value={date.quarter}
+    onChange={onChangeHandler}
+  >
+    {quarters.data.map((quarter) => {
+      return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
+    })}
+  </Select> : null;
 
-  renderYear() {
-    if (this.props.enableYear) {
-      if (!this.props.years || this.props.years.length === 0) {
-        return <div className={styles.formSelect} style={this.spinnerWrapperStyle}><Spinner loadingText={"שנים"} size={20} /></div>;
-      }
-      return <Select
-        name="year"
-        className={styles.formSelect}
-        value={this.state.date.year}
-        onChange={this.handleChange}
-      >
-        {this.props.years.map((year) => {
-          return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
-        })}
-      </Select>
-    }
-    return null;
-  }
+  //if quarters data exist, render it
+  const renderYears = years && years.data.length > 0 ? <Select
+    name="year"
+    className={styles.formSelect}
+    value={date.year}
+    onChange={onChangeHandler}
+  >
+    {years.data.map((year) => {
+      return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
+    })}
+  </Select> : null;
 
-  render() {
+  if ((months && months.isFetching) || (quarters && quarters.isFetching) || (years && years.isFetching)) {
+    return <div className={styles.dates}><Spinner loadingText={"טוען מודל בחירת תאריכים..."} size={20} /></div>;
+  } else {
     return (
-      <div id="dates" className={styles.dates} style={this.props.style}>
+      <div id="dates" className={styles.dates}>
         <form className={styles.formControl}>
-          {this.renderMonth()}
-          {this.renderQuarter()}
-          {this.renderYear()}
+
+          {renderMonths}
+          {renderQuarters}
+          {renderYears}
+
         </form>
-        <Button variant="contained" color="secondary" className={styles.button} onClick={() => this.props.loadDataByDateHandler(this.state.date)}>
+        <Button variant="contained" color="secondary" className={styles.button} onClick={() => loadDataByDateHandler(selectDate)}>
           טען
-          </Button>
+        </Button>
       </div>
     );
   }
 
 }
-
-export default DatePicker;

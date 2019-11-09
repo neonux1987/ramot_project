@@ -7,13 +7,10 @@ import TableControls from '../../common/table/TableControls/TableControls';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import EditControls from '../../common/EditControls/EditControls';
-import registeredQuartersActions from '../../../redux/actions/registeredQuartersActions';
-import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-//import Stats from './Stats/Stats';
 import monthTotalActions from '../../../redux/actions/monthTotalActions';
 import quarterTotalActions from '../../../redux/actions/quarterTotalActions';
 import StatBox from '../../common/Stats/StatBox/StatBox';
@@ -22,6 +19,7 @@ import Header from '../../layout/main/Header';
 import Section from '../../common/Section/Section';
 import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
 import Stats from '../../common/Stats/Stats';
+import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 
 const FIXED_FLOAT = 2;
 
@@ -50,12 +48,6 @@ class BudgetExecution extends Component {
       this.props.fetchBudgetExecutions(params);
     });
 
-    //fetch date registered months
-    this.props.fetchRegisteredQuarters(params);
-
-    //fetch date registered months
-    this.props.fetchRegisteredYears(params);
-
     //fetch quarter months total stats
     this.props.fetchQuarterMonthsTotalStats(params);
 
@@ -67,9 +59,6 @@ class BudgetExecution extends Component {
   componentWillUnmount() {
     //on exit init table data
     this.props.cleanup(this.props.location.state.buildingNameEng);
-
-    //cleanup quarters
-    this.props.cleanupQuarters();
 
     this.props.cleanupMonthTotal();
 
@@ -107,9 +96,9 @@ class BudgetExecution extends Component {
         colored.background = "rgb(234, 70, 70)";
       } else if (value > 0) {
         colored.color = "#fff";
-        colored.background = "rgb(129, 199, 74)";
+        colored.background = "rgb(72, 187, 91)";
       } else {
-        colored.background = "rgb(236, 249, 54)";
+        colored.background = "rgb(238, 255, 0)";
       }
     }
 
@@ -373,14 +362,14 @@ class BudgetExecution extends Component {
         headerStyle: {
           fontWeight: "600",
           fontSize: "16px",
-          background: "rgb(234, 70, 107)",//rgb(255, 55, 92)
+          background: "rgb(234, 70, 70)",//rgb(255, 55, 92)
           color: "#fff"
         },
         columns: [
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(234, 70, 107)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(234, 70, 70)", fontWeight: "600" },
             Cell: this.cell,
             style: {
               padding: 0
@@ -389,7 +378,7 @@ class BudgetExecution extends Component {
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(234, 70, 107)", fontWeight: "600" },
+            headerStyle: { color: "#fff", background: "rgb(234, 70, 70)", fontWeight: "600" },
             Cell: this.cell
           }
         ]
@@ -461,7 +450,7 @@ class BudgetExecution extends Component {
    * @param {*} quarter the quarter which the months belong to
    * @param {*} isFetching if the data is fetching
    ******************************************************************/
-  generateMonthStats(monthStats,quarter, isFetching) {
+  generateMonthStats(monthStats, quarter, isFetching) {
 
     // list of strings of qurter months
     const quarterMonths = Helper.getQuarterMonths(quarter);
@@ -476,14 +465,14 @@ class BudgetExecution extends Component {
         returnStats[i] = <StatLoadingBox key={i} title={`טוען נתוני חודש ${quarterMonths[i]}`} />;
       } else {
 
-        returnStats[i] = <StatBox 
-          key={i} 
-          title={monthStats[i].month} 
-          outcome={`${monthStats[i].outcome} ${Helper.shekelUnicode}`} 
-          income={`${monthStats[i].income} ${Helper.shekelUnicode}`} 
+        returnStats[i] = <StatBox
+          key={i}
+          title={monthStats[i].month}
+          outcome={`${monthStats[i].outcome} ${Helper.shekelUnicode}`}
+          income={`${monthStats[i].income} ${Helper.shekelUnicode}`}
         />;
 
-      } 
+      }
 
     } // end loop
 
@@ -491,17 +480,17 @@ class BudgetExecution extends Component {
 
   }
 
-  generateQuarterStats(quarterStat,quarter, isFetching) {
+  generateQuarterStats(quarterStat, quarter, isFetching) {
     //render loading if still fetching the stats
     if (isFetching) {
       return <StatLoadingBox key={3} title={`טוען נתוני סוף רבעון ${quarter}`} />
     } else {
-      return <StatBox 
-        key={3} 
-        title={`רבעון ${quarterStat.quarter}`} 
-        outcome={`${quarterStat.outcome} ${Helper.shekelUnicode}`} 
-        income={`${quarterStat.income} ${Helper.shekelUnicode}`} 
-        />;
+      return <StatBox
+        key={3}
+        title={`רבעון ${quarterStat.quarter}`}
+        outcome={`${quarterStat.outcome} ${Helper.shekelUnicode}`}
+        income={`${quarterStat.income} ${Helper.shekelUnicode}`}
+      />;
     }
   }
 
@@ -514,7 +503,7 @@ class BudgetExecution extends Component {
     } = this.props.budgetExecution;
 
     // building name
-    const buildingName = this.props.location.state.buildingName;
+    const { buildingName, buildingNameEng } = this.props.location.state;
 
     if (pages.length === 0 ||
       pages[pageIndex] === undefined ||
@@ -525,23 +514,17 @@ class BudgetExecution extends Component {
     //date
     const { date } = pages[pageIndex];
 
-    //used for date picker
-    const quarters = this.props.registeredQuarters.registeredQuarters.data;
-
-    //used for date picker
-    const years = this.props.registeredYears.registeredYears.data;
+    //month stats
+    const { monthTotal } = this.props.monthTotal;
 
     //month stats
-    const {monthTotal} = this.props.monthTotal;
-
-    //month stats
-    const {quarterTotal} = this.props.quarterTotal;
+    const { quarterTotal } = this.props.quarterTotal;
 
     //month stats generated components
-    const monthStats = this.generateMonthStats(monthTotal.data,date.quarter,monthTotal.isFetching);
+    const monthStats = this.generateMonthStats(monthTotal.data, date.quarter, monthTotal.isFetching);
 
     //quarter stats generated components
-    const quarterStats = this.generateQuarterStats(quarterTotal.data[0],date.quarter,quarterTotal.isFetching);
+    const quarterStats = this.generateQuarterStats(quarterTotal.data[0], date.quarter, quarterTotal.isFetching);
 
     //combine stats
     monthStats.push(quarterStats);
@@ -600,15 +583,18 @@ class BudgetExecution extends Component {
                   />
                 }
                 middlePane={
-                  <DatePicker
-                    years={years}
-                    quarters={quarters}
-                    date={date}
-                    loadDataByDateHandler={this.loadBudgetExecutionsByDate}
-                    enableMonth={false}
-                    enableYear={true}
-                    enableQuarter={true}
-                  />
+                  <RegisteredDatesFetcher fetchYears fetchQuarters params={{
+                    buildingName: buildingNameEng
+                  }}>
+                    {({ quarters, years }) => {
+                      return <DatePicker
+                        years={years}
+                        quarters={quarters}
+                        date={date}
+                        loadDataByDateHandler={this.loadBudgetExecutionsByDate}
+                      />
+                    }}
+                  </RegisteredDatesFetcher>
                 }
                 leftPane={
                   <PageControls
@@ -644,8 +630,6 @@ class BudgetExecution extends Component {
 
 const mapStateToProps = state => ({
   budgetExecution: state.budgetExecution,
-  registeredQuarters: state.registeredQuarters,
-  registeredYears: state.registeredYears,
   monthTotal: state.monthTotal,
   quarterTotal: state.quarterTotal
 });
@@ -657,10 +641,6 @@ const mapDispatchToProps = dispatch => ({
   receiveBudgetExecutions: (payload) => dispatch(budgetExecutionActions.receiveBudgetExecutions(payload)),
   updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
   addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData)),
-  fetchRegisteredQuarters: (buildingName) => dispatch(registeredQuartersActions.fetchRegisteredQuarters(buildingName)),
-  cleanupQuarters: () => dispatch(registeredQuartersActions.cleanupQuarters()),
-  fetchRegisteredYears: (buildingName) => dispatch(registeredYearsActions.fetchRegisteredYears(buildingName)),
-  cleanupYears: () => dispatch(registeredYearsActions.cleanupYears()),
   fetchQuarterMonthsTotalStats: (params) => dispatch(monthTotalActions.fetchQuarterMonthsTotalStats(params)),
   cleanupMonthTotal: () => dispatch(monthTotalActions.cleanupMonthTotal()),
   fetchQuarterTotalStats: (params) => dispatch(quarterTotalActions.fetchQuarterTotalStats(params)),

@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
 import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
-import registeredMonthsActions from '../../../redux/actions/registeredMonthsActions';
-import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../layout/main/Header';
 import LoadingCircle from '../../common/LoadingCircle';
@@ -20,6 +18,7 @@ import TableActions from '../../common/table/TableActions/TableActions';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 import { Typography } from '@material-ui/core';
+import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 
 const FIXED_FLOAT = 2;
 
@@ -29,47 +28,6 @@ class MonthExpanses extends Component {
     super(props);
     //state init
     this.state = {
-      months: [
-        {
-          id: 1,
-          month: "may",
-          monthHeb: "מאי"
-        },
-        {
-          id: 2,
-          month: "june",
-          monthHeb: "יוני"
-        },
-        {
-          id: 3,
-          month: "july",
-          monthHeb: "יולי"
-        },
-        {
-          id: 4,
-          month: "august",
-          monthHeb: "אוגוסט"
-        },
-        {
-          id: 5,
-          month: "september",
-          monthHeb: "ספטמבר"
-        }
-      ],
-      years: [
-        {
-          id: 1,
-          year: 2017
-        },
-        {
-          id: 2,
-          year: 2018
-        },
-        {
-          id: 3,
-          year: 2019
-        }
-      ],
       editMode: false,
       addNewMode: false
     };
@@ -97,12 +55,6 @@ class MonthExpanses extends Component {
 
     //fetch summarized sections
     this.props.fetchSummarizedSections();
-
-    //fetch date registered months
-    this.props.fetchRegisteredMonths(params);
-
-    //fetch date registered months
-    this.props.fetchRegisteredYears(params);
 
   }
 
@@ -166,10 +118,6 @@ class MonthExpanses extends Component {
   componentWillUnmount() {
     //on exit init table data
     this.props.cleanup(this.props.location.state.buildingNameEng);
-    //cleanup months
-    this.props.cleanupMonths();
-    //cleanup years
-    this.props.cleanupYears();
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -436,10 +384,13 @@ class MonthExpanses extends Component {
     }
     //summarized sections data
     const { summarizedSections } = this.props.summarizedSections;
+
     //expanses codes data
     const { expansesCodes } = this.props.expansesCodes;
+
     //building names
-    const { buildingName } = this.props.location.state;
+    const { buildingName, buildingNameEng } = this.props.location.state;
+
     //add new month expanse box
     const addNewBox = this.state.addNewMode ? <InputExpansesField
       summarizedSections={summarizedSections.data}
@@ -448,15 +399,12 @@ class MonthExpanses extends Component {
       submitData={this.inputExpansesSubmit}
       findData={this.findExpanseIndex}
     /> : null;
+
     //date
     const {
       date
     } = pages[pageIndex];
-    //registered months of month expanse of a building
-    //used for date picker
-    const months = this.props.registeredMonths.registeredMonths.data;
-    //registered years used for date picker
-    const years = this.props.registeredYears.registeredYears.data;
+
     return (
       <Fragment>
 
@@ -525,16 +473,19 @@ class MonthExpanses extends Component {
               }
 
               middlePane={
-                <DatePicker
-                  years={years}
-                  months={months}
-                  enableYear={true}
-                  enableMonth={true}
-                  enableQuarter={false}
-                  date={date}
-                  loadDataByDateHandler={this.loadExpansesByDate}
-                  cleanupMonthsHandler={this.props.cleanupMonths}
-                />
+                <RegisteredDatesFetcher fetchYears fetchMonths params={{
+                  buildingName: buildingNameEng
+                }}>
+                  {({ months, years }) => {
+                    return <DatePicker
+                      months={months}
+                      years={years}
+                      date={date}
+                      loadDataByDateHandler={this.loadExpansesByDate}
+                    />
+                  }}
+                </RegisteredDatesFetcher>
+
               }
 
               leftPane={
@@ -569,9 +520,7 @@ const mapStateToProps = state => ({
   generalSettings: {
     tax: state.generalSettings.generalSettings.data[0].tax
   },
-  expansesCodes: state.expansesCodes,
-  registeredMonths: state.registeredMonths,
-  registeredYears: state.registeredYears
+  expansesCodes: state.expansesCodes
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -582,11 +531,7 @@ const mapDispatchToProps = dispatch => ({
   addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),
   deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
-  fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
-  fetchRegisteredMonths: (buildingName) => dispatch(registeredMonthsActions.fetchRegisteredMonths(buildingName)),
-  cleanupMonths: () => dispatch(registeredMonthsActions.cleanupMonths()),
-  fetchRegisteredYears: (buildingName) => dispatch(registeredYearsActions.fetchRegisteredYears(buildingName)),
-  cleanupYears: () => dispatch(registeredYearsActions.cleanupYears())
+  fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

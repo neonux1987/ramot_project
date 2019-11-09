@@ -5,13 +5,13 @@ import Header from '../../layout/main/Header';
 import { connect } from 'react-redux';
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import summarizedBudgetActions from '../../../redux/actions/summarizedBudgetActions';
-import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import TableControls from '../../common/table/TableControls/TableControls';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 import EditControls from '../../common/EditControls/EditControls';
+import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 
 const FIXED_FLOAT = 2;
 
@@ -36,16 +36,11 @@ class SummarizedBudget extends Component {
       this.props.fetchSummarizeBudgets(params);
     });
 
-    //fetch date registered months
-    this.props.fetchRegisteredYears(params);
-
   }
 
   componentWillUnmount() {
     //on exit init table data
     this.props.cleanup(this.props.location.state.buildingNameEng);
-    //cleanup years
-    this.props.cleanupYears();
   }
 
   loadSummarizedBudgetsByDate = ({ year }) => {
@@ -250,7 +245,9 @@ class SummarizedBudget extends Component {
       pages,
       pageIndex
     } = this.props.summarizedBudget;
-    const buildingName = this.props.location.state.buildingName;
+
+    const { buildingName, buildingNameEng } = this.props.location.state;
+
     if (pages.length === 0 ||
       pages[pageIndex] === undefined ||
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
@@ -259,9 +256,6 @@ class SummarizedBudget extends Component {
     const {
       date
     } = pages[pageIndex];
-
-    //registered years used for date picker
-    const years = this.props.registeredYears.registeredYears.data;
 
     return (
       <Fragment>
@@ -315,14 +309,17 @@ class SummarizedBudget extends Component {
               }
 
               middlePane={
-                <DatePicker
-                  years={years}
-                  date={date}
-                  loadDataByDateHandler={this.loadSummarizedBudgetsByDate}
-                  enableMonth={false}
-                  enableYear={true}
-                  enableQuarter={false}
-                />
+                <RegisteredDatesFetcher fetchYears params={{
+                  buildingName: buildingNameEng
+                }}>
+                  {({ years }) => {
+                    return <DatePicker
+                      years={years}
+                      date={date}
+                      loadDataByDateHandler={this.loadExpansesByDate}
+                    />
+                  }}
+                </RegisteredDatesFetcher>
               }
 
               leftPane={<PageControls
@@ -350,16 +347,13 @@ class SummarizedBudget extends Component {
 }
 
 const mapStateToProps = state => ({
-  summarizedBudget: state.summarizedBudget,
-  registeredYears: state.registeredYears
+  summarizedBudget: state.summarizedBudget
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchSummarizeBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload)),
   cleanup: (buildingNameEng) => dispatch(summarizedBudgetActions.cleanup(buildingNameEng)),
-  initState: (page) => dispatch(summarizedBudgetActions.initState(page)),
-  fetchRegisteredYears: (buildingName) => dispatch(registeredYearsActions.fetchRegisteredYears(buildingName)),
-  cleanupYears: () => dispatch(registeredYearsActions.cleanupYears())
+  initState: (page) => dispatch(summarizedBudgetActions.initState(page))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummarizedBudget);
