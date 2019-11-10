@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import LoadingCircle from '../../common/LoadingCircle';
 import Helper from '../../../helpers/Helper';
-import Header from '../../layout/main/Header';
+import Header from '../../common/Header/Header';
 import { connect } from 'react-redux';
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import summarizedBudgetActions from '../../../redux/actions/summarizedBudgetActions';
@@ -12,6 +12,11 @@ import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 import EditControls from '../../common/EditControls/EditControls';
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
+import TotalStatsFetcher from '../../dataFetchers/TotalStatsFetcher';
+import Stats from '../../common/Stats/Stats';
+import Section from '../../common/Section/Section';
+import StatBox from '../../common/Stats/StatBox/StatBox';
+import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
 
 const FIXED_FLOAT = 2;
 
@@ -192,18 +197,6 @@ class SummarizedBudget extends Component {
         ]
       },
       {
-        Header: "",
-        columns: [
-          {
-            accessor: "evaluation",
-            Header: "הערכה",
-            headerStyle: { background: "#000", color: "#fff" },
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      }
-      ,
-      {
         Header: "סוף שנה",
         headerStyle: {
           fontWeight: "600",
@@ -212,6 +205,12 @@ class SummarizedBudget extends Component {
           color: "#fff"
         },
         columns: [
+          {
+            accessor: "evaluation",
+            Header: "הערכה",
+            headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
+            Cell: (cellInfo) => this.cell(cellInfo)
+          },
           {
             accessor: "year_total_budget",
             Header: "תקציב",
@@ -238,6 +237,48 @@ class SummarizedBudget extends Component {
     ];
   }
 
+  generateQuarterlyStats(quarterlyStats, isFetching) {
+    // list of strings of qurter months
+    const quarters = Helper.getYearQuarters();
+
+    // where the boxes will be stored fo render
+    const returnStats = [];
+
+    for (let i = 0; i < quarters.length; i++) {
+
+      // render loading if still fetching the stats
+      if (isFetching || quarterlyStats.length === 0) {
+        returnStats[i] = <StatLoadingBox key={i} title={`טוען נתוני רבעון ${quarters[i]}`} />;
+      } else {
+        returnStats[i] = <StatBox
+          key={i}
+          title={quarters[i]}
+          outcome={`${quarterlyStats[i].outcome} ${Helper.shekelUnicode}`}
+          income={`${quarterlyStats[i].income} ${Helper.shekelUnicode}`}
+        />;
+
+      }
+
+    } // end loop
+
+    return returnStats;
+
+  }
+
+  generateYearStats(yearStats, year, isFetching) {
+    //render loading if still fetching the stats
+    if (isFetching || yearStats === undefined) {
+      return <StatLoadingBox key={4} title={`טוען נתוני שנת ${year}`} />
+    } else {
+      return <StatBox
+        key={4}
+        title={`שנת ${yearStats.year}`}
+        outcome={`${yearStats.outcome} ${Helper.shekelUnicode}`}
+        income={`${yearStats.income} ${Helper.shekelUnicode}`}
+      />;
+    }
+  }
+
   render() {
     const {
       pageName,
@@ -260,84 +301,99 @@ class SummarizedBudget extends Component {
     return (
       <Fragment>
 
-        <Header
-          title={headerTitle}
-          style={{ color: "#000", fontSize: "42px", fontWeight: "600" }}
-          subTitle={""}
-        />
+        <Header>
+          {headerTitle}
+        </Header>
 
-        <ReactTableContainer
-          style={{
-            width: "100%",
-            textAlign: "center",
-            borderRadius: "4px",
-            //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
-          }}
-          getTbodyProps={(state, rowInfo, column, instance) => {
-            return {
-              style: {
-                overflow: "overlay",
-                height: "700px"
+        <Section title={"סיכום הוצאות והכנסות שנתי"}>
+          <TotalStatsFetcher allQuartersStatsByYear yearStats params={{
+            buildingName: buildingNameEng,
+            date
+          }}>
+            {({ quarterlyStats, yearlyStats }) => {
+              const renderStats = this.generateQuarterlyStats(quarterlyStats.data, quarterlyStats.isFetching);
+              renderStats.push(this.generateYearStats(yearlyStats.data[0], date.year, yearlyStats.isFetching));
+              return <Stats stats={renderStats} />;
+            }}
+          </TotalStatsFetcher>
+        </Section>
+
+        <Section title={"טבלת מעקב שנתית"}>
+          <ReactTableContainer
+            style={{
+              width: "100%",
+              textAlign: "center",
+              borderRadius: "4px",
+              //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
+            }}
+            getTbodyProps={(state, rowInfo, column, instance) => {
+              return {
+                style: {
+                  overflow: "overlay",
+                  height: "700px"
+                }
               }
-            }
-          }}
-          getTdProps={(state, rowInfo, column) => {
-            return {
-              //onClick: () => console.log(rowInfo)
-            }
-          }}
-          loadingText={"טוען..."}
-          noDataText={"המידע לא נמצא"}
-          loading={pages[pageIndex].isFetching}
-          LoadingComponent={LoadingCircle}
-          defaultPageSize={50}
-          showPagination={true}
-          data={pages[pageIndex].data}
-          columns={this.generateHeaders()}
-          resizable={true}
-          minRows={0}
-          headerControlsComponent={
-            <TableControls
-
-              rightPane={
-                <EditControls
-                  editMode={this.state.editMode}
-                  toggleEditMode={this.toggleEditMode}
-                  addNewMode={this.state.addNewMode}
-                  toggleAddNewMode={this.toggleAddNewMode}
-                />
+            }}
+            getTdProps={(state, rowInfo, column) => {
+              return {
+                //onClick: () => console.log(rowInfo)
               }
+            }}
+            loadingText={"טוען..."}
+            noDataText={"המידע לא נמצא"}
+            loading={pages[pageIndex].isFetching}
+            LoadingComponent={LoadingCircle}
+            defaultPageSize={50}
+            showPagination={true}
+            data={pages[pageIndex].data}
+            columns={this.generateHeaders()}
+            resizable={true}
+            minRows={0}
+            headerControlsComponent={
+              <TableControls
 
-              middlePane={
-                <RegisteredDatesFetcher fetchYears params={{
-                  buildingName: buildingNameEng
-                }}>
-                  {({ years }) => {
-                    return <DatePicker
-                      years={years}
-                      date={date}
-                      loadDataByDateHandler={this.loadExpansesByDate}
-                    />
+                rightPane={
+                  <EditControls
+                    editMode={this.state.editMode}
+                    toggleEditMode={this.toggleEditMode}
+                    addNewMode={this.state.addNewMode}
+                    toggleAddNewMode={this.toggleAddNewMode}
+                  />
+                }
+
+                middlePane={
+                  <RegisteredDatesFetcher fetchYears params={{
+                    buildingName: buildingNameEng
+                  }}>
+                    {({ years }) => {
+                      return <DatePicker
+                        years={years}
+                        date={date}
+                        loadDataByDateHandler={this.loadExpansesByDate}
+                      />
+                    }}
+                  </RegisteredDatesFetcher>
+                }
+
+                leftPane={<PageControls
+                  excel={{
+                    data: pages[pageIndex].data,
+                    fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
+                    tabName: `שנה ${date.year}`
                   }}
-                </RegisteredDatesFetcher>
-              }
+                  print={{
+                    title: headerTitle,
+                    pageTitle: headerTitle + " - " + buildingName
+                  }}
+                  pageName={pageName}
+                />}
 
-              leftPane={<PageControls
-                excel={{
-                  data: pages[pageIndex].data,
-                  fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
-                  tabName: `שנה ${date.year}`
-                }}
-                print={{
-                  title: headerTitle,
-                  pageTitle: headerTitle + " - " + buildingName
-                }}
-                pageName={pageName}
-              />}
+              />
+            }
+          />
+        </Section>
 
-            />
-          }
-        />
+
 
 
       </Fragment>

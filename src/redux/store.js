@@ -21,8 +21,9 @@ const persistConfig = {
     "registeredQuarters",
     "settings",
     "backupsNames",
-    "monthTotal",
-    "quarterTotal"
+    "monthlyStats",
+    "quarterlyStats",
+    "yearlyStats"
   ]
 
 }

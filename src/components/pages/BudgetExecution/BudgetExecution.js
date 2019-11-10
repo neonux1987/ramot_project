@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import budgetExecutionActions from '../../../redux/actions/budgetExecutionActions';
 import Helper from '../../../helpers/Helper';
@@ -11,11 +11,9 @@ import { notify, notificationTypes } from '../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import monthTotalActions from '../../../redux/actions/monthTotalActions';
-import quarterTotalActions from '../../../redux/actions/quarterTotalActions';
 import StatBox from '../../common/Stats/StatBox/StatBox';
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
-import Header from '../../layout/main/Header';
+import Header from '../../common/Header/Header';
 import Section from '../../common/Section/Section';
 import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
 import Stats from '../../common/Stats/Stats';
@@ -49,21 +47,11 @@ class BudgetExecution extends Component {
       this.props.fetchBudgetExecutions(params);
     });
 
-    //fetch quarter months total stats
-    this.props.fetchQuarterMonthsTotalStats(params);
-
-    //fetch quarter total
-    this.props.fetchQuarterTotalStats(params);
-
   }
 
   componentWillUnmount() {
     //on exit init table data
     this.props.cleanup(this.props.location.state.buildingNameEng);
-
-    this.props.cleanupMonthTotal();
-
-    this.props.cleanupQuarterTotal();
   }
 
   loadBudgetExecutionsByDate = ({ year, quarter }) => {
@@ -152,7 +140,8 @@ class BudgetExecution extends Component {
     //if it is set the date month params to the month
     //column that was updated
     if (columnId.includes("_budget")) {
-      params.date.month = columnId.substring(0, columnId.length - 7);
+      const month = columnId.substring(0, columnId.length - 7);
+      params.date.month = Helper.convertEngToHebMonth(month);
     }
 
     //this.calculateMonthTotalBudget(data, cellInfo.column.id, prevValue, data[objIndex][cellInfo.column.id]);
@@ -347,18 +336,6 @@ class BudgetExecution extends Component {
         ]
       },
       {
-        Header: "",
-        columns: [
-          {
-            accessor: "evaluation",
-            Header: "הערכה",
-            headerStyle: { background: "#000", color: "#fff" },
-            Cell: this.cell
-          }
-        ]
-      }
-      ,
-      {
         Header: "סוף רבעון",
         headerStyle: {
           fontWeight: "600",
@@ -367,6 +344,12 @@ class BudgetExecution extends Component {
           color: "#fff"
         },
         columns: [
+          {
+            accessor: "evaluation",
+            Header: "הערכה",
+            headerStyle: { color: "#fff", background: "rgb(232, 87, 87)", fontWeight: "600" },
+            Cell: this.cell
+          },
           {
             accessor: "total_budget",
             Header: "תקציב",
@@ -451,7 +434,7 @@ class BudgetExecution extends Component {
    * @param {*} quarter the quarter which the months belong to
    * @param {*} isFetching if the data is fetching
    ******************************************************************/
-  generateMonthStats(monthStats, quarter, isFetching) {
+  generateMonthlyStats(monthStats, quarter, isFetching) {
 
     // list of strings of qurter months
     const quarterMonths = Helper.getQuarterMonths(quarter);
@@ -462,7 +445,7 @@ class BudgetExecution extends Component {
     for (let i = 0; i < quarterMonths.length; i++) {
 
       // render loading if still fetching the stats
-      if (isFetching) {
+      if (isFetching || monthStats.length === 0) {
         returnStats[i] = <StatLoadingBox key={i} title={`טוען נתוני חודש ${quarterMonths[i]}`} />;
       } else {
 
@@ -483,7 +466,7 @@ class BudgetExecution extends Component {
 
   generateQuarterStats(quarterStat, quarter, isFetching) {
     //render loading if still fetching the stats
-    if (isFetching) {
+    if (isFetching || quarterStat === undefined) {
       return <StatLoadingBox key={3} title={`טוען נתוני סוף רבעון ${quarter}`} />
     } else {
       return <StatBox
@@ -515,44 +498,28 @@ class BudgetExecution extends Component {
     //date
     const { date } = pages[pageIndex];
 
-    //month stats
-    const { monthTotal } = this.props.monthTotal;
-
-    //month stats
-    const { quarterTotal } = this.props.quarterTotal;
-
-    //month stats generated components
-    const monthStats = this.generateMonthStats(monthTotal.data, date.quarter, monthTotal.isFetching);
-
-    //quarter stats generated components
-    const quarterStats = this.generateQuarterStats(quarterTotal.data[0], date.quarter, quarterTotal.isFetching);
-
-    //combine stats
-    monthStats.push(quarterStats);
-
     return (
-      <div>
-        <Header
-          title={headerTitle}
-          style={{ color: "#000", fontSize: "42px", fontWeight: "600" }}
-          subTitle={""}
-        />
+      <Fragment>
+        <Header>
+          {headerTitle}
+        </Header>
 
-        <Section title={"סיכום הוצאות והכנסות"}>
-          <TotalStatsFetcher fetchQuarterMonthsStats fetchQuarterTotalStats params={{
-              buildingName: buildingNameEng
-            }}>
-            {({ quarterMonthsStats, quarterTotalStats }) => {
+        <Section title={"סיכום הוצאות והכנסות רבעוני"}>
+          <TotalStatsFetcher allMonthStatsByQuarter quarterStats params={{
+            buildingName: buildingNameEng,
+            date
+          }}>
+            {({ monthlyStats, quarterlyStats }) => {
               //generate quarter months stats
-              const renderMonthStats = this.generateMonthStats(quarterMonthsStats.data, date.quarter, quarterMonthsStats.isFetching);
+              const renderMonthlyStats = this.generateMonthlyStats(monthlyStats.data, date.quarter, monthlyStats.isFetching);
               //generate quarter total stats
-              renderMonthStats.push(this.generateQuarterStats(quarterTotalStats.data[0], date.quarter, quarterTotalStats.isFetching))
-              return <Stats stats={renderMonthStats} />;
+              renderMonthlyStats.push(this.generateQuarterStats(quarterlyStats.data[0], date.quarter, quarterlyStats.isFetching))
+              return <Stats stats={renderMonthlyStats} />;
             }}
           </TotalStatsFetcher>
         </Section>
 
-        <Section title={"טבלת מעקב וביצוע"}>
+        <Section title={"טבלת מעקב וביצוע רבעוני"}>
           <ReactTableContainer id={"react-table"} className="-highlight"
             style={{
               width: "100%",
@@ -633,29 +600,22 @@ class BudgetExecution extends Component {
 
 
 
-      </div>
+      </Fragment>
     );
   }
 
 }
 
 const mapStateToProps = state => ({
-  budgetExecution: state.budgetExecution,
-  monthTotal: state.monthTotal,
-  quarterTotal: state.quarterTotal
+  budgetExecution: state.budgetExecution
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchBudgetExecutions: (payload) => dispatch(budgetExecutionActions.fetchBudgetExecutions(payload)),
   cleanup: (buildingNameEng) => dispatch(budgetExecutionActions.cleanup(buildingNameEng)),
   initState: (page) => dispatch(budgetExecutionActions.initState(page)),
-  receiveBudgetExecutions: (payload) => dispatch(budgetExecutionActions.receiveBudgetExecutions(payload)),
   updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
-  addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData)),
-  fetchQuarterMonthsTotalStats: (params) => dispatch(monthTotalActions.fetchQuarterMonthsTotalStats(params)),
-  cleanupMonthTotal: () => dispatch(monthTotalActions.cleanupMonthTotal()),
-  fetchQuarterTotalStats: (params) => dispatch(quarterTotalActions.fetchQuarterTotalStats(params)),
-  cleanupQuarterTotal: () => dispatch(quarterTotalActions.cleanupQuarterTotal())
+  addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecution);

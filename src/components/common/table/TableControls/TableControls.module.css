@@ -12,17 +12,17 @@
 }
 
 .leftPane{
-  width: 30%;
+  flex-grow: 1;
   justify-content: flex-end;
   display: flex
 }
 
 .middlePane{
-  width: 40%;
+  flex-grow: 1;
   display: flex;
   justify-content: center;
 }
 
 .rightPane{
-  width: 30%;
+  flex-grow: 1;
 }

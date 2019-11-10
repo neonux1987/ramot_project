@@ -6,16 +6,16 @@ import { toast } from 'react-toastify';
  * fetch month expanses
  * @param {*} params 
  */
-const fetchQuarterTotalStats = (params = Object) => {
+const fetchYearStats = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestQuarterTotal(params.buildingName));
+    dispatch(requestYearlyStats());
 
     //request request to backend to get the data
-    ipcRenderer.send("get-quarter-total-stats", params);
+    ipcRenderer.send("get-year-stats", params);
     //listen when the data comes back
-    return ipcRenderer.once("quarter-total-stats", (event, arg) => {
+    return ipcRenderer.once("year-stats", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
@@ -25,53 +25,42 @@ const fetchQuarterTotalStats = (params = Object) => {
         });
       } else {
         //success store the data
-        dispatch(receiveQuarterTotal(arg.data));
+        dispatch(receiveYearlyStats(arg.data));
       }
     });
   }
 };
 
-const requestQuarterTotal = function (page) {
+const requestYearlyStats = function (page) {
   return {
-    type: "REQUEST_QUARTER_TOTAL",
-    page
+    type: "REQUEST_YEARLY_STATS"
   }
 };
 
-const receiveQuarterTotal = function (data) {
+const receiveYearlyStats = function (data) {
   return {
-    type: "RECEIVE_QUARTER_TOTAL",
+    type: "RECEIVE_YEARLY_STATS",
     data
-  }
-}
-
-const updateSingleQuarterTotal = (quarterTotalObj) => {
-  return dispatch => {
-    dispatch({
-      type: "UPDATE_SINGLE_QUARTER_TOTAL",
-      quarterTotalObj
-    });
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "QUARTER_TOTAL_FETCHING_FAILED",
+    type: "YEARLY_STATS_FETCHING_FAILED",
     payload: error
   }
 };
 
-const cleanupQuarterTotal = () => {
+const cleanupYearlyStats = () => {
   return {
-    type: "CLEANUP_QUARTER_TOTAL"
+    type: "CLEANUP_YEARLY_STATS"
   }
 }
 
 export default {
-  fetchQuarterTotalStats,
+  fetchYearStats,
   fetchingFailed,
-  receiveQuarterTotal,
-  requestQuarterTotal,
-  cleanupQuarterTotal,
-  updateSingleQuarterTotal
+  receiveYearlyStats,
+  requestYearlyStats,
+  cleanupYearlyStats
 };

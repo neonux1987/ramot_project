@@ -6,7 +6,7 @@ import summarizedSectionsActions from '../../../redux/actions/summarizedSections
 import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import Helper from '../../../helpers/Helper';
-import Header from '../../layout/main/Header';
+import Header from '../../common/Header/Header';
 import LoadingCircle from '../../common/LoadingCircle';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
@@ -17,8 +17,8 @@ import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import TableActions from '../../common/table/TableActions/TableActions';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import { Typography } from '@material-ui/core';
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
+import Section from '../../common/Section/Section';
 
 const FIXED_FLOAT = 2;
 
@@ -408,105 +408,101 @@ class MonthExpanses extends Component {
     return (
       <Fragment>
 
-        <Header
-          title={headerTitle}
-          style={{ color: "#000", fontSize: "42px", fontWeight: "600" }}
-          subTitle={""}
-        />
+        <Header>
+          {headerTitle}
+        </Header>
 
-        <Typography variant="h5" style={{ fontSize: "18px", marginTop: "20px" }} gutterBottom>
-          טבלת מעקב הוצאות
-        </Typography>
-
-        <ReactTableContainer
-          id={pageName}
-          style={{
-            width: "100%",
-            textAlign: "center",
-            borderRadius: "4px",
-            //height: "700px" // This will force the table body to overflow and scroll, since there is not enough room
-          }}
-          //table body props, set the height of the table
-          getTbodyProps={(state, rowInfo, column, instance) => {
-            return {
-              style: {
-                overflow: "overlay",
-                height: "590px"
+        <Section title={"טבלת מעקב הוצאות חודשי"}>
+          <ReactTableContainer
+            id={pageName}
+            style={{
+              width: "100%",
+              textAlign: "center",
+              borderRadius: "4px",
+              //height: "700px" // This will force the table body to overflow and scroll, since there is not enough room
+            }}
+            //table body props, set the height of the table
+            getTbodyProps={(state, rowInfo, column, instance) => {
+              return {
+                style: {
+                  overflow: "overlay",
+                  height: "590px"
+                }
               }
+            }}
+            //filter props set the filter inputs style
+            getTheadFilterThProps={(state, rowInfo, column) => {
+              return {
+                style: {
+                  background: "#ebeef1"
+                }
+              };
+            }}
+            loadingText={"טוען..."}
+            noDataText={"לא נמצא מידע"}
+            loading={pages[pageIndex].isFetching}
+            LoadingComponent={LoadingCircle}
+            defaultPageSize={100}
+            showPagination={true}
+            data={pages[pageIndex].data}
+            columns={this.generateHeaders()}
+            resizable={true}
+            //minRows={0}
+            filterable
+            //PaginationComponent={PaginationBar}
+            defaultSorted={[
+              {
+                id: "code",
+                asc: true
+              }
+            ]}
+            headerControlsComponent={
+              <TableControls
+                rightPane={
+                  <EditControls
+                    editMode={this.state.editMode}
+                    toggleEditMode={this.toggleEditMode}
+                    addNewMode={this.state.addNewMode}
+                    toggleAddNewMode={this.toggleAddNewMode}
+                  />
+                }
+
+                middlePane={
+                  <RegisteredDatesFetcher fetchYears fetchMonths params={{
+                    buildingName: buildingNameEng
+                  }}>
+                    {({ months, years }) => {
+                      return <DatePicker
+                        months={months}
+                        years={years}
+                        date={date}
+                        loadDataByDateHandler={this.loadExpansesByDate}
+                      />
+                    }}
+                  </RegisteredDatesFetcher>
+
+                }
+
+                leftPane={
+                  <PageControls
+                    excel={{
+                      data: pages[pageIndex].data,
+                      fileName: Helper.getMonthExpansesFilename(buildingName, date),
+                      sheetTitle: `שנה ${date.year} חודש ${date.monthHeb}`,
+                      header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,
+                    }}
+                    print={{
+                      title: headerTitle,
+                      pageTitle: headerTitle + " - " + buildingName
+                    }}
+                    pageName={pageName}
+                  />
+                }
+              />
             }
-          }}
-          //filter props set the filter inputs style
-          getTheadFilterThProps={(state, rowInfo, column) => {
-            return {
-              style: {
-                background: "#ebeef1"
-              }
-            };
-          }}
-          loadingText={"טוען..."}
-          noDataText={"לא נמצא מידע"}
-          loading={pages[pageIndex].isFetching}
-          LoadingComponent={LoadingCircle}
-          defaultPageSize={100}
-          showPagination={true}
-          data={pages[pageIndex].data}
-          columns={this.generateHeaders()}
-          resizable={true}
-          //minRows={0}
-          filterable
-          //PaginationComponent={PaginationBar}
-          defaultSorted={[
-            {
-              id: "code",
-              asc: true
-            }
-          ]}
-          headerControlsComponent={
-            <TableControls
-              rightPane={
-                <EditControls
-                  editMode={this.state.editMode}
-                  toggleEditMode={this.toggleEditMode}
-                  addNewMode={this.state.addNewMode}
-                  toggleAddNewMode={this.toggleAddNewMode}
-                />
-              }
-
-              middlePane={
-                <RegisteredDatesFetcher fetchYears fetchMonths params={{
-                  buildingName: buildingNameEng
-                }}>
-                  {({ months, years }) => {
-                    return <DatePicker
-                      months={months}
-                      years={years}
-                      date={date}
-                      loadDataByDateHandler={this.loadExpansesByDate}
-                    />
-                  }}
-                </RegisteredDatesFetcher>
-
-              }
-
-              leftPane={
-                <PageControls
-                  excel={{
-                    data: pages[pageIndex].data,
-                    fileName: Helper.getMonthExpansesFilename(buildingName, date),
-                    sheetTitle: `שנה ${date.year} חודש ${date.monthHeb}`,
-                    header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,
-                  }}
-                  print={{
-                    title: headerTitle,
-                    pageTitle: headerTitle + " - " + buildingName
-                  }}
-                  pageName={pageName}
-                />
-              }
-            />
-          }
-          editBox={addNewBox}
-        />
+            editBox={addNewBox}
+          />
+        </Section>
 
       </Fragment>
     );

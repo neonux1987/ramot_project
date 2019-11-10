@@ -369,6 +369,10 @@ class Helper {
     }
   }
 
+  static getYearQuarters() {
+    return ["רבעון 1", "רבעון 2", "רבעון 3", "רבעון 4"];
+  }
+
   static getMonthExpansesFilename(buildingName, date = { year: Number, month: String }) {
     let monthHebName = this.convertEngToHebMonth(date.month);
     return `${buildingName} מעקב הוצאות חודש ${monthHebName} ${date.year}`;

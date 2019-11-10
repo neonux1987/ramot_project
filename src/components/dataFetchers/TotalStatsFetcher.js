@@ -1,75 +1,78 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import monthTotalActions from '../../redux/actions/monthTotalActions';
-import quarterTotalActions from '../../redux/actions/quarterTotalActions';
-//import yearTotalActions from '../../redux/actions/yearTotalActions';
+import monthlyStatsActions from '../../redux/actions/monthlyStatsActions';
+import quarterlyStatsActions from '../../redux/actions/quarterlyStatsActions';
+import yearlyStatsActions from '../../redux/actions/yearlyStatsActions';
 
 class TotalStatsFetcher extends React.Component {
 
   componentDidMount() {
 
-    if (this.props.fetchQuarterMonthsStats) {
+    if (this.props.allMonthStatsByQuarter) {
       //fetch quarter months stats
-      this.props.fetchQuarterMonthsTotalStats(this.props.params);
+      this.props.fetchAllMonthsStatsByQuarter(this.props.params);
     }
 
-    if (this.props.fetchQuarterTotalStats) {
-      //fetch quarter total stats
-      this.props.fetchQuarterTotalStats(this.props.params);
+    if (this.props.quarterStats) {
+      //fetch quarter stats
+      this.props.fetchQuarterStats(this.props.params);
     }
 
-    if (this.props.fetchYearsQuartersStats) {
-      //fetch year total
-      //this.props.fetchYearTotalStats(this.props.params);
+    if (this.props.allQuartersStatsByYear) {
+      //fetch quarter stats
+      this.props.fetchAllQuartersStatsByYear(this.props.params);
     }
 
-    if (this.props.fetchYearsTotalStats) {
-      //fetch year total
-      //this.props.fetchYearTotalStats(this.props.params);
+    if (this.props.yearStats) {
+      //fetch year stats
+      this.props.fetchYearStats(this.props.params);
     }
+
 
   }
 
   componentWillUnmount() {
     //cleanup
-    this.props.cleanupMonthTotal();
-    this.props.cleanupQuarterTotal();
-    //this.props.cleanupYearTotal();
+    this.props.cleanupMonthlyStats();
+    this.props.cleanupQuarterlyStats();
+    this.props.cleanupYearlyStats();
   }
 
   render() {
-    const { monthTotal } = this.props.monthTotal;
-    const { quarterTotal } = this.props.quarterTotal;
-    //const { yearTotal } = this.props.yearTotal;
+    const { monthlyStats } = this.props.monthlyStats;
+    const { quarterlyStats } = this.props.quarterlyStats;
+    const { yearlyStats } = this.props.yearlyStats;
 
     return this.props.children({
-      monthStats: monthTotal,
-      quarterStats: quarterTotal,
-      //yearStats: yearTotal
+      monthlyStats: monthlyStats,
+      quarterlyStats: quarterlyStats,
+      yearlyStats: yearlyStats
     });
   }
 
 }
 
 const mapStateToProps = state => ({
-  monthTotal: state.monthTotal,
-  quarterTotal: state.quarterTotal,
-  //yearTotal: state.yearTotal
+  monthlyStats: state.monthlyStats,
+  quarterlyStats: state.quarterlyStats,
+  yearlyStats: state.yearlyStats
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchQuarterMonthsTotalStats: (params) => dispatch(monthTotalActions.fetchQuarterMonthsTotalStats(params)),
-  cleanupMonthTotal: () => dispatch(monthTotalActions.cleanupMonthTotal()),
-  fetchQuarterTotalStats: (params) => dispatch(quarterTotalActions.fetchQuarterTotalStats(params)),
-  cleanupQuarterTotal: () => dispatch(quarterTotalActions.cleanupQuarterTotal()),
-  //fetchYearTotalStats: (params) => dispatch(yearTotalActions.fetchYearTotalStats(params)),
-  //cleanupYearTotal: () => dispatch(yearTotalActions.cleanupYearTotal())
+  fetchAllMonthsStatsByQuarter: (params) => dispatch(monthlyStatsActions.fetchAllMonthsStatsByQuarter(params)),
+  cleanupMonthlyStats: () => dispatch(monthlyStatsActions.cleanupMonthlyStats()),
+  fetchQuarterStats: (params) => dispatch(quarterlyStatsActions.fetchQuarterStats(params)),
+  fetchAllQuartersStatsByYear: (params) => dispatch(quarterlyStatsActions.fetchAllQuartersStatsByYear(params)),
+  cleanupQuarterlyStats: () => dispatch(quarterlyStatsActions.cleanupQuarterlyStats()),
+  fetchYearStats: (params) => dispatch(yearlyStatsActions.fetchYearStats(params)),
+  cleanupYearlyStats: () => dispatch(yearlyStatsActions.cleanupYearlyStats())
 });
 
 TotalStatsFetcher.defaultProps = {
-  fetchMonthStats: false,
-  fetchQuarterStats: false,
-  fetchYearStats: false
+  allMonthStatsByQuarter: false,
+  quarterStats: false,
+  allQuarterStatsByYear: false,
+  yearStats: false
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TotalStatsFetcher);

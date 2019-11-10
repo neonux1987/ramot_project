@@ -1,7 +1,7 @@
 const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
 const GeneralSettingsDao = require('../dao/GeneralSettingsDao');
-const MonthStatsLogic = require('./MonthStatsLogic');
-const QuarterStatsLogic = require('./QuarterStatsLogic');
+const MonthlyStatsLogic = require('./MonthlyStatsLogic');
+const QuarterlyStatsLogic = require('./QuarterlyStatsLogic');
 const SummarizedSectionsLogic = require('./SummarizedSectionsLogic');
 const SummarizedBudgetLogic = require('./SummarizedBudgetLogic');
 const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
@@ -13,9 +13,9 @@ class BudgetExecutionLogic {
     this.connection = connection;
     this.budgetExecutionDao = new BudgetExecutionDao(connection);
     this.generalSettingsDao = new GeneralSettingsDao(connection);
-    this.monthStatsLogic = new MonthStatsLogic(connection);
+    this.monthlyStatsLogic = new MonthlyStatsLogic(connection);
     this.summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
-    this.quarterStatsLogic = new QuarterStatsLogic(connection);
+    this.quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
     this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
     this.registeredQuartersLogic = new RegisteredQuartersLogic(connection);
   }
@@ -50,13 +50,13 @@ class BudgetExecutionLogic {
       const preparedMonthStatsObj = this.prepareMonthStatsObj(date.month, allBudgetExecutions);
 
       //update month stats
-      await this.monthStatsLogic.updateMonthStatsTrx(buildingName, date, {
+      await this.monthlyStatsLogic.updateMonthStatsTrx(buildingName, date, {
         outcome: preparedMonthStatsObj.outcome,
         income: preparedMonthStatsObj.income
       }, trx);
 
       //update quarter stats
-      await this.quarterStatsLogic.updateQuarterStatsTrx(buildingName, date, {
+      await this.quarterlyStatsLogic.updateQuarterStatsTrx(buildingName, date, {
         outcome: preparedMonthStatsObj.totalOutcome,
         income: preparedMonthStatsObj.totalIncome
       }, trx);
@@ -211,7 +211,7 @@ class BudgetExecutionLogic {
     }
 
     //insert empty quarter total row
-    await this.quarterStatsLogic.insertQuarterStats(buildingName, {
+    await this.quarterlyStatsLogic.insertQuarterStats(buildingName, {
       year: date.year,
       quarter: date.quarter,
       income: 0,
@@ -226,7 +226,8 @@ class BudgetExecutionLogic {
     const monthStatsArr = [];
 
     //populate the array with empty month stats objects
-    for(let i=0;i<months.length;i++){console.log(months[i]);
+    for (let i = 0; i < months.length; i++) {
+      console.log(months[i]);
       monthStatsArr.push({
         year: date.year,
         quarter: date.quarter,
@@ -237,7 +238,7 @@ class BudgetExecutionLogic {
     }
 
     //insert empty month stats rows
-    await this.monthStatsLogic.batchInsert(buildingName,monthStatsArr,trx);
+    await this.monthlyStatsLogic.batchInsert(buildingName, monthStatsArr, trx);
 
     //register quarter
     await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);

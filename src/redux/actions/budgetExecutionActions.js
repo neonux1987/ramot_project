@@ -6,7 +6,7 @@ import registeredYearsActions from './registeredYearsActions';
 import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
 import monthlyStatsActions from './monthlyStatsActions';
-import quarterTotalActions from './quarterTotalActions';
+import quarterlyStatsActions from './quarterlyStatsActions';
 
 const TOAST_AUTO_CLOSE = 3000;
 
@@ -178,44 +178,44 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
     const state = getState();
 
     //stats of all months
-    const monthTotalDataArr = [...state.monthTotal.monthTotal.data];
+    const monthlyStatsArr = [...state.monthlyStats.monthlyStats.data];
 
-    let monthTotalIndex = null;
+    let monthStatsIndex = null;
 
     //quarter total stats
-    const quarterTotalData = { ...state.quarterTotal.quarterTotal.data[0] };
-
+    const quarterlyStatsData = { ...state.quarterlyStats.quarterlyStats.data[0] };
+    console.log(params.date);
     //copy for rollback
-    const quarterTotalOld = {...quarterTotalData};
+    const quarterStatsOld = { ...quarterlyStatsData };
 
     if (params.date.month) {
 
-      for (let i = 0; i < monthTotalDataArr.length; i++) {
-        if (monthTotalDataArr[i].month === params.date.month) {
-          monthTotalIndex = i;
+      for (let i = 0; i < monthlyStatsArr.length; i++) {
+        if (monthlyStatsArr[i].month === params.date.month) {
+          monthStatsIndex = i;
         }
       }
 
       //make a copy of month total object to avoid mutating the original
-      const monthTotalObject = { ...monthTotalDataArr[monthTotalIndex] };
+      const monthStatsObject = { ...monthlyStatsArr[monthStatsIndex] };
 
       //subtract the old month budge value from
       //total budget and then add the new month budget value
-      monthTotalObject.income = monthTotalObject.income - oldBudgetExec[`${params.date.month}_budget`] + newBudgetExec[`${params.date.month}_budget`];
+      monthStatsObject.income = monthStatsObject.income - oldBudgetExec[`${params.date.month}_budget`] + newBudgetExec[`${params.date.month}_budget`];
 
       //subtract the old quarter budget value from
       //total budget and then add the new quarter budget value
-      quarterTotalData.income = quarterTotalData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
+      quarterlyStatsData.income = quarterlyStatsData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
 
       //update month total
-      dispatch(monthTotalActions.updateSingleMonthTotal(monthTotalObject, monthTotalIndex));
+      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(monthStatsObject, monthStatsIndex));
 
       //update quarter total
-      dispatch(quarterTotalActions.updateSingleQuarterTotal(quarterTotalData));
+      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterlyStatsData));
     }
 
     //copy of the un-modified month total object for rollback
-    const oldMonthTotalObj = {...monthTotalDataArr[monthTotalIndex]};
+    const oldMonthStatsObj = { ...monthlyStatsArr[monthStatsIndex] };
 
     //create a a budget execution object
     //with full properties to be saved in the store
@@ -242,10 +242,10 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
         dispatch(updateSingleBudgetExecution(oldBudgetExec, index));
 
         //rollback to the old month total stats
-        dispatch(monthlyStatsActions.updateSingleMonthTotal(oldMonthTotalObj, monthTotalIndex));
+        dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));
 
         //rollback to old quarter total
-      dispatch(quarterTotalActions.updateSingleQuarterTotal(quarterTotalOld));
+        dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterStatsOld));
       } else {
         toast.success("השורה עודכנה בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)

@@ -10,7 +10,7 @@ const fetchAllMonthsStatsByQuarter = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestMonthStats(params.buildingName));
+    dispatch(requestMonthlyStats());
 
     //request request to backend to get the data
     ipcRenderer.send("get-all-months-stats-by-quarter", params);
@@ -25,7 +25,7 @@ const fetchAllMonthsStatsByQuarter = (params = Object) => {
         });
       } else {
         //success store the data
-        dispatch(receiveMonthStats(arg.data));
+        dispatch(receiveMonthlyStats(arg.data));
       }
     });
   }
@@ -41,38 +41,37 @@ const updateMonthStatsStoreOnly = (monthStatsObj, index) => {
   }
 }
 
-const requestMonthStats = function (page) {
+const requestMonthlyStats = function (page) {
   return {
-    type: "REQUEST_MONTH_STATS",
-    page
+    type: "REQUEST_MONTHLY_STATS"
   }
 };
 
-const receiveMonthStats = function (data) {
+const receiveMonthlyStats = function (data) {
   return {
-    type: "RECEIVE_MONTH_STATS",
+    type: "RECEIVE_MONTHLY_STATS",
     data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "MONTH_STATS_FETCHING_FAILED",
+    type: "MONTHLY_STATS_FETCHING_FAILED",
     payload: error
   }
 };
 
-const cleanupMonthStats = () => {
+const cleanupMonthlyStats = () => {
   return {
-    type: "CLEANUP_MONTH_STATS"
+    type: "CLEANUP_MONTHLY_STATS"
   }
 }
 
 export default {
   fetchAllMonthsStatsByQuarter,
   fetchingFailed,
-  receiveMonthStats,
-  requestMonthStats,
-  cleanupMonthStats,
+  receiveMonthlyStats,
+  requestMonthlyStats,
+  cleanupMonthlyStats,
   updateMonthStatsStoreOnly
 };

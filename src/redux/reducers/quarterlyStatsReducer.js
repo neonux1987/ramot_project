@@ -1,6 +1,6 @@
 
 const initState = {
-  quarterTotal: {
+  quarterlyStats: {
     isFetching: false,
     status: "",
     error: "",
@@ -10,48 +10,48 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_QUARTER_TOTAL":
+    case "RECEIVE_QUARTERLY_STATS":
       return {
         ...state,
-        quarterTotal: {
-          ...state.quarterTotal,
+        quarterlyStats: {
+          ...state.quarterlyStats,
           isFetching: false,
           status: "success",
           data: action.data
         }
       }
-    case "REQUEST_QUARTER_TOTAL":
+    case "REQUEST_QUARTERLY_STATS":
       return {
         ...state,
-        quarterTotal: {
-          ...state.quarterTotal,
+        quarterlyStats: {
+          ...state.quarterlyStats,
           isFetching: true
         }
       }
-      case "UPDATE_SINGLE_QUARTER_TOTAL": {
-        //create new array with the new object
-        const newDataArray = [action.quarterTotalObj];
-        return {
-          ...state,
-          quarterTotal: {
-            ...state.quarterTotal,
-            data: newDataArray
-          }
-        }
-      }
-    case "QUARTER_TOTAL_FETCHING_FAILED":
+    case "UPDATE_QUARTER_STATS_STORE_ONLY": {
+      //create new array with the new object
+      const newDataArray = [action.quarterStatsObj];
       return {
         ...state,
-        quarterTotal: {
-          ...state.quarterTotal,
+        quarterlyStats: {
+          ...state.quarterlyStats,
+          data: newDataArray
+        }
+      }
+    }
+    case "QUARTERLY_STATS_FETCHING_FAILED":
+      return {
+        ...state,
+        quarterlyStats: {
+          ...state.quarterlyStats,
           status: "error",
           error: action.payload
         }
       }
-    case "CLEANUP_QUARTER_TOTAL":
+    case "CLEANUP_QUARTERLY_STATS":
       return {
         ...state,
-        quarterTotal: {
+        quarterlyStats: {
           isFetching: false,
           status: "",
           error: "",
