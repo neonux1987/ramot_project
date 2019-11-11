@@ -12,7 +12,6 @@ const SelectDropDown = ({ targetValue, itemsArr, selectChangeHandler, rowNumber 
   }
   return (
     <FormControl className={styles.formControl}>
-      <InputLabel className={styles.inputLabel} htmlFor="age-helper">בחר סעיף מסכם:</InputLabel>
       <Select
         name="summarized_section_id"
         value={targetValue}

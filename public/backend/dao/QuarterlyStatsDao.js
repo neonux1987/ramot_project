@@ -54,6 +54,16 @@ class QuarterlyStatsDao {
         throw error;
       });
   }
+  batchInsert(
+    buildingName = String,
+    rows,
+    trx
+  ) {
+    return trx.batchInsert(`${buildingName}_quarterly_stats`, rows, rows.length)
+      .catch((error) => {
+        throw error;
+      });
+  }
 
 }
 

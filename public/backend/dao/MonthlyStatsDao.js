@@ -37,7 +37,7 @@ class MonthlyStatsDao {
     trx = this.connection
   ) {
     return trx(`${buildingName}_monthly_stats`)
-      .where({ year: date.year, month: date.month })
+      .where({ year: date.year, month: date.monthHeb })
       .update(data)
       .catch((error) => {
         throw error;

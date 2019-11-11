@@ -9,7 +9,7 @@ import General from './pages/General/General';
 const styles = (theme) => ({
   tabs: {
     flexGrow: 1,
-    backgroundColor: "#474d56"
+    backgroundColor: "#333333"
     //backgroundColor: theme.palette.background.paper
   },
   tab: {
@@ -19,7 +19,7 @@ const styles = (theme) => ({
     backgroundColor: "#fff"
   },
   selected: {
-    backgroundColor: "#0a8fc1"
+    backgroundColor: "#6057ec"
   },
   headerTitle: {
     marginBottom: "10px"

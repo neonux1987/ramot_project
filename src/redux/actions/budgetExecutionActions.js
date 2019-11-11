@@ -184,14 +184,14 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
 
     //quarter total stats
     const quarterlyStatsData = { ...state.quarterlyStats.quarterlyStats.data[0] };
-    console.log(params.date);
+
     //copy for rollback
     const quarterStatsOld = { ...quarterlyStatsData };
 
     if (params.date.month) {
 
       for (let i = 0; i < monthlyStatsArr.length; i++) {
-        if (monthlyStatsArr[i].month === params.date.month) {
+        if (monthlyStatsArr[i].month === params.date.monthHeb) {
           monthStatsIndex = i;
         }
       }
@@ -227,9 +227,10 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
     //update the new data in the store first for
     //better and fast user experience
     dispatch(updateSingleBudgetExecution(budgetExecStoreObj, index));
-
+    
     //send a request to backend to get the data
     ipcRenderer.send("update-budget-execution", params);
+
     //listen when the data comes back
     ipcRenderer.once("budget-execution-updated", (event, arg) => {
       if (arg.error) {

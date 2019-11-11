@@ -22,6 +22,10 @@ class QuarterlyStatsLogic {
     return this.quarterlyStatsDao.insertQuarterStats(buildingName, data, trx);
   }
 
+  batchInsert(buildingName, rows, trx) {
+    return this.quarterlyStatsDao.batchInsert(buildingName, rows, trx);
+  }
+
 }
 
 module.exports = QuarterlyStatsLogic;

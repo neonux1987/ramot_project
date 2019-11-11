@@ -210,35 +210,20 @@ class BudgetExecutionLogic {
       await this.batchInsert(buildingName, date.quarter, preparedSections, trx);
     }
 
-    //insert empty quarter total row
-    await this.quarterlyStatsLogic.insertQuarterStats(buildingName, {
-      year: date.year,
-      quarter: date.quarter,
-      income: 0,
-      outcome: 0
-    },
-      trx);
+    //generate empty quarterly stats (4 quarters)
+    const quarterlyStatsArr = this.generateEmptyQuarterlyStats(date);
+
+    // batch insert the quarters
+    await this.quarterlyStatsLogic.batchInsert(buildingName, quarterlyStatsArr, trx);
 
     //all the months of a specific quarter
     const months = Helper.getQuarterMonths(date.quarter);
 
-    //empty month stats objects will be stores here
-    const monthStatsArr = [];
+    //generate empty monthly stats (3 empty months)
+    const monthlyStatsArr = this.generateEmptyMonthlyStats(months, date);
 
-    //populate the array with empty month stats objects
-    for (let i = 0; i < months.length; i++) {
-      console.log(months[i]);
-      monthStatsArr.push({
-        year: date.year,
-        quarter: date.quarter,
-        month: months[i],
-        income: 0,
-        outcome: 0
-      });
-    }
-
-    //insert empty month stats rows
-    await this.monthlyStatsLogic.batchInsert(buildingName, monthStatsArr, trx);
+    // batch insert the months
+    await this.monthlyStatsLogic.batchInsert(buildingName, monthlyStatsArr, trx);
 
     //register quarter
     await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
@@ -252,6 +237,35 @@ class BudgetExecutionLogic {
     //return the new added data
     return returnData;
 
+  }
+
+  generateEmptyMonthlyStats(months, date) {
+    const data = [];
+    //populate the array with empty month stats objects
+    for (let i = 0; i < months.length; i++) {
+      data.push({
+        year: date.year,
+        quarter: date.quarter,
+        month: months[i],
+        income: 0,
+        outcome: 0
+      });
+    }
+    return data;
+  }
+
+  generateEmptyQuarterlyStats(date) {
+    const data = [];
+    //populate the array with empty month stats objects
+    for (let i = 1; i < 5; i++) {
+      data.push({
+        year: date.year,
+        quarter: i,
+        income: 0,
+        outcome: 0
+      });
+    }
+    return data;
   }
 
 }

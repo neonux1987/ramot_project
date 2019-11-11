@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import budgetExecutionActions from '../../../redux/actions/budgetExecutionActions';
 import Helper from '../../../helpers/Helper';
-import LoadingCircle from '../../common/LoadingCircle';
 import TableControls from '../../common/table/TableControls/TableControls';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
@@ -85,9 +84,9 @@ class BudgetExecution extends Component {
         colored.background = "rgb(234, 70, 70)";
       } else if (value > 0) {
         colored.color = "#fff";
-        colored.background = "rgb(72, 187, 91)";
+        colored.background = "rgb(73, 187, 92)";
       } else {
-        colored.background = "rgb(242, 255, 59)";
+        colored.background = "rgb(244, 255, 96)";
       }
     }
 
@@ -140,8 +139,8 @@ class BudgetExecution extends Component {
     //if it is set the date month params to the month
     //column that was updated
     if (columnId.includes("_budget")) {
-      const month = columnId.substring(0, columnId.length - 7);
-      params.date.month = Helper.convertEngToHebMonth(month);
+      params.date.month = columnId.substring(0, columnId.length - 7);
+      params.date.monthHeb = Helper.convertEngToHebMonth(params.date.month);
     }
 
     //this.calculateMonthTotalBudget(data, cellInfo.column.id, prevValue, data[objIndex][cellInfo.column.id]);
@@ -157,7 +156,7 @@ class BudgetExecution extends Component {
    */
   prepareBudgetExecObj(budgetExec, quarter) {
 
-    const months = Helper.getQuarterMonths(quarter);
+    const months = Helper.getQuarterMonthsEng(quarter);
     let totalBudget = 0;
     const objToSave = {};
 
@@ -231,6 +230,19 @@ class BudgetExecution extends Component {
 
   generateHeaders = (months) => {
 
+    const month1Color = "#6057ec";
+    const month2Color = "#4e89d4";
+    const month3Color = "rgb(60, 160, 199)";
+    const quarterColor = "rgb(232, 87, 87)";
+    const defaultColor = "#333333";
+
+    const headerStyle = (monthColor) => ({
+      background: monthColor,
+      fontWeight: "600",
+      fontSize: "16px",
+      color: "#fff"
+    })
+
     return [
       {
         Header: "",
@@ -239,7 +251,7 @@ class BudgetExecution extends Component {
           {
             accessor: "summarized_section_id",
             Header: "ספרור",
-            headerStyle: { background: "#000", color: "#fff" },
+            headerStyle: headerStyle(defaultColor),
             width: 80,
             Cell: (row) => {
               return <span>{row.viewIndex + 1}</span>;
@@ -253,23 +265,18 @@ class BudgetExecution extends Component {
           {
             accessor: "section",
             Header: "סעיף",
-            headerStyle: { background: "#000", color: "#fff" }
+            headerStyle: headerStyle(defaultColor)
           }
         ]
       },
       {
         Header: months[0].header,
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "#6057ec",
-          color: "#fff"
-        },
+        headerStyle: headerStyle(month1Color),
         columns: [
           {
             accessor: months[0].column1.accessor,
             Header: months[0].column1.header,
-            headerStyle: { color: "#fff", background: "#6057ec", fontWeight: "600" },
+            headerStyle: headerStyle(month1Color),
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -278,24 +285,19 @@ class BudgetExecution extends Component {
           {
             accessor: months[0].column2.accessor,
             Header: months[0].column2.header,
-            headerStyle: { color: "#fff", background: "#6057ec", fontWeight: "600" },
+            headerStyle: headerStyle(month1Color),
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
         Header: months[1].header,
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "#4e89d4",
-          color: "#fff"
-        },
+        headerStyle: headerStyle(month2Color),
         columns: [
           {
             accessor: months[1].column1.accessor,
             Header: months[1].column1.header,
-            headerStyle: { color: "#fff", background: "#4e89d4", fontWeight: "600" },
+            headerStyle: headerStyle(month2Color),
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -304,24 +306,19 @@ class BudgetExecution extends Component {
           {
             accessor: months[1].column2.accessor,
             Header: months[1].column2.header,
-            headerStyle: { color: "#fff", background: "#4e89d4", fontWeight: "600" },
+            headerStyle: headerStyle(month2Color),
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
         Header: months[2].header,
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "rgb(60, 160, 199)",
-          color: "#fff"
-        },
+        headerStyle: headerStyle(month3Color),
         columns: [
           {
             accessor: months[2].column1.accessor,
             Header: months[2].column1.header,
-            headerStyle: { color: "#fff", background: "rgb(60, 160, 199)", fontWeight: "600" },
+            headerStyle: headerStyle(month3Color),
             Cell: this.cellNumberInput,
             style: {
               padding: 0
@@ -330,30 +327,25 @@ class BudgetExecution extends Component {
           {
             accessor: months[2].column2.accessor,
             Header: months[2].column2.header,
-            headerStyle: { color: "#fff", background: "rgb(60, 160, 199)", fontWeight: "600" },
+            headerStyle: headerStyle(month3Color),
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
         Header: "סוף רבעון",
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "rgb(232, 87, 87)",//rgb(255, 55, 92)
-          color: "#fff"
-        },
+        headerStyle: headerStyle(quarterColor),
         columns: [
           {
             accessor: "evaluation",
             Header: "הערכה",
-            headerStyle: { color: "#fff", background: "rgb(232, 87, 87)", fontWeight: "600" },
+            headerStyle: headerStyle(quarterColor),
             Cell: this.cell
           },
           {
             accessor: "total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(232, 87, 87)", fontWeight: "600" },
+            headerStyle: headerStyle(quarterColor),
             Cell: this.cell,
             style: {
               padding: 0
@@ -362,36 +354,31 @@ class BudgetExecution extends Component {
           {
             accessor: "total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(232, 87, 87)", fontWeight: "600" },
+            headerStyle: headerStyle(quarterColor),
             Cell: this.cell
           }
         ]
       },
       {
-        Header: "",
-        columns: [
-          {
-            accessor: "difference",
-            Header: "הפרש",
-            headerStyle: { background: "#000", color: "#fff" },
-            Cell: this.cell,
+        accessor: "difference",
+        Header: "הפרש",
+        headerStyle: headerStyle(defaultColor),
+        Cell: this.cell,
+        style: {
+          direction: "ltr"
+        },
+        getProps: (state, rowInfo, column) => {
+          return (rowInfo !== undefined && column !== undefined) ? {
             style: {
-              direction: "ltr"
-            },
-            getProps: (state, rowInfo, column) => {
-              return (rowInfo !== undefined && column !== undefined) ? {
-                style: {
-                  ...this.colorCell(column.id, rowInfo.row.difference)
-                }
-              } : {}
+              ...this.colorCell(column.id, rowInfo.row.difference)
             }
-          }
-        ]
+          } : {}
+        }
       },
       {
         accessor: "notes",
         Header: "הערות",
-        headerStyle: { background: "#000", color: "#fff" },
+        headerStyle: headerStyle(defaultColor),
         Cell: this.cellTextAreaInput,
         style: {
           padding: 0,
@@ -520,35 +507,10 @@ class BudgetExecution extends Component {
         </Section>
 
         <Section title={"טבלת מעקב וביצוע רבעוני"}>
-          <ReactTableContainer id={"react-table"} className="-highlight"
-            style={{
-              width: "100%",
-              textAlign: "center",
-              borderRadius: "4px",
-              //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
-            }}
-            getTbodyProps={(state, rowInfo, column, instance) => {
-              return {
-                style: {
-                  overflow: "overlay",
-                  height: "630px"
-                }
-              }
-            }}
-            getTdProps={(state, rowInfo, column) => {
-              return {
-                //onClick: () => console.log(rowInfo)
-              }
-            }}
-            loadingText={"טוען..."}
-            noDataText={"המידע לא נמצא"}
+          <ReactTableContainer
             loading={pages[pageIndex].isFetching}
-            LoadingComponent={LoadingCircle}
-            defaultPageSize={100}
-            showPagination={true}
             data={pages[pageIndex].data}
             columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
-            resizable={true}
             //minRows={0}
             headerControlsComponent={
               <TableControls
@@ -569,7 +531,7 @@ class BudgetExecution extends Component {
                         years={years}
                         quarters={quarters}
                         date={date}
-                        loadDataByDateHandler={this.loadBudgetExecutionsByDate}
+                        submitHandler={this.loadBudgetExecutionsByDate}
                       />
                     }}
                   </RegisteredDatesFetcher>

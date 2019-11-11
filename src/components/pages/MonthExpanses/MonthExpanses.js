@@ -153,7 +153,7 @@ class MonthExpanses extends Component {
 
   generateHeaders = () => {
 
-    const headerStyle = { background: "#000", color: "#fff" };
+    const headerStyle = { background: "#000", color: "#fff", fontWeight: "600" };
 
     return [
       {
@@ -414,42 +414,10 @@ class MonthExpanses extends Component {
 
         <Section title={"טבלת מעקב הוצאות חודשי"}>
           <ReactTableContainer
-            id={pageName}
-            style={{
-              width: "100%",
-              textAlign: "center",
-              borderRadius: "4px",
-              //height: "700px" // This will force the table body to overflow and scroll, since there is not enough room
-            }}
-            //table body props, set the height of the table
-            getTbodyProps={(state, rowInfo, column, instance) => {
-              return {
-                style: {
-                  overflow: "overlay",
-                  height: "590px"
-                }
-              }
-            }}
-            //filter props set the filter inputs style
-            getTheadFilterThProps={(state, rowInfo, column) => {
-              return {
-                style: {
-                  background: "#ebeef1"
-                }
-              };
-            }}
-            loadingText={"טוען..."}
-            noDataText={"לא נמצא מידע"}
             loading={pages[pageIndex].isFetching}
-            LoadingComponent={LoadingCircle}
-            defaultPageSize={100}
-            showPagination={true}
             data={pages[pageIndex].data}
             columns={this.generateHeaders()}
-            resizable={true}
-            //minRows={0}
             filterable
-            //PaginationComponent={PaginationBar}
             defaultSorted={[
               {
                 id: "code",
@@ -476,7 +444,7 @@ class MonthExpanses extends Component {
                         months={months}
                         years={years}
                         date={date}
-                        loadDataByDateHandler={this.loadExpansesByDate}
+                        submitHandler={this.loadExpansesByDate}
                       />
                     }}
                   </RegisteredDatesFetcher>

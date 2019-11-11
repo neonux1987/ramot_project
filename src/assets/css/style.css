@@ -209,6 +209,10 @@ textarea{
   border-right: none;
 }
 
+.ReactTable .rt-tbody .rt-td:last-child{
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
 .ReactTable .rt-noData{
   font-size: 24px;
   color: #353535;

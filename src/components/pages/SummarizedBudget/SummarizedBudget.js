@@ -237,6 +237,21 @@ class SummarizedBudget extends Component {
     ];
   }
 
+  loadDataByDate = ({ year }) => {
+    //important params that allows to pull the current data by
+    //building name, current month and year.
+    let params = {
+      buildingName: this.props.location.state.buildingNameEng,
+      date: {
+        year: year
+      }
+    }
+
+    //get the building month expanses
+    this.props.fetchSummarizeBudgets(params);
+
+  }
+
   generateQuarterlyStats(quarterlyStats, isFetching) {
     // list of strings of qurter months
     const quarters = Helper.getYearQuarters();
@@ -320,35 +335,9 @@ class SummarizedBudget extends Component {
 
         <Section title={"טבלת מעקב שנתית"}>
           <ReactTableContainer
-            style={{
-              width: "100%",
-              textAlign: "center",
-              borderRadius: "4px",
-              //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
-            }}
-            getTbodyProps={(state, rowInfo, column, instance) => {
-              return {
-                style: {
-                  overflow: "overlay",
-                  height: "700px"
-                }
-              }
-            }}
-            getTdProps={(state, rowInfo, column) => {
-              return {
-                //onClick: () => console.log(rowInfo)
-              }
-            }}
-            loadingText={"טוען..."}
-            noDataText={"המידע לא נמצא"}
             loading={pages[pageIndex].isFetching}
-            LoadingComponent={LoadingCircle}
-            defaultPageSize={50}
-            showPagination={true}
             data={pages[pageIndex].data}
             columns={this.generateHeaders()}
-            resizable={true}
-            minRows={0}
             headerControlsComponent={
               <TableControls
 
@@ -369,7 +358,7 @@ class SummarizedBudget extends Component {
                       return <DatePicker
                         years={years}
                         date={date}
-                        loadDataByDateHandler={this.loadExpansesByDate}
+                        submitHandler={this.loadDataByDate}
                       />
                     }}
                   </RegisteredDatesFetcher>

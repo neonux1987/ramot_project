@@ -3,7 +3,6 @@ import ReactTable from 'react-table';
 import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../../../../redux/actions/summarizedSectionsActions';
 import expansesCodesActions from '../../../../../redux/actions/expansesCodesActions';
-import LoadingCircle from '../../../../common/LoadingCircle';
 import SelectDropDown from '../../../../common/SelectDropDown/SelectDropDown';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
@@ -11,6 +10,9 @@ import EditControls from '../../../../common/EditControls/EditControls';
 import { notify, notificationTypes } from '../../../../Notifications/Notification';
 import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
 import TableActions from '../../../../common/table/TableActions/TableActions';
+import ReactTableContainer from '../../../../common/table/ReactTableContainer/ReactTableContainer';
+import Section from '../../../../common/Section/Section';
+import TableControls from '../../../../common/table/TableControls/TableControls';
 class ExpansesCodes extends Component {
 
   state = {
@@ -218,46 +220,30 @@ class ExpansesCodes extends Component {
 
     return (
       <Fragment>
+        <Section>
+          <ReactTableContainer
+            loading={expansesCodes.isFetching}
+            data={expansesCodes.data}
+            columns={this.generateHeaders()}
+            filterable
+            headerControlsComponent={
+              <TableControls
+                rightPane={
+                  <EditControls
+                    editMode={this.state.editMode}
+                    toggleEditMode={this.toggleEditMode}
+                    addNewMode={this.state.addNewMode}
+                    toggleAddNewMode={this.toggleAddNewMode}
+                  />
+                }
+              />
 
-        <EditControls
-          editMode={this.state.editMode}
-          toggleEditMode={this.toggleEditMode}
-          addNewMode={this.state.addNewMode}
-          toggleAddNewMode={this.toggleAddNewMode}
-        />
-
-        {renderAddewExpanse}
-
-        <ReactTable
-          id={pageName}
-          className="-striped"
-          style={{
-            width: "100%",
-            textAlign: "center",
-            borderRadius: "4px",
-            //height: "700px", // This will force the table body to overflow and scroll, since there is not enough room
-            marginTop: "10px"
-          }}
-          getTbodyProps={(state, rowInfo, column, instance) => {
-            return {
-              style: {
-                overflow: "overlay",
-                height: "650px"
-              }
             }
-          }}
-          loadingText={"טוען..."}
-          noDataText={"לא נמצא מידע בבסיס נתונים."}
-          loading={expansesCodes.isFetching}
-          LoadingComponent={LoadingCircle}
-          defaultPageSize={100}
-          showPagination={true}
-          data={expansesCodes.data}
-          columns={this.generateHeaders()}
-          resizable={true}
-          //minRows={0}
-          filterable
-        />
+            editBox={renderAddewExpanse}
+          /> {/* end ReactTableContainer */}
+
+        </Section> {/* end Section */}
+
       </Fragment>
     );
   }
@@ -265,7 +251,8 @@ class ExpansesCodes extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state
+  expansesCodes: state.expansesCodes,
+  summarizedSections: state.summarizedSections
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -4,6 +4,7 @@ import generalSettingsActions from '../../../../../redux/actions/generalSettings
 import { TextField, Button } from '@material-ui/core';
 import LoadingCircle from '../../../../common/LoadingCircle';
 import styles from './General.module.css';
+import Section from '../../../../common/Section/Section';
 
 class General extends Component {
 
@@ -63,19 +64,21 @@ class General extends Component {
     return (
       <Fragment>
 
-        <form className={styles.form} onChange={(event) => this.formOnChange(event)} onSubmit={(event) => event.preventDefault()}>
-          <label>מע"מ:</label>
-          <TextField
-            name="tax"
-            type="number"
-            value={this.state.formInputs.tax}
-            classes={{ root: styles.textField }}
-            onClick={(event => event.target.select())}
-          />
-          <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={(event) => this.saveSettings(event)}>
-            שמור
-        </Button>
-        </form>
+        <Section>
+          <form className={styles.form} onChange={(event) => this.formOnChange(event)} onSubmit={(event) => event.preventDefault()}>
+            <label>מע"מ:</label>
+            <TextField
+              name="tax"
+              type="number"
+              value={this.state.formInputs.tax}
+              classes={{ root: styles.textField }}
+              onClick={(event => event.target.select())}
+            />
+            <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={(event) => this.saveSettings(event)}>
+              שמור
+          </Button>
+          </form>
+        </Section>
 
       </Fragment>
     );

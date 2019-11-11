@@ -3,22 +3,19 @@ import { Select, Button, MenuItem } from '@material-ui/core';
 import styles from './DatePicker.module.css';
 import Spinner from '../Spinner/Spinner';
 
-export default ({ months, quarters, years, date, loadDataByDateHandler }) => {
+export default ({ months, quarters, years, date, submitHandler }) => {
 
   const [selectDate, setDate] = useState({
-    month: date.month,
-    year: date.year,
-    quarter: date.quarter
-  })
+    ...date
+  });
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
     const newValue = name === "year" || name === "quarter" ? Number.parseInt(value) : value;
+
     setDate({
-      selectDate: {
-        ...selectDate,
-        [name]: newValue
-      }
+      ...selectDate,
+      [name]: newValue
     });
   }
 
@@ -26,7 +23,7 @@ export default ({ months, quarters, years, date, loadDataByDateHandler }) => {
   const renderMonths = months && months.data.length > 0 ? <Select
     name="month"
     className={styles.formSelect}
-    value={date.month}
+    value={selectDate.month}
     onChange={onChangeHandler}
   >
     {months.data.map((month) => {
@@ -38,7 +35,7 @@ export default ({ months, quarters, years, date, loadDataByDateHandler }) => {
   const renderQuarters = quarters && quarters.data.length > 0 ? <Select
     name="quarter"
     className={styles.formSelect}
-    value={date.quarter}
+    value={selectDate.quarter}
     onChange={onChangeHandler}
   >
     {quarters.data.map((quarter) => {
@@ -50,7 +47,7 @@ export default ({ months, quarters, years, date, loadDataByDateHandler }) => {
   const renderYears = years && years.data.length > 0 ? <Select
     name="year"
     className={styles.formSelect}
-    value={date.year}
+    value={selectDate.year}
     onChange={onChangeHandler}
   >
     {years.data.map((year) => {
@@ -70,7 +67,7 @@ export default ({ months, quarters, years, date, loadDataByDateHandler }) => {
           {renderYears}
 
         </form>
-        <Button variant="contained" color="secondary" className={styles.button} onClick={() => loadDataByDateHandler(selectDate)}>
+        <Button variant="contained" color="secondary" className={styles.button} onClick={() => submitHandler(selectDate)}>
           טען
         </Button>
       </div>
