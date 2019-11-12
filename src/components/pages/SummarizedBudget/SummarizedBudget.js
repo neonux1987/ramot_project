@@ -17,6 +17,7 @@ import Stats from '../../common/Stats/Stats';
 import Section from '../../common/Section/Section';
 import StatBox from '../../common/Stats/StatBox/StatBox';
 import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
+import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 
 const FIXED_FLOAT = 2;
 
@@ -66,6 +67,21 @@ class SummarizedBudget extends Component {
   }
 
   generateHeaders() {
+
+    const quarter1Color = "#7f69b3";
+    const quarter2Color = "#5e94d8";
+    const quarter3Color = "#7db995";
+    const quarter4Color = "#d86565";
+    const yearColor = "rgb(62, 77, 109)";
+    const defaultColor = "#333333";
+
+    const headerStyle = (bgColor) => ({
+      background: bgColor,
+      fontWeight: "600",
+      fontSize: "15px",
+      color: "#fff"
+    });
+
     return [
       {
         Header: "",
@@ -74,7 +90,7 @@ class SummarizedBudget extends Component {
           {
             accessor: "summarized_section_id",
             Header: "ספרור",
-            headerStyle: { background: "#000", color: "#fff" },
+            headerStyle: headerStyle(defaultColor),
             width: 100,
             Cell: (row) => {
               return <span>{row.viewIndex + 1}</span>;
@@ -88,23 +104,18 @@ class SummarizedBudget extends Component {
           {
             accessor: "section",
             Header: "סעיף",
-            headerStyle: { background: "#000", color: "#fff" }
+            headerStyle: headerStyle(defaultColor)
           }
         ]
       },
       {
         Header: "רבעון 1",
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "rgb(251, 38, 38)",
-          color: "#fff"
-        },
+        headerStyle: headerStyle(quarter1Color),
         columns: [
           {
             accessor: "quarter1_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(251, 38, 38)", fontWeight: "600" },
+            headerStyle: headerStyle(quarter1Color),
             Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               padding: 0
@@ -113,24 +124,19 @@ class SummarizedBudget extends Component {
           {
             accessor: "quarter1_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(251, 38, 38)", fontWeight: "600" },
+            headerStyle: headerStyle(quarter1Color),
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
         Header: "רבעון 2",
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "rgb(103, 101, 208)",
-          color: "#fff"
-        },
+        headerStyle: headerStyle(quarter2Color),
         columns: [
           {
             accessor: "quarter2_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(103, 101, 208)", fontWeight: "600" },
+            headerStyle: headerStyle(quarter2Color),
             Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               padding: 0
@@ -139,24 +145,19 @@ class SummarizedBudget extends Component {
           {
             accessor: "quarter2_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(103, 101, 208)", fontWeight: "600" },
+            headerStyle: headerStyle(quarter2Color),
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
         Header: "רבעון 3",
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "rgb(24, 135, 199)",
-          color: "#fff"
-        },
+        headerStyle: headerStyle(quarter3Color),
         columns: [
           {
             accessor: "quarter3_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(24, 135, 199)", fontWeight: "600" },
+            headerStyle: headerStyle(quarter3Color),
             Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               padding: 0
@@ -165,24 +166,19 @@ class SummarizedBudget extends Component {
           {
             accessor: "quarter3_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(24, 135, 199)", fontWeight: "600" },
+            headerStyle: headerStyle(quarter3Color),
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
         Header: "רבעון 4",
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "rgb(29, 186, 143)",
-          color: "#fff"
-        },
+        headerStyle: headerStyle(quarter4Color),
         columns: [
           {
             accessor: "quarter4_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(29, 186, 143)", fontWeight: "600" },
+            headerStyle: headerStyle(quarter4Color),
             Cell: (cellInfo) => this.cell(cellInfo),
             style: {
               padding: 0
@@ -191,36 +187,31 @@ class SummarizedBudget extends Component {
           {
             accessor: "quarter4_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(29, 186, 143)", fontWeight: "600" },
+            headerStyle: headerStyle(quarter4Color),
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
       },
       {
         Header: "סוף שנה",
-        headerStyle: {
-          fontWeight: "600",
-          fontSize: "16px",
-          background: "rgb(143, 78, 191)",
-          color: "#fff"
-        },
+        headerStyle: headerStyle(yearColor),
         columns: [
           {
             accessor: "evaluation",
             Header: "הערכה",
-            headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
+            headerStyle: headerStyle(yearColor),
             Cell: (cellInfo) => this.cell(cellInfo)
           },
           {
             accessor: "year_total_budget",
             Header: "תקציב",
-            headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
+            headerStyle: headerStyle(yearColor),
             Cell: (cellInfo) => this.cell(cellInfo)
           },
           {
             accessor: "year_total_execution",
             Header: "ביצוע",
-            headerStyle: { color: "#fff", background: "rgb(143, 78, 191)", fontWeight: "600" },
+            headerStyle: headerStyle(yearColor),
             Cell: (cellInfo) => this.cell(cellInfo)
           }
         ]
@@ -270,6 +261,7 @@ class SummarizedBudget extends Component {
           title={quarters[i]}
           outcome={`${quarterlyStats[i].outcome} ${Helper.shekelUnicode}`}
           income={`${quarterlyStats[i].income} ${Helper.shekelUnicode}`}
+          bgColor={Helper.quartersColors[i]}
         />;
 
       }
@@ -290,6 +282,7 @@ class SummarizedBudget extends Component {
         title={`שנת ${yearStats.year}`}
         outcome={`${yearStats.outcome} ${Helper.shekelUnicode}`}
         income={`${yearStats.income} ${Helper.shekelUnicode}`}
+        bgColor={Helper.endYearColor}
       />;
     }
   }
@@ -334,52 +327,55 @@ class SummarizedBudget extends Component {
         </Section>
 
         <Section title={"טבלת מעקב שנתית"}>
-          <ReactTableContainer
-            loading={pages[pageIndex].isFetching}
-            data={pages[pageIndex].data}
-            columns={this.generateHeaders()}
-            headerControlsComponent={
-              <TableControls
 
-                rightPane={
-                  <EditControls
-                    editMode={this.state.editMode}
-                    toggleEditMode={this.toggleEditMode}
-                    addNewMode={this.state.addNewMode}
-                    toggleAddNewMode={this.toggleAddNewMode}
-                  />
-                }
+          <TableWrapper>
 
-                middlePane={
-                  <RegisteredDatesFetcher fetchYears params={{
-                    buildingName: buildingNameEng
-                  }}>
-                    {({ years }) => {
-                      return <DatePicker
-                        years={years}
-                        date={date}
-                        submitHandler={this.loadDataByDate}
-                      />
-                    }}
-                  </RegisteredDatesFetcher>
-                }
-
-                leftPane={<PageControls
-                  excel={{
-                    data: pages[pageIndex].data,
-                    fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
-                    tabName: `שנה ${date.year}`
+            <TableControls
+              rightPane={
+                <EditControls
+                  editMode={this.state.editMode}
+                  toggleEditMode={this.toggleEditMode}
+                  addNewMode={this.state.addNewMode}
+                  toggleAddNewMode={this.toggleAddNewMode}
+                />
+              } // end rightPane
+              middlePane={
+                <RegisteredDatesFetcher fetchYears params={{
+                  buildingName: buildingNameEng
+                }}>
+                  {({ years }) => {
+                    return <DatePicker
+                      years={years}
+                      date={date}
+                      submitHandler={this.loadDataByDate}
+                    />
                   }}
-                  print={{
-                    title: headerTitle,
-                    pageTitle: headerTitle + " - " + buildingName
-                  }}
-                  pageName={pageName}
-                />}
+                </RegisteredDatesFetcher>
+              } // end middlePane
+              leftPane={<PageControls
+                excel={{
+                  data: pages[pageIndex].data,
+                  fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
+                  tabName: `שנה ${date.year}`
+                }}
+                print={{
+                  title: headerTitle,
+                  pageTitle: headerTitle + " - " + buildingName
+                }}
+                pageName={pageName}
+              />} // end leftPane
 
-              />
-            }
-          />
+            />  {/* End TableControls */}
+
+            <ReactTableContainer
+              loading={pages[pageIndex].isFetching}
+              data={pages[pageIndex].data}
+              columns={this.generateHeaders()}
+            />
+
+          </TableWrapper>  {/* End TableWrapper */}
+
+
         </Section>
 
 

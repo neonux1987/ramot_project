@@ -7,7 +7,6 @@ import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../common/Header/Header';
-import LoadingCircle from '../../common/LoadingCircle';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import TableControls from '../../common/table/TableControls/TableControls';
@@ -19,6 +18,7 @@ import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 import Section from '../../common/Section/Section';
+import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 
 const FIXED_FLOAT = 2;
 
@@ -413,63 +413,69 @@ class MonthExpanses extends Component {
         </Header>
 
         <Section title={"טבלת מעקב הוצאות חודשי"}>
-          <ReactTableContainer
-            loading={pages[pageIndex].isFetching}
-            data={pages[pageIndex].data}
-            columns={this.generateHeaders()}
-            filterable
-            defaultSorted={[
-              {
-                id: "code",
-                asc: true
-              }
-            ]}
-            headerControlsComponent={
-              <TableControls
-                rightPane={
-                  <EditControls
-                    editMode={this.state.editMode}
-                    toggleEditMode={this.toggleEditMode}
-                    addNewMode={this.state.addNewMode}
-                    toggleAddNewMode={this.toggleAddNewMode}
-                  />
-                }
 
-                middlePane={
-                  <RegisteredDatesFetcher fetchYears fetchMonths params={{
-                    buildingName: buildingNameEng
-                  }}>
-                    {({ months, years }) => {
-                      return <DatePicker
-                        months={months}
-                        years={years}
-                        date={date}
-                        submitHandler={this.loadExpansesByDate}
-                      />
-                    }}
-                  </RegisteredDatesFetcher>
+          <TableWrapper>
 
-                }
+            <TableControls
+              rightPane={
+                <EditControls
+                  editMode={this.state.editMode}
+                  toggleEditMode={this.toggleEditMode}
+                  addNewMode={this.state.addNewMode}
+                  toggleAddNewMode={this.toggleAddNewMode}
+                />
+              } // end rightPane
+              middlePane={
+                <RegisteredDatesFetcher fetchYears fetchMonths params={{
+                  buildingName: buildingNameEng
+                }}>
+                  {({ months, years }) => {
+                    return <DatePicker
+                      months={months}
+                      years={years}
+                      date={date}
+                      submitHandler={this.loadExpansesByDate}
+                    />
+                  }}
+                </RegisteredDatesFetcher>
 
-                leftPane={
-                  <PageControls
-                    excel={{
-                      data: pages[pageIndex].data,
-                      fileName: Helper.getMonthExpansesFilename(buildingName, date),
-                      sheetTitle: `שנה ${date.year} חודש ${date.monthHeb}`,
-                      header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,
-                    }}
-                    print={{
-                      title: headerTitle,
-                      pageTitle: headerTitle + " - " + buildingName
-                    }}
-                    pageName={pageName}
-                  />
+              } // end middlePane
+              leftPane={
+                <PageControls
+                  excel={{
+                    data: pages[pageIndex].data,
+                    fileName: Helper.getMonthExpansesFilename(buildingName, date),
+                    sheetTitle: `שנה ${date.year} חודש ${date.monthHeb}`,
+                    header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,
+                  }}
+                  print={{
+                    title: headerTitle,
+                    pageTitle: headerTitle + " - " + buildingName
+                  }}
+                  pageName={pageName}
+                />
+              } // end leftPane
+            /> {/* end TableControls */}
+
+            {/* add new box */}
+            {addNewBox}
+
+            <ReactTableContainer
+              loading={pages[pageIndex].isFetching}
+              data={pages[pageIndex].data}
+              columns={this.generateHeaders()}
+              filterable
+              defaultSorted={[
+                {
+                  id: "code",
+                  asc: true
                 }
-              />
-            }
-            editBox={addNewBox}
-          />
+              ]} // end leftPane
+            />
+
+          </TableWrapper> {/* end TableWrapper */}
+
+
         </Section>
 
       </Fragment>

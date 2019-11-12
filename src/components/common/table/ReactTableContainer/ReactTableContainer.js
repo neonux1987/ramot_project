@@ -2,6 +2,7 @@ import React from 'react';
 import ReactTable from 'react-table';
 import styles from './ReactTableContainer.module.css';
 import LoadingCircle from '../../../common/LoadingCircle';
+import classnames from 'classnames';
 
 class ReactTableContainer extends React.Component {
 
@@ -22,40 +23,30 @@ class ReactTableContainer extends React.Component {
 
   render() {
     return (
-      <div className={styles.tableWrapper}>
-        {this.props.headerControlsComponent}
-        {this.props.editBox}
-        <ReactTable
-          id={"react-table"}
-          className="-highlight"
-          style={{
-            width: "100%",
-            textAlign: "center",
-            borderRadius: "4px",
-            //height: "750px" // This will force the table body to overflow and scroll, since there is not enough room
-          }}
-          getTbodyProps={(state, rowInfo, column, instance) => {
-            return {
-              style: {
-                overflow: "overlay",
-                height: "630px"
-              }
+      <ReactTable
+        id={"react-table"}
+        className={classnames(styles.table, "-highlight")}
+        getTbodyProps={(state, rowInfo, column, instance) => {
+          return {
+            style: {
+              overflow: "overlay",
+              height: "630px"
             }
-          }}
-          getTheadFilterThProps={() => {
-            return {
-              style: {
-                background: "#ebeef1"
-              }
+          }
+        }}
+        getTheadFilterThProps={() => {
+          return {
+            style: {
+              background: "#ebeef1"
             }
-          }}
-          loadingText={"טוען..."}
-          noDataText={"המידע לא נמצא"}
-          LoadingComponent={LoadingCircle}
-          {...this.state}
-          {...this.props}
-        />
-      </div>
+          }
+        }}
+        loadingText={"טוען..."}
+        noDataText={"המידע לא נמצא"}
+        LoadingComponent={LoadingCircle}
+        {...this.state}
+        {...this.props}
+      />
     );
   }
 

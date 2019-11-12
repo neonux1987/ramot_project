@@ -11,6 +11,7 @@ import LoadingCircle from '../../common/LoadingCircle';
 import sidebarActions from '../../../redux/actions/sidebarActions';
 import { connect } from 'react-redux';
 import SidebarToggleButton from './SidebarToggleButton';
+import classnames from 'classnames';
 
 const drawerWidth = 240;
 
@@ -207,27 +208,21 @@ class Sidebar extends Component {
   render() {
     const { sidebar, showSidebar } = this.props.sidebar;
     this.toggleSidebarAnimation = !showSidebar ? "hideAnimation" : "showAnimation";
-    this.toggleSidebarButtonAnimation = !showSidebar ? "hideButtonAnimation" : "showButtonAnimation";
+
     let render = <Menu menu={sidebar.data} active={this.state.active} clicked={this.activeItem} expandClick={this.expandMenuItem} />;
     if (sidebar.isFetching) {
       render = <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} textStyle={this.props.classes.loadingText} circleStyle={this.props.classes.loadingCircle} />;
     }
     return (
-      <Drawer id="sidebar" variant="permanent" classes={{ paper: this.props.classes.drawerPaper }} anchor="left" className={this.props.classes.drawer + " " + this.toggleSidebarAnimation}>
-
-        <SidebarToggleButton toggleStyle={" " + this.toggleSidebarButtonAnimation} toggleSidebar={() => this.props.toggleSidebar(!showSidebar)} />
+      <Drawer id="sidebar" variant="permanent" classes={{ paper: this.props.classes.drawerPaper }} anchor="left" className={classnames(this.props.classes.drawer, this.toggleSidebarAnimation)}>
 
         <Logo />
-        {/* <Divider className={this.props.classes.logoDivider} /> */}
 
         <NavButton page="דף הבית" path="דף-הבית" active={this.state.active.subMenuItemId === this.state.homeButtonId || this.state.active.subMenuItemId === 0}
           activeClass={activeButtonClass} clicked={() => (this.activeItem(this.state.homeButtonId, this.state.homeButtonId))} >
           <Dashboard classes={{ root: this.props.classes.listItemIcon }} />
         </NavButton>
 
-        {/* <Divider className={this.props.classes.homeDivider} /> */}
-
-        {/* <span className={this.props.classes.buildingsTitle}></span> */}
         {render}
 
         <div className={this.props.classes.settingsWrapper}>
@@ -247,8 +242,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar()),
-  toggleSidebar: (payload) => dispatch(sidebarActions.toggleSidebar(payload))
+  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar())
 });
 
 Sidebar.propTypes = {

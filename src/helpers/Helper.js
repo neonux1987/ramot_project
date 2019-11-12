@@ -457,5 +457,13 @@ class Helper {
     }
   }
 
+  static quarterMonthsColors = ["rgb(123, 91, 199)", "rgb(78, 143, 226)", "rgb(44, 193, 136)"];
+
+  static endQuarterColor = "rgb(232, 67, 104)";
+
+  static quartersColors = ["rgb(123, 91, 199)", "rgb(78, 143, 226)", "rgb(44, 193, 136)", this.endQuarterColor];
+
+  static endYearColor = "rgb(230, 147, 28)";
+
 }
 export default Helper;

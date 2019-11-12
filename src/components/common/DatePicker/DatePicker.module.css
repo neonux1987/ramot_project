@@ -32,6 +32,5 @@ justify-content: center;
   .button{
     display: inline-block;
     margin: 0px 5px 0 10px;
-    background-color: rgb(78, 137, 212);
-    box-shadow: none;
+    background-color: rgb(59, 126, 210);
   }

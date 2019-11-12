@@ -6,9 +6,8 @@ import { toast } from 'react-toastify';
  * toggle sidebar
  * @param {*} payload 
  */
-const toggleSidebar = (payload) => ({
-  type: "TOGGLE_SIDEBAR",
-  payload
+const toggleSidebar = () => ({
+  type: "TOGGLE_SIDEBAR"
 });
 
 /**

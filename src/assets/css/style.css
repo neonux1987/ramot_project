@@ -73,23 +73,23 @@ a {
 }
 
 .hideAnimation{
-  animation: hide 0.3s ease 0.3s forwards;
+  animation: hide 0.2s ease 0.2s forwards;
 }
 
 .showAnimation{
-  animation: show 0.3s ease 0.3s backwards;
+  animation: show 0.2s ease 0.2s backwards;
 }
 
 @keyframes hide{
   0% {margin-right: 0px;}
   100% {
-    margin-right: -230px;
+    margin-right: -240px;
   }
 }
 
 @keyframes show{
   0% {
-    margin-right: -230px;
+    margin-right: -240px;
   }
   100% {
     margin-right: 0px;
@@ -238,10 +238,17 @@ textarea{
     font-size: 15px;
 }
 
-.ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td{
+.ReactTable .rt-thead .rt-th{
   background: #ebeef1;
-  border-right: none;
 }
+
+.ReactTable .rt-thead .rt-th:last-child{
+border: none;
+}
+
+.ReactTable .rt-thead .rt-th:first-child{
+  border: none;
+  }
 
 /******** Toastify override ********/
 .Toastify__toast--success {

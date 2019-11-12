@@ -13,7 +13,7 @@ export default (state = initState, action) => {
     case "TOGGLE_SIDEBAR":
       return {
         ...state,
-        showSidebar: action.payload
+        showSidebar: !state.showSidebar
       }
     case "RECEIVE_SIDEBAR":
       return {

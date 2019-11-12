@@ -1,9 +1,14 @@
+.infoBoxWrapper{
+    flex: 1;
+    margin: 0 0 0 15px;
+}
+
 .infoBox{
   background: #ffffff;
-    height: 160px;
+    height: 170px;
     border-radius: 4px;
-    flex: 1;
-    margin: 0 0 0 10px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    margin: 30px 0 0;
 }
 
 .infoBox:first-child{
@@ -23,8 +28,25 @@
   padding-left: 15px;
 }
 
-.header .title{
-  color: #323a3c;
+.titleWrapper{
+  display: flex;
+}
+
+.title{
+  position: relative;
+    background: #7553c5;
+    display: flex;
+    justify-content: center;
+    padding: 5px 0;
+    width: 115px;
+    top: -26px;
+    border-radius: 4px;
+    /* box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14); */
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(175, 175, 175, 0.4);
+}
+
+.titleText{
+  color: #fff;
 /*   border-bottom: 1px solid #e0e0e0; */
 
 }

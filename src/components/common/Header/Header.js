@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@material-ui/core';
 import styles from './Header.module.css'
 
-const Header = ({ fontSize = "42px", color = "#000000", fontWeight = "600",children }) => {
+const Header = ({ fontSize = "36px", color = "#000000", fontWeight = "400", children }) => {
 
   return (
     <Box className={styles.header}>

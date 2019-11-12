@@ -1,5 +1,6 @@
-.tableWrapper{
-  padding: 30px 20px;
-  background: #fff;
+.table{
+  width: 100%;
+  text-align: center;
   border-radius: 4px;
+  /* height: "750px" This will force the table body to overflow and scroll, since there is not enough room */
 }
