@@ -91,11 +91,13 @@ class MonthExpansesDao {
     buildingName = String,
     trx
   ) {
-    return trx.where({ id: id }).select(
+    return trx.where("building.id", id).select(
       "building.id AS id",
       "building.expanses_code_id AS expanses_code_id",
       "building.sum AS sum",
       "building.tax AS tax",
+      "ec.code AS code",
+      "ec.codeName AS codeName",
       "sc.id AS summarized_section_id",
       "sc.section AS section",
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
@@ -127,8 +129,12 @@ class MonthExpansesDao {
       });
   }
 
-  deleteMonthExpanse({ buildingName = String, id = Number }) {
-    return this.connection(buildingName + "_month_expanses")
+  deleteMonthExpanse(
+    buildingName = String,
+    id = Number,
+    trx = this.connection
+  ) {
+    return trx(buildingName + "_month_expanses")
       .where({ id: id })
       .del()
       .catch((error) => {

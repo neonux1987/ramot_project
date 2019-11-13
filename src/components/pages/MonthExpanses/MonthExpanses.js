@@ -94,6 +94,13 @@ class MonthExpanses extends Component {
     //reset form state
     reset();
 
+    // when in edit mode and trying to delete, the cells
+    // with input elements stays and and not deleted
+    // only when turning edit mode off
+    this.setState({ editMode: !this.state.editMode }, () => {
+      this.setState({ editMode: !this.state.editMode });
+    });
+
   }
 
   validateFormInputs(formInputs) {
@@ -160,7 +167,7 @@ class MonthExpanses extends Component {
         Header: "פעולות",
         width: 80,
         headerStyle: headerStyle,
-        Cell: (cellInfo) => <TableActions deleteHandler={() => this.deleteExpanseHandler(cellInfo.original.id)} />,
+        Cell: (cellInfo) => <TableActions deleteHandler={() => this.deleteExpanseHandler(cellInfo.original.id, cellInfo.index)} />,
         show: this.state.editMode
       },
       {
@@ -253,22 +260,28 @@ class MonthExpanses extends Component {
     e.target.blur();
   }
 
-  deleteExpanseHandler = (id) => {
+  deleteExpanseHandler = (id, index) => {
     //copy data
-    const data = [...this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex].data];
-
-    //find the index of the object in the array
-    const objIndex = Helper.findObjIndexById(id, data);
+    const { data, date } = { ...this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex] };
 
     //remove from the array
-    data.splice(objIndex, 1);
+    data.splice(index, 1);
 
     //prepare the params
     let params = {
       id: id,
-      buildingName: this.props.location.state.buildingNameEng
+      buildingName: this.props.location.state.buildingNameEng,
+      date: date
     };
     this.props.deleteExpanse(params, data);
+
+    // when in edit mode and trying to delete, the cells
+    // with input elements stays and and not deleted
+    // only when turning edit mode off
+    this.setState({ editMode: !this.state.editMode }, () => {
+      this.setState({ editMode: !this.state.editMode });
+    });
+
   }
 
   cellTextAreaInput = (cellInfo) => {
@@ -382,6 +395,7 @@ class MonthExpanses extends Component {
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
+
     //summarized sections data
     const { summarizedSections } = this.props.summarizedSections;
 
@@ -465,6 +479,7 @@ class MonthExpanses extends Component {
               data={pages[pageIndex].data}
               columns={this.generateHeaders()}
               filterable
+              defaultPageSize={65}
               defaultSorted={[
                 {
                   id: "code",

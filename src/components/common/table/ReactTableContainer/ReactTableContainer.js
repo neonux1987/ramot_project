@@ -9,7 +9,6 @@ class ReactTableContainer extends React.Component {
   state = {
     sorted: this.props.sorted,
     defaultSorted: this.props.defaultSorted,
-    page: this.props.page,
     pageSize: this.props.pageSize,
     expanded: this.props.expanded,
     resized: this.props.resized,
@@ -55,14 +54,13 @@ class ReactTableContainer extends React.Component {
 ReactTableContainer.defaultProps = {
   sorted: [],
   defaultSorted: [],
-  page: 0,
   pageSize: undefined,
   expanded: {},
   resized: [],
   filtered: [],
   showPagination: true,
   resizable: false,
-  defaultPageSize: 50,
+  defaultPageSize: 40,
   minRows: undefined,
   filterable: false
 }

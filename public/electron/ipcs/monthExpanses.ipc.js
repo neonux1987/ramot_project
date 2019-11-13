@@ -38,6 +38,7 @@ const monthExpansesIpc = (connection) => {
     monthExpansesLogic.deleteMonthExpanseTrx(data).then((result) => {
       event.reply("month-expanse-deleted", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("month-expanse-deleted", { error: error.message });
     });
   });

@@ -6,6 +6,8 @@ const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const Helper = require('../../helpers/Helper');
 
+const SPECIAL_CODE_PREFIX = "9";
+
 class MonthExpansesLogic {
 
   constructor(connection) {
@@ -89,8 +91,13 @@ class MonthExpansesLogic {
     //caluclate execution and prepare an object for te insertion or update
     const budgetExec = this.prepareBudgetExecutionObj(budgetExecution[0], monthExpanses, date, tax);
 
+    //convert the code to string and find out
+    //if it start with a special prefix
+    const code = JSON.stringify(expanse.code);
+    const special = code.startsWith(SPECIAL_CODE_PREFIX);
+
     //update execution
-    await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingName, date, summarized_section_id: expanse.summarized_section_id, budgetExec }, trx);
+    await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingName, date, summarized_section_id: expanse.summarized_section_id, budgetExec, special }, trx);
 
   }
 
@@ -136,25 +143,42 @@ class MonthExpansesLogic {
 
   }
 
-  async deleteMonthExpanseTrx(params) {
+  async deleteMonthExpanseTrx({ buildingName, date, id }) {
 
     // Using trx as a transaction object:
     const trx = await this.connection.transaction();
-
+    console.log(buildingName);
+    console.log(date);
+    console.log(id);
     //get the month expanses object that about to be deleting
-    const monthExpanseObj = await this.monthExpansesDao.getMonthExpansesByIdTrx(params.id, params.buildingName, trx);
+    const monthExpanseObj = await this.monthExpansesDao.getMonthExpansesByIdTrx(id, buildingName, trx);
+
+    //after we got the object it' safe to delete it from the database
+    await this.monthExpansesDao.deleteMonthExpanse(buildingName, id, trx);
 
     //get all the month expanses by summarized section id
     //in order to calculate the total outcome
-    const monthExpansesList = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(monthExpanseObj.summarized_section_id, params.buildingName, trx);
+    const monthExpansesList = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, monthExpanseObj[0].summarized_section_id, trx);
+    console.log(monthExpansesList);
+    //get budget execution after it was updated
+    let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, monthExpanseObj[0].summarized_section_id, trx);
 
-    console.log(monthExpanseObj);
+    //caluclate execution and prepare an object for te insertion or update
+    const budgetExec = this.prepareBudgetExecutionObj(budgetExecution[0], monthExpansesList, date);
+
     if (monthExpanseObj.length === 0) {
-
-      throw new Error("משהו קרה");
+      throw new Error(`השורה לא קיית בבסיס נתונים, כנראה כבר נמחקה.`);
     }
+    console.log(monthExpanseObj[0]);
+    //convert the code to string and find out
+    //if it start with a special prefix
+    const code = JSON.stringify(monthExpanseObj[0].code);
+    const special = code.startsWith(SPECIAL_CODE_PREFIX);
 
-    return this.monthExpansesDao.deleteMonthExpanse(params);
+    //update execution
+    await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingName, date, summarized_section_id: monthExpanseObj[0].summarized_section_id, budgetExec, special }, trx);
+
+    return monthExpanseObj;
   }
 
   batchInsert(buildingName, rows, trx) {

@@ -24,7 +24,7 @@ class SummarizedBudgetLogic {
     return this.sbd.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
   }
 
-  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object }, trx) {
+  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object, special }, trx) {
 
     if (trx === undefined) {
       trx = await this.connection.transaction();
@@ -34,18 +34,20 @@ class SummarizedBudgetLogic {
 
     const allSummarizedBudgets = await this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
 
-    const yearStats = this.prepareYearStats(allSummarizedBudgets);
+    if (!special) {
+      const yearStats = this.prepareYearStats(allSummarizedBudgets);
 
-    //update year stats
-    const returnedPromise = await this.yearlyStatsLogic.updateYearStatsTrx(buildingName, date, {
-      outcome: yearStats.year_total_execution,
-      income: yearStats.year_total_budget
-    }, trx);
+      //update year stats
+      await this.yearlyStatsLogic.updateYearStatsTrx(buildingName, date, {
+        outcome: yearStats.year_total_execution,
+        income: yearStats.year_total_budget
+      }, trx);
+    }
 
     //commit changes
     trx.commit();
 
-    return returnedPromise;
+    return Promise.resolve();
 
   }
 

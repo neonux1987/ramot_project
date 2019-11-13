@@ -86,9 +86,9 @@ class BudgetExecution extends Component {
         colored.background = "rgb(234, 70, 70)";
       } else if (value > 0) {
         colored.color = "#fff";
-        colored.background = "rgb(78, 197, 99)";
+        colored.background = "rgb(47, 195, 73)";
       } else {
-        colored.background = "rgb(248, 255, 152)";
+        colored.background = "rgb(242, 255, 59)";
       }
     }
 
@@ -235,8 +235,8 @@ class BudgetExecution extends Component {
     const month1Color = "rgb(76, 139, 218)";
     const month2Color = "rgb(107, 187, 139)";
     const month3Color = "rgb(218, 87, 87)";
-    const quarterColor = "rgb(62, 77, 109)";
-    const defaultColor = "#333333";
+    const quarterColor = "rgb(72, 85, 113)";
+    const defaultColor = "#343a40";
 
     const headerStyle = (bgColor) => ({
       background: bgColor,

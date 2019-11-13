@@ -463,7 +463,7 @@ class Helper {
 
   static quartersColors = ["rgb(123, 91, 199)", "rgb(78, 143, 226)", "rgb(44, 193, 136)", this.endQuarterColor];
 
-  static endYearColor = "rgb(230, 147, 28)";
+  static endYearColor = "rgb(245, 132, 35)";
 
 }
 export default Helper;

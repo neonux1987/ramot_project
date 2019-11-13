@@ -30,7 +30,7 @@ class BudgetExecutionLogic {
     return this.budgetExecutionDao.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
   }
 
-  async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object }, trx) {
+  async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, special = Boolean }, trx) {
 
     if (trx === undefined) {
       trx = await this.connection.transaction();
@@ -46,20 +46,25 @@ class BudgetExecutionLogic {
     //then month will exist
     if (date.month) {
 
-      //calculate month stats
-      const preparedMonthStatsObj = this.prepareMonthStatsObj(date.month, allBudgetExecutions);
+      //dont update stats if it's a special code 
+      //that start with special prefix
+      if (!special) {
+        //calculate month stats
+        const preparedMonthStatsObj = this.prepareMonthStatsObj(date.month, allBudgetExecutions);
 
-      //update month stats
-      await this.monthlyStatsLogic.updateMonthStatsTrx(buildingName, date, {
-        outcome: preparedMonthStatsObj.outcome,
-        income: preparedMonthStatsObj.income
-      }, trx);
+        //update month stats
+        await this.monthlyStatsLogic.updateMonthStatsTrx(buildingName, date, {
+          outcome: preparedMonthStatsObj.outcome,
+          income: preparedMonthStatsObj.income
+        }, trx);
 
-      //update quarter stats
-      await this.quarterlyStatsLogic.updateQuarterStatsTrx(buildingName, date, {
-        outcome: preparedMonthStatsObj.totalOutcome,
-        income: preparedMonthStatsObj.totalIncome
-      }, trx);
+        //update quarter stats
+        await this.quarterlyStatsLogic.updateQuarterStatsTrx(buildingName, date, {
+          outcome: preparedMonthStatsObj.totalOutcome,
+          income: preparedMonthStatsObj.totalIncome
+        }, trx);
+      }
+
     }
 
     //get budget execution after it was updated
@@ -71,7 +76,7 @@ class BudgetExecutionLogic {
     const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(date.quarter, budgetExecution[0].total_budget, budgetExecution[0].total_execution, summarizedBudgetObj[0]);
 
     //update summarized budget data
-    await this.summarizedBudgetLogic.updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget: preparedSumBudgetObj, buildingName, date }, trx);
+    await this.summarizedBudgetLogic.updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget: preparedSumBudgetObj, buildingName, date, special }, trx);
 
   }
 
