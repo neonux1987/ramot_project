@@ -147,9 +147,7 @@ class MonthExpansesLogic {
 
     // Using trx as a transaction object:
     const trx = await this.connection.transaction();
-    console.log(buildingName);
-    console.log(date);
-    console.log(id);
+
     //get the month expanses object that about to be deleting
     const monthExpanseObj = await this.monthExpansesDao.getMonthExpansesByIdTrx(id, buildingName, trx);
 
@@ -159,7 +157,7 @@ class MonthExpansesLogic {
     //get all the month expanses by summarized section id
     //in order to calculate the total outcome
     const monthExpansesList = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, monthExpanseObj[0].summarized_section_id, trx);
-    console.log(monthExpansesList);
+
     //get budget execution after it was updated
     let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, monthExpanseObj[0].summarized_section_id, trx);
 
@@ -169,7 +167,7 @@ class MonthExpansesLogic {
     if (monthExpanseObj.length === 0) {
       throw new Error(`השורה לא קיית בבסיס נתונים, כנראה כבר נמחקה.`);
     }
-    console.log(monthExpanseObj[0]);
+
     //convert the code to string and find out
     //if it start with a special prefix
     const code = JSON.stringify(monthExpanseObj[0].code);
