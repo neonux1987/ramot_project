@@ -235,7 +235,7 @@ class BudgetExecution extends Component {
     const month1Color = "rgb(76, 139, 218)";
     const month2Color = "rgb(107, 187, 139)";
     const month3Color = "rgb(218, 87, 87)";
-    const quarterColor = "rgb(72, 85, 113)";
+    const quarterColor = "rgb(66, 77, 101)";
     const defaultColor = "#343a40";
 
     const headerStyle = (bgColor) => ({

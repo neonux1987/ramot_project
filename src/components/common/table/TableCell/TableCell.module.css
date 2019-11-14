@@ -1,0 +1,17 @@
+.cellRender{
+  /* padding: 7px 5px; */
+  outline-color: blue;
+  border: none;
+  background: none;
+  width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: inherit;
+}
+
+.cellRender:hover{
+  background: url('https://www.materialui.co/materialIcons/image/edit_black_192x192.png') no-repeat;
+  background-size: 20px 20px;
+  background-position: right center;
+  outline-color: blue;
+}

@@ -4,7 +4,7 @@ import styles from './ReactTableContainer.module.css';
 import LoadingCircle from '../../../common/LoadingCircle';
 import classnames from 'classnames';
 
-class ReactTableContainer extends React.Component {
+class ReactTableContainer extends React.PureComponent {
 
   state = {
     sorted: this.props.sorted,

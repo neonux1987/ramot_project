@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, useCallback } from 'react';
 import InputExpansesField from './InputExpansesField'
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import { connect } from 'react-redux';
@@ -19,6 +19,7 @@ import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMid
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 import Section from '../../common/Section/Section';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
+import { NumberInput, TextInput, TextAreaInput, DefaultCell } from '../../common/table/TableCell/TableCellTypes';
 
 const FIXED_FLOAT = 2;
 
@@ -173,9 +174,7 @@ class MonthExpanses extends Component {
       {
         Header: "ספרור",
         width: 100,
-        Cell: (row) => {
-          return <span>{row.viewIndex + 1}</span>;
-        },
+        Cell: (cellInfo) => <span>{cellInfo.viewIndex + 1}</span>,
         headerStyle: headerStyle
       },
       {
@@ -199,7 +198,7 @@ class MonthExpanses extends Component {
         accessor: "supplierName",
         Header: "שם הספק",
         headerStyle: headerStyle,
-        Cell: this.cellTextInput,
+        Cell: this.textInput,
         filterMethod: Helper.reactTableFilterMethod,
         style: {
           padding: 0
@@ -209,7 +208,7 @@ class MonthExpanses extends Component {
         accessor: "sum",
         Header: "סכום",
         headerStyle: headerStyle,
-        Cell: this.cellNumberInput,
+        Cell: this.numberInput,
         style: {
           padding: 0
         }
@@ -218,7 +217,7 @@ class MonthExpanses extends Component {
         accessor: "notes",
         Header: "הערות",
         headerStyle: headerStyle,
-        Cell: this.cellTextAreaInput,
+        Cell: this.textAreaInput,
         filterMethod: Helper.reactTableFilterMethod,
         style: {
           padding: 0,
@@ -275,70 +274,61 @@ class MonthExpanses extends Component {
     };
     this.props.deleteExpanse(params, data);
 
-    // when in edit mode and trying to delete, the cells
+    /* // when in edit mode and trying to delete, the cells
     // with input elements stays and and not deleted
     // only when turning edit mode off
     this.setState({ editMode: !this.state.editMode }, () => {
       this.setState({ editMode: !this.state.editMode });
-    });
+    }); */
 
   }
 
-  cellTextAreaInput = (cellInfo) => {
+  inputClickHandler = (e) => {
+    e.target.select();
+  }
+
+  onKeyPressHandler = (e) => {
+    if (e.key === "Enter") {
+      e.target.blur();
+    }
+  }
+
+  textAreaInput = (cellInfo) => {
     if (!this.state.editMode) {
       return cellInfo.value;
     }
-    return <textarea
-      type="text"
-      className="cellRender"
+    return <TextAreaInput
       defaultValue={cellInfo.value}
-      onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      onClick={e => {
-        e.target.select()
-      }}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onClickHandler={this.inputClickHandler}
     />
   };
 
 
-  cellTextInput = (cellInfo) => {
+  textInput = (cellInfo) => {
     if (!this.state.editMode) {
       return cellInfo.value;
     }
-    return <input
-      type="text"
-      className="cellRender"
+    return <TextInput
       defaultValue={cellInfo.value}
-      onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      onKeyPress={(event) => {
-        if (event.key === "Enter") {
-          event.target.blur();
-        }
-      }}
-      onClick={e => {
-        e.target.select()
-      }}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onKeyPressHandler={this.onKeyPressHandler}
+      onClickHandler={this.inputClickHandler}
     />
   };
 
-  cellNumberInput = (cellInfo) => {
+  numberInput = (cellInfo) => {
     const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     if (!this.state.editMode) {
       return <span title={`כולל ${data[cellInfo.index].tax}% מע"מ`}>{newValue}</span>;
     }
-    return <input
+    return <NumberInput
       type="number"
-      className="cellRender"
       defaultValue={newValue}
-      onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      onKeyPress={(event) => {
-        if (event.key === "Enter") {
-          event.target.blur();
-        }
-      }}
-      onClick={e => {
-        e.target.select()
-      }}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onKeyPressHandler={this.onKeyPressHandler}
+      onClickHandler={this.inputClickHandler}
     />
   };
 

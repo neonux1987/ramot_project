@@ -13,6 +13,7 @@ import TableActions from '../../../../common/table/TableActions/TableActions';
 import ReactTableContainer from '../../../../common/table/ReactTableContainer/ReactTableContainer';
 import Section from '../../../../common/Section/Section';
 import TableControls from '../../../../common/table/TableControls/TableControls';
+import TableWrapper from '../../../../common/table/TableWrapper/TableWrapper';
 class ExpansesCodes extends Component {
 
   state = {
@@ -221,26 +222,30 @@ class ExpansesCodes extends Component {
     return (
       <Fragment>
         <Section>
-          <ReactTableContainer
-            loading={expansesCodes.isFetching}
-            data={expansesCodes.data}
-            columns={this.generateHeaders()}
-            filterable
-            headerControlsComponent={
-              <TableControls
-                rightPane={
-                  <EditControls
-                    editMode={this.state.editMode}
-                    toggleEditMode={this.toggleEditMode}
-                    addNewMode={this.state.addNewMode}
-                    toggleAddNewMode={this.toggleAddNewMode}
-                  />
-                }
-              />
 
-            }
-            editBox={renderAddewExpanse}
-          /> {/* end ReactTableContainer */}
+          <TableWrapper>
+
+            <TableControls
+              rightPane={
+                <EditControls
+                  editMode={this.state.editMode}
+                  toggleEditMode={this.toggleEditMode}
+                  addNewMode={this.state.addNewMode}
+                  toggleAddNewMode={this.toggleAddNewMode}
+                />
+              } // end rightPane
+            /> {/* end TableControls */}
+
+            {renderAddewExpanse}
+
+            <ReactTableContainer
+              loading={expansesCodes.isFetching}
+              data={expansesCodes.data}
+              columns={this.generateHeaders()}
+              filterable
+            /> {/* end ReactTableContainer */}
+
+          </TableWrapper>
 
         </Section> {/* end Section */}
 
