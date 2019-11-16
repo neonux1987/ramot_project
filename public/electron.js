@@ -29,6 +29,7 @@ const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
 
 const path = require('path');
+const os = require('os');
 const isDev = require('electron-is-dev');
 
 contextMenu({
@@ -85,6 +86,11 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   }
   mainWindow.on('closed', () => mainWindow = null);
+
+  //add react dev tools
+  BrowserWindow.addDevToolsExtension(
+    path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0')
+  );
 
   //init the renderer notification service
   rendererotificationSvc.setWebContents(mainWindow.webContents);

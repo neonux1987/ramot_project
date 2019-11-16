@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './TableCell.module.css';
 
 export const NumberInput = React.memo(({ defaultValue, onBlurHandler, onClickHandler, onKeyPressHandler }) => {
+  console.log("true");
   return <input
     type="number"
     className={styles.cellRender}
@@ -13,6 +14,7 @@ export const NumberInput = React.memo(({ defaultValue, onBlurHandler, onClickHan
 }, areEqual);
 
 export const TextAreaInput = React.memo(({ defaultValue, onBlurHandler, onClickHandler, onKeyPressHandler }) => {
+  console.log("true");
   return <textarea
     className={styles.cellRender}
     defaultValue={defaultValue}
@@ -23,6 +25,7 @@ export const TextAreaInput = React.memo(({ defaultValue, onBlurHandler, onClickH
 }, areEqual);
 
 export const TextInput = React.memo(({ defaultValue, onBlurHandler, onClickHandler, onKeyPressHandler }) => {
+  console.log("true");
   return <input
     type="text"
     className={styles.cellRender}
@@ -33,8 +36,9 @@ export const TextInput = React.memo(({ defaultValue, onBlurHandler, onClickHandl
   />;
 }, areEqual);
 
-export const DefaultCell = React.memo((defaultValue) => {
-  return <span>{defaultValue}</span>;
+export const DefaultCell = React.memo((props) => {
+  //console.log("true");
+  return <span title={props.title}>{props.defaultValue}</span>;
 }, areEqual);
 
 function areEqual(prevProps, nextProps) {

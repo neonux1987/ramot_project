@@ -22,7 +22,7 @@ class ReactTableContainer extends React.PureComponent {
 
   render() {
     return (
-      <ReactTable
+      <ReactTableMemoized
         id={"react-table"}
         className={classnames(styles.table, "-highlight")}
         getTbodyProps={(state, rowInfo, column, instance) => {
@@ -50,6 +50,9 @@ class ReactTableContainer extends React.PureComponent {
   }
 
 }
+
+// memoize react table
+const ReactTableMemoized = React.memo((props) => <ReactTable {...props} />);
 
 ReactTableContainer.defaultProps = {
   sorted: [],

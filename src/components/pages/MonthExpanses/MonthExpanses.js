@@ -95,13 +95,6 @@ class MonthExpanses extends Component {
     //reset form state
     reset();
 
-    // when in edit mode and trying to delete, the cells
-    // with input elements stays and and not deleted
-    // only when turning edit mode off
-    this.setState({ editMode: !this.state.editMode }, () => {
-      this.setState({ editMode: !this.state.editMode });
-    });
-
   }
 
   validateFormInputs(formInputs) {
@@ -161,7 +154,7 @@ class MonthExpanses extends Component {
 
   generateHeaders = () => {
 
-    const headerStyle = { background: "#000", color: "#fff", fontWeight: "600" };
+    const headerStyle = { background: "rgb(52, 58, 64)", color: "#fff", fontWeight: "600" };
 
     return [
       {
@@ -174,25 +167,28 @@ class MonthExpanses extends Component {
       {
         Header: "ספרור",
         width: 100,
-        Cell: (cellInfo) => <span>{cellInfo.viewIndex + 1}</span>,
+        Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.viewIndex + 1} />,
         headerStyle: headerStyle
       },
       {
         accessor: "code",
         Header: "קוד הנהח\"ש",
-        headerStyle: headerStyle
+        headerStyle: headerStyle,
+        Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.value} />,
       },
       {
         accessor: "codeName",
         Header: "שם חשבון",
         headerStyle: headerStyle,
-        filterMethod: Helper.reactTableFilterMethod
+        filterMethod: Helper.reactTableFilterMethod,
+        Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.value} />,
       },
       {
         accessor: "section",
         Header: "מקושר לסעיף",
         headerStyle: headerStyle,
-        filterMethod: Helper.reactTableFilterMethod
+        filterMethod: Helper.reactTableFilterMethod,
+        Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.value} />,
       },
       {
         accessor: "supplierName",
@@ -237,7 +233,10 @@ class MonthExpanses extends Component {
     //the name of the field in the expanse object
     const fieldName = cellInfo.column.id;
 
-    const expanse = { ...data[index] };
+    //will be used for rollback
+    const oldExpanseCopy = { ...data[index] };
+
+    const expanse = { ...oldExpanseCopy };
 
     //replace the value
     expanse[fieldName] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
@@ -273,14 +272,8 @@ class MonthExpanses extends Component {
       date: date
     };
     this.props.deleteExpanse(params, data);
-
-    /* // when in edit mode and trying to delete, the cells
-    // with input elements stays and and not deleted
-    // only when turning edit mode off
-    this.setState({ editMode: !this.state.editMode }, () => {
-      this.setState({ editMode: !this.state.editMode });
-    }); */
-
+    this.toggleEditMode();
+    this.toggleEditMode();
   }
 
   inputClickHandler = (e) => {
@@ -295,7 +288,7 @@ class MonthExpanses extends Component {
 
   textAreaInput = (cellInfo) => {
     if (!this.state.editMode) {
-      return cellInfo.value;
+      return <DefaultCell defaultValue={cellInfo.value} />
     }
     return <TextAreaInput
       defaultValue={cellInfo.value}
@@ -307,7 +300,7 @@ class MonthExpanses extends Component {
 
   textInput = (cellInfo) => {
     if (!this.state.editMode) {
-      return cellInfo.value;
+      return <DefaultCell defaultValue={cellInfo.value} />
     }
     return <TextInput
       defaultValue={cellInfo.value}
@@ -321,7 +314,7 @@ class MonthExpanses extends Component {
     const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     if (!this.state.editMode) {
-      return <span title={`כולל ${data[cellInfo.index].tax}% מע"מ`}>{newValue}</span>;
+      return <DefaultCell title={`כולל ${data[cellInfo.index].tax}% מע"מ`} defaultValue={newValue} />;
     }
     return <NumberInput
       type="number"
