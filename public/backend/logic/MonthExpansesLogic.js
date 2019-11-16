@@ -24,6 +24,10 @@ class MonthExpansesLogic {
     return this.monthExpansesDao.getAllMonthExpansesTrx(buildingName, date, trx);
   }
 
+  dataRowCount(buildingName, date) {
+    return this.monthExpansesDao.dataRowCount(buildingName, date);
+  }
+
   getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, summarized_section_id, trx) {
     return this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, summarized_section_id, trx);
   }

@@ -31,6 +31,10 @@ class MonthExpansesDao {
       year: year = Number,
       month: month = String
     },
+    pageSettings = {
+      pageSize: -1,
+      page: -1
+    },
     trx = this.connection
   ) => {
     let data = trx.where({ year: date.year, month: date.month }).select(
@@ -48,13 +52,23 @@ class MonthExpansesDao {
       "building.year AS year"
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
-      .orderBy(['code', { column: 'codeName', order: 'asc' }]);
+      .orderBy(['code', { column: 'codeName', order: 'asc' }])
+      .limit(pageSettings.pageSize).offset(pageSettings.pageSize * pageSettings.page);
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
     }).catch((error) => {
       throw error;
     });
+  }
+
+  dataRowCount(
+    buildingName,
+    date
+  ) {
+    return this.connection(`${buildingName}_month_expanses`)
+      .count('id')
+      .where({ year: date.year, month: date.month })
   }
 
   /**

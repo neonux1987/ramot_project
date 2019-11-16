@@ -15,6 +15,15 @@ const monthExpansesIpc = (connection) => {
     });
   });
 
+  ipcMain.on('get-data-row-count', (event, arg) => {
+    monthExpansesLogic.dataRowCount(arg.buildingName, arg.date).then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("data-row-count", { data: result });
+    }).catch((error) => {
+      event.reply("data-row-count", { error: error.message });
+    });
+  });
+
   ipcMain.on('update-month-expanse', (event, data) => {
     monthExpansesLogic.updateMonthExpanse(data).then((result) => {
       event.reply("month-expanse-updated", { data: result });

@@ -468,7 +468,12 @@ class MonthExpanses extends Component {
                   id: "code",
                   asc: true
                 }
-              ]} // end leftPane
+              ]}
+              onFetchData={(state, instance) => {
+                console.log(state);
+              }}
+              manual
+              pages={10}
             />
 
           </TableWrapper> {/* end TableWrapper */}
