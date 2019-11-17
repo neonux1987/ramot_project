@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default React.memo((props) => {
-  console.log("prevProps");
+function DefaultCell(props) {
+  console.log("default");
   return <span title={props.title}>{props.defaultValue}</span>;
-}, areEqual);
+};
 
 function areEqual(prevProps, nextProps) {
   console.log("prevProps");
@@ -14,3 +14,5 @@ function areEqual(prevProps, nextProps) {
   }
   else return false;
 }
+
+export default React.memo(DefaultCell, areEqual);

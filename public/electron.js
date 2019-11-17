@@ -88,10 +88,10 @@ function createWindow() {
   mainWindow.on('closed', () => mainWindow = null);
 
   //add react dev tools
-  BrowserWindow.addDevToolsExtension(
+  /* BrowserWindow.addDevToolsExtension(
     path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0')
   );
-
+ */
   //init the renderer notification service
   rendererotificationSvc.setWebContents(mainWindow.webContents);
 }
