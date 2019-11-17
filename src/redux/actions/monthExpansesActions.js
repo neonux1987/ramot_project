@@ -179,13 +179,13 @@ const addExpanse = (params = Object, tableData, expanse) => {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const updateExpanse = (params = Object, tableData = Array, target, fieldName) => {
+const updateExpanse = (params, oldExpanse, index) => {
   return dispatch => {
     //first update the store for fast user respond
     dispatch({
       type: "UPDATE_MONTH_EXPANSE",
       payload: {
-        index: params.index,
+        index: index,
         expanse: params.expanse
       }
     });
@@ -194,10 +194,15 @@ const updateExpanse = (params = Object, tableData = Array, target, fieldName) =>
     //listen when the data comes back
     ipcRenderer.once("month-expanse-updated", (event, arg) => {
       if (arg.error) {
-        //reverse the changes to the old data
-        dispatch(receiveExpanses(tableData, params.buildingName));
-        //set the input field value back to the old value
-        target.value = tableData[params.index][fieldName];
+        // rollback to old expanse
+        dispatch({
+          type: "UPDATE_MONTH_EXPANSE",
+          payload: {
+            index: index,
+            expanse: oldExpanse
+          }
+        });
+
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
@@ -219,9 +224,9 @@ const updateExpanse = (params = Object, tableData = Array, target, fieldName) =>
  */
 const deleteExpanse = (params = Object, tableData = Array) => {
   return dispatch => {
-    dispatch(receiveExpanses(tableData, params.buildingName));
     //send a request to backend to get the data
-    //ipcRenderer.send("delete-month-expanse", params);
+    ipcRenderer.send("delete-month-expanse", params);
+
     //listen when the data comes back
     ipcRenderer.once("month-expanse-deleted", (event, arg) => {
       if (arg.error) {

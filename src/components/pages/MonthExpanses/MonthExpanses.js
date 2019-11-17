@@ -1,4 +1,4 @@
-import React, { Component, Fragment, useCallback } from 'react';
+import React, { Component, Fragment } from 'react';
 import InputExpansesField from './InputExpansesField'
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import { connect } from 'react-redux';
@@ -19,7 +19,8 @@ import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMid
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 import Section from '../../common/Section/Section';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
-import { NumberInput, TextInput, TextAreaInput, DefaultCell } from '../../common/table/TableCell/TableCellTypes';
+import DefaultCell from '../../common/table/TableCell/DefaultCell';
+import CellInput from '../../common/table/TableCell/CellInput';
 
 const FIXED_FLOAT = 2;
 
@@ -246,7 +247,6 @@ class MonthExpanses extends Component {
 
     //prepare the params
     let params = {
-      index: index,
       expanse: expanse,
       buildingName: this.props.location.state.buildingNameEng,
       date: {
@@ -254,7 +254,7 @@ class MonthExpanses extends Component {
       }
     };
     //update expanse
-    this.props.updateExpanse(params, data, e.target, fieldName);
+    this.props.updateExpanse(params, oldExpanseCopy, index);
     e.target.blur();
   }
 
@@ -272,8 +272,6 @@ class MonthExpanses extends Component {
       date: date
     };
     this.props.deleteExpanse(params, data);
-    this.toggleEditMode();
-    this.toggleEditMode();
   }
 
   inputClickHandler = (e) => {
@@ -290,8 +288,9 @@ class MonthExpanses extends Component {
     if (!this.state.editMode) {
       return <DefaultCell defaultValue={cellInfo.value} />
     }
-    return <TextAreaInput
-      defaultValue={cellInfo.value}
+    return <CellInput
+      value={cellInfo.value}
+      type="textarea"
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
       onClickHandler={this.inputClickHandler}
     />
@@ -302,8 +301,9 @@ class MonthExpanses extends Component {
     if (!this.state.editMode) {
       return <DefaultCell defaultValue={cellInfo.value} />
     }
-    return <TextInput
-      defaultValue={cellInfo.value}
+    return <CellInput
+      value={cellInfo.value}
+      type="text"
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
       onKeyPressHandler={this.onKeyPressHandler}
       onClickHandler={this.inputClickHandler}
@@ -312,13 +312,13 @@ class MonthExpanses extends Component {
 
   numberInput = (cellInfo) => {
     const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
-    const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
+    const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? "" : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     if (!this.state.editMode) {
       return <DefaultCell title={`כולל ${data[cellInfo.index].tax}% מע"מ`} defaultValue={newValue} />;
     }
-    return <NumberInput
+    return <CellInput
       type="number"
-      defaultValue={newValue}
+      value={newValue}
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
       onKeyPressHandler={this.onKeyPressHandler}
       onClickHandler={this.inputClickHandler}
