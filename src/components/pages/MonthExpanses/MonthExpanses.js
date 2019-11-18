@@ -11,6 +11,7 @@ import {
   addMonthExpanse,
   deleteMonthExpanse
 } from '../../../redux/actions/monthExpansesActions';
+import { fetchTableSettings, updateTableSettings, tableSettingsCleanup } from '../../../redux/actions/tableSettingsActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../common/Header/Header';
@@ -30,6 +31,7 @@ import DefaultCell from '../../common/table/TableCell/DefaultCell';
 import CellInput from '../../common/table/TableCell/CellInput';
 
 const FIXED_FLOAT = 2;
+const PAGE_NAME = "month_expanses";
 
 class MonthExpanses extends Component {
 
@@ -51,17 +53,22 @@ class MonthExpanses extends Component {
     //building name, current month and year.
     let params = {
       buildingName: this.props.location.state.buildingNameEng,
-      date: Helper.getCurrentDate(),
-      range: {
-        page: 0,
-        pageSize: 50
-      }
+      date: Helper.getCurrentDate()
     }
 
-    this.props.initMonthExpansesState(this.props.location.state.buildingNameEng).then(() => {
-      //get the building month expanses
-      this.props.fetchMonthExpanses(params, params.buildingName);
-    });
+    this.props.fetchTableSettings(PAGE_NAME).then((settings) => {
+
+      params.range = {
+        page: 0,
+        pageSize: 50
+      };
+
+      this.props.initMonthExpansesState(this.props.location.state.buildingNameEng).then(() => {
+        //get the building month expanses
+        this.props.fetchMonthExpanses(params, params.buildingName);
+      });
+
+    })
 
     //fetch expnases codes
     this.props.fetchExpansesCodes(params);
@@ -388,7 +395,9 @@ class MonthExpanses extends Component {
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
-    console.log(pages[pageIndex]);
+
+    const tableSettings = this.props.tableSettings.pages[PAGE_NAME];
+
     //summarized sections data
     const { summarizedSections } = this.props.summarizedSections;
 
@@ -471,8 +480,6 @@ class MonthExpanses extends Component {
               loading={pages[pageIndex].isFetching}
               data={pages[pageIndex].data}
               columns={this.generateHeaders()}
-              filterable
-              defaultPageSize={65}
               defaultSorted={[
                 {
                   id: "code",
@@ -480,10 +487,10 @@ class MonthExpanses extends Component {
                 }
               ]}
               onFetchData={(state, instance) => {
-                console.log(state);
+
               }}
-              manual
               pages={10}
+              settings={tableSettings.data}
             />
 
           </TableWrapper> {/* end TableWrapper */}
@@ -503,7 +510,8 @@ const mapStateToProps = state => ({
   generalSettings: {
     tax: state.generalSettings.generalSettings.data[0].tax
   },
-  expansesCodes: state.expansesCodes
+  expansesCodes: state.expansesCodes,
+  tableSettings: state.tableSettings
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -514,7 +522,10 @@ const mapDispatchToProps = dispatch => ({
   addMonthExpanse: (payload, tableData, expanse) => dispatch(addMonthExpanse(payload, tableData, expanse)),
   deleteMonthExpanse: (payload, tableData) => dispatch(deleteMonthExpanse(payload, tableData)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
-  fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload))
+  fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
+  fetchTableSettings: (pageName) => dispatch(fetchTableSettings(pageName)),
+  updateTableSettings: (pageName, settings) => dispatch(updateTableSettings(pageName, settings)),
+  tableSettingsCleanup: (pageName) => dispatch(tableSettingsCleanup(pageName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

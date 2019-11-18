@@ -23,7 +23,8 @@ const persistConfig = {
     "backupsNames",
     "monthlyStats",
     "quarterlyStats",
-    "yearlyStats"
+    "yearlyStats",
+    "tableSettings"
   ]
 
 }

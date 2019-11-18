@@ -18,6 +18,7 @@ const registeredQuartersIpc = require('./electron/ipcs/registeredQuarters.ipc');
 const monthlyStatsIpc = require('./electron/ipcs/monthlyStats.ipc');
 const quarterlyStatsIpc = require('./electron/ipcs/quarterlyStats.ipc');
 const yearlyStatsIpc = require('./electron/ipcs/yearlyStats.ipc');
+const tableSettingsIpc = require('./electron/ipcs/tableSettings.ipc');
 const IOIpc = require('./electron/ipcs/IO.ipc');
 const settingsIpc = require('./electron/ipcs/settings.ipc');
 const contextMenu = require('electron-context-menu');
@@ -88,9 +89,9 @@ function createWindow() {
   mainWindow.on('closed', () => mainWindow = null);
 
   //add react dev tools
-  BrowserWindow.addDevToolsExtension(
+  /* BrowserWindow.addDevToolsExtension(
     path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0')
-  );
+  ); */
 
   //init the renderer notification service
   rendererotificationSvc.setWebContents(mainWindow.webContents);
@@ -138,6 +139,8 @@ monthlyStatsIpc(knex);
 quarterlyStatsIpc(knex);
 
 yearlyStatsIpc(knex);
+
+tableSettingsIpc(knex);
 
 IOIpc();
 

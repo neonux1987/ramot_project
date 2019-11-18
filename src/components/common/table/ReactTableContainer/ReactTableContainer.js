@@ -7,18 +7,29 @@ import classnames from 'classnames';
 class ReactTableContainer extends React.PureComponent {
 
   state = {
-    sorted: this.props.sorted,
-    defaultSorted: this.props.defaultSorted,
-    pageSize: this.props.pageSize,
-    expanded: this.props.expanded,
-    resized: this.props.resized,
-    filtered: this.props.filtered,
-    showPagination: this.props.showPagination,
-    resizable: this.props.resizable,
-    defaultPageSize: this.props.defaultPageSize,
-    minRows: this.props.minRows,
-    filterable: this.props.filterable
+    sorted: [],
+    defaultSorted: [],
+    pageSize: undefined,
+    expanded: {},
+    resized: [],
+    filtered: [],
+    showPagination: true,
+    resizable: false,
+    defaultPageSize: 65,
+    minRows: undefined,
+    filterable: false
   };
+
+  componentDidMount() {
+    if (this.props.settings !== undefined) {
+      this.setState({
+        ...this.props.settings,
+        showPagination: this.props.settings.showPagination === 1 ? true : false,
+        resizable: this.props.settings.resizable === 1 ? true : false,
+        minRows: this.props.settings.resizable === 0 ? undefined : this.props.settings.resizable,
+      });
+    }
+  }
 
   render() {
     return (
@@ -43,8 +54,13 @@ class ReactTableContainer extends React.PureComponent {
         loadingText={"טוען..."}
         noDataText={"המידע לא נמצא"}
         LoadingComponent={LoadingCircle}
+        manual
         {...this.state}
-        {...this.props}
+        data={this.props.data}
+        columns={this.props.columns}
+        pages={this.props.pages}
+        onFetchData={this.props.sonFetchData}
+        defaultSorted={this.props.defaultSorted || this.state.defaultSorted}
       />
     );
   }

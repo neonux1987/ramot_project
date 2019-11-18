@@ -15,6 +15,7 @@ import backupsNames from './backupsNamesReducer';
 import monthlyStats from './monthlyStatsReducer';
 import quarterlyStats from './quarterlyStatsReducer';
 import yearlyStats from './yearlyStatsReducer';
+import tableSettings from './tableSettingsReducer';
 
 export default combineReducers({
   app,
@@ -32,5 +33,6 @@ export default combineReducers({
   backupsNames,
   monthlyStats,
   quarterlyStats,
-  yearlyStats
+  yearlyStats,
+  tableSettings
 });
