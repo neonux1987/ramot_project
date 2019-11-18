@@ -1,4 +1,14 @@
 import Helper from '../../helpers/Helper';
+import {
+  REQUEST_MONTH_EXPANSES,
+  RECEIVE_MONTH_EXPANSES,
+  MONTH_EXPANSES_FETCHING_FAILED,
+  UPDATE_MONTH_EXPANSE,
+  ADD_MONTH_EXPANSE,
+  DELETE_MONTH_EXPANSE,
+  INIT_MONTH_EXPANSES_STATE,
+  MONTH_EXPANSES_CLEANUP
+} from '../actions/monthExpansesActions';
 
 const initState = {
   pageName: "monthExpanses",
@@ -9,21 +19,22 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_MONTH_EXPANSES":
+    case RECEIVE_MONTH_EXPANSES:
       {
         const copyPages = [...state.pages];
         copyPages[state.pageIndex] = {
           ...copyPages[state.pageIndex],
           isFetching: false,
           status: "success",
-          data: action.data
+          data: action.data.expanses,
+          pageSettings: action.data.pageSettings
         }
         return {
           ...state,
           pages: copyPages
         }
       }
-    case "REQUEST_MONTH_EXPANSES":
+    case REQUEST_MONTH_EXPANSES:
       {
         const copyPages = [...state.pages];
         const index = Helper.findIndexOfPage(action.page, copyPages);
@@ -36,7 +47,7 @@ export default (state = initState, action) => {
           pages: copyPages
         }
       }
-    case "UPDATE_MONTH_EXPANSE":
+    case UPDATE_MONTH_EXPANSE:
       {
 
         const expanse = action.payload.expanse;//expanse object to update
@@ -51,7 +62,7 @@ export default (state = initState, action) => {
           pages: copyPages
         }
       }
-    case "FETCHING_FAILED":
+    case MONTH_EXPANSES_FETCHING_FAILED:
       {
         const copyPages = [...state.pages];//copy data to not mess with the original
         copyPages[state.pageIndex] = {
@@ -64,24 +75,7 @@ export default (state = initState, action) => {
           pages: copyPages
         }
       }
-    case "UPDATE_DATE":
-      {
-        const copyPages = [...state.pages];//copy data to not mess with the original
-        copyPages[state.pageIndex] = {
-          ...copyPages[state.pageIndex],
-          date: {
-            ...state.date,
-            ...action.payload,
-            quarter: Helper.getCurrentQuarter(action.payload.monthNum),
-            quarterHeb: Helper.getQuarterHeb(Helper.getCurrentQuarter(action.payload.monthNum))
-          }
-        }
-        return {
-          ...state,
-          pages: copyPages
-        }
-      }
-    case "INIT_STATE":
+    case INIT_MONTH_EXPANSES_STATE:
       {
         const initPages = [...state.pages];
         const page = {
@@ -90,7 +84,11 @@ export default (state = initState, action) => {
           isFetching: false,
           status: "",
           error: "",
-          data: []
+          data: [],
+          pageSettings: {
+            pageSize: 100,
+            page: 0
+          }
         }
         initPages.push(page);
         const pageIndex = Helper.findIndexOfPage(action.page, initPages);
@@ -100,19 +98,7 @@ export default (state = initState, action) => {
           pages: initPages
         }
       }
-    case "SET_CURRENT_DATE":
-      {
-        const copyPages = [...state.pages];//copy data to not mess with the original
-        copyPages[state.pageIndex] = {
-          ...copyPages[state.pageIndex],
-          date: Helper.getCurrentDate()
-        }
-        return {
-          ...state,
-          pages: copyPages
-        }
-      }
-    case "CLEANUP":
+    case MONTH_EXPANSES_CLEANUP:
       {
         let copiedPages = [...state.pages];
         Helper.removePageFromArray(action.page, copiedPages);

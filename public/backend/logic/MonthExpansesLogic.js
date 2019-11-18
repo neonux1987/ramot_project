@@ -24,6 +24,22 @@ class MonthExpansesLogic {
     return this.monthExpansesDao.getAllMonthExpansesTrx(buildingName, date, trx);
   }
 
+  getMonthExpansesByRange(buildingName, date, range) {
+    return this.monthExpansesDao.getMonthExpansesByRange(buildingName, date, range).then((expanses) => {
+
+      return this.dataRowCount(buildingName, date).then((count) => {
+        return {
+          expanses,
+          pageSettings: {
+            pageSize: expanses.length,
+            count: count
+          }
+        }
+      })
+
+    });
+  }
+
   dataRowCount(buildingName, date) {
     return this.monthExpansesDao.dataRowCount(buildingName, date);
   }

@@ -6,12 +6,12 @@ const monthExpansesIpc = (connection) => {
   //fetch month expanses data
   const monthExpansesLogic = new MonthExpansesLogic(connection);
 
-  ipcMain.on('get-month-expanses-data', (event, arg) => {
-    monthExpansesLogic.getAllMonthExpansesTrx(arg.buildingName, arg.date).then((result) => {
+  ipcMain.on('get-month-expanses-data-by-range', (event, arg) => {
+    monthExpansesLogic.getMonthExpansesByRange(arg.buildingName, arg.date, arg.range).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.reply("month-expanses-data", { data: result });
+      event.reply("month-expanses-data-by-range", { data: result });
     }).catch((error) => {
-      event.reply("month-expanses-data", { error: error.message });
+      event.reply("month-expanses-data-by-range", { error: error.message });
     });
   });
 

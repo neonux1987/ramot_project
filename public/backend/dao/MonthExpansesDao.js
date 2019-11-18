@@ -31,6 +31,38 @@ class MonthExpansesDao {
       year: year = Number,
       month: month = String
     },
+    trx = this.connection
+  ) => {
+    let data = trx.where({ year: date.year, month: date.month }).select(
+      "building.id AS id",
+      "building.expanses_code_id AS expanses_code_id",
+      "ec.code AS code",
+      "ec.codeName AS codeName",
+      "sc.id AS summarized_section_id",
+      "sc.section AS section",
+      "building.supplierName AS supplierName",
+      "building.sum AS sum",
+      "building.tax AS tax",
+      "building.notes AS notes",
+      "building.month AS month",
+      "building.year AS year"
+    ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
+      .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
+      .orderBy(['code', { column: 'codeName', order: 'asc' }]);
+
+    return data.then((result) => {
+      return this.nestHydrationJS.nest(result, DEFINITION);
+    }).catch((error) => {
+      throw error;
+    });
+  }
+
+  getMonthExpansesByRange = (
+    buildingName = String,
+    date = {
+      year: year = Number,
+      month: month = String
+    },
     pageSettings = {
       pageSize: -1,
       page: -1
@@ -69,6 +101,9 @@ class MonthExpansesDao {
     return this.connection(`${buildingName}_month_expanses`)
       .count('id')
       .where({ year: date.year, month: date.month })
+      .then((result) => {
+        return result[0]['count(`id`)'];
+      })
   }
 
   /**

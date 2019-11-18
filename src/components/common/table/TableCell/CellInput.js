@@ -14,7 +14,7 @@ export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPr
   // runs only once to init the data and when the
   // value updates the local state needs to be
   // updated as well because the input value is
-  // not connected directly to the outside value
+  // not connected directly to the outside state
   useEffect(() => {
     setValue(value);
   }, [value])

@@ -8,23 +8,33 @@ import ToastRender from '../../components/ToastRender/ToastRender';
 
 const TOAST_AUTO_CLOSE = 3000;
 
+// TYPES
+export const REQUEST_MONTH_EXPANSES = "REQUEST_MONTH_EXPANSES";
+export const RECEIVE_MONTH_EXPANSES = "RECEIVE_MONTH_EXPANSES";
+export const MONTH_EXPANSES_FETCHING_FAILED = "MONTH_EXPANSES_FETCHING_FAILED";
+export const UPDATE_MONTH_EXPANSE = "UPDATE_MONTH_EXPANSE";
+export const ADD_MONTH_EXPANSE = "ADD_MONTH_EXPANSE";
+export const DELETE_MONTH_EXPANSE = "DELETE_MONTH_EXPANSE";
+export const INIT_MONTH_EXPANSES_STATE = "INIT_MONTH_EXPANSES_STATE";
+export const MONTH_EXPANSES_CLEANUP = "MONTH_EXPANSES_CLEANUP";
+
 /**
  * fetch month expanses
  * @param {*} params 
  */
-const fetchExpanses = (params = Object) => {
+export const fetchMonthExpanses = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestExpanses(params.buildingName));
+    dispatch(requestMonthExpanses(params.buildingName));
 
     //request request to backend to get the data
-    ipcRenderer.send("get-month-expanses-data", params);
+    ipcRenderer.send("get-month-expanses-data-by-range", params);
     //listen when the data comes back
-    return ipcRenderer.once("month-expanses-data", (event, arg) => {
+    return ipcRenderer.once("month-expanses-data-by-range", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
+        dispatch(monthExpansesFetchingFailed(arg.error));
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
@@ -37,7 +47,7 @@ const fetchExpanses = (params = Object) => {
           generateEmptyReport(params, dispatch);
         } else {
           //success store the data
-          dispatch(receiveExpanses(arg.data, params.buildingName));
+          dispatch(receiveMonthExpanses(arg.data, params.buildingName));
         }
       }
     });
@@ -64,7 +74,7 @@ const generateEmptyReport = (params, dispatch) => {
         autoClose: TOAST_AUTO_CLOSE,
         onClose: () => {
           //let react know that an erro occured while trying to fetch
-          dispatch(fetchingFailed(arg.error));
+          dispatch(monthExpansesFetchingFailed(arg.error));
         }
       });
     } else {
@@ -76,7 +86,7 @@ const generateEmptyReport = (params, dispatch) => {
         delay: 2000,
         onClose: () => {
           //success store the data
-          dispatch(receiveExpanses(arg.data, params.buildingName));
+          dispatch(receiveMonthExpanses(arg.data, params.buildingName));
           dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
           dispatch(registeredYearsActions.fetchRegisteredYears(params));
         }
@@ -86,16 +96,16 @@ const generateEmptyReport = (params, dispatch) => {
   });
 }
 
-const requestExpanses = function (page) {
+const requestMonthExpanses = function (page) {
   return {
-    type: "REQUEST_MONTH_EXPANSES",
+    type: REQUEST_MONTH_EXPANSES,
     page
   }
 };
 
-const receiveExpanses = function (data, page) {
+const receiveMonthExpanses = function (data, page) {
   return {
-    type: "RECEIVE_MONTH_EXPANSES",
+    type: RECEIVE_MONTH_EXPANSES,
     data,
     page
   }
@@ -104,38 +114,38 @@ const receiveExpanses = function (data, page) {
 /**
  * init the state
  */
-const initState = function (page) {
+export const initMonthExpansesState = function (page) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       if (page) {
-        dispatch(setInitialState(page));
+        dispatch(setMonthExpansesInitialState(page));
         resolve();
       } else {
-        reject("page canot be empty/undefined or null");
+        reject("page cannot be empty/undefined or null");
       }
     });
   };
 };
 
-const setInitialState = function (page) {
+const setMonthExpansesInitialState = function (page) {
   return dispatch => {
     dispatch({
-      type: "INIT_STATE",
+      type: INIT_MONTH_EXPANSES_STATE,
       page: page
     });
   }
 };
 
-const cleanup = function (buldingNameEng) {
+export const monthExpansesCleanup = function (buldingNameEng) {
   return {
-    type: "CLEANUP",
+    type: MONTH_EXPANSES_CLEANUP,
     page: buldingNameEng
   }
 }
 
-const fetchingFailed = function (error) {
+const monthExpansesFetchingFailed = function (error) {
   return {
-    type: "FETCHING_FAILED",
+    type: MONTH_EXPANSES_FETCHING_FAILED,
     payload: error
   }
 };
@@ -145,7 +155,7 @@ const fetchingFailed = function (error) {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const addExpanse = (params = Object, tableData, expanse) => {
+export const addMonthExpanse = (params = Object, tableData, expanse) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("add-new-month-expanse", params);
@@ -153,7 +163,7 @@ const addExpanse = (params = Object, tableData, expanse) => {
     ipcRenderer.once("month-expanse-added", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
+        dispatch(monthExpansesFetchingFailed(arg.error));
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
@@ -163,7 +173,7 @@ const addExpanse = (params = Object, tableData, expanse) => {
         expanse.id = arg[0];
         tableData.push(expanse);
         //success store the data
-        dispatch(receiveExpanses(tableData, params.buildingName));
+        dispatch(receiveMonthExpanses(tableData, params.buildingName));
 
         //send success notification
         toast.success("השורה נוספה בהצלחה.", {
@@ -179,11 +189,11 @@ const addExpanse = (params = Object, tableData, expanse) => {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const updateExpanse = (params, oldExpanse, index) => {
+export const updateMonthExpanse = (params, oldExpanse, index) => {
   return dispatch => {
     //first update the store for fast user respond
     dispatch({
-      type: "UPDATE_MONTH_EXPANSE",
+      type: UPDATE_MONTH_EXPANSE,
       payload: {
         index: index,
         expanse: params.expanse
@@ -196,7 +206,7 @@ const updateExpanse = (params, oldExpanse, index) => {
       if (arg.error) {
         // rollback to old expanse
         dispatch({
-          type: "UPDATE_MONTH_EXPANSE",
+          type: UPDATE_MONTH_EXPANSE,
           payload: {
             index: index,
             expanse: oldExpanse
@@ -222,7 +232,7 @@ const updateExpanse = (params, oldExpanse, index) => {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const deleteExpanse = (params = Object, tableData = Array) => {
+export const deleteMonthExpanse = (params = Object, tableData = Array) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("delete-month-expanse", params);
@@ -235,7 +245,7 @@ const deleteExpanse = (params = Object, tableData = Array) => {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
-        dispatch(receiveExpanses(tableData, params.buildingName));
+        dispatch(receiveMonthExpanses(tableData, params.buildingName));
 
         //send success notification
         toast.success("השורה נמחקה בהצלחה.", {
@@ -244,16 +254,4 @@ const deleteExpanse = (params = Object, tableData = Array) => {
       }
     });
   }
-};
-
-export default {
-  fetchExpanses,
-  addExpanse,
-  updateExpanse,
-  fetchingFailed,
-  receiveExpanses,
-  requestExpanses,
-  deleteExpanse,
-  initState,
-  cleanup
 };

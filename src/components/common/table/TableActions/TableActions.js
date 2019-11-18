@@ -15,12 +15,15 @@ export default (props) => {
     setShowDialog(false);
   }
 
-  return <div className={styles.wrapper}>
-    <button onClick={showDialogHandler} className={styles.btn} style={{ display: showDialog ? "none" : "block" }}>
+  const render = showDialog ? <YesNoDialog closeDialog={closeDialogHandler} show={showDialog} deleteHandler={props.deleteHandler} /> :
+    <button onClick={showDialogHandler} className={styles.btn}>
       <DeleteForever className={styles.icon} />
-    </button>
-    <YesNoDialog closeDialog={closeDialogHandler} show={showDialog} deleteHandler={props.deleteHandler} />
-  </div>
-    ;
+    </button>;
+
+  return (
+    <div className={styles.wrapper}>
+      {render}
+    </div>
+  );
 
 }

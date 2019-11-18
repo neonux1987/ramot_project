@@ -1,9 +1,16 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, useCallback } from 'react';
 import InputExpansesField from './InputExpansesField'
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import { connect } from 'react-redux';
 import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
-import monthExpansesActions from '../../../redux/actions/monthExpansesActions';
+import {
+  fetchMonthExpanses,
+  initMonthExpansesState,
+  monthExpansesCleanup,
+  updateMonthExpanse,
+  addMonthExpanse,
+  deleteMonthExpanse
+} from '../../../redux/actions/monthExpansesActions';
 import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../common/Header/Header';
@@ -44,12 +51,16 @@ class MonthExpanses extends Component {
     //building name, current month and year.
     let params = {
       buildingName: this.props.location.state.buildingNameEng,
-      date: Helper.getCurrentDate()
+      date: Helper.getCurrentDate(),
+      range: {
+        page: 0,
+        pageSize: 50
+      }
     }
 
-    this.props.initState(this.props.location.state.buildingNameEng).then(() => {
+    this.props.initMonthExpansesState(this.props.location.state.buildingNameEng).then(() => {
       //get the building month expanses
-      this.props.fetchExpanses(params, params.buildingName);
+      this.props.fetchMonthExpanses(params, params.buildingName);
     });
 
     //fetch expnases codes
@@ -119,7 +130,7 @@ class MonthExpanses extends Component {
 
   componentWillUnmount() {
     //on exit init table data
-    this.props.cleanup(this.props.location.state.buildingNameEng);
+    this.props.monthExpansesCleanup(this.props.location.state.buildingNameEng);
   }
 
   findExpanseIndex(code = null, codeName = null) {
@@ -149,7 +160,7 @@ class MonthExpanses extends Component {
     }
 
     //get the building month expanses
-    this.props.fetchExpanses(params);
+    this.props.fetchMonthExpanses(params);
 
   }
 
@@ -162,7 +173,7 @@ class MonthExpanses extends Component {
         Header: "פעולות",
         width: 80,
         headerStyle: headerStyle,
-        Cell: (cellInfo) => <TableActions deleteHandler={() => this.deleteExpanseHandler(cellInfo.original.id, cellInfo.index)} />,
+        Cell: (cellInfo) => <TableActions deleteHandler={this.deleteExpanseHandler(cellInfo.original.id, cellInfo.index)} />,
         show: this.state.editMode
       },
       {
@@ -174,22 +185,19 @@ class MonthExpanses extends Component {
       {
         accessor: "code",
         Header: "קוד הנהח\"ש",
-        headerStyle: headerStyle,
-        Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.value} />,
+        headerStyle: headerStyle
       },
       {
         accessor: "codeName",
         Header: "שם חשבון",
         headerStyle: headerStyle,
-        filterMethod: Helper.reactTableFilterMethod,
-        Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.value} />,
+        filterMethod: Helper.reactTableFilterMethod
       },
       {
         accessor: "section",
         Header: "מקושר לסעיף",
         headerStyle: headerStyle,
-        filterMethod: Helper.reactTableFilterMethod,
-        Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.value} />,
+        filterMethod: Helper.reactTableFilterMethod
       },
       {
         accessor: "supplierName",
@@ -259,19 +267,21 @@ class MonthExpanses extends Component {
   }
 
   deleteExpanseHandler = (id, index) => {
-    //copy data
-    const { data, date } = { ...this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex] };
+    return useCallback(() => {
+      //copy data
+      const { data, date } = { ...this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex] };
 
-    //remove from the array
-    data.splice(index, 1);
+      //remove from the array
+      data.splice(index, 1);
 
-    //prepare the params
-    let params = {
-      id: id,
-      buildingName: this.props.location.state.buildingNameEng,
-      date: date
-    };
-    this.props.deleteExpanse(params, data);
+      //prepare the params
+      let params = {
+        id: id,
+        buildingName: this.props.location.state.buildingNameEng,
+        date: date
+      };
+      this.props.deleteMonthExpanse(params, data);
+    }, [id, index])
   }
 
   inputClickHandler = (e) => {
@@ -378,7 +388,7 @@ class MonthExpanses extends Component {
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
-
+    console.log(pages[pageIndex]);
     //summarized sections data
     const { summarizedSections } = this.props.summarizedSections;
 
@@ -497,12 +507,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchExpanses: (payload, page) => dispatch(monthExpansesActions.fetchExpanses(payload, page)),
-  cleanup: (buildingNameEng) => dispatch(monthExpansesActions.cleanup(buildingNameEng)),
-  initState: (page) => dispatch(monthExpansesActions.initState(page)),
-  updateExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesActions.updateExpanse(payload, tableData, target, fieldName)),
-  addExpanse: (payload, tableData, expanse) => dispatch(monthExpansesActions.addExpanse(payload, tableData, expanse)),
-  deleteExpanse: (payload, tableData) => dispatch(monthExpansesActions.deleteExpanse(payload, tableData)),
+  fetchMonthExpanses: (payload, page) => dispatch(fetchMonthExpanses(payload, page)),
+  monthExpansesCleanup: (buildingNameEng) => dispatch(monthExpansesCleanup(buildingNameEng)),
+  initMonthExpansesState: (page) => dispatch(initMonthExpansesState(page)),
+  updateMonthExpanse: (payload, tableData, target, fieldName) => dispatch(updateMonthExpanse(payload, tableData, target, fieldName)),
+  addMonthExpanse: (payload, tableData, expanse) => dispatch(addMonthExpanse(payload, tableData, expanse)),
+  deleteMonthExpanse: (payload, tableData) => dispatch(deleteMonthExpanse(payload, tableData)),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
   fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload))
 });

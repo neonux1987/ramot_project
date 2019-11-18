@@ -4,8 +4,7 @@ import { Done, Close } from '@material-ui/icons';
 
 export default ({ show, closeDialog, deleteHandler }) => {
 
-  const display = show ? "block" : "none";
-  return <div className={styles.dialog} style={{ display: display }}>
+  return <div className={styles.dialog}>
     <button onClick={() => {
       closeDialog();
       deleteHandler();
