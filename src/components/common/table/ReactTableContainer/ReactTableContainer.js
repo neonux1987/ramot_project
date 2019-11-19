@@ -6,29 +6,25 @@ import classnames from 'classnames';
 
 class ReactTableContainer extends React.PureComponent {
 
-  state = {
-    sorted: [],
-    defaultSorted: [],
-    pageSize: undefined,
-    expanded: {},
-    resized: [],
-    filtered: [],
-    showPagination: true,
-    resizable: false,
-    defaultPageSize: 65,
-    minRows: undefined,
-    filterable: false
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    if (this.props.settings !== undefined) {
-      this.setState({
-        ...this.props.settings,
-        showPagination: this.props.settings.showPagination === 1 ? true : false,
-        resizable: this.props.settings.resizable === 1 ? true : false,
-        minRows: this.props.settings.resizable === 0 ? undefined : this.props.settings.resizable,
-      });
-    }
+    const { settings = {} } = this.props;
+
+    this.state = {
+      sorted: [],
+      defaultSorted: [],
+      pageSize: undefined,
+      expanded: {},
+      resized: [],
+      filtered: [],
+      showPagination: settings && settings.showPagination === 1 ? true : false,
+      resizable: settings && settings.resizable === 1 ? true : false,
+      defaultPageSize: 65,
+      minRows: settings && settings.minRows === 0 ? undefined : settings.minRows || undefined,
+      filterable: false
+    };
+
   }
 
   render() {
@@ -59,7 +55,7 @@ class ReactTableContainer extends React.PureComponent {
         data={this.props.data}
         columns={this.props.columns}
         pages={this.props.pages}
-        onFetchData={this.props.sonFetchData}
+        onFetchData={this.props.onFetchData}
         defaultSorted={this.props.defaultSorted || this.state.defaultSorted}
       />
     );

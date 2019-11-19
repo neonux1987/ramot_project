@@ -64,8 +64,8 @@ class MonthExpansesDao {
       month: month = String
     },
     pageSettings = {
-      pageSize: -1,
-      page: -1
+      pageSize: 100,
+      startElement: 0
     },
     trx = this.connection
   ) => {
@@ -85,7 +85,7 @@ class MonthExpansesDao {
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .orderBy(['code', { column: 'codeName', order: 'asc' }])
-      .limit(pageSettings.pageSize).offset(pageSettings.pageSize * pageSettings.page);
+      .limit(pageSettings.pageSize).offset(pageSettings.startElement);
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);

@@ -84,7 +84,11 @@ export default (state = initState, action) => {
           isFetching: false,
           status: "",
           error: "",
-          data: []
+          data: [],
+          pageSettings: {
+            pageSize: 0,
+            count: 0
+          }
         }
         initPages.push(page);
         const pageIndex = Helper.findIndexOfPage(action.page, initPages);

@@ -59,14 +59,11 @@ class MonthExpanses extends Component {
     this.props.fetchTableSettings(PAGE_NAME).then((settings) => {
 
       params.range = {
-        page: 0,
-        pageSize: 50
+        startElement: settings.startElement,
+        pageSize: settings.pageSize
       };
 
-      this.props.initMonthExpansesState(this.props.location.state.buildingNameEng).then(() => {
-        //get the building month expanses
-        this.props.fetchMonthExpanses(params, params.buildingName);
-      });
+      this.props.initMonthExpansesState(this.props.location.state.buildingNameEng);
 
     })
 
@@ -382,6 +379,28 @@ class MonthExpanses extends Component {
     });
   };
 
+  onFetchData = (state, instance) => {
+    const {
+      pages,
+      pageIndex
+    } = this.props.monthExpanses;
+
+    const tableSettings = this.props.tableSettings.pages[PAGE_NAME].data;
+
+    //important params that allows to pull the current data by
+    //building name, current month and year.
+    let params = {
+      buildingName: this.props.location.state.buildingNameEng,
+      date: pages[pageIndex].date,
+      range: {
+        startElement: tableSettings.startElement,
+        pageSize: tableSettings.pageSize
+      }
+    }
+    //get the building month expanses
+    this.props.fetchMonthExpanses(params, params.buildingName);
+  }
+
   render() {
     //vars
     const {
@@ -390,11 +409,16 @@ class MonthExpanses extends Component {
       pages,
       pageIndex
     } = this.props.monthExpanses;
-    if (pages.length === 0 ||
+
+    if (pages.length === 0 || pages[pageIndex] === undefined) {
+      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
+    }
+
+    /* if (pages.length === 0 ||
       pages[pageIndex] === undefined ||
       (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
-    }
+    } */
 
     const tableSettings = this.props.tableSettings.pages[PAGE_NAME];
 
@@ -420,6 +444,9 @@ class MonthExpanses extends Component {
     const {
       date
     } = pages[pageIndex];
+
+    // number of table pages
+    const numOfPages = Math.round(pages[pageIndex].pageSettings.count / pages[pageIndex].pageSettings.pageSize);
 
     return (
       <Fragment>
@@ -486,10 +513,8 @@ class MonthExpanses extends Component {
                   asc: true
                 }
               ]}
-              onFetchData={(state, instance) => {
-
-              }}
-              pages={10}
+              onFetchData={this.onFetchData}
+              pages={numOfPages}
               settings={tableSettings.data}
             />
 
