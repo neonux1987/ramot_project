@@ -49,10 +49,10 @@ const styles = theme => ({
     minWidth: 200,
   },
   spinnnerWrapper: {
-    alignItems: "center",
-    justifyContent: "center",
-    display: "flex",
-    width: "100%"
+    verticalAlign: "middle",
+    display: "inline-flex",
+    width: "212px",
+    justifyContent: "center"
   }
 });
 
@@ -139,7 +139,7 @@ class InputExpansesField extends Component {
     const { code } = this.state.formInputs;
     let foundObj = null;
     if (code) {
-      foundObj = this.props.summarizedSections.find((section) => {
+      foundObj = this.props.summarizedSections.data.find((section) => {
         return section.id === code.summarized_section_id;
       });
     }
@@ -212,21 +212,28 @@ class InputExpansesField extends Component {
     });
   }
 
-  renderForm(selectDataRender) {
-    if (this.props.summarizedSections.length === 0 || !this.props.data.length === 0) {
-      return <div className={this.props.classes.spinnnerWrapper}><Spinner loadingText={"טוען נתונים של מצב הוספה..."} size={30} /></div>;
+  renderForm() {
+    const {
+      expansesCodes,
+      summarizedSections
+    } = this.props;
+
+    if (expansesCodes.isFetching || summarizedSections.isFetching) {
+      return <Spinner loadingText={"טוען נתונים..."} />
     }
+
     return <form
       id="inputExpanses"
       noValidate
       autoComplete="off"
       //onKeyPress={(event) => this.inputEnterPress(event)}
       onChange={this.formChangeHandler} >
+
       <ReactSelect
         classes={{ root: this.props.classes.codeTextField }}
         inputValue={this.state.formInputs.code}
         onChangeHandler={this.reactSelectHandleChange}
-        options={this.props.expansesCodes}
+        options={this.props.expansesCodes.data}
         getOptionLabel={(option) => option.code}
         getOptionValue={(option) => option.code}
         placeholder="הזן קוד:"
@@ -239,7 +246,7 @@ class InputExpansesField extends Component {
       <ReactSelect
         inputValue={this.state.formInputs.codeName}
         onChangeHandler={this.reactSelectHandleChange}
-        options={this.props.expansesCodes}
+        options={this.props.expansesCodes.data}
         getOptionLabel={(option) => option.codeName}
         getOptionValue={(option) => option.codeName}
         placeholder="הזן שם חשבון:"
@@ -249,7 +256,7 @@ class InputExpansesField extends Component {
         inputId="codeName"
       />
 
-      {!this.state.isNew && <TextField
+      <TextField
         name="section"
         label="מקושר לסעיף מסכם:"
         className={this.props.classes.textField}
@@ -257,25 +264,7 @@ class InputExpansesField extends Component {
         type="text"
         inputProps={{ 'data-order': 2, readOnly: true }}
         InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
-      />}
-
-      {this.state.isNew && <form className={this.props.classes.formControl}>
-        <InputLabel className={this.props.classes.inputLabel} htmlFor="age-helper">בחר סעיף:</InputLabel>
-        <Select
-          value={this.state.formInputs.summarized_section_id}
-          onChange={this.formChangeHandler}
-          inputProps={{
-            'data-order': 2,
-            name: "summarized_section_id"
-          }}
-          MenuProps={{ onExited: () => this.supplierInput.focus() }}//will handle moving the focus to the supplierName input
-        >
-          <MenuItem value="">
-            <em></em>
-          </MenuItem>
-          {selectDataRender}
-        </Select>
-      </form>}
+      />
 
       <TextField
         name="supplierName"
@@ -318,7 +307,7 @@ class InputExpansesField extends Component {
         name="submit"
         variant="contained"
         color="primary"
-        onClick={(event) => this.props.submitData(this.state.formInputs, this.reset, this.state.isNew)}
+        onClick={(event) => this.props.submitData(this.state.formInputs, this.reset)}
         className={this.props.classes.button}
       >
         שמור
@@ -328,12 +317,9 @@ class InputExpansesField extends Component {
   }
 
   render() {
-    const selectDataRender = this.props.summarizedSections ? this.props.summarizedSections.map((summarizedSection) => {
-      return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
-    }) : "";
     return (
       <div className={this.props.classes.container}>
-        {this.renderForm(selectDataRender)}
+        {this.renderForm()}
       </div>
     );
   }

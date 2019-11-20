@@ -47,6 +47,7 @@ class ReactTableContainer extends React.PureComponent {
             }
           }
         }}
+        loading={this.props.loading}
         loadingText={"טוען..."}
         noDataText={"המידע לא נמצא"}
         LoadingComponent={LoadingCircle}

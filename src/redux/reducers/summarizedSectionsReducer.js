@@ -1,9 +1,6 @@
 import Helper from '../../helpers/Helper';
 
 const initState = {
-  pageName: "summarizedSections",
-  headerTitle: "מעקב הוצאות חודשיות",
-  date: Helper.getCurrentDate(),
   summarizedSections: {
     isFetching: false,
     status: "",
@@ -44,6 +41,16 @@ export default (state = initState, action) => {
           ...state.summarizedSections,
           status: "error",
           error: action.payload
+        }
+      }
+    case "SUMMARIZED_SECTIONS_CLEANUP":
+      return {
+        ...state,
+        summarizedSections: {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: []
         }
       }
     default: return state;

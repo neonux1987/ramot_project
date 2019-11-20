@@ -110,11 +110,18 @@ const updateExpanseCode = (params = Object, tableData = Array) => {
   }
 };
 
+const expansesCodesCleanup = () => {
+  return {
+    type: "EXPANSES_CODES_CLEANUP"
+  }
+}
+
 export default {
   fetchExpansesCodes,
   addExpanseCode,
   updateExpanseCode,
   fetchingFailed,
   receiveExpansesCodes,
-  requestExpansesCodes
+  requestExpansesCodes,
+  expansesCodesCleanup
 };

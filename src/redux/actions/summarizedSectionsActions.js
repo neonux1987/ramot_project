@@ -100,11 +100,18 @@ const updateSummarizedSection = (params = Object, tableData = Array) => {
   }
 };
 
+const summarizedSectionsCleanup = () => {
+  return {
+    type: "SUMMARIZED_SECTIONS_CLEANUP"
+  }
+}
+
 export default {
   fetchSummarizedSections,
   addSummarizedSection,
   updateSummarizedSection,
   fetchingFailed,
   receiveSummarizedSections,
-  requestSummarizedSections
+  requestSummarizedSections,
+  summarizedSectionsCleanup
 };

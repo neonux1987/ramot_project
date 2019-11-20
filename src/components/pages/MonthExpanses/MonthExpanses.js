@@ -2,7 +2,6 @@ import React, { Component, Fragment, useCallback } from 'react';
 import InputExpansesField from './InputExpansesField'
 import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import { connect } from 'react-redux';
-import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
 import {
   fetchMonthExpanses,
   initMonthExpansesState,
@@ -12,7 +11,6 @@ import {
   deleteMonthExpanse
 } from '../../../redux/actions/monthExpansesActions';
 import { fetchTableSettings, updateTableSettings, tableSettingsCleanup } from '../../../redux/actions/tableSettingsActions';
-import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 import Helper from '../../../helpers/Helper';
 import Header from '../../common/Header/Header';
 import PageControls from '../../common/PageControls/PageControls';
@@ -29,6 +27,7 @@ import Section from '../../common/Section/Section';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 import DefaultCell from '../../common/table/TableCell/DefaultCell';
 import CellInput from '../../common/table/TableCell/CellInput';
+import CodesAndSectionsFetcher from '../../dataFetchers/CodesAndSectionsFetcher';
 
 const FIXED_FLOAT = 2;
 const PAGE_NAME = "month_expanses";
@@ -67,15 +66,9 @@ class MonthExpanses extends Component {
 
     })
 
-    //fetch expnases codes
-    this.props.fetchExpansesCodes(params);
-
-    //fetch summarized sections
-    this.props.fetchSummarizedSections();
-
   }
 
-  inputExpansesSubmit(formInputs, reset, isNew) {
+  inputExpansesSubmit(formInputs, reset) {
     const { data, date } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
     const valid = this.validateFormInputs(formInputs);
     if (!valid) {
@@ -422,23 +415,23 @@ class MonthExpanses extends Component {
 
     const tableSettings = this.props.tableSettings.pages[PAGE_NAME];
 
-    //summarized sections data
-    const { summarizedSections } = this.props.summarizedSections;
-
-    //expanses codes data
-    const { expansesCodes } = this.props.expansesCodes;
-
     //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
 
     //add new month expanse box
-    const addNewBox = this.state.addNewMode ? <InputExpansesField
-      summarizedSections={summarizedSections.data}
-      expansesCodes={expansesCodes.data}
-      data={pages[pageIndex].data}
-      submitData={this.inputExpansesSubmit}
-      findData={this.findExpanseIndex}
-    /> : null;
+    const addNewBox = this.state.addNewMode ?
+      <CodesAndSectionsFetcher fetchCodes fetchSections>
+        {({ codes, sections }) => {
+          return <InputExpansesField
+            summarizedSections={sections}
+            expansesCodes={codes}
+            data={pages[pageIndex].data}
+            submitData={this.inputExpansesSubmit}
+            findData={this.findExpanseIndex}
+          />
+        }}
+      </CodesAndSectionsFetcher>
+      : null;
 
     //date
     const {
@@ -530,12 +523,10 @@ class MonthExpanses extends Component {
 }
 
 const mapStateToProps = state => ({
-  summarizedSections: state.summarizedSections,
   monthExpanses: state.monthExpanses,
   generalSettings: {
     tax: state.generalSettings.generalSettings.data[0].tax
   },
-  expansesCodes: state.expansesCodes,
   tableSettings: state.tableSettings
 });
 
@@ -546,8 +537,6 @@ const mapDispatchToProps = dispatch => ({
   updateMonthExpanse: (payload, tableData, target, fieldName) => dispatch(updateMonthExpanse(payload, tableData, target, fieldName)),
   addMonthExpanse: (payload, tableData, expanse) => dispatch(addMonthExpanse(payload, tableData, expanse)),
   deleteMonthExpanse: (payload, tableData) => dispatch(deleteMonthExpanse(payload, tableData)),
-  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
-  fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
   fetchTableSettings: (pageName) => dispatch(fetchTableSettings(pageName)),
   updateTableSettings: (pageName, settings) => dispatch(updateTableSettings(pageName, settings)),
   tableSettingsCleanup: (pageName) => dispatch(tableSettingsCleanup(pageName)),

@@ -1,9 +1,6 @@
 import Helper from '../../helpers/Helper';
 
 const initState = {
-  pageName: "expansesCodes",
-  headerTitle: "קישור סעיפים",
-  date: Helper.getCurrentDate(),
   expansesCodes: {
     isFetching: false,
     status: "",
@@ -50,6 +47,16 @@ export default (state = initState, action) => {
           ...state.expansesCodes,
           status: "error",
           error: action.payload
+        }
+      }
+    case "EXPANSES_CODES_CLEANUP":
+      return {
+        ...state,
+        expansesCodes: {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: []
         }
       }
     case "UPDATE_DATE":
