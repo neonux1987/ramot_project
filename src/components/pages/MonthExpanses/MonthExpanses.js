@@ -1,7 +1,8 @@
+// LIBRARIES IMPORTS
 import React, { Component, Fragment, useCallback } from 'react';
-import InputExpansesField from './InputExpansesField'
-import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import { connect } from 'react-redux';
+
+// ACTIONS IMPORTS
 import {
   fetchMonthExpanses,
   initMonthExpansesState,
@@ -10,8 +11,18 @@ import {
   addMonthExpanse,
   deleteMonthExpanse
 } from '../../../redux/actions/monthExpansesActions';
-import { fetchTableSettings, updateTableSettings, tableSettingsCleanup } from '../../../redux/actions/tableSettingsActions';
+import {
+  fetchTableSettings,
+  updateTableSettings,
+  tableSettingsCleanup,
+  setStartElement,
+  initTableSettings
+} from '../../../redux/actions/tableSettingsActions';
+
+// UTILITY IMPORTS
 import Helper from '../../../helpers/Helper';
+
+// COMMON COMPONENTS IMPORTS
 import Header from '../../common/Header/Header';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
@@ -22,13 +33,18 @@ import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import TableActions from '../../common/table/TableActions/TableActions';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
+import InputExpansesField from './InputExpansesField'
+import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
 import Section from '../../common/Section/Section';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 import DefaultCell from '../../common/table/TableCell/DefaultCell';
 import CellInput from '../../common/table/TableCell/CellInput';
+
+// DATA FETHCER
+import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 import CodesAndSectionsFetcher from '../../dataFetchers/CodesAndSectionsFetcher';
 
+// CONSTS
 const FIXED_FLOAT = 2;
 const PAGE_NAME = "month_expanses";
 
@@ -55,16 +71,12 @@ class MonthExpanses extends Component {
       date: Helper.getCurrentDate()
     }
 
-    this.props.fetchTableSettings(PAGE_NAME).then((settings) => {
+    this.props.initMonthExpansesState(this.props.location.state.buildingNameEng).then(() => {
+      this.props.initTableSettings(PAGE_NAME).then(() => {
+        this.props.fetchTableSettings(PAGE_NAME);
+      })
+    });
 
-      params.range = {
-        startElement: settings.startElement,
-        pageSize: settings.pageSize
-      };
-
-      this.props.initMonthExpansesState(this.props.location.state.buildingNameEng);
-
-    })
 
   }
 
@@ -373,6 +385,7 @@ class MonthExpanses extends Component {
   };
 
   onFetchData = (state, instance) => {
+
     const {
       pages,
       pageIndex
@@ -380,18 +393,21 @@ class MonthExpanses extends Component {
 
     const tableSettings = this.props.tableSettings.pages[PAGE_NAME].data;
 
+    const newStartElement = tableSettings.startElement + tableSettings.pageSize;
+
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
       buildingName: this.props.location.state.buildingNameEng,
       date: pages[pageIndex].date,
       range: {
-        startElement: tableSettings.startElement,
+        startElement: newStartElement,
         pageSize: tableSettings.pageSize
       }
     }
     //get the building month expanses
     this.props.fetchMonthExpanses(params, params.buildingName);
+    this.props.setStartElement(PAGE_NAME, newStartElement)
   }
 
   render() {
@@ -402,8 +418,12 @@ class MonthExpanses extends Component {
       pages,
       pageIndex
     } = this.props.monthExpanses;
+    console.log(this.props.tableSettings.pages[PAGE_NAME]);
+    // table settings
+    const tableSettings = this.props.tableSettings.pages[PAGE_NAME];
 
-    if (pages.length === 0 || pages[pageIndex] === undefined) {
+    if (pages.length === 0 || pages[pageIndex] === undefined
+      || tableSettings === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
 
@@ -413,7 +433,7 @@ class MonthExpanses extends Component {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     } */
 
-    const tableSettings = this.props.tableSettings.pages[PAGE_NAME];
+    const { pageSize, count } = pages[pageIndex].pageSettings;
 
     //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
@@ -439,7 +459,7 @@ class MonthExpanses extends Component {
     } = pages[pageIndex];
 
     // number of table pages
-    const numOfPages = Math.round(pages[pageIndex].pageSettings.count / pages[pageIndex].pageSettings.pageSize);
+    const numOfPages = Math.ceil(count / pageSize);
 
     return (
       <Fragment>
@@ -508,6 +528,7 @@ class MonthExpanses extends Component {
               ]}
               onFetchData={this.onFetchData}
               pages={numOfPages}
+              loadingSettings={tableSettings === undefined || tableSettings.isFetching}
               settings={tableSettings.data}
             />
 
@@ -540,6 +561,8 @@ const mapDispatchToProps = dispatch => ({
   fetchTableSettings: (pageName) => dispatch(fetchTableSettings(pageName)),
   updateTableSettings: (pageName, settings) => dispatch(updateTableSettings(pageName, settings)),
   tableSettingsCleanup: (pageName) => dispatch(tableSettingsCleanup(pageName)),
+  setStartElement: (pageName, value) => dispatch(setStartElement(pageName, value)),
+  initTableSettings: (pageName) => dispatch(initTableSettings(pageName))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

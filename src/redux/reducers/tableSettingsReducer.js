@@ -4,7 +4,9 @@ import {
   RECEIVE_TABLE_SETTINGS,
   TABLE_SETTINGS_FETCHING_FAILED,
   UPDATE_TABLE_SETTINGS,
-  TABLE_SETTINGS_CLEANUP
+  TABLE_SETTINGS_CLEANUP,
+  SET_START_ELEMENT,
+  INIT_TABLE_SETTINGS
 } from '../actions/tableSettingsActions';
 
 const initState = {
@@ -18,6 +20,7 @@ export default (state = initState, action) => {
       return {
         ...state,
         pages: {
+          ...state.pages,
           [action.pageName]: {
             ...state.pages[action.pageName],
             isFetching: false,
@@ -71,7 +74,31 @@ export default (state = initState, action) => {
         pages: pagesCopy
       }
     }
-
+    case SET_START_ELEMENT: {
+      const pagesCopy = { ...state.pages };
+      delete pagesCopy[action.pageName];
+      return {
+        ...state,
+        pages: {
+          ...state.pages,
+          [action.pageName]: {
+            ...state.pages[action.pageName],
+            startElement: action.value
+          }
+        }
+      }
+    }
+    case INIT_TABLE_SETTINGS:
+      return {
+        pages: {
+          [action.pageName]: {
+            isFetching: false,
+            status: "",
+            error: "",
+            data: []
+          }
+        }
+      }
     default: return state;
   }
 }

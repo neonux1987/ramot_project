@@ -7,6 +7,8 @@ export const RECEIVE_TABLE_SETTINGS = "RECEIVE_TABLE_SETTINGS";
 export const TABLE_SETTINGS_FETCHING_FAILED = "TABLE_SETTINGS_FETCHING_FAILED";
 export const UPDATE_TABLE_SETTINGS = "UPDATE_TABLE_SETTINGS";
 export const TABLE_SETTINGS_CLEANUP = "UPDATE_TABLE_SETTINGS";
+export const SET_START_ELEMENT = "SET_START_ELEMENT";
+export const INIT_TABLE_SETTINGS = "INIT_TABLE_SETTINGS";
 
 export const fetchTableSettings = (pageName) => {
   return dispatch => {
@@ -68,6 +70,15 @@ export const updateTableSettingsStore = (pageName, data) => {
   }
 }
 
+export const setStartElement = (pageName, value) => {
+  return dispatch => {
+    dispatch({
+      type: SET_START_ELEMENT,
+      value
+    });
+  }
+}
+
 const requestTableSettings = function (page) {
   return {
     type: REQUEST_TABLE_SETTINGS
@@ -93,5 +104,22 @@ export const tableSettingsCleanup = (pageName) => {
   return {
     type: TABLE_SETTINGS_CLEANUP,
     pageName
+  }
+}
+
+export const initTableSettings = (pageName) => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      if (pageName) {
+        dispatch({
+          type: INIT_TABLE_SETTINGS,
+          pageName
+        });
+        resolve();
+      } else {
+        reject("pageName cannot be empty/undefined or null");
+      }
+
+    });
   }
 }

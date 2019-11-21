@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import styles from './ReactTableContainer.module.css';
 import LoadingCircle from '../../../common/LoadingCircle';
 import classnames from 'classnames';
+import Spinner from '../../Spinner/Spinner';
 
 class ReactTableContainer extends React.PureComponent {
 
@@ -12,22 +13,33 @@ class ReactTableContainer extends React.PureComponent {
     const { settings = {} } = this.props;
 
     this.state = {
-      sorted: [],
-      defaultSorted: [],
-      pageSize: undefined,
-      expanded: {},
-      resized: [],
-      filtered: [],
-      showPagination: settings && settings.showPagination === 1 ? true : false,
-      resizable: settings && settings.resizable === 1 ? true : false,
-      defaultPageSize: 65,
-      minRows: settings && settings.minRows === 0 ? undefined : settings.minRows || undefined,
-      filterable: false
+      tableSettings: {
+        sorted: [],
+        defaultSorted: this.props.defaultSorted || [],
+        pageSize: settings && settings.pageSize === undefined ? 50 : settings.pageSize,
+        expanded: {},
+        resized: [],
+        filtered: [],
+        showPagination: true,
+        resizable: settings && settings.resizable === 1 ? true : false,
+        defaultPageSize: settings && settings.defaultPageSize === undefined ? 65 : settings.defaultPageSize,
+        minRows: settings && settings.minRows === undefined ? undefined : settings.minRows,
+        filterable: false,
+        manual: this.props.manual
+      },
+      settingsLoaded: false
     };
 
   }
 
+  componentDidMount() {
+
+  }
+
   render() {
+    if (this.props.loadingSettings || this.state.settingsLoaded) {
+      return <Spinner wrapperClass={styles.spinner} size={60} loadingText={"טוען הגדרות טבלה..."} />
+    }
     return (
       <ReactTableMemoized
         id={"react-table"}
@@ -51,13 +63,13 @@ class ReactTableContainer extends React.PureComponent {
         loadingText={"טוען..."}
         noDataText={"המידע לא נמצא"}
         LoadingComponent={LoadingCircle}
-        manual
-        {...this.state}
+
+        {...this.state.tableSettings}
         data={this.props.data}
         columns={this.props.columns}
-        pages={this.props.pages}
         onFetchData={this.props.onFetchData}
-        defaultSorted={this.props.defaultSorted || this.state.defaultSorted}
+        pages={this.props.pages || 0}
+        manual
       />
     );
   }
@@ -76,7 +88,7 @@ ReactTableContainer.defaultProps = {
   filtered: [],
   showPagination: true,
   resizable: false,
-  defaultPageSize: 40,
+  defaultPageSize: 65,
   minRows: undefined,
   filterable: false
 }
