@@ -11,13 +11,6 @@ import {
   addMonthExpanse,
   deleteMonthExpanse
 } from '../../../redux/actions/monthExpansesActions';
-import {
-  fetchTableSettings,
-  updateTableSettings,
-  tableSettingsCleanup,
-  setStartElement,
-  initTableSettings
-} from '../../../redux/actions/tableSettingsActions';
 
 // UTILITY IMPORTS
 import Helper from '../../../helpers/Helper';
@@ -71,13 +64,7 @@ class MonthExpanses extends Component {
       date: Helper.getCurrentDate()
     }
 
-    this.props.initMonthExpansesState(this.props.location.state.buildingNameEng).then(() => {
-      this.props.initTableSettings(PAGE_NAME).then(() => {
-        this.props.fetchTableSettings(PAGE_NAME);
-      })
-    });
-
-
+    this.props.initMonthExpansesState(this.props.location.state.buildingNameEng);
   }
 
   inputExpansesSubmit(formInputs, reset) {
@@ -384,16 +371,21 @@ class MonthExpanses extends Component {
     });
   };
 
-  onFetchData = (state, instance) => {
+  onFetchData = (state) => {
 
     const {
       pages,
       pageIndex
     } = this.props.monthExpanses;
 
-    const tableSettings = this.props.tableSettings.pages[PAGE_NAME].data;
+    const {
+      pageSize
+      , page
+    } = state;
 
-    const newStartElement = tableSettings.startElement + tableSettings.pageSize;
+    // page 0 - no need to multpily pass only the page size
+    // page > 0 multiply to get the next start element position
+    const startElement = page === 0 ? 0 : pageSize * page;
 
     //important params that allows to pull the current data by
     //building name, current month and year.
@@ -401,13 +393,13 @@ class MonthExpanses extends Component {
       buildingName: this.props.location.state.buildingNameEng,
       date: pages[pageIndex].date,
       range: {
-        startElement: newStartElement,
-        pageSize: tableSettings.pageSize
+        startElement,
+        pageSize: pageSize
       }
-    }
+    };
+    //console.log(state);
     //get the building month expanses
     this.props.fetchMonthExpanses(params, params.buildingName);
-    this.props.setStartElement(PAGE_NAME, newStartElement)
   }
 
   render() {
@@ -418,12 +410,8 @@ class MonthExpanses extends Component {
       pages,
       pageIndex
     } = this.props.monthExpanses;
-    console.log(this.props.tableSettings.pages[PAGE_NAME]);
-    // table settings
-    const tableSettings = this.props.tableSettings.pages[PAGE_NAME];
 
-    if (pages.length === 0 || pages[pageIndex] === undefined
-      || tableSettings === undefined) {
+    if (pages.length === 0 || pages[pageIndex] === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
 
@@ -433,7 +421,7 @@ class MonthExpanses extends Component {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     } */
 
-    const { pageSize, count } = pages[pageIndex].pageSettings;
+    const { count } = pages[pageIndex].pageSettings;
 
     //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
@@ -457,9 +445,6 @@ class MonthExpanses extends Component {
     const {
       date
     } = pages[pageIndex];
-
-    // number of table pages
-    const numOfPages = Math.ceil(count / pageSize);
 
     return (
       <Fragment>
@@ -519,6 +504,7 @@ class MonthExpanses extends Component {
             <ReactTableContainer
               loading={pages[pageIndex].isFetching}
               data={pages[pageIndex].data}
+              dataCount={count}
               columns={this.generateHeaders()}
               defaultSorted={[
                 {
@@ -527,9 +513,7 @@ class MonthExpanses extends Component {
                 }
               ]}
               onFetchData={this.onFetchData}
-              pages={numOfPages}
-              loadingSettings={tableSettings === undefined || tableSettings.isFetching}
-              settings={tableSettings.data}
+              pageNameSettings={PAGE_NAME}
             />
 
           </TableWrapper> {/* end TableWrapper */}
@@ -557,12 +541,7 @@ const mapDispatchToProps = dispatch => ({
   initMonthExpansesState: (page) => dispatch(initMonthExpansesState(page)),
   updateMonthExpanse: (payload, tableData, target, fieldName) => dispatch(updateMonthExpanse(payload, tableData, target, fieldName)),
   addMonthExpanse: (payload, tableData, expanse) => dispatch(addMonthExpanse(payload, tableData, expanse)),
-  deleteMonthExpanse: (payload, tableData) => dispatch(deleteMonthExpanse(payload, tableData)),
-  fetchTableSettings: (pageName) => dispatch(fetchTableSettings(pageName)),
-  updateTableSettings: (pageName, settings) => dispatch(updateTableSettings(pageName, settings)),
-  tableSettingsCleanup: (pageName) => dispatch(tableSettingsCleanup(pageName)),
-  setStartElement: (pageName, value) => dispatch(setStartElement(pageName, value)),
-  initTableSettings: (pageName) => dispatch(initTableSettings(pageName))
+  deleteMonthExpanse: (payload, tableData) => dispatch(deleteMonthExpanse(payload, tableData))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

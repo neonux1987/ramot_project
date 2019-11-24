@@ -36,10 +36,7 @@ export default (state = initState, action) => {
           ...state.pages,
           [action.pageName]: {
             ...state.pages[action.pageName],
-            isFetching: true,
-            status: "",
-            error: "",
-            data: []
+            isFetching: true
           }
         }
       }

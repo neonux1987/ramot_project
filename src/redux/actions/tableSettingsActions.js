@@ -79,9 +79,10 @@ export const setStartElement = (pageName, value) => {
   }
 }
 
-const requestTableSettings = function (page) {
+const requestTableSettings = function (pageName) {
   return {
-    type: REQUEST_TABLE_SETTINGS
+    type: REQUEST_TABLE_SETTINGS,
+    pageName
   }
 };
 
@@ -119,7 +120,6 @@ export const initTableSettings = (pageName) => {
       } else {
         reject("pageName cannot be empty/undefined or null");
       }
-
     });
   }
 }

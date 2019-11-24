@@ -31,7 +31,6 @@ class MonthExpansesLogic {
         return {
           expanses,
           pageSettings: {
-            pageSize: expanses.length,
             count: count
           }
         }

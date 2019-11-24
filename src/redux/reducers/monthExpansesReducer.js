@@ -86,7 +86,6 @@ export default (state = initState, action) => {
           error: "",
           data: [],
           pageSettings: {
-            pageSize: 100,
             count: 0
           }
         }
