@@ -23,6 +23,8 @@ import BudgetExecutionFetcher from '../../dataFetchers/BudgetExecutionFetcher';
 
 const FIXED_FLOAT = 2;
 
+const PAGE_NAME = "budget_execution";
+
 class BudgetExecution extends Component {
 
   constructor(props) {
@@ -36,18 +38,7 @@ class BudgetExecution extends Component {
   }
 
   componentDidMount() {
-
-    //important params that allows to pull the current data by
-    //current quarter, month and year.
-    let params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: Helper.getCurrentQuarterDate(),
-    }
-    this.props.initState(this.props.location.state.buildingNameEng).then(() => {
-      //get the building budget executions
-      this.props.fetchBudgetExecutions(params);
-    });
-
+    this.props.initState(this.props.location.state.buildingNameEng);
   }
 
   componentWillUnmount() {
@@ -252,7 +243,7 @@ class BudgetExecution extends Component {
         columns: [
           {
             accessor: "summarized_section_id",
-            Header: "ספרור",
+            Header: "שורה",
             headerStyle: headerStyle(defaultColor),
             width: 80,
             Cell: (row) => {
@@ -469,6 +460,37 @@ class BudgetExecution extends Component {
     }
   }
 
+  onFetchData = (state) => {
+
+    const {
+      pages,
+      pageIndex
+    } = this.props.budgetExecution;
+
+    const {
+      pageSize
+      , page
+    } = state;
+
+    // page 0 - no need to multpily pass only the page size
+    // page > 0 multiply to get the next start element position
+    const startElement = page === 0 ? 0 : pageSize * page;
+
+    //important params that allows to pull the current data by
+    //building name, current month and year.
+    let params = {
+      buildingName: this.props.location.state.buildingNameEng,
+      date: pages[pageIndex].date,
+      range: {
+        startElement,
+        pageSize: pageSize
+      }
+    };
+
+    //get the building month expanses
+    this.props.fetchBudgetExecutions(params);
+  }
+
   render() {
     const {
       pageName,
@@ -480,14 +502,12 @@ class BudgetExecution extends Component {
     // building name
     const { buildingName, buildingNameEng } = this.props.location.state;
 
-    if (pages.length === 0 ||
-      pages[pageIndex] === undefined ||
-      (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
+    if (pages.length === 0 || pages[pageIndex] === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
 
-    //date
-    const { date } = pages[pageIndex];
+    //page data
+    const { date, pageSettings } = pages[pageIndex];
 
     return (
       <Fragment>
@@ -540,7 +560,7 @@ class BudgetExecution extends Component {
               leftPane={
                 <PageControls
                   excel={{
-                    data: [...pages[pageIndex].data],
+                    data: pages[pageIndex].data,
                     fileName: Helper.getBudgetExecutionFilename(buildingName, date),
                     sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
                     header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
@@ -556,21 +576,14 @@ class BudgetExecution extends Component {
 
             /> {/* End TableControls */}
 
-            <BudgetExecutionFetcher params={{
-              buildingName: buildingNameEng,
-              date: date
-            }}>
-
-              {({ budgetExecution }) => {
-                return <ReactTableContainer
-                  loading={budgetExecution.isFetching}
-                  data={budgetExecution.data}
-                  columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
-                >
-                </ReactTableContainer>
-              }}
-
-            </BudgetExecutionFetcher>{/* End BudgetExecutionFetcher */}
+            <ReactTableContainer
+              loading={pages[pageIndex].isFetching}
+              data={pages[pageIndex].data}
+              dataCount={pageSettings.count}
+              columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
+              onFetchData={this.onFetchData}
+              pageNameSettings={PAGE_NAME}
+            />
 
           </TableWrapper> {/* end TableWrapper */}
 

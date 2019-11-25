@@ -21,9 +21,9 @@ const fetchBudgetExecutions = (params = Object) => {
     dispatch(requestBudgetExecutions(params.buildingName));
 
     //request request to backend to get the data
-    ipcRenderer.send("get-budget-execution-data", params);
+    ipcRenderer.send("get-budget-executions", params);
     //listen when the data comes back
-    ipcRenderer.once("budget-execution-data", (event, arg) => {
+    ipcRenderer.once("budget-executions", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
@@ -227,7 +227,7 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
     //update the new data in the store first for
     //better and fast user experience
     dispatch(updateSingleBudgetExecution(budgetExecStoreObj, index));
-    
+
     //send a request to backend to get the data
     ipcRenderer.send("update-budget-execution", params);
 

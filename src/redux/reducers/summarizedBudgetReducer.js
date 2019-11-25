@@ -16,7 +16,8 @@ export default (state = initState, action) => {
           ...copyPages[state.pageIndex],
           isFetching: false,
           status: "success",
-          data: action.data
+          data: action.data.data,
+          pageSettigs: action.data.info
         }
         return {
           ...state,
@@ -60,7 +61,10 @@ export default (state = initState, action) => {
           isFetching: false,
           status: "",
           error: "",
-          data: []
+          data: [],
+          pageSettings: {
+            count: 0
+          }
         }
         initPages.push(page);
         const pageIndex = Helper.findIndexOfPage(action.page, initPages);

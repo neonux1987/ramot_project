@@ -20,6 +20,19 @@ class SummarizedBudgetLogic {
     return this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
   }
 
+  getSummarizedBudgetsByRange(buildingName, date, range) {
+    return this.sbd.getSummarizedBudgetsByRange(buildingName, date, range).then((data) => {
+      return this.sbd.dataRowCount(buildingName, date).then((count) => {
+        return {
+          data,
+          info: {
+            count: count
+          }
+        }
+      })
+    });
+  }
+
   getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx) {
     return this.sbd.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
   }

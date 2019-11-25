@@ -33,7 +33,7 @@ const fetchQuarterStats = (params = Object) => {
 
 const fetchAllQuartersStatsByYear = (params = Object) => {
   return dispatch => {
-
+    console.log("yes");
     //let react know that the fetching is started
     dispatch(requestQuarterlyStats());
 

@@ -17,8 +17,9 @@ export default (state = initState, action) => {
         //make the changes
         copyPages[state.pageIndex].isFetching = false;
         copyPages[state.pageIndex].status = "success";
-        copyPages[state.pageIndex].data = action.data;
+        copyPages[state.pageIndex].data = action.data.data;
         copyPages[state.pageIndex].date = action.date;
+        copyPages[state.pageIndex].pageSettings = action.data.info;
 
         return {
           ...state,
@@ -81,7 +82,10 @@ export default (state = initState, action) => {
           isFetching: false,
           status: "",
           error: "",
-          data: []
+          data: [],
+          pageSettings: {
+            count: 0
+          }
         }
         initPages.push(page);
         const pageIndex = Helper.findIndexOfPage(action.page, initPages);

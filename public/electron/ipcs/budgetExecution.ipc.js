@@ -6,12 +6,12 @@ const budgetExecutionIpc = (connection) => {
   //fetch month expanses data
   const budgetExecutionLogic = new BudgetExecutionLogic(connection);
 
-  ipcMain.on('get-budget-execution-data', (event, arg) => {
-    budgetExecutionLogic.getAllBudgetExecutionsTrx(arg.buildingName, arg.date).then((result) => {
-      event.sender.send("budget-execution-data", { data: result });
+  ipcMain.on('get-budget-executions', (event, arg) => {
+    budgetExecutionLogic.getBudgetExecutionsByRange(arg.buildingName, arg.date, arg.range).then((result) => {
+      event.sender.send("budget-executions", { data: result });
     }).catch((error) => {
       console.log(error);
-      event.reply("budget-execution-data", { error: error.message });
+      event.reply("budget-executions", { error: error.message });
     });
   });
 

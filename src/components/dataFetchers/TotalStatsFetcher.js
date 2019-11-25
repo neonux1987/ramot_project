@@ -19,6 +19,7 @@ class TotalStatsFetcher extends React.Component {
     }
 
     if (this.props.allQuartersStatsByYear) {
+
       //fetch quarter stats
       this.props.fetchAllQuartersStatsByYear(this.props.params);
     }

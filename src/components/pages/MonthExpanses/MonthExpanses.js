@@ -57,13 +57,6 @@ class MonthExpanses extends Component {
   }
 
   componentDidMount() {
-    //important params that allows to pull the current data by
-    //building name, current month and year.
-    let params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: Helper.getCurrentDate()
-    }
-
     this.props.initMonthExpansesState(this.props.location.state.buildingNameEng);
   }
 
@@ -173,7 +166,7 @@ class MonthExpanses extends Component {
         show: this.state.editMode
       },
       {
-        Header: "ספרור",
+        Header: "שורה",
         width: 100,
         Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.viewIndex + 1} />,
         headerStyle: headerStyle
@@ -258,7 +251,7 @@ class MonthExpanses extends Component {
       }
     };
     //update expanse
-    this.props.updateExpanse(params, oldExpanseCopy, index);
+    this.props.updateMonthExpanse(params, oldExpanseCopy, index);
     e.target.blur();
   }
 
@@ -397,9 +390,9 @@ class MonthExpanses extends Component {
         pageSize: pageSize
       }
     };
-    //console.log(state);
+
     //get the building month expanses
-    this.props.fetchMonthExpanses(params, params.buildingName);
+    this.props.fetchMonthExpanses(params);
   }
 
   render() {
@@ -414,14 +407,6 @@ class MonthExpanses extends Component {
     if (pages.length === 0 || pages[pageIndex] === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
-
-    /* if (pages.length === 0 ||
-      pages[pageIndex] === undefined ||
-      (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
-      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
-    } */
-
-    const { count } = pages[pageIndex].pageSettings;
 
     //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
@@ -441,9 +426,10 @@ class MonthExpanses extends Component {
       </CodesAndSectionsFetcher>
       : null;
 
-    //date
+    // page data
     const {
-      date
+      date,
+      pageSettings
     } = pages[pageIndex];
 
     return (
@@ -504,7 +490,7 @@ class MonthExpanses extends Component {
             <ReactTableContainer
               loading={pages[pageIndex].isFetching}
               data={pages[pageIndex].data}
-              dataCount={count}
+              dataCount={pageSettings.count}
               columns={this.generateHeaders()}
               defaultSorted={[
                 {

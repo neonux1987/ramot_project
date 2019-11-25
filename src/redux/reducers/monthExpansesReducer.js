@@ -26,8 +26,8 @@ export default (state = initState, action) => {
           ...copyPages[state.pageIndex],
           isFetching: false,
           status: "success",
-          data: action.data.expanses,
-          pageSettings: action.data.pageSettings
+          data: action.data.data,
+          pageSettings: action.data.info
         }
         return {
           ...state,

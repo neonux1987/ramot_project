@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import LoadingCircle from '../../common/LoadingCircle';
 import Helper from '../../../helpers/Helper';
 import Header from '../../common/Header/Header';
 import { connect } from 'react-redux';
@@ -21,6 +20,8 @@ import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 
 const FIXED_FLOAT = 2;
 
+const PAGE_NAME = "summarized_budget";
+
 class SummarizedBudget extends Component {
 
   constructor(props) {
@@ -30,18 +31,7 @@ class SummarizedBudget extends Component {
   }
 
   componentDidMount() {
-    //important params that allows to pull the current data by
-    //current quarter, month and year.
-    let params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: Helper.getCurrentDate(),
-    }
-
-    this.props.initState(this.props.location.state.buildingNameEng).then(() => {
-      //get the summarized budgets
-      this.props.fetchSummarizeBudgets(params);
-    });
-
+    this.props.initState(this.props.location.state.buildingNameEng);
   }
 
   componentWillUnmount() {
@@ -89,7 +79,7 @@ class SummarizedBudget extends Component {
         columns: [
           {
             accessor: "summarized_section_id",
-            Header: "ספרור",
+            Header: "שורה",
             headerStyle: headerStyle(defaultColor),
             width: 100,
             Cell: (row) => {
@@ -239,7 +229,7 @@ class SummarizedBudget extends Component {
     }
 
     //get the building month expanses
-    this.props.fetchSummarizeBudgets(params);
+    this.props.fetchSummarizedBudgets(params);
 
   }
 
@@ -251,9 +241,8 @@ class SummarizedBudget extends Component {
     const returnStats = [];
 
     for (let i = 0; i < quarters.length; i++) {
-
       // render loading if still fetching the stats
-      if (isFetching || quarterlyStats.length === 0) {
+      if (isFetching || quarterlyStats.length === 0 || quarterlyStats.length != 4) {
         returnStats[i] = <StatLoadingBox key={i} title={`טוען נתוני רבעון ${quarters[i]}`} />;
       } else {
         returnStats[i] = <StatBox
@@ -287,6 +276,37 @@ class SummarizedBudget extends Component {
     }
   }
 
+  onFetchData = (state) => {
+
+    const {
+      pages,
+      pageIndex
+    } = this.props.summarizedBudget;
+
+    const {
+      pageSize
+      , page
+    } = state;
+
+    // page 0 - no need to multpily pass only the page size
+    // page > 0 multiply to get the next start element position
+    const startElement = page === 0 ? 0 : pageSize * page;
+
+    //important params that allows to pull the current data by
+    //building name, current month and year.
+    let params = {
+      buildingName: this.props.location.state.buildingNameEng,
+      date: pages[pageIndex].date,
+      range: {
+        startElement,
+        pageSize: pageSize
+      }
+    };
+
+    //get the building month expanses
+    this.props.fetchSummarizedBudgets(params);
+  }
+
   render() {
     const {
       pageName,
@@ -297,13 +317,14 @@ class SummarizedBudget extends Component {
 
     const { buildingName, buildingNameEng } = this.props.location.state;
 
-    if (pages.length === 0 ||
-      pages[pageIndex] === undefined ||
-      (!pages[pageIndex].isFetching && pages[pageIndex].status === "")) {
+    if (pages.length === 0 || pages[pageIndex] === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
+
+    // page data
     const {
-      date
+      date,
+      pageSettings
     } = pages[pageIndex];
 
     return (
@@ -370,7 +391,10 @@ class SummarizedBudget extends Component {
             <ReactTableContainer
               loading={pages[pageIndex].isFetching}
               data={pages[pageIndex].data}
+              dataCount={pageSettings.count}
               columns={this.generateHeaders()}
+              onFetchData={this.onFetchData}
+              pageNameSettings={PAGE_NAME}
             />
 
           </TableWrapper>  {/* End TableWrapper */}
@@ -392,7 +416,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSummarizeBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload)),
+  fetchSummarizedBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload)),
   cleanup: (buildingNameEng) => dispatch(summarizedBudgetActions.cleanup(buildingNameEng)),
   initState: (page) => dispatch(summarizedBudgetActions.initState(page))
 });

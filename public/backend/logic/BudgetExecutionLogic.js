@@ -25,6 +25,22 @@ class BudgetExecutionLogic {
     return this.budgetExecutionDao.getAllBudgetExecutionsTrx(buildingName, date, quarterQuery, trx);
   }
 
+  getBudgetExecutionsByRange(buildingName, date, range) {
+    const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
+    return this.budgetExecutionDao.getBudgetExecutionsByRange(buildingName, date, range, quarterQuery).then((data) => {
+
+      return this.budgetExecutionDao.dataRowCount(buildingName, date).then((count) => {
+        return {
+          data,
+          info: {
+            count: count
+          }
+        }
+      })
+
+    });
+  }
+
   getBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, trx) {
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
     return this.budgetExecutionDao.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);

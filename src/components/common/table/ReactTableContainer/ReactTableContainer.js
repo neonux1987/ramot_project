@@ -70,7 +70,7 @@ class ReactTableContainer extends React.PureComponent {
     if (tableSettings === undefined || tableSettings.isFetching || !this.settingsLoaded) {
       return <Spinner wrapperClass={styles.spinner} size={60} loadingText={"טוען הגדרות טבלה..."} />
     }
-    console.log(this.state);
+
     const pages = this.state.pageSize != 0 ? Math.ceil(this.props.dataCount / this.state.pageSize) : 0;
 
     return (

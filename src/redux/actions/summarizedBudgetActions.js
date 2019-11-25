@@ -18,9 +18,9 @@ const fetchSummarizedBudgets = (params = Object) => {
     dispatch(requestSummarizedBudgets(params.buildingName));
 
     //request request to backend to get the data
-    ipcRenderer.send("get-summarized-budget-data", params);
+    ipcRenderer.send("get-summarized-budgets", params);
     //listen when the data comes back
-    ipcRenderer.once("summarized-budget-data", (event, arg) => {
+    ipcRenderer.once("summarized-budgets", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
