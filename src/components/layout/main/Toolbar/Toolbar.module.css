@@ -13,6 +13,7 @@
   top: 0;
   display: flex;
   justify-content: stretch;
+  background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgb(247, 247, 247) 100%);
 }
 
 .section{

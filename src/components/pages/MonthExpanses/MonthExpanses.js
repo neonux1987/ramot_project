@@ -3,14 +3,7 @@ import React, { Component, Fragment, useCallback } from 'react';
 import { connect } from 'react-redux';
 
 // ACTIONS IMPORTS
-import {
-  fetchMonthExpanses,
-  initMonthExpansesState,
-  monthExpansesCleanup,
-  updateMonthExpanse,
-  addMonthExpanse,
-  deleteMonthExpanse
-} from '../../../redux/actions/monthExpansesActions';
+import * as monthExpansesAction from '../../../redux/actions/monthExpansesActions';
 
 // UTILITY IMPORTS
 import Helper from '../../../helpers/Helper';
@@ -39,7 +32,6 @@ import CodesAndSectionsFetcher from '../../dataFetchers/CodesAndSectionsFetcher'
 
 // CONSTS
 const FIXED_FLOAT = 2;
-const PAGE_NAME = "month_expanses";
 
 class MonthExpanses extends Component {
 
@@ -61,7 +53,11 @@ class MonthExpanses extends Component {
   }
 
   inputExpansesSubmit(formInputs, reset) {
-    const { data, date } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
+    //building names
+    const { buildingNameEng } = this.props.location.state;
+    // building data
+    const { date } = this.props.monthExpanses.pages[buildingNameEng];
+
     const valid = this.validateFormInputs(formInputs);
     if (!valid) {
 
@@ -91,7 +87,7 @@ class MonthExpanses extends Component {
       date: date
     }
 
-    this.props.addExpanse(params, data, params.expanse);
+    this.props.addMonthExpanse(params, params.expanse);
 
     //reset form state
     reset();
@@ -223,8 +219,13 @@ class MonthExpanses extends Component {
   }
 
   cellInputOnBlurHandler(e, cellInfo) {
-    //the data
-    const { data, date } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
+    //building names
+    const { buildingNameEng } = this.props.location.state;
+    // building data
+    const {
+      data,
+      date
+    } = this.props.monthExpanses.pages[buildingNameEng];
 
     //index of the expanse in the data array
     const index = cellInfo.index;
@@ -257,11 +258,10 @@ class MonthExpanses extends Component {
 
   deleteExpanseHandler = (id, index) => {
     return useCallback(() => {
-      //copy data
-      const { data, date } = { ...this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex] };
-
-      //remove from the array
-      data.splice(index, 1);
+      //building names
+      const { buildingNameEng } = this.props.location.state;
+      // building data
+      const { date } = this.props.monthExpanses.pages[buildingNameEng];
 
       //prepare the params
       let params = {
@@ -269,7 +269,7 @@ class MonthExpanses extends Component {
         buildingName: this.props.location.state.buildingNameEng,
         date: date
       };
-      this.props.deleteMonthExpanse(params, data);
+      this.props.deleteMonthExpanse(params, index);
     }, [id, index])
   }
 
@@ -310,7 +310,11 @@ class MonthExpanses extends Component {
   };
 
   numberInput = (cellInfo) => {
-    const { data } = this.props.monthExpanses.pages[this.props.monthExpanses.pageIndex];
+    //building names
+    const { buildingNameEng } = this.props.location.state;
+    // building data
+    const { data } = this.props.monthExpanses.pages[buildingNameEng];
+
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? "" : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     if (!this.state.editMode) {
       return <DefaultCell title={`כולל ${data[cellInfo.index].tax}% מע"מ`} defaultValue={newValue} />;
@@ -366,10 +370,10 @@ class MonthExpanses extends Component {
 
   onFetchData = (state) => {
 
-    const {
-      pages,
-      pageIndex
-    } = this.props.monthExpanses;
+    //building names
+    const { buildingNameEng } = this.props.location.state;
+
+    const { date } = this.props.monthExpanses.pages[buildingNameEng];
 
     const {
       pageSize
@@ -383,8 +387,8 @@ class MonthExpanses extends Component {
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: pages[pageIndex].date,
+      buildingName: buildingNameEng,
+      date: date,
       range: {
         startElement,
         pageSize: pageSize
@@ -396,41 +400,38 @@ class MonthExpanses extends Component {
   }
 
   render() {
-    //vars
-    const {
-      pageName,
-      headerTitle,
-      pages,
-      pageIndex
-    } = this.props.monthExpanses;
-
-    if (pages.length === 0 || pages[pageIndex] === undefined) {
-      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
-    }
 
     //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
 
-    //add new month expanse box
-    const addNewBox = this.state.addNewMode ?
-      <CodesAndSectionsFetcher fetchCodes fetchSections>
-        {({ codes, sections }) => {
-          return <InputExpansesField
-            summarizedSections={sections}
-            expansesCodes={codes}
-            data={pages[pageIndex].data}
-            submitData={this.inputExpansesSubmit}
-            findData={this.findExpanseIndex}
-          />
-        }}
-      </CodesAndSectionsFetcher>
-      : null;
+    const page = this.props.monthExpanses.pages[buildingNameEng];
 
-    // page data
+    if (page === undefined) {
+      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
+    }
+
+    // page info
     const {
+      pageName,
+      headerTitle
+    } = this.props.monthExpanses;
+
+    // building data
+    const {
+      isFetching,
+      data,
       date,
       pageSettings
-    } = pages[pageIndex];
+    } = page;
+
+    //add new month expanse box
+    const addNewBox = this.state.addNewMode ?
+      <InputExpansesField
+        data={data}
+        submitData={this.inputExpansesSubmit}
+        findData={this.findExpanseIndex}
+      />
+      : null;
 
     return (
       <Fragment>
@@ -470,7 +471,7 @@ class MonthExpanses extends Component {
               leftPane={
                 <PageControls
                   excel={{
-                    data: pages[pageIndex].data,
+                    data: data,
                     fileName: Helper.getMonthExpansesFilename(buildingName, date),
                     sheetTitle: `שנה ${date.year} חודש ${date.monthHeb}`,
                     header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,
@@ -488,8 +489,8 @@ class MonthExpanses extends Component {
             {addNewBox}
 
             <ReactTableContainer
-              loading={pages[pageIndex].isFetching}
-              data={pages[pageIndex].data}
+              loading={isFetching}
+              data={data}
               dataCount={pageSettings.count}
               columns={this.generateHeaders()}
               defaultSorted={[
@@ -499,7 +500,7 @@ class MonthExpanses extends Component {
                 }
               ]}
               onFetchData={this.onFetchData}
-              pageNameSettings={PAGE_NAME}
+              pageNameSettings={pageName}
             />
 
           </TableWrapper> {/* end TableWrapper */}
@@ -517,17 +518,16 @@ const mapStateToProps = state => ({
   monthExpanses: state.monthExpanses,
   generalSettings: {
     tax: state.generalSettings.generalSettings.data[0].tax
-  },
-  tableSettings: state.tableSettings
+  }
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchMonthExpanses: (payload, page) => dispatch(fetchMonthExpanses(payload, page)),
-  monthExpansesCleanup: (buildingNameEng) => dispatch(monthExpansesCleanup(buildingNameEng)),
-  initMonthExpansesState: (page) => dispatch(initMonthExpansesState(page)),
-  updateMonthExpanse: (payload, tableData, target, fieldName) => dispatch(updateMonthExpanse(payload, tableData, target, fieldName)),
-  addMonthExpanse: (payload, tableData, expanse) => dispatch(addMonthExpanse(payload, tableData, expanse)),
-  deleteMonthExpanse: (payload, tableData) => dispatch(deleteMonthExpanse(payload, tableData))
+  fetchMonthExpanses: (payload, page) => dispatch(monthExpansesAction.fetchMonthExpanses(payload, page)),
+  monthExpansesCleanup: (buildingNameEng) => dispatch(monthExpansesAction.monthExpansesCleanup(buildingNameEng)),
+  initMonthExpansesState: (page) => dispatch(monthExpansesAction.initMonthExpansesState(page)),
+  updateMonthExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesAction.updateMonthExpanse(payload, tableData, target, fieldName)),
+  addMonthExpanse: (params, expanse) => dispatch(monthExpansesAction.addMonthExpanse(params, expanse)),
+  deleteMonthExpanse: (payload, index) => dispatch(monthExpansesAction.deleteMonthExpanse(payload, index))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);

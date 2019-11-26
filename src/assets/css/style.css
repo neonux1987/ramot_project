@@ -184,11 +184,15 @@ textarea{
 }
 
 /* react table overrides */
+.ReactTable .-pagination{
+  box-shadow: none;
+  border-top: none;
+  padding: 3px 0;
+}
 
 .ReactTable{
   background: #fff;
   border:none;
-  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .ReactTable.-striped .rt-tr.-odd{
@@ -224,6 +228,7 @@ textarea{
 
 .rt-table{
   border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .rt-tbody{

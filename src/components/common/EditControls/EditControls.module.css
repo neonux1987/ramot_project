@@ -3,36 +3,46 @@
 }
 
 .editBtn{
-  min-width:90px;
-  background: #272931;
+  background-color: #fbfbfb;
+  border-color: #343a40;
+  border: 1px solid #dedede;
+  color: #000;
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
 }
 
 .addNewBtn{
   margin-right: 10px;
-  background: #272931;
+  background: #21aae0;
+  color: #fff;
+  border: 1px solid #219dce;
+  background: linear-gradient(180deg, rgba(33,170,224,1) 0%, rgba(32,164,215,1) 100%);
 }
 
 .addNewBtn, .editBtn{
-  background-color: #343a40;
-  border-color: #343a40;
   min-width:90px;
+  box-shadow: none;
+  font-weight: 600;
+  font-size: 13px;
 }
 
-
-/*.editBtn{
-  min-width:90px;
-
-  background: #2372b5;
-    box-shadow: none;
-    border-radius: initial;
-    margin-right: 1px;
+.addIcon, .editIcon{
+  font-size: 18px;
+  margin-right: 2px;
 }
 
-.addNewBtn{
-  margin-right: 10px;
-  min-width:90px;
- 
-  background: #2372b5;
-    box-shadow: none;
-    border-radius: initial;
-} */
+.addNewBtn:hover{
+  background: #1e9cce;
+}
+
+.editBtn:hover{
+  background: rgb(248, 248, 249);
+}
+
+.red{
+  background: #e0215d;
+  border-color: #d21f57;
+}
+
+.red:hover{
+  background: #d21f57;
+}

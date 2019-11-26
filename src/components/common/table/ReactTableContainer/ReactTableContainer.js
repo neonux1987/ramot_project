@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import ReactTable from 'react-table';
@@ -6,6 +6,7 @@ import styles from './ReactTableContainer.module.css';
 import LoadingCircle from '../../../common/LoadingCircle';
 import classnames from 'classnames';
 import Spinner from '../../Spinner/Spinner';
+import Pagination from '../Pagination/Pagination';
 
 import {
   fetchTableSettings,
@@ -71,7 +72,7 @@ class ReactTableContainer extends React.PureComponent {
       return <Spinner wrapperClass={styles.spinner} size={60} loadingText={"טוען הגדרות טבלה..."} />
     }
 
-    const pages = this.state.pageSize != 0 ? Math.ceil(this.props.dataCount / this.state.pageSize) : 0;
+    const pages = this.state.pageSize !== 0 ? Math.ceil(this.props.dataCount / this.state.pageSize) : 0;
 
     return (
       <ReactTableMemoized
@@ -103,6 +104,14 @@ class ReactTableContainer extends React.PureComponent {
         onFetchData={this.onFetchDataCallback}
         pages={pages}
         manual
+        previousText={'הקודם'}
+        nextText={'הבא'}
+        pageText={"עמוד"}
+        rowsText={"שורות"}
+        ofText={"מתוך"}
+        showPaginationTop={true}
+        showPaginationBottom={false}
+        PaginationComponent={Pagination}
       />
     );
   }

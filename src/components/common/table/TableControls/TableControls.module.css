@@ -1,14 +1,13 @@
 .wrapper{
   border-radius: 4px;
-    margin-bottom: 30px;
-    border-bottom: 1px dashed #ccc;
-    
+  margin-bottom: 30px;
+  /* border-bottom: 1px dashed #ccc; */
 }
 
 .controls{
   display: flex;
-    align-items: center;
-    padding-bottom: 10px;
+  align-items: center;
+  padding-bottom: 10px;
 }
 
 .leftPane{
@@ -19,7 +18,7 @@
 }
 
 .middlePane{
-  flex-grow: 1;
+  flex: 1.5 1;
   display: flex;
   justify-content: center;
   flex-basis: 0;

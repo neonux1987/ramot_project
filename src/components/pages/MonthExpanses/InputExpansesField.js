@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { TextField, withStyles, Button, Select, InputLabel, MenuItem } from '@material-ui/core';
 import Spinner from '../../common/Spinner/Spinner';
 import ReactSelect from '../../common/ReactSelect/ReactSelect';
+import { connect } from 'react-redux';
+
+import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
+import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 
 const styles = theme => ({
   container: {
@@ -212,11 +216,22 @@ class InputExpansesField extends Component {
     });
   }
 
+  componentDidMount() {
+    // fetch expnases codes
+    this.props.fetchExpansesCodes();
+    // fetch summarized sections
+    this.props.fetchSummarizedSections();
+  }
+
+  componentWillUnmount() {
+    //cleanup
+    this.props.summarizedSectionsCleanup();
+    this.props.expansesCodesCleanup();
+  }
+
   renderForm() {
-    const {
-      expansesCodes,
-      summarizedSections
-    } = this.props;
+    const { expansesCodes } = this.props.expansesCodes;
+    const { summarizedSections } = this.props.summarizedSections;
 
     if (expansesCodes.isFetching || summarizedSections.isFetching) {
       return <Spinner loadingText={"טוען נתונים..."} />
@@ -233,7 +248,7 @@ class InputExpansesField extends Component {
         classes={{ root: this.props.classes.codeTextField }}
         inputValue={this.state.formInputs.code}
         onChangeHandler={this.reactSelectHandleChange}
-        options={this.props.expansesCodes.data}
+        options={expansesCodes.data}
         getOptionLabel={(option) => option.code}
         getOptionValue={(option) => option.code}
         placeholder="הזן קוד:"
@@ -246,7 +261,7 @@ class InputExpansesField extends Component {
       <ReactSelect
         inputValue={this.state.formInputs.codeName}
         onChangeHandler={this.reactSelectHandleChange}
-        options={this.props.expansesCodes.data}
+        options={expansesCodes.data}
         getOptionLabel={(option) => option.codeName}
         getOptionValue={(option) => option.codeName}
         placeholder="הזן שם חשבון:"
@@ -325,4 +340,16 @@ class InputExpansesField extends Component {
   }
 };
 
-export default withStyles(styles)(InputExpansesField);
+const mapStateToProps = state => ({
+  summarizedSections: state.summarizedSections,
+  expansesCodes: state.expansesCodes
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchExpansesCodes: () => dispatch(expansesCodesActions.fetchExpansesCodes()),
+  expansesCodesCleanup: () => dispatch(expansesCodesActions.expansesCodesCleanup()),
+  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
+  summarizedSectionsCleanup: () => dispatch(summarizedSectionsActions.summarizedSectionsCleanup()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(InputExpansesField));
