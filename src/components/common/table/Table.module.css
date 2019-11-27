@@ -1,0 +1,30 @@
+.grid{
+  width: 100%;
+  display: grid;
+  /* border-top: 1px solid #ccc; */
+  border-right: 1px solid #ccc;
+}
+
+.row > .column{
+  padding: 8px 4px;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  text-align: center;
+}
+
+.row{
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+}
+
+.header{
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+}
+
+.headerColumn{
+  background: #2c2f35;
+  color: #fff;
+  text-align: center;
+  padding: 8px 4px;
+}

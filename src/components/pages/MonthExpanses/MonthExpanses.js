@@ -1,6 +1,8 @@
 // LIBRARIES IMPORTS
 import React, { Component, Fragment, useCallback } from 'react';
 import { connect } from 'react-redux';
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from "react-virtualized-auto-sizer";
 
 // ACTIONS IMPORTS
 import * as monthExpansesAction from '../../../redux/actions/monthExpansesActions';
@@ -29,6 +31,7 @@ import CellInput from '../../common/table/TableCell/CellInput';
 // DATA FETHCER
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 import CodesAndSectionsFetcher from '../../dataFetchers/CodesAndSectionsFetcher';
+import Table from '../../common/table/Table';
 
 // CONSTS
 const FIXED_FLOAT = 2;
@@ -49,7 +52,17 @@ class MonthExpanses extends Component {
   }
 
   componentDidMount() {
-    this.props.initMonthExpansesState(this.props.location.state.buildingNameEng);
+    const params = {
+      buildingName: this.props.location.state.buildingNameEng,
+      date: Helper.getCurrentDate(),
+      range: {
+        startElement: 0,
+        pageSize: 1000
+      }
+    }
+    this.props.initMonthExpansesState(this.props.location.state.buildingNameEng).then(() => {
+      this.props.fetchMonthExpanses(params)
+    });
   }
 
   inputExpansesSubmit(formInputs, reset) {
@@ -399,6 +412,38 @@ class MonthExpanses extends Component {
     this.props.fetchMonthExpanses(params);
   }
 
+  Row = ({ index, style }) => {
+    //building names
+    const { buildingNameEng } = this.props.location.state;
+
+    const { data } = this.props.monthExpanses.pages[buildingNameEng];
+
+    return <div className={index % 2 ? 'ListItemOdd' : 'ListItemEven'} style={style}>
+      row {data[index].code}
+    </div>
+  }
+
+  headers = () => {
+    const style = {
+      backgroundColor: "#222222",
+      color: "#ffffff"
+    }
+    return [
+      {
+        title: "פעולות",
+        style
+      },
+      {
+        title: "שורה",
+        style
+      },
+      {
+        title: "קוד",
+        style
+      }
+    ]
+  }
+
   render() {
 
     //building names
@@ -406,7 +451,7 @@ class MonthExpanses extends Component {
 
     const page = this.props.monthExpanses.pages[buildingNameEng];
 
-    if (page === undefined) {
+    if (page === undefined || page.isFetching || page.data.length === 0) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
 
@@ -488,7 +533,7 @@ class MonthExpanses extends Component {
             {/* add new box */}
             {addNewBox}
 
-            <ReactTableContainer
+            {/* <ReactTableContainer
               loading={isFetching}
               data={data}
               dataCount={pageSettings.count}
@@ -501,7 +546,24 @@ class MonthExpanses extends Component {
               ]}
               onFetchData={this.onFetchData}
               pageNameSettings={pageName}
-            />
+            /> */}
+
+            <Table Row={this.Row} headerColumns={this.headers()} editMode={this.state.editMode} />
+
+            {/* <AutoSizer>
+              {({ height, width }) => (
+                <List
+                  className="List"
+                  direction="rtl"
+                  height={650}
+                  itemCount={page.data.length}
+                  itemSize={35}
+                  width={width}
+                >
+                  {this.Row}
+                </List>
+              )}
+            </AutoSizer> */}
 
           </TableWrapper> {/* end TableWrapper */}
 
