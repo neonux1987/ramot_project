@@ -32,6 +32,9 @@ import CellInput from '../../common/table/TableCell/CellInput';
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 import CodesAndSectionsFetcher from '../../dataFetchers/CodesAndSectionsFetcher';
 import Table from '../../common/table/Table';
+import Row from '../../common/table/Row';
+import Column from '../../common/table/Column';
+import NonZeroNumberColumn from '../../common/table/NonZeroNumberColumn';
 
 // CONSTS
 const FIXED_FLOAT = 2;
@@ -322,20 +325,12 @@ class MonthExpanses extends Component {
     />
   };
 
-  numberInput = (cellInfo) => {
-    //building names
-    const { buildingNameEng } = this.props.location.state;
-    // building data
-    const { data } = this.props.monthExpanses.pages[buildingNameEng];
-
-    const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? "" : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
-    if (!this.state.editMode) {
-      return <DefaultCell title={`כולל ${data[cellInfo.index].tax}% מע"מ`} defaultValue={newValue} />;
-    }
+  numberInput = (value, rowData) => {
+    const newValue = value === 0 ? "" : value;
     return <CellInput
       type="number"
       value={newValue}
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      //onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
       onKeyPressHandler={this.onKeyPressHandler}
       onClickHandler={this.inputClickHandler}
     />
@@ -412,36 +407,44 @@ class MonthExpanses extends Component {
     this.props.fetchMonthExpanses(params);
   }
 
-  Row = ({ index, style }) => {
-    //building names
+  getDataObject = (index) => {
+    // building name
     const { buildingNameEng } = this.props.location.state;
-
+    // data
     const { data } = this.props.monthExpanses.pages[buildingNameEng];
-
-    return <div className={index % 2 ? 'ListItemOdd' : 'ListItemEven'} style={style}>
-      row {data[index].code}
-    </div>
+    return data[index];
   }
 
-  headers = () => {
-    const style = {
-      backgroundColor: "#222222",
-      color: "#ffffff"
-    }
-    return [
-      {
-        title: "פעולות",
-        style
-      },
-      {
-        title: "שורה",
-        style
-      },
-      {
-        title: "קוד",
-        style
-      }
-    ]
+  Row = ({ index, style }) => {
+
+    const rowData = this.getDataObject(index);
+
+    return <Row count={this.state.editMode ? 8 : 7} style={style}>
+      <Column show={this.state.editMode}>
+        <TableActions deleteHandler={this.deleteExpanseHandler(rowData.id, index)} />
+      </Column>
+      <Column>{index + 1}</Column>
+      <Column>{rowData["code"]}</Column>
+      <Column>{rowData["codeName"]}</Column>
+      <Column>{rowData["section"]}</Column>
+      <Column>{rowData["supplierName"]}</Column>
+      <NonZeroNumberColumn>{this.state.editMode ? this.numberInput(rowData["sum"], rowData) : rowData["sum"]}</NonZeroNumberColumn>
+      <Column>{rowData["notes"]}</Column>
+    </Row>;
+  }
+
+  HeadersRow = () => {
+    const _headers = headers();
+    const repeatCount = this.state.editMode ? _headers.length : _headers.length - 1;
+    return <Row count={repeatCount}>
+      {headers().map((header, index) => {
+        return (
+          <Column key={index} style={{
+            display: header.title === "פעולות" && !this.state.editMode ? "none" : "flex",
+            ...header.style
+          }}>{header.title}</Column>);
+      })}
+    </Row>
   }
 
   render() {
@@ -548,22 +551,11 @@ class MonthExpanses extends Component {
               pageNameSettings={pageName}
             /> */}
 
-            <Table Row={this.Row} headerColumns={this.headers()} editMode={this.state.editMode} />
-
-            {/* <AutoSizer>
-              {({ height, width }) => (
-                <List
-                  className="List"
-                  direction="rtl"
-                  height={650}
-                  itemCount={page.data.length}
-                  itemSize={35}
-                  width={width}
-                >
-                  {this.Row}
-                </List>
-              )}
-            </AutoSizer> */}
+            <Table
+              Row={this.Row}
+              HeaderComponent={this.HeadersRow}
+              isFetching={false}
+            />
 
           </TableWrapper> {/* end TableWrapper */}
 
@@ -593,3 +585,50 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);
+
+// table headers
+const headers = () => {
+  const style = {
+    backgroundColor: "#222222",
+    color: "#ffffff",
+    justifyContent: "center",
+    height: "30px",
+    alignItems: "center"
+  }
+  return [
+    {
+      title: "פעולות",
+      style
+    },
+    {
+      title: "שורה",
+      style
+    },
+    {
+      title: "קוד הנהח\"ש",
+      style
+    },
+    {
+      title: "שם חשבון",
+      style
+    },
+    {
+      title: "מקושר לסעיף",
+      style
+    },
+    {
+      title: "ספק",
+      style
+    },
+    {
+      title: "סכום",
+      style
+    },
+    {
+      title: "הערות",
+      style
+    }
+  ]
+};
+
+let accessors = ["row", "code", "codeName", "section", "supplierName", "sum", "notes"];

@@ -1,8 +1,6 @@
-.grid{
+.table{
   width: 100%;
-  display: grid;
-  /* border-top: 1px solid #ccc; */
-  border-right: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .row > .column{

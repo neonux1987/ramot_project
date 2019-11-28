@@ -1,61 +1,37 @@
 import React from 'react'
 import { FixedSizeList as List } from 'react-window';
-import AutoSizer from "react-virtualized-auto-sizer";
-import { StylesContext } from '@material-ui/styles/StylesProvider';
 import styles from './Table.module.css';
+import Spinner from '../Spinner/Spinner';
 
-export default ({ groupColumns, headerColumns, Row, editMode }) => {
+export default ({ GroupComponent, HeaderComponent, Row, isFetching }) => {
 
-  /* const groups = groupColumns.map(({ title, bgColor, textColor, span = 1 }) => {
-    return (
-      <div
-        className={styles.headerColumn}
-        style={{
-          gridColumn: `span ${span}`,
-          background: bgColor
-        }}>
-        <span style={{ color: textColor }}>{title}</span>
-      </div>
-    );
-  }); */
 
-  const headers = headerColumns.map(({ title, bgColor, textColor }, index) => {
-    return (
-      <div key={index} className={styles.headerColumn} style={{ display: title === "פעולות" && !editMode ? "none" : "block" }}>
-        <span style={{
-          backgroundColor: bgColor,
-          color: textColor
-        }}>{title}</span>
-      </div>);
-  });
+  const Loading = isFetching ? <Spinner size={60} loadingText={"טוען הגדרות טבלה..."} /> : <List
+    className="row"
+    style={{ overflow: "overlay" }}
+    direction="rtl"
+    height={650}
+    itemCount={880}
+    itemSize={30}
+
+  >
+    {Row}
+  </List>;
+
 
   return (
-    <div className={styles.grid}>
+    <div className={styles.table}>
 
       {/* HEADERS GROUPS */}
-      {/* <div className={styles.row}>
-        {groups}
-      </div> */}{/* END HEADERS GROUPS */}
+      {GroupComponent}
+      {/* END HEADERS GROUPS */}
 
       {/* HEADERS */}
-      <div className={styles.row}>
-        {headers}
-      </div>{/* END HEADERS */}
+      {HeaderComponent()}
+      {/* END HEADERS */}
 
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            className="row"
-            direction="rtl"
-            height={650}
-            itemCount={880}
-            itemSize={35}
-            width={width}
-          >
-            {Row}
-          </List>
-        )}
-      </AutoSizer>
+      {Loading}
+
     </div>
 
   );
