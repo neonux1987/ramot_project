@@ -35,6 +35,7 @@ import Table from '../../common/table/Table';
 import Row from '../../common/table/Row';
 import Column from '../../common/table/Column';
 import NonZeroNumberColumn from '../../common/table/NonZeroNumberColumn';
+import HeaderRow from '../../common/table/HeaderRow';
 
 // CONSTS
 const FIXED_FLOAT = 2;
@@ -234,27 +235,20 @@ class MonthExpanses extends Component {
 
   }
 
-  cellInputOnBlurHandler(e, cellInfo) {
+  cellInputOnBlurHandler(e, key, value, rowData, index) {
+
     //building names
     const { buildingNameEng } = this.props.location.state;
     // building data
-    const {
-      data,
-      date
-    } = this.props.monthExpanses.pages[buildingNameEng];
-
-    //index of the expanse in the data array
-    const index = cellInfo.index;
-    //the name of the field in the expanse object
-    const fieldName = cellInfo.column.id;
+    const { date } = this.props.monthExpanses.pages[buildingNameEng];
 
     //will be used for rollback
-    const oldExpanseCopy = { ...data[index] };
+    const oldExpanseCopy = { ...rowData };
 
     const expanse = { ...oldExpanseCopy };
 
     //replace the value
-    expanse[fieldName] = e.target.type === "number" && e.target.value === "" ? 0 : e.target.value;
+    expanse[key] = e.target.type === "number" && value === "" ? 0 : value;
 
     //update the tax to the current one
     expanse.tax = this.props.generalSettings.tax;
@@ -299,38 +293,32 @@ class MonthExpanses extends Component {
     }
   }
 
-  textAreaInput = (cellInfo) => {
-    if (!this.state.editMode) {
-      return <DefaultCell defaultValue={cellInfo.value} />
-    }
+  textAreaInput = (key, value, rowData) => {
     return <CellInput
-      value={cellInfo.value}
+      value={value}
       type="textarea"
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, value, rowData)}
       onClickHandler={this.inputClickHandler}
     />
   };
 
 
-  textInput = (cellInfo) => {
-    if (!this.state.editMode) {
-      return <DefaultCell defaultValue={cellInfo.value} />
-    }
+  textInput = (key, value, rowData) => {
     return <CellInput
-      value={cellInfo.value}
+      value={value}
       type="text"
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, value, rowData)}
       onKeyPressHandler={this.onKeyPressHandler}
       onClickHandler={this.inputClickHandler}
     />
   };
 
-  numberInput = (value, rowData) => {
+  numberInput = (key, value, rowData) => {
     const newValue = value === 0 ? "" : value;
     return <CellInput
       type="number"
       value={newValue}
-      //onBlurHandler={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, value, rowData)}
       onKeyPressHandler={this.onKeyPressHandler}
       onClickHandler={this.inputClickHandler}
     />
@@ -415,11 +403,47 @@ class MonthExpanses extends Component {
     return data[index];
   }
 
+  HeaderGroups = () => {
+
+    // column settings
+    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+
+    return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
+      <Column show={this.state.editMode}></Column>
+      <Column>1</Column>
+      <Column>2</Column>
+      <Column>3</Column>
+      <Column>4</Column>
+      <Column>5</Column>
+      <Column>6</Column>
+      <Column>7</Column>
+    </HeaderRow>
+  }
+
+  HeadersRow = () => {
+    // column settings
+    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+
+    return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
+      {headers().map((header, index) => {
+        return (
+          <Column
+            show={header.title === "פעולות" && !this.state.editMode}
+            key={index} style={{
+              display: header.title === "פעולות" && !this.state.editMode ? "none" : "flex",
+              ...header.style
+            }}>{header.title}</Column>);
+      })}
+    </HeaderRow>
+  }
+
   Row = ({ index, style }) => {
-
+    // row data
     const rowData = this.getDataObject(index);
+    // column settings
+    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    return <Row count={this.state.editMode ? 8 : 7} style={style}>
+    return <Row style={style} gridTemplateColumns={gridTemplateColumns}>
       <Column show={this.state.editMode}>
         <TableActions deleteHandler={this.deleteExpanseHandler(rowData.id, index)} />
       </Column>
@@ -427,24 +451,10 @@ class MonthExpanses extends Component {
       <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
       <Column>{rowData["section"]}</Column>
-      <Column>{rowData["supplierName"]}</Column>
-      <NonZeroNumberColumn>{this.state.editMode ? this.numberInput(rowData["sum"], rowData) : rowData["sum"]}</NonZeroNumberColumn>
-      <Column>{rowData["notes"]}</Column>
+      <Column>{this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], rowData, index) : rowData["supplierName"]}</Column>
+      <NonZeroNumberColumn>{this.state.editMode ? this.numberInput("sum", rowData["sum"], rowData, index) : rowData["sum"]}</NonZeroNumberColumn>
+      <Column>{this.state.editMode ? this.textAreaInput("notes", rowData["notes"], rowData, index) : rowData["notes"]}</Column>
     </Row>;
-  }
-
-  HeadersRow = () => {
-    const _headers = headers();
-    const repeatCount = this.state.editMode ? _headers.length : _headers.length - 1;
-    return <Row count={repeatCount}>
-      {headers().map((header, index) => {
-        return (
-          <Column key={index} style={{
-            display: header.title === "פעולות" && !this.state.editMode ? "none" : "flex",
-            ...header.style
-          }}>{header.title}</Column>);
-      })}
-    </Row>
   }
 
   render() {
@@ -553,6 +563,7 @@ class MonthExpanses extends Component {
 
             <Table
               Row={this.Row}
+              GroupComponent={this.HeaderGroups}
               HeaderComponent={this.HeadersRow}
               isFetching={false}
             />
@@ -589,10 +600,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);
 // table headers
 const headers = () => {
   const style = {
-    backgroundColor: "#222222",
+    backgroundColor: "rgb(52, 58, 64)",
     color: "#ffffff",
+    fontWeight: "600",
     justifyContent: "center",
-    height: "30px",
+    height: "27px",
     alignItems: "center"
   }
   return [
@@ -606,7 +618,10 @@ const headers = () => {
     },
     {
       title: "קוד הנהח\"ש",
-      style
+      style: {
+        ...style,
+        backgroundcolor: "blue"
+      }
     },
     {
       title: "שם חשבון",

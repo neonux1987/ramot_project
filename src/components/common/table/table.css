@@ -1,0 +1,24 @@
+._table{
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+._tableBody{
+  display: grid;
+  border-left: 1px solid rgba(0,0,0,.08);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+._tableRow{
+  display: grid;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+._tableRow:hover{
+  background-color: rgb(247, 248, 249);
+}
+
+._tableColumn{
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}

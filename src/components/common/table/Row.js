@@ -1,12 +1,13 @@
 import React from 'react';
 
-export default ({ count, style = {}, children }) => {
+export default ({ style = {}, children, gridTemplateColumns = "unset" }) => {
   return (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: `repeat(${count},1fr)`,
-      ...style
-    }}>
+    <div
+      className="_tableRow"
+      style={{
+        gridTemplateColumns: gridTemplateColumns,
+        ...style
+      }}>
       {children}
     </div>
   );

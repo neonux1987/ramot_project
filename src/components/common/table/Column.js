@@ -2,7 +2,7 @@ import React from 'react';
 
 export default ({ children, style, show = true }) => {
   return (
-    <div style={{
+    <div className="_tableColumn" style={{
       display: show ? "block" : "none",
       ...style
     }}>
