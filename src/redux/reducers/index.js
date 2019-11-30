@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
 import app from './appReducer';
 import sidebar from './sidebarReducer';
-import monthExpanses from './monthExpansesReducer';
-import budgetExecution from './budgetExecutionReducer';
 import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
 import generalSettings from './generalSettingsReducer';
@@ -16,6 +14,21 @@ import monthlyStats from './monthlyStatsReducer';
 import quarterlyStats from './quarterlyStatsReducer';
 import yearlyStats from './yearlyStatsReducer';
 import tableSettings from './tableSettingsReducer';
+import { createPageReducer } from './util/util';
+
+// init month expanses reducer
+const monthExpanses = createPageReducer("MONTH_EXPANSES", {
+  pageName: "monthExpanses",
+  headerTitle: "מעקב הוצאות חודשיות",
+  pages: {}
+});
+
+// init budget executions reducer
+const budgetExecution = createPageReducer("BUDGET_EXECUTIONS", {
+  pageName: "budgetExecutions",
+  headerTitle: "מעקב ביצוע מול תקציב",
+  pages: {}
+});
 
 export default combineReducers({
   app,

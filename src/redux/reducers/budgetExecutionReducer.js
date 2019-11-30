@@ -1,4 +1,5 @@
 import Helper from '../../helpers/Helper';
+import { TYPES } from '../actions/budgetExecutionActions';
 
 const initState = {
   pageName: "budgetExecution",
@@ -9,7 +10,7 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_BUDGET_EXECUTIONS":
+    case TYPES.RECEIVE_BUDGET_EXECUTIONS:
       {
         //copy data to avoid mutating the state directly
         const copyPages = [...state.pages];
@@ -26,7 +27,7 @@ export default (state = initState, action) => {
           pages: copyPages
         }
       }
-    case "REQUEST_BUDGET_EXECUTIONS":
+    case TYPES.REQUEST_BUDGET_EXECUTIONS:
       {
         //copy data to avoid mutating the state directly
         const copyPages = [...state.pages];
@@ -40,12 +41,12 @@ export default (state = initState, action) => {
           pages: copyPages
         }
       }
-    case "ADD_BUDGET_EXECUTION":
+    case TYPES.ADD_BUDGET_EXECUTION:
       return {
         ...state,
         tableData: action.payload
       }
-    case "BUDGET_EXECUTION_FETCHING_FAILED":
+    case TYPES.BUDGET_EXECUTIONS_FETCHING_FAILED:
       {
         //copy data to avoid mutating the state directly
         const copyPages = [...state.pages];
@@ -59,7 +60,7 @@ export default (state = initState, action) => {
           pages: copyPages
         }
       }
-    case "UPDATE_SINGLE_BUDGET_EXECUTION":
+    case TYPES.UPDATE_BUDGET_EXECUTION:
       {
         //copy data to avoid mutating the state directly
         const copyPages = [...state.pages];
@@ -71,7 +72,7 @@ export default (state = initState, action) => {
           pages: copyPages
         }
       }
-    case "INIT_STATE":
+    case TYPES.INIT_BUDGET_EXECUTIONS_STATE:
       {
         const initPages = [...state.pages];
         const page = {
@@ -95,7 +96,7 @@ export default (state = initState, action) => {
           pages: initPages
         }
       }
-    case "CLEANUP":
+    case TYPES.BUDGET_EXECUTIONS_CLEANUP:
       {
         let copiedPages = [...state.pages];
         Helper.removePageFromArray(action.page, copiedPages);

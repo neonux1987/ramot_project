@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import budgetExecutionActions from '../../../redux/actions/budgetExecutionActions';
+import * as budgetExecutionActions from '../../../redux/actions/budgetExecutionActions';
 import Helper from '../../../helpers/Helper';
 import TableControls from '../../common/table/TableControls/TableControls';
 import PageControls from '../../common/PageControls/PageControls';
@@ -19,11 +19,10 @@ import Stats from '../../common/Stats/Stats';
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 import TotalStatsFetcher from '../../dataFetchers/TotalStatsFetcher';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
-import BudgetExecutionFetcher from '../../dataFetchers/BudgetExecutionFetcher';
 
 const FIXED_FLOAT = 2;
 
-const PAGE_NAME = "budget_execution";
+const PAGE_NAME = "budgetExecution";
 
 class BudgetExecution extends Component {
 
@@ -38,12 +37,12 @@ class BudgetExecution extends Component {
   }
 
   componentDidMount() {
-    this.props.initState(this.props.location.state.buildingNameEng);
+    this.props.initBudgetExecutionsState(this.props.location.state.buildingNameEng);
   }
 
   componentWillUnmount() {
     //on exit init table data
-    this.props.cleanup(this.props.location.state.buildingNameEng);
+    this.props.budgetExecutionsCleanup(this.props.location.state.buildingNameEng);
   }
 
   loadBudgetExecutionsByDate = ({ year, quarter }) => {
@@ -462,10 +461,10 @@ class BudgetExecution extends Component {
 
   onFetchData = (state) => {
 
-    const {
-      pages,
-      pageIndex
-    } = this.props.budgetExecution;
+    //building names
+    const { buildingNameEng } = this.props.location.state;
+
+    const { date } = this.props.budgetExecution.pages[buildingNameEng];
 
     const {
       pageSize
@@ -480,10 +479,10 @@ class BudgetExecution extends Component {
     //building name, current month and year.
     let params = {
       buildingName: this.props.location.state.buildingNameEng,
-      date: pages[pageIndex].date,
+      date: date,
       range: {
         startElement,
-        pageSize: pageSize
+        pageSize
       }
     };
 
@@ -492,22 +491,29 @@ class BudgetExecution extends Component {
   }
 
   render() {
-    const {
-      pageName,
-      headerTitle,
-      pages,
-      pageIndex
-    } = this.props.budgetExecution;
 
-    // building name
+    //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
 
-    if (pages.length === 0 || pages[pageIndex] === undefined) {
+    const page = this.props.budgetExecution.pages[buildingNameEng];
+
+    if (page === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
 
-    //page data
-    const { date, pageSettings } = pages[pageIndex];
+    // page info
+    const {
+      pageName,
+      headerTitle
+    } = this.props.budgetExecution;
+
+    // building data
+    const {
+      isFetching,
+      data,
+      date,
+      pageSettings
+    } = page;
 
     return (
       <Fragment>
@@ -560,7 +566,7 @@ class BudgetExecution extends Component {
               leftPane={
                 <PageControls
                   excel={{
-                    data: pages[pageIndex].data,
+                    data: data,
                     fileName: Helper.getBudgetExecutionFilename(buildingName, date),
                     sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
                     header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
@@ -577,13 +583,14 @@ class BudgetExecution extends Component {
             /> {/* End TableControls */}
 
             <ReactTableContainer
-              loading={pages[pageIndex].isFetching}
-              data={pages[pageIndex].data}
-              dataCount={pageSettings.count}
+              loading={isFetching}
+              data={data}
+              dataCount={100}
               columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
               onFetchData={this.onFetchData}
               pageNameSettings={PAGE_NAME}
             />
+
 
           </TableWrapper> {/* end TableWrapper */}
 
@@ -601,8 +608,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchBudgetExecutions: (payload) => dispatch(budgetExecutionActions.fetchBudgetExecutions(payload)),
-  cleanup: (buildingNameEng) => dispatch(budgetExecutionActions.cleanup(buildingNameEng)),
-  initState: (page) => dispatch(budgetExecutionActions.initState(page)),
+  budgetExecutionsCleanup: (buildingNameEng) => dispatch(budgetExecutionActions.budgetExecutionsCleanup(buildingNameEng)),
+  initBudgetExecutionsState: (page) => dispatch(budgetExecutionActions.initBudgetExecutionsState(page)),
   updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
   addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData))
 });

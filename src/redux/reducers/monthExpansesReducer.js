@@ -1,5 +1,6 @@
 import Helper from '../../helpers/Helper';
 import { TYPES } from '../actions/monthExpansesActions';
+import { setPageState, commonAdd, commonDelete } from './util/util';
 
 const initState = {
   pageName: "monthExpanses",
@@ -10,79 +11,37 @@ const initState = {
 export default (state = initState, action) => {
   switch (action.type) {
     case TYPES.RECEIVE_MONTH_EXPANSES:
-      return {
-        ...state,
-        pages: {
-          ...state.pages,
-          [action.buildingName]: {
-            ...state.pages[action.buildingName],
-            date: action.date,
-            isFetching: false,
-            status: "success",
-            data: action.data.data,
-            pageSettings: action.data.info
-          }
-        }
-      }
+      return setPageState(state, action.buildingName, {
+        date: action.date,
+        isFetching: false,
+        status: "success",
+        data: action.data.data,
+        pageSettings: action.data.info
+      });
     case TYPES.REQUEST_MONTH_EXPANSES:
-      return {
-        ...state,
-        pages: {
-          ...state.pages,
-          [action.buildingName]: {
-            ...state.pages[action.buildingName],
-            isFetching: true,
-          }
-        }
-      }
+      return setPageState(state, action.buildingName, {
+        isFetching: true
+      });
     case TYPES.UPDATE_MONTH_EXPANSE:
       {
+        const {
+          expanse,
+          index,
+          buildingName
+        } = action;
 
-        const expanse = action.payload.expanse;//expanse object to update
-        const index = action.payload.index;//index number of the expanse object in the array of data
-        const copyPages = { ...state.pages };//copy data to not mess with the original
+        // copy the data
+        const dataCopy = { ...state.pages[buildingName].data };
 
-        //replace the old object with the updated object
-        copyPages[action.buildingName].data[index] = expanse;
+        // replace the old object with the updated object
+        dataCopy[index] = expanse;
 
-        return {
-          ...state,
-          pages: copyPages
-        }
+        return setPageState(state, action.buildingName, {
+          data: dataCopy
+        });
       }
-    case TYPES.ADD_MONTH_EXPANSE:
-      {
-        const expanse = action.expanse;//expanse object to update
-        const copyPages = { ...state.pages };//copy data to not mess with the original
-
-        //replace the old object with the updated object
-        copyPages[action.buildingName].data.push(expanse);
-
-        // add 1 to the count in page settings
-        // the data grew in 1 in the database
-        copyPages[action.buildingName].pageSettings.count += 1;
-
-        return {
-          ...state,
-          pages: copyPages
-        }
-      }
-    case TYPES.DELETE_MONTH_EXPANSE:
-      {
-        const copyPages = { ...state.pages };//copy data to not mess with the original
-
-        //remove from the array
-        copyPages[action.buildingName].data.splice(action.index, 1);
-
-        // subtract 1 from the count in page settings
-        // the data shrink in 1 in the database
-        copyPages[action.buildingName].pageSettings.count -= 1;
-
-        return {
-          ...state,
-          pages: copyPages
-        }
-      }
+    case TYPES.ADD_MONTH_EXPANSE: commonAdd(state, action);
+    case TYPES.DELETE_MONTH_EXPANSE: commonDelete(state, action);
     case TYPES.MONTH_EXPANSES_FETCHING_FAILED:
       return {
         ...state,

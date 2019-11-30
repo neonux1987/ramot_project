@@ -42,14 +42,13 @@ a {
   outline: none;
 }
 
+
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
   overflow-x: hidden;
 }
 
-
- 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background-color: #e2e2e2;

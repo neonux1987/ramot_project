@@ -36,7 +36,7 @@ export const fetchMonthExpanses = (params = Object) => {
     return ipcRenderer.once("month-expanses-data-by-range", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
-        dispatch(monthExpansesFetchingFailed(arg.error));
+        dispatch(monthExpansesFetchingFailed(arg.error, params.buildingName));
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
@@ -190,10 +190,10 @@ export const addMonthExpanse = (params = Object, expanse = Object) => {
   }
 };
 
-const addMonthExpanseInStore = (expanse, buildingName) => {
+const addMonthExpanseInStore = (payload, buildingName) => {
   return {
     type: TYPES.ADD_MONTH_EXPANSE,
-    expanse,
+    payload,
     buildingName
   }
 }
@@ -208,10 +208,8 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
     //first update the store for fast user respond
     dispatch({
       type: TYPES.UPDATE_MONTH_EXPANSE,
-      payload: {
-        index: index,
-        expanse: params.expanse
-      },
+      index,
+      payload: params.expanse,
       buildingName: params.buildingName
     });
     //send a request to backend to get the data
@@ -222,10 +220,8 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
         // rollback to old expanse
         dispatch({
           type: TYPES.UPDATE_MONTH_EXPANSE,
-          payload: {
-            index: index,
-            expanse: oldExpanse
-          },
+          index,
+          payload: oldExpanse,
           buildingName: params.buildingName
         });
 

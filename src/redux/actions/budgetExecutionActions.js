@@ -10,13 +10,24 @@ import quarterlyStatsActions from './quarterlyStatsActions';
 
 const TOAST_AUTO_CLOSE = 3000;
 
+// TYPES
+export const TYPES = {
+  REQUEST_BUDGET_EXECUTIONS: "REQUEST_BUDGET_EXECUTIONS",
+  RECEIVE_BUDGET_EXECUTIONS: "RECEIVE_BUDGET_EXECUTIONS",
+  BUDGET_EXECUTIONS_FETCHING_FAILED: "BUDGET_EXECUTIONS_FETCHING_FAILED",
+  UPDATE_BUDGET_EXECUTION: "UPDATE_BUDGET_EXECUTION",
+  ADD_BUDGET_EXECUTION: "ADD_BUDGET_EXECUTION",
+  DELETE_BUDGET_EXECUTION: "DELETE_BUDGET_EXECUTION",
+  INIT_BUDGET_EXECUTIONS_STATE: "INIT_BUDGET_EXECUTIONS_STATE",
+  BUDGET_EXECUTIONS_CLEANUP: "BUDGET_EXECUTIONS_CLEANUP"
+}
+
 /**
  * fetch month expanses
  * @param {*} params 
  */
-const fetchBudgetExecutions = (params = Object) => {
+export const fetchBudgetExecutions = (params = Object) => {
   return dispatch => {
-
     //let react know that the fetching is started
     dispatch(requestBudgetExecutions(params.buildingName));
 
@@ -26,7 +37,7 @@ const fetchBudgetExecutions = (params = Object) => {
     ipcRenderer.once("budget-executions", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
+        dispatch(budgetExecutionsFetchingFailed(arg.error, params.buildingName));
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
@@ -38,8 +49,9 @@ const fetchBudgetExecutions = (params = Object) => {
           //show a notification that the generation of 
           generateEmptyReport(params, dispatch);
         }
+
         //success store the data
-        dispatch(receiveBudgetExecutions(arg.data, params.buildingName, params.date));
+        dispatch(receiveBudgetExecutions(arg.data, params.date, params.buildingName));
       }
     });
 
@@ -65,7 +77,7 @@ const generateEmptyReport = (params, dispatch) => {
         autoClose: TOAST_AUTO_CLOSE,
         onClose: () => {
           //let react know that an erro occured while trying to fetch
-          dispatch(fetchingFailed(arg.error));
+          dispatch(budgetExecutionsFetchingFailed(arg.error, params.buildingName));
         }
       });
     } else {
@@ -77,7 +89,7 @@ const generateEmptyReport = (params, dispatch) => {
         delay: 2000,
         onClose: () => {
           //success store the data
-          dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
+          dispatch(receiveBudgetExecutions(arg.data, params.date, params.buildingName));
           dispatch(registeredQuartersActions.fetchRegisteredQuarters(params));
           dispatch(registeredYearsActions.fetchRegisteredYears(params));
         }
@@ -87,37 +99,38 @@ const generateEmptyReport = (params, dispatch) => {
   });
 }
 
-const requestBudgetExecutions = function (page) {
+const requestBudgetExecutions = function (buildingName) {
   return {
-    type: "REQUEST_BUDGET_EXECUTIONS",
-    page
+    type: TYPES.REQUEST_BUDGET_EXECUTIONS,
+    buildingName
   }
 };
 
-const receiveBudgetExecutions = function (data, page, date) {
+const receiveBudgetExecutions = function (data, date, buildingName) {
   return {
-    type: "RECEIVE_BUDGET_EXECUTIONS",
+    type: TYPES.RECEIVE_BUDGET_EXECUTIONS,
     data,
-    page,
+    buildingName,
     date
   }
 }
 
-const fetchingFailed = function (error) {
+const budgetExecutionsFetchingFailed = function (error, buildingName) {
   return {
-    type: "BUDGET_EXECUTION_FETCHING_FAILED",
-    error
+    type: TYPES.BUDGET_EXECUTIONS_FETCHING_FAILED,
+    error,
+    buildingName
   }
 };
 
 /**
  * init the state
  */
-const initState = function (page) {
+export const initBudgetExecutionsState = function (buildingName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      if (page) {
-        dispatch(setInitialState(page));
+      if (buildingName) {
+        dispatch(setInitialBudgetExecutionsState(buildingName));
         resolve();
       } else {
         reject("page canot be empty/undefined or null");
@@ -126,19 +139,19 @@ const initState = function (page) {
   };
 };
 
-const setInitialState = function (page) {
+const setInitialBudgetExecutionsState = function (buildingName) {
   return dispatch => {
     dispatch({
-      type: "INIT_STATE",
-      page: page
+      type: TYPES.INIT_BUDGET_EXECUTIONS_STATE,
+      buildingName
     });
   }
 };
 
-const cleanup = function (buldingNameEng) {
+export const budgetExecutionsCleanup = function (buildingName) {
   return {
-    type: "CLEANUP",
-    page: buldingNameEng
+    type: TYPES.BUDGET_EXECUTIONS_CLEANUP,
+    buildingName
   }
 }
 
@@ -147,7 +160,7 @@ const cleanup = function (buldingNameEng) {
  * @param {*} params 
  * @param {*} tableData 
  */
-const addBudgetExecution = (params = Object, tableData) => {
+export const addBudgetExecution = (params = Object, tableData) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("add-new-month-expanse", params);
@@ -158,10 +171,10 @@ const addBudgetExecution = (params = Object, tableData) => {
   }
 };
 
-const updateSingleBudgetExecution = (newBudgetExecution, index) => {
+export const updateBudgetExecutionStoreOnly = (payload, index) => {
   return {
-    type: "UPDATE_SINGLE_BUDGET_EXECUTION",
-    newBudgetExecution,
+    type: TYPES.UPDATE_BUDGET_EXECUTION,
+    payload,
     index
   }
 }
@@ -171,7 +184,7 @@ const updateSingleBudgetExecution = (newBudgetExecution, index) => {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudgetExec = Object, index = Number) => {
+export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudgetExec = Object, index = Number) => {
   return (dispatch, getState) => {
 
     //get te state
@@ -226,7 +239,7 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
 
     //update the new data in the store first for
     //better and fast user experience
-    dispatch(updateSingleBudgetExecution(budgetExecStoreObj, index));
+    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index));
 
     //send a request to backend to get the data
     ipcRenderer.send("update-budget-execution", params);
@@ -240,7 +253,7 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
         });
 
         //rollback to the old budget execution object
-        dispatch(updateSingleBudgetExecution(oldBudgetExec, index));
+        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index));
 
         //rollback to the old month total stats
         dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));
@@ -254,15 +267,4 @@ const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudge
       }
     });
   };
-};
-
-export default {
-  fetchBudgetExecutions,
-  addBudgetExecution,
-  updateBudgetExecution,
-  fetchingFailed,
-  receiveBudgetExecutions,
-  requestBudgetExecutions,
-  initState,
-  cleanup
 };
