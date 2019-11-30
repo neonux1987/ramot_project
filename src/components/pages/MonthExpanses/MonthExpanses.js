@@ -10,7 +10,7 @@ import Section from '../../common/Section/Section';
 import MonthExpansesTable from './MonthExpansesTable';
 
 const MonthExpanses = (props) => {
-  console.log(props)
+
   return (
     <Fragment>
 

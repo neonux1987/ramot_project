@@ -462,7 +462,7 @@ class MonthExpanses extends Component {
 
     const page = this.props.monthExpanses.pages[buildingNameEng];
 
-    if (page === undefined || page.isFetching || page.data.length === 0) {
+    if (page === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
 
@@ -536,13 +536,10 @@ class MonthExpanses extends Component {
         {/* add new box */}
         {addNewBox}
 
-
-
         <Table
           Row={this.Row}
-          GroupComponent={this.HeaderGroups}
           HeaderComponent={this.HeadersRow}
-          isFetching={false}
+          isFetching={isFetching || data.length === 0}
         />
 
       </TableWrapper>
