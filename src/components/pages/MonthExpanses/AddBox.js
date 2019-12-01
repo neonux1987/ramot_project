@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { TextField, withStyles, Button, Select, InputLabel, MenuItem } from '@material-ui/core';
-import Spinner from '../../common/Spinner/Spinner';
+import { TextField, withStyles, Button } from '@material-ui/core';
 import ReactSelect from '../../common/ReactSelect/ReactSelect';
 import { connect } from 'react-redux';
 
@@ -9,23 +8,26 @@ import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 
 const styles = theme => ({
   container: {
-    display: 'flex',
-    justifyContent: 'center',
-    margin: "10px 0 30px"
+    margin: "10px 0 30px",
+    boxShadow: "inset 0px 0px 5px 0px rgba(0, 0, 0, 0.12)",
+    border: "1px solid #ccc",
+    background: "#fdfbfb",
+    padding: "10px"
+  },
+  form: {
+    display: "grid",
+    gridTemplateColumns: "212px 1fr 1fr 1fr 1fr 300px 80px 80px"
   },
   textField: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
-    width: 200,
   },
   codeTextField: {
-    width: "212px",
-    marginLeft: "0px"
+    width: "initial"
   },
   textFieldNotes: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
-    width: 300,
   },
   dense: {
     marginTop: 19,
@@ -34,7 +36,12 @@ const styles = theme => ({
     width: 200,
   },
   button: {
-    margin: "8px 0 8px 8px"
+    margin: "8px 0 8px 8px",
+    backgroundColor: "#fbfbfb",
+    border: "1px solid #dedede",
+    color: "#000",
+    background: "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%)",
+    boxShadow: "none"
   },
   inputLabel: {
     color: "#000"
@@ -233,11 +240,15 @@ class InputExpansesField extends Component {
     const { expansesCodes } = this.props.expansesCodes;
     const { summarizedSections } = this.props.summarizedSections;
 
-    if (expansesCodes.isFetching || summarizedSections.isFetching) {
-      return <Spinner loadingText={"טוען נתונים..."} />
-    }
+    let codesFetching = expansesCodes.isFetching || expansesCodes.data.length === 0;
+    let sectionsFetching = summarizedSections.isFetching || summarizedSections.data.length === 0;
+
+    const combinedFetching = codesFetching || sectionsFetching;
+
+    const { classes } = this.props;
 
     return <form
+      className={classes.form}
       id="inputExpanses"
       noValidate
       autoComplete="off"
@@ -256,9 +267,12 @@ class InputExpansesField extends Component {
         autoFocus={true}
         onMenuClose={this.onMenuCloseHandler}
         inputId="code"
+        isLoading={codesFetching}
+        isDisabled={codesFetching || sectionsFetching}
       />
 
       <ReactSelect
+        classes={{ root: this.props.classes.codeTextField }}
         inputValue={this.state.formInputs.codeName}
         onChangeHandler={this.reactSelectHandleChange}
         options={expansesCodes.data}
@@ -269,6 +283,8 @@ class InputExpansesField extends Component {
         onMenuClose={this.onMenuCloseHandler}
         //onInputChange={e => this.reactSelectInputChangeHandler(e, "codeName")}
         inputId="codeName"
+        isLoading={sectionsFetching}
+        isDisabled={sectionsFetching || codesFetching}
       />
 
       <TextField
@@ -279,6 +295,7 @@ class InputExpansesField extends Component {
         type="text"
         inputProps={{ 'data-order': 2, readOnly: true }}
         InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        disabled={combinedFetching}
       />
 
       <TextField
@@ -290,6 +307,7 @@ class InputExpansesField extends Component {
         value={this.state.formInputs.supplierName}
         InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
         inputRef={(input) => { this.supplierInput = input; }}
+        disabled={combinedFetching}
       />
 
       <TextField
@@ -300,6 +318,7 @@ class InputExpansesField extends Component {
         type="number"
         inputProps={{ 'data-order': 4 }}
         InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        disabled={combinedFetching}
       />
 
       <TextField
@@ -310,23 +329,39 @@ class InputExpansesField extends Component {
         value={this.state.formInputs.notes}
         inputProps={{ 'data-order': 5 }}
         InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        disabled={combinedFetching}
       />
 
-      <Button style={{ backgroundColor: "#fd5050" }} name="reset" type="reset" onClick={this.reset} variant="contained" color="primary" className={this.props.classes.button}>
-        אפס
-  </Button>
+      <div>
+        <Button
+          style={{ backgroundColor: "rgb(245, 58, 75)" }}
+          name="reset"
+          type="reset"
+          onClick={this.reset}
+          variant="contained"
+          color="primary"
+          className={this.props.classes.button}
+          disabled={combinedFetching}
+        >
+          אפס
+      </Button>
+      </div>
 
-      <Button
-        data-order="7"
-        style={{ backgroundColor: "#439dd2" }}
-        name="submit"
-        variant="contained"
-        color="primary"
-        onClick={(event) => this.props.submitData(this.state.formInputs, this.reset)}
-        className={this.props.classes.button}
-      >
-        שמור
-  </Button>
+      <div>
+        <Button
+          data-order="7"
+          style={{ backgroundColor: "#439dd2" }}
+          name="submit"
+          variant="contained"
+          color="primary"
+          onClick={(event) => this.props.submitData(this.state.formInputs, this.reset)}
+          className={this.props.classes.button}
+          disabled={combinedFetching}
+        >
+          שמור
+        </Button>
+      </div>
+
 
     </form>;
   }

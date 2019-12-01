@@ -23,7 +23,7 @@ export default ({ months, quarters, years, date, submitHandler }) => {
   const renderMonths = months && months.data.length > 0 ? <Select
     name="month"
     className={styles.formSelect}
-    value={selectDate.month}
+    value={selectDate.month || ""}
     onChange={onChangeHandler}
   >
     {months.data.map((month) => {
@@ -35,7 +35,7 @@ export default ({ months, quarters, years, date, submitHandler }) => {
   const renderQuarters = quarters && quarters.data.length > 0 ? <Select
     name="quarter"
     className={styles.formSelect}
-    value={selectDate.quarter}
+    value={selectDate.quarter || ""}
     onChange={onChangeHandler}
   >
     {quarters.data.map((quarter) => {
@@ -47,7 +47,7 @@ export default ({ months, quarters, years, date, submitHandler }) => {
   const renderYears = years && years.data.length > 0 ? <Select
     name="year"
     className={styles.formSelect}
-    value={selectDate.year}
+    value={selectDate.year || ""}
     onChange={onChangeHandler}
   >
     {years.data.map((year) => {

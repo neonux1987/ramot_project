@@ -33,6 +33,7 @@ class DefaultExpansesCodesLogic {
       data[i].year = date.year;
       data[i].tax = 0.0;
       data[i].sum = 0.0;
+      data[i].supplierName = "";
       data[i].notes = "";
     }
 

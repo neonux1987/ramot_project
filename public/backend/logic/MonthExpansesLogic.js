@@ -233,16 +233,18 @@ class MonthExpansesLogic {
     if (expanses.length === 0) {
       //get the default codes
       const defaultCodes = await this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx);
+
       //prepare the data for insertion
       this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
+
       //insert the batch
       await this.batchInsert(buildingName, defaultCodes, trx);
     } else {
       //prepare the data for insertion
       this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
+
       //insert the batch
       await this.batchInsert(buildingName, expanses, trx);
-
     }
 
     //can safely register new year, it's not registered from other reports

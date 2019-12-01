@@ -176,6 +176,12 @@ class IntegrationReactSelect extends React.Component {
           font: 'inherit',
         },
       }),
+      loadingIndicator: () => ({
+        fontSize: "8px",
+        alignItems: "center",
+        display: "flex",
+        justifyContent: "center"
+      })
     };
     return (
       <div className={classes.root}>
@@ -195,6 +201,8 @@ class IntegrationReactSelect extends React.Component {
             autoFocus={this.props.autoFocus}
             onMenuClose={this.props.onMenuClose}
             inputId={this.props.inputId}
+            isLoading={this.props.isLoading}
+            isDisabled={this.props.isDisabled}
           />
           <div className={classes.divider} />
         </NoSsr>

@@ -51,6 +51,7 @@ const quarter4 = [
   "exec.december_budget AS december_budget"
 ]
 
+const CHUNKSIZE = 100;
 
 class BudgetExecutionDao {
 
@@ -232,7 +233,7 @@ class BudgetExecutionDao {
     rows,
     trx
   ) {
-    return trx.batchInsert(`${buildingName}_budget_execution_quarter${quarter}`, rows, rows.length)
+    return trx.batchInsert(`${buildingName}_budget_execution_quarter${quarter}`, rows, CHUNKSIZE)
       .catch((error) => {
         throw error;
       });

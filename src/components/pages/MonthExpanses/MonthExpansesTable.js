@@ -12,7 +12,6 @@ import Helper from '../../../helpers/Helper';
 import GlobalContext from '../../../context/GlobalContext';
 
 // COMMON COMPONENTS IMPORTS
-import Header from '../../common/Header/Header';
 import PageControls from '../../common/PageControls/PageControls';
 import DatePicker from '../../common/DatePicker/DatePicker';
 import TableControls from '../../common/table/TableControls/TableControls';
@@ -22,8 +21,7 @@ import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import TableActions from '../../common/table/TableActions/TableActions';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import InputExpansesField from './InputExpansesField'
-import Section from '../../common/Section/Section';
+import AddBox from './AddBox';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 import DefaultCell from '../../common/table/TableCell/DefaultCell';
 import CellInput from '../../common/table/TableCell/CellInput';
@@ -482,7 +480,7 @@ class MonthExpanses extends Component {
 
     //add new month expanse box
     const addNewBox = this.state.addNewMode ?
-      <InputExpansesField
+      <AddBox
         data={data}
         submitData={this.inputExpansesSubmit}
         findData={this.findExpanseIndex}

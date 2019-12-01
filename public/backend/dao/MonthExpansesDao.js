@@ -15,6 +15,8 @@ const DEFINITION = [{
   year: { column: 'year', type: 'INTEGER' }
 }];
 
+const CHUNKSIZE = 100;
+
 class MonthExpansesDao {
 
   constructor(connection) {
@@ -196,7 +198,7 @@ class MonthExpansesDao {
     rows,
     trx
   ) {
-    return trx.batchInsert(`${buildingName}_month_expanses`, rows, rows.length)
+    return trx.batchInsert(`${buildingName}_month_expanses`, rows, CHUNKSIZE)
       .catch((error) => {
         throw error;
       });

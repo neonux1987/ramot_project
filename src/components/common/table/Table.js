@@ -5,7 +5,7 @@ import Spinner from '../Spinner/Spinner';
 
 export default ({ GroupComponent, HeaderComponent, Row, isFetching }) => {
 
-  const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען הגדרות טבלה..."} /> : <div className="_tableBody">
+  const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
     <List
       style={{ overflow: "overlay" }}
       direction="rtl"

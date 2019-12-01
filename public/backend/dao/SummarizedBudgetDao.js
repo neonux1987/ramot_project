@@ -14,6 +14,8 @@ const DEFINITION = [{
   year: { column: 'year', type: 'INTEGER' }
 }];
 
+const CHUNKSIZE = 100;
+
 class SummarizedBudgetDao {
 
   constructor(connection) {
@@ -166,7 +168,7 @@ class SummarizedBudgetDao {
     rows,
     trx
   ) {
-    return trx.batchInsert(`${buildingName}_summarized_budget`, rows, rows.length)
+    return trx.batchInsert(`${buildingName}_summarized_budget`, rows, CHUNKSIZE)
       .catch((error) => {
         throw error;
       });
