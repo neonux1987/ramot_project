@@ -19,6 +19,12 @@ import Stats from '../../common/Stats/Stats';
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
 import TotalStatsFetcher from '../../dataFetchers/TotalStatsFetcher';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
+import GroupColumn from '../../common/table/GroupColumn';
+import HeaderRow from '../../common/table/HeaderRow';
+import Column from '../../common/table/Column';
+import Row from '../../common/table/Row';
+import NonZeroNumberColumn from '../../common/table/NonZeroNumberColumn';
+import TableActions from '../../common/table/TableActions/TableActions';
 
 const FIXED_FLOAT = 2;
 
@@ -490,6 +496,70 @@ class BudgetExecution extends Component {
     this.props.fetchBudgetExecutions(params);
   }
 
+  getDataObject = (index) => {
+    // building name
+    const { buildingNameEng } = this.props.location.state;
+    // data
+    const { data } = this.props.budgetExecution.pages[buildingNameEng];
+    return data[index];
+  }
+
+  HeaderGroups = (months) => {
+    return () => {
+      const { groupColors } = this.context;
+
+      // column settings
+      const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+
+      return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
+        <GroupColumn show={this.state.editMode}></GroupColumn>
+        <GroupColumn></GroupColumn>
+        <GroupColumn bgColor={groupColors[1]} span={2}>2</GroupColumn>
+        <GroupColumn bgColor={groupColors[2]} span={2}>3</GroupColumn>
+        <GroupColumn bgColor={groupColors[3]} span={2}>4</GroupColumn>
+      </HeaderRow>
+    }
+  }
+
+  HeadersRow = () => {
+    // column settings
+    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+
+    return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
+      {headers().map((header, index) => {
+        return (
+          <Column
+            show={header.title === "פעולות" && !this.state.editMode}
+            key={index} style={{
+              display: header.title === "פעולות" && !this.state.editMode ? "none" : "flex",
+              ...header.style
+            }}>{header.title}</Column>);
+      })}
+    </HeaderRow>
+  }
+
+  Row = (months) => {
+    return ({ index, style }) => {
+      // row data
+      const rowData = this.getDataObject(index);
+      // column settings
+      const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+
+      return <Row style={style} gridTemplateColumns={gridTemplateColumns}>
+        <Column show={this.state.editMode}>
+          <TableActions deleteHandler={this.deleteExpanseHandler(rowData.id, index)} />
+        </Column>
+        <Column>{index + 1}</Column>
+        <Column>{rowData["code"]}</Column>
+        <Column>{rowData["codeName"]}</Column>
+        <Column>{rowData["section"]}</Column>
+        <Column>{this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], rowData, index) : rowData["supplierName"]}</Column>
+        <NonZeroNumberColumn>{this.state.editMode ? this.numberInput("sum", rowData["sum"], rowData, index) : rowData["sum"]}</NonZeroNumberColumn>
+        <Column>{this.state.editMode ? this.textAreaInput("notes", rowData["notes"], rowData, index) : rowData["notes"]}</Column>
+      </Row>;
+    }
+  }
+
   render() {
 
     //building names
@@ -588,7 +658,7 @@ class BudgetExecution extends Component {
               dataCount={100}
               columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
               onFetchData={this.onFetchData}
-              pageNameSettings={PAGE_NAME}
+              pageNameSettings={pageName}
             />
 
 
@@ -615,3 +685,80 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecution);
+
+const headers = () => {
+  const style = {
+    backgroundColor: "rgb(52, 58, 64)",
+    color: "#ffffff",
+    fontWeight: "600",
+    justifyContent: "center",
+    height: "27px",
+    alignItems: "center"
+  }
+  return [
+    {
+      title: "פעולות",
+      style
+    },
+    {
+      title: "שורה",
+      style
+    },
+    {
+      title: "תקציב",
+      style: {
+        ...style,
+        backgroundcolor: "blue"
+      }
+    },
+    {
+      title: "ביצוע",
+      style
+    },
+    {
+      title: "תקציב",
+      style: {
+        ...style,
+        backgroundcolor: "blue"
+      }
+    },
+    {
+      title: "ביצוע",
+      style
+    },
+    {
+      title: "תקציב",
+      style: {
+        ...style,
+        backgroundcolor: "blue"
+      }
+    },
+    {
+      title: "ביצוע",
+      style
+    },
+    {
+      title: "הערכה",
+      style
+    },
+    {
+      title: "תקציב",
+      style: {
+        ...style,
+        backgroundcolor: "blue"
+      }
+    },
+    {
+      title: "ביצוע",
+      style
+    },
+    {
+      title: "הפרש",
+      style
+    },
+    {
+      title: "הערות",
+      style
+    }
+  ]
+};

@@ -400,22 +400,6 @@ class MonthExpanses extends Component {
     return data[index];
   }
 
-  HeaderGroups = () => {
-
-    const { groupColors } = this.context;
-
-    // column settings
-    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
-
-    return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
-      <GroupColumn show={this.state.editMode}></GroupColumn>
-      <GroupColumn></GroupColumn>
-      <GroupColumn bgColor={groupColors[1]} span={2}>2</GroupColumn>
-      <GroupColumn bgColor={groupColors[2]} span={2}>3</GroupColumn>
-      <GroupColumn bgColor={groupColors[3]} span={2}>4</GroupColumn>
-    </HeaderRow>
-  }
-
   HeadersRow = () => {
     // column settings
     const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;

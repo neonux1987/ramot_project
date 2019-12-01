@@ -45,7 +45,7 @@ export const fetchBudgetExecutions = (params = Object) => {
       } else {
         //if there is no data, that means it's a new month and 
         //and empty report should be generated.
-        if (arg.data.length === 0) {
+        if (arg.data.data.length === 0) {
           //show a notification that the generation of 
           generateEmptyReport(params, dispatch);
         }

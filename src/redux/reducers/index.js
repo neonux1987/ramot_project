@@ -4,7 +4,6 @@ import sidebar from './sidebarReducer';
 import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
 import generalSettings from './generalSettingsReducer';
-import summarizedBudget from './summarizedBudgetReducer';
 import registeredMonths from './registeredMonthsReducer';
 import registeredYears from './registeredYearsReducer';
 import registeredQuarters from './registeredQuartersReducer';
@@ -27,6 +26,13 @@ const monthExpanses = createPageReducer("MONTH_EXPANSES", {
 const budgetExecution = createPageReducer("BUDGET_EXECUTIONS", {
   pageName: "budgetExecutions",
   headerTitle: "מעקב ביצוע מול תקציב",
+  pages: {}
+});
+
+// init budget executions reducer
+const summarizedBudget = createPageReducer("SUMMARIZED_BUDGETS", {
+  pageName: "summarizedBudgets",
+  headerTitle: "סיכום תקציבי",
   pages: {}
 });
 

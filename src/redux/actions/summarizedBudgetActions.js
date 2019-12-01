@@ -7,11 +7,23 @@ import ToastRender from '../../components/ToastRender/ToastRender';
 
 const TOAST_AUTO_CLOSE = 3000;
 
+// TYPES
+export const TYPES = {
+  REQUEST_SUMMARIZED_BUDGETS: "REQUEST_SUMMARIZED_BUDGETS",
+  RECEIVE_SUMMARIZED_BUDGETS: "RECEIVE_SUMMARIZED_BUDGETS",
+  SUMMARIZED_BUDGETS_FETCHING_FAILED: "SUMMARIZED_BUDGETS_FETCHING_FAILED",
+  UPDATE_SUMMARIZED_BUDGET: "UPDATE_SUMMARIZED_BUDGET",
+  ADD_SUMMARIZED_BUDGET: "ADD_SUMMARIZED_BUDGET",
+  DELETE_SUMMARIZED_BUDGET: "DELETE_SUMMARIZED_BUDGET",
+  INIT_SUMMARIZED_BUDGETS_STATE: "INIT_SUMMARIZED_BUDGETS_STATE",
+  SUMMARIZED_BUDGETS_CLEANUP: "SUMMARIZED_BUDGETS_CLEANUP"
+}
+
 /**
  * fetch summarized budgets
  * @param {*} params 
  */
-const fetchSummarizedBudgets = (params = Object) => {
+export const fetchSummarizedBudgets = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
@@ -23,19 +35,19 @@ const fetchSummarizedBudgets = (params = Object) => {
     ipcRenderer.once("summarized-budgets", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
+        dispatch(summarizedBudgetsFetchingFailed(arg.error, params.buildingName));
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
         //and empty report should be generated.
-        if (arg.data.length === 0) {
+        if (arg.data.data.length === 0) {
           //generate empty report
           generateEmptyReport(params, dispatch);
         } else {
           //success store the data
-          dispatch(receiveSummarizedBudgets(arg.data, params.buildingName));
+          dispatch(receiveSummarizedBudgets(arg.data, params.date, params.buildingName));
           //if there is no data, that means it's a new month and 
         }
       }
@@ -64,7 +76,7 @@ const generateEmptyReport = (params, dispatch) => {
         autoClose: TOAST_AUTO_CLOSE,
         onClose: () => {
           //let react know that an erro occured while trying to fetch
-          dispatch(fetchingFailed(arg.error));
+          dispatch(summarizedBudgetsFetchingFailed(arg.error, params.buildingName));
         }
       });
     } else {
@@ -76,7 +88,7 @@ const generateEmptyReport = (params, dispatch) => {
         autoClose: TOAST_AUTO_CLOSE,
         onClose: () => {
           //success store the data
-          dispatch(receiveSummarizedBudgets(arg.data, params.buildingName));
+          dispatch(receiveSummarizedBudgets(arg.data, params.date, params.buildingName));
           dispatch(registeredYearsActions.fetchRegisteredYears(params));
         }
       });
@@ -84,29 +96,30 @@ const generateEmptyReport = (params, dispatch) => {
   });
 }
 
-const requestSummarizedBudgets = function (page) {
+const requestSummarizedBudgets = function (buildingName) {
   return {
-    type: "REQUEST_SUMMARIZED_BUDGETS",
-    page
+    type: TYPES.REQUEST_SUMMARIZED_BUDGETS,
+    buildingName
   }
 };
 
-const receiveSummarizedBudgets = function (data, page) {
+const receiveSummarizedBudgets = function (data, date, buildingName) {
   return {
-    type: "RECEIVE_SUMMARIZED_BUDGETS",
-    data: data,
-    page
+    type: TYPES.RECEIVE_SUMMARIZED_BUDGETS,
+    data,
+    date,
+    buildingName
   }
 }
 
 /**
  * init the state
  */
-const initState = function (page) {
+export const initSummzrizedBudgetsState = function (buildingName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      if (page) {
-        dispatch(setInitialState(page));
+      if (buildingName) {
+        dispatch(setSummarizedBudgetsInitialState(buildingName));
         resolve();
       } else {
         reject("page canot be empty/undefined or null");
@@ -115,34 +128,26 @@ const initState = function (page) {
   };
 };
 
-const setInitialState = function (page) {
+const setSummarizedBudgetsInitialState = function (buildingName) {
   return dispatch => {
     dispatch({
-      type: "INIT_STATE",
-      page: page
+      type: TYPES.INIT_SUMMARIZED_BUDGETS_STATE,
+      buildingName
     });
   }
 };
 
-const cleanup = function (buldingNameEng) {
+export const summarizedBudgetCleanup = function (buildingName) {
   return {
-    type: "CLEANUP",
-    page: buldingNameEng
+    type: TYPES.SUMMARIZED_BUDGETS_CLEANUP,
+    buildingName
   }
 }
 
-const fetchingFailed = function (error) {
+const summarizedBudgetsFetchingFailed = function (error, buildingName) {
   return {
-    type: "FETCHING_FAILED",
-    payload: error
+    type: TYPES.SUMMARIZED_BUDGETS_FETCHING_FAILED,
+    payload: error,
+    buildingName
   }
-};
-
-export default {
-  fetchSummarizedBudgets,
-  fetchingFailed,
-  receiveSummarizedBudgets,
-  requestSummarizedBudgets,
-  initState,
-  cleanup
 };
