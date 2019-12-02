@@ -232,20 +232,25 @@ class MonthExpanses extends Component {
 
   }
 
-  cellInputOnBlurHandler(e, key, value, rowData, index) {
-
+  cellInputOnBlurHandler(e, key, index) {
     //building names
     const { buildingNameEng } = this.props.location.state;
     // building data
-    const { date } = this.props.monthExpanses.pages[buildingNameEng];
+    const { date, data } = this.props.monthExpanses.pages[buildingNameEng];
+
+    const { type, value } = e.target;
 
     //will be used for rollback
-    const oldExpanseCopy = { ...rowData };
+    const oldExpanseCopy = { ...data[index] };
 
     const expanse = { ...oldExpanseCopy };
 
-    //replace the value
-    expanse[key] = e.target.type === "number" && value === "" ? 0 : value;
+    if (type === "number")
+      // empty string converted to 0
+      // parse float to secure that the value is a number
+      expanse[key] = value === "" ? 0 : Number.parseFloat(e.target.value);
+    else
+      expanse[key] = value;
 
     //update the tax to the current one
     expanse.tax = this.props.generalSettings.tax;
@@ -290,32 +295,39 @@ class MonthExpanses extends Component {
     }
   }
 
-  textAreaInput = (key, value, rowData) => {
+  onBlurCallBack = (event, key, index) => {
+    const { type, value } = event.target;
+    return useCallback(() => {
+      this.cellInputOnBlurHandler(event, key, index);
+    }, [key, type, value, index]);
+  }
+
+  textAreaInput = (key, value, index) => {
     return <CellInput
       value={value}
       type="textarea"
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, value, rowData)}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
       onClickHandler={this.inputClickHandler}
     />
   };
 
 
-  textInput = (key, value, rowData) => {
+  textInput = (key, value, index) => {
     return <CellInput
       value={value}
       type="text"
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, value, rowData)}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
       onKeyPressHandler={this.onKeyPressHandler}
       onClickHandler={this.inputClickHandler}
     />
   };
 
-  numberInput = (key, value, rowData) => {
+  numberInput = (key, value, index) => {
     const newValue = value === 0 ? "" : value;
     return <CellInput
       type="number"
       value={newValue}
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, value, rowData)}
+      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
       onKeyPressHandler={this.onKeyPressHandler}
       onClickHandler={this.inputClickHandler}
     />
@@ -431,9 +443,9 @@ class MonthExpanses extends Component {
       <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
       <Column>{rowData["section"]}</Column>
-      <Column>{this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], rowData, index) : rowData["supplierName"]}</Column>
-      <NonZeroNumberColumn>{this.state.editMode ? this.numberInput("sum", rowData["sum"], rowData, index) : rowData["sum"]}</NonZeroNumberColumn>
-      <Column>{this.state.editMode ? this.textAreaInput("notes", rowData["notes"], rowData, index) : rowData["notes"]}</Column>
+      <Column>{this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], index) : rowData["supplierName"]}</Column>
+      <NonZeroNumberColumn>{this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : rowData["sum"]}</NonZeroNumberColumn>
+      <Column>{this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : rowData["notes"]}</Column>
     </Row>;
   }
 
@@ -461,7 +473,7 @@ class MonthExpanses extends Component {
       date,
       pageSettings
     } = page;
-
+    console.log(page.data[0]);
     //add new month expanse box
     const addNewBox = this.state.addNewMode ?
       <AddBox

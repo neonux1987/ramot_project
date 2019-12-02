@@ -10,13 +10,13 @@ const TOAST_AUTO_CLOSE = 3000;
 
 // TYPES
 export const TYPES = {
-  REQUEST_MONTH_EXPANSES: "REQUEST_MONTH_EXPANSES",
-  RECEIVE_MONTH_EXPANSES: "RECEIVE_MONTH_EXPANSES",
+  MONTH_EXPANSES_REQUEST: "MONTH_EXPANSES_REQUEST",
+  MONTH_EXPANSES_RECEIVE: "MONTH_EXPANSES_RECEIVE",
   MONTH_EXPANSES_FETCHING_FAILED: "MONTH_EXPANSES_FETCHING_FAILED",
-  UPDATE_MONTH_EXPANSE: "UPDATE_MONTH_EXPANSE",
-  ADD_MONTH_EXPANSE: "ADD_MONTH_EXPANSE",
-  DELETE_MONTH_EXPANSE: "DELETE_MONTH_EXPANSE",
-  INIT_MONTH_EXPANSES_STATE: "INIT_MONTH_EXPANSES_STATE",
+  MONTH_EXPANSES_UPDATE: "MONTH_EXPANSES_UPDATE",
+  MONTH_EXPANSES_ADD: "MONTH_EXPANSES_ADD",
+  MONTH_EXPANSES_DELETE: "MONTH_EXPANSES_DELETE",
+  MONTH_EXPANSES_INIT_STATE: "MONTH_EXPANSES_INIT_STATE",
   MONTH_EXPANSES_CLEANUP: "MONTH_EXPANSES_CLEANUP"
 }
 
@@ -26,34 +26,34 @@ export const TYPES = {
  */
 export const fetchMonthExpanses = (params = Object) => {
   return dispatch => {
-
-    //let react know that the fetching is started
+    // let react know that the fetching is started
     dispatch(requestMonthExpanses(params.buildingName));
 
-    //request request to backend to get the data
+    // request request to backend to get the data
     ipcRenderer.send("get-month-expanses-data-by-range", params);
-    //listen when the data comes back
+
+    // listen when the data comes back
     return ipcRenderer.once("month-expanses-data-by-range", (event, arg) => {
       if (arg.error) {
-        //let react know that an erro occured while trying to fetch
+        // let react know that an erro occured while trying to fetch
         dispatch(monthExpansesFetchingFailed(arg.error, params.buildingName));
-        //send the error to the notification center
+        // send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
-        //if there is no data, that means it's a new month and 
-        //and empty report should be generated.
+        // if there is no data, that means it's a new month and 
+        // and empty report should be generated.
         if (arg.data.data.length === 0) {
-          //generate empty report
+          // generate empty report
           generateEmptyReport(params, dispatch);
         } else {
-          //success store the data
+          // store the data
           dispatch(receiveMonthExpanses(arg.data, params.date, params.buildingName));
         }
-      }
+      } // end else
     });
-  }
+  } // end return
 };
 
 const generateEmptyReport = (params, dispatch) => {
@@ -65,6 +65,7 @@ const generateEmptyReport = (params, dispatch) => {
 
   //request request to backend to get the data
   ipcRenderer.send("generate-empty-month-expanses-report", params);
+
   return ipcRenderer.once("generated-empty-month-expanses-data", (event, arg) => {
     if (arg.error) {
       playSound(soundTypes.error);
@@ -92,31 +93,27 @@ const generateEmptyReport = (params, dispatch) => {
           dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
           dispatch(registeredYearsActions.fetchRegisteredYears(params));
         }
-      });
-
-    }
+      }); // end toast
+    } // end else
   });
 }
 
 const requestMonthExpanses = function (buildingName) {
   return {
-    type: TYPES.REQUEST_MONTH_EXPANSES,
+    type: TYPES.MONTH_EXPANSES_REQUEST,
     buildingName
   }
 };
 
 const receiveMonthExpanses = function (data, date, buildingName) {
   return {
-    type: TYPES.RECEIVE_MONTH_EXPANSES,
+    type: TYPES.MONTH_EXPANSES_RECEIVE,
     data,
     date,
     buildingName
   }
 }
 
-/**
- * init the state
- */
 export const initMonthExpansesState = function (buildingName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
@@ -133,7 +130,7 @@ export const initMonthExpansesState = function (buildingName) {
 const setMonthExpansesInitialState = function (buildingName) {
   return dispatch => {
     dispatch({
-      type: TYPES.INIT_MONTH_EXPANSES_STATE,
+      type: TYPES.MONTH_EXPANSES_INIT_STATE,
       buildingName
     });
   }
@@ -154,17 +151,12 @@ const monthExpansesFetchingFailed = function (error, buildingName) {
   }
 };
 
-/**
- * add expanse
- * @param {*} payload 
- * @param {*} tableData 
- */
 export const addMonthExpanse = (params = Object, expanse = Object) => {
-
   return (dispatch) => {
 
     //send a request to backend to get the data
     ipcRenderer.send("add-new-month-expanse", params);
+
     //listen when the data comes back
     ipcRenderer.once("month-expanse-added", (event, arg) => {
       if (arg.error) {
@@ -185,52 +177,44 @@ export const addMonthExpanse = (params = Object, expanse = Object) => {
         toast.success("השורה נוספה בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)
         });
-      }
-    });
+      } // end else
+    }); // end ipc renderer
   }
 };
 
 const addMonthExpanseInStore = (payload, buildingName) => {
   return {
-    type: TYPES.ADD_MONTH_EXPANSE,
+    type: TYPES.MONTH_EXPANSES_ADD,
     payload,
     buildingName
   }
 }
 
-/**
- * update expanse
- * @param {*} payload 
- * @param {*} tableData 
- */
 export const updateMonthExpanse = (params, oldExpanse, index) => {
+
   return dispatch => {
-    //first update the store for fast user respond
-    dispatch({
-      type: TYPES.UPDATE_MONTH_EXPANSE,
-      index,
-      payload: params.expanse,
-      buildingName: params.buildingName
-    });
-    //send a request to backend to get the data
+    // first update the store for fast user response
+    dispatch(updateMonthExpanseInStore(params.buildingName, params.expanse, index));
+
+    // send a request to backend to get the data
     ipcRenderer.send("update-month-expanse", params);
-    //listen when the data comes back
+
+    // listen when the data comes back
     ipcRenderer.once("month-expanse-updated", (event, arg) => {
       if (arg.error) {
         // rollback to old expanse
         dispatch({
-          type: TYPES.UPDATE_MONTH_EXPANSE,
+          type: TYPES.MONTH_EXPANSES_UPDATE,
           index,
           payload: oldExpanse,
           buildingName: params.buildingName
         });
-
-        //send the error to the notification center
+        // send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
-        //send success notification
+        // send success notification
         toast.success("השורה עודכנה בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)
         });
@@ -239,17 +223,20 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
   }
 };
 
-/**
- * update expanse
- * @param {*} payload 
- * @param {*} tableData 
- */
+const updateMonthExpanseInStore = (buildingName, expanse, index) => {
+  return {
+    type: TYPES.MONTH_EXPANSES_UPDATE,
+    index,
+    payload: expanse,
+    buildingName
+  };
+}
+
 export const deleteMonthExpanse = (params = Object, index = Number) => {
   return dispatch => {
-    //send a request to backend to get the data
+    // send a request to backend to get the data
     ipcRenderer.send("delete-month-expanse", params);
 
-    //listen when the data comes back
     ipcRenderer.once("month-expanse-deleted", (event, arg) => {
       if (arg.error) {
         //send the error to the notification center
@@ -270,7 +257,7 @@ export const deleteMonthExpanse = (params = Object, index = Number) => {
 
 const deleteMonthExpanseInStore = (index, buildingName) => {
   return {
-    type: TYPES.DELETE_MONTH_EXPANSE,
+    type: TYPES.MONTH_EXPANSES_DELETE,
     index,
     buildingName
   }

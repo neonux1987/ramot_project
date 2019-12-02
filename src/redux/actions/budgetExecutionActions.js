@@ -12,20 +12,16 @@ const TOAST_AUTO_CLOSE = 3000;
 
 // TYPES
 export const TYPES = {
-  REQUEST_BUDGET_EXECUTIONS: "REQUEST_BUDGET_EXECUTIONS",
-  RECEIVE_BUDGET_EXECUTIONS: "RECEIVE_BUDGET_EXECUTIONS",
+  BUDGET_EXECUTIONS_REQUEST: "BUDGET_EXECUTIONS_REQUEST",
+  BUDGET_EXECUTIONS_RECEIVE: "BUDGET_EXECUTIONS_RECEIVE",
   BUDGET_EXECUTIONS_FETCHING_FAILED: "BUDGET_EXECUTIONS_FETCHING_FAILED",
-  UPDATE_BUDGET_EXECUTION: "UPDATE_BUDGET_EXECUTION",
-  ADD_BUDGET_EXECUTION: "ADD_BUDGET_EXECUTION",
-  DELETE_BUDGET_EXECUTION: "DELETE_BUDGET_EXECUTION",
-  INIT_BUDGET_EXECUTIONS_STATE: "INIT_BUDGET_EXECUTIONS_STATE",
+  BUDGET_EXECUTIONS_UPDATE: "BUDGET_EXECUTIONS_UPDATE",
+  BUDGET_EXECUTIONS_ADD: "BUDGET_EXECUTIONS_ADD",
+  BUDGET_EXECUTIONS_DELETE: "BUDGET_EXECUTIONS_DELETE",
+  BUDGET_EXECUTIONS_INIT_STATE: "BUDGET_EXECUTIONS_INIT_STATE",
   BUDGET_EXECUTIONS_CLEANUP: "BUDGET_EXECUTIONS_CLEANUP"
 }
 
-/**
- * fetch month expanses
- * @param {*} params 
- */
 export const fetchBudgetExecutions = (params = Object) => {
   return dispatch => {
     //let react know that the fetching is started
@@ -101,14 +97,14 @@ const generateEmptyReport = (params, dispatch) => {
 
 const requestBudgetExecutions = function (buildingName) {
   return {
-    type: TYPES.REQUEST_BUDGET_EXECUTIONS,
+    type: TYPES.BUDGET_EXECUTIONS_REQUEST,
     buildingName
   }
 };
 
 const receiveBudgetExecutions = function (data, date, buildingName) {
   return {
-    type: TYPES.RECEIVE_BUDGET_EXECUTIONS,
+    type: TYPES.BUDGET_EXECUTIONS_RECEIVE,
     data,
     buildingName,
     date
@@ -123,9 +119,6 @@ const budgetExecutionsFetchingFailed = function (error, buildingName) {
   }
 };
 
-/**
- * init the state
- */
 export const initBudgetExecutionsState = function (buildingName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
@@ -142,7 +135,7 @@ export const initBudgetExecutionsState = function (buildingName) {
 const setInitialBudgetExecutionsState = function (buildingName) {
   return dispatch => {
     dispatch({
-      type: TYPES.INIT_BUDGET_EXECUTIONS_STATE,
+      type: TYPES.BUDGET_EXECUTIONS_INIT_STATE,
       buildingName
     });
   }
@@ -155,11 +148,6 @@ export const budgetExecutionsCleanup = function (buildingName) {
   }
 }
 
-/**
- * add budget execution
- * @param {*} params 
- * @param {*} tableData 
- */
 export const addBudgetExecution = (params = Object, tableData) => {
   return dispatch => {
     //send a request to backend to get the data
@@ -173,17 +161,13 @@ export const addBudgetExecution = (params = Object, tableData) => {
 
 export const updateBudgetExecutionStoreOnly = (payload, index) => {
   return {
-    type: TYPES.UPDATE_BUDGET_EXECUTION,
+    type: TYPES.BUDGET_EXECUTIONS_UPDATE,
     payload,
     index
   }
 }
 
-/**
- * update budget execution
- * @param {*} payload 
- * @param {*} tableData 
- */
+
 export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudgetExec = Object, index = Number) => {
   return (dispatch, getState) => {
 

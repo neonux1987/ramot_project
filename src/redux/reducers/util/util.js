@@ -16,7 +16,7 @@ export const setPageState = (state, buildingName, target) => {
 export const createPageReducer = (pageName, initialState) => {
   return (state = initialState, action) => {
     switch (action.type) {
-      case `RECEIVE_${pageName}`:
+      case `${pageName}_RECEIVE`:
         return setPageState(state, action.buildingName, {
           date: action.date,
           isFetching: false,
@@ -24,11 +24,11 @@ export const createPageReducer = (pageName, initialState) => {
           data: action.data.data,
           pageSettings: action.data.info
         });
-      case `REQUEST_${pageName}`:
+      case `${pageName}_REQUEST`:
         return setPageState(state, action.buildingName, {
           isFetching: true
         });
-      case `UPDATE_${pageName}`:
+      case `${pageName}_UPDATE`:
         {
           const {
             payload,
@@ -37,7 +37,7 @@ export const createPageReducer = (pageName, initialState) => {
           } = action;
 
           // copy the data
-          const dataCopy = { ...state.pages[buildingName].data };
+          const dataCopy = [...state.pages[buildingName].data];
 
           // replace the old object with the updated object
           dataCopy[index] = payload;
@@ -46,14 +46,14 @@ export const createPageReducer = (pageName, initialState) => {
             data: dataCopy
           });
         }
-      case `ADD_${pageName}`: {
+      case `${pageName}_ADD`: {
         const {
           payload,
           buildingName
         } = action;
 
         // copy the data
-        const dataCopy = { ...state.pages[buildingName].data };
+        const dataCopy = [...state.pages[buildingName].data];
 
         //replace the old object with the updated object
         dataCopy.push(payload);
@@ -70,14 +70,14 @@ export const createPageReducer = (pageName, initialState) => {
           pageSettings: pageSettingsCopy
         });
       };
-      case `DELETE_${pageName}`: {
+      case `${pageName}_DELETE`: {
         const {
           buildingName,
           index
         } = action;
 
         // copy the data
-        const dataCopy = { ...state.pages[buildingName].data };
+        const dataCopy = [...state.pages[buildingName].data];
 
         //remove from the array
         dataCopy.splice(index, 1);
@@ -99,7 +99,7 @@ export const createPageReducer = (pageName, initialState) => {
           status: "error",
           error: action.error
         });
-      case `INIT_${pageName}_STATE`:
+      case `${pageName}_INIT_STATE`:
         return {
           ...state,
           pages: {

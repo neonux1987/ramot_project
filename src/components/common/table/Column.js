@@ -1,6 +1,4 @@
 import React from 'react';
-import { bgcolor } from '@material-ui/system';
-import { spawn } from 'child_process';
 
 export default ({ bgColor = "", span = 1, children, style, show = true }) => {
   return (
