@@ -12,7 +12,7 @@ export default ({
 }) => {
 
   return (
-    <Box mt={marginTop} mb={marginBottom} >
+    <Box mt={marginTop} mb={marginBottom} mx={"24px"}>
       <Box mb={"7px"} mt={0}>
         <Typography style={{ fontSize: titleSize, fontWeight: fontWeight, color: titleColor }}>
           {title}

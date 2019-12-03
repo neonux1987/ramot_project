@@ -4,7 +4,7 @@ import styles from './CellInput.module.css';
 export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPressHandler, styleClass }) => {
 
   const [newValue, setValue] = useState(value);
-
+  console.log("yes")
   const onChangeHandler = (event) => {
     const target = event.currentTarget;
     setValue(target.value);

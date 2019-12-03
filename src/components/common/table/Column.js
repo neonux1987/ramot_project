@@ -1,16 +1,19 @@
 import React from 'react';
 
-export default ({ bgColor = "", span = 1, children, style, show = true }) => {
+export default React.memo(({ children, style, show = true }) => {
   return (
     <div className="_tableColumn" style={{
-      display: show ? "block" : "none",
+      display: show ? "flex" : "none",
+      justifyContent: "center",
+      alignItems: "center",
       ...style
     }}>
-      <div style={{
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>{children}</div>
+      <div>{children}</div>
     </div>);
+}, areEqual);
+
+function areEqual(prevProps, nextProps) {
+  if (prevProps.children === nextProps.children)
+    return true;
+  else return false;
 }

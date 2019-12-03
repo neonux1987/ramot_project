@@ -11,7 +11,7 @@ const styles = theme => ({
     margin: "10px 0 30px",
     boxShadow: "inset 0px 0px 5px 0px rgba(0, 0, 0, 0.12)",
     border: "1px solid #ccc",
-    background: "#fdfbfb",
+    background: "#ffffff",
     padding: "10px"
   },
   form: {
@@ -148,9 +148,11 @@ class InputExpansesField extends Component {
 
   findSection = () => {
     const { code } = this.state.formInputs;
+    const { data } = this.props.summarizedSections.summarizedSections;
     let foundObj = null;
+
     if (code) {
-      foundObj = this.props.summarizedSections.data.find((section) => {
+      foundObj = data.find((section) => {
         return section.id === code.summarized_section_id;
       });
     }

@@ -417,13 +417,14 @@ class MonthExpanses extends Component {
     const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
     return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
-      {headers().map((header, index) => {
+
+      {this.state.editMode ? <Column style={headerStyle}>{"פעולות"}</Column> : null}
+      {headers.map((header, index) => {
         return (
           <Column
-            show={header.title === "פעולות" && !this.state.editMode}
             key={index} style={{
               display: header.title === "פעולות" && !this.state.editMode ? "none" : "flex",
-              ...header.style
+              ...header.headerStyle
             }}>{header.title}</Column>);
       })}
     </HeaderRow>
@@ -436,16 +437,17 @@ class MonthExpanses extends Component {
     const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
     return <Row style={style} gridTemplateColumns={gridTemplateColumns}>
-      <Column show={this.state.editMode}>
-        <TableActions deleteHandler={this.deleteExpanseHandler(rowData.id, index)} />
+      <Column memoValue={rowData["supplierName"]} show={this.state.editMode}>
+
       </Column>
+      {this.state.editMode ? <TableActions deleteHandler={this.deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
       <Column>{rowData["section"]}</Column>
-      <Column>{this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], index) : rowData["supplierName"]}</Column>
-      <NonZeroNumberColumn>{this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : rowData["sum"]}</NonZeroNumberColumn>
-      <Column>{this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : rowData["notes"]}</Column>
+      {this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
+      {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
+      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column>{rowData["notes"]}</Column>}
     </Row>;
   }
 
@@ -473,7 +475,7 @@ class MonthExpanses extends Component {
       date,
       pageSettings
     } = page;
-    console.log(page.data[0]);
+
     //add new month expanse box
     const addNewBox = this.state.addNewMode ?
       <AddBox
@@ -560,51 +562,43 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);
 
-// table headers
-const headers = () => {
-  const style = {
-    backgroundColor: "rgb(52, 58, 64)",
-    color: "#ffffff",
-    fontWeight: "600",
-    justifyContent: "center",
-    height: "27px",
-    alignItems: "center"
-  }
-  return [
-    {
-      title: "פעולות",
-      style
-    },
-    {
-      title: "שורה",
-      style
-    },
-    {
-      title: "קוד הנהח\"ש",
-      style: {
-        ...style,
-        backgroundcolor: "blue"
-      }
-    },
-    {
-      title: "שם חשבון",
-      style
-    },
-    {
-      title: "מקושר לסעיף",
-      style
-    },
-    {
-      title: "ספק",
-      style
-    },
-    {
-      title: "סכום",
-      style
-    },
-    {
-      title: "הערות",
-      style
-    }
-  ]
+const headerStyle = {
+  backgroundColor: "rgb(52, 58, 64)",
+  color: "#ffffff",
+  fontWeight: "600",
+  justifyContent: "center",
+  height: "27px",
+  alignItems: "center"
 };
+
+// table headers
+const headers = [
+  {
+    title: "שורה",
+    headerStyle
+  },
+  {
+    title: "קוד הנהח\"ש",
+    headerStyle
+  },
+  {
+    title: "שם חשבון",
+    headerStyle
+  },
+  {
+    title: "מקושר לסעיף",
+    headerStyle
+  },
+  {
+    title: "ספק",
+    headerStyle
+  },
+  {
+    title: "סכום",
+    headerStyle
+  },
+  {
+    title: "הערות",
+    headerStyle
+  }
+];

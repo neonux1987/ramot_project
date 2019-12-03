@@ -1,8 +1,7 @@
 .header {
-  border-radius: 4px;
   margin-bottom: 20px;
-  border-bottom: 1px dashed #ccc;
   display: flex;
   align-items: center;
-  padding-bottom: 10px;
+  padding: 15px 24px 24px 24px;
+    background: rgba(255,255,255,0.45);
 }
