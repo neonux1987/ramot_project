@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './CellInput.module.css';
+import classnames from 'classnames';
 
 export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPressHandler, styleClass }) => {
 
   const [newValue, setValue] = useState(value);
-  console.log("yes")
+
   const onChangeHandler = (event) => {
     const target = event.currentTarget;
     setValue(target.value);
@@ -17,10 +18,12 @@ export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPr
   // not connected directly to the outside state
   useEffect(() => {
     setValue(value);
-  }, [value])
+  }, [value]);
+
+  let renderer = null;
 
   if (type === "textarea")
-    return <textarea
+    renderer = <textarea
       className={styleClass || styles.cellRender}
       value={newValue}
       onKeyPress={onKeyPressHandler}
@@ -29,7 +32,7 @@ export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPr
       onChange={onChangeHandler}
     />;
   else
-    return <input
+    renderer = <input
       type={type}
       className={styleClass || styles.cellRender}
       value={newValue}
@@ -38,6 +41,8 @@ export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPr
       onClick={onClickHandler}
       onChange={onChangeHandler}
     />;
+
+  return <div className={styles.wrapper}>{renderer}</div>;
 
 },
   areEqual);

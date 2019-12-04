@@ -24,9 +24,9 @@ const Toolbar = (props) => {
         </div>
       </div>
 
-      <div className={classnames(styles.section, styles.alignCenter)}>
+      {/* <div className={classnames(styles.section, styles.alignCenter)}>
         {`שנה ${props.year} / ${props.quarter} / חודש ${props.month}`}
-      </div>
+      </div> */}
 
       <div className={classnames(styles.section, styles.flexAlignLeft)}>
         {`מע"מ נוכחי: ${props.tax}`}

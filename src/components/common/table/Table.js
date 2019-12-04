@@ -1,9 +1,9 @@
 import React from 'react'
-import { FixedSizeList as List } from 'react-window';
+import { VariableSizeList as List } from 'react-window';
 import './table.css';
 import Spinner from '../Spinner/Spinner';
 
-export default ({ GroupComponent, HeaderComponent, Row, isFetching }) => {
+export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemSize, itemCount }) => {
 
   const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
     <List
@@ -11,7 +11,7 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching }) => {
       direction="rtl"
       height={630}
       itemCount={880}
-      itemSize={35}
+      itemSize={itemSize}
     >
       {Row}
     </List>

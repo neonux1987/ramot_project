@@ -14,7 +14,7 @@ const MonthExpanses = (props) => {
   return (
     <Fragment>
 
-      <Header>
+      <Header bgColor="rgb(44, 183, 197)">
         {"מעקב הוצאות חודשיות"}
       </Header>
 

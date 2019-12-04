@@ -451,6 +451,14 @@ class MonthExpanses extends Component {
     </Row>;
   }
 
+  getRowHeight = (index) => {
+    // row data
+    const rowData = this.getDataObject(index);
+    console.log((rowData.notes.length / 40));
+    const height = rowData.notes.length === 0 || rowData.notes.length < 35 ? 35 : Math.ceil(35 * (rowData.notes.length / 30));
+    return height;
+  }
+
   render() {
 
     //building names
@@ -536,6 +544,8 @@ class MonthExpanses extends Component {
           Row={this.Row}
           HeaderComponent={this.HeadersRow}
           isFetching={isFetching || data.length === 0}
+          itemSize={this.getRowHeight}
+          itemCount={data.length}
         />
 
       </TableWrapper>

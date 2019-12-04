@@ -2,11 +2,11 @@ import React from 'react';
 import { Box, Typography } from '@material-ui/core';
 import styles from './Header.module.css'
 
-const Header = ({ fontSize = "36px", color = "#000000", fontWeight = "400", children }) => {
+const Header = ({ bgColor = "rgb(44, 183, 197)", fontSize = "26px", color = "#ffffff", fontWeight = "400", children }) => {
 
   return (
     <Box className={styles.header}>
-      <Box style={{
+      {/* <Box style={{
         width: "64px",
         height: "64px",
         background: "url('https://sfilev2.f-static.com/image/users/441204/departAlbum/441204/normal/4252487.jpg') no-repeat",
@@ -16,13 +16,10 @@ const Header = ({ fontSize = "36px", color = "#000000", fontWeight = "400", chil
         border: "4px solid #e4e4e4"
       }}>
 
-      </Box>
-      <Box>
-        <Typography style={{ color, fontWeight }} variant="h5" color="primary">
+      </Box> */}
+      <Box className={styles.titleWrapper} style={{backgroundColor: bgColor }}>
+        <Typography style={{ color, fontWeight, fontSize }} variant="h5" color="primary">
           {children}
-        </Typography>
-        <Typography style={{ color, fontWeight }} variant="h6" color="primary">
-          {"לב תל אביב"}
         </Typography>
       </Box>
     </Box>
