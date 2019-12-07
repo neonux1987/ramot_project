@@ -32,6 +32,7 @@
     "react-toastify": "^5.4.0",
     "react-virtualized": "^9.21.2",
     "react-virtualized-auto-sizer": "^1.0.2",
+    "react-virtuoso": "^0.12.3",
     "react-window": "^1.8.5",
     "redux": "^4.0.4",
     "redux-persist": "^6.0.0",

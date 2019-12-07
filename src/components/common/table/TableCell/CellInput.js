@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './CellInput.module.css';
 import classnames from 'classnames';
 
-export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPressHandler, styleClass }) => {
+export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPressHandler, styleClass, style }) => {
 
   const [newValue, setValue] = useState(value);
 
@@ -25,6 +25,7 @@ export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPr
   if (type === "textarea")
     renderer = <textarea
       className={styleClass || styles.cellRender}
+      style={style}
       value={newValue}
       onKeyPress={onKeyPressHandler}
       onBlur={onBlurHandler}
@@ -36,6 +37,7 @@ export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPr
       type={type}
       className={styleClass || styles.cellRender}
       value={newValue}
+      style={style}
       onKeyPress={onKeyPressHandler}
       onBlur={onBlurHandler}
       onClick={onClickHandler}

@@ -1,20 +1,38 @@
 import React from 'react'
-import { VariableSizeList as List } from 'react-window';
+import {
+  List,
+  AutoSizer
+} from 'react-virtualized';
 import './table.css';
 import Spinner from '../Spinner/Spinner';
 
-export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemSize, itemCount }) => {
+import { Virtuoso } from 'react-virtuoso'
+
+export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, cache }) => {
 
   const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
-    <List
-      style={{ overflow: "overlay" }}
-      direction="rtl"
-      height={630}
-      itemCount={880}
-      itemSize={itemSize}
-    >
-      {Row}
-    </List>
+    {/* <AutoSizer disableHeight>
+      {({ width }) => {
+        return <List
+          style={{ overflow: "overlay", direction: "rtl", paddingLeft: "10px" }}
+          width={width}
+          height={630}
+          rowCount={itemCount}
+          rowHeight={cache.rowHeight}
+          minHeight={cache.minHeight}
+          deferredMeasurementCache={cache}
+          rowRenderer={Row}
+        />;
+      }}
+    </AutoSizer> */}
+
+    <Virtuoso
+      style={{ overflow: "overlay", direction: "rtl" }}
+      totalCount={itemCount}
+      item={Row}
+      overscan={200}
+    />
+
   </div>;
 
 

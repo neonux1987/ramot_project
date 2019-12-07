@@ -33,7 +33,11 @@ import Row from '../../common/table/Row';
 import Column from '../../common/table/Column';
 import NonZeroNumberColumn from '../../common/table/NonZeroNumberColumn';
 import HeaderRow from '../../common/table/HeaderRow';
-import GroupColumn from '../../common/table/GroupColumn';
+
+import {
+  CellMeasurer,
+  CellMeasurerCache
+} from 'react-virtualized';
 
 class MonthExpanses extends Component {
 
@@ -44,6 +48,13 @@ class MonthExpanses extends Component {
       editMode: false,
       addNewMode: false
     };
+
+    this.cache = new CellMeasurerCache({
+      fixedWidth: true,
+      defaultHeight: 35,
+      minHeight: 35
+    });
+
     //binds
     this.inputExpansesSubmit = this.inputExpansesSubmit.bind(this);
     this.findExpanseIndex = this.findExpanseIndex.bind(this);
@@ -245,6 +256,9 @@ class MonthExpanses extends Component {
 
     const expanse = { ...oldExpanseCopy };
 
+    const target = e.currentTarget;
+    const row = target.parentNode.parentNode;
+    row.style.height = "100px";
     if (type === "number")
       // empty string converted to 0
       // parse float to secure that the value is a number
@@ -269,20 +283,18 @@ class MonthExpanses extends Component {
   }
 
   deleteExpanseHandler = (id, index) => {
-    return useCallback(() => {
-      //building names
-      const { buildingNameEng } = this.props.location.state;
-      // building data
-      const { date } = this.props.monthExpanses.pages[buildingNameEng];
+    //building names
+    const { buildingNameEng } = this.props.location.state;
+    // building data
+    const { date } = this.props.monthExpanses.pages[buildingNameEng];
 
-      //prepare the params
-      let params = {
-        id: id,
-        buildingName: this.props.location.state.buildingNameEng,
-        date: date
-      };
-      this.props.deleteMonthExpanse(params, index);
-    }, [id, index])
+    //prepare the params
+    let params = {
+      id: id,
+      buildingName: this.props.location.state.buildingNameEng,
+      date: date
+    };
+    this.props.deleteMonthExpanse(params, index);
   }
 
   inputClickHandler = (e) => {
@@ -430,17 +442,40 @@ class MonthExpanses extends Component {
     </HeaderRow>
   }
 
-  Row = ({ index, style }) => {
+  /* Row = ({ index, parent, key, style }) => {
     // row data
     const rowData = this.getDataObject(index);
     // column settings
     const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    return <Row style={style} gridTemplateColumns={gridTemplateColumns}>
-      <Column memoValue={rowData["supplierName"]} show={this.state.editMode}>
+    return <CellMeasurer
+      key={key}
+      cache={this.cache}
+      parent={parent}
+      columnIndex={0}
+      rowIndex={index}
+    >
+      <Row style={style} gridTemplateColumns={gridTemplateColumns}>
+        {this.state.editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+        <Column>{index + 1}</Column>
+        <Column>{rowData["code"]}</Column>
+        <Column>{rowData["codeName"]}</Column>
+        <Column>{rowData["section"]}</Column>
+        {this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
+        {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
+        {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column>{rowData["notes"]}</Column>}
+      </Row>
+    </CellMeasurer>;
+  } */
 
-      </Column>
-      {this.state.editMode ? <TableActions deleteHandler={this.deleteExpanseHandler(rowData.id, index)} /> : null}
+  Row = (index) => {
+    // row data
+    const rowData = this.getDataObject(index);
+    // column settings
+    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+
+    return <Row style={{ minHeight: "35px" }} gridTemplateColumns={gridTemplateColumns}>
+      {this.state.editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
@@ -448,15 +483,7 @@ class MonthExpanses extends Component {
       {this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
       {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
       {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column>{rowData["notes"]}</Column>}
-    </Row>;
-  }
-
-  getRowHeight = (index) => {
-    // row data
-    const rowData = this.getDataObject(index);
-    console.log((rowData.notes.length / 40));
-    const height = rowData.notes.length === 0 || rowData.notes.length < 35 ? 35 : Math.ceil(35 * (rowData.notes.length / 30));
-    return height;
+    </Row>
   }
 
   render() {
@@ -544,8 +571,8 @@ class MonthExpanses extends Component {
           Row={this.Row}
           HeaderComponent={this.HeadersRow}
           isFetching={isFetching || data.length === 0}
-          itemSize={this.getRowHeight}
           itemCount={data.length}
+          cache={this.cache}
         />
 
       </TableWrapper>
