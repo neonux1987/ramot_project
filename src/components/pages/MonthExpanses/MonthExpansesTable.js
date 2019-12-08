@@ -24,7 +24,7 @@ import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMid
 import AddBox from './AddBox';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 import DefaultCell from '../../common/table/TableCell/DefaultCell';
-import CellInput from '../../common/table/TableCell/CellInput';
+import CellInput from '../../common/table/TableCell/EditableColumn';
 
 // DATA FETHCER
 import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
@@ -38,6 +38,7 @@ import {
   CellMeasurer,
   CellMeasurerCache
 } from 'react-virtualized';
+import EditableColumn from '../../common/table/TableCell/EditableColumn';
 
 class MonthExpanses extends Component {
 
@@ -256,15 +257,14 @@ class MonthExpanses extends Component {
 
     const expanse = { ...oldExpanseCopy };
 
-    const target = e.currentTarget;
-    const row = target.parentNode.parentNode;
-    row.style.height = "100px";
     if (type === "number")
       // empty string converted to 0
       // parse float to secure that the value is a number
       expanse[key] = value === "" ? 0 : Number.parseFloat(e.target.value);
-    else
-      expanse[key] = value;
+    else {
+      const { innerText } = e.target;
+      expanse[key] = innerText;
+    }
 
     //update the tax to the current one
     expanse.tax = this.props.generalSettings.tax;
@@ -297,8 +297,16 @@ class MonthExpanses extends Component {
     this.props.deleteMonthExpanse(params, index);
   }
 
-  inputClickHandler = (e) => {
+  inputOnFocusHandler = (e) => {
     e.target.select();
+  }
+
+  onFocusHandler = (e) => {
+    var range = document.createRange();
+    range.selectNodeContents(e.target);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
 
   onKeyPressHandler = (e) => {
@@ -315,17 +323,18 @@ class MonthExpanses extends Component {
   }
 
   textAreaInput = (key, value, index) => {
-    return <CellInput
+    return <EditableColumn
       value={value}
       type="textarea"
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
-      onClickHandler={this.inputClickHandler}
+      onFocusHandler={this.onFocusHandler}
+      style={{ paddingLeft: "10px" }}
     />
   };
 
 
   textInput = (key, value, index) => {
-    return <CellInput
+    return <EditableColumn
       value={value}
       type="text"
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
@@ -336,12 +345,12 @@ class MonthExpanses extends Component {
 
   numberInput = (key, value, index) => {
     const newValue = value === 0 ? "" : value;
-    return <CellInput
+    return <EditableColumn
       type="number"
       value={newValue}
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
       onKeyPressHandler={this.onKeyPressHandler}
-      onClickHandler={this.inputClickHandler}
+      onFocusHandler={this.inputOnFocusHandler}
     />
   };
 
@@ -480,9 +489,9 @@ class MonthExpanses extends Component {
       <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
       <Column>{rowData["section"]}</Column>
-      {this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
+      {this.state.editMode ? this.textAreaInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
       {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column>{rowData["notes"]}</Column>}
+      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column style={{ whiteSpace: "pre-wrap" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 

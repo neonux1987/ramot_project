@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styles from './CellInput.module.css';
-import classnames from 'classnames';
+import styles from './EditableColumn.module.css';
 
-export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPressHandler, styleClass, style }) => {
+export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFocusHandler, styleClass, style }) => {
 
   const [newValue, setValue] = useState(value);
 
@@ -23,15 +22,19 @@ export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPr
   let renderer = null;
 
   if (type === "textarea")
-    renderer = <textarea
-      className={styleClass || styles.cellRender}
+    renderer = <div
+      contentEditable
+      className={styleClass || styles.textArea}
       style={style}
-      value={newValue}
+      suppressContentEditableWarning
       onKeyPress={onKeyPressHandler}
       onBlur={onBlurHandler}
-      onClick={onClickHandler}
+      onFocus={onFocusHandler}
       onChange={onChangeHandler}
-    />;
+      dangerouslySetInnerHTML={{
+        __html: newValue
+      }}
+    />
   else
     renderer = <input
       type={type}
@@ -40,7 +43,7 @@ export default React.memo(({ value, type, onBlurHandler, onClickHandler, onKeyPr
       style={style}
       onKeyPress={onKeyPressHandler}
       onBlur={onBlurHandler}
-      onClick={onClickHandler}
+      onFocus={onFocusHandler}
       onChange={onChangeHandler}
     />;
 
