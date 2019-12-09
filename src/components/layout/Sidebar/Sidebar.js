@@ -31,8 +31,9 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: "#00152ad6",
-    //background: "linear-gradient(90deg, #18002a 0%, rgba(0,21,42,1) 100%)",
+    //backgroundColor: "#00152ad6",
+    background: "rgb(33,39,49)",
+    background: "linear-gradient(315deg, rgba(33,39,49,1) 0%, rgba(46,55,62,1) 100%)",
     overflow: "initial",
     position: "relative",
     border: "none"

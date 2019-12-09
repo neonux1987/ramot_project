@@ -34,7 +34,8 @@ const styles = theme => ({
   },
   collapse: {
     //background: "#22262E",
-    backgroundColor: "#000c188f",
+    //backgroundColor: "#000c188f",
+    backgroundColor: "#000c1847",
     paddingTop: "10px",
     paddingBottom: "6px",
     //boxShadow: "inset 0px 1px 1px #050606, inset 0px -1px 1px #050606",

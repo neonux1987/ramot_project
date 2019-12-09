@@ -1,5 +1,6 @@
 .typography {
-  color: #6057ec;
+  /* color: #6057ec; */
+  color: #d0213f;
   width: 70px;
   font-size: 28px;
   font-weight: 600;
@@ -14,7 +15,8 @@
   min-height: initial;
   padding-top: 10px;
   padding-bottom: 12px;
-  background-color: #000c187a;
+  /* background-color: #000c187a; */
+  border-bottom: 1px solid #333a42;
   margin-bottom: 18px;
   direction: ltr;
 }

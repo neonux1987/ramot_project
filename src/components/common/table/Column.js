@@ -6,7 +6,8 @@ export default React.memo(({ children, style, show = true }) => {
       display: show ? "flex" : "none",
       justifyContent: "center",
       alignItems: "center",
-      wordBreak: "break-all",
+      whiteSpace: "pre-wrap",
+      textAlign: "center",
       overflow: "hidden",
       ...style
     }}>

@@ -12,8 +12,8 @@ export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style 
 
   // add settings
   const addNewBtnTitle = addNewMode ? "בטל הוספה" : "הוסף חדש";
-  const addNewBtnStyle = addNewMode ? styles.red : "";
-  const addIcon = addNewMode ? <RemoveCircle className={styles.addIcon} style={{ color: "white" }} /> : <Add className={styles.addIcon} />
+  const addNewBtnStyle = "" //addNewMode ? styles.red : "";
+  const addIcon = addNewMode ? <RemoveCircle className={styles.addIcon} style={{ color: "red" }} /> : <Add className={styles.addIcon} />
 
   return (
     <div className={styles.wrapper} style={style}>

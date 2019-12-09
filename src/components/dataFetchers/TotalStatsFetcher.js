@@ -53,11 +53,14 @@ class TotalStatsFetcher extends React.Component {
 
 }
 
-const mapStateToProps = state => ({
-  monthlyStats: state.monthlyStats,
-  quarterlyStats: state.quarterlyStats,
-  yearlyStats: state.yearlyStats
-});
+const mapStateToProps = (state, ownProps) => {
+  return ({
+    monthlyStats: state.monthlyStats,
+    quarterlyStats: state.quarterlyStats,
+    yearlyStats: state.yearlyStats,
+    date: state[ownProps.pageName].pages[ownProps.params.buildingName].date
+  });
+}
 
 const mapDispatchToProps = dispatch => ({
   fetchAllMonthsStatsByQuarter: (params) => dispatch(monthlyStatsActions.fetchAllMonthsStatsByQuarter(params)),

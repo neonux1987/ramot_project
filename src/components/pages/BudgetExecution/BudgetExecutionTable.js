@@ -586,91 +586,61 @@ class BudgetExecution extends Component {
     } = page;
 
     return (
-      <Fragment>
-        <Header>
-          {headerTitle}
-        </Header>
+      <TableWrapper>
 
-        <Section title={"סיכום הוצאות והכנסות רבעוני"}>
-          <TotalStatsFetcher
-            allMonthStatsByQuarter
-            quarterStats
-            pageName={PAGE_NAME}
-            params={{
-              buildingName: buildingNameEng,
-              date
-            }}>
-            {({ monthlyStats, quarterlyStats }) => {
-              //generate quarter months stats
-              const renderMonthlyStats = this.generateMonthlyStats(monthlyStats.data, date.quarter, monthlyStats.isFetching);
-              //generate quarter total stats
-              renderMonthlyStats.push(this.generateQuarterStats(quarterlyStats.data[0], date.quarter, quarterlyStats.isFetching))
-              return <Stats stats={renderMonthlyStats} />;
-            }}
-          </TotalStatsFetcher>
-        </Section>
-
-        <Section title={"טבלת מעקב וביצוע רבעוני"}>
-
-          <TableWrapper>
-
-            <TableControls
-              rightPane={
-                <EditControls
-                  editMode={this.state.editMode}
-                  toggleEditMode={this.toggleEditMode}
-                  addNewMode={this.state.addNewMode}
-                  toggleAddNewMode={this.toggleAddNewMode}
-                />
-              } // end rightPane
-              middlePane={
-                <RegisteredDatesFetcher fetchYears fetchQuarters params={{
-                  buildingName: buildingNameEng
-                }}>
-                  {({ quarters, years }) => {
-                    return <DatePicker
-                      years={years}
-                      quarters={quarters}
-                      date={date}
-                      submitHandler={this.loadBudgetExecutionsByDate}
-                    />
-                  }}
-                </RegisteredDatesFetcher>
-              } // end middlePane
-              leftPane={
-                <PageControls
-                  excel={{
-                    data: data,
-                    fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-                    sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
-                    header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
-                    date: date
-                  }}
-                  print={{
-                    title: headerTitle,
-                    pageTitle: headerTitle + " - " + buildingName
-                  }}
-                  pageName={pageName}
-                />
-              } // end leftPane
-
-            /> {/* End TableControls */}
-
-            <ReactTableContainer
-              loading={isFetching}
-              data={data}
-              dataCount={100}
-              columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
-              onFetchData={this.onFetchData}
-              pageNameSettings={pageName}
+        <TableControls
+          rightPane={
+            <EditControls
+              editMode={this.state.editMode}
+              toggleEditMode={this.toggleEditMode}
+              addNewMode={this.state.addNewMode}
+              toggleAddNewMode={this.toggleAddNewMode}
             />
+          } // end rightPane
+          middlePane={
+            <RegisteredDatesFetcher fetchYears fetchQuarters params={{
+              buildingName: buildingNameEng
+            }}>
+              {({ quarters, years }) => {
+                return <DatePicker
+                  years={years}
+                  quarters={quarters}
+                  date={date}
+                  submitHandler={this.loadBudgetExecutionsByDate}
+                />
+              }}
+            </RegisteredDatesFetcher>
+          } // end middlePane
+          leftPane={
+            <PageControls
+              excel={{
+                data: data,
+                fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+                sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
+                header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
+                date: date
+              }}
+              print={{
+                title: headerTitle,
+                pageTitle: headerTitle + " - " + buildingName
+              }}
+              pageName={pageName}
+            />
+          } // end leftPane
+
+        /> {/* End TableControls */}
+
+        <ReactTableContainer
+          loading={isFetching}
+          data={data}
+          dataCount={100}
+          columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
+          onFetchData={this.onFetchData}
+          pageNameSettings={pageName}
+        />
 
 
-          </TableWrapper> {/* end TableWrapper */}
-
-        </Section>
-
-      </Fragment>
+      </TableWrapper> {/* end TableWrapper */ }
     );
   }
 

@@ -244,11 +244,20 @@ class MonthExpanses extends Component {
 
   }
 
+  getLocationState = () => {
+    return this.props.location.state;
+  }
+
+  getPage = () => {
+    return this.props.page;
+  }
+
   cellInputOnBlurHandler(e, key, index) {
     //building names
-    const { buildingNameEng } = this.props.location.state;
+    const { buildingNameEng } = this.getLocationState();
+
     // building data
-    const { date, data } = this.props.monthExpanses.pages[buildingNameEng];
+    const { date, data } = this.getPage();
 
     const { type, value } = e.target;
 
@@ -272,7 +281,7 @@ class MonthExpanses extends Component {
     //prepare the params
     let params = {
       expanse: expanse,
-      buildingName: this.props.location.state.buildingNameEng,
+      buildingName: buildingNameEng,
       date: {
         ...date
       }
@@ -284,14 +293,15 @@ class MonthExpanses extends Component {
 
   deleteExpanseHandler = (id, index) => {
     //building names
-    const { buildingNameEng } = this.props.location.state;
+    const { buildingNameEng } = this.getLocationState();
+
     // building data
-    const { date } = this.props.monthExpanses.pages[buildingNameEng];
+    const { date } = this.getPage();
 
     //prepare the params
     let params = {
       id: id,
-      buildingName: this.props.location.state.buildingNameEng,
+      buildingName: buildingNameEng,
       date: date
     };
     this.props.deleteMonthExpanse(params, index);
@@ -328,7 +338,6 @@ class MonthExpanses extends Component {
       type="textarea"
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
       onFocusHandler={this.onFocusHandler}
-      style={{ paddingLeft: "10px" }}
     />
   };
 
@@ -397,9 +406,10 @@ class MonthExpanses extends Component {
   onFetchData = (state) => {
 
     //building names
-    const { buildingNameEng } = this.props.location.state;
+    const { buildingNameEng } = this.getLocationState();
 
-    const { date } = this.props.monthExpanses.pages[buildingNameEng];
+    // building data
+    const { date } = this.getPage();
 
     const {
       pageSize
@@ -426,11 +436,8 @@ class MonthExpanses extends Component {
   }
 
   getDataObject = (index) => {
-    // building name
-    const { buildingNameEng } = this.props.location.state;
-    // data
-    const { data } = this.props.monthExpanses.pages[buildingNameEng];
-    return data[index];
+    // building data
+    return this.getPage().data[index];
   }
 
   HeadersRow = () => {
@@ -496,11 +503,11 @@ class MonthExpanses extends Component {
   }
 
   render() {
-
+    console.log("rendered")
     //building names
-    const { buildingName, buildingNameEng } = this.props.location.state;
+    const { buildingName, buildingNameEng } = this.getLocationState();
 
-    const page = this.props.monthExpanses.pages[buildingNameEng];
+    const page = this.props.page;
 
     if (page === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
@@ -510,7 +517,7 @@ class MonthExpanses extends Component {
     const {
       pageName,
       headerTitle
-    } = this.props.monthExpanses;
+    } = this.props.pageInfo;
 
     // building data
     const {
@@ -590,12 +597,27 @@ class MonthExpanses extends Component {
 
 }
 
-const mapStateToProps = state => ({
-  monthExpanses: state.monthExpanses,
-  generalSettings: {
-    tax: state.generalSettings.generalSettings.data[0].tax
-  }
-});
+const mapStateToProps = (state, ownProps) => {
+  //buildingName
+  const buildingName = ownProps.location.state.buildingNameEng;
+
+  //pageInfo
+  const {
+    pageName,
+    headerTitle
+  } = state.monthExpanses;
+
+  return ({
+    page: state.monthExpanses.pages[buildingName],
+    pageInfo: {
+      pageName,
+      headerTitle
+    },
+    generalSettings: {
+      tax: state.generalSettings.generalSettings.data[0].tax
+    }
+  });
+}
 
 const mapDispatchToProps = dispatch => ({
   fetchMonthExpanses: (payload, page) => dispatch(monthExpansesAction.fetchMonthExpanses(payload, page)),
