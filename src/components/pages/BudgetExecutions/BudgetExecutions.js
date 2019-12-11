@@ -30,7 +30,7 @@ const BudgetExecutions = props => {
     <DateProvider pageName={PAGE_NAME} buildingName={buildingNameEng}>
       {(date) => {
 
-        const TableComponent = withBudgetExecutionsProvider(BudgetExecutionsTable, buildingNameEng, date);
+        const TableComponent = withBudgetExecutionsProvider(BudgetExecutionsTable, PAGE_NAME, buildingNameEng, date);
 
         if (date === undefined || date[buildingNameEng] === undefined)
           return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות עמוד מעקב מול ביצוע..."} /></AlignCenterMiddle>;
