@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import registeredQuartersActions from '../../redux/actions/registeredQuartersActions';
-import registeredMonthsActions from '../../redux/actions/registeredMonthsActions';
-import registeredYearsActions from '../../redux/actions/registeredYearsActions';
+import registeredQuartersActions from '../../../redux/actions/registeredQuartersActions';
+import registeredMonthsActions from '../../../redux/actions/registeredMonthsActions';
+import registeredYearsActions from '../../../redux/actions/registeredYearsActions';
 
 class RegisteredDatesFetcher extends React.Component {
 

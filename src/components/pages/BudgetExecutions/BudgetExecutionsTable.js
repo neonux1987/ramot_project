@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import * as budgetExecutionActions from '../../../redux/actions/budgetExecutionActions';
+import * as budgetExecutionActions from '../../../redux/actions/budgetExecutionsActions';
 import Helper from '../../../helpers/Helper';
 import TableControls from '../../common/table/TableControls/TableControls';
 import PageControls from '../../common/PageControls/PageControls';
@@ -16,8 +16,8 @@ import Header from '../../common/Header/Header';
 import Section from '../../common/Section/Section';
 import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
 import Stats from '../../common/Stats/Stats';
-import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
-import TotalStatsFetcher from '../../dataFetchers/TotalStatsFetcher';
+import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
+import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 import GroupColumn from '../../common/table/GroupColumn';
 import HeaderRow from '../../common/table/HeaderRow';
@@ -28,27 +28,13 @@ import TableActions from '../../common/table/TableActions/TableActions';
 
 const FIXED_FLOAT = 2;
 
-const PAGE_NAME = "budgetExecution";
+const PAGE_NAME = "budgetExecutions";
 
-class BudgetExecution extends Component {
-
-  constructor(props) {
-    super(props);
-    this._isMounted = false;
-  }
+export default class BudgetExecutionsTable extends Component {
 
   state = {
     editMode: false,
     addNewMode: false
-  }
-
-  componentDidMount() {
-    this.props.initBudgetExecutionsState(this.props.location.state.buildingNameEng);
-  }
-
-  componentWillUnmount() {
-    //on exit init table data
-    this.props.budgetExecutionsCleanup(this.props.location.state.buildingNameEng);
   }
 
   loadBudgetExecutionsByDate = ({ year, quarter }) => {
@@ -226,166 +212,6 @@ class BudgetExecution extends Component {
     />
   };
 
-  generateHeaders = (months) => {
-
-    const month1Color = "rgb(76, 139, 218)";
-    const month2Color = "rgb(107, 187, 139)";
-    const month3Color = "rgb(218, 87, 87)";
-    const quarterColor = "rgb(75, 81, 95)";
-    const defaultColor = "#343a40";
-
-    const headerStyle = (bgColor) => ({
-      background: bgColor,
-      fontWeight: "600",
-      fontSize: "15px",
-      color: "#fff"
-    });
-
-    return [
-      {
-        Header: "",
-        width: 80,
-        columns: [
-          {
-            accessor: "summarized_section_id",
-            Header: "שורה",
-            headerStyle: headerStyle(defaultColor),
-            width: 80,
-            Cell: (row) => {
-              return <span>{row.viewIndex + 1}</span>;
-            },
-          }
-        ]
-      },
-      {
-        Header: "",
-        columns: [
-          {
-            accessor: "section",
-            Header: "סעיף",
-            headerStyle: headerStyle(defaultColor)
-          }
-        ]
-      },
-      {
-        Header: months[0].header,
-        headerStyle: headerStyle(month1Color),
-        columns: [
-          {
-            accessor: months[0].column1.accessor,
-            Header: months[0].column1.header,
-            headerStyle: headerStyle(month1Color),
-            Cell: this.cellNumberInput,
-            style: {
-              padding: 0
-            }
-          },
-          {
-            accessor: months[0].column2.accessor,
-            Header: months[0].column2.header,
-            headerStyle: headerStyle(month1Color),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      },
-      {
-        Header: months[1].header,
-        headerStyle: headerStyle(month2Color),
-        columns: [
-          {
-            accessor: months[1].column1.accessor,
-            Header: months[1].column1.header,
-            headerStyle: headerStyle(month2Color),
-            Cell: this.cellNumberInput,
-            style: {
-              padding: 0
-            }
-          },
-          {
-            accessor: months[1].column2.accessor,
-            Header: months[1].column2.header,
-            headerStyle: headerStyle(month2Color),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      },
-      {
-        Header: months[2].header,
-        headerStyle: headerStyle(month3Color),
-        columns: [
-          {
-            accessor: months[2].column1.accessor,
-            Header: months[2].column1.header,
-            headerStyle: headerStyle(month3Color),
-            Cell: this.cellNumberInput,
-            style: {
-              padding: 0
-            }
-          },
-          {
-            accessor: months[2].column2.accessor,
-            Header: months[2].column2.header,
-            headerStyle: headerStyle(month3Color),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      },
-      {
-        Header: "סוף רבעון",
-        headerStyle: headerStyle(quarterColor),
-        columns: [
-          {
-            accessor: "evaluation",
-            Header: "הערכה",
-            headerStyle: headerStyle(quarterColor),
-            Cell: this.cell
-          },
-          {
-            accessor: "total_budget",
-            Header: "תקציב",
-            headerStyle: headerStyle(quarterColor),
-            Cell: this.cell,
-            style: {
-              padding: 0
-            }
-          },
-          {
-            accessor: "total_execution",
-            Header: "ביצוע",
-            headerStyle: headerStyle(quarterColor),
-            Cell: this.cell
-          }
-        ]
-      },
-      {
-        accessor: "difference",
-        Header: "הפרש",
-        headerStyle: headerStyle(defaultColor),
-        Cell: this.cell,
-        style: {
-          direction: "ltr"
-        },
-        getProps: (state, rowInfo, column) => {
-          return (rowInfo !== undefined && column !== undefined) ? {
-            style: {
-              ...this.colorCell(column.id, rowInfo.row.difference)
-            }
-          } : {}
-        }
-      },
-      {
-        accessor: "notes",
-        Header: "הערות",
-        headerStyle: headerStyle(defaultColor),
-        Cell: this.cellTextAreaInput,
-        style: {
-          padding: 0,
-          paddingLeft: "10px"
-        }
-      }
-    ];
-  }
-
   toggleEditMode = (event) => {
     this.setState({
       ...this.state,
@@ -412,58 +238,6 @@ class BudgetExecution extends Component {
       addNewMode: !this.state.addNewMode
     })
   };
-
-  /******************************************************************
-   * generates month stats
-   * @param {*} monthStats list of month stats
-   * @param {*} quarter the quarter which the months belong to
-   * @param {*} isFetching if the data is fetching
-   ******************************************************************/
-  generateMonthlyStats(monthStats, quarter, isFetching) {
-
-    // list of strings of qurter months
-    const quarterMonths = Helper.getQuarterMonths(quarter);
-
-    // where the boxes will be stored fo render
-    const returnStats = [];
-
-    for (let i = 0; i < quarterMonths.length; i++) {
-
-      // render loading if still fetching the stats
-      if (isFetching || monthStats.length === 0) {
-        returnStats[i] = <StatLoadingBox key={i} title={`טוען נתוני חודש ${quarterMonths[i]}`} />;
-      } else {
-
-        returnStats[i] = <StatBox
-          key={i}
-          title={monthStats[i].month}
-          outcome={`${monthStats[i].outcome} ${Helper.shekelUnicode}`}
-          income={`${monthStats[i].income} ${Helper.shekelUnicode}`}
-          bgColor={Helper.quarterMonthsColors[i]}
-        />;
-
-      }
-
-    } // end loop
-
-    return returnStats;
-
-  }
-
-  generateQuarterStats(quarterStat, quarter, isFetching) {
-    //render loading if still fetching the stats
-    if (isFetching || quarterStat === undefined) {
-      return <StatLoadingBox key={3} title={`טוען נתוני סוף רבעון ${quarter}`} />
-    } else {
-      return <StatBox
-        key={3}
-        title={`רבעון ${quarterStat.quarter}`}
-        outcome={`${quarterStat.outcome} ${Helper.shekelUnicode}`}
-        income={`${quarterStat.income} ${Helper.shekelUnicode}`}
-        bgColor={Helper.endQuarterColor}
-      />;
-    }
-  }
 
   onFetchData = (state) => {
 
@@ -565,130 +339,73 @@ class BudgetExecution extends Component {
     //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
 
-    const page = this.props.budgetExecution.pages[buildingNameEng];
-
-    if (page === undefined) {
+    if (this.props.budgetExecution.data === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
 
-    // page info
+    // provider data
     const {
-      pageName,
-      headerTitle
-    } = this.props.budgetExecution;
-
-    // building data
-    const {
-      isFetching,
       data,
+      isFetching,
       date,
-      pageSettings
-    } = page;
+      pageSettings,
+      headerTitle,
+      pageName
+    } = this.props.budgetExecutions;
 
     return (
-      <Fragment>
-        <Header>
-          {headerTitle}
-        </Header>
+      <TableWrapper>
 
-        <Section title={"סיכום הוצאות והכנסות רבעוני"}>
-          <TotalStatsFetcher
-            allMonthStatsByQuarter
-            quarterStats
-            pageName={PAGE_NAME}
-            params={{
-              buildingName: buildingNameEng,
-              date
-            }}>
-            {({ monthlyStats, quarterlyStats }) => {
-              //generate quarter months stats
-              const renderMonthlyStats = this.generateMonthlyStats(monthlyStats.data, date.quarter, monthlyStats.isFetching);
-              //generate quarter total stats
-              renderMonthlyStats.push(this.generateQuarterStats(quarterlyStats.data[0], date.quarter, quarterlyStats.isFetching))
-              return <Stats stats={renderMonthlyStats} />;
-            }}
-          </TotalStatsFetcher>
-        </Section>
-
-        <Section title={"טבלת מעקב וביצוע רבעוני"}>
-
-          <TableWrapper>
-
-            <TableControls
-              rightPane={
-                <EditControls
-                  editMode={this.state.editMode}
-                  toggleEditMode={this.toggleEditMode}
-                  addNewMode={this.state.addNewMode}
-                  toggleAddNewMode={this.toggleAddNewMode}
-                />
-              } // end rightPane
-              middlePane={
-                <RegisteredDatesFetcher fetchYears fetchQuarters params={{
-                  buildingName: buildingNameEng
-                }}>
-                  {({ quarters, years }) => {
-                    return <DatePicker
-                      years={years}
-                      quarters={quarters}
-                      date={date}
-                      submitHandler={this.loadBudgetExecutionsByDate}
-                    />
-                  }}
-                </RegisteredDatesFetcher>
-              } // end middlePane
-              leftPane={
-                <PageControls
-                  excel={{
-                    data: data,
-                    fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-                    sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
-                    header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
-                    date: date
-                  }}
-                  print={{
-                    title: headerTitle,
-                    pageTitle: headerTitle + " - " + buildingName
-                  }}
-                  pageName={pageName}
-                />
-              } // end leftPane
-
-            /> {/* End TableControls */}
-
-            <ReactTableContainer
-              loading={isFetching}
-              data={data}
-              dataCount={100}
-              columns={this.generateHeaders(Helper.getQuarterMonthsHeaders(date.quarter))}
-              onFetchData={this.onFetchData}
-              pageNameSettings={pageName}
+        <TableControls
+          rightPane={
+            <EditControls
+              editMode={this.state.editMode}
+              toggleEditMode={this.toggleEditMode}
+              addNewMode={this.state.addNewMode}
+              toggleAddNewMode={this.toggleAddNewMode}
             />
+          } // end rightPane
+          middlePane={
+            <RegisteredDatesFetcher fetchYears fetchQuarters params={{
+              buildingName: buildingNameEng
+            }}>
+              {({ quarters, years }) => {
+                return <DatePicker
+                  years={years}
+                  quarters={quarters}
+                  date={date}
+                  submitHandler={this.loadBudgetExecutionsByDate}
+                />
+              }}
+            </RegisteredDatesFetcher>
+          } // end middlePane
+          leftPane={
+            <PageControls
+              excel={{
+                data: data,
+                fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+                sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
+                header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
+                date: date
+              }}
+              print={{
+                title: headerTitle,
+                pageTitle: headerTitle + " - " + buildingName
+              }}
+              pageName={pageName}
+            />
+          } // end leftPane
+
+        /> {/* End TableControls */}
 
 
-          </TableWrapper> {/* end TableWrapper */}
 
-        </Section>
 
-      </Fragment>
+      </TableWrapper>
     );
   }
 
 }
-
-const mapStateToProps = state => ({
-  budgetExecution: state.budgetExecution
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchBudgetExecutions: (payload) => dispatch(budgetExecutionActions.fetchBudgetExecutions(payload)),
-  budgetExecutionsCleanup: (buildingNameEng) => dispatch(budgetExecutionActions.budgetExecutionsCleanup(buildingNameEng)),
-  initBudgetExecutionsState: (page) => dispatch(budgetExecutionActions.initBudgetExecutionsState(page)),
-  updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
-  addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionActions.addBudgetExecution(payload, tableData))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecution);
 
 const headers = () => {
   const style = {

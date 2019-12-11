@@ -9,7 +9,7 @@ import Section from '../../common/Section/Section';
 // DATA FETHCER
 import MonthExpansesTable from './MonthExpansesTable';
 
-const MonthExpanses = (props) => {
+const MonthExpanses = props => {
 
   return (
     <Fragment>

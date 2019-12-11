@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MonthExpanses from '../../pages/MonthExpanses/MonthExpanses';
 import Home from '../../pages/Home/Home';
-import BudgetExecution from '../../pages/BudgetExecution/BudgetExecution';
-import SummarizedBudget from '../../pages/SummarizedBudget/SummarizedBudget';
+import BudgetExecutions from '../../pages/BudgetExecutions/BudgetExecutions';
+import SummarizedBudgets from '../../pages/SummarizedBudgets/SummarizedBudgets';
 import Settings from '../../pages/Settings/Settings';
 import Statistics from '../../pages/Statistics/Statistics'
 import { Route, Switch } from 'react-router-dom';
@@ -66,8 +66,8 @@ class Main extends Component {
   whichPageComponent(pageName) {
     switch (pageName) {
       case "הוצאות חודשי": return MonthExpanses;
-      case "ביצוע מול תקציב": return BudgetExecution;
-      case "סיכום תקציבי": return SummarizedBudget;
+      case "ביצוע מול תקציב": return BudgetExecutions;
+      case "סיכום תקציבי": return SummarizedBudgets;
       case "סטטיסטיקה": return Statistics;
       default: return Home;
     }
@@ -89,7 +89,7 @@ class Main extends Component {
       return (
         <main id="main" className={this.props.classes.main + this.props.toggleMain}>
           <Toolbar buildingName={locationState.buildingName} header={locationState.page} year={Helper.getCurrentYear()} quarter={Helper.getCurrentQuarterHeb()} month={Helper.getCurrentMonthHeb()} tax={`${generalSettings.data[0].tax}%`} />
-          <div /* style={{ padding: "15px 24px 24px 24px" }} */>
+          <div /* style={{ padding: "15px 24px 24px 24px" }} */ style={{ height: "100%" }}>
             <Switch>
               {this.generateRoutes(this.props.sidebar.sidebar.data)}
               <Route path="/דף-הבית" component={Home} />

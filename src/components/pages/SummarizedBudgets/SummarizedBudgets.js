@@ -10,8 +10,8 @@ import TableControls from '../../common/table/TableControls/TableControls';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
 import EditControls from '../../common/EditControls/EditControls';
-import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
-import TotalStatsFetcher from '../../dataFetchers/TotalStatsFetcher';
+import RegisteredDatesProvider from '../../renderProps/providers/RegisteredDatesFetcher';
+import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
 import Stats from '../../common/Stats/Stats';
 import Section from '../../common/Section/Section';
 import StatBox from '../../common/Stats/StatBox/StatBox';
@@ -366,7 +366,7 @@ class SummarizedBudget extends Component {
                 />
               } // end rightPane
               middlePane={
-                <RegisteredDatesFetcher fetchYears params={{
+                <RegisteredDatesProvider fetchYears params={{
                   buildingName: buildingNameEng
                 }}>
                   {({ years }) => {
@@ -376,7 +376,7 @@ class SummarizedBudget extends Component {
                       submitHandler={this.loadDataByDate}
                     />
                   }}
-                </RegisteredDatesFetcher>
+                </RegisteredDatesProvider>
               } // end middlePane
               leftPane={<PageControls
                 excel={{

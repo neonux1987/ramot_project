@@ -27,7 +27,7 @@ import DefaultCell from '../../common/table/TableCell/DefaultCell';
 import CellInput from '../../common/table/TableCell/EditableColumn';
 
 // DATA FETHCER
-import RegisteredDatesFetcher from '../../dataFetchers/RegisteredDatesFetcher';
+import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
 import Table from '../../common/table/Table';
 import Row from '../../common/table/Row';
 import Column from '../../common/table/Column';

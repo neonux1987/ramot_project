@@ -11,11 +11,11 @@ const persistConfig = {
     'app',
     'sidebar',
     'monthExpanses',
-    'budgetExecution',
+    'budgetExecutions',
     "summarizedSections",
     "expansesCodes",
     "generalSettings",
-    "summarizedBudget",
+    "summarizedBudgets",
     "registeredMonths",
     "registeredYears",
     "registeredQuarters",
@@ -24,7 +24,8 @@ const persistConfig = {
     "monthlyStats",
     "quarterlyStats",
     "yearlyStats",
-    "tableSettings"
+    "tableSettings",
+    "date"
   ]
 
 }

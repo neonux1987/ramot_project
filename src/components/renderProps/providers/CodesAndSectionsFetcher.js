@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
-import expansesCodesActions from '../../redux/actions/expansesCodesActions';
+import summarizedSectionsActions from '../../../redux/actions/summarizedSectionsActions';
+import expansesCodesActions from '../../../redux/actions/expansesCodesActions';
 
 class CodesAndSectionsFetcher extends React.Component {
 

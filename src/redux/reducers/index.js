@@ -13,6 +13,7 @@ import monthlyStats from './monthlyStatsReducer';
 import quarterlyStats from './quarterlyStatsReducer';
 import yearlyStats from './yearlyStatsReducer';
 import tableSettings from './tableSettingsReducer';
+import date from './dateReducer';
 import { createPageReducer } from './util/util';
 
 // init month expanses reducer
@@ -23,14 +24,14 @@ const monthExpanses = createPageReducer("MONTH_EXPANSES", {
 });
 
 // init budget executions reducer
-const budgetExecution = createPageReducer("BUDGET_EXECUTIONS", {
+const budgetExecutions = createPageReducer("BUDGET_EXECUTIONS", {
   pageName: "budgetExecutions",
   headerTitle: "מעקב ביצוע מול תקציב",
   pages: {}
 });
 
 // init budget executions reducer
-const summarizedBudget = createPageReducer("SUMMARIZED_BUDGETS", {
+const summarizedBudgets = createPageReducer("SUMMARIZED_BUDGETS", {
   pageName: "summarizedBudgets",
   headerTitle: "סיכום תקציבי",
   pages: {}
@@ -40,11 +41,11 @@ export default combineReducers({
   app,
   sidebar,
   monthExpanses,
-  budgetExecution,
+  budgetExecutions,
   summarizedSections,
   expansesCodes,
   generalSettings,
-  summarizedBudget,
+  summarizedBudgets,
   registeredMonths,
   registeredYears,
   registeredQuarters,
@@ -53,5 +54,6 @@ export default combineReducers({
   monthlyStats,
   quarterlyStats,
   yearlyStats,
-  tableSettings
+  tableSettings,
+  date
 });

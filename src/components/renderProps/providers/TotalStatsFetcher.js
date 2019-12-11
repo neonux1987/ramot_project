@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import monthlyStatsActions from '../../redux/actions/monthlyStatsActions';
-import quarterlyStatsActions from '../../redux/actions/quarterlyStatsActions';
-import yearlyStatsActions from '../../redux/actions/yearlyStatsActions';
+import monthlyStatsActions from '../../../redux/actions/monthlyStatsActions';
+import quarterlyStatsActions from '../../../redux/actions/quarterlyStatsActions';
+import yearlyStatsActions from '../../../redux/actions/yearlyStatsActions';
 
 class TotalStatsFetcher extends React.Component {
 
@@ -53,12 +53,11 @@ class TotalStatsFetcher extends React.Component {
 
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return ({
     monthlyStats: state.monthlyStats,
     quarterlyStats: state.quarterlyStats,
-    yearlyStats: state.yearlyStats,
-    date: state[ownProps.pageName].pages[ownProps.params.buildingName].date
+    yearlyStats: state.yearlyStats
   });
 }
 
