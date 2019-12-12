@@ -3,15 +3,15 @@ import React from 'react';
 
 import Helper from '../../../helpers/Helper';
 
-import StatBox from '../../common/Stats/StatBox/StatBox';
-import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
-import Stats from '../../common/Stats/Stats';
+import StatBox from '../../../components/common/Stats/StatBox/StatBox';
+import StatLoadingBox from '../../../components/common/Stats/StatLoadingBox/StatLoadingBox';
+import Stats from '../../../components/common/Stats/Stats';
 
-import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
-import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../common/Spinner/Spinner';
+import TotalStatsFetcher from '../../../renderProps/providers/TotalStatsFetcher';
+import { AlignCenterMiddle } from '../../../components/common/AlignCenterMiddle/AlignCenterMiddle';
+import Spinner from '../../../components/common/Spinner/Spinner';
 
-const QuarterStats = props => {
+const QuarterStatsContainer = props => {
 
   const generateMonthlyStats = (monthStats, quarter, isFetching) => {
 
@@ -91,4 +91,4 @@ const QuarterStats = props => {
 
 }
 
-export default QuarterStats;
+export default QuarterStatsContainer;

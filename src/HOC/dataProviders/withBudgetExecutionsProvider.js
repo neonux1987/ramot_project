@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as budgetExecutionsActions from '../../../redux/actions/budgetExecutionsActions';
+import * as budgetExecutionsActions from '../../redux/actions/budgetExecutionsActions';
 
-export default (WrappedComponent, pageName, buildingName, date) => {
-  class BudgetExecutions extends React.Component {
+export default (WrappedComponent, buildingName, date) => {
+  class withBudgetExecutionsProvider extends React.Component {
 
     componentDidMount() {
+      console.log(date);
       const params = {
         date,
         buildingName
@@ -25,26 +26,15 @@ export default (WrappedComponent, pageName, buildingName, date) => {
     }
 
     render() {
-      console.log(this.props);
-      const {
-        data,
-        isFetching,
-        pageSettings,
-        headerTitle
-      } = this.props.page;
-
       return <WrappedComponent
+        location={this.location}
+        headerTitle={this.headerTitle}
+        date={this.date}
+        pageName={this.pageName}
         budgetExecutions={{
-          date,
-          data,
-          isFetching,
-          pageSettings,
-          headerTitle,
-          pageName,
+          ...this.props.page,
           actions: {
             fetchBudgetExecutions: this.props.fetchBudgetExecutions,
-            budgetExecutionsCleanup: this.props.budgetExecutionsCleanup,
-            initBudgetExecutionsState: this.props.initBudgetExecutionsState,
             updateBudgetExecution: this.props.updateBudgetExecution,
             addBudgetExecution: this.props.addBudgetExecution
           }
@@ -54,24 +44,19 @@ export default (WrappedComponent, pageName, buildingName, date) => {
 
   };// end of BudgetExecutions
 
-  const mapStateToProps = (state, ownProps) => ({
+  const mapStateToProps = (state) => ({
     page: state.budgetExecutions.pages[buildingName],
     headerTitle: state.budgetExecutions.headerTitle
   });
 
   const mapDispatchToProps = dispatch => ({
-    fetchBudgetExecutions: (payload) => dispatch(budgetExecutionsActions.fetchBudgetExecutions(payload)),
+    fetchBudgetExecutions: (params) => dispatch(budgetExecutionsActions.fetchBudgetExecutions(params)),
     budgetExecutionsCleanup: (buildingNameEng) => dispatch(budgetExecutionsActions.budgetExecutionsCleanup(buildingNameEng)),
     initBudgetExecutionsState: (page) => dispatch(budgetExecutionsActions.initBudgetExecutionsState(page)),
     updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionsActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
     addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionsActions.addBudgetExecution(payload, tableData))
   });
 
-  BudgetExecutions.propTypes = {
-    buildingName: PropTypes.string.isRequired,
-    date: PropTypes.object.isRequired,
-  };
-
-  return connect(mapStateToProps, mapDispatchToProps)(BudgetExecutions);
+  return connect(mapStateToProps, mapDispatchToProps)(withBudgetExecutionsProvider);
 }
 

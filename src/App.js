@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Sidebar from "./components/layout/Sidebar/Sidebar";
-import Main from "./components/layout/main/Main";
+import MainContainer from "./containers/MainContainer";
 import { MemoryRouter } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -122,7 +122,7 @@ class App extends Component {
               <CssBaseline />
 
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
-              <Main toggleMain={" showMainAnimation"} />
+              <MainContainer toggleMain={" showMainAnimation"} />
             </div>
             <ToastContainer
               position="bottom-left"

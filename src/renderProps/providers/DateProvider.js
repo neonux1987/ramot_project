@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as dateActions from '../../../redux/actions/dateActions';
+import * as dateActions from '../../redux/actions/dateActions';
 
 class DateProvider extends React.Component {
 

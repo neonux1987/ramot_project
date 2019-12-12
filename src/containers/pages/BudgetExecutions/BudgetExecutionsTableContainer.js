@@ -1,40 +1,56 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import * as budgetExecutionActions from '../../../redux/actions/budgetExecutionsActions';
+import * as budgetExecutionsActions from '../../../redux/actions/budgetExecutionsActions';
 import Helper from '../../../helpers/Helper';
-import TableControls from '../../common/table/TableControls/TableControls';
-import PageControls from '../../common/PageControls/PageControls';
-import DatePicker from '../../common/DatePicker/DatePicker';
-import EditControls from '../../common/EditControls/EditControls';
-import { notify, notificationTypes } from '../../Notifications/Notification';
+import TableControls from '../../../components/common/table/TableControls/TableControls';
+import PageControls from '../../../components/common/PageControls/PageControls';
+import DatePicker from '../../../components/common/DatePicker/DatePicker';
+import EditControls from '../../../components/common/EditControls/EditControls';
+import { notify, notificationTypes } from '../../../components/Notifications/Notification';
 import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
-import Spinner from '../../common/Spinner/Spinner';
-import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import StatBox from '../../common/Stats/StatBox/StatBox';
-import ReactTableContainer from '../../common/table/ReactTableContainer/ReactTableContainer';
-import Header from '../../common/Header/Header';
-import Section from '../../common/Section/Section';
-import StatLoadingBox from '../../common/Stats/StatLoadingBox/StatLoadingBox';
-import Stats from '../../common/Stats/Stats';
-import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
-import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
-import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
-import GroupColumn from '../../common/table/GroupColumn';
-import HeaderRow from '../../common/table/HeaderRow';
-import Column from '../../common/table/Column';
-import Row from '../../common/table/Row';
-import NonZeroNumberColumn from '../../common/table/NonZeroNumberColumn';
-import TableActions from '../../common/table/TableActions/TableActions';
+import Spinner from '../../../components/common/Spinner/Spinner';
+import { AlignCenterMiddle } from '../../../components/common/AlignCenterMiddle/AlignCenterMiddle';
+
+import ReactTableContainer from '../../../components/common/table/ReactTableContainer/ReactTableContainer';
+
+import RegisteredDatesFetcher from '../../../renderProps/providers/RegisteredDatesFetcher';
+
+import TableWrapper from '../../../components/common/table/TableWrapper/TableWrapper';
+import GroupColumn from '../../../components/common/table/GroupColumn';
+import HeaderRow from '../../../components/common/table/HeaderRow';
+import Column from '../../../components/common/table/Column';
+import Row from '../../../components/common/table/Row';
+import NonZeroNumberColumn from '../../../components/common/table/NonZeroNumberColumn';
+import TableActions from '../../../components/common/table/TableActions/TableActions';
 
 const FIXED_FLOAT = 2;
 
 const PAGE_NAME = "budgetExecutions";
 
-export default class BudgetExecutionsTable extends Component {
+class BudgetExecutionsTable extends Component {
 
   state = {
     editMode: false,
     addNewMode: false
+  }
+
+  componentDidMount() {
+
+    const params = {
+      date: this.props.date,
+      buildingName: this.props.location.state.buildingNameEng
+    }
+
+    // init the state first
+    this.props.initBudgetExecutionsState(params.buildingName).then(() => {
+      // fetch budget executions
+      this.props.fetchBudgetExecutions(params);
+    });
+  }
+
+  componentWillUnmount() {
+    //cleanup
+    this.props.budgetExecutionsCleanup(this.props.location.state.buildingNameEng);
   }
 
   loadBudgetExecutionsByDate = ({ year, quarter }) => {
@@ -406,6 +422,20 @@ export default class BudgetExecutionsTable extends Component {
   }
 
 }
+
+const mapStateToProps = (state, ownProps) => ({
+  page: state.budgetExecutions.pages[ownProps.location.state.buildingNameEng]
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchBudgetExecutions: (params) => dispatch(budgetExecutionsActions.fetchBudgetExecutions(params)),
+  budgetExecutionsCleanup: (buildingName) => dispatch(budgetExecutionsActions.budgetExecutionsCleanup(buildingName)),
+  initBudgetExecutionsState: (page) => dispatch(budgetExecutionsActions.initBudgetExecutionsState(page)),
+  updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionsActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
+  addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionsActions.addBudgetExecution(payload, tableData))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecutionsTable);
 
 const headers = () => {
   const style = {

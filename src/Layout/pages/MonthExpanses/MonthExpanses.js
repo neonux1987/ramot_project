@@ -7,7 +7,7 @@ import Header from '../../common/Header/Header';
 import Section from '../../common/Section/Section';
 
 // DATA FETHCER
-import MonthExpansesTable from './MonthExpansesTable';
+import MonthExpansesTableContainer from '../../../containers/pages/MonthExpanses/MonthExpansesTableContainer';
 
 const MonthExpanses = props => {
 
@@ -20,7 +20,7 @@ const MonthExpanses = props => {
 
       <Section title={"טבלת מעקב הוצאות חודשי"}>
 
-        <MonthExpansesTable location={props.location} />
+        <MonthExpansesTableContainer location={props.location} />
 
       </Section>
 

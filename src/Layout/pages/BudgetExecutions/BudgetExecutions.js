@@ -3,16 +3,15 @@ import React, { Fragment } from 'react';
 import { withRouter } from 'react-router';
 
 // COMMON COMPONENTS IMPORTS
-import Header from '../../common/Header/Header';
-import Section from '../../common/Section/Section';
+import Header from '../../../components/common/Header/Header';
+import Section from '../../../components/common/Section/Section';
 
-import withBudgetExecutionsProvider from '../../HOC/dataProviders/withBudgetExecutionsProvider';
-import BudgetExecutionsTable from './BudgetExecutionsTable';
-import QuarterStats from './QuarterStats';
-import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../common/Spinner/Spinner';
-import DateProvider from '../../renderProps/providers/DateProvider';
+import QuarterStatsContainer from './QuarterStatsContainer';
+import { AlignCenterMiddle } from '../../../components/common/AlignCenterMiddle/AlignCenterMiddle';
+import Spinner from '../../../components/common/Spinner/Spinner';
+import DateProvider from '../../../renderProps/providers/DateProvider';
 
+import BudgetExecutionsTableContainer from '../../../containers/pages/BudgetExecutions/BudgetExecutionsTableContainer';
 
 const PAGE_NAME = "budgetExecutions";
 
@@ -30,16 +29,14 @@ const BudgetExecutions = props => {
     <DateProvider pageName={PAGE_NAME} buildingName={buildingNameEng}>
       {(date) => {
 
-        const TableComponent = withBudgetExecutionsProvider(BudgetExecutionsTable, PAGE_NAME, buildingNameEng, date);
-
         if (date === undefined || date[buildingNameEng] === undefined)
-          return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות עמוד מעקב מול ביצוע..."} /></AlignCenterMiddle>;
+          return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים..."} /></AlignCenterMiddle>;
         else {
           return (
             <Fragment>
 
               <Section title={"סיכום הוצאות והכנסות רבעוני"}>
-                <QuarterStats
+                <QuarterStatsContainer
                   buildingName={buildingNameEng}
                   date={date[buildingNameEng]}
                   pageName={PAGE_NAME}
@@ -48,7 +45,11 @@ const BudgetExecutions = props => {
 
               <Section title={"טבלת מעקב הוצאות חודשי"}>
 
-                <TableComponent location={props.location} />}
+                <BudgetExecutionsTableContainer
+                  location={props.location}
+                  date={date}
+                  pageName={PAGE_NAME}
+                />
 
               </Section>
 

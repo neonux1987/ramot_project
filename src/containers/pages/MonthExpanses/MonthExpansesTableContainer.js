@@ -21,7 +21,7 @@ import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
 import TableActions from '../../common/table/TableActions/TableActions';
 import Spinner from '../../common/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../common/AlignCenterMiddle/AlignCenterMiddle';
-import AddBox from './AddBox';
+import AddBox from './AddBoxContainer';
 import TableWrapper from '../../common/table/TableWrapper/TableWrapper';
 import DefaultCell from '../../common/table/TableCell/DefaultCell';
 import CellInput from '../../common/table/TableCell/EditableColumn';
