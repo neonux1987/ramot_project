@@ -6,7 +6,6 @@ import { Menu } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import sidebarActions from '../../redux/actions/sidebarActions';
-import generalSettingsActions from "../../redux/actions/generalSettingsActions";
 import Spinner from "../../components/Spinner/Spinner";
 
 const Toolbar = ({ buildingName, page }) => {

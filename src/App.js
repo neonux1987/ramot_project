@@ -5,7 +5,6 @@ import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import RTL from './components/RTL';
 import { connect } from 'react-redux';
-import LoadingCircle from './components/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
 import ToastRender from './components/ToastRender/ToastRender';
 //import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';

@@ -9,14 +9,15 @@ import expansesCodesActions from '../../redux/actions/expansesCodesActions';
 const styles = theme => ({
   container: {
     margin: "10px 0 30px",
-    boxShadow: "inset 0px 0px 5px 0px rgba(0, 0, 0, 0.12)",
-    border: "1px solid #ccc",
-    background: "#ffffff",
-    padding: "10px"
+    boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.08)",
+    background: "#f9fcfd",
+    padding: "10px",
+    borderRadius: "4px"
   },
   form: {
     display: "grid",
-    gridTemplateColumns: "212px 1fr 1fr 1fr 1fr 300px 80px 80px"
+    gridTemplateColumns: "212px 1fr 1fr 1fr 1fr 300px 80px 80px",
+    border: "1px solid #f1efef"
   },
   textField: {
     marginLeft: theme.spacing(),

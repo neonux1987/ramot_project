@@ -9,7 +9,6 @@ import quarterlyStatsActions from '../../redux/actions/quarterlyStatsActions';
 import Helper from '../../helpers/Helper';
 
 import StatBox from '../../components/Stats/StatBox/StatBox';
-import StatLoadingBox from '../../components/Stats/StatLoadingBox/StatLoadingBox';
 import Stats from '../../components/Stats/Stats';
 
 import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';

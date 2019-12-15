@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Menu from './Menu';
-import { ipcRenderer } from 'electron';
 import { withStyles, Drawer } from '@material-ui/core';
 import Logo from './Logo/Logo'
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import sidebarActions from '../redux/actions/sidebarActions';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Menuitem from './Menuitem';
+import bgImage from '../assets/images/texture.jpg';
 
 const drawerWidth = 240;
 
@@ -19,35 +19,21 @@ const styles = theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    //background: "url('https://c.wallhere.com/photos/44/47/1600x900_px_mountain_night_sky_stars_Trees-517931.jpg!d')",
-    //background: "url('https://sfilev2.f-static.com/image/users/441204/departAlbum/441204/normal/4252487.jpg')",
-    //background: "url('https://i.pinimg.com/originals/79/a5/b7/79a5b7eb6d5ba37b8179562f045a2be2.jpg')",
-    background: "url('https://ak6.picdn.net/shutterstock/videos/28467886/thumb/1.jpg')",
-    //background: `url('${bgImg}')`,
+    backgroundImage: `url('${bgImage}')`,
     //backgroundPosition: "center top",
     //backgroundSize: "cover",
     zIndex: 2,
-    //boxShadow: `-1px 0px 4px #00000042`,
     boxShadow: "none"
   },
   drawerPaper: {
     width: drawerWidth,
-    //backgroundColor: "#00152ad6",
-    background: "rgb(33,39,49)",
-    background: "linear-gradient(315deg, rgba(33,39,49,1) 0%, rgba(46,55,62,1) 100%)",
+    //background: "rgb(33,39,49)",
+    boxShadow: "inset -15px 0px 23px -5px rgba(0, 0, 0, 0.52)",
+    background: "linear-gradient(315deg, rgba(33, 39, 49, 0.95) 0%, rgba(46, 55, 62, 0.95) 100%)",
     overflow: "initial",
     position: "relative",
     border: "none",
-    boxShadow: "none"
-  },
-  divider: {
-    backgroundColor: "rgba(255, 255, 255, 0.12)",
-    width: "100%",
-    margin: "0 auto"
-  },
-  unaffected: {
-    flip: false,
-    textAlign: 'right',
+    //boxShadow: "none"
   },
   loadingWrapper: {
     display: "flex",
@@ -62,32 +48,6 @@ const styles = theme => ({
   loadingCircle: {
     margin: theme.spacing() * 2,
     color: "#fff"
-  },
-  homeDivider: {
-    backgroundColor: "rgba(255, 255, 255, 0.12)",
-    width: "100%",
-    margin: "0 auto 25px"
-  },
-  logoDivider: {
-    margin: "0 auto 10px",
-    backgroundColor: "rgba(255, 255, 255, 0.12)",
-    width: "100%"
-  },
-  settingsDivider: {
-    //backgroundColor: "rgba(255, 255, 255, 0.12)",
-    borderTop: "1px dashed #cbcdda",
-    width: "100%",
-    margin: "0px auto 15px"
-  },
-  buildingsTitle: {
-    color: "#cbcdda",
-    display: "block",
-    marginTop: "6px",
-    marginBottom: "16px",
-    paddingBottom: "16px",
-    boxShadow: "inset 0px 1px 1px #050606, inset 0px -1px 1px #050606",
-    borderTop: "1px solid #262b2f",
-    borderBottom: "1px solid #262b2f"
   },
   settingsWrapper: {
     position: "fixed",
@@ -122,29 +82,17 @@ class Sidebar extends Component {
       settingsButtonId: 100,
       sidebarOpen: true
     };
-    this._isMounted = false;
     this.toggleSidebarAnimation = "";
   }
 
   componentDidMount() {
-    this._isMounted = true;
-    //send message to get the menu data
-    ipcRenderer.send("get-menu");
-    //set listener to listen when the menu data comes
-    ipcRenderer.once("menu-data", (event, result) => {
-      if (this._isMounted) {
-        this.setState(() => ({
-          menu: result.data
-        }));
-      }
-    });
     this.props.fetchSidebar();
   }
 
   //handle menu button click to expand
   expandMenuItem(id, menuItem) {
     //copy the menu and add the new value
-    let copyMenu = [...this.state.menu];
+    let copyMenu = [...this.props.sidebar.sidebar.data];
 
     //copy active object
     let active = { ...this.state.active }
@@ -202,11 +150,9 @@ class Sidebar extends Component {
 
   };
 
-  //======================= componentWillUnmount ======================= //
   componentWillUnmount() {
     this._isMounted = false;
   }
-  //======================= end componentWillUnmount ======================= //
 
   render() {
     const { sidebar, showSidebar } = this.props.sidebar;

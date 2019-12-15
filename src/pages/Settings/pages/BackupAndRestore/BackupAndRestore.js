@@ -5,7 +5,7 @@ import backupsNamesActions from '../../../../redux/actions/backupsNamesActions';
 import { Button, Divider } from '@material-ui/core';
 import LoadingCircle from '../../../../components/LoadingCircle';
 import styles from './BackupAndRestore.module.css';
-import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import heLocale from "date-fns/locale/he";
 import { selectFolderDialog, saveToFileDialog } from '../../../../services/electronDialogsSvc';

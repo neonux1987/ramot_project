@@ -15,14 +15,16 @@ html,body{
     height: 100%;
     margin: 0;
     padding: 0;
-    /* font-family: 'Roboto', sans-serif; */
     font-family: 'Rubik', sans-serif;
     overflow: hidden;
-    /* background: #191b21; */
 }
 
 html{
   scroll-behavior: smooth;
+}
+
+body{
+  background: #f3f4f8;
 }
 
 #root{
@@ -31,7 +33,7 @@ html{
 
 #sidebar{
   /* box-shadow: -1px 0px 4px #00000042; */
-box-shadow: -4px 0px 4px -4px rgba(0,0,0,0.75);
+/* box-shadow: -4px 0px 4px -4px rgba(0,0,0,0.75); */
 }
 
 textarea {

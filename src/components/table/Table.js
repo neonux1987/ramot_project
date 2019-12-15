@@ -1,8 +1,9 @@
 import React from 'react'
-import {
+/* import {
   List,
   AutoSizer
-} from 'react-virtualized';
+} from 'react-virtualized'; */
+
 import './table.css';
 import Spinner from '../Spinner/Spinner';
 
