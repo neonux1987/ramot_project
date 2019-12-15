@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import monthlyStatsActions from '../../../redux/actions/monthlyStatsActions';
-import quarterlyStatsActions from '../../../redux/actions/quarterlyStatsActions';
-import yearlyStatsActions from '../../../redux/actions/yearlyStatsActions';
+import monthlyStatsActions from '../../redux/actions/monthlyStatsActions';
+import quarterlyStatsActions from '../../redux/actions/quarterlyStatsActions';
+import yearlyStatsActions from '../../redux/actions/yearlyStatsActions';
 
 class TotalStatsFetcher extends React.Component {
 

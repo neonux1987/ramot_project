@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import Sidebar from "./components/layout/Sidebar/Sidebar";
-import MainContainer from "./containers/MainContainer";
+import Sidebar from "./Sidebar/Sidebar";
 import { MemoryRouter } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import RTL from './components/RTL';
 import { connect } from 'react-redux';
-import LoadingCircle from './components/common/LoadingCircle';
+import LoadingCircle from './components/LoadingCircle';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
 import ToastRender from './components/ToastRender/ToastRender';
 //import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';
-import AppFrame from './components/AppFrame/AppFrame';
+import AppFrame from './AppFrame/AppFrameContainer';
 import { playSound, soundTypes } from './audioPlayer/audioPlayer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-table/react-table.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/css/style.css';
+import MainContainer from './Main/MainContainer';
+
 const remote = require('electron').remote;
 const { ipcRenderer } = require('electron');
 
@@ -105,10 +106,7 @@ class App extends Component {
   }
 
   render() {
-    const { isFetching } = this.props.generalSettings.generalSettings;
-    if (isFetching) {
-      return <LoadingCircle loading={true} />;
-    }
+
     return (
       <RTL>
         <MuiThemeProvider theme={theme}>
@@ -122,7 +120,9 @@ class App extends Component {
               <CssBaseline />
 
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
+
               <MainContainer toggleMain={" showMainAnimation"} />
+
             </div>
             <ToastContainer
               position="bottom-left"
@@ -142,12 +142,8 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  generalSettings: state.generalSettings
-});
-
 const mapDispatchToProps = dispatch => ({
   fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

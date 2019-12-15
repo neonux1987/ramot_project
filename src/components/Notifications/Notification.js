@@ -3,7 +3,7 @@ import styles from './Notifications.module.css';
 import { Typography } from '@material-ui/core';
 import { ErrorOutline, NotificationImportant, Close } from '@material-ui/icons';
 import Ee from 'event-emitter';
-import Spinner from '../common/Spinner/Spinner';
+import Spinner from '../Spinner/Spinner';
 
 export const notificationTypes = {
   db: "תקלת בסיס נתונים",

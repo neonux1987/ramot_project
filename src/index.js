@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
-import LoadingCircle from './components/common/LoadingCircle';
+import LoadingCircle from './components/LoadingCircle';
 import 'typeface-roboto';
 
 ReactDOM.render(

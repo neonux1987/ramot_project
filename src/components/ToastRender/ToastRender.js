@@ -1,6 +1,6 @@
 import React from 'react';
 import DoneIcon from '@material-ui/icons/Done';
-import Spinner from '../common/Spinner/Spinner';
+import Spinner from '../Spinner/Spinner';
 
 export default ({ message = "", spinner = false, done = false, spinnerColor = "#ffffff" }) => {
   let renderSpinner = spinner ? <Spinner color={spinnerColor} size={24} /> : null;

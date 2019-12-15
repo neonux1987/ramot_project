@@ -1,0 +1,41 @@
+.wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.cellRender{
+  padding-top: 0;
+  outline-color: blue;
+  border: none;
+  background: none;
+  text-align: center;
+  font-size: 14px;
+  height: 100%;
+  width: 100%;
+}
+
+.textArea{
+  outline-color: blue;
+  border: none;
+  background: none;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  min-height: 100%;
+  display: grid;
+  align-content: center;
+  white-space: pre-wrap;
+}
+
+.cellRender:hover,.cellRender:active,.cellRender:focus,.textArea:hover,.textArea:active,.textArea:focus{
+  background: url('https://www.materialui.co/materialIcons/image/edit_black_192x192.png') no-repeat;
+  background-size: 20px 20px;
+  background-position: right center;
+  border: 1px solid #000;
+}
+
+.cellRender:active,.cellRender:focus,.textArea:active,.textArea:focus{
+  outline: none;
+}

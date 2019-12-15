@@ -1,0 +1,86 @@
+.infoBoxWrapper{
+    margin: 0 0 0 15px;
+}
+
+.infoBox{
+  background: #ffffff;
+    height: 170px;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    margin: 30px 0 0;
+}
+
+.infoBox:first-child{
+  margin-right: 0;
+}
+
+.infoBox:last-child{
+  margin-left: 0;
+}
+
+.infoBox .header{
+  background-color: initial;
+  box-shadow: initial;
+  border-radius: initial;
+  padding: 5px 3px 20px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.titleWrapper{
+  display: flex;
+}
+
+.title{
+  position: relative;
+    background: #7553c5;
+    display: flex;
+    justify-content: center;
+    padding: 5px 0;
+    width: 115px;
+    top: -26px;
+    border-radius: 4px;
+    /* box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14); */
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(175, 175, 175, 0.4);
+}
+
+.titleText{
+  color: #fff;
+/*   border-bottom: 1px solid #e0e0e0; */
+
+}
+
+.infoBox .body{
+  background-color: initial;
+    box-shadow: initial;
+    border-radius: initial;
+    display: flex;
+}
+
+.body .expansesTitle{
+  color: #323a3c;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.body{
+  display: flex;
+    justify-content: center;
+}
+
+.content{
+  width: 50%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.alignCenter{
+  text-align: center;
+}
+
+.fontSize20{
+  font-size: 20px;
+}

@@ -1,0 +1,29 @@
+.wrapper{
+  border-radius: 4px;
+  /* border-bottom: 1px dashed #ccc; */
+}
+
+.controls{
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.leftPane{
+  flex-grow: 1;
+  justify-content: flex-end;
+  display: flex;
+  flex-basis: 0;
+}
+
+.middlePane{
+  flex: 1.5 1;
+  display: flex;
+  justify-content: center;
+  flex-basis: 0;
+}
+
+.rightPane{
+  flex-grow: 1;
+  flex-basis: 0;
+}
