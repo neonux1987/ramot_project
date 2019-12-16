@@ -1,17 +1,19 @@
-// LIBRARIES IMPORTS
+// LIBRARIES
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router';
 
-// COMMON COMPONENTS IMPORTS
+// COMMON COMPONENTS
 import Header from '../../components/Header/Header';
 import Section from '../../components/Section/Section';
-
-import QuarterStatsContainer from './QuarterStatsContainer';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import DateProvider from '../../renderProps/providers/DateProvider';
 
+// CONTAINERS
+import QuarterStatsContainer from './QuarterStatsContainer';
 import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
+
+// DATA PROVIDERS
+import DateProvider from '../../renderProps/providers/DateProvider';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -30,7 +32,7 @@ const BudgetExecutions = props => {
     </Header>
 
     <DateProvider pageName={PAGE_NAME} buildingName={buildingNameEng}>
-      {(date) => {
+      {({ date, actions }) => {
 
         if (date === undefined || date[buildingNameEng] === undefined)
           return <AlignCenterMiddle><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
@@ -51,6 +53,7 @@ const BudgetExecutions = props => {
                 <BudgetExecutionsTableContainer
                   location={props.location}
                   date={date[buildingNameEng]}
+                  dateActions={actions}
                   pageName={PAGE_NAME}
                   pageTitle={PAGE_TITLE}
                 />

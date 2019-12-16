@@ -1,19 +1,33 @@
+// LIBRARIES
 import React, { Component } from 'react';
-import Sidebar from "./Sidebar/Sidebar";
-import { MemoryRouter } from 'react-router-dom';
-import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import RTL from './components/RTL';
+import { CssBaseline } from '@material-ui/core';
+import { MemoryRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import generalSettingsActions from './redux/actions/generalSettingsActions';
+import { ToastContainer, toast } from 'react-toastify';
+
+// COMPONENTS
+import Sidebar from "./Sidebar/Sidebar";
+import RTL from './components/RTL';
 import ToastRender from './components/ToastRender/ToastRender';
 //import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';
 import AppFrame from './AppFrame/AppFrameContainer';
+
+// ACTIONS
+import generalSettingsActions from './redux/actions/generalSettingsActions';
+
+// CONTEXT
+import GlobalContext from './context/GlobalContext';
+
+// UTILS
 import { playSound, soundTypes } from './audioPlayer/audioPlayer';
-import { ToastContainer, toast } from 'react-toastify';
+
+// CSS
 import 'react-table/react-table.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/css/style.css';
+
+// CONTAINERS
 import MainContainer from './Main/MainContainer';
 
 const remote = require('electron').remote;
@@ -110,6 +124,7 @@ class App extends Component {
       <RTL>
         <MuiThemeProvider theme={theme}>
           <MemoryRouter>
+
             <AppFrame handlers={{
               close: this.closeButtonHandler,
               minimize: this.minimizeButtonHandler,
@@ -134,6 +149,7 @@ class App extends Component {
               draggable={false}
               pauseOnHover
             />
+
           </MemoryRouter>
         </MuiThemeProvider>
       </RTL>

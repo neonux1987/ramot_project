@@ -10,10 +10,10 @@ export default (state = initialState, action) => {
       const {
         buildingName,
         pageName,
-        newDate
+        date
       } = action;
 
-      return setDateState(state, pageName, buildingName, newDate);
+      return setDateState(state, pageName, buildingName, date);
     }
     case `DATE_INIT_PAGE`: {
       const {

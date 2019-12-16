@@ -16,7 +16,12 @@ class DateProvider extends React.Component {
   }
 
   render() {
-    return this.props.children(this.props.date);
+    return this.props.children({
+      date: this.props.date,
+      actions: {
+        updateDate: this.props.updateDate
+      }
+    });
   }
 
 };
@@ -27,7 +32,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   initDateState: (pageName, buildingName) => dispatch(dateActions.initDateState(pageName, buildingName)),
-  dateCleanup: (pageName, buildingName) => dispatch(dateActions.dateCleanup(pageName, buildingName))
+  dateCleanup: (pageName, buildingName) => dispatch(dateActions.dateCleanup(pageName, buildingName)),
+  updateDate: (pageName, buildingName, date) => dispatch(dateActions.updateDate(pageName, buildingName, date))
 });
 
 DateProvider.propTypes = {

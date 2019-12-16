@@ -19,7 +19,7 @@ const styles = theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    backgroundImage: `url('${bgImage}')`,
+    //backgroundImage: `url('${bgImage}')`,
     //backgroundPosition: "center top",
     //backgroundSize: "cover",
     zIndex: 2,
@@ -29,7 +29,8 @@ const styles = theme => ({
     width: drawerWidth,
     //background: "rgb(33,39,49)",
     boxShadow: "inset -15px 0px 23px -5px rgba(0, 0, 0, 0.52)",
-    background: "linear-gradient(315deg, rgba(33, 39, 49, 0.95) 0%, rgba(46, 55, 62, 0.95) 100%)",
+    //background: "linear-gradient(315deg, rgba(33, 39, 49, 0.95) 0%, rgba(46, 55, 62, 0.95) 100%)",
+    background: "linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%)",
     overflow: "initial",
     position: "relative",
     border: "none",
@@ -162,8 +163,13 @@ class Sidebar extends Component {
     }
 
     const NavigationBtn = ({ page, path, active, activeClass, clicked }) => {
-      return <NavButton page={page} path={path} active={active}
-        activeClass={activeClass} clicked={clicked} >
+      return <NavButton
+        page={page}
+        path={path}
+        active={active}
+        activeClass={activeClass}
+        clicked={clicked}
+      >
         <Dashboard classes={{ root: this.props.classes.listItemIcon }} />
       </NavButton>;
     }

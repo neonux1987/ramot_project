@@ -40,7 +40,7 @@ import {
 } from 'react-virtualized';
 import EditableColumn from '../../components/table/TableCell/EditableColumn';
 
-class MonthExpanses extends Component {
+class MonthExpanses extends React.PureComponent {
 
   constructor(props) {
     super(props);
@@ -156,10 +156,14 @@ class MonthExpanses extends Component {
 
   loadExpansesByDate({ month, year }) {
     const monthNum = Helper.convertEngToMonthNum(month);
+
+    const { pageName } = this.props;
+    const { buildingNameEng } = this.props.location.state
+
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
-      buildingName: this.props.location.state.buildingNameEng,
+      buildingName: buildingNameEng,
       date: {
         year: year,
         month: month,
@@ -172,6 +176,8 @@ class MonthExpanses extends Component {
 
     //get the building month expanses
     this.props.fetchMonthExpanses(params);
+
+    this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
 
   }
 
@@ -436,7 +442,6 @@ class MonthExpanses extends Component {
   }
 
   getDataObject = (index) => {
-    // building data
     return this.getPage().data[index];
   }
 
@@ -458,32 +463,6 @@ class MonthExpanses extends Component {
     </HeaderRow>
   }
 
-  /* Row = ({ index, parent, key, style }) => {
-    // row data
-    const rowData = this.getDataObject(index);
-    // column settings
-    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
-
-    return <CellMeasurer
-      key={key}
-      cache={this.cache}
-      parent={parent}
-      columnIndex={0}
-      rowIndex={index}
-    >
-      <Row style={style} gridTemplateColumns={gridTemplateColumns}>
-        {this.state.editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
-        <Column>{index + 1}</Column>
-        <Column>{rowData["code"]}</Column>
-        <Column>{rowData["codeName"]}</Column>
-        <Column>{rowData["section"]}</Column>
-        {this.state.editMode ? this.textInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
-        {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-        {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column>{rowData["notes"]}</Column>}
-      </Row>
-    </CellMeasurer>;
-  } */
-
   Row = (index) => {
     // row data
     const rowData = this.getDataObject(index);
@@ -503,27 +482,25 @@ class MonthExpanses extends Component {
   }
 
   render() {
-    console.log("rendered")
     //building names
     const { buildingName, buildingNameEng } = this.getLocationState();
 
     const page = this.props.page;
 
-    if (page === undefined) {
+    if (page === undefined || page.data === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
     }
 
-    // page info
     const {
+      date,
       pageName,
-      headerTitle
-    } = this.props.pageInfo;
+      pageTitle
+    } = this.props;
 
     // building data
     const {
       isFetching,
       data,
-      date,
       pageSettings
     } = page;
 
@@ -572,8 +549,8 @@ class MonthExpanses extends Component {
                 header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,
               }}
               print={{
-                title: headerTitle,
-                pageTitle: headerTitle + " - " + buildingName
+                title: pageTitle,
+                pageTitle: pageTitle + " - " + buildingName
               }}
               pageName={pageName}
             />
@@ -601,18 +578,8 @@ const mapStateToProps = (state, ownProps) => {
   //buildingName
   const buildingName = ownProps.location.state.buildingNameEng;
 
-  //pageInfo
-  const {
-    pageName,
-    headerTitle
-  } = state.monthExpanses;
-
   return ({
     page: state.monthExpanses.pages[buildingName],
-    pageInfo: {
-      pageName,
-      headerTitle
-    },
     generalSettings: {
       tax: state.generalSettings.generalSettings.data[0].tax
     }

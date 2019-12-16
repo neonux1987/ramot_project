@@ -12,7 +12,8 @@ const styles = theme => ({
   },
   listItemText: {
     fontSize: "15px",
-    color: "#cbcdda"
+    color: "#cbcdda",
+    minWidth: "0px"
   },
   listItemIcon: {
     color: "#cbcdda",

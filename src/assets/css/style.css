@@ -33,7 +33,7 @@ body{
 
 #sidebar{
   /* box-shadow: -1px 0px 4px #00000042; */
-/* box-shadow: -4px 0px 4px -4px rgba(0,0,0,0.75); */
+box-shadow: -4px 0px 4px -4px rgba(0,0,0,0.75);
 }
 
 textarea {

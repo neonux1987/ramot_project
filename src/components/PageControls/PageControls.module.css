@@ -10,4 +10,9 @@
   cursor: pointer;
   background: none;
   margin: 0 6px;
+  display: inline-flex;
+  height: 42px;
+  width: 48px;
+  justify-content: center;
+  align-items: center;
 }

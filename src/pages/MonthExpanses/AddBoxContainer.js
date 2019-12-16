@@ -9,15 +9,16 @@ import expansesCodesActions from '../../redux/actions/expansesCodesActions';
 const styles = theme => ({
   container: {
     margin: "10px 0 30px",
-    boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.08)",
-    background: "#f9fcfd",
+    boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.02)",
+    background: "#f9f9f9",
     padding: "10px",
     borderRadius: "4px"
   },
   form: {
     display: "grid",
     gridTemplateColumns: "212px 1fr 1fr 1fr 1fr 300px 80px 80px",
-    border: "1px solid #f1efef"
+    border: "1px solid #f1efef",
+    background: "#fff"
   },
   textField: {
     marginLeft: theme.spacing(),
@@ -36,13 +37,17 @@ const styles = theme => ({
   menu: {
     width: 200,
   },
+  buttonWrapper: {
+    alignItems: "center",
+    display: "flex",
+  },
   button: {
     margin: "8px 0 8px 8px",
     backgroundColor: "#fbfbfb",
     border: "1px solid #dedede",
     color: "#000",
     background: "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%)",
-    boxShadow: "none"
+    boxShadow: "none",
   },
   inputLabel: {
     color: "#000"
@@ -259,7 +264,7 @@ class InputExpansesField extends Component {
       onChange={this.formChangeHandler} >
 
       <ReactSelect
-        classes={{ root: this.props.classes.codeTextField }}
+        classes={{ root: classes.codeTextField }}
         inputValue={this.state.formInputs.code}
         onChangeHandler={this.reactSelectHandleChange}
         options={expansesCodes.data}
@@ -275,7 +280,7 @@ class InputExpansesField extends Component {
       />
 
       <ReactSelect
-        classes={{ root: this.props.classes.codeTextField }}
+        classes={{ root: classes.codeTextField }}
         inputValue={this.state.formInputs.codeName}
         onChangeHandler={this.reactSelectHandleChange}
         options={expansesCodes.data}
@@ -293,22 +298,22 @@ class InputExpansesField extends Component {
       <TextField
         name="section"
         label="מקושר לסעיף מסכם:"
-        className={this.props.classes.textField}
+        className={classes.textField}
         value={this.state.formInputs.section}
         type="text"
         inputProps={{ 'data-order': 2, readOnly: true }}
-        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        InputLabelProps={{ classes: { root: classes.inputLabel } }}
         disabled={combinedFetching}
       />
 
       <TextField
         name="supplierName"
         label="שם הספק:"
-        className={this.props.classes.textField}
+        className={classes.textField}
         type="text"
         inputProps={{ 'data-order': 3 }}
         value={this.state.formInputs.supplierName}
-        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        InputLabelProps={{ classes: { root: classes.inputLabel } }}
         inputRef={(input) => { this.supplierInput = input; }}
         disabled={combinedFetching}
       />
@@ -316,49 +321,47 @@ class InputExpansesField extends Component {
       <TextField
         name="sum"
         label="הזן סכום:"
-        className={this.props.classes.textField}
+        className={classes.textField}
         value={this.state.formInputs.sum}
         type="number"
         inputProps={{ 'data-order': 4 }}
-        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        InputLabelProps={{ classes: { root: classes.inputLabel } }}
         disabled={combinedFetching}
       />
 
       <TextField
         name="notes"
         label="הערות:"
-        className={this.props.classes.textFieldNotes}
+        className={classes.textFieldNotes}
         multiline
         value={this.state.formInputs.notes}
         inputProps={{ 'data-order': 5 }}
-        InputLabelProps={{ classes: { root: this.props.classes.inputLabel } }}
+        InputLabelProps={{ classes: { root: classes.inputLabel } }}
         disabled={combinedFetching}
       />
 
-      <div>
+      <div className={classes.buttonWrapper}>
         <Button
-          style={{ backgroundColor: "rgb(245, 58, 75)" }}
           name="reset"
           type="reset"
           onClick={this.reset}
           variant="contained"
           color="primary"
-          className={this.props.classes.button}
+          className={classes.button}
           disabled={combinedFetching}
         >
           אפס
       </Button>
       </div>
 
-      <div>
+      <div className={classes.buttonWrapper}>
         <Button
           data-order="7"
-          style={{ backgroundColor: "#439dd2" }}
           name="submit"
           variant="contained"
           color="primary"
           onClick={(event) => this.props.submitData(this.state.formInputs, this.reset)}
-          className={this.props.classes.button}
+          className={classes.button}
           disabled={combinedFetching}
         >
           שמור
