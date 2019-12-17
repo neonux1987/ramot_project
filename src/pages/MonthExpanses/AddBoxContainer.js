@@ -101,8 +101,6 @@ class InputExpansesField extends Component {
       isSpecial: false
     };
     this.supplierInput = React.createRef();
-    this.formChangeHandler = this.formChangeHandler.bind(this);
-    this.reset = this.reset.bind(this);
   }
 
   reactSelectHandleChange = (selectedOption) => {
@@ -200,7 +198,7 @@ class InputExpansesField extends Component {
     }
   }
 
-  formChangeHandler(event) {
+  formChangeHandler = (event) => {
     let target = event.target;
     this.setState((prevState) => {
       return {
@@ -212,7 +210,7 @@ class InputExpansesField extends Component {
     });
   }
 
-  reset() {
+  reset = () => {
     this.setState(() => {
       keys[2] = "section";
       return {

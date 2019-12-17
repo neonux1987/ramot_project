@@ -2,14 +2,16 @@
   width: 100%;
   overflow: hidden;
   background: #fff;
+  padding: 10px;
+  border-radius: 4px;
   box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 }
 
 ._tableBody{
   display: grid;
-  border-left: 1px solid rgba(0,0,0,.08);
   border-bottom: 1px solid rgba(0,0,0,.08);
   direction: rtl;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 ._tableRow{

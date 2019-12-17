@@ -17,7 +17,7 @@ const Header = ({ bgColor = "rgb(44, 183, 197)", fontSize = "26px", color = "#ff
       }}>
 
       </Box> */}
-      <Box className={styles.titleWrapper} style={{backgroundColor: bgColor }}>
+      <Box className={styles.titleWrapper} style={{ backgroundColor: bgColor }}>
         <Typography style={{ color, fontWeight, fontSize }} variant="h5" color="primary">
           {children}
         </Typography>

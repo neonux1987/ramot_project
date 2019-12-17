@@ -1,6 +1,7 @@
 // LIBRARIES
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 
 // ACTIONS
 import * as budgetExecutionsActions from '../../redux/actions/budgetExecutionsActions';
@@ -17,7 +18,6 @@ import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import EditControls from '../../components/EditControls/EditControls';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
 import Spinner from '../../components/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
@@ -28,11 +28,18 @@ import Row from '../../components/table/Row';
 import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Table from '../../components/table/Table';
+import GroupRow from '../../components/table/GroupRow';
 
 // DATA FETHCERS
 import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
 
+// HOC
+import withColumnColorLogic from '../../HOC/withColumnColorLogic';
+
 const FIXED_FLOAT = 2;
+
+const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
+const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
 class BudgetExecutionsTable extends React.PureComponent {
 
@@ -85,39 +92,17 @@ class BudgetExecutionsTable extends React.PureComponent {
     this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
   }
 
-  colorCell(title, value) {
-
-    let colored = {
-      color: "",
-      background: ""
-    }
-
-    value = Number.parseFloat(value);
-
-    if (title === "difference") {
-      if (value < 0) {
-        colored.color = "#fff";
-        colored.background = "rgb(234, 70, 70)";
-      } else if (value > 0) {
-        colored.color = "#fff";
-        colored.background = "rgb(47, 195, 73)";
-      } else {
-        colored.background = "rgb(242, 255, 59)";
-      }
-    }
-
-    return colored;
-
-  }
-
   cell(cellInfo) {
     const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     return newValue;
   }
 
   cellInputOnBlurHandler = (e, cellInfo) => {
+
+    const { data } = this.getPage();
+
     //copy data
-    const data = [...this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex].data];
+    const copyData = [...data];
     //data date
     const { date } = this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex];
     //index of the object in the array
@@ -126,19 +111,18 @@ class BudgetExecutionsTable extends React.PureComponent {
     const columnId = cellInfo.column.id;
 
     //copy old object so rollback would be possible
-    const oldBudgetExecutionObj = { ...data[objIndex] };
+    const oldBudgetExecutionObj = { ...copyData[objIndex] };
 
     if (columnId === "notes") {
       //replace the value
-      data[objIndex][columnId] = e.target.value === "" ? "" : e.target.value;
+      copyData[objIndex][columnId] = e.target.value === "" ? "" : e.target.value;
     } else {
       //replace the value
-      data[objIndex][columnId] = e.target.value === "" ? 0 : parseFloat(e.target.value);
+      copyData[objIndex][columnId] = e.target.value === "" ? 0 : parseFloat(e.target.value);
     }
 
-
     //prepare the budget execution object
-    const newBudgetExecutionObj = this.prepareBudgetExecObj(data[objIndex], date.quarter);
+    const newBudgetExecutionObj = this.prepareBudgetExecObj(copyData[objIndex], date.quarter);
 
     //prepare the params object
     let params = {
@@ -147,7 +131,7 @@ class BudgetExecutionsTable extends React.PureComponent {
         ...date
       },
       budgetExec: newBudgetExecutionObj,
-      summarized_section_id: data[objIndex].summarized_section_id
+      summarized_section_id: copyData[objIndex].summarized_section_id
     };
 
 
@@ -159,7 +143,7 @@ class BudgetExecutionsTable extends React.PureComponent {
       params.date.monthHeb = Helper.convertEngToHebMonth(params.date.month);
     }
 
-    //this.calculateMonthTotalBudget(data, cellInfo.column.id, prevValue, data[objIndex][cellInfo.column.id]);
+    //this.calculateMonthTotalBudget(copyData, cellInfo.column.id, prevValue, copyData[objIndex][cellInfo.column.id]);
     this.props.updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, objIndex);
     e.target.blur();
   }
@@ -244,25 +228,25 @@ class BudgetExecutionsTable extends React.PureComponent {
     />
   };
 
-  toggleEditMode = (event) => {
-    this.setState({
-      ...this.state,
-      editMode: !this.state.editMode
-    }, () => {
-      if (this.state.editMode) {
-        notify({
-          type: notificationTypes.message,
-          message: "הופעל מצב עריכה"
-        });
-      } else {
-        notify({
-          type: notificationTypes.message,
-          message: "מצב עריכה בוטל"
-        });
-      }
-      playSound(soundTypes.message);
-    });
+  toggleEditMode = () => {
+    if (this.state.editMode) {
+      this.setState({
+        editMode: false
+      });
+      toast.warning("מצב עריכה בוטל");
+    } else {
+      this.setState({
+        editMode: true
+      });
+      toast.success("הופעל מצב עריכה");
+    }
+
+    playSound(soundTypes.message);
   };
+
+  getGridTemplateColumns = () => {
+    return this.state.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+  }
 
   toggleAddNewMode = () => {
     this.setState({
@@ -313,8 +297,6 @@ class BudgetExecutionsTable extends React.PureComponent {
   HeaderGroups = () => {
     const { groupColors } = this.context;
     const { quarter } = this.props.date;
-    // column settings
-    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  80px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr`;
 
     const months = Helper.getQuarterMonths(quarter);
 
@@ -326,43 +308,45 @@ class BudgetExecutionsTable extends React.PureComponent {
       >{month}</GroupColumn>;
     });
 
-    return <HeaderRow gridTemplateColumns={gridTemplateColumns} style={{ borderBottom: "1px solid #fff" }}>
-      {this.state.editMode ? <GroupColumn></GroupColumn> : null}
-      <GroupColumn></GroupColumn>
-      <GroupColumn></GroupColumn>
+    const defaultStyle = {
+      backgroundColor: "rgb(248, 251, 253)"
+    }
+
+    return <GroupRow
+      gridTemplateColumns={this.getGridTemplateColumns()} >
+      {this.state.editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
+      <GroupColumn style={defaultStyle}></GroupColumn>
+      <GroupColumn style={defaultStyle}></GroupColumn>
       {monthColumns}
       <GroupColumn
         span={3}
         bgColor={groupColors[3]}
       >{`סוף רבעון ${quarter}`}</GroupColumn>
-      <GroupColumn></GroupColumn>
-      <GroupColumn></GroupColumn>
-    </HeaderRow>
+      <GroupColumn style={defaultStyle}></GroupColumn>
+      <GroupColumn style={defaultStyle}></GroupColumn>
+    </GroupRow>
   }
 
   HeadersRow = () => {
     const { groupColors } = this.context;
 
-    // column settings
-    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  80px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr`;
-
     const monthColumns = [];
 
     for (let i = 0; i < 3; i++) {
-      monthColumns.push(<Column style={{ ...headerStyle, backgroundColor: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</Column>);
-      monthColumns.push(<Column style={{ ...headerStyle, backgroundColor: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</Column>);
+      monthColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</Column>);
+      monthColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</Column>);
     }
 
     const quarterStyle = {
-      ...headerStyle,
-      backgroundColor: groupColors[3]
+      ...defaultheaderStyle,
+      color: groupColors[3]
     }
 
-    return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
+    return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
 
-      {this.state.editMode ? <Column style={headerStyle}>{"פעולות"}</Column> : null}
-      <Column style={headerStyle}>{"שורה"}</Column>
-      <Column style={headerStyle}>{"סעיף"}</Column>
+      {this.state.editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
+      <Column style={defaultheaderStyle}>{"שורה"}</Column>
+      <Column style={defaultheaderStyle}>{"סעיף"}</Column>
 
       {monthColumns}
 
@@ -370,36 +354,38 @@ class BudgetExecutionsTable extends React.PureComponent {
       <Column style={quarterStyle}>{"תקציב"}</Column>
       <Column style={quarterStyle}>{"ביצוע"}</Column>
 
-      <Column style={headerStyle}>{"הפרש"}</Column>
-      <Column style={headerStyle}>{"הערות"}</Column>
+      <Column style={defaultheaderStyle}>{"הפרש"}</Column>
+      <Column style={defaultheaderStyle}>{"הערות"}</Column>
     </HeaderRow>
   }
 
   Row = (index) => {
     // row data
     const rowData = this.getDataObject(index);
-    // column settings
-    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  80px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr`;
 
+    // list of months of specific quarter
     const months = Helper.getQuarterMonthsEng(this.props.date.quarter);
 
     const monthColumns = [];
 
-    months.map((month, i) => {
-      monthColumns.push(<Column key={`${month}_budget${i}`}>{rowData[`${month}_budget`]}</Column>);
-      monthColumns.push(<Column key={`${month}_budget_execution${i + 1}`}>{rowData[`${month}_budget_execution`]}</Column>);
-    });
+    // generate month columns
+    for (let i = 0; i < months.length; i++) {
+      monthColumns.push(<NonZeroNumberColumn key={`${months[i]}_budget${i}`}>{rowData[`${months[i]}_budget`]}</NonZeroNumberColumn>);
+      monthColumns.push(<NonZeroNumberColumn key={`${months[i]}_budget_execution${i + 1}`}>{rowData[`${months[i]}_budget_execution`]}</NonZeroNumberColumn>);
+    }
 
-    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={gridTemplateColumns}>
+    const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
+
+    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
       {this.state.editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
       {monthColumns}
-      <Column>{rowData["evaluation"]}</Column>
-      <Column>{rowData["total_budget"]}</Column>
-      <Column>{rowData["total_execution"]}</Column>
-      <Column>{rowData["difference"]}</Column>
-      <Column>{rowData["notes"]}</Column>
+      <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>
+      <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>
+      <NonZeroNumberColumn>{rowData["total_execution"]}</NonZeroNumberColumn>
+      <DifferenceColumn style={{ direction: "ltr" }}>{rowData["difference"]}</DifferenceColumn>
+      <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>
       {/*     {this.state.editMode ? this.textAreaInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
       {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
       {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column style={{ whiteSpace: "pre-wrap" }}>{rowData["notes"]}</Column>} */}
@@ -513,34 +499,11 @@ const headerStyle = {
   alignItems: "center"
 };
 
-// table headers
-const headers = [
-  {
-    title: "שורה",
-    headerStyle
-  },
-  {
-    title: "קוד הנהח\"ש",
-    headerStyle
-  },
-  {
-    title: "שם חשבון",
-    headerStyle
-  },
-  {
-    title: "מקושר לסעיף",
-    headerStyle
-  },
-  {
-    title: "ספק",
-    headerStyle
-  },
-  {
-    title: "סכום",
-    headerStyle
-  },
-  {
-    title: "הערות",
-    headerStyle
-  }
-];
+const defaultheaderStyle = {
+  backgroundColor: "rgb(232, 236, 241)",
+  color: "#000000",
+  fontWeight: "600",
+  justifyContent: "center",
+  height: "27px",
+  alignItems: "center"
+};

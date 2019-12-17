@@ -48,7 +48,7 @@ const BudgetExecutions = props => {
                 />
               </Section>
 
-              <Section title={TABLE_TITLE}>
+              <Section title={TABLE_TITLE} marginBottom={"100px"}>
 
                 <BudgetExecutionsTableContainer
                   location={props.location}
@@ -66,7 +66,7 @@ const BudgetExecutions = props => {
       }}
     </DateProvider>
 
-  </Fragment>
+  </Fragment>;
 
 
 }

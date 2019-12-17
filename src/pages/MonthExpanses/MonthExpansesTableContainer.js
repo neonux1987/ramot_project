@@ -342,6 +342,7 @@ class MonthExpanses extends React.PureComponent {
     return <EditableColumn
       value={value}
       type="textarea"
+      style={{ marginLeft: "10px" }}
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
       onFocusHandler={this.onFocusHandler}
     />
@@ -477,7 +478,7 @@ class MonthExpanses extends React.PureComponent {
       <Column>{rowData["section"]}</Column>
       {this.state.editMode ? this.textAreaInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
       {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column style={{ whiteSpace: "pre-wrap" }}>{rowData["notes"]}</Column>}
+      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column style={{ whiteSpace: "pre-wrap,", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 
@@ -596,6 +597,15 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);
+
+/* const headerStyle = {
+  backgroundColor: "rgb(232, 236, 241)",
+  color: "#000000",
+  fontWeight: "600",
+  justifyContent: "center",
+  height: "27px",
+  alignItems: "center"
+}; */
 
 const headerStyle = {
   backgroundColor: "rgb(52, 58, 64)",
