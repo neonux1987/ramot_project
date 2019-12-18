@@ -342,12 +342,10 @@ class MonthExpanses extends React.PureComponent {
     return <EditableColumn
       value={value}
       type="textarea"
-      style={{ marginLeft: "10px" }}
       onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
       onFocusHandler={this.onFocusHandler}
     />
   };
-
 
   textInput = (key, value, index) => {
     return <EditableColumn

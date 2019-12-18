@@ -1,3 +1,5 @@
+import Helper from "../../helpers/Helper";
+
 // TYPES
 export const TYPES = {
   DATE_UPDATE: "DATE_UPDATE",
@@ -7,7 +9,7 @@ export const TYPES = {
   DATE_INIT_BUILDING: "DATE_INIT_BUILDING"
 }
 
-export const initDateState = function (pageName, buildingName) {
+export const initDateState = function (pageName, buildingName, initState = Helper.getCurrentDate()) {
   return dispatch => {
     dispatch({
       type: TYPES.DATE_INIT_PAGE,
@@ -16,7 +18,8 @@ export const initDateState = function (pageName, buildingName) {
     dispatch({
       type: TYPES.DATE_INIT_BUILDING,
       pageName,
-      buildingName
+      buildingName,
+      initState
     });
   }
 };

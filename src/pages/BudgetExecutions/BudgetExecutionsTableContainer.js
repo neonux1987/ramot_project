@@ -309,7 +309,7 @@ class BudgetExecutionsTable extends React.PureComponent {
     });
 
     const defaultStyle = {
-      backgroundColor: "rgb(248, 251, 253)"
+      border: "none"
     }
 
     return <GroupRow

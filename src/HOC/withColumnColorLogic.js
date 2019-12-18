@@ -3,7 +3,7 @@ import React from 'react';
 export default (OriginalComponent, value = Number, logicalStyle = {
   negative: {
     color: "#ffffff",
-    backgroundColor: "rgb(234, 70, 70)"
+    backgroundColor: "rgb(228, 60, 60)"
   },
   positive: {
     color: "#ffffff",
@@ -11,7 +11,7 @@ export default (OriginalComponent, value = Number, logicalStyle = {
   },
   neutral: {
     color: "#000000",
-    backgroundColor: "rgb(242, 255, 59)"
+    backgroundColor: "rgb(242, 255, 75)"
   }
 }) => {
 

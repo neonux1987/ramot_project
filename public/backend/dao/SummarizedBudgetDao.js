@@ -58,9 +58,13 @@ class SummarizedBudgetDao {
   getSummarizedBudgetsByRange(
     buildingName = String,
     date = {
-      year: Number
+      year: year = Number,
+      month: month = String
     },
-    pageSettings,
+    pageSettings = {
+      pageSize: 100,
+      startElement: 0
+    },
     trx = this.connection
   ) {
     return trx.select(

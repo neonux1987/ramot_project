@@ -89,7 +89,7 @@ class QuarterStatsContainer extends React.PureComponent {
       //generate quarter total stats
       stats.push(this.generateQuarterStats(quarterlyStats.data[0], quarterlyStats.isFetching))
 
-      return (<Stats stats={stats} />);
+      return (<Stats stats={stats} columns={4} />);
 
     }
   }

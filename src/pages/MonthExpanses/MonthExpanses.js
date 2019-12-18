@@ -26,7 +26,7 @@ const MonthExpanses = props => {
   return (
     <Fragment>
 
-      <Header bgColor="rgb(44, 183, 197)">
+      <Header bgColor="#458efd">
         {PAGE_TITLE}
       </Header>
 

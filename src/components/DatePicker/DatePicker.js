@@ -49,6 +49,7 @@ export default ({ months, quarters, years, date, submitHandler }) => {
     className={styles.formSelect}
     value={selectDate.year || ""}
     onChange={onChangeHandler}
+    classes={{ select: styles.select }}
   >
     {years.data.map((year) => {
       return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;

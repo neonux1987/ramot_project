@@ -33,15 +33,12 @@ import GroupRow from '../../components/table/GroupRow';
 // DATA FETHCERS
 import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
 
-// HOC
-import withColumnColorLogic from '../../HOC/withColumnColorLogic';
-
 const FIXED_FLOAT = 2;
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
-const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
+const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 
-class SummarizedBudgetTableContainer extends Component {
+class SummarizedBudgetTableContainer extends React.PureComponent {
 
   state = {
     editMode: false
@@ -54,7 +51,7 @@ class SummarizedBudgetTableContainer extends Component {
       date: this.props.date,
       buildingName: this.props.location.state.buildingNameEng
     }
-
+    console.log(params);
     this.props.initSummzrizedBudgetsState(params.buildingName).then(() => {
       // fetch budget executions
       this.props.fetchSummarizedBudgets(params);
@@ -84,171 +81,25 @@ class SummarizedBudgetTableContainer extends Component {
     this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
   }
 
+  toggleEditMode = () => {
+    if (this.state.editMode) {
+      this.setState({
+        editMode: false
+      });
+      toast.warning("מצב עריכה בוטל");
+    } else {
+      this.setState({
+        editMode: true
+      });
+      toast.success("הופעל מצב עריכה");
+    }
+
+    playSound(soundTypes.message);
+  };
+
   cell(cellInfo) {
     const newValue = cellInfo.value === 0 ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
     return newValue;
-  }
-
-  generateHeaders() {
-
-    const quarter1Color = "#7f69b3";
-    const quarter2Color = "#5e94d8";
-    const quarter3Color = "#7db995";
-    const quarter4Color = "#d86565";
-    const yearColor = "rgb(62, 77, 109)";
-    const defaultColor = "#333333";
-
-    const headerStyle = (bgColor) => ({
-      background: bgColor,
-      fontWeight: "600",
-      fontSize: "15px",
-      color: "#fff"
-    });
-
-    return [
-      {
-        Header: "",
-        width: 100,
-        columns: [
-          {
-            accessor: "summarized_section_id",
-            Header: "שורה",
-            headerStyle: headerStyle(defaultColor),
-            width: 100,
-            Cell: (row) => {
-              return <span>{row.viewIndex + 1}</span>;
-            }
-          }
-        ]
-      },
-      {
-        Header: "",
-        columns: [
-          {
-            accessor: "section",
-            Header: "סעיף",
-            headerStyle: headerStyle(defaultColor)
-          }
-        ]
-      },
-      {
-        Header: "רבעון 1",
-        headerStyle: headerStyle(quarter1Color),
-        columns: [
-          {
-            accessor: "quarter1_budget",
-            Header: "תקציב",
-            headerStyle: headerStyle(quarter1Color),
-            Cell: (cellInfo) => this.cell(cellInfo),
-            style: {
-              padding: 0
-            }
-          },
-          {
-            accessor: "quarter1_execution",
-            Header: "ביצוע",
-            headerStyle: headerStyle(quarter1Color),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      },
-      {
-        Header: "רבעון 2",
-        headerStyle: headerStyle(quarter2Color),
-        columns: [
-          {
-            accessor: "quarter2_budget",
-            Header: "תקציב",
-            headerStyle: headerStyle(quarter2Color),
-            Cell: (cellInfo) => this.cell(cellInfo),
-            style: {
-              padding: 0
-            }
-          },
-          {
-            accessor: "quarter2_execution",
-            Header: "ביצוע",
-            headerStyle: headerStyle(quarter2Color),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      },
-      {
-        Header: "רבעון 3",
-        headerStyle: headerStyle(quarter3Color),
-        columns: [
-          {
-            accessor: "quarter3_budget",
-            Header: "תקציב",
-            headerStyle: headerStyle(quarter3Color),
-            Cell: (cellInfo) => this.cell(cellInfo),
-            style: {
-              padding: 0
-            }
-          },
-          {
-            accessor: "quarter3_execution",
-            Header: "ביצוע",
-            headerStyle: headerStyle(quarter3Color),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      },
-      {
-        Header: "רבעון 4",
-        headerStyle: headerStyle(quarter4Color),
-        columns: [
-          {
-            accessor: "quarter4_budget",
-            Header: "תקציב",
-            headerStyle: headerStyle(quarter4Color),
-            Cell: (cellInfo) => this.cell(cellInfo),
-            style: {
-              padding: 0
-            }
-          },
-          {
-            accessor: "quarter4_execution",
-            Header: "ביצוע",
-            headerStyle: headerStyle(quarter4Color),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      },
-      {
-        Header: "סוף שנה",
-        headerStyle: headerStyle(yearColor),
-        columns: [
-          {
-            accessor: "evaluation",
-            Header: "הערכה",
-            headerStyle: headerStyle(yearColor),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          },
-          {
-            accessor: "year_total_budget",
-            Header: "תקציב",
-            headerStyle: headerStyle(yearColor),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          },
-          {
-            accessor: "year_total_execution",
-            Header: "ביצוע",
-            headerStyle: headerStyle(yearColor),
-            Cell: (cellInfo) => this.cell(cellInfo)
-          }
-        ]
-      },
-      {
-        accessor: "notes",
-        Header: "הערות",
-        headerStyle: { background: "#000", color: "#fff" },
-        Cell: this.cellTextInput,
-        style: {
-          padding: 0
-        }
-      }
-    ];
   }
 
   loadDataByDate = ({ year }) => {
@@ -264,49 +115,6 @@ class SummarizedBudgetTableContainer extends Component {
     //get the building month expanses
     this.props.fetchSummarizedBudgets(params);
 
-  }
-
-  generateQuarterlyStats(quarterlyStats, isFetching) {
-    // list of strings of qurter months
-    const quarters = Helper.getYearQuarters();
-
-    // where the boxes will be stored fo render
-    const returnStats = [];
-
-    for (let i = 0; i < quarters.length; i++) {
-      // render loading if still fetching the stats
-      if (isFetching || quarterlyStats.length === 0 || quarterlyStats.length != 4) {
-        returnStats[i] = <StatLoadingBox key={i} title={`טוען נתוני רבעון ${quarters[i]}`} />;
-      } else {
-        returnStats[i] = <StatBox
-          key={i}
-          title={quarters[i]}
-          outcome={`${quarterlyStats[i].outcome} ${Helper.shekelUnicode}`}
-          income={`${quarterlyStats[i].income} ${Helper.shekelUnicode}`}
-          bgColor={Helper.quartersColors[i]}
-        />;
-
-      }
-
-    } // end loop
-
-    return returnStats;
-
-  }
-
-  generateYearStats(yearStats, year, isFetching) {
-    //render loading if still fetching the stats
-    if (isFetching || yearStats === undefined) {
-      return <StatLoadingBox key={4} title={`טוען נתוני שנת ${year}`} />
-    } else {
-      return <StatBox
-        key={4}
-        title={`שנת ${yearStats.year}`}
-        outcome={`${yearStats.outcome} ${Helper.shekelUnicode}`}
-        income={`${yearStats.income} ${Helper.shekelUnicode}`}
-        bgColor={Helper.endYearColor}
-      />;
-    }
   }
 
   onFetchData = (state) => {
@@ -340,117 +148,179 @@ class SummarizedBudgetTableContainer extends Component {
     this.props.fetchSummarizedBudgets(params);
   }
 
+  HeaderGroups = () => {
+    const { groupColors } = this.context;
+    const { quarter } = this.props.date;
+
+    const quarters = Helper.getYearQuarters(quarter);
+
+    const quarterColumns = quarters.map((quarter, i) => {
+      return <GroupColumn
+        span={2}
+        bgColor={groupColors[i]}
+        key={i}
+      >{quarter}</GroupColumn>;
+    });
+
+    const defaultStyle = {
+      border: "none"
+    }
+
+    return <GroupRow
+      gridTemplateColumns={this.getGridTemplateColumns()} >
+      {this.state.editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
+      <GroupColumn style={defaultStyle}></GroupColumn>
+      <GroupColumn style={defaultStyle}></GroupColumn>
+      {quarterColumns}
+      <GroupColumn
+        span={3}
+        bgColor={groupColors[3]}
+      >{`סוף רבעון ${quarter}`}</GroupColumn>
+      <GroupColumn style={defaultStyle}></GroupColumn>
+      <GroupColumn style={defaultStyle}></GroupColumn>
+    </GroupRow>
+  }
+
+  HeadersRow = () => {
+    const { groupColors } = this.context;
+
+    const quarterColumns = [];
+
+    for (let i = 0; i < 4; i++) {
+      quarterColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</Column>);
+      quarterColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</Column>);
+    }
+
+    const quarterStyle = {
+      ...defaultheaderStyle,
+      color: groupColors[3]
+    }
+
+    return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
+
+      {this.state.editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
+      <Column style={defaultheaderStyle}>{"שורה"}</Column>
+      <Column style={defaultheaderStyle}>{"סעיף"}</Column>
+
+      {quarterColumns}
+
+      <Column style={quarterStyle}>{"הערכה"}</Column>
+      <Column style={quarterStyle}>{"תקציב"}</Column>
+      <Column style={quarterStyle}>{"ביצוע"}</Column>
+
+      <Column style={defaultheaderStyle}>{"הפרש"}</Column>
+      <Column style={defaultheaderStyle}>{"הערות"}</Column>
+    </HeaderRow>
+  }
+
+  Row = (index) => {
+    // row data
+    const rowData = this.getDataObject(index);
+
+    const quarterColumns = [];
+
+    // generate month columns
+    for (let i = 1; i < 5; i++) {
+      quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_budget`}>{rowData[`quarter${i}_budget`]}</NonZeroNumberColumn>);
+      quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_budget_execution`}>{rowData[`quarter${i}_budget_execution`]}</NonZeroNumberColumn>);
+    }
+
+    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
+      {this.state.editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+      <Column>{index + 1}</Column>
+      <Column>{rowData["section"]}</Column>
+      {quarterColumns}
+      <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>
+      <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>
+      <NonZeroNumberColumn>{rowData["total_execution"]}</NonZeroNumberColumn>
+      <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>
+      {/*     {this.state.editMode ? this.textAreaInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
+      {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
+      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column style={{ whiteSpace: "pre-wrap" }}>{rowData["notes"]}</Column>} */}
+    </Row>
+  }
+
   render() {
 
     //building names
     const { buildingName, buildingNameEng } = this.props.location.state;
 
-    const page = this.props.summarizedBudget.pages[buildingNameEng];
+    const page = this.props.page;
     console.log(page);
-    if (page === undefined) {
-      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
+    if (page === undefined || page.data === undefined) {
+      return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
     }
 
-    // page info
     const {
-      pageName,
-      headerTitle
-    } = this.props.summarizedBudget;
-
-    // building data
-    const {
-      isFetching,
-      data,
       date,
-      pageSettings
+      pageName,
+      pageTitle
+    } = this.props;
+
+    // provider data
+    const {
+      data,
+      isFetching,
+      pageSettings,
     } = page;
 
     return (
-      <Fragment>
+      <TableWrapper>
 
-        <Header>
-          {headerTitle}
-        </Header>
-
-        <Section title={"סיכום הוצאות והכנסות שנתי"}>
-          <TotalStatsFetcher allQuartersStatsByYear yearStats params={{
-            buildingName: buildingNameEng,
-            date
-          }}>
-            {({ quarterlyStats, yearlyStats }) => {
-              const renderStats = this.generateQuarterlyStats(quarterlyStats.data, quarterlyStats.isFetching);
-              renderStats.push(this.generateYearStats(yearlyStats.data[0], date.year, yearlyStats.isFetching));
-              return <Stats stats={renderStats} />;
-            }}
-          </TotalStatsFetcher>
-        </Section>
-
-        <Section title={"טבלת מעקב שנתית"}>
-
-          <TableWrapper>
-
-            <TableControls
-              rightPane={
-                <EditControls
-                  editMode={this.state.editMode}
-                  toggleEditMode={this.toggleEditMode}
-                  addNewMode={this.state.addNewMode}
-                  toggleAddNewMode={this.toggleAddNewMode}
-                />
-              } // end rightPane
-              middlePane={
-                <RegisteredDatesProvider fetchYears params={{
-                  buildingName: buildingNameEng
-                }}>
-                  {({ years }) => {
-                    return <DatePicker
-                      years={years}
-                      date={date}
-                      submitHandler={this.loadDataByDate}
-                    />
-                  }}
-                </RegisteredDatesProvider>
-              } // end middlePane
-              leftPane={<PageControls
-                excel={{
-                  data: data,
-                  fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
-                  tabName: `שנה ${date.year}`
-                }}
-                print={{
-                  title: headerTitle,
-                  pageTitle: headerTitle + " - " + buildingName
-                }}
-                pageName={pageName}
-              />} // end leftPane
-
-            />  {/* End TableControls */}
-
-            <ReactTableContainer
-              loading={isFetching}
-              data={data}
-              dataCount={100}
-              columns={this.generateHeaders()}
-              onFetchData={this.onFetchData}
-              pageNameSettings={pageName}
+        <TableControls
+          rightPane={
+            <EditControls
+              editMode={this.state.editMode}
+              toggleEditMode={this.toggleEditMode}
+              addNewMode={this.state.addNewMode}
+              toggleAddNewMode={this.toggleAddNewMode}
             />
+          } // end rightPane
+          middlePane={
+            <RegisteredDatesFetcher fetchYears params={{
+              buildingName: buildingNameEng
+            }}>
+              {({ years }) => {
+                return <DatePicker
+                  years={years}
+                  date={date}
+                  submitHandler={this.loadDataByDate}
+                />
+              }}
+            </RegisteredDatesFetcher>
+          } // end middlePane
+          leftPane={<PageControls
+            excel={{
+              data: data,
+              fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
+              tabName: `שנה ${date.year}`
+            }}
+            print={{
+              title: pageTitle,
+              pageTitle: pageTitle + " - " + buildingName
+            }}
+            pageName={pageName}
+          />} // end leftPane
 
-          </TableWrapper>  {/* End TableWrapper */}
+        />  {/* End TableControls */}
 
+        <Table
+          Row={this.Row}
+          GroupComponent={this.HeaderGroups}
+          HeaderComponent={this.HeadersRow}
+          isFetching={isFetching || data.length === 0}
+          itemCount={data.length}
+          cache={this.cache}
+        />
 
-        </Section>
-
-
-
-
-      </Fragment>
+      </TableWrapper>
     );
   }
 
 }
 
-const mapStateToProps = state => ({
-  summarizedBudget: state.summarizedBudget
+const mapStateToProps = (state, ownProps) => ({
+  summarizedBudgets: state.summarizedBudgets.pages[ownProps.location.state.buildingNameEng]
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -460,3 +330,12 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummarizedBudgetTableContainer);
+
+const defaultheaderStyle = {
+  backgroundColor: "rgb(232, 236, 241)",
+  color: "#000000",
+  fontWeight: "600",
+  justifyContent: "center",
+  height: "27px",
+  alignItems: "center"
+};

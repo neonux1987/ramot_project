@@ -10,9 +10,12 @@ import Spinner from '../../components/Spinner/Spinner';
 
 // CONTAINERS
 //import SummarizedBudgetTableContainer from './SummarizedBudgetTableContainer';
+import YearStatsContainer from './YearStatsContainer';
 
 // DATA PROVIDERS
 import DateProvider from '../../renderProps/providers/DateProvider';
+import SummarizedBudgetTableContainer from './SummarizedBudgetTableContainer';
+import Helper from '../../helpers/Helper';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -25,11 +28,16 @@ const SummarizedBudgets = props => {
 
   return <Fragment>
 
-    <Header bgColor="rgb(44, 183, 197)">
+    <Header bgColor="rgb(232, 67, 104)">
       {PAGE_TITLE}
     </Header>
 
-    <DateProvider pageName={PAGE_NAME} buildingName={buildingNameEng}>
+    <DateProvider
+      pageName={PAGE_NAME}
+      buildingName={buildingNameEng}
+      initState={{
+        year: Helper.getCurrentYear()
+      }}>
       {({ date, actions }) => {
 
         if (date === undefined || date[buildingNameEng] === undefined)
@@ -39,22 +47,22 @@ const SummarizedBudgets = props => {
             <Fragment>
 
               <Section title={STATS_TITLE}>
-                {/* <QuarterStatsContainer
+                <YearStatsContainer
                   buildingName={buildingNameEng}
                   date={date[buildingNameEng]}
                   pageName={PAGE_NAME}
-                /> */}
+                />
               </Section>
 
               <Section title={TABLE_TITLE} marginBottom={"100px"}>
 
-                {/* <SummarizedBudgetTableContainer
+                <SummarizedBudgetTableContainer
                   location={props.location}
                   date={date[buildingNameEng]}
                   dateActions={actions}
                   pageName={PAGE_NAME}
                   pageTitle={PAGE_TITLE}
-                /> */}
+                />
 
               </Section>
 

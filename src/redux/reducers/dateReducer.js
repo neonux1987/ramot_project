@@ -31,7 +31,8 @@ export default (state = initialState, action) => {
     case `DATE_INIT_BUILDING`: {
       const {
         buildingName,
-        pageName
+        pageName,
+        initState
       } = action;
 
       return {
@@ -41,7 +42,7 @@ export default (state = initialState, action) => {
           [pageName]: {
             ...state.pages[pageName],
             [buildingName]: {
-              ...Helper.getCurrentDate()
+              ...initState
             }
           }
         }

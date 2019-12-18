@@ -6,20 +6,36 @@ import * as dateActions from '../../redux/actions/dateActions';
 class DateProvider extends React.Component {
 
   componentDidMount() {
+    const {
+      pageName,
+      buildingName,
+      initState
+    } = this.props;
+
     // init the state first
-    this.props.initDateState(this.props.pageName, this.props.buildingName);
+    this.props.initDateState(pageName, buildingName, initState);
   }
 
   componentWillUnmount() {
+    const {
+      pageName,
+      buildingName
+    } = this.props;
+
     //cleanup
-    this.props.dateCleanup(this.props.pageName, this.props.buildingName);
+    this.props.dateCleanup(pageName, buildingName);
   }
 
   render() {
+    const {
+      date,
+      updateDate
+    } = this.props;
+
     return this.props.children({
-      date: this.props.date,
+      date,
       actions: {
-        updateDate: this.props.updateDate
+        updateDate
       }
     });
   }
@@ -31,7 +47,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  initDateState: (pageName, buildingName) => dispatch(dateActions.initDateState(pageName, buildingName)),
+  initDateState: (pageName, buildingName, initState) => dispatch(dateActions.initDateState(pageName, buildingName, initState)),
   dateCleanup: (pageName, buildingName) => dispatch(dateActions.dateCleanup(pageName, buildingName)),
   updateDate: (pageName, buildingName, date) => dispatch(dateActions.updateDate(pageName, buildingName, date))
 });
