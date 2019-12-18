@@ -8,9 +8,9 @@ import expansesCodesActions from '../../redux/actions/expansesCodesActions';
 
 const styles = theme => ({
   container: {
-    margin: "10px 0 30px",
-    boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.02)",
-    background: "#f9f9f9",
+    margin: "0px 0 20px",
+    boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.06)",
+    background: "#ffffff",
     padding: "10px",
     borderRadius: "4px"
   },

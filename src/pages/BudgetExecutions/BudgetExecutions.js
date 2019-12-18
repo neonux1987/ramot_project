@@ -14,6 +14,7 @@ import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 
 // DATA PROVIDERS
 import DateProvider from '../../renderProps/providers/DateProvider';
+import Helper from '../../helpers/Helper';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -25,13 +26,26 @@ const BudgetExecutions = props => {
   //building name
   const { buildingNameEng } = props.location.state;
 
+  const quarter = Helper.getCurrentQuarter();
+
+  const initState = {
+    quarter,
+    quarterHeb: Helper.getQuarterHeb(quarter),
+    quarterEng: Helper.getCurrentQuarterEng(quarter),
+    year: Helper.getCurrentYear()
+  };
+
   return <Fragment>
 
     <Header bgColor="rgb(44, 183, 197)">
       {PAGE_TITLE}
     </Header>
 
-    <DateProvider pageName={PAGE_NAME} buildingName={buildingNameEng}>
+    <DateProvider
+      pageName={PAGE_NAME}
+      buildingName={buildingNameEng}
+      initState={initState}
+    >
       {({ date, actions }) => {
 
         if (date === undefined || date[buildingNameEng] === undefined)

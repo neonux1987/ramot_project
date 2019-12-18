@@ -35,10 +35,10 @@ import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesF
 
 const FIXED_FLOAT = 2;
 
-const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
+const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 
-class SummarizedBudgetTableContainer extends React.PureComponent {
+class SummarizedBudgetsTableContainer extends React.PureComponent {
 
   state = {
     editMode: false
@@ -51,7 +51,7 @@ class SummarizedBudgetTableContainer extends React.PureComponent {
       date: this.props.date,
       buildingName: this.props.location.state.buildingNameEng
     }
-    console.log(params);
+
     this.props.initSummzrizedBudgetsState(params.buildingName).then(() => {
       // fetch budget executions
       this.props.fetchSummarizedBudgets(params);
@@ -147,10 +147,21 @@ class SummarizedBudgetTableContainer extends React.PureComponent {
     //get the building month expanses
     this.props.fetchSummarizedBudgets(params);
   }
+  getGridTemplateColumns = () => {
+    return this.state.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+  }
+
+  getPage = () => {
+    return this.props.page;
+  }
+
+  getDataObject = (index) => {
+    return this.getPage().data[index];
+  }
 
   HeaderGroups = () => {
     const { groupColors } = this.context;
-    const { quarter } = this.props.date;
+    const { quarter, year } = this.props.date;
 
     const quarters = Helper.getYearQuarters(quarter);
 
@@ -174,9 +185,8 @@ class SummarizedBudgetTableContainer extends React.PureComponent {
       {quarterColumns}
       <GroupColumn
         span={3}
-        bgColor={groupColors[3]}
-      >{`סוף רבעון ${quarter}`}</GroupColumn>
-      <GroupColumn style={defaultStyle}></GroupColumn>
+        bgColor={groupColors[4]}
+      >{`סוף שנת ${year}`}</GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
     </GroupRow>
   }
@@ -191,9 +201,9 @@ class SummarizedBudgetTableContainer extends React.PureComponent {
       quarterColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</Column>);
     }
 
-    const quarterStyle = {
+    const yearStyle = {
       ...defaultheaderStyle,
-      color: groupColors[3]
+      color: groupColors[4]
     }
 
     return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
@@ -204,11 +214,10 @@ class SummarizedBudgetTableContainer extends React.PureComponent {
 
       {quarterColumns}
 
-      <Column style={quarterStyle}>{"הערכה"}</Column>
-      <Column style={quarterStyle}>{"תקציב"}</Column>
-      <Column style={quarterStyle}>{"ביצוע"}</Column>
+      <Column style={yearStyle}>{"הערכה"}</Column>
+      <Column style={yearStyle}>{"תקציב"}</Column>
+      <Column style={yearStyle}>{"ביצוע"}</Column>
 
-      <Column style={defaultheaderStyle}>{"הפרש"}</Column>
       <Column style={defaultheaderStyle}>{"הערות"}</Column>
     </HeaderRow>
   }
@@ -246,7 +255,7 @@ class SummarizedBudgetTableContainer extends React.PureComponent {
     const { buildingName, buildingNameEng } = this.props.location.state;
 
     const page = this.props.page;
-    console.log(page);
+
     if (page === undefined || page.data === undefined) {
       return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
     }
@@ -320,7 +329,7 @@ class SummarizedBudgetTableContainer extends React.PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  summarizedBudgets: state.summarizedBudgets.pages[ownProps.location.state.buildingNameEng]
+  page: state.summarizedBudgets.pages[ownProps.location.state.buildingNameEng]
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -329,7 +338,7 @@ const mapDispatchToProps = dispatch => ({
   initSummzrizedBudgetsState: (page) => dispatch(summarizedBudgetActions.initSummzrizedBudgetsState(page))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SummarizedBudgetTableContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SummarizedBudgetsTableContainer);
 
 const defaultheaderStyle = {
   backgroundColor: "rgb(232, 236, 241)",

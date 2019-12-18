@@ -14,7 +14,7 @@ import YearStatsContainer from './YearStatsContainer';
 
 // DATA PROVIDERS
 import DateProvider from '../../renderProps/providers/DateProvider';
-import SummarizedBudgetTableContainer from './SummarizedBudgetTableContainer';
+import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
 import Helper from '../../helpers/Helper';
 
 const PAGE_NAME = "summarizedBudgets";
@@ -56,7 +56,7 @@ const SummarizedBudgets = props => {
 
               <Section title={TABLE_TITLE} marginBottom={"100px"}>
 
-                <SummarizedBudgetTableContainer
+                <SummarizedBudgetsTableContainer
                   location={props.location}
                   date={date[buildingNameEng]}
                   dateActions={actions}

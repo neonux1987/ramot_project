@@ -17,7 +17,8 @@
 .wrapper{
   padding: 13px 24px;
   background: #f7f7f9;
-  border-bottom: 1px solid #eeeeef;
+  box-shadow: 0 5px 4px -5px #0000000d;
+    border-bottom: 1px solid #e8e7e7;
   font-size: 14px;
   color: #464a4e;
   font-weight: 600;
