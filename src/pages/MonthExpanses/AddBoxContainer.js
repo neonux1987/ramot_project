@@ -8,17 +8,17 @@ import expansesCodesActions from '../../redux/actions/expansesCodesActions';
 
 const styles = theme => ({
   container: {
-    margin: "0px 0 20px",
+    margin: "10px 0 10px",
     boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.06)",
-    background: "#ffffff",
     padding: "10px",
-    borderRadius: "4px"
+    background: "#ffffff",
+    boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.06)",
+    borderRadius: "4px",
+    border: "1px solid #00000024"
   },
   form: {
     display: "grid",
     gridTemplateColumns: "212px 1fr 1fr 1fr 1fr 300px 80px 80px",
-    border: "1px solid #f1efef",
-    background: "#fff"
   },
   textField: {
     marginLeft: theme.spacing(),
@@ -229,6 +229,10 @@ class InputExpansesField extends Component {
     });
   }
 
+  submit = () => {
+    this.props.submitData(this.state.formInputs, this.reset);
+  }
+
   componentDidMount() {
     // fetch expnases codes
     this.props.fetchExpansesCodes();
@@ -358,7 +362,7 @@ class InputExpansesField extends Component {
           name="submit"
           variant="contained"
           color="primary"
-          onClick={(event) => this.props.submitData(this.state.formInputs, this.reset)}
+          onClick={this.submit}
           className={classes.button}
           disabled={combinedFetching}
         >

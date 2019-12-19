@@ -32,6 +32,7 @@ import GroupRow from '../../components/table/GroupRow';
 
 // DATA FETHCERS
 import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
+import InfoBox from '../../components/InfoBox/InfoBox';
 
 const FIXED_FLOAT = 2;
 
@@ -86,12 +87,10 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
       this.setState({
         editMode: false
       });
-      toast.warning("מצב עריכה בוטל");
     } else {
       this.setState({
         editMode: true
       });
-      toast.success("הופעל מצב עריכה");
     }
 
     playSound(soundTypes.message);
@@ -312,6 +311,11 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
           />} // end leftPane
 
         />  {/* End TableControls */}
+
+        <InfoBox
+          year={date.year}
+          editMode={this.state.editMode}
+        />
 
         <Table
           Row={this.Row}

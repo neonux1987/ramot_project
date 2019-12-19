@@ -24,7 +24,7 @@ import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCente
 import AddBox from './AddBoxContainer';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import DefaultCell from '../../components/table/TableCell/DefaultCell';
-import CellInput from '../../components/table/TableCell/EditableColumn';
+import InfoBox from '../../components/InfoBox/InfoBox';
 
 // DATA FETHCER
 import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
@@ -558,6 +558,13 @@ class MonthExpanses extends React.PureComponent {
 
         {/* add new box */}
         {addNewBox}
+
+        <InfoBox
+          month={date.monthHeb}
+          quarter={date.quarter}
+          year={date.year}
+          editMode={this.state.editMode}
+        />
 
         <Table
           Row={this.Row}

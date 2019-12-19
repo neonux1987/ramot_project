@@ -1,4 +1,5 @@
 import React from "react";
+import { Notifications, Settings } from '@material-ui/icons';
 
 import styles from './Toolbar.module.css';
 import classnames from 'classnames';
@@ -38,7 +39,15 @@ const Toolbar = ({ buildingName, page }) => {
       </div> */}
 
       <div className={classnames(styles.section, styles.flexAlignLeft)}>
-        <span>מע"מ נוכחי: </span>{tax}
+
+        <div className={styles.vatWrapper}>
+          <span>מע"מ נוכחי: </span>{tax}
+        </div>
+
+        <button className={styles.notifBtn}>
+          <Notifications />
+        </button>
+
       </div>
 
     </div>

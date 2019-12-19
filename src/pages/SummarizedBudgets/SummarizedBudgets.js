@@ -1,12 +1,14 @@
 // LIBRARIES
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router';
+import { Equalizer, TableChart } from '@material-ui/icons';
 
 // COMMON COMPONENTS
 import Header from '../../components/Header/Header';
 import Section from '../../components/Section/Section';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
+import SectionTitle from '../../components/SectionTitle/SectionTitle';
 
 // CONTAINERS
 //import SummarizedBudgetTableContainer from './SummarizedBudgetTableContainer';
@@ -15,6 +17,8 @@ import YearStatsContainer from './YearStatsContainer';
 // DATA PROVIDERS
 import DateProvider from '../../renderProps/providers/DateProvider';
 import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
+
+// UTILS
 import Helper from '../../helpers/Helper';
 
 const PAGE_NAME = "summarizedBudgets";
@@ -46,7 +50,9 @@ const SummarizedBudgets = props => {
           return (
             <Fragment>
 
-              <Section title={STATS_TITLE}>
+              <SectionTitle title={STATS_TITLE} TitleIcon={Equalizer} />
+
+              <Section>
                 <YearStatsContainer
                   buildingName={buildingNameEng}
                   date={date[buildingNameEng]}
@@ -54,7 +60,9 @@ const SummarizedBudgets = props => {
                 />
               </Section>
 
-              <Section title={TABLE_TITLE} marginBottom={"100px"}>
+              <SectionTitle title={TABLE_TITLE} TitleIcon={TableChart} />
+
+              <Section marginBottom={"100px"}>
 
                 <SummarizedBudgetsTableContainer
                   location={props.location}

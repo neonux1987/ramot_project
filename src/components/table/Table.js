@@ -28,7 +28,7 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, c
     </AutoSizer> */}
 
     <Virtuoso
-      style={{ overflow: "overlay", direction: "rtl" }}
+      style={{ overflow: "overlay", direction: "rtl", overscrollBehavior: "contain" }}
       totalCount={itemCount}
       item={Row}
       overscan={200}

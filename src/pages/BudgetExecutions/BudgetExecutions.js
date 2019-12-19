@@ -1,6 +1,7 @@
 // LIBRARIES
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router';
+import { Equalizer, TableChart } from '@material-ui/icons';
 
 // COMMON COMPONENTS
 import Header from '../../components/Header/Header';
@@ -15,11 +16,12 @@ import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 // DATA PROVIDERS
 import DateProvider from '../../renderProps/providers/DateProvider';
 import Helper from '../../helpers/Helper';
+import SectionTitle from '../../components/SectionTitle/SectionTitle';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
 const STATS_TITLE = "סיכום הוצאות והכנסות רבעוני";
-const TABLE_TITLE = "טבלת מעקב הוצאות חודשי";
+const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 
 const BudgetExecutions = props => {
 
@@ -54,7 +56,9 @@ const BudgetExecutions = props => {
           return (
             <Fragment>
 
-              <Section title={STATS_TITLE}>
+              <SectionTitle title={STATS_TITLE} TitleIcon={Equalizer} />
+
+              <Section>
                 <QuarterStatsContainer
                   buildingName={buildingNameEng}
                   date={date[buildingNameEng]}
@@ -62,7 +66,9 @@ const BudgetExecutions = props => {
                 />
               </Section>
 
-              <Section title={TABLE_TITLE} marginBottom={"100px"}>
+              <SectionTitle title={TABLE_TITLE} TitleIcon={TableChart} />
+
+              <Section marginBottom={"100px"}>
 
                 <BudgetExecutionsTableContainer
                   location={props.location}

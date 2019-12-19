@@ -1,6 +1,7 @@
 // LIBRARIES
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router';
+import { TableChart } from '@material-ui/icons';
 
 // COMMON COMPONENTS
 import Header from '../../components/Header/Header';
@@ -13,6 +14,7 @@ import DateProvider from '../../renderProps/providers/DateProvider';
 
 // CONTAINERS
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
+import SectionTitle from '../../components/SectionTitle/SectionTitle';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -26,7 +28,7 @@ const MonthExpanses = props => {
   return (
     <Fragment>
 
-      <Header bgColor="#458efd">
+      <Header bgColor="rgb(129, 86, 234)">
         {PAGE_TITLE}
       </Header>
 
@@ -39,7 +41,9 @@ const MonthExpanses = props => {
             return (
               <Fragment>
 
-                <Section title={TABLE_TITLE}>
+                <SectionTitle title={TABLE_TITLE} TitleIcon={TableChart} />
+
+                <Section>
 
                   <MonthExpansesTableContainer
                     location={props.location}

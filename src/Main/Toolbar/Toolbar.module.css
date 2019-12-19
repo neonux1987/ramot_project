@@ -15,8 +15,10 @@
 } */
 
 .wrapper{
-  padding: 13px 24px;
-  background: #f7f7f9;
+  /* padding: 13px 24px; */
+  height: 57px;
+  padding: 0 24px;
+  background: #f3f4f8;
   box-shadow: 0 5px 4px -5px #0000000d;
     border-bottom: 1px solid #e8e7e7;
   font-size: 14px;
@@ -39,9 +41,7 @@
 
 .section{
   flex-grow: 1;
-  align-items: center;
     display: flex;
-    justify-content: center;
     flex-basis: 0;
 }
 
@@ -64,4 +64,31 @@
 
 .flexAlignLeft{
   justify-content: flex-end;
+}
+
+.notifBtn{
+  width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border-right: 1px solid #e4e4e4; */
+    /* border-left: 1px solid #e4e4e4; */
+    /* border-top: none;
+    border-bottom: none; */
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    color: #697071;
+}
+
+.notifBtn svg:hover{
+  color: #808080;
+}
+
+.vatWrapper{
+  width: 150px;
+  display: flex;
+    align-items: center;
+    justify-content: center;
 }

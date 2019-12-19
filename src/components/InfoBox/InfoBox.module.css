@@ -1,0 +1,22 @@
+.wrapper{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.section{
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.flexEnd{
+  justify-content: flex-end;
+}
+
+.flexStart{
+  justify-content: flex-start;
+}
+
+.marginText{
+  margin-right: 5px;
+}
