@@ -14,7 +14,9 @@ const styles = theme => ({
     background: "#ffffff",
     boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.06)",
     borderRadius: "4px",
-    border: "1px solid #00000024"
+    border: "1px solid #00000024",
+    position: "relative",
+    zIndex: "3"
   },
   form: {
     display: "grid",
@@ -36,6 +38,7 @@ const styles = theme => ({
   },
   menu: {
     width: 200,
+    marginTop: "60px"
   },
   buttonWrapper: {
     alignItems: "center",

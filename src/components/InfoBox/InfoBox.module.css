@@ -1,6 +1,7 @@
 .wrapper{
   display: flex;
   justify-content: flex-end;
+  padding-bottom: 2px;
 }
 
 .section{

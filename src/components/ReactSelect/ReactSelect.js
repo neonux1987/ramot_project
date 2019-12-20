@@ -65,6 +65,7 @@ const styles = theme => ({
     marginTop: theme.spacing(1),
     left: 0,
     right: 0,
+    top: "30px"
   },
   divider: {
     height: theme.spacing(2),

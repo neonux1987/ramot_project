@@ -16,7 +16,7 @@ export default ({
   const icon = TitleIcon ? <TitleIcon /> : null;
 
   return (
-    <Box mt={marginTop} mb={marginBottom} mx={"24px"}>
+    <Box mt={marginTop} mb={marginBottom} mx={"20px"}>
       {children}
     </Box>
   );

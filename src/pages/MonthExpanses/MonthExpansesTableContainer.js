@@ -39,6 +39,8 @@ import {
   CellMeasurerCache
 } from 'react-virtualized';
 import EditableColumn from '../../components/table/TableCell/EditableColumn';
+import GroupRow from '../../components/table/GroupRow';
+import GroupColumn from '../../components/table/GroupColumn';
 
 class MonthExpanses extends React.PureComponent {
 
@@ -444,6 +446,12 @@ class MonthExpanses extends React.PureComponent {
     return this.getPage().data[index];
   }
 
+  HeaderGroups = () => {
+    return <GroupRow>
+      <GroupColumn></GroupColumn>
+    </GroupRow>
+  }
+
   HeadersRow = () => {
     // column settings
     const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
@@ -568,6 +576,7 @@ class MonthExpanses extends React.PureComponent {
 
         <Table
           Row={this.Row}
+          GroupComponent={this.HeaderGroups}
           HeaderComponent={this.HeadersRow}
           isFetching={isFetching || data.length === 0}
           itemCount={data.length}
@@ -613,8 +622,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);
 }; */
 
 const headerStyle = {
-  backgroundColor: "rgb(52, 58, 64)",
-  color: "#ffffff",
+  backgroundColor: "rgb(232, 236, 241)",
+  color: "#000000",
   fontWeight: "600",
   justifyContent: "center",
   height: "27px",
