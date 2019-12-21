@@ -46,7 +46,7 @@ class BudgetExecutionLogic {
     return this.budgetExecutionDao.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
   }
 
-  async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, special = Boolean }, trx) {
+  async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, special = false }, trx) {
 
     if (trx === undefined) {
       trx = await this.connection.transaction();
@@ -63,7 +63,7 @@ class BudgetExecutionLogic {
     if (date.month) {
 
       //dont update stats if it's a special code 
-      //that start with special prefix
+      //that starts with special prefix
       if (!special) {
         //calculate month stats
         const preparedMonthStatsObj = this.prepareMonthStatsObj(date.month, allBudgetExecutions);
@@ -139,14 +139,17 @@ class BudgetExecutionLogic {
 
     for (let i = 0; i < budgetExecArr.length; i++) {
 
-      //calculate month outcome
-      outcome += budgetExecArr[i][`${monthEng}_budget_execution`];
-      //calculate month income
-      income += budgetExecArr[i][`${monthEng}_budget`];
-      //calculate quarter outcome
-      totalOutcome += budgetExecArr[i]["total_execution"];
-      //calculate quarter income
-      totalIncome += budgetExecArr[i]["total_budget"];
+      if (budgetExecArr[i].section !== "הכנסות מיוחדות" || budgetExecArr[i].summarized_section_id !== 31) {
+        //calculate month outcome
+        outcome += budgetExecArr[i][`${monthEng}_budget_execution`];
+        //calculate month income
+        income += budgetExecArr[i][`${monthEng}_budget`];
+        //calculate quarter outcome
+        totalOutcome += budgetExecArr[i]["total_execution"];
+        //calculate quarter income
+        totalIncome += budgetExecArr[i]["total_budget"];
+      }
+
     }
 
     return {

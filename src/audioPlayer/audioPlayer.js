@@ -12,18 +12,15 @@ export const playSound = (type) => {
 
   var audio = new Audio();
   audio.currentTime = 0;
-  let delayTime = 0;
 
   switch (type) {
     case "error":
       audio.src = error;
       audio.volume = 0.1;
-      delayTime = 0;
       break;
     case "message":
       audio.src = message;
       audio.volume = 0.15;
-      delayTime = 0;
       break;
     case "welcome":
       audio.src = welcome;
@@ -32,11 +29,8 @@ export const playSound = (type) => {
     default:
       audio.src = message;
       audio.volume = 0.15;
-      delayTime = 0;
   }
 
-  setTimeout(() => {
-    audio.play();
-  }, delayTime);
+  audio.play();
 
 }

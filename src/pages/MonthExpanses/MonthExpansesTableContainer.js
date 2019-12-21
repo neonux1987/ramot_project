@@ -23,46 +23,28 @@ import Spinner from '../../components/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import AddBox from './AddBoxContainer';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
-import DefaultCell from '../../components/table/TableCell/DefaultCell';
+import EditableColumn from '../../components/table/TableCell/EditableColumn';
+import GroupRow from '../../components/table/GroupRow';
+import GroupColumn from '../../components/table/GroupColumn';
 import InfoBox from '../../components/InfoBox/InfoBox';
-
-// DATA FETHCER
-import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
 import Table from '../../components/table/Table';
 import Row from '../../components/table/Row';
 import Column from '../../components/table/Column';
 import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
 import HeaderRow from '../../components/table/HeaderRow';
 
-import {
-  CellMeasurer,
-  CellMeasurerCache
-} from 'react-virtualized';
-import EditableColumn from '../../components/table/TableCell/EditableColumn';
-import GroupRow from '../../components/table/GroupRow';
-import GroupColumn from '../../components/table/GroupColumn';
+// DATA FETHCER
+import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
+
+// HOC
+import withTableLogic from '../../HOC/withTableLogic';
 
 class MonthExpanses extends React.PureComponent {
 
-  constructor(props) {
-    super(props);
-    //state init
-    this.state = {
-      editMode: false,
-      addNewMode: false
-    };
-
-    this.cache = new CellMeasurerCache({
-      fixedWidth: true,
-      defaultHeight: 35,
-      minHeight: 35
-    });
-
-    //binds
-    this.inputExpansesSubmit = this.inputExpansesSubmit.bind(this);
-    this.findExpanseIndex = this.findExpanseIndex.bind(this);
-    this.loadExpansesByDate = this.loadExpansesByDate.bind(this);
-  }
+  state = {
+    editMode: false,
+    addNewMode: false
+  };
 
   static contextType = GlobalContext;
 
@@ -80,7 +62,7 @@ class MonthExpanses extends React.PureComponent {
     });
   }
 
-  inputExpansesSubmit(formInputs, reset) {
+  inputExpansesSubmit = (formInputs, reset) => {
     //building names
     const { buildingNameEng } = this.props.location.state;
     // building data
@@ -122,14 +104,14 @@ class MonthExpanses extends React.PureComponent {
 
   }
 
-  validateFormInputs(formInputs) {
+  validateFormInputs = (formInputs) => {
     if (!formInputs.code && !formInputs.codeName) {
       return false;
     }
     return true;
   }
 
-  parseFormInputs(formInputs) {
+  parseFormInputs = (formInputs) => {
     const copyFormInputs = { ...formInputs };
     //parse inputs
     copyFormInputs.code = Number.parseInt(copyFormInputs.code);
@@ -146,7 +128,7 @@ class MonthExpanses extends React.PureComponent {
     this.props.monthExpansesCleanup(this.props.location.state.buildingNameEng);
   }
 
-  findExpanseIndex(code = null, codeName = null) {
+  findExpanseIndex = (code = null, codeName = null) => {
     let result = null;
     this.props.monthExpanses.expanses.data.forEach((row, index) => {
       if (row["code"] === Number.parseInt(code) || row["codeName"] === codeName) {
@@ -156,7 +138,7 @@ class MonthExpanses extends React.PureComponent {
     return result;
   }
 
-  loadExpansesByDate({ month, year }) {
+  loadDataByDate = ({ month, year }) => {
     const monthNum = Helper.convertEngToMonthNum(month);
 
     const { pageName } = this.props;
@@ -183,75 +165,6 @@ class MonthExpanses extends React.PureComponent {
 
   }
 
-  generateHeaders = () => {
-
-    const headerStyle = { background: "rgb(52, 58, 64)", color: "#fff", fontWeight: "600" };
-
-    return [
-      {
-        Header: "פעולות",
-        width: 80,
-        headerStyle: headerStyle,
-        Cell: (cellInfo) => <TableActions deleteHandler={this.deleteExpanseHandler(cellInfo.original.id, cellInfo.index)} />,
-        show: this.state.editMode
-      },
-      {
-        Header: "שורה",
-        width: 100,
-        Cell: (cellInfo) => <DefaultCell defaultValue={cellInfo.viewIndex + 1} />,
-        headerStyle: headerStyle
-      },
-      {
-        accessor: "code",
-        Header: "קוד הנהח\"ש",
-        headerStyle: headerStyle
-      },
-      {
-        accessor: "codeName",
-        Header: "שם חשבון",
-        headerStyle: headerStyle,
-        filterMethod: Helper.reactTableFilterMethod
-      },
-      {
-        accessor: "section",
-        Header: "מקושר לסעיף",
-        headerStyle: headerStyle,
-        filterMethod: Helper.reactTableFilterMethod
-      },
-      {
-        accessor: "supplierName",
-        Header: "שם הספק",
-        headerStyle: headerStyle,
-        Cell: this.textInput,
-        filterMethod: Helper.reactTableFilterMethod,
-        style: {
-          padding: 0
-        }
-      },
-      {
-        accessor: "sum",
-        Header: "סכום",
-        headerStyle: headerStyle,
-        Cell: this.numberInput,
-        style: {
-          padding: 0
-        }
-      },
-      {
-        accessor: "notes",
-        Header: "הערות",
-        headerStyle: headerStyle,
-        Cell: this.textAreaInput,
-        filterMethod: Helper.reactTableFilterMethod,
-        style: {
-          padding: 0,
-          paddingLeft: "10px"
-        }
-      }
-    ]
-
-  }
-
   getLocationState = () => {
     return this.props.location.state;
   }
@@ -260,14 +173,21 @@ class MonthExpanses extends React.PureComponent {
     return this.props.page;
   }
 
-  cellInputOnBlurHandler(e, key, index) {
+  onBlurHandler = (e) => {
     //building names
     const { buildingNameEng } = this.getLocationState();
 
     // building data
-    const { date, data } = this.getPage();
+    const { data } = this.getPage();
 
-    const { type, value } = e.target;
+    // date
+    const date = this.props.date;
+
+    const target = e.target;
+
+    const { type, value } = target;
+
+    const { key, index } = target.dataset;
 
     //will be used for rollback
     const oldExpanseCopy = { ...data[index] };
@@ -290,9 +210,7 @@ class MonthExpanses extends React.PureComponent {
     let params = {
       expanse: expanse,
       buildingName: buildingNameEng,
-      date: {
-        ...date
-      }
+      date
     };
     //update expanse
     this.props.updateMonthExpanse(params, oldExpanseCopy, index);
@@ -314,101 +232,6 @@ class MonthExpanses extends React.PureComponent {
     };
     this.props.deleteMonthExpanse(params, index);
   }
-
-  inputOnFocusHandler = (e) => {
-    e.target.select();
-  }
-
-  onFocusHandler = (e) => {
-    var range = document.createRange();
-    range.selectNodeContents(e.target);
-    var sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-  }
-
-  onKeyPressHandler = (e) => {
-    if (e.key === "Enter") {
-      e.target.blur();
-    }
-  }
-
-  onBlurCallBack = (event, key, index) => {
-    const { type, value } = event.target;
-    return useCallback(() => {
-      this.cellInputOnBlurHandler(event, key, index);
-    }, [key, type, value, index]);
-  }
-
-  textAreaInput = (key, value, index) => {
-    return <EditableColumn
-      value={value}
-      type="textarea"
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
-      onFocusHandler={this.onFocusHandler}
-    />
-  };
-
-  textInput = (key, value, index) => {
-    return <EditableColumn
-      value={value}
-      type="text"
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
-      onKeyPressHandler={this.onKeyPressHandler}
-      onClickHandler={this.inputClickHandler}
-    />
-  };
-
-  numberInput = (key, value, index) => {
-    const newValue = value === 0 ? "" : value;
-    return <EditableColumn
-      type="number"
-      value={newValue}
-      onBlurHandler={(event) => this.cellInputOnBlurHandler(event, key, index)}
-      onKeyPressHandler={this.onKeyPressHandler}
-      onFocusHandler={this.inputOnFocusHandler}
-    />
-  };
-
-  toggleEditMode = () => {
-    this.setState({
-      ...this.state,
-      editMode: !this.state.editMode
-    }, () => {
-      if (this.state.editMode) {
-        notify({
-          type: notificationTypes.message,
-          message: "הופעל מצב עריכה"
-        });
-      } else {
-        notify({
-          type: notificationTypes.message,
-          message: "מצב עריכה בוטל"
-        });
-      }
-      playSound(soundTypes.message);
-    });
-  };
-
-  toggleAddNewMode = () => {
-    this.setState({
-      ...this.state,
-      addNewMode: !this.state.addNewMode
-    }, () => {
-      if (this.state.addNewMode) {
-        notify({
-          type: notificationTypes.message,
-          message: "מצב הוסף חדש הופעל"
-        });
-      } else {
-        notify({
-          type: notificationTypes.message,
-          message: "מצב הוסף חדש בוטל"
-        });
-      }
-      playSound(soundTypes.message);
-    });
-  };
 
   onFetchData = (state) => {
 
@@ -453,17 +276,19 @@ class MonthExpanses extends React.PureComponent {
   }
 
   HeadersRow = () => {
+    const editMode = this.props.editMode;
+
     // column settings
-    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+    const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
     return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
 
-      {this.state.editMode ? <Column style={headerStyle}>{"פעולות"}</Column> : null}
+      {editMode ? <Column style={headerStyle}>{"פעולות"}</Column> : null}
       {headers.map((header, index) => {
         return (
           <Column
             key={index} style={{
-              display: header.title === "פעולות" && !this.state.editMode ? "none" : "flex",
+              display: header.title === "פעולות" && !editMode ? "none" : "flex",
               ...header.headerStyle
             }}>{header.title}</Column>);
       })}
@@ -471,20 +296,26 @@ class MonthExpanses extends React.PureComponent {
   }
 
   Row = (index) => {
+    const {
+      editMode,
+      textAreaInput,
+      numberInput
+    } = this.props;
+
     // row data
     const rowData = this.getDataObject(index);
     // column settings
-    const gridTemplateColumns = `${this.state.editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+    const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
     return <Row style={{ minHeight: "35px" }} gridTemplateColumns={gridTemplateColumns}>
-      {this.state.editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+      {editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
       <Column>{rowData["section"]}</Column>
-      {this.state.editMode ? this.textAreaInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
-      {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column style={{ whiteSpace: "pre-wrap,", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
+      {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, this.onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}
+      {editMode ? numberInput("sum", rowData["sum"], index, this.onBlurHandler) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap,", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 
@@ -501,7 +332,11 @@ class MonthExpanses extends React.PureComponent {
     const {
       date,
       pageName,
-      pageTitle
+      pageTitle,
+      editMode,
+      toggleEditMode,
+      addNewMode,
+      toggleAddNewMode
     } = this.props;
 
     // building data
@@ -512,7 +347,7 @@ class MonthExpanses extends React.PureComponent {
     } = page;
 
     //add new month expanse box
-    const addNewBox = this.state.addNewMode ?
+    const addNewBox = addNewMode ?
       <AddBox
         data={data}
         submitData={this.inputExpansesSubmit}
@@ -526,10 +361,10 @@ class MonthExpanses extends React.PureComponent {
         <TableControls
           rightPane={
             <EditControls
-              editMode={this.state.editMode}
-              toggleEditMode={this.toggleEditMode}
-              addNewMode={this.state.addNewMode}
-              toggleAddNewMode={this.toggleAddNewMode}
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
+              addNewMode={addNewMode}
+              toggleAddNewMode={toggleAddNewMode}
             />
           } // end rightPane
           middlePane={
@@ -541,7 +376,7 @@ class MonthExpanses extends React.PureComponent {
                   months={months}
                   years={years}
                   date={date}
-                  submitHandler={this.loadExpansesByDate}
+                  submitHandler={this.loadDataByDate}
                 />
               }}
             </RegisteredDatesFetcher>
@@ -571,7 +406,7 @@ class MonthExpanses extends React.PureComponent {
           month={date.monthHeb}
           quarter={date.quarter}
           year={date.year}
-          editMode={this.state.editMode}
+          editMode={editMode}
         />
 
         <Table
@@ -610,7 +445,9 @@ const mapDispatchToProps = dispatch => ({
   deleteMonthExpanse: (payload, index) => dispatch(monthExpansesAction.deleteMonthExpanse(payload, index))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MonthExpanses);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withTableLogic(MonthExpanses)
+);
 
 /* const headerStyle = {
   backgroundColor: "rgb(232, 236, 241)",

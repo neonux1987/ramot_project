@@ -36,6 +36,7 @@ import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesF
 
 // HOC
 import withColumnColorLogic from '../../HOC/withColumnColorLogic';
+import withTableLogic from '../../HOC/withTableLogic';
 
 const FIXED_FLOAT = 2;
 
@@ -70,7 +71,7 @@ class BudgetExecutionsTable extends React.PureComponent {
     this.props.budgetExecutionsCleanup(this.props.location.state.buildingNameEng);
   }
 
-  loadBudgetExecutionsByDate = ({ year, quarter }) => {
+  loadDataByDate = ({ year, quarter }) => {
 
     const { pageName } = this.props;
     const { buildingNameEng } = this.props.location.state;
@@ -93,59 +94,58 @@ class BudgetExecutionsTable extends React.PureComponent {
     this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
   }
 
-  cell(cellInfo) {
-    const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
-    return newValue;
-  }
+  onBlurHandler = (e) => {
+    //building names
+    const { buildingNameEng } = this.getLocationState();
 
-  cellInputOnBlurHandler = (e, cellInfo) => {
-
+    // building data
     const { data } = this.getPage();
 
-    //copy data
-    const copyData = [...data];
-    //data date
-    const { date } = this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex];
-    //index of the object in the array
-    const objIndex = cellInfo.index;
-    //column id, the title of the column
-    const columnId = cellInfo.column.id;
+    // date
+    const date = this.props.date;
+
+    const target = e.target;
+
+    const { value } = target;
+
+    const { key, index } = target.dataset;
 
     //copy old object so rollback would be possible
-    const oldBudgetExecutionObj = { ...copyData[objIndex] };
+    const oldBudgetExecutionObj = { ...data[index] };
 
-    if (columnId === "notes") {
+    // new budget execution copy
+    const budgetExecutionObj = { ...oldBudgetExecutionObj };
+
+    if (key === "notes") {
+      const { innerText } = e.target;
       //replace the value
-      copyData[objIndex][columnId] = e.target.value === "" ? "" : e.target.value;
+      budgetExecutionObj[key] = innerText === "" ? "" : innerText;
     } else {
       //replace the value
-      copyData[objIndex][columnId] = e.target.value === "" ? 0 : parseFloat(e.target.value);
+      budgetExecutionObj[key] = value === "" ? 0 : parseFloat(value);
     }
 
     //prepare the budget execution object
-    const newBudgetExecutionObj = this.prepareBudgetExecObj(copyData[objIndex], date.quarter);
+    const newBudgetExecutionObj = this.prepareBudgetExecObj(budgetExecutionObj, date.quarter);
 
     //prepare the params object
     let params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: {
-        ...date
-      },
+      buildingName: buildingNameEng,
+      date,
       budgetExec: newBudgetExecutionObj,
-      summarized_section_id: copyData[objIndex].summarized_section_id
+      summarized_section_id: budgetExecutionObj.summarized_section_id
     };
-
 
     //check if it's a month budget column,
     //if it is set the date month params to the month
     //column that was updated
-    if (columnId.includes("_budget")) {
-      params.date.month = columnId.substring(0, columnId.length - 7);
+    if (key.includes("_budget")) {
+      params.date.month = key.substring(0, key.length - 7);
       params.date.monthHeb = Helper.convertEngToHebMonth(params.date.month);
     }
 
     //this.calculateMonthTotalBudget(copyData, cellInfo.column.id, prevValue, copyData[objIndex][cellInfo.column.id]);
-    this.props.updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, objIndex);
+    this.props.updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index);
     e.target.blur();
   }
 
@@ -190,69 +190,9 @@ class BudgetExecutionsTable extends React.PureComponent {
     data[objIndex].total_budget = data[objIndex][`${monthNames[0]}_budget`] + data[objIndex][`${monthNames[1]}_budget`] + data[objIndex][`${monthNames[2]}_budget`];
   }
 
-  cellTextAreaInput = (cellInfo) => {
-    if (!this.state.editMode) {
-      return cellInfo.value;
-    }
-    return <textarea
-      type="text"
-      className="cellRender"
-      defaultValue={cellInfo.value}
-      onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      onClick={e => {
-        e.target.select()
-      }}
-    />
-  };
-
-  cellNumberInput = (cellInfo) => {
-    if (cellInfo.row.summarized_section_id === 32 || cellInfo.row.summarized_section_id === 33) {
-      return this.cell(cellInfo);
-    }
-    const newValue = cellInfo.value === 0 || cellInfo.value === undefined ? null : Number.parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
-    if (!this.state.editMode) {
-      return newValue;
-    }
-    return <input
-      type="number"
-      className="cellRender"
-      defaultValue={newValue}
-      onBlur={(event) => this.cellInputOnBlurHandler(event, cellInfo)}
-      onKeyPress={(event) => {
-        if (event.key === "Enter") {
-          event.target.blur();
-        }
-      }}
-      onClick={e => {
-        e.target.select()
-      }}
-    />
-  };
-
-  toggleEditMode = () => {
-    if (this.state.editMode) {
-      this.setState({
-        editMode: false
-      });
-    } else {
-      this.setState({
-        editMode: true
-      });
-    }
-
-    playSound(soundTypes.message);
-  };
-
   getGridTemplateColumns = () => {
-    return this.state.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+    return this.props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
-
-  toggleAddNewMode = () => {
-    this.setState({
-      ...this.state,
-      addNewMode: !this.state.addNewMode
-    })
-  };
 
   onFetchData = (state) => {
 
@@ -285,6 +225,10 @@ class BudgetExecutionsTable extends React.PureComponent {
     this.props.fetchBudgetExecutions(params);
   }
 
+  getLocationState = () => {
+    return this.props.location.state;
+  }
+
   getPage = () => {
     return this.props.page;
   }
@@ -294,6 +238,7 @@ class BudgetExecutionsTable extends React.PureComponent {
   }
 
   HeaderGroups = () => {
+    const editMode = this.props.editMode;
     const { groupColors } = this.context;
     const { quarter } = this.props.date;
 
@@ -313,7 +258,7 @@ class BudgetExecutionsTable extends React.PureComponent {
 
     return <GroupRow
       gridTemplateColumns={this.getGridTemplateColumns()} >
-      {this.state.editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
+      {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
       <GroupColumn style={defaultStyle}></GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
       {monthColumns}
@@ -327,6 +272,8 @@ class BudgetExecutionsTable extends React.PureComponent {
   }
 
   HeadersRow = () => {
+    const editMode = this.props.editMode;
+
     const { groupColors } = this.context;
 
     const monthColumns = [];
@@ -343,7 +290,7 @@ class BudgetExecutionsTable extends React.PureComponent {
 
     return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
 
-      {this.state.editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
+      {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
       <Column style={defaultheaderStyle}>{"סעיף"}</Column>
 
@@ -359,6 +306,12 @@ class BudgetExecutionsTable extends React.PureComponent {
   }
 
   Row = (index) => {
+    const {
+      editMode,
+      textAreaInput,
+      numberInput
+    } = this.props;
+
     // row data
     const rowData = this.getDataObject(index);
 
@@ -369,25 +322,26 @@ class BudgetExecutionsTable extends React.PureComponent {
 
     // generate month columns
     for (let i = 0; i < months.length; i++) {
-      monthColumns.push(<NonZeroNumberColumn key={`${months[i]}_budget${i}`}>{rowData[`${months[i]}_budget`]}</NonZeroNumberColumn>);
+      monthColumns.push(
+        editMode ?
+          numberInput(`${months[i]}_budget`, rowData[`${months[i]}_budget`], index, this.onBlurHandler) :
+          <NonZeroNumberColumn key={`${months[i]}_budget${i}`}>{rowData[`${months[i]}_budget`]}</NonZeroNumberColumn>
+      );
       monthColumns.push(<NonZeroNumberColumn key={`${months[i]}_budget_execution${i + 1}`}>{rowData[`${months[i]}_budget_execution`]}</NonZeroNumberColumn>);
     }
 
     const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
 
     return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {this.state.editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+      {editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
       {monthColumns}
-      <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>
+      {editMode ? numberInput("evaluation", rowData["evaluation"], index, this.onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
       <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>
       <NonZeroNumberColumn>{rowData["total_execution"]}</NonZeroNumberColumn>
       <DifferenceColumn style={{ direction: "ltr" }}>{rowData["difference"]}</DifferenceColumn>
-      <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>
-      {/*     {this.state.editMode ? this.textAreaInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
-      {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column style={{ whiteSpace: "pre-wrap" }}>{rowData["notes"]}</Column>} */}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 
@@ -405,7 +359,11 @@ class BudgetExecutionsTable extends React.PureComponent {
     const {
       date,
       pageName,
-      pageTitle
+      pageTitle,
+      editMode,
+      toggleEditMode,
+      addNewMode,
+      toggleAddNewMode
     } = this.props;
 
     // provider data
@@ -421,10 +379,10 @@ class BudgetExecutionsTable extends React.PureComponent {
         <TableControls
           rightPane={
             <EditControls
-              editMode={this.state.editMode}
-              toggleEditMode={this.toggleEditMode}
-              addNewMode={this.state.addNewMode}
-              toggleAddNewMode={this.toggleAddNewMode}
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
+              addNewMode={addNewMode}
+              toggleAddNewMode={toggleAddNewMode}
             />
           } // end rightPane
           middlePane={
@@ -436,7 +394,7 @@ class BudgetExecutionsTable extends React.PureComponent {
                   years={years}
                   quarters={quarters}
                   date={date}
-                  submitHandler={this.loadBudgetExecutionsByDate}
+                  submitHandler={this.loadDataByDate}
                 />
               }}
             </RegisteredDatesFetcher>
@@ -463,7 +421,7 @@ class BudgetExecutionsTable extends React.PureComponent {
         <InfoBox
           quarter={date.quarter}
           year={date.year}
-          editMode={this.state.editMode}
+          editMode={editMode}
         />
 
         <Table
@@ -493,7 +451,9 @@ const mapDispatchToProps = dispatch => ({
   addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionsActions.addBudgetExecution(payload, tableData))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BudgetExecutionsTable);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withTableLogic(BudgetExecutionsTable)
+);
 
 const headerStyle = {
   backgroundColor: "rgb(52, 58, 64)",

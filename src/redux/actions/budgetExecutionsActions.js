@@ -159,11 +159,12 @@ export const addBudgetExecution = (params = Object, tableData) => {
   }
 };
 
-export const updateBudgetExecutionStoreOnly = (payload, index) => {
+export const updateBudgetExecutionStoreOnly = (payload, index, buildingName) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_UPDATE,
     payload,
-    index
+    index,
+    buildingName
   }
 }
 
@@ -223,7 +224,7 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
 
     //update the new data in the store first for
     //better and fast user experience
-    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index));
+    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingName));
 
     //send a request to backend to get the data
     ipcRenderer.send("update-budget-execution", params);
@@ -237,7 +238,7 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
         });
 
         //rollback to the old budget execution object
-        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index));
+        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingName));
 
         //rollback to the old month total stats
         dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));

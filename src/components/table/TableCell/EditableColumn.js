@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './EditableColumn.module.css';
 
-export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFocusHandler, styleClass, style }) => {
+export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFocusHandler, styleClass, style, dataKey, dataIndex }) => {
 
   const [newValue, setValue] = useState(value);
 
@@ -34,6 +34,8 @@ export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFo
       dangerouslySetInnerHTML={{
         __html: newValue
       }}
+      data-key={dataKey}
+      data-index={dataIndex}
     />
   else
     renderer = <input
@@ -45,6 +47,8 @@ export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFo
       onBlur={onBlurHandler}
       onFocus={onFocusHandler}
       onChange={onChangeHandler}
+      data-key={dataKey}
+      data-index={dataIndex}
     />;
 
   return <div className={styles.wrapper}>{renderer}</div>;
