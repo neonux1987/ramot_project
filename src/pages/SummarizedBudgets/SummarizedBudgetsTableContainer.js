@@ -32,7 +32,9 @@ import GroupRow from '../../components/table/GroupRow';
 
 // DATA FETHCERS
 import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
-import InfoBox from '../../components/InfoBox/InfoBox';
+
+// HOC 
+import withTableLogic from '../../HOC/withTableLogic';
 
 const FIXED_FLOAT = 2;
 
@@ -64,43 +66,6 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     this.props.summarizedBudgetCleanup(this.props.location.state.buildingNameEng);
   }
 
-  loadSummarizedBudgetsByDate = ({ year }) => {
-    const { pageName } = this.props;
-    const { buildingNameEng } = this.props.location.state;
-
-    //important params that allow to pull the current data by
-    //current quarter, month and year.
-    let params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: {
-        year: year
-      }
-    };
-    this.props.fetchSummarizeBudgets(params);
-
-    // update global date
-    this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
-  }
-
-  toggleEditMode = () => {
-    if (this.state.editMode) {
-      this.setState({
-        editMode: false
-      });
-    } else {
-      this.setState({
-        editMode: true
-      });
-    }
-
-    playSound(soundTypes.message);
-  };
-
-  cell(cellInfo) {
-    const newValue = cellInfo.value === 0 ? null : parseFloat(cellInfo.value).toFixed(FIXED_FLOAT).replace(/[.,]00$/, "");
-    return newValue;
-  }
-
   loadDataByDate = ({ year }) => {
     //important params that allows to pull the current data by
     //building name, current month and year.
@@ -114,6 +79,10 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     //get the building month expanses
     this.props.fetchSummarizedBudgets(params);
 
+  }
+
+  onBlurHandler = () => {
+    console.log("im blured daba di daba da...");
   }
 
   onFetchData = (state) => {
@@ -147,7 +116,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     this.props.fetchSummarizedBudgets(params);
   }
   getGridTemplateColumns = () => {
-    return this.state.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+    return this.props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
   getPage = () => {
@@ -159,6 +128,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
   }
 
   HeaderGroups = () => {
+    const editMode = this.props.editMode;
     const { groupColors } = this.context;
     const { quarter, year } = this.props.date;
 
@@ -178,7 +148,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
 
     return <GroupRow
       gridTemplateColumns={this.getGridTemplateColumns()} >
-      {this.state.editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
+      {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
       <GroupColumn style={defaultStyle}></GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
       {quarterColumns}
@@ -191,6 +161,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
   }
 
   HeadersRow = () => {
+    const editMode = this.props.editMode;
     const { groupColors } = this.context;
 
     const quarterColumns = [];
@@ -207,7 +178,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
 
     return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
 
-      {this.state.editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
+      {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
       <Column style={defaultheaderStyle}>{"סעיף"}</Column>
 
@@ -222,6 +193,12 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
   }
 
   Row = (index) => {
+    const {
+      editMode,
+      textAreaInput,
+      numberInput
+    } = this.props;
+
     // row data
     const rowData = this.getDataObject(index);
 
@@ -234,17 +211,14 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     }
 
     return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {this.state.editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+      {editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
       {quarterColumns}
-      <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>
+      {editMode ? numberInput("evaluation", rowData["evaluation"], index, this.onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
       <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>
       <NonZeroNumberColumn>{rowData["total_execution"]}</NonZeroNumberColumn>
-      <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>
-      {/*     {this.state.editMode ? this.textAreaInput("supplierName", rowData["supplierName"], index) : <Column>{rowData["supplierName"]}</Column>}
-      {this.state.editMode ? this.numberInput("sum", rowData["sum"], index) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-      {this.state.editMode ? this.textAreaInput("notes", rowData["notes"], index) : <Column style={{ whiteSpace: "pre-wrap" }}>{rowData["notes"]}</Column>} */}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 
@@ -262,7 +236,11 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     const {
       date,
       pageName,
-      pageTitle
+      pageTitle,
+      editMode,
+      toggleEditMode,
+      addNewMode,
+      toggleAddNewMode
     } = this.props;
 
     // provider data
@@ -276,12 +254,11 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
       <TableWrapper>
 
         <TableControls
+          editMode={editMode}
           rightPane={
             <EditControls
-              editMode={this.state.editMode}
-              toggleEditMode={this.toggleEditMode}
-              addNewMode={this.state.addNewMode}
-              toggleAddNewMode={this.toggleAddNewMode}
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
             />
           } // end rightPane
           middlePane={
@@ -312,11 +289,6 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
 
         />  {/* End TableControls */}
 
-        <InfoBox
-          year={date.year}
-          editMode={this.state.editMode}
-        />
-
         <Table
           Row={this.Row}
           GroupComponent={this.HeaderGroups}
@@ -342,7 +314,9 @@ const mapDispatchToProps = dispatch => ({
   initSummzrizedBudgetsState: (page) => dispatch(summarizedBudgetActions.initSummzrizedBudgetsState(page))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SummarizedBudgetsTableContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withTableLogic(SummarizedBudgetsTableContainer)
+);
 
 const defaultheaderStyle = {
   backgroundColor: "rgb(232, 236, 241)",

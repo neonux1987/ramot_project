@@ -8,13 +8,16 @@ import Header from '../../components/Header/Header';
 import Section from '../../components/Section/Section';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
+import SectionHeader from '../../components/SectionHeader/SectionHeader';
 
 // DATA FETHCER
 import DateProvider from '../../renderProps/providers/DateProvider';
 
 // CONTAINERS
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
-import SectionTitle from '../../components/SectionTitle/SectionTitle';
+
+// HOC
+import withPageLogic from '../../HOC/withPageLogic';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -38,16 +41,22 @@ const MonthExpanses = props => {
           if (date === undefined || date[buildingNameEng] === undefined)
             return <AlignCenterMiddle><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
           else {
+            const onlyDate = date[buildingNameEng];
+
             return (
               <Fragment>
 
-                <SectionTitle title={TABLE_TITLE} TitleIcon={TableChart} />
+                <SectionHeader
+                  title={TABLE_TITLE}
+                  TitleIcon={TableChart}
+                  extraDetails={props.dateDetails(onlyDate)}
+                />
 
                 <Section>
 
                   <MonthExpansesTableContainer
                     location={props.location}
-                    date={date[buildingNameEng]}
+                    date={onlyDate}
                     dateActions={actions}
                     pageName={PAGE_NAME}
                     pageTitle={PAGE_TITLE}
@@ -65,4 +74,6 @@ const MonthExpanses = props => {
   );
 }
 
-export default withRouter(MonthExpanses)
+export default withRouter(
+  withPageLogic(MonthExpanses)
+)

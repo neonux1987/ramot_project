@@ -8,7 +8,7 @@ import Header from '../../components/Header/Header';
 import Section from '../../components/Section/Section';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import SectionTitle from '../../components/SectionTitle/SectionTitle';
+import SectionHeader from '../../components/SectionHeader/SectionHeader';
 
 // CONTAINERS
 //import SummarizedBudgetTableContainer from './SummarizedBudgetTableContainer';
@@ -17,6 +17,9 @@ import YearStatsContainer from './YearStatsContainer';
 // DATA PROVIDERS
 import DateProvider from '../../renderProps/providers/DateProvider';
 import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
+
+// HOC
+import withPageLogic from '../../HOC/withPageLogic';
 
 // UTILS
 import Helper from '../../helpers/Helper';
@@ -47,10 +50,12 @@ const SummarizedBudgets = props => {
         if (date === undefined || date[buildingNameEng] === undefined)
           return <AlignCenterMiddle><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
         else {
+          const onlyDate = date[buildingNameEng];
+
           return (
             <Fragment>
 
-              <SectionTitle title={STATS_TITLE} TitleIcon={Equalizer} />
+              <SectionHeader title={STATS_TITLE} TitleIcon={Equalizer} />
 
               <Section>
                 <YearStatsContainer
@@ -60,7 +65,11 @@ const SummarizedBudgets = props => {
                 />
               </Section>
 
-              <SectionTitle title={TABLE_TITLE} TitleIcon={TableChart} />
+              <SectionHeader
+                title={TABLE_TITLE}
+                TitleIcon={TableChart}
+                extraDetails={props.dateDetails(onlyDate)}
+              />
 
               <Section marginBottom={"100px"}>
 
@@ -84,4 +93,6 @@ const SummarizedBudgets = props => {
 
 }
 
-export default withRouter(SummarizedBudgets);
+export default withRouter(
+  withPageLogic(SummarizedBudgets)
+);

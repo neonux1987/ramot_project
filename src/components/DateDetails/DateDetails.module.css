@@ -1,0 +1,9 @@
+.wrapper{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.marginText{
+  margin-right: 5px;
+}

@@ -26,7 +26,6 @@ import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import EditableColumn from '../../components/table/TableCell/EditableColumn';
 import GroupRow from '../../components/table/GroupRow';
 import GroupColumn from '../../components/table/GroupColumn';
-import InfoBox from '../../components/InfoBox/InfoBox';
 import Table from '../../components/table/Table';
 import Row from '../../components/table/Row';
 import Column from '../../components/table/Column';
@@ -382,6 +381,7 @@ class MonthExpanses extends React.PureComponent {
             </RegisteredDatesFetcher>
 
           } // end middlePane
+          editMode={editMode}
           leftPane={
             <PageControls
               excel={{
@@ -401,13 +401,6 @@ class MonthExpanses extends React.PureComponent {
 
         {/* add new box */}
         {addNewBox}
-
-        <InfoBox
-          month={date.monthHeb}
-          quarter={date.quarter}
-          year={date.year}
-          editMode={editMode}
-        />
 
         <Table
           Row={this.Row}

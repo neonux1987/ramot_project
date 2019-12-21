@@ -8,6 +8,7 @@ import Header from '../../components/Header/Header';
 import Section from '../../components/Section/Section';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
+import SectionHeader from '../../components/SectionHeader/SectionHeader';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
@@ -16,7 +17,9 @@ import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 // DATA PROVIDERS
 import DateProvider from '../../renderProps/providers/DateProvider';
 import Helper from '../../helpers/Helper';
-import SectionTitle from '../../components/SectionTitle/SectionTitle';
+
+// HOC
+import withPageLogic from '../../HOC/withPageLogic';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -53,10 +56,12 @@ const BudgetExecutions = props => {
         if (date === undefined || date[buildingNameEng] === undefined)
           return <AlignCenterMiddle><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
         else {
+          const onlyDate = date[buildingNameEng];
+
           return (
             <Fragment>
 
-              <SectionTitle title={STATS_TITLE} TitleIcon={Equalizer} />
+              <SectionHeader title={STATS_TITLE} TitleIcon={Equalizer} />
 
               <Section>
                 <QuarterStatsContainer
@@ -66,7 +71,11 @@ const BudgetExecutions = props => {
                 />
               </Section>
 
-              <SectionTitle title={TABLE_TITLE} TitleIcon={TableChart} />
+              <SectionHeader
+                title={TABLE_TITLE}
+                TitleIcon={TableChart}
+                extraDetails={props.dateDetails(onlyDate)}
+              />
 
               <Section marginBottom={"100px"}>
 
@@ -91,4 +100,6 @@ const BudgetExecutions = props => {
 
 }
 
-export default withRouter(BudgetExecutions);
+export default withRouter(
+  withPageLogic(BudgetExecutions)
+);

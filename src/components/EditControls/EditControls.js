@@ -21,9 +21,11 @@ export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style 
         {editBtnTitle} {editIcon}
       </Button>
 
-      <Button className={classnames(styles.addNewBtn, addNewBtnStyle)} onClick={toggleAddNewMode} variant="contained" >
-        {addNewBtnTitle} {addIcon}
-      </Button>
+      {
+        toggleAddNewMode && <Button className={classnames(styles.addNewBtn, addNewBtnStyle)} onClick={toggleAddNewMode} variant="contained" >
+          {addNewBtnTitle} {addIcon}
+        </Button>
+      }
     </div>
   )
 

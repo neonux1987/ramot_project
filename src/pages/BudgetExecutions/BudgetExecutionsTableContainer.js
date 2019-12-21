@@ -29,7 +29,6 @@ import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Table from '../../components/table/Table';
 import GroupRow from '../../components/table/GroupRow';
-import InfoBox from '../../components/InfoBox/InfoBox';
 
 // DATA FETHCERS
 import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
@@ -377,6 +376,7 @@ class BudgetExecutionsTable extends React.PureComponent {
       <TableWrapper>
 
         <TableControls
+          editMode={editMode}
           rightPane={
             <EditControls
               editMode={editMode}
@@ -417,12 +417,6 @@ class BudgetExecutionsTable extends React.PureComponent {
           } // end leftPane
 
         /> {/* End TableControls */}
-
-        <InfoBox
-          quarter={date.quarter}
-          year={date.year}
-          editMode={editMode}
-        />
 
         <Table
           Row={this.Row}
