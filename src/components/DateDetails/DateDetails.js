@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './DateDetails.module.css';
-import classnames from 'classnames';
 
 export default ({ month, quarter, year }) => {
 

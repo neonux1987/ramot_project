@@ -1,27 +1,32 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import styles from './SelectDropDown.module.css';
 
-const SelectDropDown = ({ targetValue, itemsArr, selectChangeHandler, rowNumber }) => {
+const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler, rowNumber }) => {
 
-  let selectDataRender = null;
-  if (itemsArr.length > 1) {
-    selectDataRender = itemsArr.map((summarizedSection) => {
-      return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
-    });
+  const onChangeHandler = (event) => {
+    const target = event.target;
+    selectChangeHandler(target.name, target.value, rowNumber);
   }
+
   return (
     <FormControl className={styles.formControl}>
       <Select
         name="summarized_section_id"
         value={targetValue}
-        onChange={(event) => selectChangeHandler(event.target.name, event.target.value, rowNumber)}
+        onChange={onChangeHandler}
       >
-        {selectDataRender}
+        {itemsArr}
       </Select>
     </FormControl>
   );
 
+}, areEqual);
+
+function areEqual(prevProps, nextProps) {
+  if (prevProps.targetValue === nextProps.targetValue)
+    return true;
+  else return false;
 }
 
 export default SelectDropDown;

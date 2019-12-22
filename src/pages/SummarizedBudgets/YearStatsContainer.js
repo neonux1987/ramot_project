@@ -74,7 +74,6 @@ class YearStatsContainer extends React.PureComponent {
   render() {
 
     const {
-      date,
       quarterlyStats,
       yearlyStats
     } = this.props;

@@ -19,7 +19,7 @@ const styles = (theme) => ({
     backgroundColor: "#fff"
   },
   selected: {
-    backgroundColor: "#6057ec"
+    backgroundColor: "#ffffff2e"
   },
   headerTitle: {
     marginBottom: "10px"
@@ -38,7 +38,7 @@ const Settings = ({ classes, match }, props) => {
 
   return (
     <div>
-      <AppBar position="static" style={{ marginBottom: "30px" }}>
+      <AppBar position="static" style={{ margin: "20px 20px 30px 20px" }}>
         <Tabs classes={{ root: classes.tabs, indicator: classes.indicator }} value={value} onChange={handleChange}>
           <Tab
             classes={{ root: classes.tab, selected: classes.selected }}

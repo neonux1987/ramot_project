@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from './TableControls.module.css';
 
-const TableControls = ({ rightPane, middlePane, leftPane, editMode }) => {
+const TableControls = ({ style, rightPane, middlePane, leftPane, editMode }) => {
   const editModeColor = editMode ? "#33af37" : "#ea4141";
   const editModeText = editMode ? "פעיל" : "כבוי";
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} style={style}>
       <div className={styles.controls}>
 
         <div className={styles.rightPane}>{rightPane}</div>

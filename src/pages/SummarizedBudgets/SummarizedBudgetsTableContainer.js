@@ -1,14 +1,12 @@
 // LIBRARIES
 import React from 'react';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 
 // ACTIONS
 import * as summarizedBudgetActions from '../../redux/actions/summarizedBudgetActions';
 
 // UTILS
 import Helper from '../../helpers/Helper';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 // CONTEXT
 import GlobalContext from '../../context/GlobalContext';
@@ -35,8 +33,6 @@ import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesF
 
 // HOC 
 import withTableLogic from '../../HOC/withTableLogic';
-
-const FIXED_FLOAT = 2;
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -238,9 +234,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
       pageName,
       pageTitle,
       editMode,
-      toggleEditMode,
-      addNewMode,
-      toggleAddNewMode
+      toggleEditMode
     } = this.props;
 
     // provider data

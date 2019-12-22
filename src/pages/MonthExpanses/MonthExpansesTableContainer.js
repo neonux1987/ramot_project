@@ -408,7 +408,6 @@ class MonthExpanses extends React.PureComponent {
           HeaderComponent={this.HeadersRow}
           isFetching={isFetching || data.length === 0}
           itemCount={data.length}
-          cache={this.cache}
         />
 
       </TableWrapper>

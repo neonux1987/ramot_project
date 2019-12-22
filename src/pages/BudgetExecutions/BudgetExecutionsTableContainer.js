@@ -1,14 +1,12 @@
 // LIBRARIES
 import React from 'react';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 
 // ACTIONS
 import * as budgetExecutionsActions from '../../redux/actions/budgetExecutionsActions';
 
 // UTILS
 import Helper from '../../helpers/Helper';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 // CONTEXT
 import GlobalContext from '../../context/GlobalContext';
@@ -36,8 +34,6 @@ import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesF
 // HOC
 import withColumnColorLogic from '../../HOC/withColumnColorLogic';
 import withTableLogic from '../../HOC/withTableLogic';
-
-const FIXED_FLOAT = 2;
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -424,7 +420,6 @@ class BudgetExecutionsTable extends React.PureComponent {
           HeaderComponent={this.HeadersRow}
           isFetching={isFetching || data.length === 0}
           itemCount={data.length}
-          cache={this.cache}
         />
 
       </TableWrapper>
@@ -448,15 +443,6 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(
   withTableLogic(BudgetExecutionsTable)
 );
-
-const headerStyle = {
-  backgroundColor: "rgb(52, 58, 64)",
-  color: "#ffffff",
-  fontWeight: "600",
-  justifyContent: "center",
-  height: "27px",
-  alignItems: "center"
-};
 
 const defaultheaderStyle = {
   backgroundColor: "rgb(232, 236, 241)",

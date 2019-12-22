@@ -9,25 +9,29 @@ import { toast } from 'react-toastify';
 const fetchSummarizedSections = (params = Object) => {
   return dispatch => {
 
-    //let react know that the fetching started
-    dispatch(requestSummarizedSections());
+    return new Promise((resolve, reject) => {
+      //let react know that the fetching started
+      dispatch(requestSummarizedSections());
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-summarized-sections-data", params);
-    //listen when the data comes back
-    ipcRenderer.once("summarized-sections-data", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success store the data
-        dispatch(receiveSummarizedSections(arg.data));
-      }
-    });
+      //request request to backend to get the data
+      ipcRenderer.send("get-summarized-sections-data", params);
+      //listen when the data comes back
+      ipcRenderer.once("summarized-sections-data", (event, arg) => {
+        if (arg.error) {
+          //let react know that an erro occured while trying to fetch
+          dispatch(fetchingFailed(arg.error));
+          //send the error to the notification center
+          toast.error(arg.error, {
+            onOpen: () => playSound(soundTypes.error)
+          });
+          reject("שליפת סעיפים מסכמים מהבסיס הנתונים נכשלה.")
+        } else {
+          //success store the data
+          dispatch(receiveSummarizedSections(arg.data));
+          resolve(arg.data);
+        }
+      });
+    })
 
   }
 };
