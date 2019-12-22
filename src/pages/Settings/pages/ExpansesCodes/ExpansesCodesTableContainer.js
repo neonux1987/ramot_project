@@ -5,7 +5,7 @@ import { MenuItem } from '@material-ui/core';
 
 // ACTIONS
 import summarizedSectionsActions from '../../../../redux/actions/summarizedSectionsActions';
-import expansesCodesActions from '../../../../redux/actions/expansesCodesActions';
+import * as expansesCodesActions from '../../../../redux/actions/expansesCodesActions';
 
 // COMPONENTS
 import EditControls from '../../../../components/EditControls/EditControls';
@@ -55,7 +55,7 @@ class ExpansesCodes extends React.PureComponent {
 
   componentWillUnmount() {
     //on exit init table data
-    this.props.receiveExpansesCodes([]);
+    this.props.expansesCodesCleanup();
   }
 
   onBlurSelectHandler = (name, value, index) => {
@@ -70,9 +70,16 @@ class ExpansesCodes extends React.PureComponent {
     const rowData = this.getDataObject(index);
 
     if (key === "code" && value.length < 1) {
-      target.value = rowData[key];
-      toast.error(`קוד הנהח"ש לא יכול להיות פחות מ-1 ספרות`);
-      return;
+      if (value.length < 1) {
+        target.value = rowData[key];
+        toast.error(`קוד הנהח"ש לא יכול להיות פחות מ-1 ספרות`);
+        return;
+      }
+
+      if (this.dataExist(key)) {
+
+      }
+
     }
 
     if (key === "codeName" && value.length < 1) {
@@ -81,21 +88,19 @@ class ExpansesCodes extends React.PureComponent {
       return;
     }
 
+
+
     this.onBlurAction(key, value, index);
   }
 
   onBlurAction = (name, value, index) => {
-    const copyData = { ...this.props.expansesCodes.data[index] };
-    copyData[name] = value;
-    const params = {
-      id: copyData.id,
-      data: {
-        summarized_section_id: copyData.summarized_section_id,
-        code: copyData.code,
-        codeName: copyData.codeName
-      }
-    };
-    //this.props.updateExpanseCode(params, copyData);
+    const oldCopy = { ...this.props.expansesCodes.data[index] };
+    const newCopy = { ...oldCopy };
+
+    // set the new value
+    newCopy[name] = value;
+
+    this.props.updateExpanseCode(newCopy, oldCopy, index);
   }
 
 
@@ -242,15 +247,15 @@ class ExpansesCodes extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  expansesCodes: state.expansesCodes.expansesCodes,
+  expansesCodes: state.expansesCodes,
   summarizedSections: state.summarizedSections.summarizedSections
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
-  receiveExpansesCodes: (payload) => dispatch(expansesCodesActions.receiveExpansesCodes(payload)),
-  updateExpanseCode: (payload, tableData) => dispatch(expansesCodesActions.updateExpanseCode(payload, tableData)),
+  updateExpanseCode: (newCopy, oldCopy, index) => dispatch(expansesCodesActions.updateExpanseCode(newCopy, oldCopy, index)),
   addExpanseCode: (payload, tableData) => dispatch(expansesCodesActions.addExpanseCode(payload, tableData)),
+  expansesCodesCleanup: () => dispatch(expansesCodesActions.expansesCodesCleanup()),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
 });
 

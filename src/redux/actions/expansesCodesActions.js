@@ -2,11 +2,23 @@ import { ipcRenderer } from 'electron';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
 
+// TYPES
+export const TYPES = {
+  EXPANSES_CODES_REQUEST: "EXPANSES_CODES_REQUEST",
+  EXPANSES_CODES_RECEIVE: "EXPANSES_CODES_RECEIVE",
+  EXPANSES_CODES_FETCHING_FAILED: "EXPANSES_CODES_FETCHING_FAILED",
+  EXPANSES_CODES_UPDATE: "EXPANSES_CODES_UPDATE",
+  EXPANSES_CODES_ADD: "EXPANSES_CODES_ADD",
+  EXPANSES_CODES_DELETE: "EXPANSES_CODES_DELETE",
+  EXPANSES_CODES_INIT_STATE: "EXPANSES_CODES_INIT_STATE",
+  EXPANSES_CODES_CLEANUP: "EXPANSES_CODES_CLEANUP"
+}
+
 /**
  * fetch expanses codes
  * @param {*} params 
  */
-const fetchExpansesCodes = (params = Object) => {
+export const fetchExpansesCodes = (params = Object) => {
 
   return dispatch => {
 
@@ -34,20 +46,20 @@ const fetchExpansesCodes = (params = Object) => {
 
 const requestExpansesCodes = function () {
   return {
-    type: "REQUEST_EXPANSES_CODES"
+    type: TYPES.EXPANSES_CODES_REQUEST
   }
 };
 
 const receiveExpansesCodes = function (data) {
   return {
-    type: "RECEIVE_EXPANSES_CODES",
+    type: TYPES.EXPANSES_CODES_RECEIVE,
     data: data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "FETCHING_FAILED",
+    type: TYPES.EXPANSES_CODES_FETCHING_FAILED,
     payload: error
   }
 };
@@ -57,7 +69,7 @@ const fetchingFailed = function (error) {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const addExpanseCode = (params = Object, tableData) => {
+export const addExpanseCode = (params = Object, tableData) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("add-expanse-code", params);
@@ -83,13 +95,34 @@ const addExpanseCode = (params = Object, tableData) => {
   }
 };
 
+const updateStoreOnly = (payload, index) => {
+  return {
+    type: TYPES.EXPANSES_CODES_UPDATE,
+    index,
+    payload
+  }
+}
+
 /**
  * update expanse code
  * @param {*} payload 
  * @param {*} tableData 
  */
-const updateExpanseCode = (params = Object, tableData = Array) => {
+export const updateExpanseCode = (newCopy, oldCopy, index) => {
   return dispatch => {
+    // first update the new copy in store 
+    // for better user experience
+    dispatch(updateStoreOnly(newCopy, index));
+
+    const params = {
+      id: newCopy.id,
+      data: {
+        summarized_section_id: newCopy.summarized_section_id,
+        code: newCopy.code,
+        codeName: newCopy.codeName
+      }
+    };
+
     //send a request to backend to get the data
     ipcRenderer.send("update-expanse-code", params);
     //listen when the data comes back
@@ -99,8 +132,9 @@ const updateExpanseCode = (params = Object, tableData = Array) => {
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
         });
+        // rollback
+        dispatch(updateStoreOnly(oldCopy, index));
       } else {
-        dispatch(receiveExpansesCodes(tableData));
         //send success notification
         toast.success("הקוד עודכן בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)
@@ -110,18 +144,8 @@ const updateExpanseCode = (params = Object, tableData = Array) => {
   }
 };
 
-const expansesCodesCleanup = () => {
+export const expansesCodesCleanup = () => {
   return {
-    type: "EXPANSES_CODES_CLEANUP"
+    type: TYPES.EXPANSES_CODES_CLEANUP
   }
 }
-
-export default {
-  fetchExpansesCodes,
-  addExpanseCode,
-  updateExpanseCode,
-  fetchingFailed,
-  receiveExpansesCodes,
-  requestExpansesCodes,
-  expansesCodesCleanup
-};

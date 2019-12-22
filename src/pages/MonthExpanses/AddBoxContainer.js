@@ -4,7 +4,7 @@ import ReactSelect from '../../components/ReactSelect/ReactSelect';
 import { connect } from 'react-redux';
 
 import summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
-import expansesCodesActions from '../../redux/actions/expansesCodesActions';
+import * as expansesCodesActions from '../../redux/actions/expansesCodesActions';
 
 const styles = theme => ({
   container: {
@@ -155,7 +155,7 @@ class InputExpansesField extends Component {
 
   findSection = () => {
     const { code } = this.state.formInputs;
-    const { data } = this.props.summarizedSections.summarizedSections;
+    const { data } = this.props.summarizedSections;
     let foundObj = null;
 
     if (code) {
@@ -166,7 +166,7 @@ class InputExpansesField extends Component {
     return foundObj;
   }
 
-  findExpanse = (code, codeName) => {
+  findExpanse = (code) => {
     let foundObj = null;
     if (code) {
       foundObj = this.props.data.find((expanse) => {
@@ -250,7 +250,7 @@ class InputExpansesField extends Component {
   }
 
   renderForm() {
-    const { expansesCodes } = this.props.expansesCodes;
+    const expansesCodes = this.props.expansesCodes;
     const { summarizedSections } = this.props.summarizedSections;
 
     let codesFetching = expansesCodes.isFetching || expansesCodes.data.length === 0;

@@ -1,76 +1,72 @@
-import Helper from '../../helpers/Helper';
+import { TYPES } from '../actions/expansesCodesActions'
 
 const initState = {
-  expansesCodes: {
-    isFetching: false,
-    status: "",
-    error: "",
-    data: []
-  }
+  isFetching: false,
+  status: "",
+  error: "",
+  data: []
 }
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "ADD_EXPANSE_CODE": {
+    case TYPES.EXPANSES_CODES_ADD: {
       const copyData = [...state.expansesCodes.data];
       copyData.push(action.payload);
-      return {
-        ...state,
-        expansesCodes: {
-          ...state.expansesCodes,
-          data: copyData
-        }
-      }
+      return setState(state, {
+        ...state.expansesCodes,
+        data: copyData
+      });
     }
-    case "RECEIVE_EXPANSES_CODES":
-      return {
-        ...state,
-        expansesCodes: {
-          ...state.expansesCodes,
-          isFetching: false,
-          status: "success",
-          data: action.data
-        }
+    case TYPES.EXPANSES_CODES_RECEIVE:
+      return setState(state, {
+        ...state.expansesCodes,
+        isFetching: false,
+        status: "success",
+        data: action.data
+      });
+    case TYPES.EXPANSES_CODES_REQUEST:
+      return setState(state, {
+        ...state.expansesCodes,
+        isFetching: true,
+      });
+    case TYPES.EXPANSES_CODES_FETCHING_FAILED:
+      return setState(state, {
+        ...state.expansesCodes,
+        status: "error",
+        error: action.payload
+      });
+    case TYPES.EXPANSES_CODES_CLEANUP:
+      return setState(state, {
+        isFetching: false,
+        status: "",
+        error: "",
+        data: []
+      });
+    case TYPES.EXPANSES_CODES_UPDATE:
+      {
+        const {
+          payload,
+          index
+        } = action;
+
+        // copy the data
+        const dataCopy = [...state.data];
+
+        // replace the old object with the updated object
+        dataCopy[index] = payload;
+
+        return setState(state, {
+          data: dataCopy
+        });
       }
-    case "REQUEST_EXPANSES_CODES":
-      return {
-        ...state,
-        expansesCodes: {
-          ...state.expansesCodes,
-          isFetching: true,
-        }
-      }
-    case "FETCHING_FAILED":
-      return {
-        ...state,
-        expansesCodes: {
-          ...state.expansesCodes,
-          status: "error",
-          error: action.payload
-        }
-      }
-    case "EXPANSES_CODES_CLEANUP":
-      return {
-        ...state,
-        expansesCodes: {
-          isFetching: false,
-          status: "",
-          error: "",
-          data: []
-        }
-      }
-    case "UPDATE_DATE":
-      return {
-        ...state,
-        date: {
-          ...state.date,
-          ...action.payload
-        }
-      }
-    case "SET_CURRENT_DATE": return {
-      ...state,
-      date: Helper.getCurrentDate()
-    }
+
     default: return state;
+  }
+}
+
+function setState(state, target) {
+  return {
+    ...state,
+    ...target
   }
 }
