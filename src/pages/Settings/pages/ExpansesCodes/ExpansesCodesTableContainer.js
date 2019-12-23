@@ -50,7 +50,7 @@ class ExpansesCodes extends React.PureComponent {
       this.setState({ sections: dataArr, selectItems });
     });
     //get the building month expanses
-    this.props.fetchExpansesCodes();
+    this.props.fetchExpansesCodesByStatus("active");
   }
 
   componentWillUnmount() {
@@ -69,28 +69,40 @@ class ExpansesCodes extends React.PureComponent {
 
     const rowData = this.getDataObject(index);
 
-    if (key === "code" && value.length < 1) {
+    const valid = this.validateOnBlur(key, value);
+
+    if (!valid) {
+      target.value = rowData[key];
+      return;
+    }
+
+    //this.onBlurAction(key, value, index);
+  }
+
+  validateOnBlur = (key, value) => {
+    let valid = true;
+    let message = "";
+
+    if (key === "code") {
+
       if (value.length < 1) {
-        target.value = rowData[key];
-        toast.error(`קוד הנהח"ש לא יכול להיות פחות מ-1 ספרות`);
-        return;
-      }
-
-      if (this.dataExist(key)) {
-
+        message = `קוד הנהח"ש לא יכול להיות פחות מ-1 ספרות`;
+        valid = false;
+      } else if (this.dataExist(value)) {
+        message = `לא ניתן להוסיף קוד הנהח"ש שכבר קיים.`;
+        valid = false;
       }
 
     }
 
     if (key === "codeName" && value.length < 1) {
-      target.value = rowData[key];
-      toast.error(`שם חשבון לא יכול להיות פחות מ-1 תוים.`);
-      return;
+      message = `שם חשבון לא יכול להיות פחות מ-1 תוים.`;
+      valid = false;
     }
 
+    if (!valid)
+      toast.error(message);
 
-
-    this.onBlurAction(key, value, index);
   }
 
   onBlurAction = (name, value, index) => {
@@ -112,17 +124,18 @@ class ExpansesCodes extends React.PureComponent {
     const valid = this.validateFormInputs(formInputs);
 
     if (!valid) {
-      console.log("קוד ושם חשבון לא יכולים להיות ריקים");
+      toast.error("כל השדות לא יכולים להיות ריקים.");
       return;
     }
 
-    const exist = this.dataExist(formInputs.code, formInputs.codeName);
+    const exist = this.dataExist(formInputs.code);
     if (exist) {
-      console.log("קוד או שם חשבון כבר קיימים ברשימה.");
+      toast.error("הקוד כבר קיים ברשימה, לא ניתן להוסיף את אותו הקוד.");
       return;
     }
-    const params = this.parseFormInputs(formInputs);
-    this.props.addExpanseCode(params);
+
+    const expanseCode = this.parseFormInputs(formInputs);
+    this.props.addExpanseCode(expanseCode);
   }
 
   parseFormInputs = (formInputs) => {
@@ -132,7 +145,7 @@ class ExpansesCodes extends React.PureComponent {
   }
 
   validateFormInputs = (formInputs) => {
-    if (formInputs.code === "" || formInputs.codeName === "") {
+    if (formInputs.code === "" || formInputs.codeName === "" || formInputs.summarized_section_id === "") {
       return false;
     }
     return true;
@@ -140,13 +153,19 @@ class ExpansesCodes extends React.PureComponent {
 
   dataExist = (code) => {
     let valid = false;
-    const data = this.props.expansesCodes.data;
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].code === code) {
+    const parsedCode = Number.parseInt(code);
+
+    this.props.expansesCodes.data.forEach(item => {
+      if (item.code === parsedCode) {
         valid = true;
       }
-    }
+    });
+
     return valid;
+  }
+
+  deleteCodeExpanseHandler = (id, index) => {
+    this.props.deleteExpanseCode(id, index);
   }
 
   getGridTemplateColumns = () => {
@@ -185,7 +204,7 @@ class ExpansesCodes extends React.PureComponent {
     const rowData = this.getDataObject(index);
 
     return <Row style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+      {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       {editMode ? numberInput("code", rowData["code"], index, this.onBlurHandler) : <Column>{rowData["code"]}</Column>}
       {editMode ? textInput("codeName", rowData["codeName"], index, this.onBlurHandler) : <Column>{rowData["codeName"]}</Column>}
@@ -252,9 +271,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchExpansesCodes: (payload) => dispatch(expansesCodesActions.fetchExpansesCodes(payload)),
+  fetchExpansesCodesByStatus: (status) => dispatch(expansesCodesActions.fetchExpansesCodesByStatus(status)),
   updateExpanseCode: (newCopy, oldCopy, index) => dispatch(expansesCodesActions.updateExpanseCode(newCopy, oldCopy, index)),
-  addExpanseCode: (payload, tableData) => dispatch(expansesCodesActions.addExpanseCode(payload, tableData)),
+  addExpanseCode: (payload) => dispatch(expansesCodesActions.addExpanseCode(payload)),
+  deleteExpanseCode: (id, index) => dispatch(expansesCodesActions.deleteExpanseCode(id, index)),
   expansesCodesCleanup: () => dispatch(expansesCodesActions.expansesCodesCleanup()),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
 });

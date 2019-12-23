@@ -13,28 +13,54 @@ export default (state = initState, action) => {
       const copyData = [...state.expansesCodes.data];
       copyData.push(action.payload);
       return setState(state, {
-        ...state.expansesCodes,
         data: copyData
       });
     }
     case TYPES.EXPANSES_CODES_RECEIVE:
       return setState(state, {
-        ...state.expansesCodes,
         isFetching: false,
         status: "success",
         data: action.data
       });
     case TYPES.EXPANSES_CODES_REQUEST:
       return setState(state, {
-        ...state.expansesCodes,
         isFetching: true,
       });
     case TYPES.EXPANSES_CODES_FETCHING_FAILED:
       return setState(state, {
-        ...state.expansesCodes,
         status: "error",
         error: action.payload
       });
+    case TYPES.EXPANSES_CODES_RESTORE: {
+      const copyData = [...state.data];
+
+      copyData.push(action.payload);
+
+      copyData.sort((a, b) => {
+        if (a.code < b.code) {
+          return -1;
+        }
+        if (a.code > b.code) {
+          return 1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+
+      return setState(state, {
+        data: copyData
+      });
+
+    };
+    case TYPES.EXPANSES_CODES_DELETE: {
+      const copyData = [...state.data];
+
+      copyData.splice(action.index, 1);
+
+      return setState(state, {
+        data: copyData
+      });
+    }
     case TYPES.EXPANSES_CODES_CLEANUP:
       return setState(state, {
         isFetching: false,

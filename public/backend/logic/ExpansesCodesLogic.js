@@ -3,23 +3,33 @@ const ExpansesCodesDao = require('../dao/ExpansesCodesDao');
 class ExpansesCodesLogic {
 
   constructor(connection) {
-    this.ec = new ExpansesCodesDao(connection);
+    this.expansesCodesDao = new ExpansesCodesDao(connection);
   }
 
-  getExpansesCodes(params) {
-    return this.ec.getExpansesCodes(params);
+  getExpansesCodes() {
+    return this.expansesCodesDao.getExpansesCodes();
   }
 
-  updateExpanseCode(params) {
-    return this.ec.updateExpanseCode(params);
+  getExpansesCodesByStatus(status) {
+    return this.expansesCodesDao.getExpansesCodesByStatus(status);
   }
 
-  addExpanseCode(params) {
-    return this.ec.addExpanseCode(params);
+  updateExpanseCode({ id = Number, data = { summarized_section_id: Number, code: Number, codeName: String } }) {
+    return this.expansesCodesDao.updateExpanseCode(id, data);
+  }
+
+  addExpanseCode(data = { summarized_section_id: Number, code: Number, codeName: String }) {
+    data.status = "active";
+    return this.expansesCodesDao.addExpanseCode(data);
+  }
+
+  deleteExpanseCode(id) {
+    const data = {
+      status: "deleted"
+    }
+    return this.expansesCodesDao.updateExpanseCode(id, data);
   }
 
 }
-
-
 
 module.exports = ExpansesCodesLogic;

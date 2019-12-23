@@ -16,11 +16,20 @@ class ExpansesCodesDao {
       });
   }
 
+  getExpansesCodesByStatus(status) {
+    return this.connection.select().from("expanses_codes")
+      .orderBy(['code', { column: 'codeName', order: 'asc' }])
+      .where({ status: status })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   /**
    * update expanse code record
    * @param {*} data 
    */
-  updateExpanseCode({ id = Number, data = { summarized_section_id: Number, code: Number, codeName: String } }) {
+  updateExpanseCode(id, data) {
     return this.connection("expanses_codes")
       .where({ id: id })
       .update(data)
@@ -38,7 +47,7 @@ class ExpansesCodesDao {
    * add new summarized section record
    * @param {*} record 
    */
-  addExpanseCode(data = { summarized_section_id: Number, code: Number, codeName: String }) {
+  addExpanseCode(data) {
     return this.connection("expanses_codes")
       .insert(data)
       .catch((error) => {
@@ -46,7 +55,7 @@ class ExpansesCodesDao {
       });
   }
 
-  deleteExpanseCodeTrx(id = Number, trx) {
+  deleteExpanseCodeTrx(id = Number, trx = this.connection) {
     return trx(expanses_codes)
       .where({ id: id })
       .del()

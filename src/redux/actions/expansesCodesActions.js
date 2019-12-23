@@ -10,6 +10,7 @@ export const TYPES = {
   EXPANSES_CODES_UPDATE: "EXPANSES_CODES_UPDATE",
   EXPANSES_CODES_ADD: "EXPANSES_CODES_ADD",
   EXPANSES_CODES_DELETE: "EXPANSES_CODES_DELETE",
+  EXPANSES_CODES_RESTORE: "EXPANSES_CODES_RESTORE",
   EXPANSES_CODES_INIT_STATE: "EXPANSES_CODES_INIT_STATE",
   EXPANSES_CODES_CLEANUP: "EXPANSES_CODES_CLEANUP"
 }
@@ -18,7 +19,7 @@ export const TYPES = {
  * fetch expanses codes
  * @param {*} params 
  */
-export const fetchExpansesCodes = (params = Object) => {
+export const fetchExpansesCodesByStatus = (status) => {
 
   return dispatch => {
 
@@ -26,9 +27,9 @@ export const fetchExpansesCodes = (params = Object) => {
     dispatch(requestExpansesCodes());
 
     //request request to backend to get the data
-    ipcRenderer.send("get-expanses-codes-data", params);
+    ipcRenderer.send("get-expanses-codes-by-status", status);
     //listen when the data comes back
-    ipcRenderer.once("expanses-codes-data", (event, arg) => {
+    ipcRenderer.once("expanses-codes-by-status", (event, arg) => {
       if (arg.error) {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(arg.error));
@@ -69,10 +70,10 @@ const fetchingFailed = function (error) {
  * @param {*} payload 
  * @param {*} tableData 
  */
-export const addExpanseCode = (params = Object, tableData) => {
+export const addExpanseCode = (expanseCode) => {
   return dispatch => {
     //send a request to backend to get the data
-    ipcRenderer.send("add-expanse-code", params);
+    ipcRenderer.send("add-expanse-code", expanseCode);
     //listen when the data comes back
     ipcRenderer.once("expanse-code-added", (event, arg) => {
       if (arg.error) {
@@ -81,11 +82,8 @@ export const addExpanseCode = (params = Object, tableData) => {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
-        params.id = arg.data;
-        dispatch({
-          type: "ADD_EXPANSE_CODE",
-          payload: params
-        });
+        expanseCode.id = arg.data;
+        dispatch(addStoreOnly(expanseCode));
         //send success notification
         toast.success("הקוד נוסף בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)
@@ -94,6 +92,13 @@ export const addExpanseCode = (params = Object, tableData) => {
     });
   }
 };
+
+const addStoreOnly = (payload) => {
+  return {
+    type: TYPES.EXPANSES_CODES_ADD,
+    payload
+  }
+}
 
 const updateStoreOnly = (payload, index) => {
   return {
@@ -137,6 +142,49 @@ export const updateExpanseCode = (newCopy, oldCopy, index) => {
       } else {
         //send success notification
         toast.success("הקוד עודכן בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
+      }
+    });
+  }
+};
+
+const deleteStoreOnly = (index) => {
+  return {
+    type: TYPES.EXPANSES_CODES_DELETE,
+    index
+  }
+}
+
+const restoreExpanseCodeInStoreOnly = (payload) => {
+  return {
+    type: TYPES.EXPANSES_CODES_RESTORE,
+    payload
+  }
+}
+
+export const deleteExpanseCode = (id, oldCopy, index) => {
+
+  return dispatch => {
+
+    //delete the item in store first
+    dispatch(deleteStoreOnly(index));
+
+    //request request to backend to get the data
+    ipcRenderer.send("delete-expanse-code", id);
+    //listen when the data comes back
+    ipcRenderer.once("expanse-code-deleted", (event, arg) => {
+      arg.error = "what"
+      if (arg.error) {
+        //delete the item in store first
+        dispatch(restoreExpanseCodeInStoreOnly(oldCopy));
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        //send the error to the notification center
+        toast.success("השורה נמחקה בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)
         });
       }
