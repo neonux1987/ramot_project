@@ -5,6 +5,7 @@ const QuarterlyStatsLogic = require('./QuarterlyStatsLogic');
 const SummarizedSectionsLogic = require('./SummarizedSectionsLogic');
 const SummarizedBudgetLogic = require('./SummarizedBudgetLogic');
 const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
+const MonthExpansesDao = require('../dao/MonthExpansesDao');
 const Helper = require('../../helpers/Helper');
 
 class BudgetExecutionLogic {
@@ -18,6 +19,7 @@ class BudgetExecutionLogic {
     this.quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
     this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
     this.registeredQuartersLogic = new RegisteredQuartersLogic(connection);
+    this.monthExpansesDao = new MonthExpansesDao(connection);
   }
 
   getAllBudgetExecutionsTrx(buildingName, date, trx) {
@@ -44,6 +46,11 @@ class BudgetExecutionLogic {
   getBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, trx) {
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
     return this.budgetExecutionDao.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
+  }
+
+  getBudgetExecutionById(buildingName = String, date = Object, id = Number) {
+    const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
+    return this.budgetExecutionDao.getBudgetExecutionById(buildingName, date, quarterQuery, id);
   }
 
   async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, special = false }, trx) {
@@ -196,7 +203,7 @@ class BudgetExecutionLogic {
   async createEmptyReport(buildingName, date, trx) {
 
     if (trx === undefined) {
-      trx = await this.connection.transaction()
+      trx = await this.connection.transaction();
     }
 
     const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingName, date.quarter, date.year, trx);
@@ -290,6 +297,35 @@ class BudgetExecutionLogic {
       });
     }
     return data;
+  }
+
+  async deleteBudgetExecution({ buildingName, date, id }) {
+
+    const quarterMonths = Helper.getQuarterMonths(date.quarter);
+
+    const budgetExecution = await this.getBudgetExecutionById(buildingName, date, id);
+
+    let exist = false;
+
+    for (let i = 0; i < quarterMonths.length; i++) {
+      const newDate = {
+        year: date.year,
+        month: quarterMonths[i]
+      };
+
+      const monthExpanses = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(
+        buildingName,
+        newDate,
+        budgetExecution[0].summarized_section_id
+      );
+
+      if (monthExpanses.length > 0)
+        exist = true;
+      console.log(exist);
+    }
+
+    if (exist)
+      throw new Error(`אין אפשרת לבצע מחיקה, כל עוד קיימים הוצאות חודשיות בחודשים של רבעון ${date.quarter} ושנה ${date.year} שמקושרים לסעיף מסכם זה.`);
   }
 
 }

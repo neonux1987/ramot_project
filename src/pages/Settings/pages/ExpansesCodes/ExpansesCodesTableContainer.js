@@ -76,7 +76,7 @@ class ExpansesCodes extends React.PureComponent {
       return;
     }
 
-    //this.onBlurAction(key, value, index);
+    this.onBlurAction(key, value, index);
   }
 
   validateOnBlur = (key, value) => {
@@ -209,7 +209,13 @@ class ExpansesCodes extends React.PureComponent {
       {editMode ? numberInput("code", rowData["code"], index, this.onBlurHandler) : <Column>{rowData["code"]}</Column>}
       {editMode ? textInput("codeName", rowData["codeName"], index, this.onBlurHandler) : <Column>{rowData["codeName"]}</Column>}
       {editMode ?
-        <SelectDropDown targetValue={rowData["summarized_section_id"]} rowNumber={index} itemsArr={this.state.selectItems} selectChangeHandler={this.onBlurSelectHandler} /> :
+        <SelectDropDown
+          targetValue={rowData["summarized_section_id"]}
+          index={index}
+          itemsArr={this.state.selectItems}
+          selectChangeHandler={this.onBlurSelectHandler}
+          name={"summarized_section_id"}
+        /> :
         <Column>{this.getSection(rowData["summarized_section_id"])}</Column>}
     </Row>
   }

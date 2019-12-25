@@ -191,6 +191,34 @@ class BudgetExecutionDao {
       });
   }
 
+  getBudgetExecutionById(
+    buildingName = String,
+    date = {
+      year: year = Number,
+      quarter: quarter = String
+    },
+    quarterQuery = Array,
+    id = Number
+  ) {
+    return this.connection.where("exec.id", id)
+      .select(
+        "exec.id AS id",
+        "exec.summarized_section_id AS summarized_section_id",
+        "ss.section AS section",
+        "exec.year AS year",
+        "exec.quarter AS quarter",
+        ...quarterQuery,
+        "exec.evaluation AS evaluation",
+        "exec.total_budget AS total_budget",
+        "exec.total_execution AS total_execution",
+        "exec.difference AS difference",
+        "exec.notes AS notes"
+      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   /**
    * update budget execution record with transaction object
    * params object {

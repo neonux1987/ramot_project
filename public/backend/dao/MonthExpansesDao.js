@@ -118,7 +118,7 @@ class MonthExpansesDao {
       month: month = String
     },
     summarized_section_id = Number,
-    trx
+    trx = this.connection
   ) {
     return trx.where({ year: date.year, month: date.month, summarized_section_id: summarized_section_id }).select(
       "building.id AS id",
@@ -128,6 +128,28 @@ class MonthExpansesDao {
       "sc.id AS summarized_section_id",
       "sc.section AS section",
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
+      .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  getMonthExpansesByMonthsAndSummarizedSectionId(
+    buildingName = String,
+    months = [],
+    summarized_section_id = Number
+  ) {
+    return this.connection
+      .whereIn("month", months)
+      .andWhere("summarized_section_id", summarized_section_id)
+      .select(
+        "building.id AS id",
+        "building.expanses_code_id AS expanses_code_id",
+        "building.sum AS sum",
+        "building.tax AS tax",
+        "sc.id AS summarized_section_id",
+        "sc.section AS section",
+      ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .catch((error) => {
         throw error;

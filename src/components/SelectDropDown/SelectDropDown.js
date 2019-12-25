@@ -2,17 +2,17 @@ import React, { useCallback } from 'react';
 import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import styles from './SelectDropDown.module.css';
 
-const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler, rowNumber }) => {
+const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler, index, name }) => {
 
   const onChangeHandler = (event) => {
     const target = event.target;
-    selectChangeHandler(target.name, target.value, rowNumber);
+    selectChangeHandler(target.name, target.value, index);
   }
 
   return (
     <FormControl className={styles.formControl}>
       <Select
-        name="summarized_section_id"
+        name={name}
         value={targetValue}
         onChange={onChangeHandler}
       >

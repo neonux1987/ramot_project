@@ -24,6 +24,15 @@ const budgetExecutionIpc = (connection) => {
     });
   });
 
+  ipcMain.on('delete-budget-execution', (event, params) => {
+    budgetExecutionLogic.deleteBudgetExecution(params).then((result) => {
+      event.sender.send("budget-execution-deleted", { data: result });
+    }).catch((error) => {
+      console.log(error);
+      event.reply("budget-execution-deleted", { error: error.message });
+    });
+  });
+
   ipcMain.on('generate-budget-execution-report', (event, arg) => {
     budgetExecutionLogic.createEmptyReport(arg.buildingName, arg.date).then((result) => {
       event.sender.send("generated-budget-execution-data", { data: result });

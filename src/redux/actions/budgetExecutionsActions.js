@@ -253,3 +253,23 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
     });
   };
 };
+
+export const deleteBudgetExecution = (buildingName, date, id) => {
+  return dispatch => {
+
+    //request request to backend to get the data
+    ipcRenderer.send("delete-budget-execution", { buildingName, date, id });
+    //listen when the data comes back
+    ipcRenderer.once("budget-execution-deleted", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        console.log("success");
+      }
+    });
+
+  }
+};

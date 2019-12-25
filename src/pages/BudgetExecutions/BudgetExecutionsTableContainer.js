@@ -144,6 +144,13 @@ class BudgetExecutionsTable extends React.PureComponent {
     e.target.blur();
   }
 
+  deleteHandler = (id) => {
+    //building names
+    const { buildingNameEng } = this.getLocationState();
+
+    this.props.deleteBudgetExecution(buildingNameEng, this.props.date, id);
+  }
+
   /**
    * prepare budget executon object for update 
    * calculate the total budget and difference
@@ -328,7 +335,7 @@ class BudgetExecutionsTable extends React.PureComponent {
     const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
 
     return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+      {editMode ? <TableActions deleteHandler={() => this.deleteHandler(rowData.id)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
       {monthColumns}
@@ -437,6 +444,7 @@ const mapDispatchToProps = dispatch => ({
   budgetExecutionsCleanup: (buildingName) => dispatch(budgetExecutionsActions.budgetExecutionsCleanup(buildingName)),
   initBudgetExecutionsState: (page) => dispatch(budgetExecutionsActions.initBudgetExecutionsState(page)),
   updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionsActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
+  deleteBudgetExecution: (buildingName, date, id) => dispatch(budgetExecutionsActions.deleteBudgetExecution(buildingName, date, id)),
   addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionsActions.addBudgetExecution(payload, tableData))
 });
 
