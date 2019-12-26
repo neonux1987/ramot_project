@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
 import monthlyStatsActions from './monthlyStatsActions';
 import quarterlyStatsActions from './quarterlyStatsActions';
+import * as modalActions from './modalActions';
 
 const TOAST_AUTO_CLOSE = 3000;
 
@@ -257,19 +258,18 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
 export const deleteBudgetExecution = (buildingName, date, id) => {
   return dispatch => {
 
-    //request request to backend to get the data
-    ipcRenderer.send("delete-budget-execution", { buildingName, date, id });
-    //listen when the data comes back
-    ipcRenderer.once("budget-execution-deleted", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        console.log("success");
-      }
-    });
+    return new Promise((resolve, reject) => {
+      //request request to backend to get the data
+      ipcRenderer.send("delete-budget-execution", { buildingName, date, id });
+      //listen when the data comes back
+      ipcRenderer.once("budget-execution-deleted", (event, arg) => {
+        if (arg.error) {
+          reject(arg.error);
+        } else {
+          resolve();
+        }
+      });
+    })
 
   }
 };

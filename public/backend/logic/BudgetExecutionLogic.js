@@ -321,7 +321,6 @@ class BudgetExecutionLogic {
 
       if (monthExpanses.length > 0)
         exist = true;
-      console.log(exist);
     }
 
     if (exist)

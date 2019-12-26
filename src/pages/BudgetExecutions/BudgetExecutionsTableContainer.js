@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 // ACTIONS
 import * as budgetExecutionsActions from '../../redux/actions/budgetExecutionsActions';
+import * as modalActions from '../../redux/actions/modalActions';
 
 // UTILS
 import Helper from '../../helpers/Helper';
@@ -148,7 +149,19 @@ class BudgetExecutionsTable extends React.PureComponent {
     //building names
     const { buildingNameEng } = this.getLocationState();
 
-    this.props.deleteBudgetExecution(buildingNameEng, this.props.date, id);
+    this.props.deleteBudgetExecution(buildingNameEng, this.props.date, id)
+      .catch(() => {
+        this.props.showModal(
+          "CONFIRM_DELETE_ALL_MONTH_EXPANSES",
+          {
+            title: "האם למחוק את כל ההוצאות שמקושרות לרבעון זה?",
+            contentText: `לא ניתן למחוק סעיף מסכם זה, כל עוד קיימות הוצאות שמקושרות אליו.
+            נדרש למחוק את כל ההוצאות שמקושרות לסעיף בכל החודשים של הרבעון או 
+            האם הנך מעוניין שהמערכת תבצע את הפעולה בשבילך?
+            `
+          }
+        )
+      });
   }
 
   /**
@@ -445,7 +458,9 @@ const mapDispatchToProps = dispatch => ({
   initBudgetExecutionsState: (page) => dispatch(budgetExecutionsActions.initBudgetExecutionsState(page)),
   updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionsActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
   deleteBudgetExecution: (buildingName, date, id) => dispatch(budgetExecutionsActions.deleteBudgetExecution(buildingName, date, id)),
-  addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionsActions.addBudgetExecution(payload, tableData))
+  addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionsActions.addBudgetExecution(payload, tableData)),
+  showModal: (modalType, modalProps) => dispatch(modalActions.showModal(modalType, modalProps)),
+  hideModal: () => dispatch(modalActions.hideModal())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

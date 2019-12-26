@@ -14,6 +14,7 @@ import quarterlyStats from './quarterlyStatsReducer';
 import yearlyStats from './yearlyStatsReducer';
 import tableSettings from './tableSettingsReducer';
 import date from './dateReducer';
+import modal from './modalReducer';
 import { createPageReducer } from './util/util';
 
 // init month expanses reducer
@@ -55,5 +56,6 @@ export default combineReducers({
   quarterlyStats,
   yearlyStats,
   tableSettings,
-  date
+  date,
+  modal
 });

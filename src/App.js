@@ -29,6 +29,7 @@ import './assets/css/style.css';
 
 // CONTAINERS
 import MainContainer from './Main/MainContainer';
+import ModalRoot from './components/modals/ModalRoot';
 
 const remote = require('electron').remote;
 const { ipcRenderer } = require('electron');
@@ -149,6 +150,7 @@ class App extends Component {
               draggable={false}
               pauseOnHover
             />
+            <ModalRoot />
 
           </MemoryRouter>
         </MuiThemeProvider>
