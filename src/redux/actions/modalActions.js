@@ -3,11 +3,11 @@ export const TYPES = {
   HIDE_MODAL: "HIDE_MODAL"
 }
 
-export const showModal = (modalType, modalProps) => {
+export const showModal = (ModalComponent, props) => {
   return dispatch => dispatch({
     type: TYPES.SHOW_MODAL,
-    modalType,
-    modalProps
+    ModalComponent,
+    props
   });
 }
 

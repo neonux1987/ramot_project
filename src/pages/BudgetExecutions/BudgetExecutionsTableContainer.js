@@ -1,10 +1,17 @@
 // LIBRARIES
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 
 // ACTIONS
-import * as budgetExecutionsActions from '../../redux/actions/budgetExecutionsActions';
-import * as modalActions from '../../redux/actions/modalActions';
+import { deleteMonthExpansesBySummarizedSectionId } from '../../redux/actions/monthExpansesActions';
+import {
+  initBudgetExecutionsState,
+  fetchBudgetExecutions,
+  updateBudgetExecution,
+  addBudgetExecution,
+  deleteBudgetExecution,
+  budgetExecutionsCleanup
+} from '../../redux/actions/budgetExecutionsActions';
 
 // UTILS
 import Helper from '../../helpers/Helper';
@@ -35,42 +42,45 @@ import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesF
 // HOC
 import withColumnColorLogic from '../../HOC/withColumnColorLogic';
 import withTableLogic from '../../HOC/withTableLogic';
+import ConfirmDeleteAllMonthExpansesModal from '../../components/modals/ConfirmDeleteAllMonthExpansesModal/ConfirmDeleteAllMonthExpansesModal';
+
+// HOOKS
+import useModalLogic from '../../customHooks/useModalLogic';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
-class BudgetExecutionsTable extends React.PureComponent {
+const BudgetExecutionsTable = props => {
 
-  state = {
-    editMode: false,
-    addNewMode: false
-  }
+  const globalContext = useContext(GlobalContext);
+  const { showModal } = useModalLogic();
 
-  static contextType = GlobalContext;
-
-  componentDidMount() {
+  useEffect(() => {
 
     const params = {
-      date: this.props.date,
-      buildingName: this.props.location.state.buildingNameEng
+      date: props.date,
+      buildingName: props.location.state.buildingNameEng
     }
 
     // init the state first
-    this.props.initBudgetExecutionsState(params.buildingName).then(() => {
+    props.initBudgetExecutionsState(params.buildingName).then(() => {
       // fetch budget executions
-      this.props.fetchBudgetExecutions(params);
+      props.fetchBudgetExecutions(params);
     });
-  }
 
-  componentWillUnmount() {
+    return cleanup;
+  }, []);
+
+
+  const cleanup = () => {
     //cleanup
-    this.props.budgetExecutionsCleanup(this.props.location.state.buildingNameEng);
+    props.budgetExecutionsCleanup(props.location.state.buildingNameEng);
   }
 
-  loadDataByDate = ({ year, quarter }) => {
+  const loadDataByDate = ({ year, quarter }) => {
 
-    const { pageName } = this.props;
-    const { buildingNameEng } = this.props.location.state;
+    const { pageName } = props;
+    const { buildingNameEng } = props.location.state;
 
     //important params that allow to pull the current data by
     //current quarter, month and year.
@@ -84,21 +94,21 @@ class BudgetExecutionsTable extends React.PureComponent {
       }
     };
     // fetch data
-    this.props.fetchBudgetExecutions(params);
+    props.fetchBudgetExecutions(params);
 
     // update global date
-    this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
+    props.dateActions.updateDate(pageName, buildingNameEng, params.date);
   }
 
-  onBlurHandler = (e) => {
+  const onBlurHandler = (e) => {
     //building names
-    const { buildingNameEng } = this.getLocationState();
+    const { buildingNameEng } = getLocationState();
 
     // building data
-    const { data } = this.getPage();
+    const { data } = getPage();
 
     // date
-    const date = this.props.date;
+    const date = props.date;
 
     const target = e.target;
 
@@ -122,7 +132,7 @@ class BudgetExecutionsTable extends React.PureComponent {
     }
 
     //prepare the budget execution object
-    const newBudgetExecutionObj = this.prepareBudgetExecObj(budgetExecutionObj, date.quarter);
+    const newBudgetExecutionObj = prepareBudgetExecObj(budgetExecutionObj, date.quarter);
 
     //prepare the params object
     let params = {
@@ -140,27 +150,20 @@ class BudgetExecutionsTable extends React.PureComponent {
       params.date.monthHeb = Helper.convertEngToHebMonth(params.date.month);
     }
 
-    //this.calculateMonthTotalBudget(copyData, cellInfo.column.id, prevValue, copyData[objIndex][cellInfo.column.id]);
-    this.props.updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index);
+    //calculateMonthTotalBudget(copyData, cellInfo.column.id, prevValue, copyData[objIndex][cellInfo.column.id]);
+    props.updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index);
     e.target.blur();
   }
 
-  deleteHandler = (id) => {
+  const deleteHandler = (id, summarized_section_id) => {
     //building names
-    const { buildingNameEng } = this.getLocationState();
+    const { buildingNameEng } = getLocationState();
 
-    this.props.deleteBudgetExecution(buildingNameEng, this.props.date, id)
+    props.deleteBudgetExecution(buildingNameEng, props.date, id)
       .catch(() => {
-        this.props.showModal(
-          "CONFIRM_DELETE_ALL_MONTH_EXPANSES",
-          {
-            title: "האם למחוק את כל ההוצאות שמקושרות לרבעון זה?",
-            contentText: `לא ניתן למחוק סעיף מסכם זה, כל עוד קיימות הוצאות שמקושרות אליו.
-            נדרש למחוק את כל ההוצאות שמקושרות לסעיף בכל החודשים של הרבעון או 
-            האם הנך מעוניין שהמערכת תבצע את הפעולה בשבילך?
-            `
-          }
-        )
+        showModal(ConfirmDeleteAllMonthExpansesModal, {
+          onAgreeHandler: () => props.deleteMonthExpansesBySummarizedSectionId(buildingNameEng, summarized_section_id, props.date)
+        });
       });
   }
 
@@ -170,7 +173,7 @@ class BudgetExecutionsTable extends React.PureComponent {
    * @param {} budgetExec 
    * @param {*} date 
    */
-  prepareBudgetExecObj(budgetExec, quarter) {
+  const prepareBudgetExecObj = (budgetExec, quarter) => {
 
     const months = Helper.getQuarterMonthsEng(quarter);
     let totalBudget = 0;
@@ -193,9 +196,9 @@ class BudgetExecutionsTable extends React.PureComponent {
 
   }
 
-  calculateMonthTotalBudget = (data, columnName, prevValue, newValue) => {
+  const calculateMonthTotalBudget = (data, columnName, prevValue, newValue) => {
     //data date
-    const { date } = this.props.budgetExecution.pages[this.props.budgetExecution.pageIndex];
+    const { date } = props.budgetExecution.pages[props.budgetExecution.pageIndex];
     //find the index of the object in the array
     const objIndex = Helper.findObjIndexById(33, data);
     //get month names
@@ -205,57 +208,26 @@ class BudgetExecutionsTable extends React.PureComponent {
     data[objIndex].total_budget = data[objIndex][`${monthNames[0]}_budget`] + data[objIndex][`${monthNames[1]}_budget`] + data[objIndex][`${monthNames[2]}_budget`];
   }
 
-  getGridTemplateColumns = () => {
-    return this.props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+  const getGridTemplateColumns = () => {
+    return props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
-  onFetchData = (state) => {
-
-    //building names
-    const { buildingNameEng } = this.props.location.state;
-
-    const { date } = this.props.budgetExecution.pages[buildingNameEng];
-
-    const {
-      pageSize
-      , page
-    } = state;
-
-    // page 0 - no need to multpily pass only the page size
-    // page > 0 multiply to get the next start element position
-    const startElement = page === 0 ? 0 : pageSize * page;
-
-    //important params that allows to pull the current data by
-    //building name, current month and year.
-    let params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: date,
-      range: {
-        startElement,
-        pageSize
-      }
-    };
-
-    //get the building month expanses
-    this.props.fetchBudgetExecutions(params);
+  const getLocationState = () => {
+    return props.location.state;
   }
 
-  getLocationState = () => {
-    return this.props.location.state;
+  const getPage = () => {
+    return props.page;
   }
 
-  getPage = () => {
-    return this.props.page;
+  const getDataObject = (index) => {
+    return getPage().data[index];
   }
 
-  getDataObject = (index) => {
-    return this.getPage().data[index];
-  }
-
-  HeaderGroups = () => {
-    const editMode = this.props.editMode;
-    const { groupColors } = this.context;
-    const { quarter } = this.props.date;
+  const HeaderGroups = () => {
+    const editMode = props.editMode;
+    const { groupColors } = globalContext;
+    const { quarter } = props.date;
 
     const months = Helper.getQuarterMonths(quarter);
 
@@ -272,7 +244,7 @@ class BudgetExecutionsTable extends React.PureComponent {
     }
 
     return <GroupRow
-      gridTemplateColumns={this.getGridTemplateColumns()} >
+      gridTemplateColumns={getGridTemplateColumns()} >
       {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
       <GroupColumn style={defaultStyle}></GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
@@ -286,10 +258,10 @@ class BudgetExecutionsTable extends React.PureComponent {
     </GroupRow>
   }
 
-  HeadersRow = () => {
-    const editMode = this.props.editMode;
+  const HeadersRow = () => {
+    const editMode = props.editMode;
 
-    const { groupColors } = this.context;
+    const { groupColors } = globalContext;
 
     const monthColumns = [];
 
@@ -303,7 +275,7 @@ class BudgetExecutionsTable extends React.PureComponent {
       color: groupColors[3]
     }
 
-    return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} >
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
@@ -320,18 +292,18 @@ class BudgetExecutionsTable extends React.PureComponent {
     </HeaderRow>
   }
 
-  Row = (index) => {
+  const TableRow = (index) => {
     const {
       editMode,
       textAreaInput,
       numberInput
-    } = this.props;
+    } = props;
 
     // row data
-    const rowData = this.getDataObject(index);
+    const rowData = getDataObject(index);
 
     // list of months of specific quarter
-    const months = Helper.getQuarterMonthsEng(this.props.date.quarter);
+    const months = Helper.getQuarterMonthsEng(props.date.quarter);
 
     const monthColumns = [];
 
@@ -339,7 +311,7 @@ class BudgetExecutionsTable extends React.PureComponent {
     for (let i = 0; i < months.length; i++) {
       monthColumns.push(
         editMode ?
-          numberInput(`${months[i]}_budget`, rowData[`${months[i]}_budget`], index, this.onBlurHandler) :
+          numberInput(`${months[i]}_budget`, rowData[`${months[i]}_budget`], index, onBlurHandler) :
           <NonZeroNumberColumn key={`${months[i]}_budget${i}`}>{rowData[`${months[i]}_budget`]}</NonZeroNumberColumn>
       );
       monthColumns.push(<NonZeroNumberColumn key={`${months[i]}_budget_execution${i + 1}`}>{rowData[`${months[i]}_budget_execution`]}</NonZeroNumberColumn>);
@@ -347,105 +319,101 @@ class BudgetExecutionsTable extends React.PureComponent {
 
     const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
 
-    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => this.deleteHandler(rowData.id)} /> : null}
+    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={getGridTemplateColumns()}>
+      {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData.id, rowData.summarized_section_id)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
       {monthColumns}
-      {editMode ? numberInput("evaluation", rowData["evaluation"], index, this.onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
+      {editMode ? numberInput("evaluation", rowData["evaluation"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
       <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>
       <NonZeroNumberColumn>{rowData["total_execution"]}</NonZeroNumberColumn>
       <DifferenceColumn style={{ direction: "ltr" }}>{rowData["difference"]}</DifferenceColumn>
-      {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 
-  render() {
+  //building names
+  const { buildingName, buildingNameEng } = props.location.state;
 
-    //building names
-    const { buildingName, buildingNameEng } = this.props.location.state;
+  const page = props.page;
 
-    const page = this.props.page;
-
-    if (page === undefined || page.data === undefined) {
-      return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
-    }
-
-    const {
-      date,
-      pageName,
-      pageTitle,
-      editMode,
-      toggleEditMode,
-      addNewMode,
-      toggleAddNewMode
-    } = this.props;
-
-    // provider data
-    const {
-      data,
-      isFetching,
-      pageSettings,
-    } = page;
-
-    return (
-      <TableWrapper>
-
-        <TableControls
-          editMode={editMode}
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              addNewMode={addNewMode}
-              toggleAddNewMode={toggleAddNewMode}
-            />
-          } // end rightPane
-          middlePane={
-            <RegisteredDatesFetcher fetchYears fetchQuarters params={{
-              buildingName: buildingNameEng
-            }}>
-              {({ quarters, years }) => {
-                return <DatePicker
-                  years={years}
-                  quarters={quarters}
-                  date={date}
-                  submitHandler={this.loadDataByDate}
-                />
-              }}
-            </RegisteredDatesFetcher>
-          } // end middlePane
-          leftPane={
-            <PageControls
-              excel={{
-                data: data,
-                fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-                sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
-                header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
-                date: date
-              }}
-              print={{
-                title: pageTitle,
-                pageTitle: pageTitle + " - " + buildingName
-              }}
-              pageName={pageName}
-            />
-          } // end leftPane
-
-        /> {/* End TableControls */}
-
-        <Table
-          Row={this.Row}
-          GroupComponent={this.HeaderGroups}
-          HeaderComponent={this.HeadersRow}
-          isFetching={isFetching || data.length === 0}
-          itemCount={data.length}
-        />
-
-      </TableWrapper>
-    );
+  if (page === undefined || page.data === undefined) {
+    return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
   }
 
+  const {
+    date,
+    pageName,
+    pageTitle,
+    editMode,
+    toggleEditMode,
+    addNewMode,
+    toggleAddNewMode
+  } = props;
+
+  // provider data
+  const {
+    data,
+    isFetching,
+    pageSettings,
+  } = page;
+
+  return (
+    <TableWrapper>
+
+      <TableControls
+        editMode={editMode}
+        rightPane={
+          <EditControls
+            editMode={editMode}
+            toggleEditMode={toggleEditMode}
+            addNewMode={addNewMode}
+            toggleAddNewMode={toggleAddNewMode}
+          />
+        } // end rightPane
+        middlePane={
+          <RegisteredDatesFetcher fetchYears fetchQuarters params={{
+            buildingName: buildingNameEng
+          }}>
+            {({ quarters, years }) => {
+              return <DatePicker
+                years={years}
+                quarters={quarters}
+                date={date}
+                submitHandler={loadDataByDate}
+              />
+            }}
+          </RegisteredDatesFetcher>
+        } // end middlePane
+        leftPane={
+          <PageControls
+            excel={{
+              data: data,
+              fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+              sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
+              header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
+              date: date
+            }}
+            print={{
+              title: pageTitle,
+              pageTitle: pageTitle + " - " + buildingName
+            }}
+            pageName={pageName}
+          />
+        } // end leftPane
+
+      /> {/* End TableControls */}
+
+      <Table
+        Row={TableRow}
+        GroupComponent={HeaderGroups}
+        HeaderComponent={HeadersRow}
+        isFetching={isFetching || data.length === 0}
+        itemCount={data.length}
+      />
+
+    </TableWrapper>
+  );
 }
 
 const mapStateToProps = (state, ownProps) => ({
@@ -453,19 +421,24 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchBudgetExecutions: (params) => dispatch(budgetExecutionsActions.fetchBudgetExecutions(params)),
-  budgetExecutionsCleanup: (buildingName) => dispatch(budgetExecutionsActions.budgetExecutionsCleanup(buildingName)),
-  initBudgetExecutionsState: (page) => dispatch(budgetExecutionsActions.initBudgetExecutionsState(page)),
-  updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(budgetExecutionsActions.updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
-  deleteBudgetExecution: (buildingName, date, id) => dispatch(budgetExecutionsActions.deleteBudgetExecution(buildingName, date, id)),
-  addBudgetExecution: (payload, tableData) => dispatch(budgetExecutionsActions.addBudgetExecution(payload, tableData)),
-  showModal: (modalType, modalProps) => dispatch(modalActions.showModal(modalType, modalProps)),
-  hideModal: () => dispatch(modalActions.hideModal())
+  fetchBudgetExecutions: (params) => dispatch(fetchBudgetExecutions(params)),
+  budgetExecutionsCleanup: (buildingName) => dispatch(budgetExecutionsCleanup(buildingName)),
+  initBudgetExecutionsState: (page) => dispatch(initBudgetExecutionsState(page)),
+  updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
+  deleteBudgetExecution: (buildingName, date, id) => dispatch(deleteBudgetExecution(buildingName, date, id)),
+  addBudgetExecution: (payload, tableData) => dispatch(addBudgetExecution(payload, tableData)),
+  deleteMonthExpansesBySummarizedSectionId: (buildingName, date, summarized_section_id) => dispatch(deleteMonthExpansesBySummarizedSectionId(buildingName, date, summarized_section_id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(
   withTableLogic(BudgetExecutionsTable)
 );
+
+export default React.memo(ConnectedComponent, areEqual)
+
+function areEqual(prevProps, nextProps) {
+  return prevProps.date === nextProps.date || prevProps.location.state.buildingName === nextProps.location.state.buildingName;
+}
 
 const defaultheaderStyle = {
   backgroundColor: "rgb(232, 236, 241)",

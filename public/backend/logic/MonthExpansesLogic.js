@@ -194,6 +194,10 @@ class MonthExpansesLogic {
     return monthExpanseObj;
   }
 
+  deleteMonthExpansesBySummarizedSectionId({ buildingName, summarized_section_id, date }, trx) {
+    this.monthExpansesDao.deleteMonthExpansesBySummarizedSectionId(buildingName, summarized_section_id, date, trx);
+  }
+
   batchInsert(buildingName, rows, trx) {
     return this.monthExpansesDao.batchInsert(buildingName, rows, trx);
   }

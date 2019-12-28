@@ -215,6 +215,21 @@ class MonthExpansesDao {
       });
   }
 
+  deleteMonthExpansesBySummarizedSectionId(
+    buildingName = String,
+    summarized_section_id = Number,
+    date,
+    trx = this.connection
+  ) {
+    return trx(buildingName + "_month_expanses")
+      .innerJoin('expanses_codes AS ec').innerJoin("summarized_sections AS sc")
+      .where({ year: date.year, month: date.month, summarized_section_id })
+      .del()
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   batchInsert(
     buildingName,
     rows,

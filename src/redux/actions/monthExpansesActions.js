@@ -255,6 +255,29 @@ export const deleteMonthExpanse = (params = Object, index = Number) => {
   }
 };
 
+export const deleteMonthExpansesBySummarizedSectionId = (buildingName, date, summarized_section_id) => {
+  return dispatch => {
+    // send a request to backend to get the data
+    ipcRenderer.send("delete-month-expanses-by-summarized-section-id", { buildingName, date, summarized_section_id });
+
+    ipcRenderer.once("month-expanses-by-summarized-section-id-deleted", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        //dispatch(deleteMonthExpanseInStore(index, params.buildingName));
+
+        //send success notification
+        toast.success("השורה נמחקה בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
+      }
+    });
+  }
+};
+
 const deleteMonthExpanseInStore = (index, buildingName) => {
   return {
     type: TYPES.MONTH_EXPANSES_DELETE,

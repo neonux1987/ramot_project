@@ -43,12 +43,21 @@ const monthExpansesIpc = (connection) => {
 
   });
 
-  ipcMain.on('delete-month-expanse', (event, data) => {
-    monthExpansesLogic.deleteMonthExpanseTrx(data).then((result) => {
+  ipcMain.on('delete-month-expanse', (event, params) => {
+    monthExpansesLogic.deleteMonthExpanseTrx(params).then((result) => {
       event.reply("month-expanse-deleted", { data: result });
     }).catch((error) => {
       console.log(error);
       event.reply("month-expanse-deleted", { error: error.message });
+    });
+  });
+
+  ipcMain.on('delete-month-expanses-by-summarized-section-id', (event, params) => {
+    monthExpansesLogic.deleteMonthExpansesBySummarizedSectionId(params).then((result) => {
+      event.reply("month-expanses-by-summarized-section-id-deleted", { data: result });
+    }).catch((error) => {
+      console.log(error);
+      event.reply("month-expanses-by-summarized-section-id-deleted", { error: error.message });
     });
   });
 
