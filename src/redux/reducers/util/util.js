@@ -18,7 +18,6 @@ export const createPageReducer = (pageName, initialState) => {
     switch (action.type) {
       case `${pageName}_RECEIVE`:
         return setPageState(state, action.buildingName, {
-          date: action.date,
           isFetching: false,
           status: "success",
           data: action.data.data,
@@ -105,7 +104,6 @@ export const createPageReducer = (pageName, initialState) => {
           pages: {
             ...state.pages,
             [action.buildingName]: {
-              date: Helper.getCurrentDate(),
               isFetching: false,
               status: "",
               error: "",

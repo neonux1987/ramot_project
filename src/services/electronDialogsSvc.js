@@ -2,7 +2,7 @@ import { remote } from 'electron';
 import os from 'os';
 
 export const saveToFileDialog = (defaultFileName = "", options = {}, callback) => {
-
+  console.log("asdsad");
   const dialog = remote.dialog;
   const WIN = remote.getCurrentWindow();
 
@@ -12,8 +12,8 @@ export const saveToFileDialog = (defaultFileName = "", options = {}, callback) =
     options.defaultPath = os.homedir() + "/" + defaultFileName;
   }
 
-  //asynchronous - using callback
-  dialog.showSaveDialog(WIN, options, callback);
+  //asynchronous - returns a promise
+  return dialog.showSaveDialog(WIN, options);
 
 }
 

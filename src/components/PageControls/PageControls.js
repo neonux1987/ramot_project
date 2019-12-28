@@ -14,13 +14,12 @@ let options = {
 
 const PageControls = ({ excel, print, pageName, styles, ...props }) => {
   const exportToExcel = () => {
-    saveToFileDialog(excel.fileName, options, (fullPath) => {
-      if (fullPath) {
-        excel.fileName = fullPath;
+    saveToFileDialog(excel.fileName, options).then(({ canceled, filePath }) => {
+      console.log(canceled);
+      if (!canceled) {
+        excel.fileName = filePath;
         excelProcess(pageName, excel);
       }
-
-
     });
   }
 

@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useEffect, useContext } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
 import { deleteMonthExpansesBySummarizedSectionId } from '../../redux/actions/monthExpansesActions';
@@ -51,31 +51,37 @@ const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
 const BudgetExecutionsTable = props => {
+  //building names
+  const { buildingName, buildingNameEng } = props.location.state;
 
   const globalContext = useContext(GlobalContext);
   const { showModal } = useModalLogic();
+  const dispatch = useDispatch();
 
+  // page data
+  const page = useSelector(store => store.budgetExecutions.pages[buildingNameEng]);
+  console.log(page);
   useEffect(() => {
+
+    const cleanup = () => {
+      //cleanup
+      dispatch(budgetExecutionsCleanup(buildingNameEng));
+    }
 
     const params = {
       date: props.date,
-      buildingName: props.location.state.buildingNameEng
+      buildingName: buildingNameEng
     }
 
-    // init the state first
-    props.initBudgetExecutionsState(params.buildingName).then(() => {
-      // fetch budget executions
-      props.fetchBudgetExecutions(params);
-    });
+    const returnedPromise = dispatch(initBudgetExecutionsState(params.buildingName));
+
+    returnedPromise.then(() => {
+      dispatch(fetchBudgetExecutions(params));
+    })
 
     return cleanup;
-  }, []);
+  }, [props.date, buildingNameEng, dispatch]);
 
-
-  const cleanup = () => {
-    //cleanup
-    props.budgetExecutionsCleanup(props.location.state.buildingNameEng);
-  }
 
   const loadDataByDate = ({ year, quarter }) => {
 
@@ -94,18 +100,16 @@ const BudgetExecutionsTable = props => {
       }
     };
     // fetch data
-    props.fetchBudgetExecutions(params);
+    dispatch(fetchBudgetExecutions(params));
 
     // update global date
-    props.dateActions.updateDate(pageName, buildingNameEng, params.date);
+    dispatch(props.dateActions.updateDate(pageName, buildingNameEng, params.date));
   }
 
   const onBlurHandler = (e) => {
-    //building names
-    const { buildingNameEng } = getLocationState();
 
     // building data
-    const { data } = getPage();
+    const { data } = page;
 
     // date
     const date = props.date;
@@ -151,18 +155,16 @@ const BudgetExecutionsTable = props => {
     }
 
     //calculateMonthTotalBudget(copyData, cellInfo.column.id, prevValue, copyData[objIndex][cellInfo.column.id]);
-    props.updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index);
+    dispatch(updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index));
     e.target.blur();
   }
 
   const deleteHandler = (id, summarized_section_id) => {
-    //building names
-    const { buildingNameEng } = getLocationState();
 
-    props.deleteBudgetExecution(buildingNameEng, props.date, id)
+    dispatch(deleteBudgetExecution(buildingNameEng, props.date, id))
       .catch(() => {
         showModal(ConfirmDeleteAllMonthExpansesModal, {
-          onAgreeHandler: () => props.deleteMonthExpansesBySummarizedSectionId(buildingNameEng, summarized_section_id, props.date)
+          onAgreeHandler: () => dispatch(deleteMonthExpansesBySummarizedSectionId(buildingNameEng, summarized_section_id, props.date))
         });
       });
   }
@@ -212,16 +214,8 @@ const BudgetExecutionsTable = props => {
     return props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
-  const getLocationState = () => {
-    return props.location.state;
-  }
-
-  const getPage = () => {
-    return props.page;
-  }
-
   const getDataObject = (index) => {
-    return getPage().data[index];
+    return page.data[index];
   }
 
   const HeaderGroups = () => {
@@ -332,15 +326,10 @@ const BudgetExecutionsTable = props => {
     </Row>
   }
 
-  //building names
-  const { buildingName, buildingNameEng } = props.location.state;
-
-  const page = props.page;
-
   if (page === undefined || page.data === undefined) {
     return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
   }
-
+  console.log(page);
   const {
     date,
     pageName,
@@ -416,23 +405,7 @@ const BudgetExecutionsTable = props => {
   );
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  page: state.budgetExecutions.pages[ownProps.location.state.buildingNameEng]
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchBudgetExecutions: (params) => dispatch(fetchBudgetExecutions(params)),
-  budgetExecutionsCleanup: (buildingName) => dispatch(budgetExecutionsCleanup(buildingName)),
-  initBudgetExecutionsState: (page) => dispatch(initBudgetExecutionsState(page)),
-  updateBudgetExecution: (param, oldBudgetExecutionObj, newBudgetExecutionObj, index) => dispatch(updateBudgetExecution(param, oldBudgetExecutionObj, newBudgetExecutionObj, index)),
-  deleteBudgetExecution: (buildingName, date, id) => dispatch(deleteBudgetExecution(buildingName, date, id)),
-  addBudgetExecution: (payload, tableData) => dispatch(addBudgetExecution(payload, tableData)),
-  deleteMonthExpansesBySummarizedSectionId: (buildingName, date, summarized_section_id) => dispatch(deleteMonthExpansesBySummarizedSectionId(buildingName, date, summarized_section_id)),
-});
-
-const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(
-  withTableLogic(BudgetExecutionsTable)
-);
+const ConnectedComponent = withTableLogic(BudgetExecutionsTable);
 
 export default React.memo(ConnectedComponent, areEqual)
 
