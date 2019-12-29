@@ -90,11 +90,11 @@ module.exports = (
 
   //worksheet headers
   sheet.columns = [
-    { key: 'code', width: 4.5 },
-    { key: 'codeName', width: 10 },
-    { key: 'supplierName', width: 9.8 },
-    { key: 'sum', width: 4.5 },
-    { key: 'notes', width: 13 }
+    { key: 'code', width: 12.14 },
+    { key: 'codeName', width: 19.29 },
+    { key: 'supplierName', width: 18.55 },
+    { key: 'sum', width: 14.45 },
+    { key: 'notes', width: 33.71 }
   ];
 
   //get the first row of headers
@@ -129,7 +129,9 @@ module.exports = (
       row.eachCell((cell) => {
         cell.alignment = {
           vertical: 'middle',
-          horizontal: 'center'
+          horizontal: 'center',
+          wrapText: true,
+          indent: 1
         }
         cell.style.font = {
           name: 'Arial',
@@ -146,6 +148,35 @@ module.exports = (
       });
     }
   });
+
+  /* const newData = data.map(obj => {
+    delete obj.summarized_section_id;
+    delete obj.month;
+    delete obj.year;
+    delete obj.id;
+    delete obj.expanses_code_id;
+    delete obj.tax;
+    console.log(obj);
+    return Object.values(obj)
+  });
+
+  // add a table to a sheet
+  sheet.addTable({
+    name: 'MyTable',
+    ref: 'A3',
+    headerRow: true,
+    style: {
+      theme: null
+    },
+    columns: [
+      { name: 'קוד הנהח"ש' },
+      { name: 'שם חשבון' },
+      { name: 'ספק' },
+      { name: 'סכום' },
+      { name: 'הערות' },
+    ],
+    rows: newData,
+  }); */
 
   return workbook;
 
