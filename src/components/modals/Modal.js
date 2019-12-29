@@ -12,7 +12,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default ({ onAgreeHandler, title, contentText }) => {
+export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText }) => {
 
   const [open, setOpen] = React.useState(true);
   const { hideModal } = useModalLogic();
@@ -38,7 +38,15 @@ export default ({ onAgreeHandler, title, contentText }) => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">{title}</DialogTitle>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Icon style={{
+            margin: "16px 24px 16px 0",
+            color: "#ffb100",
+            fontSize: "28px",
+          }} />
+          <DialogTitle style={{ paddingRight: "12px", flex: "initial" }} id="alert-dialog-slide-title">{title}</DialogTitle>
+        </div>
+
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             {contentText}
@@ -49,7 +57,7 @@ export default ({ onAgreeHandler, title, contentText }) => {
             בטל
           </Button>
           <Button onClick={agree} color="primary">
-            בצע פעולה
+            {agreeBtnText || "בצע פעולה"}
           </Button>
         </DialogActions>
       </Dialog>

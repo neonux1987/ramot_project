@@ -1,5 +1,5 @@
 import React from "react";
-import { Notifications, Settings } from '@material-ui/icons';
+import { Notifications } from '@material-ui/icons';
 
 import styles from './Toolbar.module.css';
 import classnames from 'classnames';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { saveToFileDialog } from '../../services/electronDialogsSvc';
-import { default as excelProcess } from '../../helpers/excel';
+import { saveToFileDialog } from '../../services/electronDialogs.svc';
+import { exportToExcel } from '../../services/excel.svc';
 import { default as printProcess } from 'print-js';
 import defaultStyles from './PageControls.module.css';
 
@@ -13,12 +13,11 @@ let options = {
 };
 
 const PageControls = ({ excel, print, pageName, styles, ...props }) => {
-  const exportToExcel = () => {
+  const exportToExcelHandler = () => {
     saveToFileDialog(excel.fileName, options).then(({ canceled, filePath }) => {
-      console.log(canceled);
       if (!canceled) {
         excel.fileName = filePath;
-        excelProcess(pageName, excel);
+        exportToExcel(pageName, excel);
       }
     });
   }
@@ -27,7 +26,7 @@ const PageControls = ({ excel, print, pageName, styles, ...props }) => {
     <div id="page-controls" className={styles && styles.pageControls ? styles.pageControls : defaultStyles.pageControls} style={props.style}>
       <button
         className={styles && styles.pageControlsButton ? styles.pageControlsButton : defaultStyles.pageControlsButton}
-        onClick={excel.handler ? excel.handler : exportToExcel}
+        onClick={excel.handler ? excel.handler : exportToExcelHandler}
         style={{ background: "#24a978" }}
       >
         <svg

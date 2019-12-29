@@ -215,15 +215,13 @@ class MonthExpansesDao {
       });
   }
 
-  deleteMonthExpansesBySummarizedSectionId(
+  deleteMonthExpansesBulkByIds(
     buildingName = String,
-    summarized_section_id = Number,
-    date,
+    ids,
     trx = this.connection
   ) {
     return trx(buildingName + "_month_expanses")
-      .innerJoin('expanses_codes AS ec').innerJoin("summarized_sections AS sc")
-      .where({ year: date.year, month: date.month, summarized_section_id })
+      .whereIn("id", ids)
       .del()
       .catch((error) => {
         throw error;

@@ -255,10 +255,10 @@ export const deleteMonthExpanse = (params = Object, index = Number) => {
   }
 };
 
-export const deleteMonthExpansesBySummarizedSectionId = (buildingName, date, summarized_section_id) => {
+export const deleteMonthExpansesBySummarizedSectionId = (buildingName, summarized_section_id, date) => {
   return dispatch => {
     // send a request to backend to get the data
-    ipcRenderer.send("delete-month-expanses-by-summarized-section-id", { buildingName, date, summarized_section_id });
+    ipcRenderer.send("delete-month-expanses-by-summarized-section-id", { buildingName, summarized_section_id, date });
 
     ipcRenderer.once("month-expanses-by-summarized-section-id-deleted", (event, arg) => {
       if (arg.error) {

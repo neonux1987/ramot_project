@@ -1,5 +1,5 @@
-import Excel from 'exceljs';
-import Helper from '../../helpers/Helper';
+const Excel = require('exceljs');
+const Helper = require('../../../../helpers/Helper');
 
 const BUDGET_EXECUTION_QUARTER1_KEYS = [
   { key: 'section', width: 15 },
@@ -97,7 +97,7 @@ const headerStyle = {
   }
 }
 
-export default (
+module.exports = (
   {
     sheetTitle,
     header,

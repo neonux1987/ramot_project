@@ -1,20 +1,34 @@
+// LIBRARIES
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import settingsActions from '../../../../redux/actions/settingsActions';
-import backupsNamesActions from '../../../../redux/actions/backupsNamesActions';
-import { Button, Divider } from '@material-ui/core';
-import LoadingCircle from '../../../../components/LoadingCircle';
-import styles from './BackupAndRestore.module.css';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { Button, Divider } from '@material-ui/core';
+import { toast } from 'react-toastify';
+import { Prompt } from 'react-router';
 import DateFnsUtils from '@date-io/date-fns';
 import heLocale from "date-fns/locale/he";
-import { selectFolderDialog, saveToFileDialog } from '../../../../services/electronDialogsSvc';
-import { toast } from 'react-toastify';
+
+// ELECTRON
+import { ipcRenderer } from 'electron';
+
+// ACTIONS
+import settingsActions from '../../../../redux/actions/settingsActions';
+import backupsNamesActions from '../../../../redux/actions/backupsNamesActions';
+
+// COMPONENTS
+import LoadingCircle from '../../../../components/LoadingCircle';
+import styles from './BackupAndRestore.module.css';
+
+// SERVICES
+import { selectFolderDialog, saveToFileDialog } from '../../../../services/electronDialogs.svc';
+
+// UTILS
 import { playSound, soundTypes } from '../../../../audioPlayer/audioPlayer';
-import { Prompt } from 'react-router'
+
+// CONTAINERS
 import Backup from './Backup/Backup';
 import Restore from './Restore/Restore';
-const { ipcRenderer } = require('electron');
+
 
 const localeMap = {
   he: heLocale

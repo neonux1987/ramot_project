@@ -1,5 +1,5 @@
-import Excel from 'exceljs';
-import Helper from '../../helpers/Helper';
+const Excel = require('exceljs');
+const Helper = require('../../../../helpers/Helper');
 
 const headerStyle = {
   fill: {
@@ -15,7 +15,7 @@ const headerStyle = {
   }
 }
 
-export default (
+module.exports = (
   {
     fileName,
     sheetTitle,

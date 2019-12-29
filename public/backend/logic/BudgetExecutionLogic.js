@@ -303,9 +303,11 @@ class BudgetExecutionLogic {
 
     const quarterMonths = Helper.getQuarterMonths(date.quarter);
 
-    const budgetExecution = await this.getBudgetExecutionById(buildingName, date, id);
+    const trx = await this.connection.transaction();
 
-    let exist = false;
+    const budgetExecution = await this.getBudgetExecutionById(buildingName, date, id, trx);
+
+    const ids = [];
 
     for (let i = 0; i < quarterMonths.length; i++) {
       const newDate = {
@@ -316,15 +318,20 @@ class BudgetExecutionLogic {
       const monthExpanses = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(
         buildingName,
         newDate,
-        budgetExecution[0].summarized_section_id
+        budgetExecution[0].summarized_section_id,
+        trx
       );
 
-      if (monthExpanses.length > 0)
-        exist = true;
-    }
+      // extract the ids of te month expanses
+      // and put them in array
+      monthExpanses.forEach(item => {
+        ids.push(item.id);
+      })
 
-    if (exist)
-      throw new Error(`אין אפשרת לבצע מחיקה, כל עוד קיימים הוצאות חודשיות בחודשים של רבעון ${date.quarter} ושנה ${date.year} שמקושרים לסעיף מסכם זה.`);
+    }
+    console.log(ids);
+    this.monthExpansesDao.deleteMonthExpansesBulkByIds(buildingName, ids, trx);
+
   }
 
 }

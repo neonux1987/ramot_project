@@ -23,7 +23,6 @@ import GlobalContext from './context/GlobalContext';
 import { playSound, soundTypes } from './audioPlayer/audioPlayer';
 
 // CSS
-import 'react-table/react-table.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/css/style.css';
 

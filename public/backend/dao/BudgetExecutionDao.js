@@ -198,9 +198,10 @@ class BudgetExecutionDao {
       quarter: quarter = String
     },
     quarterQuery = Array,
-    id = Number
+    id = Number,
+    trx = this.connection
   ) {
-    return this.connection.where("exec.id", id)
+    return trx.where("exec.id", id)
       .select(
         "exec.id AS id",
         "exec.summarized_section_id AS summarized_section_id",

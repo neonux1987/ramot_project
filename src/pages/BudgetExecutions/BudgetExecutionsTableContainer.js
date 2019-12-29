@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useEffect, useContext } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
 import { deleteMonthExpansesBySummarizedSectionId } from '../../redux/actions/monthExpansesActions';
@@ -51,8 +51,19 @@ const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
 const BudgetExecutionsTable = props => {
-  //building names
+  // building names
   const { buildingName, buildingNameEng } = props.location.state;
+
+  const {
+    date,
+    dateActions,
+    pageName,
+    pageTitle,
+    editMode,
+    toggleEditMode,
+    addNewMode,
+    toggleAddNewMode
+  } = props;
 
   const globalContext = useContext(GlobalContext);
   const { showModal } = useModalLogic();
@@ -60,7 +71,7 @@ const BudgetExecutionsTable = props => {
 
   // page data
   const page = useSelector(store => store.budgetExecutions.pages[buildingNameEng]);
-  console.log(page);
+
   useEffect(() => {
 
     const cleanup = () => {
@@ -69,7 +80,7 @@ const BudgetExecutionsTable = props => {
     }
 
     const params = {
-      date: props.date,
+      date: date,
       buildingName: buildingNameEng
     }
 
@@ -80,7 +91,7 @@ const BudgetExecutionsTable = props => {
     })
 
     return cleanup;
-  }, [props.date, buildingNameEng, dispatch]);
+  }, [date, buildingNameEng, dispatch]);
 
 
   const loadDataByDate = ({ year, quarter }) => {
@@ -103,16 +114,13 @@ const BudgetExecutionsTable = props => {
     dispatch(fetchBudgetExecutions(params));
 
     // update global date
-    dispatch(props.dateActions.updateDate(pageName, buildingNameEng, params.date));
+    dispatch(dateActions.updateDate(pageName, buildingNameEng, params.date));
   }
 
   const onBlurHandler = (e) => {
 
     // building data
     const { data } = page;
-
-    // date
-    const date = props.date;
 
     const target = e.target;
 
@@ -161,12 +169,14 @@ const BudgetExecutionsTable = props => {
 
   const deleteHandler = (id, summarized_section_id) => {
 
-    dispatch(deleteBudgetExecution(buildingNameEng, props.date, id))
+    showModal(ConfirmDeleteAllMonthExpansesModal, {
+      onAgreeHandler: () => dispatch(deleteBudgetExecution(buildingNameEng, date, id))
+    });
+    //dispatch(deleteMonthExpansesBySummarizedSectionId(buildingNameEng, summarized_section_id, date))
+    /* dispatch(deleteBudgetExecution(buildingNameEng, date, id))
       .catch(() => {
-        showModal(ConfirmDeleteAllMonthExpansesModal, {
-          onAgreeHandler: () => dispatch(deleteMonthExpansesBySummarizedSectionId(buildingNameEng, summarized_section_id, props.date))
-        });
-      });
+
+      }); */
   }
 
   /**
@@ -221,7 +231,7 @@ const BudgetExecutionsTable = props => {
   const HeaderGroups = () => {
     const editMode = props.editMode;
     const { groupColors } = globalContext;
-    const { quarter } = props.date;
+    const { quarter } = date;
 
     const months = Helper.getQuarterMonths(quarter);
 
@@ -297,7 +307,7 @@ const BudgetExecutionsTable = props => {
     const rowData = getDataObject(index);
 
     // list of months of specific quarter
-    const months = Helper.getQuarterMonthsEng(props.date.quarter);
+    const months = Helper.getQuarterMonthsEng(date.quarter);
 
     const monthColumns = [];
 
@@ -329,16 +339,6 @@ const BudgetExecutionsTable = props => {
   if (page === undefined || page.data === undefined) {
     return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
   }
-  console.log(page);
-  const {
-    date,
-    pageName,
-    pageTitle,
-    editMode,
-    toggleEditMode,
-    addNewMode,
-    toggleAddNewMode
-  } = props;
 
   // provider data
   const {
