@@ -393,6 +393,10 @@ class Helper {
     return `${buildingName} ביצוע מול תקציב ${quarter} ${date.year}`;
   }
 
+  static getSummarizedBudgetsFilename(buildingName, date = { year: Number }) {
+    return `${buildingName} סיכום שנתי ${date.year}`;
+  }
+
   static getSummarizedBudgetFilename(buildingName, date = { year: Number }) {
     return `${buildingName} סיכום תקציבי ${date.year}`;
   }

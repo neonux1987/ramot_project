@@ -385,10 +385,11 @@ class MonthExpanses extends React.PureComponent {
           leftPane={
             <PageControls
               excel={{
-                data: data,
+                data,
                 fileName: Helper.getMonthExpansesFilename(buildingName, date),
-                sheetTitle: `שנה ${date.year} חודש ${date.monthHeb}`,
-                header: `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`,
+                buildingName,
+                buildingNameEng,
+                date
               }}
               print={{
                 title: pageTitle,

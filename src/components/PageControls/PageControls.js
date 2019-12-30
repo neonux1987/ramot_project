@@ -17,7 +17,8 @@ const PageControls = ({ excel, print, pageName, styles, ...props }) => {
     saveToFileDialog(excel.fileName, options).then(({ canceled, filePath }) => {
       if (!canceled) {
         excel.fileName = filePath;
-        exportToExcel(pageName, excel);
+        excel.pageName = pageName;
+        exportToExcel(excel);
       }
     });
   }

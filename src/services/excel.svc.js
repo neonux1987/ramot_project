@@ -3,9 +3,9 @@ import { ipcRenderer } from 'electron';
 import { playSound, soundTypes } from '../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
 
-export const exportToExcel = (pageName, excelData) => {
+export const exportToExcel = (excelData) => {
   // request request to backend to get the data
-  ipcRenderer.send("export-to-excel", pageName, excelData);
+  ipcRenderer.send("export-to-excel", excelData);
 
   // listen when the data comes back
   return ipcRenderer.once("excel-exported", (event, arg) => {

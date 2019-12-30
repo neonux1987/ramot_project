@@ -270,9 +270,11 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
           } // end middlePane
           leftPane={<PageControls
             excel={{
-              data: data,
-              fileName: Helper.getSummarizedBudgetFilename(buildingName, date),
-              tabName: `שנה ${date.year}`
+              data,
+              fileName: Helper.getSummarizedBudgetsFilename(buildingName, date),
+              buildingName,
+              buildingNameEng,
+              date
             }}
             print={{
               title: pageTitle,

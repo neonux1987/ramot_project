@@ -1,4 +1,7 @@
 const Excel = require('exceljs');
+const createDBConnection = require('../../../dao/connection/dbconfig');
+const MonthlyStatsLogic = require('../../../logic/MonthlyStatsLogic');
+const QuarterlyStatsLogic = require('../../../logic/QuarterlyStatsLogic');
 const Helper = require('../../../../helpers/Helper');
 
 const BUDGET_EXECUTION_QUARTER1_KEYS = [
@@ -97,13 +100,18 @@ const headerStyle = {
   }
 }
 
-module.exports = (
-  {
-    sheetTitle,
-    header,
-    date,
-    data
-  }) => {
+module.exports = async (
+  buildingName,
+  buildingNameEng,
+  date,
+  data
+) => {
+
+  const sheetTitle = `שנה ${date.year} רבעון ${date.quarter}`;
+  const header = `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`;
+
+  await addIncomeOutcome(data, buildingNameEng);
+
   //create new empty workbook
   const workbook = new Excel.Workbook();
 
@@ -302,6 +310,8 @@ module.exports = (
   //replace zero with empty string for esthetics
   data.forEach((row) => {
     Helper.replaceZeroWithEmpty(row);
+    // instead of null to make the borders appear
+    row.notes = "";
     sheet.addRow(row);
   });
 
@@ -411,4 +421,48 @@ function getMonthHeaders(quarter) {
     case 4: return ["אוקטובר", "נובמבר", "דצמבר"];
     default: return null;
   }
+}
+
+async function addIncomeOutcome(data, buildingName) {
+  const connection = createDBConnection();
+  const monthlyStatsLogic = new MonthlyStatsLogic(connection);
+  const quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
+
+  const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({ buildingName, date });
+
+  const incomeRow = {
+    section: "הכנסות",
+    evaluation: "",
+    difference: "",
+    notes: ""
+  };
+  const outcomeRow = {
+    section: "הוצאות",
+    evaluation: "",
+    difference: "",
+    notes: ""
+  };
+
+  monthlyStats.forEach((item) => {
+    const engMonth = Helper.convertHebToEngMonth(item.month);
+
+    incomeRow[`${engMonth}_budget`] = item.income;
+    incomeRow[`${engMonth}_budget_execution`] = "";
+
+    outcomeRow[`${engMonth}_budget`] = "";
+    outcomeRow[`${engMonth}_budget_execution`] = item.outcome;
+  })
+
+  const quarterlyStats = await quarterlyStatsLogic.getQuarterStatsTrx({ buildingName: buildingNameEng, date });
+
+  incomeRow.total_budget = quarterlyStats[0].income;
+  incomeRow.total_execution = "";
+
+  outcomeRow.total_budget = "";
+  outcomeRow.total_execution = quarterlyStats[0].outcome;
+
+  data.push(incomeRow);
+  data.push(outcomeRow);
+
+  connection.destroy();
 }

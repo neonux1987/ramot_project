@@ -377,11 +377,11 @@ const BudgetExecutionsTable = props => {
         leftPane={
           <PageControls
             excel={{
-              data: data,
+              data,
               fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-              sheetTitle: `שנה ${date.year} רבעון ${date.quarter}`,
-              header: `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`,
-              date: date
+              buildingName,
+              buildingNameEng,
+              date
             }}
             print={{
               title: pageTitle,

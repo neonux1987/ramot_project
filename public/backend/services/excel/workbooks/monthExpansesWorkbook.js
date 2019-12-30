@@ -16,14 +16,14 @@ const headerStyle = {
 }
 
 module.exports = (
-  {
-    fileName,
-    sheetTitle,
-    header,
-    date,
-    data
-  }
+  buildingName,
+  date,
+  data
 ) => {
+
+  const sheetTitle = `שנה ${date.year} חודש ${date.monthHeb}`;
+  const header = `${buildingName} / הוצאות חודש ${date.monthHeb} / ${date.year}`;
+
   //create new empty workbook
   const workbook = new Excel.Workbook();
 
@@ -150,13 +150,20 @@ module.exports = (
   });
 
   /* const newData = data.map(obj => {
+
+    // delete the unneccassery fields
     delete obj.summarized_section_id;
     delete obj.month;
     delete obj.year;
     delete obj.id;
     delete obj.expanses_code_id;
     delete obj.tax;
-    console.log(obj);
+    delete obj.section
+
+    // replace 0 with empty
+    if (obj.sum === 0)
+      obj.sum = "";
+
     return Object.values(obj)
   });
 
@@ -178,6 +185,6 @@ module.exports = (
     rows: newData,
   }); */
 
-  return workbook;
+  return Promise.resolve(workbook);
 
 };
