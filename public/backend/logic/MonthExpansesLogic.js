@@ -75,12 +75,14 @@ class MonthExpansesLogic {
 
     const { tax } = settings[0];
 
+    let returnMonthExpanseId = null;
+
     if (action === "update") {
       //prepare the expanse obejct, remove all the unneccessary 
       //fields so it can be saved.
       const expanseToUpdate = { supplierName: expanse.supplierName, sum: expanse.sum, tax: expanse.tax, notes: expanse.notes };
       //update month expanse
-      await this.monthExpansesDao.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx);
+      returnMonthExpanseId = await this.monthExpansesDao.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx);
     } else {
       //prepare the expanse obejct, remove all the unneccessary 
       //fields so it can be saved.
@@ -93,7 +95,7 @@ class MonthExpansesLogic {
         tax: expanse.tax,
         notes: expanse.notes
       };
-      await this.monthExpansesDao.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx);
+      returnMonthExpanseId = await this.monthExpansesDao.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx);
     }
 
     //get the total sum of expanses that are related
@@ -114,6 +116,7 @@ class MonthExpansesLogic {
     //update execution
     await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingName, date, summarized_section_id: expanse.summarized_section_id, budgetExec, special }, trx);
 
+    return returnMonthExpanseId[0];
   }
 
   /**

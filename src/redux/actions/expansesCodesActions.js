@@ -83,6 +83,7 @@ export const addExpanseCode = (expanseCode) => {
         });
       } else {
         expanseCode.id = arg.data;
+        console.log(arg);
         dispatch(addStoreOnly(expanseCode));
         //send success notification
         toast.success("הקוד נוסף בהצלחה.", {
@@ -164,9 +165,7 @@ const restoreExpanseCodeInStoreOnly = (payload) => {
 }
 
 export const deleteExpanseCode = (id, oldCopy, index) => {
-
   return dispatch => {
-
     //delete the item in store first
     dispatch(deleteStoreOnly(index));
 
@@ -174,7 +173,6 @@ export const deleteExpanseCode = (id, oldCopy, index) => {
     ipcRenderer.send("delete-expanse-code", id);
     //listen when the data comes back
     ipcRenderer.once("expanse-code-deleted", (event, arg) => {
-      arg.error = "what"
       if (arg.error) {
         //delete the item in store first
         dispatch(restoreExpanseCodeInStoreOnly(oldCopy));

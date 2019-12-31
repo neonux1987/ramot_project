@@ -65,7 +65,7 @@ class MonthExpanses extends React.PureComponent {
     //building names
     const { buildingNameEng } = this.props.location.state;
     // building data
-    const { date } = this.props.monthExpanses.pages[buildingNameEng];
+    const date = this.props.date;
 
     const valid = this.validateFormInputs(formInputs);
     if (!valid) {
@@ -91,7 +91,7 @@ class MonthExpanses extends React.PureComponent {
     const parsedFormInputs = this.parseFormInputs(copiedFormInputs);
 
     const params = {
-      buildingName: this.props.location.state.buildingNameEng,
+      buildingName: buildingNameEng,
       expanse: parsedFormInputs,
       date: date
     }
@@ -220,48 +220,13 @@ class MonthExpanses extends React.PureComponent {
     //building names
     const { buildingNameEng } = this.getLocationState();
 
-    // building data
-    const { date } = this.getPage();
-
     //prepare the params
     let params = {
       id: id,
       buildingName: buildingNameEng,
-      date: date
+      date: this.props.date
     };
     this.props.deleteMonthExpanse(params, index);
-  }
-
-  onFetchData = (state) => {
-
-    //building names
-    const { buildingNameEng } = this.getLocationState();
-
-    // building data
-    const { date } = this.getPage();
-
-    const {
-      pageSize
-      , page
-    } = state;
-
-    // page 0 - no need to multpily pass only the page size
-    // page > 0 multiply to get the next start element position
-    const startElement = page === 0 ? 0 : pageSize * page;
-
-    //important params that allows to pull the current data by
-    //building name, current month and year.
-    let params = {
-      buildingName: buildingNameEng,
-      date: date,
-      range: {
-        startElement,
-        pageSize
-      }
-    };
-
-    //get the building month expanses
-    this.props.fetchMonthExpanses(params);
   }
 
   getDataObject = (index) => {

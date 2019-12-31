@@ -1,7 +1,7 @@
 const Excel = require('exceljs');
 const createDBConnection = require('../../../dao/connection/dbconfig');
-const MonthlyStatsLogic = require('../../../logic/MonthlyStatsLogic');
 const QuarterlyStatsLogic = require('../../../logic/QuarterlyStatsLogic');
+const YearlyStatsLogic = require('../../../logic/YearlyStatsLogic');
 const Helper = require('../../../../helpers/Helper');
 
 const KEYS = [
@@ -66,7 +66,7 @@ module.exports = async (
   const sheetTitle = `שנה ${date.year}`;
   const header = `${buildingName} / סיכום שנתי / ${date.year}`;
 
-  //await addIncomeOutcome(data, buildingNameEng);
+  await addIncomeOutcome(data, date, buildingNameEng);
 
   //create new empty workbook
   const workbook = new Excel.Workbook();
@@ -317,61 +317,59 @@ module.exports = async (
     }
   });
 
-  sheet.getColumn("A").width = 9.8;
-  sheet.getColumn("B").width = 3.8;
-  sheet.getColumn("C").width = 3.8;
-  sheet.getColumn("D").width = 3.8;
-  sheet.getColumn("E").width = 3.8;
-  sheet.getColumn("F").width = 3.8;
-  sheet.getColumn("G").width = 3.8;
-  sheet.getColumn("H").width = 3.8;
-  sheet.getColumn("I").width = 3.8;
-  sheet.getColumn("J").width = 3.8;
-  sheet.getColumn("K").width = 3.8;
-  sheet.getColumn("L").width = 12.6;
-  sheet.getColumn("M").width = 12.6;
+  sheet.getColumn("A").width = 16.00;// real 15.29
+  sheet.getColumn("B").width = 10.00;//real 9.29
+  sheet.getColumn("C").width = 10.00;//real 9.29
+  sheet.getColumn("D").width = 10.00;//real 9.29
+  sheet.getColumn("E").width = 10.00;//real 9.29
+  sheet.getColumn("F").width = 10.00;//real 9.29
+  sheet.getColumn("G").width = 10.00;//real 9.29
+  sheet.getColumn("H").width = 10.00;//real 9.29
+  sheet.getColumn("I").width = 10.00;//real 9.29
+  sheet.getColumn("J").width = 10.00;//real 9.29
+  sheet.getColumn("K").width = 10.00;//real 9.29
+  sheet.getColumn("L").width = 10.00;//real 9.29
+  sheet.getColumn("M").width = 16.71;// real 16.00
 
   return Promise.resolve(workbook);
 
 };
 
-async function addIncomeOutcome(data, buildingName) {
+async function addIncomeOutcome(data, date, buildingNameEng) {
   const connection = createDBConnection();
-  const monthlyStatsLogic = new MonthlyStatsLogic(connection);
   const quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
+  const yearlyStatsLogic = new YearlyStatsLogic(connection);
 
-  const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({ buildingName, date });
+  const quarterlyStats = await quarterlyStatsLogic.getAllQuartersStatsByYearTrx({ buildingName: buildingNameEng, date });
 
   const incomeRow = {
     section: "הכנסות",
     evaluation: "",
-    difference: "",
     notes: ""
   };
   const outcomeRow = {
     section: "הוצאות",
     evaluation: "",
-    difference: "",
     notes: ""
   };
 
-  monthlyStats.forEach((item) => {
-    const engMonth = Helper.convertHebToEngMonth(item.month);
+  quarterlyStats.forEach((item) => {
+    const { quarter } = item;
 
-    incomeRow[`${engMonth}_budget`] = item.income;
-    incomeRow[`${engMonth}_budget_execution`] = "";
+    incomeRow[`quarter${quarter}_budget`] = item.income;
+    incomeRow[`quarter${quarter}_execution`] = "";
 
-    outcomeRow[`${engMonth}_budget`] = "";
-    outcomeRow[`${engMonth}_budget_execution`] = item.outcome;
+    outcomeRow[`quarter${quarter}_budget`] = "";
+    outcomeRow[`quarter${quarter}_execution`] = item.outcome;
   })
 
-  const quarterlyStats = await quarterlyStatsLogic.getQuarterStatsTrx({ buildingName: buildingNameEng, date });
+  const yearlyStats = await yearlyStatsLogic.getYearStatsTrx(buildingNameEng, date);
 
-  incomeRow.total_budget = quarterlyStats[0].income;
-  incomeRow.total_execution = "";
+  incomeRow.year_total_budget = yearlyStats[0].income;
+  incomeRow.year_total_execution = "";
 
-  outcomeRow.total_budget = "";
-  outcomeRow.total_execution = quarterlyStats[0].outcome;
+  outcomeRow.year_total_budget = "";
+  outcomeRow.year_total_execution = yearlyStats[0].outcome;
 
   data.push(incomeRow);
   data.push(outcomeRow);

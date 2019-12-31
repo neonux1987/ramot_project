@@ -250,8 +250,7 @@ class InputExpansesField extends Component {
   }
 
   renderForm() {
-    const expansesCodes = this.props.expansesCodes;
-    const { summarizedSections } = this.props.summarizedSections;
+    const { expansesCodes, summarizedSections } = this.props;
 
     let codesFetching = expansesCodes.isFetching || expansesCodes.data.length === 0;
     let sectionsFetching = summarizedSections.isFetching || summarizedSections.data.length === 0;

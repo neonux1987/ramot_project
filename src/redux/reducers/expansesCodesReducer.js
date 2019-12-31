@@ -10,7 +10,7 @@ const initState = {
 export default (state = initState, action) => {
   switch (action.type) {
     case TYPES.EXPANSES_CODES_ADD: {
-      const copyData = [...state.expansesCodes.data];
+      const copyData = [...state.data];
       copyData.push(action.payload);
       return setState(state, {
         data: copyData
@@ -54,7 +54,6 @@ export default (state = initState, action) => {
     };
     case TYPES.EXPANSES_CODES_DELETE: {
       const copyData = [...state.data];
-
       copyData.splice(action.index, 1);
 
       return setState(state, {

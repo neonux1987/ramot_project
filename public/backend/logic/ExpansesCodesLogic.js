@@ -18,9 +18,24 @@ class ExpansesCodesLogic {
     return this.expansesCodesDao.updateExpanseCode(id, data);
   }
 
-  addExpanseCode(data = { summarized_section_id: Number, code: Number, codeName: String }) {
-    data.status = "active";
-    return this.expansesCodesDao.addExpanseCode(data);
+  async addExpanseCode(data = { summarized_section_id: Number, code: Number, codeName: String }) {
+
+    const result = await this.expansesCodesDao.getExpanseCodeByCode(data.code);
+    const expanseCode = result[0];
+
+    if (expanseCode) {
+      //set the new fields
+      expanseCode.codeName = data.codeName;
+      expanseCode.summarized_section_id = data.summarized_section_id;
+
+      await this.expansesCodesDao.updateExpanseCode(expanseCode.id, expanseCode);
+
+      return expanseCode.id;
+    } else {
+      data.status = "active";
+      return this.expansesCodesDao.addExpanseCode(data);
+    }
+
   }
 
   deleteExpanseCode(id) {

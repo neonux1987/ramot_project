@@ -203,7 +203,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     // generate month columns
     for (let i = 1; i < 5; i++) {
       quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_budget`}>{rowData[`quarter${i}_budget`]}</NonZeroNumberColumn>);
-      quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_budget_execution`}>{rowData[`quarter${i}_budget_execution`]}</NonZeroNumberColumn>);
+      quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_execution`}>{rowData[`quarter${i}_execution`]}</NonZeroNumberColumn>);
     }
 
     return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
@@ -212,8 +212,8 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
       <Column>{rowData["section"]}</Column>
       {quarterColumns}
       {editMode ? numberInput("evaluation", rowData["evaluation"], index, this.onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
-      <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>
-      <NonZeroNumberColumn>{rowData["total_execution"]}</NonZeroNumberColumn>
+      <NonZeroNumberColumn>{rowData["year_total_budget"]}</NonZeroNumberColumn>
+      <NonZeroNumberColumn>{rowData["year_total_execution"]}</NonZeroNumberColumn>
       {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }

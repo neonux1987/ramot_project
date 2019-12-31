@@ -90,11 +90,11 @@ module.exports = (
 
   //worksheet headers
   sheet.columns = [
-    { key: 'code', width: 12.14 },
-    { key: 'codeName', width: 19.29 },
-    { key: 'supplierName', width: 18.55 },
-    { key: 'sum', width: 14.45 },
-    { key: 'notes', width: 33.71 }
+    { key: 'code', width: 12.85 },// real 12.14
+    { key: 'codeName', width: 20 },// real 19.29
+    { key: 'supplierName', width: 19.26 },// real 18.55
+    { key: 'sum', width: 15.16 },// real 14.45
+    { key: 'notes', width: 31.57 }// real 30.86
   ];
 
   //get the first row of headers

@@ -1,12 +1,10 @@
 import Helper from '../../helpers/Helper';
 
 const initState = {
-  summarizedSections: {
-    isFetching: false,
-    status: "",
-    error: "",
-    data: []
-  }
+  isFetching: false,
+  status: "",
+  error: "",
+  data: []
 }
 
 export default (state = initState, action) => {
@@ -14,20 +12,14 @@ export default (state = initState, action) => {
     case "RECEIVE_SUMMARIZED_SECTIONS":
       return {
         ...state,
-        summarizedSections: {
-          ...state.summarizedSections,
-          isFetching: false,
-          status: "success",
-          data: action.data
-        }
+        isFetching: false,
+        status: "success",
+        data: action.data
       }
     case "REQUEST_SUMMARIZED_SECTIONS":
       return {
         ...state,
-        summarizedSections: {
-          ...state.summarizedSections,
-          isFetching: true,
-        }
+        isFetching: true,
       }
     case "UPDATE_SUMMARIZED_SECTIONS":
       return {
@@ -37,21 +29,16 @@ export default (state = initState, action) => {
     case "FETCHING_FAILED":
       return {
         ...state,
-        summarizedSections: {
-          ...state.summarizedSections,
-          status: "error",
-          error: action.payload
-        }
+        status: "error",
+        error: action.payload
       }
     case "SUMMARIZED_SECTIONS_CLEANUP":
       return {
         ...state,
-        summarizedSections: {
-          isFetching: false,
-          status: "",
-          error: "",
-          data: []
-        }
+        isFetching: false,
+        status: "",
+        error: "",
+        data: []
       }
     default: return state;
   }

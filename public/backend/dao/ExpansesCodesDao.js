@@ -25,6 +25,14 @@ class ExpansesCodesDao {
       });
   }
 
+  getExpanseCodeByCode(code) {
+    return this.connection.select().from("expanses_codes")
+      .where({ code })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   /**
    * update expanse code record
    * @param {*} data 

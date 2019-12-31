@@ -70,8 +70,12 @@ class SummarizedBudgetLogic {
     let year_total_budget = 0;
 
     for (let i = 0; i < allSummarizedBudgets.length; i++) {
-      year_total_execution += allSummarizedBudgets[i].year_total_execution;
-      year_total_budget += allSummarizedBudgets[i].year_total_budget;
+
+      if (allSummarizedBudgets[i].section !== "הכנסות מיוחדות" || allSummarizedBudgets[i].summarized_section_id !== 31) {
+        year_total_execution += allSummarizedBudgets[i].year_total_execution;
+        year_total_budget += allSummarizedBudgets[i].year_total_budget;
+      }
+
     }
 
     return {

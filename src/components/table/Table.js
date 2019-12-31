@@ -1,11 +1,11 @@
-import React, { useRef } from 'react'
+import React from 'react'
 
 import './table.css';
 import Spinner from '../Spinner/Spinner';
 
 import { Virtuoso } from 'react-virtuoso'
 
-export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, cache }) => {
+export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) => {
 
   const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
     <Virtuoso

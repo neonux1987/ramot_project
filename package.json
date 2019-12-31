@@ -12,7 +12,7 @@
     "electron-context-menu": "^0.15.1",
     "electron-is-dev": "^1.1.0",
     "event-emitter": "^0.3.5",
-    "exceljs": "^3.4.0",
+    "exceljs": "^3.5.0",
     "jss-rtl": "^0.3.0",
     "knex": "^0.20.4",
     "nesthydrationjs": "^2.0.0",

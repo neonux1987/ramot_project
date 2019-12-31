@@ -5,7 +5,7 @@ const QuarterlyStatsLogic = require('../../../logic/QuarterlyStatsLogic');
 const Helper = require('../../../../helpers/Helper');
 
 const BUDGET_EXECUTION_QUARTER1_KEYS = [
-  { key: 'section', width: 15 },
+  { key: 'section' },
   { key: 'january_budget' },
   { key: 'january_budget_execution' },
   { key: 'february_budget' },
@@ -16,11 +16,11 @@ const BUDGET_EXECUTION_QUARTER1_KEYS = [
   { key: 'total_budget' },
   { key: 'total_execution' },
   { key: 'difference' },
-  { key: 'notes', width: 15 }
+  { key: 'notes' }
 ];
 
 const BUDGET_EXECUTION_QUARTER2_KEYS = [
-  { key: 'section', width: 15 },
+  { key: 'section' },
   { key: 'april_budget' },
   { key: 'april_budget_execution' },
   { key: 'may_budget' },
@@ -31,12 +31,12 @@ const BUDGET_EXECUTION_QUARTER2_KEYS = [
   { key: 'total_budget' },
   { key: 'total_execution' },
   { key: 'difference' },
-  { key: 'notes', width: 15 }
+  { key: 'notes' }
 ];
 
 
 const BUDGET_EXECUTION_QUARTER3_KEYS = [
-  { key: 'section', width: 15 },
+  { key: 'section' },
   { key: 'july_budget' },
   { key: 'july_budget_execution' },
   { key: 'august_budget' },
@@ -47,11 +47,11 @@ const BUDGET_EXECUTION_QUARTER3_KEYS = [
   { key: 'total_budget' },
   { key: 'total_execution' },
   { key: 'difference' },
-  { key: 'notes', width: 15 }
+  { key: 'notes' }
 ];
 
 const BUDGET_EXECUTION_QUARTER4_KEYS = [
-  { key: 'section', width: 15 },
+  { key: 'section' },
   { key: 'october_budget' },
   { key: 'october_budget_execution' },
   { key: 'november_budget' },
@@ -62,7 +62,7 @@ const BUDGET_EXECUTION_QUARTER4_KEYS = [
   { key: 'total_budget' },
   { key: 'total_execution' },
   { key: 'difference' },
-  { key: 'notes', width: 15 }
+  { key: 'notes' }
 ];
 
 const BUDGET_EXECUTION_HEADERS = [
@@ -110,7 +110,7 @@ module.exports = async (
   const sheetTitle = `שנה ${date.year} רבעון ${date.quarter}`;
   const header = `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`;
 
-  await addIncomeOutcome(data, buildingNameEng);
+  await addIncomeOutcome(data, date, buildingNameEng);
 
   //create new empty workbook
   const workbook = new Excel.Workbook();
@@ -318,6 +318,7 @@ module.exports = async (
   sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
     if (rowNumber > 5) {
       row.eachCell((cell) => {
+
         cell.alignment = {
           vertical: 'middle',
           horizontal: 'center',
@@ -340,18 +341,19 @@ module.exports = async (
     }
   });
 
-  sheet.getColumn("A").width = 9.8;
-  sheet.getColumn("B").width = 3.8;
-  sheet.getColumn("C").width = 3.8;
-  sheet.getColumn("D").width = 3.8;
-  sheet.getColumn("E").width = 3.8;
-  sheet.getColumn("F").width = 3.8;
-  sheet.getColumn("G").width = 3.8;
-  sheet.getColumn("H").width = 3.8;
-  sheet.getColumn("I").width = 3.8;
-  sheet.getColumn("J").width = 3.8;
-  sheet.getColumn("K").width = 3.8;
-  sheet.getColumn("L").width = 12.6;
+  // set columns width's
+  sheet.getColumn("A").width = 16.71;
+  sheet.getColumn("B").width = 10.71;
+  sheet.getColumn("C").width = 10.71;
+  sheet.getColumn("D").width = 10.71;
+  sheet.getColumn("E").width = 10.71;
+  sheet.getColumn("F").width = 10.71;
+  sheet.getColumn("G").width = 10.71;
+  sheet.getColumn("H").width = 10.71;
+  sheet.getColumn("I").width = 10.71;
+  sheet.getColumn("J").width = 10.71;
+  sheet.getColumn("K").width = 10.71;
+  sheet.getColumn("L").width = 18.81;
 
   //iterate over all difference column cells including 
   //empty cells and set the following logic:
@@ -423,12 +425,12 @@ function getMonthHeaders(quarter) {
   }
 }
 
-async function addIncomeOutcome(data, buildingName) {
+async function addIncomeOutcome(data, date, buildingNameEng) {
   const connection = createDBConnection();
   const monthlyStatsLogic = new MonthlyStatsLogic(connection);
   const quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
 
-  const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({ buildingName, date });
+  const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({ buildingName: buildingNameEng, date });
 
   const incomeRow = {
     section: "הכנסות",

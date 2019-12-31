@@ -164,8 +164,9 @@ class ExpansesCodes extends React.PureComponent {
     return valid;
   }
 
-  deleteCodeExpanseHandler = (id, index) => {
-    this.props.deleteExpanseCode(id, index);
+  deleteCodeExpanseHandler = (rowData, index) => {
+    const expanseCodeCopy = { ...rowData };
+    this.props.deleteExpanseCode(expanseCodeCopy.id, expanseCodeCopy, index);
   }
 
   getGridTemplateColumns = () => {
@@ -204,7 +205,7 @@ class ExpansesCodes extends React.PureComponent {
     const rowData = this.getDataObject(index);
 
     return <Row style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData.id, index)} /> : null}
+      {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData, index)} /> : null}
       <Column>{index + 1}</Column>
       {editMode ? numberInput("code", rowData["code"], index, this.onBlurHandler) : <Column>{rowData["code"]}</Column>}
       {editMode ? textInput("codeName", rowData["codeName"], index, this.onBlurHandler) : <Column>{rowData["codeName"]}</Column>}
@@ -273,14 +274,14 @@ class ExpansesCodes extends React.PureComponent {
 
 const mapStateToProps = state => ({
   expansesCodes: state.expansesCodes,
-  summarizedSections: state.summarizedSections.summarizedSections
+  summarizedSections: state.summarizedSections
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchExpansesCodesByStatus: (status) => dispatch(expansesCodesActions.fetchExpansesCodesByStatus(status)),
   updateExpanseCode: (newCopy, oldCopy, index) => dispatch(expansesCodesActions.updateExpanseCode(newCopy, oldCopy, index)),
   addExpanseCode: (payload) => dispatch(expansesCodesActions.addExpanseCode(payload)),
-  deleteExpanseCode: (id, index) => dispatch(expansesCodesActions.deleteExpanseCode(id, index)),
+  deleteExpanseCode: (id, oldCopy, index) => dispatch(expansesCodesActions.deleteExpanseCode(id, oldCopy, index)),
   expansesCodesCleanup: () => dispatch(expansesCodesActions.expansesCodesCleanup()),
   fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
 });

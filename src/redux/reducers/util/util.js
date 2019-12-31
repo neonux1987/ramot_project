@@ -48,14 +48,19 @@ export const createPageReducer = (pageName, initialState) => {
       case `${pageName}_ADD`: {
         const {
           payload,
-          buildingName
+          buildingName,
+          compareFunc
         } = action;
 
         // copy the data
-        const dataCopy = [...state.pages[buildingName].data];
+        let dataCopy = [...state.pages[buildingName].data];
 
         //replace the old object with the updated object
         dataCopy.push(payload);
+
+        if (compareFunc) {
+          dataCopy = dataCopy.sort(compareFunc);
+        }
 
         // copy page settings
         const pageSettingsCopy = { ...state.pages[buildingName].pageSettings };

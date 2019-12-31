@@ -152,7 +152,7 @@ const monthExpansesFetchingFailed = function (error, buildingName) {
 };
 
 export const addMonthExpanse = (params = Object, expanse = Object) => {
-  return (dispatch) => {
+  return dispatch => {
 
     //send a request to backend to get the data
     ipcRenderer.send("add-new-month-expanse", params);
@@ -169,9 +169,10 @@ export const addMonthExpanse = (params = Object, expanse = Object) => {
         playSound(soundTypes.error);
       } else {
         //set the new id from the saved object in the db
-        expanse.id = arg[0];
+        expanse.id = arg.data;
+
         //success store the data
-        dispatch(addMonthExpanseInStore(expanse, params.buildingName));
+        dispatch(addMonthExpanseInStore(expanse, params.buildingName, sortByCode));
 
         //send success notification
         toast.success("השורה נוספה בהצלחה.", {
@@ -182,11 +183,12 @@ export const addMonthExpanse = (params = Object, expanse = Object) => {
   }
 };
 
-const addMonthExpanseInStore = (payload, buildingName) => {
+const addMonthExpanseInStore = (payload, buildingName, sortByCode) => {
   return {
     type: TYPES.MONTH_EXPANSES_ADD,
     payload,
-    buildingName
+    buildingName,
+    compareFunc: sortByCode
   }
 }
 
@@ -284,4 +286,8 @@ const deleteMonthExpanseInStore = (index, buildingName) => {
     index,
     buildingName
   }
+}
+
+function sortByCode(a, b) {
+  return a.code - b.code;
 }
