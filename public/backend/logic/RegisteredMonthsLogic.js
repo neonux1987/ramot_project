@@ -7,8 +7,8 @@ class RegisteredMonthsLogic {
     this.registeredMonthsDao = new RegisteredMonthsDao(connection);
   }
 
-  getAllRegisteredMonths(buildingName) {
-    return this.registeredMonthsDao.getAllRegisteredMonths(buildingName);
+  getAllRegisteredMonths({ buildingName, year }) {
+    return this.registeredMonthsDao.getAllRegisteredMonths(buildingName, year);
   }
 
   getRegisteredMonthTrx(buildingName, month, year, trx) {

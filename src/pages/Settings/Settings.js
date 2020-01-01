@@ -23,6 +23,9 @@ const styles = (theme) => ({
   },
   headerTitle: {
     marginBottom: "10px"
+  },
+  appBar: {
+    width: "initial"
   }
 });
 
@@ -38,7 +41,7 @@ const Settings = ({ classes, match }, props) => {
 
   return (
     <div>
-      <AppBar position="static" style={{ margin: "20px 20px 30px 20px" }}>
+      <AppBar classes={{ root: classes.appBar }} position="static" style={{ margin: "20px 20px 30px 20px" }}>
         <Tabs classes={{ root: classes.tabs, indicator: classes.indicator }} value={value} onChange={handleChange}>
           <Tab
             classes={{ root: classes.tab, selected: classes.selected }}

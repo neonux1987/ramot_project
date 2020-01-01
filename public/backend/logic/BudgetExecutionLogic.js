@@ -248,7 +248,7 @@ class BudgetExecutionLogic {
     await this.quarterlyStatsLogic.batchInsert(buildingName, quarterlyStatsArr, trx);
 
     //all the months of a specific quarter
-    const months = Helper.getQuarterMonths(date.quarter);
+    const months = Helper.getQuarterMonthsHeb(date.quarter);
 
     //generate empty monthly stats (3 empty months)
     const monthlyStatsArr = this.generateEmptyMonthlyStats(months, date);

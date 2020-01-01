@@ -14,6 +14,7 @@ import { ipcRenderer } from 'electron';
 // ACTIONS
 import settingsActions from '../../../../redux/actions/settingsActions';
 import backupsNamesActions from '../../../../redux/actions/backupsNamesActions';
+import * as modalActions from '../../../../redux/actions/modalActions';
 
 // COMPONENTS
 import LoadingCircle from '../../../../components/LoadingCircle';
@@ -28,6 +29,7 @@ import { playSound, soundTypes } from '../../../../audioPlayer/audioPlayer';
 // CONTAINERS
 import Backup from './Backup/Backup';
 import Restore from './Restore/Restore';
+import ConfirmDbPathChangeModel from '../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
 
 
 const localeMap = {
@@ -48,8 +50,6 @@ class BackupAndRestore extends Component {
     this.props.fetchBackupsNames();
     ipcRenderer.on("settings-updated", (event, type, settings) => {
       this.props.updateBackupSettings("last_update", settings.db_backup.last_update);
-      console.log(settings);
-
     });
   }
 
@@ -151,14 +151,26 @@ class BackupAndRestore extends Component {
     const options = {
       defaultPath: this.props.settings.settings.data.db_backup.path
     }
-    selectFolderDialog(options, (fullPath) => {
-      if (fullPath.length > 0) {
+    selectFolderDialog(options).then(({ canceled, filePaths }) => {
+      if (!canceled) {
         const db_backup = { ...this.props.settings.settings.data.db_backup };
-        db_backup.path = fullPath[0];
-        this.setState({ settingsSaved: false });
-        this.props.updateSettings("db_backup", db_backup);
+
+        if (db_backup.path !== filePaths[0]) {
+          this.props.showModal(ConfirmDbPathChangeModel, {
+            onAgreeHandler: () => {
+              db_backup.path = filePaths[0];
+              this.setState({ settingsSaved: false });
+              this.props.initializeBackupNames();
+              this.props.updateSettings("db_backup", db_backup);
+            }
+          });
+        }
+
+
       }
     });
+
+
   }
 
   dbIndependentBackup = () => {
@@ -167,9 +179,9 @@ class BackupAndRestore extends Component {
 
     const fileName = `ndts-frms-db-backup-${currentDate.getDay()}-${currentDate.getDate()}-${currentDate.getFullYear()}.sqlite`;
 
-    saveToFileDialog(fileName, undefined, (fullPath) => {
-      if (fullPath) {
-        this.props.dbIndependentBackup(fullPath);
+    saveToFileDialog(fileName, undefined).then(({ canceled, filePath }) => {
+      if (!canceled) {
+        this.props.dbIndependentBackup(filePath);
       }
     });
 
@@ -207,8 +219,6 @@ class BackupAndRestore extends Component {
     if (settings.isFetching || backupsNames.isFetching) {
       return <LoadingCircle loading={settings.isFetching || backupsNames.isFetching} />
     }
-
-
 
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap["he"]}>
@@ -257,7 +267,9 @@ const mapDispatchToProps = dispatch => ({
   disableDbBackup: (data) => dispatch(settingsActions.disableDbBackup(data)),
   dbIndependentBackup: (filePath) => dispatch(settingsActions.dbIndependentBackup(filePath)),
   updateBackupSettings: (key, data) => dispatch(settingsActions.updateBackupSettings(key, data)),
-  fetchBackupsNames: () => dispatch(backupsNamesActions.fetchBackupsNames())
+  fetchBackupsNames: () => dispatch(backupsNamesActions.fetchBackupsNames()),
+  initializeBackupNames: () => dispatch(backupsNamesActions.initializeBackupNames()),
+  showModal: (modelComponent, props) => dispatch(modalActions.showModal(modelComponent, props)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BackupAndRestore);

@@ -17,7 +17,7 @@ export const saveToFileDialog = (defaultFileName = "", options = {}) => {
 
 }
 
-export const selectFolderDialog = (options = {}, callback) => {
+export const selectFolderDialog = (options = {}) => {
 
   const dialog = remote.dialog;
   const WIN = remote.getCurrentWindow();
@@ -29,6 +29,6 @@ export const selectFolderDialog = (options = {}, callback) => {
   }
 
   //asynchronous - using callback
-  dialog.showOpenDialog(WIN, copiedOptions, callback);
+  return dialog.showOpenDialog(WIN, copiedOptions);
 
 }

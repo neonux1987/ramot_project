@@ -3,8 +3,8 @@ const os = require('os');
 const platform = os.platform();
 const homedir = os.homedir();
 
-const CONFIG_LOCATION = platform==="linux" ? homedir + "/Dropbox/ndts/config/config.json": "C:/Users/ag1987/Dropbox/ndts/config/config.json";
-const CONFIG_BACKUPS_NAMES = platform==="linux" ? homedir + "/Dropbox/ndts/config/backupsNames.json":"C:/Users/ag1987/Dropbox/ndts/config/backupsNames.json";
+const CONFIG_LOCATION = platform === "linux" ? homedir + "/Dropbox/ndts/config/config.json" : "C:/Users/ag1987/Dropbox/ndts/config/config.json";
+const CONFIG_BACKUPS_NAMES = platform === "linux" ? homedir + "/Dropbox/ndts/config/backupsNames.json" : "C:/Users/ag1987/Dropbox/ndts/config/backupsNames.json";
 
 class SettingsLogic {
 
@@ -30,6 +30,10 @@ class SettingsLogic {
 
   updateBackupsNames(data) {
     return this.iOLogic.writeFile(CONFIG_BACKUPS_NAMES, JSON.stringify(data, null, 2));
+  }
+
+  initializeBackupNames() {
+    return this.updateBackupsNames([]);
   }
 
 }

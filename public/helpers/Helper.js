@@ -161,6 +161,16 @@ class Helper {
     }
   }
 
+  static getQuarterMonthsHeb(quarter) {
+    switch (quarter) {
+      case 1: return ["ינואר", "פברואר", "מרץ"]
+      case 2: return ["אפריל", "מאי", "יוני"]
+      case 3: return ["יולי", "אוגוסט", "ספטמבר"]
+      case 4: return ["אוקטובר", "נובמבר", "דצמבר"]
+      default: return null
+    }
+  }
+
   static getCurrentDatePresentation() {
     let today = new Date();
     let dd = today.getDate();

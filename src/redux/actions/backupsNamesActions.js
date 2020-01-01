@@ -60,10 +60,30 @@ const fetchingFailed = function (error) {
 };
 
 
+const initializeBackupNames = () => {
+  return dispatch => {
 
+    //request request to backend to get the data
+    ipcRenderer.send("initialize-backups-names");
+    //listen when the data comes back
+    ipcRenderer.once("backups-names-initialized", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        dispatch({
+          type: "BACKUPS_NAMES_INIT"
+        })
+      }
+    });
+  }
+}
 
 
 
 export default {
-  fetchBackupsNames
+  fetchBackupsNames,
+  initializeBackupNames
 };

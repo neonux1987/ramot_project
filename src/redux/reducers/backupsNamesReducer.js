@@ -3,10 +3,10 @@ const initState = {
   pageName: "settings",
   headerTitle: "כללי",
   backupsNames: {
-    isFetching: true,
+    isFetching: false,
     status: "",
     error: "",
-    data: {}
+    data: []
   }
 }
 
@@ -37,6 +37,16 @@ export default (state = initState, action) => {
           ...state.backupsNames,
           status: "error",
           error: action.payload
+        }
+      }
+    case "BACKUPS_NAMES_INIT":
+      return {
+        ...state,
+        backupsNames: {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: []
         }
       }
     default: return state;

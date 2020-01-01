@@ -5,8 +5,8 @@ export default () => {
 
   const dispatch = useDispatch();
 
-  const showModal = (modelType, modelProps) => {
-    dispatch(modalActions.showModal(modelType, modelProps))
+  const showModal = (modelComponent, props) => {
+    dispatch(modalActions.showModal(modelComponent, props))
   }
 
   const hideModal = () => {

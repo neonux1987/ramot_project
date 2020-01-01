@@ -333,7 +333,8 @@ class MonthExpanses extends React.PureComponent {
           } // end rightPane
           middlePane={
             <RegisteredDatesFetcher fetchYears fetchMonths params={{
-              buildingName: buildingNameEng
+              buildingName: buildingNameEng,
+              year: date.year
             }}>
               {({ months, years }) => {
                 return <DatePicker

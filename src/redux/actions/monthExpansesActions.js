@@ -88,8 +88,9 @@ const generateEmptyReport = (params, dispatch) => {
         autoClose: TOAST_AUTO_CLOSE,
         delay: 2000,
         onClose: () => {
+          console.log(arg);
           //success store the data
-          dispatch(receiveMonthExpanses(arg.data, params.buildingName));
+          dispatch(receiveMonthExpanses(arg.data, params.date, params.buildingName));
           dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
           dispatch(registeredYearsActions.fetchRegisteredYears(params));
         }

@@ -5,15 +5,17 @@ import styles from './Restore.module.css';
 export default (props) => {
 
   const { backupsNames, } = props;
-  const [selectedBackupDate, SetSelectedBackupDate] = React.useState(backupsNames.data[0].backupDateTime);
+  const [selectedBackupDate, SetSelectedBackupDate] = React.useState(backupsNames.data[0] ? backupsNames.data[0].backupDateTime : "לא קיימים גיבויים שמורים");
 
-  const backupsNamesRender = backupsNames.data.map((backup, index) => {
+  const backupsNamesRender = backupsNames.data.length > 0 ? backupsNames.data.map((backup, index) => {
     const date = new Date(backup.backupDateTime);
     const locale = date.toLocaleString();
     //to get rid off of the AM or PM
     const newLocaleDateTime = locale.slice(0, locale.length - 3);
     return <MenuItem value={backup.backupDateTime} key={index}>{newLocaleDateTime}</MenuItem>
-  });
+  }) : <MenuItem value="לא קיימים גיבויים שמורים" disabled>
+      לא קיימים גיבויים
+</MenuItem>;
 
   const dbBackupSelectHandler = (event) => {
     const { value } = event.target;

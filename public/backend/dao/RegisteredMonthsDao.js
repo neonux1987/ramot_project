@@ -9,8 +9,10 @@ class RegisteredMonthsDao {
    * get all the months
    * @param {*} buildingName 
    */
-  getAllRegisteredMonths(buildingName) {
-    return this.connection.select().from(`${buildingName}_registered_months`)
+  getAllRegisteredMonths(buildingName, year) {
+    return this.connection.select()
+      .from(`${buildingName}_registered_months`)
+      .where({ year })
       .catch((error) => {
         throw error;
       });
