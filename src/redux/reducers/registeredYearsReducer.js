@@ -1,11 +1,9 @@
 
 const initState = {
-  registeredYears: {
-    isFetching: false,
-    status: "",
-    error: "",
-    data: []
-  }
+  isFetching: false,
+  status: "",
+  error: "",
+  data: []
 }
 
 export default (state = initState, action) => {
@@ -13,39 +11,28 @@ export default (state = initState, action) => {
     case "RECEIVE_REGISTERED_YEARS":
       return {
         ...state,
-        registeredYears: {
-          ...state.registeredYears,
-          isFetching: false,
-          status: "success",
-          data: action.data
-        }
+        isFetching: false,
+        status: "success",
+        data: action.data
       }
     case "REQUEST_REGISTERED_YEARS":
       return {
         ...state,
-        registeredYears: {
-          ...state.registeredYears,
-          isFetching: true
-        }
+        isFetching: true
       }
     case "REGISTERED_YEARS_FETCHING_FAILED":
       return {
         ...state,
-        registeredYears: {
-          ...state.registeredYears,
-          status: "error",
-          error: action.payload
-        }
+        status: "error",
+        error: action.payload
       }
     case "CLEANUP_YEARS":
       return {
         ...state,
-        registeredYears: {
-          isFetching: false,
-          status: "",
-          error: "",
-          data: []
-        }
+        isFetching: false,
+        status: "",
+        error: "",
+        data: []
       }
     default: return state;
   }

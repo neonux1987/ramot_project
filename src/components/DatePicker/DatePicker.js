@@ -1,14 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select, Button, MenuItem } from '@material-ui/core';
 import styles from './DatePicker.module.css';
 import Spinner from '../Spinner/Spinner';
+import { useSelector, useDispatch } from 'react-redux';
+import registeredMonthsActions from '../../redux/actions/registeredMonthsActions';
+import registeredQuartersActions from '../../redux/actions/registeredQuartersActions';
+import registeredYearsActions from '../../redux/actions/registeredYearsActions';
 
-export default ({ months, quarters, years, date, submitHandler }) => {
+const DatePicker = ({
+  quarter = false,
+  month = false,
+  date,
+  submitHandler,
+  buildingName
+}) => {
 
   const [selectDate, setDate] = useState({
-    ...date
+    year: date.year,
+    quarter: date.quarter,
+    month: date.month
   });
 
+  const dispatch = useDispatch();
+
+  const months = useSelector(store => store.registeredMonths);
+  const quarters = useSelector(store => store.registeredQuarters);
+  const years = useSelector(store => store.registeredYears);
+
+  useEffect(() => {
+    dispatch((registeredYearsActions.fetchRegisteredYears({ buildingName }))).then(() => {
+      if (month)
+        dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, year: date.year })));
+
+      if (quarter)
+        dispatch((registeredQuartersActions.fetchRegisteredQuarters({ buildingName, year: date.year })));
+    });
+
+    // cleanup
+    const cleanup = () => {
+      dispatch((registeredYearsActions.cleanupYears(buildingName)))
+      if (quarter)
+        dispatch((registeredQuartersActions.cleanupQuarters(buildingName)))
+      if (month)
+        dispatch((registeredMonthsActions.cleanupMonths(buildingName)))
+    }
+
+    return cleanup;
+  }, [month, quarter, dispatch, buildingName]);
+
+  // default on change handler
+  // for months and quarters
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
     const newValue = name === "year" || name === "quarter" ? Number.parseInt(value) : value;
@@ -19,8 +60,53 @@ export default ({ months, quarters, years, date, submitHandler }) => {
     });
   }
 
+  const onYearChangeHandler = (event) => {
+    const { value } = event.target;
+    const year = Number.parseInt(value);
+
+    // we must intialize month and quarter to empty
+    // string so the current date won't interfer 
+    // with the selected values, because current date
+    // maybe different than the selected values
+    setDate({
+      year,
+      month: "",
+      monthHeb: "",
+      quarterHeb: "",
+      quarterEng: ""
+    });
+
+    if (month) {
+      dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, year }))).then((result) => {
+        // get the earliest month in the list 
+        const month = result[0].month;
+
+        setDate({
+          ...selectDate,
+          year,
+          month
+        });
+      });
+    }
+
+    if (quarter) {
+      dispatch((registeredQuartersActions.fetchRegisteredQuarters({ buildingName, year }))).then((result) => {
+        // get the earliest quarter in the list
+        const quarter = result[0].quarter;
+        const parsedQuarter = Number.parseInt(quarter);
+
+        setDate({
+          ...selectDate,
+          year,
+          quarter: parsedQuarter
+        });
+      });
+    }
+
+  }
+
   //if months data exist, render it
-  const renderMonths = months && months.data.length > 0 ? <Select
+  const renderMonths = !months.isFetching && months.data.length > 0 ? <Select
     name="month"
     className={styles.formSelect}
     value={selectDate.month || ""}
@@ -29,10 +115,10 @@ export default ({ months, quarters, years, date, submitHandler }) => {
     {months.data.map((month) => {
       return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
     })}
-  </Select> : null;
+  </Select> : <FormSelectDummy><Spinner size={20} /></FormSelectDummy>;
 
   //if quarters data exist, render it
-  const renderQuarters = quarters && quarters.data.length > 0 ? <Select
+  const renderQuarters = !quarters.isFetching && quarters.data.length > 0 ? <Select
     name="quarter"
     className={styles.formSelect}
     value={selectDate.quarter || ""}
@@ -41,38 +127,56 @@ export default ({ months, quarters, years, date, submitHandler }) => {
     {quarters.data.map((quarter) => {
       return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
     })}
-  </Select> : null;
+  </Select> : <FormSelectDummy><Spinner size={20} /></FormSelectDummy>;
 
   //if quarters data exist, render it
-  const renderYears = years && years.data.length > 0 ? <Select
+  const renderYears = !years.isFetching && years.data.length > 0 ? <Select
     name="year"
     className={styles.formSelect}
     value={selectDate.year || ""}
-    onChange={onChangeHandler}
+    onChange={onYearChangeHandler}
     classes={{ select: styles.select }}
   >
     {years.data.map((year) => {
       return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
     })}
-  </Select> : null;
+  </Select> : <FormSelectDummy><Spinner size={20} /></FormSelectDummy>;
 
-  if ((months && months.isFetching) || (quarters && quarters.isFetching) || (years && years.isFetching)) {
-    return <div className={styles.dates}><Spinner loadingText={"טוען מודל בחירת תאריכים..."} size={20} /></div>;
-  } else {
-    return (
-      <div id="dates" className={styles.dates}>
-        <form className={styles.formControl}>
+  return (
+    <div id="dates" className={styles.dates}>
+      <form className={styles.formControl}>
 
-          {renderMonths}
-          {renderQuarters}
-          {renderYears}
+        {month && renderMonths}
+        {quarter && renderQuarters}
+        {renderYears}
 
-        </form>
-        <Button variant="contained" color="secondary" className={styles.button} onClick={() => submitHandler(selectDate)}>
-          טען
-        </Button>
-      </div>
-    );
-  }
+      </form>
+      <Button variant="contained" color="secondary" className={styles.button} onClick={() => submitHandler({
+        year: selectDate.year,
+        quarter: selectDate.quarter,
+        month: selectDate.month
+      })}>
+        טען
+    </Button>
+    </div>
+  );
 
 }
+
+const FormSelectDummy = ({ children }) => {
+  return <div className={styles.formSelect}>{children}</div>
+}
+
+export default React.memo(DatePicker, (prevProps, nextProps) => {
+  if (prevProps.year === nextProps.year)
+    return true;
+  else if (prevProps.quarter === nextProps.quarter)
+    return true;
+  else if (prevProps.month === nextProps.month)
+    return true;
+  else if (prevProps.buildingName === nextProps.buildingName)
+    return true;
+  else if (prevProps.date === nextProps.date)
+    return true;
+  else return false;
+})

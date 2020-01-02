@@ -1,5 +1,3 @@
-import Helper from "../../helpers/Helper";
-
 const initialState = {
   pages: {}
 }

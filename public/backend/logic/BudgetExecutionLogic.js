@@ -329,7 +329,7 @@ class BudgetExecutionLogic {
       })
 
     }
-    console.log(ids);
+
     this.monthExpansesDao.deleteMonthExpansesBulkByIds(buildingName, ids, trx);
 
   }

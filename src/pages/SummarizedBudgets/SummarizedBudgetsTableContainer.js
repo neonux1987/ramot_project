@@ -28,9 +28,6 @@ import TableActions from '../../components/table/TableActions/TableActions';
 import Table from '../../components/table/Table';
 import GroupRow from '../../components/table/GroupRow';
 
-// DATA FETHCERS
-import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
-
 // HOC 
 import withTableLogic from '../../HOC/withTableLogic';
 
@@ -63,10 +60,13 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
   }
 
   loadDataByDate = ({ year }) => {
+    const { pageName } = this.props;
+    const { buildingNameEng } = this.props.location.state
+
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
-      buildingName: this.props.location.state.buildingNameEng,
+      buildingName: buildingNameEng,
       date: {
         year: year
       }
@@ -75,42 +75,45 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     //get the building month expanses
     this.props.fetchSummarizedBudgets(params);
 
+    this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
+
   }
 
-  onBlurHandler = () => {
-    console.log("im blured daba di daba da...");
-  }
+  onBlurHandler = (e) => {
+    const { data } = this.getPage();
+    const { buildingNameEng } = this.props.location.state
 
-  onFetchData = (state) => {
+    const target = e.target;
 
-    //building names
-    const { buildingNameEng } = this.props.location.state;
 
-    const { date } = this.props.summarizedBudget.pages[buildingNameEng];
 
-    const {
-      pageSize
-      , page
-    } = state;
+    const { key, index } = target.dataset;
 
-    // page 0 - no need to multpily pass only the page size
-    // page > 0 multiply to get the next start element position
-    const startElement = page === 0 ? 0 : pageSize * page;
+    //copy old object so rollback would be possible
+    const oldCopy = { ...data[index] };
 
-    //important params that allows to pull the current data by
-    //building name, current month and year.
+    const newCopy = {};
+
+    if (key === "notes") {
+      const { innerText } = target;
+      newCopy[key] = innerText;
+    } else {
+      const { value } = target;
+      newCopy[key] = value === "" ? 0 : Number.parseFloat(value);
+    }
+
+    //prepare the params object
     let params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: date,
-      range: {
-        startElement,
-        pageSize: pageSize
-      }
+      buildingName: buildingNameEng,
+      date: this.props.date,
+      summarizedBudget: newCopy,
+      id: oldCopy.id
     };
 
-    //get the building month expanses
-    this.props.fetchSummarizedBudgets(params);
+    this.props.updateSummarizedBudget(params, oldCopy, index);
+    e.target.blur();
   }
+
   getGridTemplateColumns = () => {
     return this.props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
@@ -256,17 +259,11 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
             />
           } // end rightPane
           middlePane={
-            <RegisteredDatesFetcher fetchYears params={{
-              buildingName: buildingNameEng
-            }}>
-              {({ years }) => {
-                return <DatePicker
-                  years={years}
-                  date={date}
-                  submitHandler={this.loadDataByDate}
-                />
-              }}
-            </RegisteredDatesFetcher>
+            <DatePicker
+              buildingName={buildingNameEng}
+              date={date}
+              submitHandler={this.loadDataByDate}
+            />
           } // end middlePane
           leftPane={<PageControls
             excel={{
@@ -307,7 +304,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   fetchSummarizedBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload)),
   summarizedBudgetCleanup: (buildingNameEng) => dispatch(summarizedBudgetActions.summarizedBudgetCleanup(buildingNameEng)),
-  initSummzrizedBudgetsState: (page) => dispatch(summarizedBudgetActions.initSummzrizedBudgetsState(page))
+  initSummzrizedBudgetsState: (page) => dispatch(summarizedBudgetActions.initSummzrizedBudgetsState(page)),
+  updateSummarizedBudget: (params, oldCopy, index) => dispatch(summarizedBudgetActions.updateSummarizedBudget(params, oldCopy, index))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

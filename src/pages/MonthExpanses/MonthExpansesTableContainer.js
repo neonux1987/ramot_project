@@ -1,5 +1,5 @@
 // LIBRARIES IMPORTS
-import React, { Component, Fragment, useCallback } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 // ACTIONS IMPORTS
@@ -23,7 +23,6 @@ import Spinner from '../../components/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import AddBox from './AddBoxContainer';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
-import EditableColumn from '../../components/table/TableCell/EditableColumn';
 import GroupRow from '../../components/table/GroupRow';
 import GroupColumn from '../../components/table/GroupColumn';
 import Table from '../../components/table/Table';
@@ -31,9 +30,6 @@ import Row from '../../components/table/Row';
 import Column from '../../components/table/Column';
 import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
 import HeaderRow from '../../components/table/HeaderRow';
-
-// DATA FETHCER
-import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
 
 // HOC
 import withTableLogic from '../../HOC/withTableLogic';
@@ -152,6 +148,7 @@ class MonthExpanses extends React.PureComponent {
         month: month,
         monthNum: monthNum,
         monthHeb: Helper.convertEngToHebMonth(month),
+        quarter: Helper.getCurrentQuarter(monthNum),
         quarterEng: Helper.convertMonthNumToQuarterEng(monthNum),
         quarterHeb: Helper.getCurrentQuarterHeb(monthNum)
       }
@@ -332,19 +329,12 @@ class MonthExpanses extends React.PureComponent {
             />
           } // end rightPane
           middlePane={
-            <RegisteredDatesFetcher fetchYears fetchMonths params={{
-              buildingName: buildingNameEng,
-              year: date.year
-            }}>
-              {({ months, years }) => {
-                return <DatePicker
-                  months={months}
-                  years={years}
-                  date={date}
-                  submitHandler={this.loadDataByDate}
-                />
-              }}
-            </RegisteredDatesFetcher>
+            <DatePicker
+              month
+              date={date}
+              buildingName={buildingNameEng}
+              submitHandler={this.loadDataByDate}
+            />
 
           } // end middlePane
           editMode={editMode}

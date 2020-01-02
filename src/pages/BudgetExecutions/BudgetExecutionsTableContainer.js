@@ -36,9 +36,6 @@ import TableActions from '../../components/table/TableActions/TableActions';
 import Table from '../../components/table/Table';
 import GroupRow from '../../components/table/GroupRow';
 
-// DATA FETHCERS
-import RegisteredDatesFetcher from '../../renderProps/providers/RegisteredDatesFetcher';
-
 // HOC
 import withColumnColorLogic from '../../HOC/withColumnColorLogic';
 import withTableLogic from '../../HOC/withTableLogic';
@@ -104,12 +101,13 @@ const BudgetExecutionsTable = props => {
     let params = {
       buildingName: buildingNameEng,
       date: {
-        quarter: quarter,
+        quarter,
         quarterHeb: Helper.getQuarterHeb(quarter),
         quarterEng: Helper.getCurrentQuarterEng(quarter),
-        year: year
+        year
       }
     };
+
     // fetch data
     dispatch(fetchBudgetExecutions(params));
 
@@ -196,6 +194,7 @@ const BudgetExecutionsTable = props => {
       objToSave[monthName + "_budget"] = Number.parseFloat(budgetExec[monthName + "_budget"]);
     }
 
+    objToSave["evaluation"] = Number.parseFloat(budgetExec["evaluation"]);
     objToSave["total_budget"] = totalBudget;
     //except the total month budget and total monh execution
     //they don't need the difference calculation
@@ -361,18 +360,12 @@ const BudgetExecutionsTable = props => {
           />
         } // end rightPane
         middlePane={
-          <RegisteredDatesFetcher fetchYears fetchQuarters params={{
-            buildingName: buildingNameEng
-          }}>
-            {({ quarters, years }) => {
-              return <DatePicker
-                years={years}
-                quarters={quarters}
-                date={date}
-                submitHandler={loadDataByDate}
-              />
-            }}
-          </RegisteredDatesFetcher>
+          <DatePicker
+            quarter
+            date={date}
+            buildingName={buildingNameEng}
+            submitHandler={loadDataByDate}
+          />
         } // end middlePane
         leftPane={
           <PageControls
@@ -410,7 +403,13 @@ const ConnectedComponent = withTableLogic(BudgetExecutionsTable);
 export default React.memo(ConnectedComponent, areEqual)
 
 function areEqual(prevProps, nextProps) {
-  return prevProps.date === nextProps.date || prevProps.location.state.buildingName === nextProps.location.state.buildingName;
+  if (
+    prevProps.date.year === nextProps.date.year &&
+    prevProps.date.month === nextProps.date.month &&
+    prevProps.date.quarter === nextProps.date.quarter &&
+    prevProps.location.state.buildingName === nextProps.location.state.buildingName
+  ) return true;
+  else return false;
 }
 
 const defaultheaderStyle = {

@@ -137,6 +137,47 @@ const setSummarizedBudgetsInitialState = function (buildingName) {
   }
 };
 
+export const updateSummarizedBudget = (params, oldCopy, index) => {
+  return dispatch => {
+    const {
+      buildingName,
+      summarizedBudget
+    } = params;
+
+    // first update the store for fast user response
+    dispatch(updateSummarizedBudgetInStore(buildingName, summarizedBudget, index));
+
+    // send a request to backend to get the data
+    //ipcRenderer.send("update-summarized-budget", params);
+
+    // listen when the data comes back
+    ipcRenderer.once("summarized-budget-updated", (event, arg) => {
+      if (arg.error) {
+        // rollback to old expanse
+        updateSummarizedBudgetInStore(buildingName, oldCopy, index)
+        // send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        // send success notification
+        toast.success("השורה עודכנה בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
+      }
+    });
+  }
+};
+
+const updateSummarizedBudgetInStore = (buildingName, summarizedBudget, index) => {
+  return {
+    type: TYPES.SUMMARIZED_BUDGETS_UPDATE,
+    index,
+    payload: summarizedBudget,
+    buildingName
+  };
+}
+
 export const summarizedBudgetCleanup = function (buildingName) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_CLEANUP,

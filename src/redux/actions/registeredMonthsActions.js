@@ -8,25 +8,29 @@ import { toast } from 'react-toastify';
  */
 const fetchRegisteredMonths = (params = Object) => {
   return dispatch => {
+    return new Promise((resolve, reject) => {
+      //let react know that the fetching is started
+      dispatch(requestRegisteredMonths(params.buildingName));
 
-    //let react know that the fetching is started
-    dispatch(requestRegisteredMonths(params.buildingName));
+      //request request to backend to get the data
+      ipcRenderer.send("get-registered-months", params);
+      //listen when the data comes back
+      return ipcRenderer.once("registered-months-data", (event, arg) => {
+        if (arg.error) {
+          //let react know that an erro occured while trying to fetch
+          dispatch(fetchingFailed(arg.error));
+          //send the error to the notification center
+          toast.error(arg.error, {
+            onOpen: () => playSound(soundTypes.error)
+          });
+          reject(arg.error);
+        } else {
+          //success store the data
+          dispatch(receiveRegisteredMonths(arg.data, params.buildingName));
+          resolve(arg.data);
+        }
+      });
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-registered-months", params);
-    //listen when the data comes back
-    return ipcRenderer.once("registered-months-data", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success store the data
-        dispatch(receiveRegisteredMonths(arg.data, params.buildingName));
-      }
     });
   }
 };

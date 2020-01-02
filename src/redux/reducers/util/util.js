@@ -1,5 +1,3 @@
-import Helper from '../../../helpers/Helper';
-
 export const setPageState = (state, buildingName, target) => {
   return {
     ...state,
