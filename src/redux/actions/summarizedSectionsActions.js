@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
  * fetch summarized sections
  * @param {*} payload 
  */
-const fetchSummarizedSections = (params = Object) => {
+export const fetchSummarizedSections = (params = Object) => {
   return dispatch => {
 
     return new Promise((resolve, reject) => {
@@ -61,7 +61,7 @@ const fetchingFailed = function (error) {
  * @param {*} params 
  * @param {*} tableData 
  */
-const addSummarizedSection = (params = Object) => {
+export const addSummarizedSection = (params = Object) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("add-summarized-section", params);
@@ -87,7 +87,7 @@ const addSummarizedSection = (params = Object) => {
  * @param {*} payload 
  * @param {*} tableData 
  */
-const updateSummarizedSection = (params = Object, tableData = Array) => {
+export const updateSummarizedSection = (params = Object, tableData = Array) => {
   return dispatch => {
     /* //send a request to backend to get the data
     ipcRenderer.send("update-budget-execution", params);
@@ -104,18 +104,8 @@ const updateSummarizedSection = (params = Object, tableData = Array) => {
   }
 };
 
-const summarizedSectionsCleanup = () => {
+export const summarizedSectionsCleanup = () => {
   return {
     type: "SUMMARIZED_SECTIONS_CLEANUP"
   }
 }
-
-export default {
-  fetchSummarizedSections,
-  addSummarizedSection,
-  updateSummarizedSection,
-  fetchingFailed,
-  receiveSummarizedSections,
-  requestSummarizedSections,
-  summarizedSectionsCleanup
-};

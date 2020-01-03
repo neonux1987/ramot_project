@@ -2,7 +2,6 @@ import React from 'react';
 import DateDetails from '../components/DateDetails/DateDetails';
 
 export default (WrappedComponent) => {
-  console.log("asdsa");
   const dateDetails = (date) => {
     return () => <DateDetails
       month={date.monthHeb}

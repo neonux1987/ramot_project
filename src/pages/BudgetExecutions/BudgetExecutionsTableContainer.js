@@ -184,7 +184,6 @@ const BudgetExecutionsTable = props => {
    * @param {*} date 
    */
   const prepareBudgetExecObj = (budgetExec, quarter) => {
-
     const months = Helper.getQuarterMonthsEng(quarter);
     let totalBudget = 0;
     const objToSave = {};
@@ -204,19 +203,6 @@ const BudgetExecutionsTable = props => {
     objToSave["notes"] = budgetExec["notes"];
 
     return objToSave;
-
-  }
-
-  const calculateMonthTotalBudget = (data, columnName, prevValue, newValue) => {
-    //data date
-    const { date } = props.budgetExecution.pages[props.budgetExecution.pageIndex];
-    //find the index of the object in the array
-    const objIndex = Helper.findObjIndexById(33, data);
-    //get month names
-    const monthNames = Helper.getQuarterMonths(date.quarter);
-
-    data[objIndex][columnName] = data[objIndex][columnName] - prevValue + newValue;
-    data[objIndex].total_budget = data[objIndex][`${monthNames[0]}_budget`] + data[objIndex][`${monthNames[1]}_budget`] + data[objIndex][`${monthNames[2]}_budget`];
   }
 
   const getGridTemplateColumns = () => {

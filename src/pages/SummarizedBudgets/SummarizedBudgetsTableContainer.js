@@ -85,8 +85,6 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
 
     const target = e.target;
 
-
-
     const { key, index } = target.dataset;
 
     //copy old object so rollback would be possible
@@ -107,10 +105,10 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
       buildingName: buildingNameEng,
       date: this.props.date,
       summarizedBudget: newCopy,
-      id: oldCopy.id
+      summarized_section_id: oldCopy.summarized_section_id
     };
 
-    this.props.updateSummarizedBudget(params, oldCopy, index);
+    this.props.updateSummarizedBudget(params, oldCopy, newCopy, index);
     e.target.blur();
   }
 
@@ -305,7 +303,7 @@ const mapDispatchToProps = dispatch => ({
   fetchSummarizedBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload)),
   summarizedBudgetCleanup: (buildingNameEng) => dispatch(summarizedBudgetActions.summarizedBudgetCleanup(buildingNameEng)),
   initSummzrizedBudgetsState: (page) => dispatch(summarizedBudgetActions.initSummzrizedBudgetsState(page)),
-  updateSummarizedBudget: (params, oldCopy, index) => dispatch(summarizedBudgetActions.updateSummarizedBudget(params, oldCopy, index))
+  updateSummarizedBudget: (params, oldCopy, newCopy, index) => dispatch(summarizedBudgetActions.updateSummarizedBudget(params, oldCopy, newCopy, index))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

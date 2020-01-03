@@ -7,11 +7,11 @@ import SectionHeader from '../../../../components/SectionHeader/SectionHeader';
 import Section from '../../../../components/Section/Section';
 
 // CONTAINERS
-import ExpansesCodesTableContainer from './ExpansesCodesTableContainer';
+import SummarizedSectionsTableContainer from './SummarizedSectionsTableContainer';
 
-const TABLE_TITLE = "טבלת מעקב וניהול קודי הנהלת חשבונות";
+const TABLE_TITLE = "טבלת מעקב וניהול סעיפים מסכמים";
 
-const ExpansesCodes = () => {
+const SummarizedSections = () => {
 
   return (
     <Fragment>
@@ -20,7 +20,7 @@ const ExpansesCodes = () => {
 
       <Section>
 
-        <ExpansesCodesTableContainer />
+        <SummarizedSectionsTableContainer />
 
       </Section> {/* end Section */}
 
@@ -29,4 +29,4 @@ const ExpansesCodes = () => {
 
 }
 
-export default ExpansesCodes;
+export default SummarizedSections;

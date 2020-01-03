@@ -27,13 +27,14 @@ class ExpansesCodesLogic {
       //set the new fields
       expanseCode.codeName = data.codeName;
       expanseCode.summarized_section_id = data.summarized_section_id;
+      expanseCode.status = "active";
 
       await this.expansesCodesDao.updateExpanseCode(expanseCode.id, expanseCode);
 
       return expanseCode.id;
     } else {
-      data.status = "active";
-      return this.expansesCodesDao.addExpanseCode(data);
+      const returnedData = await this.expansesCodesDao.addExpanseCode(data)[0];
+      return returnedData[0];
     }
 
   }

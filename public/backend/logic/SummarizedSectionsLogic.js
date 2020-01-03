@@ -15,7 +15,6 @@ class SummarizedSectionsLogic {
     return this.ssd.getAllSummarizedSectionsTrx(trx);
   }
 
-
 }
 
 module.exports = SummarizedSectionsLogic;

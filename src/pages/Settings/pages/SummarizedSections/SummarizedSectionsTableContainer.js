@@ -1,11 +1,14 @@
 // LIBRARIES
 import React from 'react';
-import { connect } from 'react-redux';
-import { MenuItem } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 
 // ACTIONS
-import summarizedSectionsActions from '../../../../redux/actions/summarizedSectionsActions';
-import * as expansesCodesActions from '../../../../redux/actions/expansesCodesActions';
+import {
+  fetchSummarizedSections,
+  addSummarizedSection,
+  updateSummarizedSection,
+  summarizedSectionsCleanup
+} from '../../../../redux/actions/summarizedSectionsActions';
 
 // COMPONENTS
 import EditControls from '../../../../components/EditControls/EditControls';
@@ -28,41 +31,40 @@ import withTableLogic from '../../../../HOC/withTableLogic';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import { toast } from 'react-toastify';
 
+// CUSTOM HOOKS
+import useModalLogic from '../../../../customHooks/useModalLogic';
+
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(3,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(3,1fr)";
 
-class ExpansesCodes extends React.PureComponent {
+const ExpansesCodes = props => {
 
-  state = {
-    sections: [],
-    selectItems: []
-  }
+  const {
+    editMode,
+    toggleEditMode,
+    addNewMode,
+    toggleAddNewMode
+  } = props;
 
-  componentDidMount() {
-    this.props.fetchSummarizedSections().then((data) => {
-      const dataArr = [];
+  const { showModal } = useModalLogic();
+  const dispatch = useDispatch();
 
-      const selectItems = data.map((row, index) => {
-        dataArr[row.id] = row.section;
-        return <MenuItem value={row.id} key={row.id}>{row.section}</MenuItem>;
-      })
+  useEffect(() => {
 
-      this.setState({ sections: dataArr, selectItems });
-    });
-    //get the building month expanses
-    this.props.fetchExpansesCodesByStatus("active");
-  }
+    dispatch(fetchSummarizedSections())
 
-  componentWillUnmount() {
+  });
+
+  const componentWillUnmount = () => {
     //on exit init table data
     this.props.expansesCodesCleanup();
-  }
+  };
 
-  onBlurSelectHandler = (name, value, index) => {
+  const onBlurSelectHandler = (name, value, index) => {
     this.onBlurAction(name, value, index);
   }
 
-  onBlurHandler = (event) => {
+  const onBlurHandler = (event) => {
     const target = event.target;
     const { key, index } = target.dataset;
     const { value } = target;
@@ -79,7 +81,7 @@ class ExpansesCodes extends React.PureComponent {
     this.onBlurAction(key, value, index);
   }
 
-  validateOnBlur = (key, value) => {
+  const validateOnBlur = (key, value) => {
     let valid = true;
     let message = "";
 
@@ -106,7 +108,7 @@ class ExpansesCodes extends React.PureComponent {
     return valid;
   }
 
-  onBlurAction = (name, value, index) => {
+  const onBlurAction = (name, value, index) => {
     const oldCopy = { ...this.props.expansesCodes.data[index] };
     const newCopy = { ...oldCopy };
 
@@ -117,11 +119,11 @@ class ExpansesCodes extends React.PureComponent {
   }
 
 
-  getSection = (id) => {
+  const getSection = (id) => {
     return this.state.sections[id];
   }
 
-  addNewSubmitHandler = (formInputs) => {
+  const addNewSubmitHandler = (formInputs) => {
     const valid = this.validateFormInputs(formInputs);
 
     if (!valid) {
@@ -139,20 +141,20 @@ class ExpansesCodes extends React.PureComponent {
     this.props.addExpanseCode(expanseCode);
   }
 
-  parseFormInputs = (formInputs) => {
+  const parseFormInputs = (formInputs) => {
     const copyFormInputs = { ...formInputs };
     copyFormInputs.code = Number.parseInt(formInputs.code);
     return copyFormInputs;
   }
 
-  validateFormInputs = (formInputs) => {
+  const validateFormInputs = (formInputs) => {
     if (formInputs.code === "" || formInputs.codeName === "" || formInputs.summarized_section_id === "") {
       return false;
     }
     return true;
   }
 
-  dataExist = (code) => {
+  const dataExist = (code) => {
     let valid = false;
     const parsedCode = Number.parseInt(code);
 
@@ -165,24 +167,24 @@ class ExpansesCodes extends React.PureComponent {
     return valid;
   }
 
-  deleteCodeExpanseHandler = (rowData, index) => {
+  const deleteCodeExpanseHandler = (rowData, index) => {
     const expanseCodeCopy = { ...rowData };
     this.props.deleteExpanseCode(expanseCodeCopy.id, expanseCodeCopy, index);
   }
 
-  getGridTemplateColumns = () => {
+  const getGridTemplateColumns = () => {
     return this.props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
-  getDataObject = (index) => {
+  const getDataObject = (index) => {
     return this.props.expansesCodes.data[index];
   }
 
-  HeaderGroups = () => {
+  const HeaderGroups = () => {
     return <GroupRow><GroupColumn></GroupColumn></GroupRow>
   }
 
-  HeadersRow = () => {
+  const HeadersRow = () => {
     const editMode = this.props.editMode;
 
     return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
@@ -195,7 +197,7 @@ class ExpansesCodes extends React.PureComponent {
     </HeaderRow>
   }
 
-  Row = (index) => {
+  const Row = (index) => {
     const {
       editMode,
       textInput,
@@ -222,74 +224,56 @@ class ExpansesCodes extends React.PureComponent {
     </Row>
   }
 
-  render() {
-    const {
-      editMode,
-      toggleEditMode,
-      addNewMode,
-      toggleAddNewMode
-    } = this.props;
+  const {
+    editMode,
+    toggleEditMode,
+    addNewMode,
+    toggleAddNewMode
+  } = this.props;
 
-    const {
-      isFetching,
-      data
-    } = this.props.expansesCodes;
+  const {
+    isFetching,
+    data
+  } = this.props.expansesCodes;
 
-    //give the box a form functionality
-    const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
+  //give the box a form functionality
+  const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
 
-    //show or hide based of the add new mode status
-    const renderAddewExpanse = addNewMode ? <WrappedAddNewBox submitHandler={this.addNewSubmitHandler} summarizedSections={this.props.summarizedSections.data} /> : null;
+  //show or hide based of the add new mode status
+  const renderAddewExpanse = addNewMode ? <WrappedAddNewBox submitHandler={this.addNewSubmitHandler} summarizedSections={this.props.summarizedSections.data} /> : null;
 
-    return (
-      <TableWrapper>
+  return (
+    <TableWrapper>
 
-        <TableControls
-          style={{ marginBottom: "7px" }}
-          editMode={editMode}
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              addNewMode={addNewMode}
-              toggleAddNewMode={toggleAddNewMode}
-            />
-          } // end rightPane
-        /> {/* end TableControls */}
+      <TableControls
+        style={{ marginBottom: "7px" }}
+        editMode={editMode}
+        rightPane={
+          <EditControls
+            editMode={editMode}
+            toggleEditMode={toggleEditMode}
+            addNewMode={addNewMode}
+            toggleAddNewMode={toggleAddNewMode}
+          />
+        } // end rightPane
+      /> {/* end TableControls */}
 
-        {renderAddewExpanse}
+      {renderAddewExpanse}
 
-        <Table
-          Row={this.Row}
-          GroupComponent={this.HeaderGroups}
-          HeaderComponent={this.HeadersRow}
-          isFetching={isFetching || data.length === 0}
-          itemCount={data.length}
-        />
+      <Table
+        Row={this.Row}
+        GroupComponent={this.HeaderGroups}
+        HeaderComponent={this.HeadersRow}
+        isFetching={isFetching || data.length === 0}
+        itemCount={data.length}
+      />
 
-      </TableWrapper>
-    );
-  }
+    </TableWrapper>
+  );
 
 }
 
-const mapStateToProps = state => ({
-  expansesCodes: state.expansesCodes,
-  summarizedSections: state.summarizedSections
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchExpansesCodesByStatus: (status) => dispatch(expansesCodesActions.fetchExpansesCodesByStatus(status)),
-  updateExpanseCode: (newCopy, oldCopy, index) => dispatch(expansesCodesActions.updateExpanseCode(newCopy, oldCopy, index)),
-  addExpanseCode: (payload) => dispatch(expansesCodesActions.addExpanseCode(payload)),
-  deleteExpanseCode: (id, oldCopy, index) => dispatch(expansesCodesActions.deleteExpanseCode(id, oldCopy, index)),
-  expansesCodesCleanup: () => dispatch(expansesCodesActions.expansesCodesCleanup()),
-  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withTableLogic(ExpansesCodes)
-);
+export default withTableLogic(ExpansesCodes);
 
 const defaultheaderStyle = {
   backgroundColor: "rgb(232, 236, 241)",

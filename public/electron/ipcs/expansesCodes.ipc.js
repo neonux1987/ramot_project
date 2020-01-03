@@ -37,7 +37,6 @@ const expansesCodesIpc = (connection) => {
 
     expansesCodesLogic.addExpanseCode(data).then((result) => {
       //extract the id from the array
-      result = result[0];
       event.sender.send("expanse-code-added", { data: result });
     }).catch((error) => {
       console.log(error);

@@ -137,18 +137,20 @@ const setSummarizedBudgetsInitialState = function (buildingName) {
   }
 };
 
-export const updateSummarizedBudget = (params, oldCopy, index) => {
+export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
   return dispatch => {
-    const {
-      buildingName,
-      summarizedBudget
-    } = params;
+    const buildingName = params.buildingName;
+
+    const fullSummarizedBudget = {
+      ...oldCopy,
+      ...newCopy
+    }
 
     // first update the store for fast user response
-    dispatch(updateSummarizedBudgetInStore(buildingName, summarizedBudget, index));
+    dispatch(updateSummarizedBudgetInStore(buildingName, fullSummarizedBudget, index));
 
     // send a request to backend to get the data
-    //ipcRenderer.send("update-summarized-budget", params);
+    ipcRenderer.send("update-summarized-budget", params);
 
     // listen when the data comes back
     ipcRenderer.once("summarized-budget-updated", (event, arg) => {

@@ -37,7 +37,7 @@ class SummarizedBudgetLogic {
     return this.sbd.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
   }
 
-  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object, special }, trx) {
+  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object, special = false }, trx) {
 
     if (trx === undefined) {
       trx = await this.connection.transaction();
