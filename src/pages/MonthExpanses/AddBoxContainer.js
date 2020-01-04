@@ -240,7 +240,7 @@ class InputExpansesField extends Component {
     // fetch expnases codes
     this.props.fetchExpansesCodesByStatus("active");
     // fetch summarized sections
-    this.props.fetchSummarizedSections();
+    this.props.fetchSummarizedSections("active");
   }
 
   componentWillUnmount() {
@@ -393,7 +393,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchExpansesCodesByStatus: (status) => dispatch(expansesCodesActions.fetchExpansesCodesByStatus(status)),
   expansesCodesCleanup: () => dispatch(expansesCodesActions.expansesCodesCleanup()),
-  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections()),
+  fetchSummarizedSections: (status) => dispatch(summarizedSectionsActions.fetchSummarizedSections(status)),
   summarizedSectionsCleanup: () => dispatch(summarizedSectionsActions.summarizedSectionsCleanup()),
 });
 
