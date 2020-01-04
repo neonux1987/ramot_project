@@ -205,7 +205,7 @@ class DbBackupSvc {
     const { db_backup, general } = settings;
 
     //fetch db backup settings
-    let fileToBackup = await this.ioLogic.readFile(general.db_path);
+    let dbFile = await this.ioLogic.readFile(general.db_path);
 
     //fetch db backup settings
     const backupsNames = await this.settingsLogic.getBackupsNames();
@@ -229,19 +229,16 @@ class DbBackupSvc {
       if (backupsNames.length < db_backup.backups_to_save) {
 
         //write the file physically to the drive
-        await this.ioLogic.writeFile(path, fileToBackup);
+        await this.ioLogic.writeFile(path, dbFile);
 
         //push the new file to the array
         backupsNames.push({ backupDateTime: date, fileName: fileName });
 
       } else {
 
-
         //filename of the file to remove, the first and oldest in the array
-        const removedFileName = backupsNames[0];
-        console.log("hello");
-        console.log(db_backup);
-        console.log(`${db_backup.path}/${removedFileName}`);
+        const removedFileName = backupsNames[0].fileName;
+
         //remove the file physically from the drive
         await this.ioLogic.removeFile(`${db_backup.path}/${removedFileName}`);
 
@@ -249,7 +246,7 @@ class DbBackupSvc {
         backupsNames.shift();
 
         //write the file physically to the drive
-        await this.ioLogic.writeFile(path, fileToBackup);
+        await this.ioLogic.writeFile(path, dbFile);
 
         //push the new file to the array
         backupsNames.push({ backupDateTime: date, fileName: fileName });
