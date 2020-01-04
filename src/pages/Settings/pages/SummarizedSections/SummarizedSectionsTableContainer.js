@@ -1,13 +1,14 @@
 // LIBRARIES
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
 import {
   fetchSummarizedSections,
   addSummarizedSection,
   updateSummarizedSection,
-  summarizedSectionsCleanup
+  summarizedSectionsCleanup,
+  deleteSummarizedSection
 } from '../../../../redux/actions/summarizedSectionsActions';
 
 // COMPONENTS
@@ -28,40 +29,50 @@ import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 import withTableLogic from '../../../../HOC/withTableLogic';
 
 // CONTAINERS
-import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
+//import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import { toast } from 'react-toastify';
 
 // CUSTOM HOOKS
 import useModalLogic from '../../../../customHooks/useModalLogic';
+import AddSummarizedSectionContainer from './AddSummarizedSectionContainer/AddSummarizedSectionContainer';
 
-const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(3,1fr)";
-const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(3,1fr)";
+const EDITMODE_TEMPLATE = "minmax(250px,5%) minmax(250px,5%) 1fr";
+const DEFAULT_TEMPLATE = "minmax(250px,5%) 1fr";
 
-const ExpansesCodes = props => {
+const SummarizedSectionsTableContainer = props => {
 
   const {
     editMode,
     toggleEditMode,
     addNewMode,
-    toggleAddNewMode
+    toggleAddNewMode,
+    textInput
   } = props;
+
+  // page data
+  const {
+    isFetching,
+    data
+  } = useSelector(store => store.summarizedSections);
 
   const { showModal } = useModalLogic();
   const dispatch = useDispatch();
 
   useEffect(() => {
 
-    dispatch(fetchSummarizedSections())
+    dispatch(fetchSummarizedSections("active"));
 
-  });
+    const cleanup = () => {
+      dispatch(summarizedSectionsCleanup());
+    }
 
-  const componentWillUnmount = () => {
-    //on exit init table data
-    this.props.expansesCodesCleanup();
-  };
+    return cleanup;
+  }, [dispatch]);
+
+
 
   const onBlurSelectHandler = (name, value, index) => {
-    this.onBlurAction(name, value, index);
+    onBlurAction(name, value, index);
   }
 
   const onBlurHandler = (event) => {
@@ -69,37 +80,32 @@ const ExpansesCodes = props => {
     const { key, index } = target.dataset;
     const { value } = target;
 
-    const rowData = this.getDataObject(index);
+    const rowData = getDataObject(index);
 
-    const valid = this.validateOnBlur(key, value);
+    const valid = validateOnBlur(key, rowData.id, value);
 
     if (!valid) {
       target.value = rowData[key];
       return;
     }
 
-    this.onBlurAction(key, value, index);
+    onBlurAction(key, value, index);
   }
 
-  const validateOnBlur = (key, value) => {
+  const validateOnBlur = (key, summarizedSectionId, value) => {
     let valid = true;
     let message = "";
 
-    if (key === "code") {
+    if (key === "section") {
 
       if (value.length < 1) {
-        message = `קוד הנהח"ש לא יכול להיות פחות מ-1 ספרות`;
+        message = `סעיף מסכם לא יכול להיות פחות מ- 1 תוים.`;
         valid = false;
-      } else if (this.dataExist(value)) {
-        message = `לא ניתן להוסיף קוד הנהח"ש שכבר קיים.`;
+      } else if (dataExist(summarizedSectionId, value)) {
+        message = `לא ניתן להוסיף סעיף מסכם שכבר קים.`;
         valid = false;
       }
 
-    }
-
-    if (key === "codeName" && value.length < 1) {
-      message = `שם חשבון לא יכול להיות פחות מ-1 תוים.`;
-      valid = false;
     }
 
     if (!valid)
@@ -109,57 +115,48 @@ const ExpansesCodes = props => {
   }
 
   const onBlurAction = (name, value, index) => {
-    const oldCopy = { ...this.props.expansesCodes.data[index] };
+    const oldCopy = { ...data[index] };
     const newCopy = { ...oldCopy };
 
     // set the new value
     newCopy[name] = value;
 
-    this.props.updateExpanseCode(newCopy, oldCopy, index);
-  }
-
-
-  const getSection = (id) => {
-    return this.state.sections[id];
+    dispatch(updateSummarizedSection(newCopy, oldCopy, index));
   }
 
   const addNewSubmitHandler = (formInputs) => {
-    const valid = this.validateFormInputs(formInputs);
+    const valid = validateFormInputs(formInputs);
 
     if (!valid) {
-      toast.error("כל השדות לא יכולים להיות ריקים.");
+      toast.error("חובה לבחור סעיף!");
       return;
     }
 
-    const exist = this.dataExist(formInputs.code);
+    const exist = dataExist(formInputs.section);
     if (exist) {
-      toast.error("הקוד כבר קיים ברשימה, לא ניתן להוסיף את אותו הקוד.");
+      toast.error("הסעיף כבר קיים ברשימה, לא ניתן להוסיף סעיף שקיים.");
       return;
     }
 
-    const expanseCode = this.parseFormInputs(formInputs);
-    this.props.addExpanseCode(expanseCode);
-  }
+    const summarizedSection = {
+      section: formInputs.section
+    };
 
-  const parseFormInputs = (formInputs) => {
-    const copyFormInputs = { ...formInputs };
-    copyFormInputs.code = Number.parseInt(formInputs.code);
-    return copyFormInputs;
+    dispatch(addSummarizedSection({ summarizedSection }));
   }
 
   const validateFormInputs = (formInputs) => {
-    if (formInputs.code === "" || formInputs.codeName === "" || formInputs.summarized_section_id === "") {
+    if (formInputs.section === "")
       return false;
-    }
-    return true;
+    else
+      return true;
   }
 
-  const dataExist = (code) => {
+  const dataExist = (id, section) => {
     let valid = false;
-    const parsedCode = Number.parseInt(code);
 
-    this.props.expansesCodes.data.forEach(item => {
-      if (item.code === parsedCode) {
+    data.forEach(item => {
+      if (item.section === section && item.id !== id) {
         valid = true;
       }
     });
@@ -167,17 +164,17 @@ const ExpansesCodes = props => {
     return valid;
   }
 
-  const deleteCodeExpanseHandler = (rowData, index) => {
+  const deleteHandler = (rowData, index) => {
     const expanseCodeCopy = { ...rowData };
-    this.props.deleteExpanseCode(expanseCodeCopy.id, expanseCodeCopy, index);
+    dispatch(deleteSummarizedSection(expanseCodeCopy, index));
   }
 
   const getGridTemplateColumns = () => {
-    return this.props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+    return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
   const getDataObject = (index) => {
-    return this.props.expansesCodes.data[index];
+    return data[index];
   }
 
   const HeaderGroups = () => {
@@ -185,62 +182,30 @@ const ExpansesCodes = props => {
   }
 
   const HeadersRow = () => {
-    const editMode = this.props.editMode;
-
-    return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} >
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
-      <Column style={defaultheaderStyle}>{"קוד הנהח\"ש"}</Column>
-      <Column style={defaultheaderStyle}>{"שם חשבון"}</Column>
-      <Column style={defaultheaderStyle}>{"מקושר לסעיף מסכם..."}</Column>
+      <Column style={defaultheaderStyle}>{"סעיף מסכם"}</Column>
     </HeaderRow>
   }
 
-  const Row = (index) => {
-    const {
-      editMode,
-      textInput,
-      numberInput
-    } = this.props;
-
+  const TableRow = (index) => {
     // row data
-    const rowData = this.getDataObject(index);
+    const rowData = getDataObject(index);
 
-    return <Row style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData, index)} /> : null}
+    return <Row style={{ minHeight: "35px" }} gridTemplateColumns={getGridTemplateColumns()}>
+      {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData, index)} /> : null}
       <Column>{index + 1}</Column>
-      {editMode ? numberInput("code", rowData["code"], index, this.onBlurHandler) : <Column>{rowData["code"]}</Column>}
-      {editMode ? textInput("codeName", rowData["codeName"], index, this.onBlurHandler) : <Column>{rowData["codeName"]}</Column>}
-      {editMode ?
-        <SelectDropDown
-          targetValue={rowData["summarized_section_id"]}
-          index={index}
-          itemsArr={this.state.selectItems}
-          selectChangeHandler={this.onBlurSelectHandler}
-          name={"summarized_section_id"}
-        /> :
-        <Column>{this.getSection(rowData["summarized_section_id"])}</Column>}
+      {editMode ? textInput("section", rowData["section"], index, onBlurHandler) : <Column>{rowData["section"]}</Column>}
     </Row>
   }
 
-  const {
-    editMode,
-    toggleEditMode,
-    addNewMode,
-    toggleAddNewMode
-  } = this.props;
-
-  const {
-    isFetching,
-    data
-  } = this.props.expansesCodes;
-
   //give the box a form functionality
-  const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
+  const WrappedAddNewBox = withFormFunctionality(AddSummarizedSectionContainer);
 
   //show or hide based of the add new mode status
-  const renderAddewExpanse = addNewMode ? <WrappedAddNewBox submitHandler={this.addNewSubmitHandler} summarizedSections={this.props.summarizedSections.data} /> : null;
+  const renderAddNewSummarizedSection = addNewMode ? <WrappedAddNewBox submitHandler={addNewSubmitHandler} /> : null;
 
   return (
     <TableWrapper>
@@ -258,12 +223,12 @@ const ExpansesCodes = props => {
         } // end rightPane
       /> {/* end TableControls */}
 
-      {renderAddewExpanse}
+      {renderAddNewSummarizedSection}
 
       <Table
-        Row={this.Row}
-        GroupComponent={this.HeaderGroups}
-        HeaderComponent={this.HeadersRow}
+        Row={TableRow}
+        GroupComponent={HeaderGroups}
+        HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
         itemCount={data.length}
       />
@@ -273,7 +238,17 @@ const ExpansesCodes = props => {
 
 }
 
-export default withTableLogic(ExpansesCodes);
+const WrappedComponent = withTableLogic(SummarizedSectionsTableContainer);
+
+export default React.memo(WrappedComponent, areEqual)
+
+function areEqual(prevProps, nextProps) {
+  if (
+    prevProps.editMode === nextProps.editMode &&
+    prevProps.addNewMode === nextProps.addNewMode
+  ) return true;
+  else return false;
+}
 
 const defaultheaderStyle = {
   backgroundColor: "rgb(232, 236, 241)",

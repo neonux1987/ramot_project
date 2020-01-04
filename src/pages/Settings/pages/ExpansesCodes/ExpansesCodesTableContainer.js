@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { MenuItem } from '@material-ui/core';
 
 // ACTIONS
-import summarizedSectionsActions from '../../../../redux/actions/summarizedSectionsActions';
+import * as summarizedSectionsActions from '../../../../redux/actions/summarizedSectionsActions';
 import * as expansesCodesActions from '../../../../redux/actions/expansesCodesActions';
 
 // COMPONENTS
@@ -69,7 +69,7 @@ class ExpansesCodes extends React.PureComponent {
 
     const rowData = this.getDataObject(index);
 
-    const valid = this.validateOnBlur(key, value);
+    const valid = this.validateOnBlur(key, rowData.id, value);
 
     if (!valid) {
       target.value = rowData[key];
@@ -79,7 +79,7 @@ class ExpansesCodes extends React.PureComponent {
     this.onBlurAction(key, value, index);
   }
 
-  validateOnBlur = (key, value) => {
+  validateOnBlur = (key, expanseCodeId, value) => {
     let valid = true;
     let message = "";
 
@@ -88,7 +88,7 @@ class ExpansesCodes extends React.PureComponent {
       if (value.length < 1) {
         message = `קוד הנהח"ש לא יכול להיות פחות מ-1 ספרות`;
         valid = false;
-      } else if (this.dataExist(value)) {
+      } else if (this.dataExist(expanseCodeId, value)) {
         message = `לא ניתן להוסיף קוד הנהח"ש שכבר קיים.`;
         valid = false;
       }
@@ -152,12 +152,12 @@ class ExpansesCodes extends React.PureComponent {
     return true;
   }
 
-  dataExist = (code) => {
+  dataExist = (id, code) => {
     let valid = false;
     const parsedCode = Number.parseInt(code);
 
     this.props.expansesCodes.data.forEach(item => {
-      if (item.code === parsedCode) {
+      if (item.code === parsedCode && item.id !== id) {
         valid = true;
       }
     });

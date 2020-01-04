@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import { Route, Switch, NavLink } from 'react-router-dom';
 import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
 import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
+import SummarizedSections from './pages/SummarizedSections/SummarizedSections';
 import General from './pages/General/General';
 
 const styles = (theme) => ({
@@ -96,7 +97,7 @@ const Settings = ({ classes, match }, props) => {
         <Switch>
           <Route path={`${match.path}/כללי`} component={General} />
           <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
-          <Route path={`${match.path}/סעיפים מסכמים`} component={ExpansesCodes} />
+          <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
           <Route component={General} />
         </Switch>

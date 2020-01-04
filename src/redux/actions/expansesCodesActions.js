@@ -157,13 +157,6 @@ const deleteStoreOnly = (index) => {
   }
 }
 
-const restoreExpanseCodeInStoreOnly = (payload) => {
-  return {
-    type: TYPES.EXPANSES_CODES_RESTORE,
-    payload
-  }
-}
-
 export const deleteExpanseCode = (id, oldCopy, index) => {
   return dispatch => {
     //delete the item in store first
@@ -175,7 +168,7 @@ export const deleteExpanseCode = (id, oldCopy, index) => {
     ipcRenderer.once("expanse-code-deleted", (event, arg) => {
       if (arg.error) {
         //delete the item in store first
-        dispatch(restoreExpanseCodeInStoreOnly(oldCopy));
+        dispatch(addStoreOnly(oldCopy));
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)

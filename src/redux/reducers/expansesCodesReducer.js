@@ -31,27 +31,6 @@ export default (state = initState, action) => {
         status: "error",
         error: action.payload
       });
-    case TYPES.EXPANSES_CODES_RESTORE: {
-      const copyData = [...state.data];
-
-      copyData.push(action.payload);
-
-      copyData.sort((a, b) => {
-        if (a.code < b.code) {
-          return -1;
-        }
-        if (a.code > b.code) {
-          return 1;
-        }
-        // a must be equal to b
-        return 0;
-      });
-
-      return setState(state, {
-        data: copyData
-      });
-
-    };
     case TYPES.EXPANSES_CODES_DELETE: {
       const copyData = [...state.data];
       copyData.splice(action.index, 1);

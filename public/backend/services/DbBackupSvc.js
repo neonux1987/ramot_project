@@ -104,6 +104,7 @@ class DbBackupSvc {
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
 
       this.backupDbCallback(settings).catch((error) => {
+        console.log(error);
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
       });
     });
@@ -157,6 +158,7 @@ class DbBackupSvc {
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
 
       this.backupDbCallback(settings).catch((error) => {
+        console.log(error);
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
       });
     });
@@ -237,7 +239,9 @@ class DbBackupSvc {
 
         //filename of the file to remove, the first and oldest in the array
         const removedFileName = backupsNames[0];
-
+        console.log("hello");
+        console.log(db_backup);
+        console.log(`${db_backup.path}/${removedFileName}`);
         //remove the file physically from the drive
         await this.ioLogic.removeFile(`${db_backup.path}/${removedFileName}`);
 

@@ -33,7 +33,7 @@ class ExpansesCodesLogic {
 
       return expanseCode.id;
     } else {
-      const returnedData = await this.expansesCodesDao.addExpanseCode(data)[0];
+      const returnedData = await this.expansesCodesDao.addExpanseCode(data);
       return returnedData[0];
     }
 

@@ -18,6 +18,17 @@ import Spinner from '../../components/Spinner/Spinner';
 class YearStatsContainer extends React.PureComponent {
 
   componentDidMount() {
+    this.fetchData();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.date.year !== prevProps.date.year
+    )
+      this.fetchData();
+  }
+
+  fetchData = () => {
     const params = {
       buildingName: this.props.buildingName,
       date: this.props.date

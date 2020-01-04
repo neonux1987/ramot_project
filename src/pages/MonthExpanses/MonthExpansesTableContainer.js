@@ -276,7 +276,7 @@ class MonthExpanses extends React.PureComponent {
       <Column>{rowData["section"]}</Column>
       {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, this.onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}
       {editMode ? numberInput("sum", rowData["sum"], index, this.onBlurHandler) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-      {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap,", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 

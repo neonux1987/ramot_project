@@ -5,31 +5,25 @@ class SummarizedSectionsDao {
     this.connection = connection;
   }
 
-  /**
-   * get all summarized sections
-   */
-  getAllSummarizedSectionsOrderedTrx(trx = this.connection) {
-    return trx.select().from("summarized_sections")
+  getAllSummarizedSectionsOrderedTrx(status) {
+    return this.connection.select()
+      .from("summarized_sections")
+      .where({ status })
       .orderBy('section', 'asc')
       .catch((error) => {
         throw error;
       });
   }
 
-  /**
- * get all summarized sections
- */
   getAllSummarizedSectionsTrx(trx = this.connection) {
-    return trx.select().from("summarized_sections")
+    return trx.select()
+      .from("summarized_sections")
       .orderBy('section', 'asc')
       .catch((error) => {
         throw error;
       });
   }
 
-  /**
-   * get summarized section record by id
-   */
   getSummarizedSectionById({ buildingName = String, year = Number, month = String, expanse = Object }) {
     let data = this.connection.where({ year: year, month: month, summarized_section_id: expanse.summarized_section_id }).select(
       "building.id AS id",
@@ -47,30 +41,27 @@ class SummarizedSectionsDao {
     });
   }
 
-  /**
-   * update summarized section record
-   * @param {*} id the id of the month expanse to update
-   * @param {*} buildingName the name of the building
-   * @param {*} expanseToSave the record to update with
-   */
-  updateSummarizedSection(id = Number, buildingName = String, expanseToSave = Object) {
-    let data = this.connection(buildingName + "_month_expanses")
-      .where({ id: id })
-      .update(expanseToSave);
+  getSummarizedSectionBySection(section) {
+    return this.connection.select()
+      .from("summarized_sections")
+      .where({ section })
+      .catch((error) => {
+        throw error;
+      });
+  }
 
-    return data.then((result) => result)
+  updateSummarizedSection(id = Number, summarizedSection = Object) {
+    return this.connection("summarized_sections")
+      .where({ id: id })
+      .update(summarizedSection)
       .catch((error) => {
         throw error;
       })
   }
 
-  /**
-   * add new summarized section record
-   * @param {*} record 
-   */
-  addNewSummarizedSection(record = Object) {
-    return this.connection(buildingName + "_month_expanses")
-      .insert(record)
+  addSummarizedSection(summarizedSection = Object) {
+    return this.connection("summarized_sections")
+      .insert(summarizedSection)
       .catch((error) => {
         throw error;
       });

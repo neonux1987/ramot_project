@@ -2,11 +2,20 @@ import { ipcRenderer } from 'electron';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
 
-/**
- * fetch summarized sections
- * @param {*} payload 
- */
-export const fetchSummarizedSections = (params = Object) => {
+// TYPES
+export const TYPES = {
+  SUMMARIZED_SECTIONS_REQUEST: "SUMMARIZED_SECTIONS_REQUEST",
+  SUMMARIZED_SECTIONS_RECEIVE: "SUMMARIZED_SECTIONS_RECEIVE",
+  SUMMARIZED_SECTIONS_FETCHING_FAILED: "SUMMARIZED_SECTIONS_FETCHING_FAILED",
+  SUMMARIZED_SECTIONS_UPDATE: "SUMMARIZED_SECTIONS_UPDATE",
+  SUMMARIZED_SECTIONS_ADD: "SUMMARIZED_SECTIONS_ADD",
+  SUMMARIZED_SECTIONS_DELETE: "SUMMARIZED_SECTIONS_DELETE",
+  SUMMARIZED_SECTIONS_RESTORE: "SUMMARIZED_SECTIONS_RESTORE",
+  SUMMARIZED_SECTIONS_INIT_STATE: "SUMMARIZED_SECTIONS_INIT_STATE",
+  SUMMARIZED_SECTIONS_CLEANUP: "SUMMARIZED_SECTIONS_CLEANUP"
+}
+
+export const fetchSummarizedSections = (status) => {
   return dispatch => {
 
     return new Promise((resolve, reject) => {
@@ -14,7 +23,7 @@ export const fetchSummarizedSections = (params = Object) => {
       dispatch(requestSummarizedSections());
 
       //request request to backend to get the data
-      ipcRenderer.send("get-summarized-sections-data", params);
+      ipcRenderer.send("get-summarized-sections-data", status);
       //listen when the data comes back
       ipcRenderer.once("summarized-sections-data", (event, arg) => {
         if (arg.error) {
@@ -38,29 +47,24 @@ export const fetchSummarizedSections = (params = Object) => {
 
 const requestSummarizedSections = function () {
   return {
-    type: "REQUEST_SUMMARIZED_SECTIONS"
+    type: TYPES.SUMMARIZED_SECTIONS_REQUEST
   }
 };
 
 const receiveSummarizedSections = function (data) {
   return {
-    type: "RECEIVE_SUMMARIZED_SECTIONS",
+    type: TYPES.SUMMARIZED_SECTIONS_RECEIVE,
     data: data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "FETCHING_FAILED",
+    type: TYPES.SUMMARIZED_SECTIONS_FETCHING_FAILED,
     payload: error
   }
 };
 
-/**
- * add budget execution
- * @param {*} params 
- * @param {*} tableData 
- */
 export const addSummarizedSection = (params = Object) => {
   return dispatch => {
     //send a request to backend to get the data
@@ -75,37 +79,103 @@ export const addSummarizedSection = (params = Object) => {
           onOpen: () => playSound(soundTypes.error)
         });
       } else {
-        //success store the data
-        dispatch(receiveSummarizedSections(arg.data));
+        // add the returned id to the new summarized
+        // section object and save it in the store
+        params.summarizedSection.id = arg.data;
+        dispatch(addSummarizedSectionStoreOnly(params.summarizedSection));
+
+        //send success notification
+        toast.success("הסעיף עודכן בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
       }
     });
   }
 };
 
-/**
- * update budget execution
- * @param {*} payload 
- * @param {*} tableData 
- */
-export const updateSummarizedSection = (params = Object, tableData = Array) => {
-  return dispatch => {
-    /* //send a request to backend to get the data
-    ipcRenderer.send("update-budget-execution", params);
-    //listen when the data comes back
-    ipcRenderer.once("month-expanse-updated", (event, arg) => {
-      if (arg.error) {
-        console.log(arg.error);
-      } else {
-        
-      }
-    }); */
+const addSummarizedSectionStoreOnly = (summarizedSection) => {
+  return {
+    type: TYPES.SUMMARIZED_SECTIONS_ADD,
+    payload: summarizedSection
+  }
+}
 
-    dispatch(receiveSummarizedSections(tableData));
+const updateSummarizedSectionStoreOnly = (summarizedSection, index) => {
+  return {
+    type: TYPES.SUMMARIZED_SECTIONS_UPDATE,
+    payload: summarizedSection,
+    index
+  }
+}
+
+export const updateSummarizedSection = (newCopy, oldCopy, index) => {
+  return dispatch => {
+    dispatch(updateSummarizedSectionStoreOnly(newCopy, index));
+
+    const params = {
+      id: newCopy.id,
+      summarizedSection: {
+        section: newCopy.section
+      }
+    }
+
+    //send a request to backend to get the data
+    ipcRenderer.send("update-summarized-section", params);
+    //listen when the data comes back
+    ipcRenderer.once("summarized-section-updated", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+        // rollback
+        dispatch(updateSummarizedSectionStoreOnly(oldCopy, index));
+      } else {
+        //send success notification
+        toast.success("הסעיף עודכן בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
+      }
+    });
+
   }
 };
 
+export const deleteSummarizedSection = (oldCopy, index) => {
+  return dispatch => {
+    dispatch(deleteSummarizedSectionStoreOnly(index));
+
+    //send a request to backend to get the data
+    ipcRenderer.send("delete-summarized-section", { id: oldCopy.id });
+    //listen when the data comes back
+    ipcRenderer.once("summarized-section-deleted", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+        // rollback
+        dispatch(addSummarizedSectionStoreOnly(oldCopy));
+      } else {
+        //send success notification
+        toast.success("הסעיף נמחק בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
+      }
+    });
+
+  }
+};
+
+export const deleteSummarizedSectionStoreOnly = (index) => {
+  return {
+    type: TYPES.SUMMARIZED_SECTIONS_DELETE,
+    index
+  }
+}
+
 export const summarizedSectionsCleanup = () => {
   return {
-    type: "SUMMARIZED_SECTIONS_CLEANUP"
+    type: TYPES.SUMMARIZED_SECTIONS_CLEANUP
   }
 }

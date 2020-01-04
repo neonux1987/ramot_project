@@ -3,7 +3,7 @@ import { TextField, withStyles, Button } from '@material-ui/core';
 import ReactSelect from '../../components/ReactSelect/ReactSelect';
 import { connect } from 'react-redux';
 
-import summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
+import * as summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
 import * as expansesCodesActions from '../../redux/actions/expansesCodesActions';
 
 const styles = theme => ({
