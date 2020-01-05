@@ -7,8 +7,8 @@ class RegisteredQuartersLogic {
     this.registeredQuartersDao = new RegisteredQuartersDao(connection);
   }
 
-  getAllRegisteredQuarters({ buildingName, year }) {
-    return this.registeredQuartersDao.getAllRegisteredQuarters(buildingName, year);
+  getAllRegisteredQuarters({ buildingName, date }) {
+    return this.registeredQuartersDao.getAllRegisteredQuarters(buildingName, date.year);
   }
 
   getRegisteredQuarterTrx(buildingName, quarter, year, trx) {

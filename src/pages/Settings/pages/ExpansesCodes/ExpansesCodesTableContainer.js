@@ -39,7 +39,7 @@ class ExpansesCodes extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.fetchSummarizedSections().then((data) => {
+    this.props.fetchSummarizedSections("active").then((data) => {
       const dataArr = [];
 
       const selectItems = data.map((row, index) => {
@@ -284,7 +284,7 @@ const mapDispatchToProps = dispatch => ({
   addExpanseCode: (payload) => dispatch(expansesCodesActions.addExpanseCode(payload)),
   deleteExpanseCode: (id, oldCopy, index) => dispatch(expansesCodesActions.deleteExpanseCode(id, oldCopy, index)),
   expansesCodesCleanup: () => dispatch(expansesCodesActions.expansesCodesCleanup()),
-  fetchSummarizedSections: () => dispatch(summarizedSectionsActions.fetchSummarizedSections())
+  fetchSummarizedSections: (status) => dispatch(summarizedSectionsActions.fetchSummarizedSections(status))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

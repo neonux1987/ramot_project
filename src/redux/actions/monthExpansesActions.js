@@ -49,7 +49,7 @@ export const fetchMonthExpanses = (params = Object) => {
           generateEmptyReport(params, dispatch);
         } else {
           // store the data
-          dispatch(receiveMonthExpanses(arg.data, params.date, params.buildingName));
+          dispatch(receiveMonthExpanses(arg.data.data, params.buildingName));
         }
       } // end else
     });
@@ -89,11 +89,12 @@ const generateEmptyReport = (params, dispatch) => {
         delay: 2000,
         onClose: () => {
           //success store the data
-          dispatch(receiveMonthExpanses(arg.data, params.date, params.buildingName));
+          dispatch(receiveMonthExpanses(arg.data, params.buildingName));
           dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
           dispatch(registeredYearsActions.fetchRegisteredYears(params));
         }
       }); // end toast
+
     } // end else
   });
 }
@@ -105,11 +106,10 @@ const requestMonthExpanses = function (buildingName) {
   }
 };
 
-const receiveMonthExpanses = function (data, date, buildingName) {
+const receiveMonthExpanses = function (data, buildingName) {
   return {
     type: TYPES.MONTH_EXPANSES_RECEIVE,
     data,
-    date,
     buildingName
   }
 }

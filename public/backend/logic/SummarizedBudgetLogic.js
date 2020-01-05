@@ -1,6 +1,7 @@
 const Helper = require('../../helpers/Helper');
 const SummarizedBudgetDao = require('../dao/SummarizedBudgetDao');
 const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
+const QuarterlyStatsLogic = require('../logic/QuarterlyStatsLogic');
 const YearlyStatsLogic = require('../logic/YearlyStatsLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
@@ -11,6 +12,7 @@ class SummarizedBudgetLogic {
     this.connection = connection;
     this.sbd = new SummarizedBudgetDao(connection);
     this.registeredYearsLogic = new RegisteredYearsLogic(connection);
+    this.quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
     this.yearlyStatsLogic = new YearlyStatsLogic(connection);
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
     this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
@@ -151,6 +153,12 @@ class SummarizedBudgetLogic {
       await this.batchInsert(buildingName, preparedSections, trx);
     }
 
+    //generate empty quarterly stats (4 quarters)
+    const quarterlyStatsArr = this.generateEmptyQuarterlyStats(date);
+
+    // batch insert the quarters
+    await this.quarterlyStatsLogic.batchInsert(buildingName, quarterlyStatsArr, trx);
+
     //insert empty month total row
     await this.yearlyStatsLogic.insertYearStatsTrx(buildingName, {
       year: date.year,
@@ -169,6 +177,20 @@ class SummarizedBudgetLogic {
 
     return returnData;
 
+  }
+
+  generateEmptyQuarterlyStats(date) {
+    const data = [];
+    //populate the array with empty month stats objects
+    for (let i = 1; i < 5; i++) {
+      data.push({
+        year: date.year,
+        quarter: i,
+        income: 0,
+        outcome: 0
+      });
+    }
+    return data;
   }
 
 }

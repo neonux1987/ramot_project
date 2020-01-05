@@ -18,7 +18,7 @@ export const createPageReducer = (pageName, initialState) => {
         return setPageState(state, action.buildingName, {
           isFetching: false,
           status: "success",
-          data: action.data.data,
+          data: action.data,
           pageSettings: action.data.info
         });
       case `${pageName}_REQUEST`:

@@ -19,15 +19,19 @@ const styles = theme => ({
     zIndex: "3"
   },
   form: {
-    display: "grid",
-    gridTemplateColumns: "212px 1fr 1fr 1fr 1fr 300px 80px 80px",
+    display: "flex",
+    flexWrap: "wrap",
   },
   textField: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
+    flex: "auto"
   },
   codeTextField: {
-    width: "initial"
+    //width: "initial"
+    flexGrow: "initial",
+    minWidth: "220px",
+    width: "218px"
   },
   textFieldNotes: {
     marginLeft: theme.spacing(),
@@ -342,6 +346,7 @@ class InputExpansesField extends Component {
         inputProps={{ 'data-order': 5 }}
         InputLabelProps={{ classes: { root: classes.inputLabel } }}
         disabled={combinedFetching}
+        style={{ flexGrow: "7" }}
       />
 
       <div className={classes.buttonWrapper}>

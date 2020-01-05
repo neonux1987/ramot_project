@@ -74,7 +74,7 @@ class App extends Component {
         case "dbBackupFinished":
           toast.update(this.state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: toast.TYPE.INFO,
+            type: toast.TYPE.SUCCESS,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE,
             onOpen: () => {

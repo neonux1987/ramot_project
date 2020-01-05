@@ -78,7 +78,11 @@ const BudgetExecutionsTable = props => {
 
     const params = {
       date: date,
-      buildingName: buildingNameEng
+      buildingName: buildingNameEng,
+      range: {
+        startElement: 0,
+        pageSize: 1000
+      }
     }
 
     const returnedPromise = dispatch(initBudgetExecutionsState(params.buildingName));

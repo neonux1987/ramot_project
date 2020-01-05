@@ -8,26 +8,23 @@
 }
 
 .leftPane{
-  flex-grow: 1;
+  flex: auto;
   justify-content: flex-end;
   display: flex;
-  flex-basis: 0;
 }
 
 .middlePane{
-  flex: 1.5 1;
+  flex: auto;
   display: flex;
   justify-content: center;
-  flex-basis: 0;
 }
 
 .rightPane{
-  flex-grow: 1;
-  flex-basis: 0;
+  flex: auto;
 }
 
 .editModeWrapper{
-  flex-grow: 1;
+  flex: auto;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -45,7 +45,11 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
   componentDidMount() {
     const params = {
       date: this.props.date,
-      buildingName: this.props.location.state.buildingNameEng
+      buildingName: this.props.location.state.buildingNameEng,
+      range: {
+        startElement: 0,
+        pageSize: 1000
+      }
     }
 
     this.props.initSummzrizedBudgetsState(params.buildingName).then(() => {

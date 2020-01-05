@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
 import monthlyStatsActions from './monthlyStatsActions';
 import quarterlyStatsActions from './quarterlyStatsActions';
-import * as modalActions from './modalActions';
 
 const TOAST_AUTO_CLOSE = 3000;
 
@@ -48,7 +47,7 @@ export const fetchBudgetExecutions = (params = Object) => {
         }
 
         //success store the data
-        dispatch(receiveBudgetExecutions(arg.data, params.date, params.buildingName));
+        dispatch(receiveBudgetExecutions(arg.data.data, params.buildingName));
       }
     });
 
@@ -86,9 +85,11 @@ const generateEmptyReport = (params, dispatch) => {
         delay: 2000,
         onClose: () => {
           //success store the data
-          dispatch(receiveBudgetExecutions(arg.data, params.date, params.buildingName));
+          dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
           dispatch(registeredQuartersActions.fetchRegisteredQuarters(params));
           dispatch(registeredYearsActions.fetchRegisteredYears(params));
+          dispatch(monthlyStatsActions.fetchAllMonthsStatsByQuarter(params));
+          dispatch(quarterlyStatsActions.fetchQuarterStats(params));
         }
       });
 
@@ -103,12 +104,11 @@ const requestBudgetExecutions = function (buildingName) {
   }
 };
 
-const receiveBudgetExecutions = function (data, date, buildingName) {
+const receiveBudgetExecutions = function (data, buildingName) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_RECEIVE,
     data,
-    buildingName,
-    date
+    buildingName
   }
 }
 

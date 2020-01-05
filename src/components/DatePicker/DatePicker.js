@@ -30,10 +30,20 @@ const DatePicker = ({
   useEffect(() => {
     dispatch((registeredYearsActions.fetchRegisteredYears({ buildingName }))).then(() => {
       if (month)
-        dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, year: date.year })));
+        dispatch((registeredMonthsActions.fetchRegisteredMonths({
+          buildingName,
+          date: {
+            year: date.year
+          }
+        })));
 
       if (quarter)
-        dispatch((registeredQuartersActions.fetchRegisteredQuarters({ buildingName, year: date.year })));
+        dispatch((registeredQuartersActions.fetchRegisteredQuarters({
+          buildingName,
+          date: {
+            year: date.year
+          }
+        })));
     });
 
     // cleanup
@@ -46,7 +56,7 @@ const DatePicker = ({
     }
 
     return cleanup;
-  }, [month, quarter, dispatch, buildingName]);
+  }, [month, quarter, dispatch, buildingName, date.year]);
 
   // default on change handler
   // for months and quarters
@@ -77,7 +87,7 @@ const DatePicker = ({
     });
 
     if (month) {
-      dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, year }))).then((result) => {
+      dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, date: { year } }))).then((result) => {
         // get the earliest month in the list 
         const month = result[0].month;
 
@@ -90,7 +100,12 @@ const DatePicker = ({
     }
 
     if (quarter) {
-      dispatch((registeredQuartersActions.fetchRegisteredQuarters({ buildingName, year }))).then((result) => {
+      dispatch((registeredQuartersActions.fetchRegisteredQuarters({
+        buildingName,
+        date: {
+          year
+        }
+      }))).then((result) => {
         // get the earliest quarter in the list
         const quarter = result[0].quarter;
         const parsedQuarter = Number.parseInt(quarter);
@@ -105,6 +120,20 @@ const DatePicker = ({
 
   }
 
+  // the current year maybe will not be in the registered years 
+  // yet because it wasn't created yet. so we must check to see
+  // if the year exist in the registered years list, if not return 
+  // empty string, otherwise the current year.
+  const yearExist = () => {
+    let exist = false;
+    years.data.forEach((item) => {
+      const parsedYear = Number.parseInt(item.year);
+      if (selectDate.year === parsedYear)
+        exist = true;
+    });
+    return exist;
+  }
+
   //if months data exist, render it
   const renderMonths = !months.isFetching && months.data.length > 0 ? <Select
     name="month"
@@ -115,7 +144,7 @@ const DatePicker = ({
     {months.data.map((month) => {
       return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
     })}
-  </Select> : <FormSelectDummy><Spinner size={20} /></FormSelectDummy>;
+  </Select> : <FormSelectDummy />;
 
   //if quarters data exist, render it
   const renderQuarters = !quarters.isFetching && quarters.data.length > 0 ? <Select
@@ -127,10 +156,10 @@ const DatePicker = ({
     {quarters.data.map((quarter) => {
       return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
     })}
-  </Select> : <FormSelectDummy><Spinner size={20} /></FormSelectDummy>;
+  </Select> : <FormSelectDummy />;
 
   //if quarters data exist, render it
-  const renderYears = !years.isFetching && years.data.length > 0 ? <Select
+  const renderYears = !years.isFetching && years.data.length > 0 && yearExist() ? <Select
     name="year"
     className={styles.formSelect}
     value={selectDate.year || ""}
@@ -140,7 +169,7 @@ const DatePicker = ({
     {years.data.map((year) => {
       return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
     })}
-  </Select> : <FormSelectDummy><Spinner size={20} /></FormSelectDummy>;
+  </Select> : <FormSelectDummy />;
 
   return (
     <div id="dates" className={styles.dates}>
@@ -163,8 +192,10 @@ const DatePicker = ({
 
 }
 
-const FormSelectDummy = ({ children }) => {
-  return <div className={styles.formSelect}>{children}</div>
+const FormSelectDummy = () => {
+  return <div className={styles.formSelect}>
+    <Spinner size={18} />
+  </div>
 }
 
 export default React.memo(DatePicker, (prevProps, nextProps) => {

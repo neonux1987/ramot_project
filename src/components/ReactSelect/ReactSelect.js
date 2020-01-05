@@ -195,7 +195,7 @@ class IntegrationReactSelect extends React.Component {
             value={this.props.inputValue}
             onChange={this.props.onChangeHandler}
             placeholder={this.props.placeholder}
-            isClearable
+            isClearable={this.props.isClearable}
             getOptionLabel={this.props.getOptionLabel}
             getOptionValue={this.props.getOptionValue}
             onBlur={this.props.onBlurHandler}

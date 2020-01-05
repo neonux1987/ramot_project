@@ -1,5 +1,7 @@
 import { ipcRenderer } from 'electron';
 import registeredYearsActions from './registeredYearsActions';
+import yearlyStatsActions from './yearlyStatsActions';
+import quarterlyStatsActions from './quarterlyStatsActions';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import React from 'react';
 import { toast } from 'react-toastify';
@@ -47,7 +49,7 @@ export const fetchSummarizedBudgets = (params = Object) => {
           generateEmptyReport(params, dispatch);
         } else {
           //success store the data
-          dispatch(receiveSummarizedBudgets(arg.data, params.date, params.buildingName));
+          dispatch(receiveSummarizedBudgets(arg.data.data, params.date, params.buildingName));
           //if there is no data, that means it's a new month and 
         }
       }
@@ -90,6 +92,8 @@ const generateEmptyReport = (params, dispatch) => {
           //success store the data
           dispatch(receiveSummarizedBudgets(arg.data, params.date, params.buildingName));
           dispatch(registeredYearsActions.fetchRegisteredYears(params));
+          dispatch(quarterlyStatsActions.fetchAllQuartersStatsByYear(params));
+          dispatch(yearlyStatsActions.fetchYearStats(params));
         }
       });
     }

@@ -241,12 +241,6 @@ class BudgetExecutionLogic {
       await this.batchInsert(buildingName, date.quarter, preparedSections, trx);
     }
 
-    //generate empty quarterly stats (4 quarters)
-    const quarterlyStatsArr = this.generateEmptyQuarterlyStats(date);
-
-    // batch insert the quarters
-    await this.quarterlyStatsLogic.batchInsert(buildingName, quarterlyStatsArr, trx);
-
     //all the months of a specific quarter
     const months = Helper.getQuarterMonthsHeb(date.quarter);
 
@@ -278,20 +272,6 @@ class BudgetExecutionLogic {
         year: date.year,
         quarter: date.quarter,
         month: months[i],
-        income: 0,
-        outcome: 0
-      });
-    }
-    return data;
-  }
-
-  generateEmptyQuarterlyStats(date) {
-    const data = [];
-    //populate the array with empty month stats objects
-    for (let i = 1; i < 5; i++) {
-      data.push({
-        year: date.year,
-        quarter: i,
         income: 0,
         outcome: 0
       });
