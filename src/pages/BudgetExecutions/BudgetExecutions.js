@@ -22,7 +22,7 @@ import Helper from '../../helpers/Helper';
 import withPageLogic from '../../HOC/withPageLogic';
 
 const PAGE_NAME = "budgetExecutions";
-const PAGE_TITLE = "מעקב ביצוע מול תקציב";
+const PAGE_TITLE = "לב תל אביב - מעקב ביצוע מול תקציב";
 const STATS_TITLE = "סיכום הוצאות והכנסות רבעוני";
 const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 
@@ -42,9 +42,9 @@ const BudgetExecutions = props => {
 
   return <Fragment>
 
-    <Header bgColor="rgb(44, 183, 197)">
+    {/* <Header bgColor="rgb(44, 183, 197)">
       {PAGE_TITLE}
-    </Header>
+    </Header> */}
 
     <DateProvider
       pageName={PAGE_NAME}
@@ -74,6 +74,7 @@ const BudgetExecutions = props => {
               <SectionHeader
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
+                iconBoxBg={"rgb(234, 104, 59)"}
                 extraDetails={props.dateDetails(onlyDate)}
               />
 

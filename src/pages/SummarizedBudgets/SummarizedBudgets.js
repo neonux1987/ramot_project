@@ -35,9 +35,9 @@ const SummarizedBudgets = props => {
 
   return <Fragment>
 
-    <Header bgColor="rgb(232, 67, 104)">
+    {/* <Header bgColor="rgb(232, 67, 104)">
       {PAGE_TITLE}
-    </Header>
+    </Header> */}
 
     <DateProvider
       pageName={PAGE_NAME}
@@ -68,6 +68,7 @@ const SummarizedBudgets = props => {
               <SectionHeader
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
+                iconBoxBg={"rgb(234, 104, 59)"}
                 extraDetails={props.dateDetails(onlyDate)}
               />
 

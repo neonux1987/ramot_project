@@ -26,8 +26,12 @@ export default class Statistics extends Component {
   render() {
     const { data } = this.state;
     return (
-      <div>
-        <h1>statistics</h1>
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}>
+        <h3>דף סטטיסטיקה נמצא בבנייה.</h3>
       </div>
     );
   }

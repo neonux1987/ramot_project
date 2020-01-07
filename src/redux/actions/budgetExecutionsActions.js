@@ -173,85 +173,90 @@ export const updateBudgetExecutionStoreOnly = (payload, index, buildingName) => 
 export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudgetExec = Object, index = Number) => {
   return (dispatch, getState) => {
 
-    //get te state
-    const state = getState();
+    return new Promise((resolve, reject) => {
+      //get te state
+      const state = getState();
 
-    //stats of all months
-    const monthlyStatsArr = [...state.monthlyStats.monthlyStats.data];
+      //stats of all months
+      const monthlyStatsArr = [...state.monthlyStats.monthlyStats.data];
 
-    let monthStatsIndex = null;
+      let monthStatsIndex = null;
 
-    //quarter total stats
-    const quarterlyStatsData = { ...state.quarterlyStats.quarterlyStats.data[0] };
+      //quarter total stats
+      const quarterlyStatsData = { ...state.quarterlyStats.quarterlyStats.data[0] };
 
-    //copy for rollback
-    const quarterStatsOld = { ...quarterlyStatsData };
+      //copy for rollback
+      const quarterStatsOld = { ...quarterlyStatsData };
 
-    if (params.date.month) {
+      if (params.date.month) {
 
-      for (let i = 0; i < monthlyStatsArr.length; i++) {
-        if (monthlyStatsArr[i].month === params.date.monthHeb) {
-          monthStatsIndex = i;
+        for (let i = 0; i < monthlyStatsArr.length; i++) {
+          if (monthlyStatsArr[i].month === params.date.monthHeb) {
+            monthStatsIndex = i;
+          }
         }
+
+        //make a copy of month total object to avoid mutating the original
+        const monthStatsObject = { ...monthlyStatsArr[monthStatsIndex] };
+
+        //subtract the old month budge value from
+        //total budget and then add the new month budget value
+        monthStatsObject.income = monthStatsObject.income - oldBudgetExec[`${params.date.month}_budget`] + newBudgetExec[`${params.date.month}_budget`];
+
+        //subtract the old quarter budget value from
+        //total budget and then add the new quarter budget value
+        quarterlyStatsData.income = quarterlyStatsData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
+
+        //update month total
+        dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(monthStatsObject, monthStatsIndex));
+
+        //update quarter total
+        dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterlyStatsData));
       }
 
-      //make a copy of month total object to avoid mutating the original
-      const monthStatsObject = { ...monthlyStatsArr[monthStatsIndex] };
+      //copy of the un-modified month total object for rollback
+      const oldMonthStatsObj = { ...monthlyStatsArr[monthStatsIndex] };
 
-      //subtract the old month budge value from
-      //total budget and then add the new month budget value
-      monthStatsObject.income = monthStatsObject.income - oldBudgetExec[`${params.date.month}_budget`] + newBudgetExec[`${params.date.month}_budget`];
-
-      //subtract the old quarter budget value from
-      //total budget and then add the new quarter budget value
-      quarterlyStatsData.income = quarterlyStatsData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
-
-      //update month total
-      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(monthStatsObject, monthStatsIndex));
-
-      //update quarter total
-      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterlyStatsData));
-    }
-
-    //copy of the un-modified month total object for rollback
-    const oldMonthStatsObj = { ...monthlyStatsArr[monthStatsIndex] };
-
-    //create a a budget execution object
-    //with full properties to be saved in the store
-    const budgetExecStoreObj = {
-      ...oldBudgetExec,
-      ...newBudgetExec
-    }
-
-    //update the new data in the store first for
-    //better and fast user experience
-    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingName));
-
-    //send a request to backend to get the data
-    ipcRenderer.send("update-budget-execution", params);
-
-    //listen when the data comes back
-    ipcRenderer.once("budget-execution-updated", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-
-        //rollback to the old budget execution object
-        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingName));
-
-        //rollback to the old month total stats
-        dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));
-
-        //rollback to old quarter total
-        dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterStatsOld));
-      } else {
-        toast.success("השורה עודכנה בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
+      //create a a budget execution object
+      //with full properties to be saved in the store
+      const budgetExecStoreObj = {
+        ...oldBudgetExec,
+        ...newBudgetExec
       }
-    });
+
+      //update the new data in the store first for
+      //better and fast user experience
+      dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingName));
+
+      //send a request to backend to get the data
+      ipcRenderer.send("update-budget-execution", params);
+
+      //listen when the data comes back
+      ipcRenderer.once("budget-execution-updated", (event, arg) => {
+        if (arg.error) {
+          //send the error to the notification center
+          toast.error(arg.error, {
+            onOpen: () => playSound(soundTypes.error)
+          });
+
+          //rollback to the old budget execution object
+          dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingName));
+
+          //rollback to the old month total stats
+          dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));
+
+          //rollback to old quarter total
+          dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterStatsOld));
+          reject();
+        } else {
+          toast.success("השורה עודכנה בהצלחה.", {
+            onOpen: () => playSound(soundTypes.message)
+          });
+          resolve();
+        }
+      });
+    })
+
   };
 };
 

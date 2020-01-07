@@ -31,9 +31,9 @@ const MonthExpanses = props => {
   return (
     <Fragment>
 
-      <Header bgColor="rgb(129, 86, 234)">
+      {/* <Header bgColor="rgb(129, 86, 234)">
         {PAGE_TITLE}
-      </Header>
+      </Header> */}
 
       <DateProvider pageName={PAGE_NAME} buildingName={buildingNameEng}>
         {({ date, actions }) => {

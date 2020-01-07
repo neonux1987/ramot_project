@@ -131,20 +131,26 @@ module.exports = async (
       views: [
         { rightToLeft: true }
       ],
-      pageSetup: { paperSize: 9, orientation: 'landscape' }
+      pageSetup: {
+        paperSize: 9,
+        orientation: 'landscape',
+        fitToWidth: 1,
+        fitToHeight: 0,
+        fitToPage: true,
+        margins: {
+          left: 0.20, right: 0.20,
+          top: 0.20, bottom: 0.20,
+          header: 0, footer: 0
+        }
+      }
     }
   );
 
-  // adjust pageSetup settings afterwards
-  sheet.pageSetup.margins = {
-    left: 0.24, right: 0.24,
-    top: 0.35, bottom: 0.35,
-    header: 0.3, footer: 0.3
-  };
-
-  sheet.pageSetup.firstPageNumber = 1;
   // Repeat specific rows on every printed page
-  //sheet.pageSetup.printTitlesRow = '1:1';
+  sheet.pageSetup.printTitlesRow = '3:4';
+
+  // Set footer (default centered), result: "Page 2 of 16"
+  sheet.headerFooter.oddFooter = "עמוד &P מתוך &N";
 
   const headerCellsStyles = {
     font: {
@@ -187,18 +193,11 @@ module.exports = async (
   //set alignment
   headerCell.alignment = headerCellsStyles.alignment;
 
-  sheet.getCell('A3').font = {
-    name: 'Arial',
-    color: { argb: '1b75bc' },
-    family: 2,
-    size: 11
-  };
-
   const months = getMonthHeaders(date.quarter);
 
   //merge cells for month 1 header
-  sheet.mergeCells('B4', 'C4');
-  const month1 = sheet.getCell('B4');
+  sheet.mergeCells('B3', 'C3');
+  const month1 = sheet.getCell('B3');
   //set title
   month1.value = `חודש ${months[0]}`;
   //set styles
@@ -212,8 +211,8 @@ module.exports = async (
   month1.border = headerCellsStyles.border;
 
   //merge cells for month 1 header
-  sheet.mergeCells('D4', 'E4');
-  const month2 = sheet.getCell('D4');
+  sheet.mergeCells('D3', 'E3');
+  const month2 = sheet.getCell('D3');
   //set title
   month2.value = `חודש ${months[1]}`;
   //set styles
@@ -227,8 +226,8 @@ module.exports = async (
   month2.border = headerCellsStyles.border;
 
   //merge cells for month 1 header
-  sheet.mergeCells('F4', 'G4');
-  const month3 = sheet.getCell('F4');
+  sheet.mergeCells('F3', 'G3');
+  const month3 = sheet.getCell('F3');
   //set title
   month3.value = `חודש ${months[2]}`;
   //set styles
@@ -242,8 +241,8 @@ module.exports = async (
   month3.border = headerCellsStyles.border;
 
   //merge cells for end of quarter
-  sheet.mergeCells('I4', 'J4');
-  const quarterEnd = sheet.getCell('I4');
+  sheet.mergeCells('I3', 'J3');
+  const quarterEnd = sheet.getCell('I3');
   //set title
   quarterEnd.value = "סוף רבעון";
   //set styles
@@ -256,7 +255,7 @@ module.exports = async (
   quarterEnd.alignment = headerCellsStyles.alignment;
   quarterEnd.border = headerCellsStyles.border;
   /*Column headers*/
-  sheet.getRow(5).values = BUDGET_EXECUTION_HEADERS;
+  sheet.getRow(4).values = BUDGET_EXECUTION_HEADERS;
 
   //dynamically generates headers according to
   //the specified quarter of a year
@@ -264,7 +263,7 @@ module.exports = async (
 
   //get the first row the headers
   //and set style to each column of header row
-  const headerRow = sheet.getRow(5);
+  const headerRow = sheet.getRow(4);
 
   headerRow.eachCell(function (cell, colNumber) {
 
@@ -316,7 +315,7 @@ module.exports = async (
   });
 
   sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
-    if (rowNumber > 5) {
+    if (rowNumber > 4) {
       row.eachCell((cell) => {
 
         cell.alignment = {
@@ -361,7 +360,7 @@ module.exports = async (
   //neutral number is yellow
   //positive number is green
   sheet.getColumn("K").eachCell(function (cell, rowNumber) {
-    if (rowNumber > 5) {
+    if (rowNumber > 4) {
       let bg = "ffff00";
       let fontColor = "000000";
       if (cell.value > 0) {

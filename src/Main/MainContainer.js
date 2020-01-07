@@ -86,7 +86,7 @@ class MainContainer extends Component {
       return <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} />;
     } else {
       return (
-        <main id="main" className={this.props.classes.main + this.props.toggleMain}>
+        <main ref={this.props.mainContainer} id="main" className={this.props.classes.main + this.props.toggleMain}>
           <Toolbar
             buildingName={locationState.buildingName}
             page={locationState.page}

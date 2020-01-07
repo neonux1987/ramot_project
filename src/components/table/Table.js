@@ -2,14 +2,15 @@ import React from 'react'
 
 import './table.css';
 import Spinner from '../Spinner/Spinner';
+import SavedNotification from '../SavedNotification/SavedNotification';
 
 import { Virtuoso } from 'react-virtuoso'
 
-export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) => {
+export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, dataSaved }) => {
 
   const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
     <Virtuoso
-      style={{ overflow: "overlay", direction: "rtl", overscrollBehavior: "contain" }}
+      style={{ overflow: "overlay", direction: "rtl" }}//overscrollBehavior: "contain"
       totalCount={itemCount}
       item={Row}
       overscan={200}
@@ -28,6 +29,8 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount })
       {/* END HEADERS */}
 
       {Loading}
+
+      <SavedNotification saved={dataSaved} />
 
     </div>
 

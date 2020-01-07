@@ -35,27 +35,35 @@ module.exports = (
   workbook.lastPrinted = new Date();
 
   //add a worksheet
-  var sheet = workbook.addWorksheet(sheetTitle,
-    {
-      properties: {
-        tabColor: { argb: 'FFC0000' }
-      },
-      views: [
-        { rightToLeft: true }
-      ],
-      pageSetup: { paperSize: 9, orientation: 'portrait' }
+  var sheet = workbook.addWorksheet(sheetTitle, {
+    properties: {
+      tabColor: { argb: 'FFC0000' }
+    },
+    views: [
+      { rightToLeft: true }
+    ],
+    pageSetup: {
+      paperSize: 9,
+      orientation: 'portrait',
+      fitToWidth: 1,
+      fitToHeight: 0,
+      fitToPage: true,
+      margins: {
+        left: 0.20, right: 0.20,
+        top: 0.20, bottom: 0.20,
+        header: 0, footer: 0
+      }
     }
-  );
+  });
 
-  // adjust pageSetup settings afterwards
-  sheet.pageSetup.margins = {
-    left: 0.24, right: 0.24,
-    top: 0.35, bottom: 0.35,
-    header: 0.3, footer: 0.3
-  };
+
+  //sheet.pageSetup.printArea = 'A1:E58';
 
   // Repeat specific rows on every printed page
-  //sheet.pageSetup.printTitlesRow = '1:1';
+  sheet.pageSetup.printTitlesRow = '3:3';
+
+  // Set footer (default centered), result: "Page 2 of 16"
+  sheet.headerFooter.oddFooter = "עמוד &P מתוך &N";
 
   //merge cells for the header
   sheet.mergeCells('A1', 'E2');

@@ -78,9 +78,14 @@ function createWindow() {
       nodeIntegration: true
     },
     frame: false,
-    transparent: true
     //backgroundColor: '#191b21'
+    resizeable: false,
+    show: false
   });
+
+  mainWindow.maximize();
+  mainWindow.show();
+
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
   if (isDev) {
     // Open the DevTools.

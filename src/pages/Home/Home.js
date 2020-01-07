@@ -15,6 +15,13 @@ class Home extends Component {
     return (
       <div className={styles.wrapper}>
 
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <h3>דף הבית נמצא בבנייה.</h3>
+        </div>
         {/* <InfoBox wrapper={styles.infoBox} boxColor={"#f94c4c"}>
           <Paper className={styles.header} elevation={1}>
             <Typography variant="h5" className={styles.title} gutterBottom>

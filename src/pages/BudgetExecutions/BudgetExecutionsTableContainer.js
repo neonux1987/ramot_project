@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
@@ -65,6 +65,8 @@ const BudgetExecutionsTable = props => {
   const globalContext = useContext(GlobalContext);
   const { showModal } = useModalLogic();
   const dispatch = useDispatch();
+
+  const [dataSaved, setDataSaved] = useState(false);
 
   // page data
   const page = useSelector(store => store.budgetExecutions.pages[buildingNameEng]);
@@ -165,7 +167,12 @@ const BudgetExecutionsTable = props => {
     }
 
     //calculateMonthTotalBudget(copyData, cellInfo.column.id, prevValue, copyData[objIndex][cellInfo.column.id]);
-    dispatch(updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index));
+    dispatch(updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index)).then(() => {
+      setDataSaved(true);
+      setTimeout(() => {
+        setDataSaved(false);
+      }, 3000);
+    });
     e.target.blur();
   }
 
@@ -382,6 +389,7 @@ const BudgetExecutionsTable = props => {
         HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
         itemCount={data.length}
+        dataSaved={dataSaved}
       />
 
     </TableWrapper>

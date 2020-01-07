@@ -11,13 +11,14 @@ export default ({ handlers }) => {
       <div className={styles.draggableRegion}>
         <div className={styles.section} style={{ flex: "1 1" }}>
           <div className={styles.header}>
-            {/* <span>NDTS</span>&nbsp; */}<span>מערכת לניהול דוחות כספיים</span>
+            {/* <span>NDTS</span>&nbsp; */}<span>מז"ח ניהול דוחות</span>
           </div>
         </div>
 
         <div className={styles.section} style={{ flex: "1 1", display: "flex", justifyContent: "center", fontSize: "13px" }}>
           <div className={styles.date}>
-            <span>{`שנה ${Helper.getCurrentYear()} / ${Helper.getCurrentQuarterHeb()} / חודש ${Helper.getCurrentMonthHeb()}`}</span>
+            <span style={{ color: "rgb(33, 117, 79)", marginLeft: "5px" }}>תאריך נוכחי: </span>
+            <span style={{ color: "#000000" }}>{`שנה ${Helper.getCurrentYear()} / ${Helper.getCurrentQuarterHeb()} / חודש ${Helper.getCurrentMonthHeb()}`}</span>
           </div>
         </div>
 

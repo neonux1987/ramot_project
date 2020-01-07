@@ -4,7 +4,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import { MemoryRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast, Flip } from 'react-toastify';
 
 // COMPONENTS
 import Sidebar from "./Sidebar/Sidebar";
@@ -12,6 +12,7 @@ import RTL from './components/RTL';
 import ToastRender from './components/ToastRender/ToastRender';
 //import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';
 import AppFrame from './AppFrame/AppFrameContainer';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 // ACTIONS
 import generalSettingsActions from './redux/actions/generalSettingsActions';
@@ -52,6 +53,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.toggleSidebarAnimation = "";
+    this.mainContainer = React.createRef();
   }
 
   state = {
@@ -111,6 +113,7 @@ class App extends Component {
 
   maximizeButtonHandler = () => {
     const window = remote.getCurrentWindow();
+
     if (!window.isMaximized()) {
       window.maximize();
     } else {
@@ -124,7 +127,7 @@ class App extends Component {
       <RTL>
         <MuiThemeProvider theme={theme}>
           <MemoryRouter>
-
+            <ScrollToTop mainContainer={this.mainContainer} />
             <AppFrame handlers={{
               close: this.closeButtonHandler,
               minimize: this.minimizeButtonHandler,
@@ -135,19 +138,19 @@ class App extends Component {
 
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
 
-              <MainContainer toggleMain={" showMainAnimation"} />
+              <MainContainer mainContainer={this.mainContainer} toggleMain={" showMainAnimation"} />
 
             </div>
             <ToastContainer
-              position="bottom-left"
+              position="bottom-right"
               autoClose={TOAST_AUTO_CLOSE}
               hideProgressBar={true}
               newestOnTop={false}
-              closeOnClick
               rtl
               pauseOnVisibilityChange
               draggable={false}
               pauseOnHover
+              transition={Flip}
             />
             <ModalRoot />
 
