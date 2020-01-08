@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './TableControls.module.css';
 
 const TableControls = ({ style, rightPane, middlePane, leftPane, editMode }) => {
-  const editModeColor = editMode ? "#33af37" : "#ea4141";
+  const editModeColor = editMode ? "#33af37" : "#ff2864";
   const editModeText = editMode ? "פעיל" : "כבוי";
 
   return (

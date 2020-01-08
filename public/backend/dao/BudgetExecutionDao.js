@@ -1,4 +1,5 @@
 const NestHydrationJS = require('nesthydrationjs');
+const mainSystem = require('../system/MainSystem');
 
 const DEFINITION = [{
   id: { column: 'id', type: 'NUMBER' },
@@ -55,8 +56,8 @@ const CHUNKSIZE = 100;
 
 class BudgetExecutionDao {
 
-  constructor(connection) {
-    this.connection = connection;
+  constructor() {
+    this.connection = mainSystem.getConnection();
     this.nestHydrationJS = new NestHydrationJS();
   }
 

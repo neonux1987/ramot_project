@@ -76,23 +76,23 @@ a {
 }
 
 .hideAnimation{
-  animation: hide 0.2s ease 0.2s forwards;
+  animation: hide 0.2s ease forwards;
 }
 
 .showAnimation{
-  animation: show 0.2s ease 0.2s backwards;
+  animation: show 0.2s ease backwards;
 }
 
 @keyframes hide{
   0% {margin-right: 0px;}
   100% {
-    margin-right: -240px;
+    margin-right: -244px;
   }
 }
 
 @keyframes show{
   0% {
-    margin-right: -240px;
+    margin-right: -244px;
   }
   100% {
     margin-right: 0px;
