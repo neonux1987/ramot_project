@@ -26,9 +26,12 @@ const Toolbar = ({ buildingName, page }) => {
 
       <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
 
-        <div className={styles.toggleBtn}>
-          <Menu onClick={() => dispatch(sidebarActions.toggleSidebar())} style={{ display: "flex" }} />
-        </div>
+        <button
+          className={styles.toggleBtn}
+          onClick={() => dispatch(sidebarActions.toggleSidebar())}
+        >
+          <Menu style={{ display: "flex" }} />
+        </button>
         <div style={{ marginRight: "10px", fontWeight: "400", fontSize: "16px" }}>
           {`${navigationPath}`}
         </div>

@@ -35,8 +35,31 @@ const os = require('os');
 const isDev = require('electron-is-dev');
 
 contextMenu({
-  prepend: (defaultActions, params, browserWindow) => [{
-    label: 'תפריט',
+  prepend: (defaultActions, params, browserWindow) => [
+    {
+      role: "selectAll",
+      label: "סמן הכל"
+    },
+    {
+      role: "reload",
+      label: "טען מחדש"
+    }
+
+  ],
+  labels: {
+    cut: 'גזור',
+    copy: 'העתק',
+    paste: 'הדבק',
+    save: 'שמור',
+    saveImageAs: 'שמור תמונה',
+    copyLink: 'העתק קישור',
+    copyImageAddress: 'העתק קישור תמונה',
+    inspect: 'Inspect'
+  }
+});
+
+/* {
+  label: 'תפריט',
     menu: actions => [
       actions.copyLink({
         transform: content => `modified_link_${content}`
@@ -57,14 +80,15 @@ contextMenu({
         transform: content => `modified_paste_${content}`
       })
     ]
-  }]
-});
+} */
 
 //app details
 const companyName = "NDT Solutions";
 const appName = "מערכת ניהול דוחות";
 
-let mainWindow;
+let mainWindow = null;
+
+const gotTheLock = app.requestSingleInstanceLock();
 
 function createWindow() {
   // Create the browser window.
@@ -103,19 +127,31 @@ function createWindow() {
   rendererotificationSvc.setWebContents(mainWindow.webContents);
 }
 
-app.on('ready', createWindow);
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (myWindow) {
+      if (myWindow.isMinimized()) myWindow.restore()
+      myWindow.focus()
+    }
+  })
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+  app.on('ready', createWindow);
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
+  app.on('activate', () => {
+    if (mainWindow === null) {
+      createWindow();
+    }
+  });
+}
 
 //create db connection
 let knex = createDBConnection();

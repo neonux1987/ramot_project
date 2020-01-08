@@ -71,10 +71,12 @@ const BudgetExecutions = props => {
                 />
               </Section>
 
+
+
               <SectionHeader
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
-                iconBoxBg={"rgb(234, 104, 59)"}
+                iconBoxBg={"rgb(255, 117, 37)"}
                 extraDetails={props.dateDetails(onlyDate)}
               />
 
