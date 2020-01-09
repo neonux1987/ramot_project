@@ -11,7 +11,7 @@ export default ({ handlers }) => {
       <div className={styles.draggableRegion}>
         <div className={styles.section} style={{ flex: "1 1" }}>
           <div className={styles.header}>
-            {/* <span>NDTS</span>&nbsp; */}<span>מז"ח ניהול דוחות</span>
+            {/* <span>NDTS</span>&nbsp; */}<span>מז"ח ניהול הוצאות הכנסות</span>
           </div>
         </div>
 

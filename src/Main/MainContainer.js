@@ -1,18 +1,26 @@
+// LIBRARIES
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
+import { withStyles } from '@material-ui/core';
+import { Element, Events } from 'react-scroll'
+
+// PAGES
 import MonthExpanses from '../pages/MonthExpanses/MonthExpanses';
 import Home from '../pages/Home/Home';
 import BudgetExecutions from '../pages/BudgetExecutions/BudgetExecutions';
 import SummarizedBudgets from '../pages/SummarizedBudgets/SummarizedBudgets';
 import Settings from '../pages/Settings/Settings';
 import Statistics from '../pages/Statistics/Statistics'
-import { Route, Switch } from 'react-router-dom';
-import { withStyles } from '@material-ui/core';
+
+// COMPONENTS
 import LoadingCircle from '../components/LoadingCircle';
 import Toolbar from './Toolbar/Toolbar';
 import Helper from '../helpers/Helper';
+
+// ACTIONS
 import sidebarActions from '../redux/actions/sidebarActions';
-import { withRouter } from 'react-router';
 
 const styles = theme => ({
   main: {
@@ -49,6 +57,17 @@ class MainContainer extends Component {
 
   componentDidMount() {
     this.props.fetchSidebar();
+
+    Events.scrollEvent.register('begin', function () {
+    });
+
+    Events.scrollEvent.register('end', function () {
+    });
+  }
+
+  componentWillUnmount() {
+    Events.scrollEvent.remove('begin');
+    Events.scrollEvent.remove('end');
   }
 
   //gnerate routes from menu array with sub arrays
@@ -87,27 +106,29 @@ class MainContainer extends Component {
       return <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} />;
     } else {
       return (
-        <main ref={this.props.mainContainer} id="main" className={this.props.classes.main + this.props.toggleMain}>
-          <Toolbar
-            buildingName={locationState.buildingName}
-            page={locationState.page}
-            year={Helper.getCurrentYear()}
-            quarter={Helper.getCurrentQuarterHeb()}
-            month={Helper.getCurrentMonthHeb()}
-          />
-          <div /* style={{ padding: "15px 24px 24px 24px" }} */ style={{ height: "100%" }}>
-            <Switch>
-              {this.generateRoutes(this.props.sidebar.sidebar.data)}
-              <Route path="/דף-הבית" component={Home} />
-              <Route path="/הגדרות" component={Settings} />
-              <Route exact path="/" component={Home} history={{
-                page: "דף-הבית",
-                buildingName: "דף הבית",
-                buildingNameEng: "home"
-              }} />
-            </Switch>
-          </div>
-        </main>
+        <Element id="mainContainer" className={this.props.classes.main + this.props.toggleMain}>
+          <main ref={this.props.mainContainer}>
+            <Toolbar
+              buildingName={locationState.buildingName}
+              page={locationState.page}
+              year={Helper.getCurrentYear()}
+              quarter={Helper.getCurrentQuarterHeb()}
+              month={Helper.getCurrentMonthHeb()}
+            />
+            <div /* style={{ padding: "15px 24px 24px 24px" }} */ style={{ height: "100%" }}>
+              <Switch>
+                {this.generateRoutes(this.props.sidebar.sidebar.data)}
+                <Route path="/דף-הבית" component={Home} />
+                <Route path="/הגדרות" component={Settings} />
+                <Route exact path="/" component={Home} history={{
+                  page: "דף-הבית",
+                  buildingName: "דף הבית",
+                  buildingNameEng: "home"
+                }} />
+              </Switch>
+            </div>
+          </main>
+        </Element>
       );
     }
   }

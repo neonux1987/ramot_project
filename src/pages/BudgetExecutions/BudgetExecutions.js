@@ -81,7 +81,6 @@ const BudgetExecutions = props => {
               />
 
               <Section marginBottom={"100px"}>
-
                 <BudgetExecutionsTableContainer
                   location={props.location}
                   date={date[buildingNameEng]}
@@ -89,7 +88,6 @@ const BudgetExecutions = props => {
                   pageName={PAGE_NAME}
                   pageTitle={PAGE_TITLE}
                 />
-
               </Section>
 
             </Fragment>

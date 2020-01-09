@@ -3,6 +3,7 @@ import { Button } from '@material-ui/core';
 import { Add, Edit, RemoveCircle } from '@material-ui/icons';
 import styles from './EditControls.module.css';
 import classnames from 'classnames';
+import { scroller } from 'react-scroll'
 
 export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style }) => {
 
@@ -15,9 +16,22 @@ export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style 
   const addNewBtnStyle = "" //addNewMode ? styles.red : "";
   const addIcon = addNewMode ? <RemoveCircle className={styles.addIcon} style={{ color: "#ff2864" }} /> : <Add className={styles.addIcon} />
 
+  const clickWithScroll = (event) => {
+    toggleEditMode(event)
+
+    if (!editMode)
+      scroller.scrollTo("table", {
+        duration: 800,
+        delay: 0,
+        containerId: 'mainContainer',
+        smooth: "easeInOutQuart",
+        offset: -57
+      });
+  }
+
   return (
     <div className={styles.wrapper} style={style}>
-      <Button className={styles.editBtn} onClick={toggleEditMode} variant="contained" >
+      <Button className={styles.editBtn} onClick={clickWithScroll} variant="contained" >
         {editBtnTitle} {editIcon}
       </Button>
 
