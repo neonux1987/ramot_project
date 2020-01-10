@@ -150,7 +150,7 @@ module.exports = async (
   sheet.pageSetup.printTitlesRow = '3:4';
 
   // Set footer (default centered), result: "Page 2 of 16"
-  sheet.headerFooter.oddFooter = "&N מתוך &P עמוד";
+  sheet.headerFooter.oddFooter = "&N עמוד &P מתוך";
 
   const headerCellsStyles = {
     font: {
