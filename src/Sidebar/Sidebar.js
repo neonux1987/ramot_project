@@ -28,7 +28,7 @@ const styles = theme => ({
   drawerPaper: {
     width: drawerWidth,
     //background: "rgb(33,39,49)",
-    boxShadow: "inset -15px 0px 23px -5px rgba(0, 0, 0, 0.52)",
+    //boxShadow: "inset -15px 0px 23px -5px rgba(0, 0, 0, 0.52)",
     //background: "linear-gradient(315deg, rgba(33, 39, 49, 0.95) 0%, rgba(46, 55, 62, 0.95) 100%)",
     background: "linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%)",
     overflow: "initial",
