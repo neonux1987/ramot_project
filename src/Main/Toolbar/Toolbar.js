@@ -1,5 +1,6 @@
 import React from "react";
-import { Notifications } from '@material-ui/icons';
+import { Notifications, Settings } from '@material-ui/icons';
+import { NavLink } from 'react-router-dom';
 
 import styles from './Toolbar.module.css';
 import classnames from 'classnames';
@@ -47,7 +48,7 @@ const Toolbar = ({ buildingName, page }) => {
           <span>מע"מ נוכחי: </span>{tax}
         </div>
 
-        <button className={styles.notifBtn}>
+        <button className={styles.notificationBtn}>
           <Notifications />
         </button>
 

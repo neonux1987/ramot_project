@@ -20,7 +20,7 @@ export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style 
     toggleEditMode(event)
 
     if (!editMode)
-      scroller.scrollTo("table", {
+      scroller.scrollTo("tableElement", {
         duration: 800,
         delay: 0,
         containerId: 'mainContainer',

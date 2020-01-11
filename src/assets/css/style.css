@@ -28,7 +28,9 @@ body{
 }
 
 #root{
-  height: 100%;
+  height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 #sidebar{
@@ -46,13 +48,25 @@ a {
 }
 
 
-/* general scrollbar */
+/* width */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
   overflow-x: hidden;
+  border-radius: 4px;
 }
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 4px;
+}
+ 
+/* Handle */
 ::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   background-color: #e2e2e2;
   border-radius: 4px;
 }

@@ -30,6 +30,8 @@ const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
 const dbBackupSvc = require('./backend/services/DbBackupSvc');
 
+const mainSystem = require('./backend/system/MainSystem');
+
 const path = require('path');
 const os = require('os');
 const isDev = require('electron-is-dev');
@@ -155,6 +157,10 @@ if (!gotTheLock) {
 
 //create db connection
 let knex = createDBConnection();
+
+mainSystem.firstTimeSetup({
+  //dbFilePath: "/home/ag1987/Dropbox/ndts/db/mezach-db.sqlite"
+});
 
 sidebarIpc(knex);
 

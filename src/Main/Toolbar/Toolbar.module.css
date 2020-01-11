@@ -50,25 +50,20 @@
   justify-content: flex-end;
 }
 
-.notifBtn{
+.notificationBtn{
   width: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* border-right: 1px solid #e4e4e4; */
-    /* border-left: 1px solid #e4e4e4; */
-    /* border-top: none;
-    border-bottom: none; */
+    background: #2c86b1;
+    color: #fff;
     border: none;
-    background: none;
     outline: none;
     cursor: pointer;
-    color: #ffffff;
-    background: #2c86b1;
 }
 
-.notifBtn svg:hover{
-  color: #808080;
+.notificationBtn svg:hover{
+  color: #e2e2e2;
 }
 
 .vatWrapper{

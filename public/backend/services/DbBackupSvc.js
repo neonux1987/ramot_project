@@ -3,7 +3,7 @@ const SettingsLogic = require('../logic/SettingsLogic');
 const IOLogic = require('../logic/IOLogic');
 const rendererNotificationSvc = require('./RendererNotificationSvc');
 
-const DB_BACKUP_FILENAME = "ndts-frms-db-backup";
+const DB_BACKUP_FILENAME = "mezach-db-backup";
 
 class DbBackupSvc {
 

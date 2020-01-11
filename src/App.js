@@ -133,7 +133,12 @@ class App extends Component {
               minimize: this.minimizeButtonHandler,
               maximize: this.maximizeButtonHandler
             }} />
-            <div style={{ display: "flex", height: "100%", padding: 0 }}>
+            <div style={{
+              display: "flex",
+              padding: "0",
+              flex: "1",
+              overflow: "hidden"
+            }}>
               <CssBaseline />
 
               <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />

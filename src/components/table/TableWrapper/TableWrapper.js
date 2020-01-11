@@ -4,10 +4,8 @@ import { Element } from 'react-scroll';
 
 export default ({ children }) => {
   return (
-    <div className={styles.tableWrapper}>
-      <Element name="table">
-        {children}
-      </Element>
-    </div>
+    <Element className={styles.tableWrapper} name="tableElement">
+      {children}
+    </Element>
   );
 }
