@@ -1,3 +1,4 @@
+// LIBRARIES
 const path = require('path');
 const os = require('os');
 const platform = os.platform();
@@ -8,16 +9,48 @@ const simpleNodeLogger = require('simple-node-logger');
 const fs = require('fs');
 const util = require('util');
 
+//========================= my ipc's imports =========================//
+const monthExpansesIpc = require('../../electron/ipcs/monthExpanses.ipc');
+const budgetExecutionIpc = require('../../electron/ipcs/budgetExecution.ipc');
+const summarizedBudgetIpc = require('../../electron/ipcs/SummarizedBudget.ipc');
+const sidebarIpc = require('../../electron/ipcs/sidebar.ipc');
+const summarizedSectionsIpc = require('../../electron/ipcs/summarizedSections.ipc');
+const expansesCodesIpc = require('../../electron/ipcs/expansesCodes.ipc');
+const generalSettingsIpc = require('../../electron/ipcs/generalSettings.ipc');
+const registeredMonthsIpc = require('../../electron/ipcs/registeredMonths.ipc');
+const registeredYearsIpc = require('../../electron/ipcs/registeredYears.ipc');
+const registeredQuartersIpc = require('../../electron/ipcs/registeredQuarters.ipc');
+const monthlyStatsIpc = require('../../electron/ipcs/monthlyStats.ipc');
+const quarterlyStatsIpc = require('../../electron/ipcs/quarterlyStats.ipc');
+const yearlyStatsIpc = require('../../electron/ipcs/yearlyStats.ipc');
+const tableSettingsIpc = require('../../electron/ipcs/tableSettings.ipc');
+const IOIpc = require('../../electron/ipcs/IO.ipc');
+const settingsIpc = require('../../electron/ipcs/settings.ipc');
+const dbBackupIpc = require('../../electron/ipcs/dbBackup.ipc');
+const excelIpc = require('../../electron/ipcs/excel.ipc');
+
+//========================= services =========================//
+const reportsGeneratorSvc = require('../services/ReportsGeneratorSvc');
+const dbBackupSvc = require('../services/DbBackupSvc');
+
+const ConnectionPool = require('../connection/ConnectionPool');
+
 const readFilePromise = util.promisify(fs.readFile);
 const writeFilePromise = util.promisify(fs.writeFile);
 
-const computerFolder = platform === "linux" ? path.join(homedir, "Dropbox") : `${homedir}\\AppData\\Roaming`;
+// location of the settings folder
+const appSettingsFolderLocation = platform === "linux" ? path.join(homedir, "Dropbox") : `${homedir}\\AppData\\Roaming`;
+const appSettingsFolder = platform === "linux" ? path.join(appSettingsFolderLocation, "/ndts/") : `${appSettingsFolderLocation}\\ndts\\`;
+// app settings folder structure
+const appDBFolder = platform === "linux" ? path.join(appSettingsFolder, "/db") : `${appSettingsFolder}\\db`;
+const appConfigFolder = platform === "linux" ? path.join(appSettingsFolder, "/config") : `${appSettingsFolder}\\config`;
+const appBackupFolder = platform === "linux" ? path.join(appSettingsFolder, "/backup") : `${appSettingsFolder}\\backup`;
 
-const dbPath = platform === "linux" ? path.join(computerFolder, "/mezach/db/") : `${computerFolder}\\mezach\\db\\`;
-
-const systemFolderPath = platform === "linux" ? path.join(computerFolder, "/mezach/") : `${computerFolder}\\mezach\\`;
-
+// database file name
 const DB_NAME = "mezach-db.sqlite";
+
+// database file location
+const dbFilePath = platform === "linux" ? `${appDBFolder}/${DB_NAME}` : `${appDBFolder}\\${DB_NAME}`;
 
 class MainSystem {
 
@@ -27,29 +60,36 @@ class MainSystem {
     this.knex = require('knex')({
       client: 'sqlite3',
       connection: {
-        filename: dbPath + DB_NAME,
+        filename: dbFilePath,
       },
       useNullAsDefault: true
     });
 
   }
 
-  async firstTimeSetup({ dbFilePath, reportsPath }) {
+  async firstTimeSetup({ userDBFilePath, reportsPath }) {
 
-    if (!fs.existsSync(systemFolderPath)) {
-      fs.mkdirSync(systemFolderPath);
-      fs.mkdirSync(systemFolderPath + "db");
-      fs.mkdirSync(systemFolderPath + "config");
-      fs.mkdirSync(systemFolderPath + "backup");
+    if (!fs.existsSync(appSettingsFolder)) {
+      fs.mkdirSync(appSettingsFolder);
+    }
+
+    if (!fs.existsSync(appDBFolder)) {
+      fs.mkdirSync(appDBFolder);
+    }
+    if (!fs.existsSync(appConfigFolder)) {
+      fs.mkdirSync(appConfigFolder);
+    }
+    if (!fs.existsSync(appBackupFolder)) {
+      fs.mkdirSync(appBackupFolder);
     }
 
     // create a stdout and file logger
-    this.log = simpleNodeLogger.createSimpleLogger(systemFolderPath + 'project.log');
+    this.log = simpleNodeLogger.createSimpleLogger(appSettingsFolder + 'project.log');
 
     // if the user passed a location to a previous exisitng database,
     // copy the user's database to the location of the app database
-    if (dbFilePath) {
-      const dbFile = await readFilePromise(dbFilePath);
+    if (userDBFilePath) {
+      const dbFile = await readFilePromise(userDBFilePath);
       await writeFilePromise(`${dbPath}bdika.sqlite`, dbFile)
     }
     // create an empty database if the use did not
@@ -63,8 +103,6 @@ class MainSystem {
         }
       })
     }
-
-
 
   }
 
@@ -81,6 +119,52 @@ class MainSystem {
 
   getConnection() {
     return this.knex;
+  }
+
+  initializeIpcs() {
+    sidebarIpc(this.knex);
+
+    monthExpansesIpc(this.knex);
+
+    budgetExecutionIpc(this.knex);
+
+    summarizedBudgetIpc(this.knex);
+
+    summarizedSectionsIpc(this.knex);
+
+    expansesCodesIpc(this.knex);
+
+    generalSettingsIpc(this.knex);
+
+    registeredMonthsIpc(this.knex);
+
+    registeredYearsIpc(this.knex);
+
+    registeredQuartersIpc(this.knex);
+
+    monthlyStatsIpc(this.knex);
+
+    quarterlyStatsIpc(this.knex);
+
+    yearlyStatsIpc(this.knex);
+
+    tableSettingsIpc(this.knex);
+
+    IOIpc();
+
+    settingsIpc();
+
+    dbBackupIpc();
+
+    excelIpc();
+  }
+
+  startServices() {
+    //start the backup service
+    dbBackupSvc.init();
+
+    // start the 
+    reportsGeneratorSvc.init();
   }
 
 }

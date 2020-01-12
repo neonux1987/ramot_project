@@ -4,37 +4,15 @@ const { app, BrowserWindow } = require('electron');
 //========================= my db config imports =========================//
 const createDBConnection = require('./backend/dao/connection/dbconfig');
 
-//========================= my ipc's imports =========================//
-const monthExpansesIpc = require('./electron/ipcs/monthExpanses.ipc');
-const budgetExecutionIpc = require('./electron/ipcs/budgetExecution.ipc');
-const summarizedBudgetIpc = require('./electron/ipcs/SummarizedBudget.ipc');
-const sidebarIpc = require('./electron/ipcs/sidebar.ipc');
-const summarizedSectionsIpc = require('./electron/ipcs/summarizedSections.ipc');
-const expansesCodesIpc = require('./electron/ipcs/expansesCodes.ipc');
-const generalSettingsIpc = require('./electron/ipcs/generalSettings.ipc');
-const registeredMonthsIpc = require('./electron/ipcs/registeredMonths.ipc');
-const registeredYearsIpc = require('./electron/ipcs/registeredYears.ipc');
-const registeredQuartersIpc = require('./electron/ipcs/registeredQuarters.ipc');
-const monthlyStatsIpc = require('./electron/ipcs/monthlyStats.ipc');
-const quarterlyStatsIpc = require('./electron/ipcs/quarterlyStats.ipc');
-const yearlyStatsIpc = require('./electron/ipcs/yearlyStats.ipc');
-const tableSettingsIpc = require('./electron/ipcs/tableSettings.ipc');
-const IOIpc = require('./electron/ipcs/IO.ipc');
-const settingsIpc = require('./electron/ipcs/settings.ipc');
-const contextMenu = require('electron-context-menu');
-const dbBackupIpc = require('./electron/ipcs/dbBackup.ipc');
-const excelIpc = require('./electron/ipcs/excel.ipc');
-
 //========================= services =========================//
-const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
-const dbBackupSvc = require('./backend/services/DbBackupSvc');
 
 const mainSystem = require('./backend/system/MainSystem');
 
 const path = require('path');
 const os = require('os');
 const isDev = require('electron-is-dev');
+const contextMenu = require('electron-context-menu');
 
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
@@ -158,51 +136,13 @@ if (!gotTheLock) {
 //create db connection
 let knex = createDBConnection();
 
-mainSystem.firstTimeSetup({
+/* mainSystem.firstTimeSetup({
   //dbFilePath: "/home/ag1987/Dropbox/ndts/db/mezach-db.sqlite"
-});
+}); */
 
-sidebarIpc(knex);
+mainSystem.initializeIpcs();
 
-monthExpansesIpc(knex);
-
-budgetExecutionIpc(knex);
-
-summarizedBudgetIpc(knex);
-
-summarizedSectionsIpc(knex);
-
-expansesCodesIpc(knex);
-
-generalSettingsIpc(knex);
-
-registeredMonthsIpc(knex);
-
-registeredYearsIpc(knex);
-
-registeredQuartersIpc(knex);
-
-monthlyStatsIpc(knex);
-
-quarterlyStatsIpc(knex);
-
-yearlyStatsIpc(knex);
-
-tableSettingsIpc(knex);
-
-IOIpc();
-
-settingsIpc();
-
-dbBackupIpc();
-
-excelIpc();
-
-//start the backup service
-dbBackupSvc.init();
-
-reportsGeneratorSvc.init();
-
+mainSystem.startServices();
 
 
 

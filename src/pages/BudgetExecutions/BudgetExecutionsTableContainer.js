@@ -15,6 +15,7 @@ import {
 
 // UTILS
 import Helper from '../../helpers/Helper';
+import { areEqual } from '../util';
 
 // CONTEXT
 import GlobalContext from '../../context/GlobalContext';
@@ -294,7 +295,6 @@ const BudgetExecutionsTable = props => {
 
   const TableRow = (index) => {
     const {
-      editMode,
       textAreaInput,
       numberInput
     } = props;
@@ -398,17 +398,7 @@ const BudgetExecutionsTable = props => {
 
 const ConnectedComponent = withTableLogic(BudgetExecutionsTable);
 
-export default React.memo(ConnectedComponent, areEqual)
-
-function areEqual(prevProps, nextProps) {
-  if (
-    prevProps.date.year === nextProps.date.year &&
-    prevProps.date.month === nextProps.date.month &&
-    prevProps.date.quarter === nextProps.date.quarter &&
-    prevProps.location.state.buildingName === nextProps.location.state.buildingName
-  ) return true;
-  else return false;
-}
+export default React.memo(ConnectedComponent, areEqual);
 
 const defaultheaderStyle = {
   backgroundColor: "rgb(232, 236, 241)",

@@ -1,15 +1,20 @@
 // LIBRARIES IMPORTS
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 // ACTIONS IMPORTS
-import * as monthExpansesAction from '../../redux/actions/monthExpansesActions';
+import {
+  initMonthExpansesState,
+  fetchMonthExpanses,
+  updateMonthExpanse,
+  addMonthExpanse,
+  deleteMonthExpanse,
+  monthExpansesCleanup
+} from '../../redux/actions/monthExpansesActions';
 
 // UTILITY IMPORTS
 import Helper from '../../helpers/Helper';
-
-// CONTEXT IMPORTS
-import GlobalContext from '../../context/GlobalContext';
+import { areEqual } from '../util';
 
 // COMMON COMPONENTS IMPORTS
 import PageControls from '../../components/PageControls/PageControls';
@@ -34,36 +39,57 @@ import HeaderRow from '../../components/table/HeaderRow';
 // HOC
 import withTableLogic from '../../HOC/withTableLogic';
 
-class MonthExpanses extends React.PureComponent {
+const MonthExpansesTableContainer = props => {
 
-  state = {
-    editMode: false,
-    addNewMode: false
-  };
+  // building names
+  const { buildingName, buildingNameEng } = props.location.state;
 
-  static contextType = GlobalContext;
+  const {
+    date,
+    dateActions,
+    pageName,
+    pageTitle,
+    editMode,
+    toggleEditMode,
+    addNewMode,
+    toggleAddNewMode
+  } = props;
 
-  componentDidMount() {
+  const dispatch = useDispatch();
+
+  // page data
+  const page = useSelector(store => store.monthExpanses.pages[buildingNameEng]);
+
+  // page data
+  const tax = useSelector(store => store.generalSettings.generalSettings.data[0].tax);
+
+  useEffect(() => {
+
+    const cleanup = () => {
+      //cleanup
+      dispatch(monthExpansesCleanup(buildingNameEng));
+    }
+
     const params = {
-      buildingName: this.props.location.state.buildingNameEng,
-      date: Helper.getCurrentDate(),
+      buildingName: buildingNameEng,
+      date,
       range: {
         startElement: 0,
         pageSize: 1000
       }
     }
-    this.props.initMonthExpansesState(this.props.location.state.buildingNameEng).then(() => {
-      this.props.fetchMonthExpanses(params)
-    });
-  }
 
-  inputExpansesSubmit = (formInputs, reset) => {
-    //building names
-    const { buildingNameEng } = this.props.location.state;
-    // building data
-    const date = this.props.date;
+    const returnedPromise = dispatch(initMonthExpansesState(params.buildingName));
 
-    const valid = this.validateFormInputs(formInputs);
+    returnedPromise.then(() => {
+      dispatch(fetchMonthExpanses(params));
+    })
+
+    return cleanup;
+  }, [date, buildingNameEng, dispatch]);
+
+  const addNewExpanseSubmit = (formInputs, reset) => {
+    const valid = validateFormInputs(formInputs);
     if (!valid) {
 
       notify({
@@ -81,10 +107,10 @@ class MonthExpanses extends React.PureComponent {
     copiedFormInputs.expanses_code_id = formInputs.code.id;
     copiedFormInputs.year = date.year;
     copiedFormInputs.month = date.month;
-    copiedFormInputs.tax = this.props.generalSettings.tax;
+    copiedFormInputs.tax = tax;
 
     //parse form inputs
-    const parsedFormInputs = this.parseFormInputs(copiedFormInputs);
+    const parsedFormInputs = parseFormInputs(copiedFormInputs);
 
     const params = {
       buildingName: buildingNameEng,
@@ -92,21 +118,21 @@ class MonthExpanses extends React.PureComponent {
       date: date
     }
 
-    this.props.addMonthExpanse(params, params.expanse);
+    dispatch(addMonthExpanse(params, params.expanse));
 
     //reset form state
     reset();
 
   }
 
-  validateFormInputs = (formInputs) => {
+  const validateFormInputs = (formInputs) => {
     if (!formInputs.code && !formInputs.codeName) {
       return false;
     }
     return true;
   }
 
-  parseFormInputs = (formInputs) => {
+  const parseFormInputs = (formInputs) => {
     const copyFormInputs = { ...formInputs };
     //parse inputs
     copyFormInputs.code = Number.parseInt(copyFormInputs.code);
@@ -118,14 +144,10 @@ class MonthExpanses extends React.PureComponent {
     return copyFormInputs;
   }
 
-  componentWillUnmount() {
-    //on exit init table data
-    this.props.monthExpansesCleanup(this.props.location.state.buildingNameEng);
-  }
 
-  findExpanseIndex = (code = null, codeName = null) => {
+  const findExpanseIndex = (code = null, codeName = null) => {
     let result = null;
-    this.props.monthExpanses.expanses.data.forEach((row, index) => {
+    page.data.forEach((row, index) => {
       if (row["code"] === Number.parseInt(code) || row["codeName"] === codeName) {
         result = index;
       }
@@ -133,11 +155,8 @@ class MonthExpanses extends React.PureComponent {
     return result;
   }
 
-  loadDataByDate = ({ month, year }) => {
+  const loadDataByDate = ({ month, year }) => {
     const monthNum = Helper.convertEngToMonthNum(month);
-
-    const { pageName } = this.props;
-    const { buildingNameEng } = this.props.location.state
 
     //important params that allows to pull the current data by
     //building name, current month and year.
@@ -155,29 +174,16 @@ class MonthExpanses extends React.PureComponent {
     }
 
     //get the building month expanses
-    this.props.fetchMonthExpanses(params);
+    dispatch(fetchMonthExpanses(params));
 
-    this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
+    dispatch(dateActions.updateDate(pageName, buildingNameEng, params.date));
 
   }
 
-  getLocationState = () => {
-    return this.props.location.state;
-  }
-
-  getPage = () => {
-    return this.props.page;
-  }
-
-  onBlurHandler = (e) => {
-    //building names
-    const { buildingNameEng } = this.getLocationState();
+  const onBlurHandler = (e) => {
 
     // building data
-    const { data } = this.getPage();
-
-    // date
-    const date = this.props.date;
+    const data = page.data;
 
     const target = e.target;
 
@@ -200,7 +206,7 @@ class MonthExpanses extends React.PureComponent {
     }
 
     //update the tax to the current one
-    expanse.tax = this.props.generalSettings.tax;
+    expanse.tax = tax;
 
     //prepare the params
     let params = {
@@ -209,36 +215,32 @@ class MonthExpanses extends React.PureComponent {
       date
     };
     //update expanse
-    this.props.updateMonthExpanse(params, oldExpanseCopy, index);
+    dispatch(updateMonthExpanse(params, oldExpanseCopy, index));
     e.target.blur();
   }
 
-  deleteExpanseHandler = (id, index) => {
-    //building names
-    const { buildingNameEng } = this.getLocationState();
+  const deleteExpanseHandler = (id, index) => {
 
     //prepare the params
     let params = {
-      id: id,
+      id,
       buildingName: buildingNameEng,
-      date: this.props.date
+      date
     };
-    this.props.deleteMonthExpanse(params, index);
+    dispatch(deleteMonthExpanse(params, index));
   }
 
-  getDataObject = (index) => {
-    return this.getPage().data[index];
+  const getDataObject = (index) => {
+    return page.data[index];
   }
 
-  HeaderGroups = () => {
+  const HeaderGroups = () => {
     return <GroupRow>
       <GroupColumn></GroupColumn>
     </GroupRow>
   }
 
-  HeadersRow = () => {
-    const editMode = this.props.editMode;
-
+  const HeadersRow = () => {
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
@@ -256,156 +258,111 @@ class MonthExpanses extends React.PureComponent {
     </HeaderRow>
   }
 
-  Row = (index) => {
+  const TableRow = (index) => {
     const {
-      editMode,
       textAreaInput,
       numberInput
-    } = this.props;
+    } = props;
 
     // row data
-    const rowData = this.getDataObject(index);
+    const rowData = getDataObject(index);
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    return <Row style={{ minHeight: "35px" }} gridTemplateColumns={gridTemplateColumns}>
-      {editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+    // highlight the row
+    const backgroundColor = rowData.linked === 0 ? "#ff000069" : "none";
+
+    return <Row style={{ minHeight: "35px", backgroundColor }} gridTemplateColumns={gridTemplateColumns}>
+      {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
       <Column>{rowData["section"]}</Column>
-      {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, this.onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}
-      {editMode ? numberInput("sum", rowData["sum"], index, this.onBlurHandler) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-      {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
+      {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}
+      {editMode ? numberInput("sum", rowData["sum"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 
-  render() {
-    //building names
-    const { buildingName, buildingNameEng } = this.getLocationState();
-
-    const page = this.props.page;
-
-    if (page === undefined || page.data === undefined) {
-      return <AlignCenterMiddle><Spinner loadingText={"טוען עמוד"} /></AlignCenterMiddle>;
-    }
-
-    const {
-      date,
-      pageName,
-      pageTitle,
-      editMode,
-      toggleEditMode,
-      addNewMode,
-      toggleAddNewMode
-    } = this.props;
-
-    // building data
-    const {
-      isFetching,
-      data,
-      pageSettings
-    } = page;
-
-    //add new month expanse box
-    const addNewBox = addNewMode ?
-      <AddBox
-        data={data}
-        submitData={this.inputExpansesSubmit}
-        findData={this.findExpanseIndex}
-      />
-      : null;
-
-    return (
-      <TableWrapper>
-
-        <TableControls
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              addNewMode={addNewMode}
-              toggleAddNewMode={toggleAddNewMode}
-            />
-          } // end rightPane
-          middlePane={
-            <DatePicker
-              month
-              date={date}
-              buildingName={buildingNameEng}
-              submitHandler={this.loadDataByDate}
-            />
-
-          } // end middlePane
-          editMode={editMode}
-          leftPane={
-            <PageControls
-              excel={{
-                data,
-                fileName: Helper.getMonthExpansesFilename(buildingName, date),
-                buildingName,
-                buildingNameEng,
-                date
-              }}
-              print={{
-                title: pageTitle,
-                pageTitle: pageTitle + " - " + buildingName
-              }}
-              pageName={pageName}
-            />
-          } // end leftPane
-        /> {/* end TableControls */}
-
-        {/* add new box */}
-        {addNewBox}
-
-        <Table
-          Row={this.Row}
-          GroupComponent={this.HeaderGroups}
-          HeaderComponent={this.HeadersRow}
-          isFetching={isFetching || data.length === 0}
-          itemCount={data.length}
-        />
-
-      </TableWrapper>
-    );
+  if (page === undefined || page.data === undefined) {
+    return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב הוצאות חודשיות..."} /></AlignCenterMiddle>;
   }
 
+  // provider data
+  const {
+    data,
+    isFetching,
+    pageSettings,
+  } = page;
+
+  //add new month expanse box
+  const addNewBox = addNewMode ?
+    <AddBox
+      data={data}
+      submitData={addNewExpanseSubmit}
+      findData={findExpanseIndex}
+    />
+    : null;
+
+  return (
+    <TableWrapper>
+
+      <TableControls
+        rightPane={
+          <EditControls
+            editMode={editMode}
+            toggleEditMode={toggleEditMode}
+            addNewMode={addNewMode}
+            toggleAddNewMode={toggleAddNewMode}
+          />
+        } // end rightPane
+        middlePane={
+          <DatePicker
+            month
+            date={date}
+            buildingName={buildingNameEng}
+            submitHandler={loadDataByDate}
+          />
+
+        } // end middlePane
+        editMode={editMode}
+        leftPane={
+          <PageControls
+            excel={{
+              data,
+              fileName: Helper.getMonthExpansesFilename(buildingName, date),
+              buildingName,
+              buildingNameEng,
+              date
+            }}
+            print={{
+              title: pageTitle,
+              pageTitle: pageTitle + " - " + buildingName
+            }}
+            pageName={pageName}
+          />
+        } // end leftPane
+      /> {/* end TableControls */}
+
+      {/* add new box */}
+      {addNewBox}
+
+      <Table
+        Row={TableRow}
+        GroupComponent={HeaderGroups}
+        HeaderComponent={HeadersRow}
+        isFetching={isFetching || data.length === 0}
+        itemCount={data.length}
+      />
+
+    </TableWrapper>
+  );
+
 }
 
-const mapStateToProps = (state, ownProps) => {
-  //buildingName
-  const buildingName = ownProps.location.state.buildingNameEng;
+const ConnectedComponent = withTableLogic(MonthExpansesTableContainer);
 
-  return ({
-    page: state.monthExpanses.pages[buildingName],
-    generalSettings: {
-      tax: state.generalSettings.generalSettings.data[0].tax
-    }
-  });
-}
-
-const mapDispatchToProps = dispatch => ({
-  fetchMonthExpanses: (payload, page) => dispatch(monthExpansesAction.fetchMonthExpanses(payload, page)),
-  monthExpansesCleanup: (buildingNameEng) => dispatch(monthExpansesAction.monthExpansesCleanup(buildingNameEng)),
-  initMonthExpansesState: (page) => dispatch(monthExpansesAction.initMonthExpansesState(page)),
-  updateMonthExpanse: (payload, tableData, target, fieldName) => dispatch(monthExpansesAction.updateMonthExpanse(payload, tableData, target, fieldName)),
-  addMonthExpanse: (params, expanse) => dispatch(monthExpansesAction.addMonthExpanse(params, expanse)),
-  deleteMonthExpanse: (payload, index) => dispatch(monthExpansesAction.deleteMonthExpanse(payload, index))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withTableLogic(MonthExpanses)
-);
-
-/* const headerStyle = {
-  backgroundColor: "rgb(232, 236, 241)",
-  color: "#000000",
-  fontWeight: "600",
-  justifyContent: "center",
-  height: "27px",
-  alignItems: "center"
-}; */
+export default React.memo(ConnectedComponent, areEqual);
 
 const headerStyle = {
   backgroundColor: "rgb(232, 236, 241)",

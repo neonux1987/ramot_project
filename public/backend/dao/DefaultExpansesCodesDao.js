@@ -1,9 +1,7 @@
-const mainSystem = require('../system/MainSystem');
-
 class DefaultExpansesCodesDao {
 
   constructor(connection) {
-    this.connection = mainSystem.getConnection();
+    this.connection = connection;
   }
 
   /**

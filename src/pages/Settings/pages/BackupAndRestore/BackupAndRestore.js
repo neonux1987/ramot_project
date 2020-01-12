@@ -177,7 +177,7 @@ class BackupAndRestore extends Component {
 
     const currentDate = new Date();
 
-    const fileName = `ndts-frms-db-backup-${currentDate.getDay()}-${currentDate.getDate()}-${currentDate.getFullYear()}.sqlite`;
+    const fileName = `mezach-db-backup-${currentDate.getDay()}-${currentDate.getDate()}-${currentDate.getFullYear()}.sqlite`;
 
     saveToFileDialog(fileName, undefined).then(({ canceled, filePath }) => {
       if (!canceled) {

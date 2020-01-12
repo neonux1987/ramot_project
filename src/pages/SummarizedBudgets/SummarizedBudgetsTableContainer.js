@@ -1,12 +1,18 @@
 // LIBRARIES
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useContext } from 'react';
+import { connect, useSelector, useDispatch } from 'react-redux';
 
 // ACTIONS
-import * as summarizedBudgetActions from '../../redux/actions/summarizedBudgetActions';
+import {
+  initSummarizedBudgetsState,
+  fetchSummarizedBudgets,
+  updateSummarizedBudget,
+  summarizedBudgetsCleanup
+} from '../../redux/actions/summarizedBudgetActions';
 
 // UTILS
 import Helper from '../../helpers/Helper';
+import { areEqual } from '../util';
 
 // CONTEXT
 import GlobalContext from '../../context/GlobalContext';
@@ -31,42 +37,63 @@ import GroupRow from '../../components/table/GroupRow';
 // HOC 
 import withTableLogic from '../../HOC/withTableLogic';
 
+// CUSTOM HOOKS
+import useModalLogic from '../../customHooks/useModalLogic';
+
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 
-class SummarizedBudgetsTableContainer extends React.PureComponent {
+const SummarizedBudgetsTableContainer = props => {
 
-  state = {
-    editMode: false
-  }
+  // building names
+  const { buildingName, buildingNameEng } = props.location.state;
 
-  static contextType = GlobalContext;
+  const {
+    date,
+    dateActions,
+    pageName,
+    pageTitle,
+    editMode,
+    toggleEditMode,
+    addNewMode,
+    toggleAddNewMode
+  } = props;
 
-  componentDidMount() {
+  const globalContext = useContext(GlobalContext);
+
+  const dispatch = useDispatch();
+
+  // page data
+  const page = useSelector(store => store.summarizedBudgets.pages[buildingNameEng]);
+
+  useEffect(() => {
+
+    const cleanup = () => {
+      //cleanup
+      dispatch(summarizedBudgetsCleanup(buildingNameEng));
+    }
+
     const params = {
-      date: this.props.date,
-      buildingName: this.props.location.state.buildingNameEng,
+      date: date,
+      buildingName: buildingNameEng,
       range: {
         startElement: 0,
         pageSize: 1000
       }
     }
 
-    this.props.initSummzrizedBudgetsState(params.buildingName).then(() => {
-      // fetch budget executions
-      this.props.fetchSummarizedBudgets(params);
-    });
-  }
+    const returnedPromise = dispatch(initSummarizedBudgetsState(params.buildingName));
 
-  componentWillUnmount() {
-    //on exit init table data
-    this.props.summarizedBudgetCleanup(this.props.location.state.buildingNameEng);
-  }
+    returnedPromise.then(() => {
+      dispatch(fetchSummarizedBudgets(params));
+    })
 
-  loadDataByDate = ({ year }) => {
-    const { pageName } = this.props;
-    const { buildingNameEng } = this.props.location.state
+    return cleanup;
+  }, [date, buildingNameEng, dispatch]);
 
+
+
+  const loadDataByDate = ({ year }) => {
     //important params that allows to pull the current data by
     //building name, current month and year.
     let params = {
@@ -77,15 +104,14 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     }
 
     //get the building month expanses
-    this.props.fetchSummarizedBudgets(params);
+    dispatch(fetchSummarizedBudgets(params));
 
-    this.props.dateActions.updateDate(pageName, buildingNameEng, params.date);
+    dispatch(dateActions.updateDate(pageName, buildingNameEng, params.date));
 
   }
 
-  onBlurHandler = (e) => {
-    const { data } = this.getPage();
-    const { buildingNameEng } = this.props.location.state
+  const onBlurHandler = (e) => {
+    const data = page.data;
 
     const target = e.target;
 
@@ -107,31 +133,32 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     //prepare the params object
     let params = {
       buildingName: buildingNameEng,
-      date: this.props.date,
+      date,
       summarizedBudget: newCopy,
       summarized_section_id: oldCopy.summarized_section_id
     };
 
-    this.props.updateSummarizedBudget(params, oldCopy, newCopy, index);
+    dispatch(updateSummarizedBudget(params, oldCopy, newCopy, index));
     e.target.blur();
   }
 
-  getGridTemplateColumns = () => {
-    return this.props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+  const deleteHandler = (id, summarized_section_id) => {
+
   }
 
-  getPage = () => {
-    return this.props.page;
+  const getGridTemplateColumns = () => {
+    return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
-  getDataObject = (index) => {
-    return this.getPage().data[index];
+
+  const getDataObject = (index) => {
+    return page.data[index];
   }
 
-  HeaderGroups = () => {
-    const editMode = this.props.editMode;
-    const { groupColors } = this.context;
-    const { quarter, year } = this.props.date;
+  const HeaderGroups = () => {
+
+    const { groupColors } = globalContext;
+    const { quarter, year } = date;
 
     const quarters = Helper.getYearQuarters(quarter);
 
@@ -148,7 +175,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     }
 
     return <GroupRow
-      gridTemplateColumns={this.getGridTemplateColumns()} >
+      gridTemplateColumns={getGridTemplateColumns()} >
       {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
       <GroupColumn style={defaultStyle}></GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
@@ -161,9 +188,8 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     </GroupRow>
   }
 
-  HeadersRow = () => {
-    const editMode = this.props.editMode;
-    const { groupColors } = this.context;
+  const HeadersRow = () => {
+    const { groupColors } = globalContext;
 
     const quarterColumns = [];
 
@@ -177,7 +203,7 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
       color: groupColors[4]
     }
 
-    return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} >
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
@@ -193,15 +219,14 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
     </HeaderRow>
   }
 
-  Row = (index) => {
+  const TableRow = (index) => {
     const {
-      editMode,
       textAreaInput,
       numberInput
-    } = this.props;
+    } = props;
 
     // row data
-    const rowData = this.getDataObject(index);
+    const rowData = getDataObject(index);
 
     const quarterColumns = [];
 
@@ -211,108 +236,80 @@ class SummarizedBudgetsTableContainer extends React.PureComponent {
       quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_execution`}>{rowData[`quarter${i}_execution`]}</NonZeroNumberColumn>);
     }
 
-    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => this.deleteExpanseHandler(rowData.id, index)} /> : null}
+    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={getGridTemplateColumns()}>
+      {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
       {quarterColumns}
-      {editMode ? numberInput("evaluation", rowData["evaluation"], index, this.onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
+      {editMode ? numberInput("evaluation", rowData["evaluation"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
       <NonZeroNumberColumn>{rowData["year_total_budget"]}</NonZeroNumberColumn>
       <NonZeroNumberColumn>{rowData["year_total_execution"]}</NonZeroNumberColumn>
-      {editMode ? textAreaInput("notes", rowData["notes"], index, this.onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
 
-  render() {
-
-    //building names
-    const { buildingName, buildingNameEng } = this.props.location.state;
-
-    const page = this.props.page;
-
-    if (page === undefined || page.data === undefined) {
-      return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
-    }
-
-    const {
-      date,
-      pageName,
-      pageTitle,
-      editMode,
-      toggleEditMode
-    } = this.props;
-
-    // provider data
-    const {
-      data,
-      isFetching,
-      pageSettings,
-    } = page;
-
-    return (
-      <TableWrapper>
-
-        <TableControls
-          editMode={editMode}
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-            />
-          } // end rightPane
-          middlePane={
-            <DatePicker
-              buildingName={buildingNameEng}
-              date={date}
-              submitHandler={this.loadDataByDate}
-            />
-          } // end middlePane
-          leftPane={<PageControls
-            excel={{
-              data,
-              fileName: Helper.getSummarizedBudgetsFilename(buildingName, date),
-              buildingName,
-              buildingNameEng,
-              date
-            }}
-            print={{
-              title: pageTitle,
-              pageTitle: pageTitle + " - " + buildingName
-            }}
-            pageName={pageName}
-          />} // end leftPane
-
-        />  {/* End TableControls */}
-
-        <Table
-          Row={this.Row}
-          GroupComponent={this.HeaderGroups}
-          HeaderComponent={this.HeadersRow}
-          isFetching={isFetching || data.length === 0}
-          itemCount={data.length}
-          cache={this.cache}
-        />
-
-      </TableWrapper>
-    );
+  if (page === undefined || page.data === undefined) {
+    return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
   }
+
+  // provider data
+  const {
+    data,
+    isFetching,
+    pageSettings,
+  } = page;
+
+  return (
+    <TableWrapper>
+
+      <TableControls
+        editMode={editMode}
+        rightPane={
+          <EditControls
+            editMode={editMode}
+            toggleEditMode={toggleEditMode}
+          />
+        } // end rightPane
+        middlePane={
+          <DatePicker
+            buildingName={buildingNameEng}
+            date={date}
+            submitHandler={loadDataByDate}
+          />
+        } // end middlePane
+        leftPane={<PageControls
+          excel={{
+            data,
+            fileName: Helper.getSummarizedBudgetsFilename(buildingName, date),
+            buildingName,
+            buildingNameEng,
+            date
+          }}
+          print={{
+            title: pageTitle,
+            pageTitle: pageTitle + " - " + buildingName
+          }}
+          pageName={pageName}
+        />} // end leftPane
+
+      />  {/* End TableControls */}
+
+      <Table
+        Row={TableRow}
+        GroupComponent={HeaderGroups}
+        HeaderComponent={HeadersRow}
+        isFetching={isFetching || data.length === 0}
+        itemCount={data.length}
+      />
+
+    </TableWrapper>
+  );
 
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  page: state.summarizedBudgets.pages[ownProps.location.state.buildingNameEng]
-});
+const ConnectedComponent = withTableLogic(SummarizedBudgetsTableContainer);
 
-const mapDispatchToProps = dispatch => ({
-  fetchSummarizedBudgets: (payload) => dispatch(summarizedBudgetActions.fetchSummarizedBudgets(payload)),
-  summarizedBudgetCleanup: (buildingNameEng) => dispatch(summarizedBudgetActions.summarizedBudgetCleanup(buildingNameEng)),
-  initSummzrizedBudgetsState: (page) => dispatch(summarizedBudgetActions.initSummzrizedBudgetsState(page)),
-  updateSummarizedBudget: (params, oldCopy, newCopy, index) => dispatch(summarizedBudgetActions.updateSummarizedBudget(params, oldCopy, newCopy, index))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withTableLogic(SummarizedBudgetsTableContainer)
-);
+export default React.memo(ConnectedComponent, areEqual);
 
 const defaultheaderStyle = {
   backgroundColor: "rgb(232, 236, 241)",

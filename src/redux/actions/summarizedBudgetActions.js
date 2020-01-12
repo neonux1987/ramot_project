@@ -119,7 +119,7 @@ const receiveSummarizedBudgets = function (data, date, buildingName) {
 /**
  * init the state
  */
-export const initSummzrizedBudgetsState = function (buildingName) {
+export const initSummarizedBudgetsState = function (buildingName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       if (buildingName) {
@@ -184,7 +184,7 @@ const updateSummarizedBudgetInStore = (buildingName, summarizedBudget, index) =>
   };
 }
 
-export const summarizedBudgetCleanup = function (buildingName) {
+export const summarizedBudgetsCleanup = function (buildingName) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_CLEANUP,
     buildingName

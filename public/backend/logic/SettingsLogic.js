@@ -6,7 +6,7 @@ const path = require('path');
 
 const CONFIG_LOCATION = platform === "linux" ? homedir + "/Dropbox/ndts/config/config.json" : `${homedir}\\AppData\\Roaming\\ndts\\config\\config.json`;
 const CONFIG_BACKUPS_NAMES = platform === "linux" ? homedir + "/Dropbox/ndts/config/backupsNames.json" : `${homedir}\\AppData\\Roaming\\ndts\\config\\backupsNames.json`;
-const dbPath = platform === "linux" ? path.join(homedir, "Dropbox/ndts/db/ndts-frms-db.sqlite") : `${homedir}\\AppData\\Roaming\\ndts\\db\\ndts-frms-db.sqlite`;
+const dbPath = platform === "linux" ? path.join(homedir, "Dropbox/ndts/db/mezach-db.sqlite") : `${homedir}\\AppData\\Roaming\\ndts\\db\\mezach-db.sqlite`;
 
 class SettingsLogic {
 
