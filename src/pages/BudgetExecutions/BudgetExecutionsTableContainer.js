@@ -67,8 +67,6 @@ const BudgetExecutionsTable = props => {
   const { showModal } = useModalLogic();
   const dispatch = useDispatch();
 
-  const [dataSaved, setDataSaved] = useState(false);
-
   // page data
   const page = useSelector(store => store.budgetExecutions.pages[buildingNameEng]);
 
@@ -168,12 +166,7 @@ const BudgetExecutionsTable = props => {
     }
 
     //calculateMonthTotalBudget(copyData, cellInfo.column.id, prevValue, copyData[objIndex][cellInfo.column.id]);
-    dispatch(updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index)).then(() => {
-      setDataSaved(true);
-      setTimeout(() => {
-        setDataSaved(false);
-      }, 3000);
-    });
+    dispatch(updateBudgetExecution(params, oldBudgetExecutionObj, newBudgetExecutionObj, index));
     e.target.blur();
   }
 
@@ -389,7 +382,6 @@ const BudgetExecutionsTable = props => {
         HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
         itemCount={data.length}
-        dataSaved={dataSaved}
       />
 
     </TableWrapper>

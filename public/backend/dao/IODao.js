@@ -1,26 +1,21 @@
-const fs = require('fs');
-const util = require('util');
-
-const readFilePromise = util.promisify(fs.readFile);
-const writeFilePromise = util.promisify(fs.writeFile);
-const removeFilePromise = util.promisify(fs.unlink);
+const fs = require('fs').promises;
 
 class IODao {
 
   readFile(filePath, settings) {
-    return readFilePromise(filePath, settings).catch(() => {
+    return fs.readFile(filePath, settings).catch(() => {
       throw new Error("קרתה תקלה, לא ניתן לקרוא את הקובץ.");
-    });;
+    });
   }
 
   writeFile(filePath, data) {
-    return writeFilePromise(filePath, data).catch(() => {
+    return fs.writeFile(filePath, data).catch(() => {
       throw new Error("כתיבת הקובץ לא הצליחה.");
     });
   }
 
   removeFile(filePath) {
-    return removeFilePromise(filePath).catch(() => {
+    return fs.unlink(filePath).catch(() => {
       throw new Error("מחיקת הקובץ לא הצליחה.");
     });
   }

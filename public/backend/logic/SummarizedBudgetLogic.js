@@ -5,17 +5,17 @@ const QuarterlyStatsLogic = require('../logic/QuarterlyStatsLogic');
 const YearlyStatsLogic = require('../logic/YearlyStatsLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
+const connectionPool = require('../connection/ConnectionPool');
 
 class SummarizedBudgetLogic {
 
-  constructor(connection) {
-    this.connection = connection;
-    this.sbd = new SummarizedBudgetDao(connection);
-    this.registeredYearsLogic = new RegisteredYearsLogic(connection);
-    this.quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
-    this.yearlyStatsLogic = new YearlyStatsLogic(connection);
-    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
-    this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
+  constructor() {
+    this.sbd = new SummarizedBudgetDao();
+    this.registeredYearsLogic = new RegisteredYearsLogic();
+    this.quarterlyStatsLogic = new QuarterlyStatsLogic();
+    this.yearlyStatsLogic = new YearlyStatsLogic();
+    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
+    this.summarizedSectionsLogic = new SummarizedSectionsLogic();
   }
 
   getBuildingSummarizedBudgetTrx(buildingName, date, trx) {
@@ -42,7 +42,7 @@ class SummarizedBudgetLogic {
   async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object, special = false }, trx) {
 
     if (trx === undefined) {
-      trx = await this.connection.transaction();
+      trx = await connectionPool.getTransaction();
     }
 
     await this.sbd.updateSummarizedBudgetTrx(summarized_section_id, buildingName, summarizedBudget, date, trx);
@@ -121,7 +121,7 @@ class SummarizedBudgetLogic {
   async createEmptyReport(buildingName, date, trx) {
 
     if (trx === undefined) {
-      trx = await this.connection.transaction()
+      trx = await connectionPool.getTransaction();
     }
 
     const registeredYear = await this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx);

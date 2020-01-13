@@ -1,4 +1,5 @@
 const NestHydrationJS = require('nesthydrationjs');
+const connectionPool = require('../connection/ConnectionPool');
 
 const DEFINITION = [{
   id: { column: 'id', type: 'NUMBER' },
@@ -21,8 +22,8 @@ const DEFINITION = [{
 
 class MenuDao {
 
-  constructor(connection) {
-    this.connection = connection;
+  constructor() {
+    this.connection = connectionPool.getConnection();
     this.nestHydrationJS = new NestHydrationJS();
   }
 

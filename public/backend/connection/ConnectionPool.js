@@ -1,7 +1,6 @@
 class ConnectionPool {
 
-  init(dbFilePath) {
-
+  createConnection(dbFilePath) {
     //create database connection
     this.knex = require('knex')({
       client: 'sqlite3',
@@ -12,10 +11,14 @@ class ConnectionPool {
     });
   }
 
-  static getConnection() {
+  getConnection() {
     return this.knex;
+  }
+
+  getTransaction() {
+    return this.knex.transaction();
   }
 
 }
 
-module.exports = ConnectionPool;
+module.exports = new ConnectionPool();

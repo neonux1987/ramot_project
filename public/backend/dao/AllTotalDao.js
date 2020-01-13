@@ -1,7 +1,9 @@
+const connectionPool = require('../connection/ConnectionPool');
+
 class AllTotalDao {
 
-  constructor(connection) {
-    this.connection = connection;
+  constructor() {
+    this.connection = connectionPool.getConnection();
   }
 
   getQuarterTotalTrx(

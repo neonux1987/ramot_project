@@ -1,7 +1,9 @@
+const connectionPool = require('../connection/ConnectionPool');
+
 class YearlyStatsDao {
 
-  constructor(connection) {
-    this.connection = connection;
+  constructor() {
+    this.connection = connectionPool.getConnection();
   }
 
   getYearStatsTrx(

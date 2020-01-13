@@ -6,7 +6,7 @@ const homedir = os.homedir();
 const sqlite3 = require('sqlite3');
 const simpleNodeLogger = require('simple-node-logger');
 
-const fs = require('fs');
+const fs = require('fs').promises;
 const util = require('util');
 
 //========================= my ipc's imports =========================//
@@ -33,7 +33,7 @@ const excelIpc = require('../../electron/ipcs/excel.ipc');
 const reportsGeneratorSvc = require('../services/ReportsGeneratorSvc');
 const dbBackupSvc = require('../services/DbBackupSvc');
 
-const ConnectionPool = require('../connection/ConnectionPool');
+const connectionPool = require('../connection/ConnectionPool');
 
 const readFilePromise = util.promisify(fs.readFile);
 const writeFilePromise = util.promisify(fs.writeFile);
@@ -52,9 +52,18 @@ const DB_NAME = "mezach-db.sqlite";
 // database file location
 const dbFilePath = platform === "linux" ? `${appDBFolder}/${DB_NAME}` : `${appDBFolder}\\${DB_NAME}`;
 
+// config file location
+const configPath = platform === "linux" ? `${appConfigFolder}/config.json` : `${appConfigFolder}\\config.json`;
+
+// backup names file location
+const backupsNamesPath = platform === "linux" ? `${appConfigFolder}/backupsNames.json` : `${appConfigFolder}\\backupsNames.json`;
+
 class MainSystem {
 
   constructor() {
+
+    // create the connection pool
+    connectionPool.createConnection(dbFilePath);
 
     //create database connection
     this.knex = require('knex')({
@@ -69,8 +78,8 @@ class MainSystem {
 
   async firstTimeSetup({ userDBFilePath, reportsPath }) {
 
-    if (!fs.existsSync(appSettingsFolder)) {
-      fs.mkdirSync(appSettingsFolder);
+    if (!fs.existsSync("./ramotmezach")) {
+      await fs.mkdir("./ramotmezach");
     }
 
     if (!fs.existsSync(appDBFolder)) {
@@ -106,49 +115,39 @@ class MainSystem {
 
   }
 
-  connectToDatabase() {
-    //create database connection
-    this.knex = require('knex')({
-      client: 'sqlite3',
-      connection: {
-        filename: dbPath,
-      },
-      useNullAsDefault: true
-    });
-  }
-
-  getConnection() {
-    return this.knex;
+  connectToDatabase(dbFilePath) {
+    // create the connection pool
+    connectionPool.createConnection(dbFilePath);
   }
 
   initializeIpcs() {
-    sidebarIpc(this.knex);
+    sidebarIpc();
 
-    monthExpansesIpc(this.knex);
+    monthExpansesIpc();
 
-    budgetExecutionIpc(this.knex);
+    budgetExecutionIpc();
 
-    summarizedBudgetIpc(this.knex);
+    summarizedBudgetIpc();
 
-    summarizedSectionsIpc(this.knex);
+    summarizedSectionsIpc();
 
-    expansesCodesIpc(this.knex);
+    expansesCodesIpc();
 
-    generalSettingsIpc(this.knex);
+    generalSettingsIpc();
 
-    registeredMonthsIpc(this.knex);
+    registeredMonthsIpc();
 
-    registeredYearsIpc(this.knex);
+    registeredYearsIpc();
 
-    registeredQuartersIpc(this.knex);
+    registeredQuartersIpc();
 
-    monthlyStatsIpc(this.knex);
+    monthlyStatsIpc();
 
-    quarterlyStatsIpc(this.knex);
+    quarterlyStatsIpc();
 
-    yearlyStatsIpc(this.knex);
+    yearlyStatsIpc();
 
-    tableSettingsIpc(this.knex);
+    tableSettingsIpc();
 
     IOIpc();
 

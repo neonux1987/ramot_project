@@ -1,8 +1,10 @@
 
+const connectionPool = require('../connection/ConnectionPool');
+
 class RegisteredMonthsDao {
 
-  constructor(connection) {
-    this.connection = connection;
+  constructor() {
+    this.connection = connectionPool.getConnection();
   }
 
   /**

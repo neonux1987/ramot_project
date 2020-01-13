@@ -1,4 +1,5 @@
 const NestHydrationJS = require('nesthydrationjs');
+const connectionPool = require('../connection/ConnectionPool');
 
 const DEFINITION = [{
   id: { column: 'id', type: 'NUMBER' },
@@ -12,16 +13,15 @@ const DEFINITION = [{
   tax: { column: 'tax', type: 'REAL' },
   notes: 'notes',
   month: 'month',
-  year: { column: 'year', type: 'INTEGER' },
-  linked: { column: 'linked', type: 'INTEGER' }
+  year: { column: 'year', type: 'INTEGER' }
 }];
 
 const CHUNKSIZE = 100;
 
 class MonthExpansesDao {
 
-  constructor(connection) {
-    this.connection = connection;
+  constructor() {
+    this.connection = connectionPool.getConnection();
     this.nestHydrationJS = new NestHydrationJS();
   }
 
@@ -48,8 +48,7 @@ class MonthExpansesDao {
       "building.tax AS tax",
       "building.notes AS notes",
       "building.month AS month",
-      "building.year AS year",
-      "building.linked AS linked"
+      "building.year AS year"
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .orderBy(['code', { column: 'codeName', order: 'asc' }]);
@@ -85,13 +84,12 @@ class MonthExpansesDao {
       "building.tax AS tax",
       "building.notes AS notes",
       "building.month AS month",
-      "building.year AS year",
-      "building.linked AS linked"
+      "building.year AS year"
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .orderBy(['code', { column: 'codeName', order: 'asc' }])
       .limit(pageSettings.pageSize).offset(pageSettings.startElement);
-
+    console.log(data.toString());
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
     }).catch((error) => {

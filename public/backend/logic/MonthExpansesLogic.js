@@ -5,19 +5,19 @@ const MonthlyStatsLogic = require('../logic/MonthlyStatsLogic');
 const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const Helper = require('../../helpers/Helper');
+const connectionPool = require('../connection/ConnectionPool');
 
 const SPECIAL_CODE_PREFIX = "9";
 
 class MonthExpansesLogic {
 
-  constructor(connection) {
-    this.connection = connection;
-    this.monthExpansesDao = new MonthExpansesDao(connection);
-    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic(connection);
-    this.budgetExecutionLogic = new BudgetExecutionLogic(connection);
-    this.registeredMonthsLogic = new RegisteredMonthsLogic(connection);
-    this.monthlyStatsLogic = new MonthlyStatsLogic(connection);
-    this.generalSettingsLogic = new GeneralSettingsLogic(connection);
+  constructor() {
+    this.monthExpansesDao = new MonthExpansesDao();
+    this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
+    this.budgetExecutionLogic = new BudgetExecutionLogic();
+    this.registeredMonthsLogic = new RegisteredMonthsLogic();
+    this.monthlyStatsLogic = new MonthlyStatsLogic();
+    this.generalSettingsLogic = new GeneralSettingsLogic();
   }
 
   getAllMonthExpansesTrx(buildingName, date, trx) {
@@ -68,7 +68,7 @@ class MonthExpansesLogic {
   async saveExpanse(action = String, { date = Object, buildingName = String, expanse = Object }) {
 
     // Using trx as a transaction object:
-    const trx = await this.connection.transaction();
+    const trx = await connectionPool.getTransaction();
 
     //get settings to get th tax value
     const settings = await this.generalSettingsLogic.getGeneralSettingsTrx(trx);
@@ -164,7 +164,7 @@ class MonthExpansesLogic {
   async deleteMonthExpanseTrx({ buildingName, date, id }) {
 
     // Using trx as a transaction object:
-    const trx = await this.connection.transaction();
+    const trx = await connectionPool.getTransaction();
 
     //get the month expanses object that about to be deleting
     const monthExpanseObj = await this.monthExpansesDao.getMonthExpansesByIdTrx(id, buildingName, trx);
@@ -209,7 +209,7 @@ class MonthExpansesLogic {
   async createEmptyReport(buildingName, date) {
 
     // Using trx as a transaction object:
-    const trx = await this.connection.transaction();
+    const trx = await connectionPool.getTransaction();
 
     const registeredMonth = await this.registeredMonthsLogic.getRegisteredMonthTrx(buildingName, date.month, date.year, trx);
 

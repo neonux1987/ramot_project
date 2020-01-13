@@ -7,19 +7,19 @@ const SummarizedBudgetLogic = require('./SummarizedBudgetLogic');
 const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
 const MonthExpansesDao = require('../dao/MonthExpansesDao');
 const Helper = require('../../helpers/Helper');
+const connectionPool = require('../connection/ConnectionPool');
 
 class BudgetExecutionLogic {
 
-  constructor(connection) {
-    this.connection = connection;
-    this.budgetExecutionDao = new BudgetExecutionDao(connection);
-    this.generalSettingsDao = new GeneralSettingsDao(connection);
-    this.monthlyStatsLogic = new MonthlyStatsLogic(connection);
-    this.summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
-    this.quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
-    this.summarizedSectionsLogic = new SummarizedSectionsLogic(connection);
-    this.registeredQuartersLogic = new RegisteredQuartersLogic(connection);
-    this.monthExpansesDao = new MonthExpansesDao(connection);
+  constructor() {
+    this.budgetExecutionDao = new BudgetExecutionDao();
+    this.generalSettingsDao = new GeneralSettingsDao();
+    this.monthlyStatsLogic = new MonthlyStatsLogic();
+    this.summarizedBudgetLogic = new SummarizedBudgetLogic();
+    this.quarterlyStatsLogic = new QuarterlyStatsLogic();
+    this.summarizedSectionsLogic = new SummarizedSectionsLogic();
+    this.registeredQuartersLogic = new RegisteredQuartersLogic();
+    this.monthExpansesDao = new MonthExpansesDao();
   }
 
   getAllBudgetExecutionsTrx(buildingName, date, trx) {
@@ -56,7 +56,7 @@ class BudgetExecutionLogic {
   async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, special = false }, trx) {
 
     if (trx === undefined) {
-      trx = await this.connection.transaction();
+      trx = await connectionPool.getTransaction();
     }
 
     //update budget execution
@@ -203,7 +203,7 @@ class BudgetExecutionLogic {
   async createEmptyReport(buildingName, date, trx) {
 
     if (trx === undefined) {
-      trx = await this.connection.transaction();
+      trx = await connectionPool.getTransaction();
     }
 
     const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingName, date.quarter, date.year, trx);
@@ -283,7 +283,7 @@ class BudgetExecutionLogic {
 
     const quarterMonths = Helper.getQuarterMonths(date.quarter);
 
-    const trx = await this.connection.transaction();
+    const trx = await connectionPool.getTransaction();
 
     const budgetExecution = await this.getBudgetExecutionById(buildingName, date, id, trx);
 

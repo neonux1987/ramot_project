@@ -269,10 +269,7 @@ const MonthExpansesTableContainer = props => {
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    // highlight the row
-    const backgroundColor = rowData.linked === 0 ? "#ff000069" : "none";
-
-    return <Row style={{ minHeight: "35px", backgroundColor }} gridTemplateColumns={gridTemplateColumns}>
+    return <Row style={{ minHeight: "35px" }} gridTemplateColumns={gridTemplateColumns}>
       {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["code"]}</Column>

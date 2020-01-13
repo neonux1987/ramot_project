@@ -30,7 +30,7 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, d
 
       {Loading}
 
-      <SavedNotification saved={dataSaved} />
+      {/* <SavedNotification saved={dataSaved} /> */}
 
     </div>
 
