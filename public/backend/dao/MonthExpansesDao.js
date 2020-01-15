@@ -89,7 +89,7 @@ class MonthExpansesDao {
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .orderBy(['code', { column: 'codeName', order: 'asc' }])
       .limit(pageSettings.pageSize).offset(pageSettings.startElement);
-    console.log(data.toString());
+
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
     }).catch((error) => {
