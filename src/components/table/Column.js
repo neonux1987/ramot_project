@@ -1,18 +1,21 @@
 import React from 'react';
 
-export default React.memo(({ children, style, show = true }) => {
+export default React.memo(({ children, style, innerStyle, show = true, onDoubleClick }) => {
   return (
-    <div className="_tableColumn" style={{
-      display: show ? "flex" : "none",
-      justifyContent: "center",
-      alignItems: "center",
-      whiteSpace: "pre-wrap",
-      wordBreak: "break-word",
-      textAlign: "center",
-      overflow: "hidden",
-      ...style
-    }}>
-      <div>{children}</div>
+    <div className="_tableColumn"
+      style={{
+        display: show ? "flex" : "none",
+        justifyContent: "center",
+        alignItems: "center",
+        whiteSpace: "pre-wrap",
+        wordBreak: "break-word",
+        textAlign: "center",
+        overflow: "hidden",
+        ...style
+      }}
+      onDoubleClick={onDoubleClick}
+    >
+      <div style={innerStyle}>{children}</div>
     </div>);
 }, areEqual);
 

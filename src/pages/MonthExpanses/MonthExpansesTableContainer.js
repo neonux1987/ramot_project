@@ -11,6 +11,7 @@ import {
   deleteMonthExpanse,
   monthExpansesCleanup
 } from '../../redux/actions/monthExpansesActions';
+import { fetchExpansesCodesByStatus } from '../../redux/actions/expansesCodesActions';
 
 // UTILITY IMPORTS
 import Helper from '../../helpers/Helper';
@@ -38,6 +39,7 @@ import HeaderRow from '../../components/table/HeaderRow';
 
 // HOC
 import withTableLogic from '../../HOC/withTableLogic';
+import SelectColumn from '../../components/table/SelectColumn';
 
 const MonthExpansesTableContainer = props => {
 
@@ -59,6 +61,9 @@ const MonthExpansesTableContainer = props => {
 
   // page data
   const page = useSelector(store => store.monthExpanses.pages[buildingNameEng]);
+
+  // page data
+  const expansesCodes = useSelector(store => store.expansesCodes);
 
   // page data
   const tax = useSelector(store => store.generalSettings.generalSettings.data[0].tax);
@@ -83,7 +88,9 @@ const MonthExpansesTableContainer = props => {
 
     returnedPromise.then(() => {
       dispatch(fetchMonthExpanses(params));
-    })
+    });
+
+    dispatch(fetchExpansesCodesByStatus("active"));
 
     return cleanup;
   }, [date, buildingNameEng, dispatch]);
@@ -272,7 +279,7 @@ const MonthExpansesTableContainer = props => {
     return <Row style={{ minHeight: "35px" }} gridTemplateColumns={gridTemplateColumns}>
       {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
-      <Column>{rowData["code"]}</Column>
+      {editMode ? <SelectColumn data={expansesCodes}>{rowData["code"]}</SelectColumn> : <Column>{rowData["code"]}</Column>}
       <Column>{rowData["codeName"]}</Column>
       <Column>{rowData["section"]}</Column>
       {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}

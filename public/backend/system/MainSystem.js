@@ -65,15 +65,6 @@ class MainSystem {
     // create the connection pool
     connectionPool.createConnection(dbFilePath);
 
-    //create database connection
-    this.knex = require('knex')({
-      client: 'sqlite3',
-      connection: {
-        filename: dbFilePath,
-      },
-      useNullAsDefault: true
-    });
-
   }
 
   async firstTimeSetup({ userDBFilePath, reportsPath }) {
@@ -113,11 +104,6 @@ class MainSystem {
       })
     }
 
-  }
-
-  connectToDatabase(dbFilePath) {
-    // create the connection pool
-    connectionPool.createConnection(dbFilePath);
   }
 
   initializeIpcs() {
