@@ -33,7 +33,7 @@ const Toolbar = ({ buildingName, page }) => {
         >
           <Menu style={{ display: "flex" }} />
         </button>
-        <div style={{ marginRight: "10px", fontWeight: "400", fontSize: "16px" }}>
+        <div style={{ marginRight: "10px", fontWeight: "600", fontSize: "15px" }}>
           {`${navigationPath}`}
         </div>
       </div>

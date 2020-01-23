@@ -204,6 +204,7 @@ class IntegrationReactSelect extends React.Component {
             inputId={this.props.inputId}
             isLoading={this.props.isLoading}
             isDisabled={this.props.isDisabled}
+            blurInputOnSelect={this.props.blurInputOnSelect}
           />
           <div className={classes.divider} />
         </NoSsr>

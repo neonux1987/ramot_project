@@ -2,10 +2,18 @@ import React, { useState } from 'react';
 import Column from './Column';
 import ReactSelect from '../ReactSelect/ReactSelect';
 
-export default ({ children, onBlurHandler, data }) => {
+export default ({
+  children,
+  onBlurHandler,
+  options,
+  isFetching,
+  index,
+  type,
+  value
+}) => {
 
   const [select, setSelect] = useState(false);
-  const [value, setValue] = useState("");
+  const [selectValue, setSelectValue] = useState(`${value}`);
 
   const onClick = () => {
     setSelect(true);
@@ -15,21 +23,28 @@ export default ({ children, onBlurHandler, data }) => {
     setSelect(false);
   }
 
-  const onChangeHandler = (event) => {
-    console.log(event);
-  }
+  const onChangeHandler = (data) => {
 
+    const saveValue = data[type];
+    setSelectValue(saveValue);
+
+    return onBlurHandler({
+      data,
+      index
+    });
+  }
+  console.log(selectValue);
   const render = select ?
     <ReactSelect
-      inputValue={value}
+      inputValue={selectValue}
       onChangeHandler={onChangeHandler}
-      options={data.data}
-      getOptionLabel={(option) => option.code}
-      getOptionValue={(option) => option.code}
-      onBlurHandler={() => { }}
+      options={options}
+      getOptionLabel={(option) => option[type]}
+      getOptionValue={(option) => option[type]}
       autoFocus={true}
       //onMenuClose={onMenuCloseHandler}
-      isLoading={data.isFetching}
+      blurInputOnSelect={true}
+      isLoading={isFetching}
     /> :
     children;
 

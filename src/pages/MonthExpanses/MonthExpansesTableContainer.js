@@ -226,6 +226,23 @@ const MonthExpansesTableContainer = props => {
     e.target.blur();
   }
 
+  const selectOnBlurHandler = (event) => {
+    const { data, index } = event;
+
+    //will be used for rollback
+    const oldExpanseCopy = { ...data[index] };
+
+    //prepare the params
+    let params = {
+      data,
+      buildingName: buildingNameEng,
+      date
+    };
+
+    //update expanse
+    //dispatch(updateMonthExpanse(params, oldExpanseCopy, index));
+  }
+
   const deleteExpanseHandler = (id, index) => {
 
     //prepare the params
@@ -278,10 +295,24 @@ const MonthExpansesTableContainer = props => {
 
     return <Row style={{ minHeight: "35px" }} gridTemplateColumns={gridTemplateColumns}>
       {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}
+
       <Column>{index + 1}</Column>
-      {editMode ? <SelectColumn data={expansesCodes}>{rowData["code"]}</SelectColumn> : <Column>{rowData["code"]}</Column>}
+
+      {editMode ? <SelectColumn
+        value={rowData["code"]}
+        options={expansesCodes.data}
+        onBlurHandler={selectOnBlurHandler}
+        index={index}
+        type={"code"}
+        isFetching={expansesCodes.isFetching}
+      >
+        {rowData["code"]}
+      </SelectColumn> :
+        <Column>{rowData["code"]}</Column>}
+
       <Column>{rowData["codeName"]}</Column>
       <Column>{rowData["section"]}</Column>
+
       {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}
       {editMode ? numberInput("sum", rowData["sum"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
       {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
