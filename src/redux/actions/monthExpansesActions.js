@@ -83,7 +83,7 @@ const generateEmptyReport = (params, dispatch) => {
     } else {
       //empty report process finished
       toast.update(toastId, {
-        render: <ToastRender done={true} message={"דוח חודש חדש נוצר בהצלחה."} />,
+        render: <ToastRender done={true} message={"דוח חודשי חדש נוצר בהצלחה."} />,
         type: toast.TYPE.SUCCESS,
         autoClose: TOAST_AUTO_CLOSE,
         delay: 2000,
