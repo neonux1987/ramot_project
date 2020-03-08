@@ -13,7 +13,7 @@ export default ({
 }) => {
 
   const [select, setSelect] = useState(false);
-  const [selectValue, setSelectValue] = useState(`${value}`);
+  const [selectValue, setSelectValue] = useState(value);
 
   const onClick = () => {
     setSelect(true);
