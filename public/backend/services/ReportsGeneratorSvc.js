@@ -1,7 +1,5 @@
 const schedule = require('node-schedule');
-const RegisteredMonthsLogic = require('../logic/RegisteredMonthsLogic');
-const RegisteredQuartersLogic = require('../logic/RegisteredQuartersLogic');
-const RegisteredYearsLogic = require('../logic/RegisteredYearsLogic');
+const RegisteredReportsLogic = require('../logic/RegisteredReportsLogic');
 const rendererNotificationSvc = require('./RendererNotificationSvc');
 
 
@@ -9,24 +7,29 @@ class ReportsGenerator {
 
   constructor() {
 
-    this.registeredMonthsLogic = new RegisteredMonthsLogic();
-    this.registeredQuartersLogic = new RegisteredQuartersLogic();
-    this.registeredYearsLogic = new RegisteredYearsLogic();
+    this.registeredReportsLogic = new RegisteredReportsLogic();
     this.backupSchedule = null;
   }
 
   async init() {
 
-    //const registeredYears = await this.registeredYearsLogic.getAllRegisteredMonths();
-
-    //current date
-    const date = new Date();
-
     //cron settings
     const cron = "0 22 2 1 * *"
 
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;//make january start from 1
+
+    const registeredReports = await this.registeredReportsLogic.getRegisteredReports();
+    const lastReport = registeredReports[0]; // remember the data you get is ordered by desc year and month
+
+    for (let i = lastReport.year; i <= currentYear; i++) {
+      console.log(i);
+    }
+
     //execute scheduler
     this.backupSchedule = schedule.scheduleJob(cron, () => {
+
       console.log(this.backupSchedule);
     });
 

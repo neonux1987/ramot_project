@@ -60,11 +60,9 @@ const backupsNamesPath = platform === "linux" ? `${appConfigFolder}/backupsNames
 
 class MainSystem {
 
-  constructor() {
-
+  async initDBConnection() {
     // create the connection pool
-    connectionPool.createConnection(dbFilePath);
-
+    await connectionPool.createConnection(dbFilePath);
   }
 
   async firstTimeSetup({ userDBFilePath, reportsPath }) {
@@ -92,7 +90,7 @@ class MainSystem {
       const dbFile = await readFilePromise(userDBFilePath);
       await writeFilePromise(`${dbPath}bdika.sqlite`, dbFile)
     }
-    // create an empty database if the use did not
+    // create an empty database if the user did not
     // specify his own exisiting database
     else {
       this.db = new sqlite3.Database(`${dbPath}/mezach-db-test.sqlite`, (err) => {
@@ -148,7 +146,7 @@ class MainSystem {
     //start the backup service
     dbBackupSvc.init();
 
-    // start the 
+    // start the reports generator service
     reportsGeneratorSvc.init();
   }
 

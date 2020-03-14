@@ -140,6 +140,8 @@ let knex = createDBConnection();
   //dbFilePath: "/home/ag1987/Dropbox/ndts/db/mezach-db.sqlite"
 }); */
 
+mainSystem.initDBConnection();
+
 mainSystem.initializeIpcs();
 
 mainSystem.startServices();
