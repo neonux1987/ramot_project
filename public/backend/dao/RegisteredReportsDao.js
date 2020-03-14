@@ -10,13 +10,7 @@ class RegisteredReportsDao {
    * get registered reports
    */
   getRegisteredReports() {
-    return this.connection.select()
-      .from("registered_reports")
-      .orderBy('year', 'desc')
-      .orderBy('month', 'desc')
-      .catch((error) => {
-        throw error;
-      });
+    return this.connection;
   }
 
 
