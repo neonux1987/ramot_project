@@ -1,5 +1,5 @@
 //========================= electron imports =========================//
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, powerMonitor } = require('electron');
 
 //========================= my db config imports =========================//
 const createDBConnection = require('./backend/dao/connection/dbconfig');
