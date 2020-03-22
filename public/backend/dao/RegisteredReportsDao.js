@@ -2,15 +2,18 @@ const connectionPool = require('../connection/ConnectionPool');
 
 class RegisteredReportsDao {
 
-  constructor() {
-    this.connection = connectionPool.getConnection();
-  }
-
   /**
    * get registered reports
    */
   getRegisteredReports() {
-    return this.connection;
+    const connection = connectionPool.getConnection();
+    return connection.select()
+      .from("registered_reports")
+      .orderBy('year', 'desc')
+      .orderBy('month', 'desc')
+      .catch((error) => {
+        throw error;
+      });
   }
 
 
@@ -21,7 +24,7 @@ class RegisteredReportsDao {
    */
   addNewReport(
     payload = Object,
-    trx = this.connection
+    trx = connectionPool.getConnection()
   ) {
     return trx("registered_reports")
       .insert(payload)

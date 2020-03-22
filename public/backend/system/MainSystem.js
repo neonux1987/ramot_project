@@ -60,9 +60,9 @@ const backupsNamesPath = platform === "linux" ? `${appConfigFolder}/backupsNames
 
 class MainSystem {
 
-  async initDBConnection() {
+  initDBConnection() {
     // create the connection pool
-    await connectionPool.createConnection(dbFilePath);
+    connectionPool.createConnection(dbFilePath);
   }
 
   async firstTimeSetup({ userDBFilePath, reportsPath }) {
@@ -147,7 +147,13 @@ class MainSystem {
     dbBackupSvc.init();
 
     // start the reports generator service
-    reportsGeneratorSvc.init();
+    //reportsGeneratorSvc.init();
+  }
+
+  async startSystem() {
+    await this.initDBConnection();
+    this.initializeIpcs();
+    this.startServices();
   }
 
 }

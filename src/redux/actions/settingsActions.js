@@ -4,11 +4,20 @@ import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
 
+// TYPES
+export const TYPES = {
+  SETTINGS_REQUEST: "SETTINGS_REQUEST",
+  SETTINGS_RECEIVE: "SETTINGS_RECEIVE",
+  SETTINGS_FETCHING_FAILED: "SETTINGS_FETCHING_FAILED",
+  SETTINGS_UPDATE: "SETTINGS_UPDATE",
+  SETTINGS_DB_BACKUP_UPDATE: "SETTINGS_DB_BACKUP_UPDATE"
+}
+
 /**
  * fetch general settings
  * @param {*} params 
  */
-const fetchSettings = () => {
+export const fetchSettings = () => {
 
   return dispatch => {
 
@@ -36,27 +45,27 @@ const fetchSettings = () => {
 
 const requestSettings = function () {
   return {
-    type: "REQUEST_SETTINGS"
+    type: TYPES.SETTINGS_REQUEST
   }
 };
 
 const receiveSettings = function (data) {
   return {
-    type: "RECEIVE_SETTINGS",
+    type: TYPES.SETTINGS_RECEIVE,
     data: data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "FETCHING_FAILED",
+    type: TYPES.SETTINGS_FETCHING_FAILED,
     payload: error
   }
 };
 
 const updateSettingsInStore = function (name, data) {
   return {
-    type: "UPDATE_SETTINGS",
+    type: TYPES.SETTINGS_UPDATE,
     name,
     data
   }
@@ -66,7 +75,7 @@ const updateSettingsInStore = function (name, data) {
  * update general settings
  * @param {*} params 
  */
-const updateSettings = (key, data) => {
+export const updateSettings = (key, data) => {
   return dispatch => {
     dispatch(updateSettingsInStore(key, data));
   }
@@ -76,7 +85,7 @@ const updateSettings = (key, data) => {
  * update general settings
  * @param {*} params 
  */
-const saveSettings = (data) => {
+export const saveSettings = (data) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("save-settings", data);
@@ -102,17 +111,17 @@ const saveSettings = (data) => {
  * @param {*} key 
  * @param {*} data 
  */
-const updateBackupSettings = (key, data) => {
+export const updateBackupSettings = (key, data) => {
   return dispatch => {
     dispatch({
-      type: "UPDATE_DB_BACKUP_SETTINGS",
+      type: TYPES.SETTINGS_DB_BACKUP_UPDATE,
       key,
       data
     });
   }
 }
 
-const enableDbBackup = (db_backup) => {
+export const enableDbBackup = (db_backup) => {
 
   return dispatch => {
     //send a request to backend to get the data
@@ -136,7 +145,7 @@ const enableDbBackup = (db_backup) => {
   }
 }
 
-const disableDbBackup = (db_backup) => {
+export const disableDbBackup = (db_backup) => {
   return dispatch => {
     //send a request to backend to get the data
     ipcRenderer.send("disable-db-backup");
@@ -158,7 +167,7 @@ const disableDbBackup = (db_backup) => {
   }
 }
 
-const dbIndependentBackup = (fullPath) => {
+export const dbIndependentBackup = (fullPath) => {
   return dispatch => {
     //backup started message
     const toastId = toast.info(<ToastRender spinner={true} message={"מתבצע כעת גיבוי בסיס נתונים..."} />, {
@@ -189,15 +198,48 @@ const dbIndependentBackup = (fullPath) => {
   }
 }
 
-export default {
-  fetchSettings,
-  saveSettings,
-  fetchingFailed,
-  receiveSettings,
-  requestSettings,
-  updateSettings,
-  enableDbBackup,
-  disableDbBackup,
-  dbIndependentBackup,
-  updateBackupSettings
-};
+export const activateReportsGenerator = (reports_generator) => {
+  return dispatch => {
+    //send a request to backend to get the data
+    ipcRenderer.send("activate-reports-generator");
+    //listen when the data comes back
+    ipcRenderer.once("reports-generator-activated", (event, arg) => {
+
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        //success
+        toast.success("שירות יצירת הדוחות האוטומטי הופעל בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
+        dispatch(updateSettingsInStore("reports_generator", reports_generator));
+      }
+    });
+  }
+}
+
+export const disableReportsGenerator = (reports_generator) => {
+  return dispatch => {
+    //send a request to backend to get the data
+    ipcRenderer.send("disable-reports-generator");
+    //listen when the data comes back
+    ipcRenderer.once("reports-generator-disabled", (event, arg) => {
+
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        //success
+        toast.success("שירות יצירת הדוחות האוטומטי בוטל בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
+        dispatch(updateSettingsInStore("reports_generator", reports_generator));
+      }
+    });
+  }
+}

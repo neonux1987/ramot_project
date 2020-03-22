@@ -1,4 +1,6 @@
 
+import { TYPES } from '../actions/settingsActions';
+
 const initState = {
   pageName: "settings",
   headerTitle: "כללי",
@@ -13,7 +15,7 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_SETTINGS":
+    case TYPES.SETTINGS_RECEIVE:
       return {
         ...state,
         settings: {
@@ -23,7 +25,7 @@ export default (state = initState, action) => {
           data: action.data
         }
       }
-    case "REQUEST_SETTINGS":
+    case TYPES.SETTINGS_REQUEST:
       return {
         ...state,
         settings: {
@@ -31,7 +33,7 @@ export default (state = initState, action) => {
           isFetching: true,
         }
       }
-    case "FETCHING_FAILED":
+    case TYPES.SETTINGS_FETCHING_FAILED:
       return {
         ...state,
         settings: {
@@ -40,7 +42,7 @@ export default (state = initState, action) => {
           error: action.payload
         }
       }
-    case "UPDATE_SETTINGS":
+    case TYPES.SETTINGS_UPDATE:
       {
         const data = { ...state.settings.data };
         data[action.name] = action.data;
@@ -52,7 +54,7 @@ export default (state = initState, action) => {
           }
         }
       }
-    case "UPDATE_DB_BACKUP_SETTINGS":
+    case TYPES.SETTINGS_DB_BACKUP_UPDATE:
       {
         const data = { ...state.settings.data };
         data.db_backup[action.key] = action.data;

@@ -28,8 +28,8 @@ class MenuDao {
   }
 
   getMenu() {
-
-    let data = this.connection.select(
+    const connection = connectionPool.getConnection();
+    let data = connection.select(
       "menu.id AS id",
       "buildings.buildingName AS label",
       "buildings.buildingNameEng AS engLabel",
