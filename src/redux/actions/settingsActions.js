@@ -37,6 +37,7 @@ export const fetchSettings = () => {
         });
       } else {
         //success store the data
+        console.log(arg);
         dispatch(receiveSettings(arg.data));
       }
     });

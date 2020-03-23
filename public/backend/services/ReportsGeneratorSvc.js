@@ -19,7 +19,10 @@ class ReportsGenerator {
   init() {
 
     //cron settings
-    const cron = "0 22 2 1 * *"
+    const cron = "0 22 2 1 * *";
+
+    if (this.checkIfneedToGenerateReports())
+      this.generateMissingReports();
 
     //execute scheduler
     this.backupSchedule = schedule.scheduleJob(cron, async () => {
@@ -40,7 +43,34 @@ class ReportsGenerator {
 
   }
 
+  async checkIfneedToGenerateReports() {
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();// remember month starts at 0
+
+    const registeredReports = await this.registeredReportsLogic.getRegisteredReports();
+    const lastReport = registeredReports[0]; // remember the data you get is ordered by desc year and month
+    const {
+      year,
+      month
+    } = lastReport;
+
+    if (year < currentYear) {
+      return true;
+    } else if (year === currentYear) {
+      if (month < currentMonth) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+
+  }
+
   async generateMissingReports() {
+
+    rendererNotificationSvc.notifyRenderer("notify-renderer", "reportsGenerationStarted", "המערכת מייצרת כעת דוחות לכל הבניינים...");
 
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -57,12 +87,16 @@ class ReportsGenerator {
 
     // loop through all the registered year up to the 
     // current year includingte current year
-    for (let i = year; i <= currentYear; i++) {
+    /* for (let i = year; i <= currentYear; i++) {
       // loop through all the months in a whole year 
       // if not the current year
       if (i < currentYear) {
         for (let j = 0; j <= 11; j++) {
           this.generateReport(i, j, buildings);
+          this.registeredReportsLogic.addNewReport({
+            year: i,
+            month: j
+          });
         }
       }
       // this is current year. loop through months up to the
@@ -70,10 +104,15 @@ class ReportsGenerator {
       else {
         for (let k = month; k <= currentMonth; k++) {
           this.generateReport(i, k, buildings);
+          this.registeredReportsLogic.addNewReport({
+            year: i,
+            month: k
+          });
         }
       }
-    }
+    } */
 
+    rendererNotificationSvc.notifyRenderer("notify-renderer", "reportsGenerationFinished", "המערכת סיימה. הדוחות החדשים מוכנם.");
   }
 
   generateReport(year, month, buildings) {

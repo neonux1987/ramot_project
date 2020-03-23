@@ -95,6 +95,24 @@ class App extends Component {
             }
           });
           break;
+        case "reportsGenerationStarted":
+          toastId = toast.info(<ToastRender spinner={true} message={message} />, {
+            autoClose: false,
+            onOpen: () => playSound(soundTypes.message)
+          });
+          this.setState({ toastId: toastId });
+          break;
+        case "reportsGenerationFinished":
+          toast.update(this.state.toastId, {
+            render: <ToastRender done={true} message={message} />,
+            type: toast.TYPE.SUCCESS,
+            delay: 2000,
+            autoClose: TOAST_AUTO_CLOSE,
+            onOpen: () => {
+              playSound(soundTypes.message)
+            }
+          });
+          break;
         default: return null;
       }
 

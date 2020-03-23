@@ -6,6 +6,7 @@ const createDBConnection = require('./backend/dao/connection/dbconfig');
 
 //========================= services =========================//
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
+const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
 
 const mainSystem = require('./backend/system/MainSystem');
 
@@ -105,6 +106,12 @@ function createWindow() {
 
   //init the renderer notification service
   rendererotificationSvc.setWebContents(mainWindow.webContents);
+
+  powerMonitor.on('resume', () => {
+    console.log('The system is up');
+    const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
+    console.log(generateReports);
+  })
 }
 
 if (!gotTheLock) {

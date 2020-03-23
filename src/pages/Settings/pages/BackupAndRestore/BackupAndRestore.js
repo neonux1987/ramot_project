@@ -12,15 +12,7 @@ import heLocale from "date-fns/locale/he";
 import { ipcRenderer } from 'electron';
 
 // ACTIONS
-import {
-  fetchSettings,
-  saveSettings,
-  updateSettings,
-  enableDbBackup,
-  disableDbBackup,
-  dbIndependentBackup,
-  updateBackupSettings
-} from '../../../../redux/actions/settingsActions';
+import * as settingsActions from '../../../../redux/actions/settingsActions';
 import backupsNamesActions from '../../../../redux/actions/backupsNamesActions';
 import * as modalActions from '../../../../redux/actions/modalActions';
 
@@ -54,10 +46,10 @@ class BackupAndRestore extends Component {
 
 
   componentDidMount() {
-    fetchSettings();
+    this.props.fetchSettings();
     this.props.fetchBackupsNames();
     ipcRenderer.on("settings-updated", (event, type, settings) => {
-      updateBackupSettings("last_update", settings.db_backup.last_update);
+      this.props.updateBackupSettings("last_update", settings.db_backup.last_update);
     });
   }
 
@@ -75,7 +67,7 @@ class BackupAndRestore extends Component {
     db_backup.time = date.toString();
 
     this.setState({ settingsSaved: false });
-    updateSettings(name, db_backup);
+    this.props.updateSettings(name, db_backup);
   }
 
   onDbDayChange = (event) => {
@@ -114,7 +106,7 @@ class BackupAndRestore extends Component {
 
     }
     this.setState({ settingsSaved: false });
-    updateSettings("db_backup", db_backup);
+    this.props.updateSettings("db_backup", db_backup);
   }
 
   saveSettings = (message, enableSound) => {
@@ -130,7 +122,7 @@ class BackupAndRestore extends Component {
       });
     } else {
       this.setState({ settingsSaved: true });
-      saveSettings(this.props.settings.settings.data, message, enableSound);
+      this.props.saveSettings(this.props.settings.settings.data, message, enableSound);
     }
   }
 
@@ -169,7 +161,7 @@ class BackupAndRestore extends Component {
               db_backup.path = filePaths[0];
               this.setState({ settingsSaved: false });
               this.props.initializeBackupNames();
-              updateSettings("db_backup", db_backup);
+              this.props.updateSettings("db_backup", db_backup);
             }
           });
         }
@@ -189,7 +181,7 @@ class BackupAndRestore extends Component {
 
     saveToFileDialog(fileName, undefined).then(({ canceled, filePath }) => {
       if (!canceled) {
-        dbIndependentBackup(filePath);
+        this.props.dbIndependentBackup(filePath);
       }
     });
 
@@ -201,9 +193,9 @@ class BackupAndRestore extends Component {
     db_backup.active = !db_backup.active;
 
     if (db_backup.active) {
-      enableDbBackup(db_backup);
+      this.props.enableDbBackup(db_backup);
     } else {
-      disableDbBackup(db_backup);
+      this.props.disableDbBackup(db_backup);
     }
 
   }
@@ -212,7 +204,7 @@ class BackupAndRestore extends Component {
     const { value } = event.target;
     const db_backup = { ...this.props.settings.settings.data.db_backup };
     db_backup.backups_to_save = value;
-    updateSettings("db_backup", db_backup);
+    this.props.updateSettings("db_backup", db_backup);
   }
 
   render() {
@@ -268,6 +260,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  fetchSettings: () => dispatch(settingsActions.fetchSettings()),
+  saveSettings: (data) => dispatch(settingsActions.saveSettings(data)),
+  updateSettings: (key, data) => dispatch(settingsActions.updateSettings(key, data)),
+  enableDbBackup: (data) => dispatch(settingsActions.enableDbBackup(data)),
+  disableDbBackup: (data) => dispatch(settingsActions.disableDbBackup(data)),
+  dbIndependentBackup: (filePath) => dispatch(settingsActions.dbIndependentBackup(filePath)),
+  updateBackupSettings: (key, data) => dispatch(settingsActions.updateBackupSettings(key, data)),
   fetchBackupsNames: () => dispatch(backupsNamesActions.fetchBackupsNames()),
   initializeBackupNames: () => dispatch(backupsNamesActions.initializeBackupNames()),
   showModal: (modelComponent, props) => dispatch(modalActions.showModal(modelComponent, props)),
