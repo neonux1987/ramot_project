@@ -1,12 +1,12 @@
 //========================= electron imports =========================//
-const { app, BrowserWindow, powerMonitor } = require('electron');
+const { app, BrowserWindow } = require('electron');
 
 //========================= my db config imports =========================//
 const createDBConnection = require('./backend/dao/connection/dbconfig');
 
 //========================= services =========================//
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
-const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
+//const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
 
 const mainSystem = require('./backend/system/MainSystem');
 
@@ -106,12 +106,12 @@ function createWindow() {
 
   //init the renderer notification service
   rendererotificationSvc.setWebContents(mainWindow.webContents);
-
-  powerMonitor.on('resume', () => {
+  mainSystem.startSystem();
+  /* powerMonitor.on('resume', () => {
     console.log('The system is up');
     const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
     console.log(generateReports);
-  })
+  }) */
 }
 
 if (!gotTheLock) {
@@ -147,7 +147,7 @@ let knex = createDBConnection();
   //dbFilePath: "/home/ag1987/Dropbox/ndts/db/mezach-db.sqlite"
 }); */
 
-mainSystem.startSystem();
+
 
 
 

@@ -9,6 +9,7 @@ class RendererNotificationSvc {
   }
 
   notifyRenderer(channel, action, message) {
+    console.log(channel, action, message);
     this.webContents.send(channel, action, message);
   }
 
