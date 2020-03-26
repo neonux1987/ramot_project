@@ -61,6 +61,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+
     this.props.fetchGeneralSettings();
     //listen when the data comes back
     ipcRenderer.on("notify-renderer", (event, action, message) => {

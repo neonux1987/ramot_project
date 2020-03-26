@@ -140,6 +140,8 @@ class MainSystem {
     dbBackupIpc();
 
     excelIpc();
+
+    //servicesIpc();
   }
 
   startServices() {
@@ -153,7 +155,6 @@ class MainSystem {
   async startSystem() {
     await this.initDBConnection();
     this.initializeIpcs();
-    this.startServices();
   }
 
 }
