@@ -149,7 +149,7 @@ class MainSystem {
     dbBackupSvc.init();
 
     // start the reports generator service
-    reportsGeneratorSvc.init();
+    //reportsGeneratorSvc.init();
   }
 
   async startSystem() {

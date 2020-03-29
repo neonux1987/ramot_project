@@ -62,6 +62,8 @@ class App extends Component {
 
   componentDidMount() {
 
+    ipcRenderer.send("system-start-services");
+
     this.props.fetchGeneralSettings();
     //listen when the data comes back
     ipcRenderer.on("notify-renderer", (event, action, message) => {
