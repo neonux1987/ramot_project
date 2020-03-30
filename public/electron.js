@@ -5,7 +5,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const createDBConnection = require('./backend/dao/connection/dbconfig');
 
 //========================= services =========================//
-//const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
+const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
 //const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
 
 const mainSystem = require('./backend/system/MainSystem');
@@ -99,6 +99,13 @@ function createWindow() {
   }
   mainWindow.on('closed', () => mainWindow = null);
 
+  //init the renderer notification service
+  rendererotificationSvc.setWebContents(mainWindow.webContents);
+
+  ipcMain.on('system-start-services', (event, arg) => {
+    mainSystem.startServices();
+  });
+
   //add react dev tools
   /* BrowserWindow.addDevToolsExtension(
     path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0')
@@ -124,14 +131,9 @@ if (!gotTheLock) {
 
   app.on('ready', createWindow);
 
-  app.on('web-contents-created', (event, webContents) => {
-    //init the renderer notification service
-    //rendererotificationSvc.setWebContents(webContents);
-
-    /* setTimeout(() => {
-      mainSystem.startServices();
-    }, 15000); */
-  })
+  /* app.on('web-contents-created', (event, webContents) => {
+    
+  }) */
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -154,10 +156,6 @@ let knex = createDBConnection();
 }); */
 
 mainSystem.startSystem();
-
-ipcMain.on('system-start-services', (event, arg) => {
-  mainSystem.startServices();
-});
 
 
 

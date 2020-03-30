@@ -23,13 +23,11 @@ const DEFINITION = [{
 class MenuDao {
 
   constructor() {
-    this.connection = connectionPool.getConnection();
     this.nestHydrationJS = new NestHydrationJS();
   }
 
-  getMenu() {
-    const connection = connectionPool.getConnection();
-    let data = connection.select(
+  getMenu(trx = connectionPool.getConnection()) {
+    let data = trx.select(
       "menu.id AS id",
       "buildings.buildingName AS label",
       "buildings.buildingNameEng AS engLabel",

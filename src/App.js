@@ -62,11 +62,10 @@ class App extends Component {
 
   componentDidMount() {
 
-    ipcRenderer.send("system-start-services");
-
     this.props.fetchGeneralSettings();
     //listen when the data comes back
     ipcRenderer.on("notify-renderer", (event, action, message) => {
+      console.log(message, "hello");
       let toastId = null;
       switch (action) {
         case "dbBackupStarted":
@@ -118,8 +117,8 @@ class App extends Component {
           break;
         default: return null;
       }
-
     });
+    ipcRenderer.send("system-start-services");
   }
 
   closeButtonHandler = () => {

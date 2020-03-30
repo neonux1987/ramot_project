@@ -5,6 +5,7 @@ import { Route, Switch, NavLink } from 'react-router-dom';
 import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
 import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
 import SummarizedSections from './pages/SummarizedSections/SummarizedSections';
+import Reports from './pages/Reports/Reports';
 import General from './pages/General/General';
 
 const styles = (theme) => ({
@@ -81,6 +82,18 @@ const Settings = ({ classes, match }, props) => {
           />
           <Tab
             classes={{ root: classes.tab, selected: classes.selected }}
+            label="דוחות"
+            component={NavLink}
+            to={{
+              pathname: `${match.path}/דוחות`,
+              state: {
+                page: "דוחות",
+                buildingName: "הגדרות"
+              }
+            }}
+          />
+          <Tab
+            classes={{ root: classes.tab, selected: classes.selected }}
             label="גיבוי ושחזור"
             component={NavLink}
             to={{
@@ -99,6 +112,7 @@ const Settings = ({ classes, match }, props) => {
           <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
           <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
+          <Route path={`${match.path}/דוחות`} component={Reports} />
           <Route component={General} />
         </Switch>
       </div>
