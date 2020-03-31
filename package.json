@@ -37,7 +37,6 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "scheduler": "^0.19.1",
-    "simple-node-logger": "^18.12.23",
     "sqlite3": "^4.1.1",
     "typeface-roboto": "0.0.75"
   },
@@ -97,7 +96,7 @@
     "@rescripts/rescript-env": "0.0.11",
     "concurrently": "^5.0.1",
     "cross-env": "^6.0.3",
-    "electron": "^7.1.4",
+    "electron": "7.1.4",
     "electron-builder": "^21.2.0",
     "typescript": "^3.7.3",
     "wait-on": "^3.3.0"

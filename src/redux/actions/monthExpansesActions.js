@@ -46,7 +46,8 @@ export const fetchMonthExpanses = (params = Object) => {
         // and empty report should be generated.
         if (arg.data.data.length === 0) {
           // generate empty report
-          generateEmptyReport(params, dispatch);
+          //generateEmptyReport(params, dispatch);
+          dispatch(receiveMonthExpanses([], params.buildingName));
         } else {
           // store the data
           dispatch(receiveMonthExpanses(arg.data.data, params.buildingName));

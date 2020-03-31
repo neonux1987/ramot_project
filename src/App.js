@@ -118,7 +118,8 @@ class App extends Component {
         default: return null;
       }
     });
-    ipcRenderer.send("system-start-services");
+    //start services
+    //ipcRenderer.send("system-start-services");
   }
 
   closeButtonHandler = () => {

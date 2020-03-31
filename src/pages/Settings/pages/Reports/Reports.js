@@ -1,7 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import ReportsGenerator from './ReportsGenerator/ReportsGenerator';
-import styles from './Reports.module.css'
+import { generateEmptyReports } from '../../../../services/reportsGenerator.svc';
+import styles from './Reports.module.css';
+
 export default props => {
+
+  useEffect(() => {
+
+  });
 
   return (
     <div className={styles.container}>

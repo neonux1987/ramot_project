@@ -3,11 +3,12 @@ import { Select, Button, MenuItem, Typography, Divider } from '@material-ui/core
 import Helper from '../../../../../helpers/Helper';
 import styles from './ReportsGenerator.module.css';
 import classnames from 'classnames';
+import { generateEmptyReports } from '../../../../../services/reportsGenerator.svc';
 
 export default props => {
   const [selectDate, setSelectDate] = useState({
     year: 2020,
-    month: "מרץ"
+    month: 2
   });
 
   // default on change handler
@@ -20,6 +21,19 @@ export default props => {
       ...selectDate,
       [name]: newValue
     });
+  }
+
+  const onClickHandler = () => {
+    const newDate = {
+      month: Helper.getCurrentMonth(selectDate.month),
+      monthHeb: Helper.getCurrentMonthHeb(selectDate.month),
+      monthNum: selectDate.month,
+      year: selectDate.year,
+      quarter: Helper.getCurrentQuarter(selectDate.month),
+      quarterHeb: Helper.getCurrentQuarterHeb(selectDate.month),
+      quarterEng: Helper.convertMonthNumToQuarterEng(selectDate.month)
+    }
+    generateEmptyReports(newDate);
   }
 
   const months = Helper.getMonths();
@@ -48,7 +62,7 @@ export default props => {
       onChange={onChangeHandler}
     >
       {months.map((month, index) => {
-        return <MenuItem value={month} key={index}>{month}</MenuItem>;
+        return <MenuItem value={index} key={index}>{month}</MenuItem>;
       })}
     </Select>
 
@@ -65,7 +79,7 @@ export default props => {
 
     <Button
       className={styles.createBtn}
-      onClick={props.toggleDbBackupActivation}
+      onClick={onClickHandler}
       variant="contained"
       color="secondary">
       צור

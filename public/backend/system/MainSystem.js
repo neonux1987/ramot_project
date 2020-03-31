@@ -4,7 +4,7 @@ const os = require('os');
 const platform = os.platform();
 const homedir = os.homedir();
 const sqlite3 = require('sqlite3');
-const simpleNodeLogger = require('simple-node-logger');
+//const simpleNodeLogger = require('simple-node-logger');
 
 const fs = require('fs').promises;
 const util = require('util');
@@ -28,6 +28,7 @@ const IOIpc = require('../../electron/ipcs/IO.ipc');
 const settingsIpc = require('../../electron/ipcs/settings.ipc');
 const dbBackupIpc = require('../../electron/ipcs/dbBackup.ipc');
 const excelIpc = require('../../electron/ipcs/excel.ipc');
+const reportsGeneratorIpc = require('../../electron/ipcs/reportsGenerator.ipc');
 
 //========================= services =========================//
 const reportsGeneratorSvc = require('../services/ReportsGeneratorSvc');
@@ -82,7 +83,7 @@ class MainSystem {
     }
 
     // create a stdout and file logger
-    this.log = simpleNodeLogger.createSimpleLogger(appSettingsFolder + 'project.log');
+    //this.log = simpleNodeLogger.createSimpleLogger(appSettingsFolder + 'project.log');
 
     // if the user passed a location to a previous exisitng database,
     // copy the user's database to the location of the app database
@@ -140,6 +141,8 @@ class MainSystem {
     dbBackupIpc();
 
     excelIpc();
+
+    reportsGeneratorIpc();
 
     //servicesIpc();
   }

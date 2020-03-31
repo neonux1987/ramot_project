@@ -206,17 +206,20 @@ class MonthExpansesLogic {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  async createEmptyReport(buildingName, date) {
+  async createEmptyReport(buildingName, date, trx) {
 
     // Using trx as a transaction object:
-    const trx = await connectionPool.getTransaction();
+    //const trx = await connectionPool.getTransaction();
+    if (trx === undefined) {
+      trx = await connectionPool.getTransaction()
+    }
 
     const registeredMonth = await this.registeredMonthsLogic.getRegisteredMonthTrx(buildingName, date.month, date.year, trx);
 
     //if the month is already registered
     //return empty promise
     if (registeredMonth.length > 0) {
-      trx.commit();
+
       return Promise.resolve([]);
     }
 
