@@ -6,8 +6,12 @@ class RegisteredReportsLogic {
     this.registeredReportsDao = new RegisteredReportsDao();
   }
 
-  getRegisteredReports() {
-    return this.registeredReportsDao.getRegisteredReports();
+  getRegisteredReports(trx) {
+    return this.registeredReportsDao.getRegisteredReports(trx);
+  }
+
+  getRegisteredReportsGroupedByYear(trx) {
+    return this.registeredReportsDao.getRegisteredReportsGroupedByYear(trx);
   }
 
   addNewReport(payload, trx) {

@@ -202,16 +202,11 @@ class BudgetExecutionLogic {
    */
   async createEmptyReport(buildingName, date, trx) {
 
-    if (trx === undefined) {
-      trx = await connectionPool.getTransaction();
-    }
-
     const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingName, date.quarter, date.year, trx);
 
     //if the quarter is already registered
     //return empty promise
     if (registeredQuarter.length > 0) {
-      trx.commit();
       return Promise.resolve([]);
     }
 
@@ -253,15 +248,8 @@ class BudgetExecutionLogic {
     //register quarter
     await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
 
-    //new data
-    const returnData = await this.getAllBudgetExecutionsTrx(buildingName, date, trx);
-
     //call to create summarized budget report data
     await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx);
-
-    //return the new added data
-    return returnData;
-
   }
 
   generateEmptyMonthlyStats(months, date) {

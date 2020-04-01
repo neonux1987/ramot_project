@@ -1,12 +1,12 @@
 const { ipcMain } = require('electron');
-const ReportsGeneratorLogic = require('../../backend/logic/ReportsGeneratorLogic');
+const EmptyReportsGeneratorLogic = require('../../backend/logic/EmptyReportsGeneratorLogic');
 
-const reportsGeneratorIpc = () => {
+const emptyReportsGeneratorIpc = () => {
   //fetch month expanses data
-  const reportsGeneratorLogic = new ReportsGeneratorLogic();
+  const emptyReportsGeneratorLogic = new EmptyReportsGeneratorLogic();
 
   ipcMain.on('generate-empty-reports', (event, params) => {
-    reportsGeneratorLogic.generateEmptyReports(params.date).then((result) => {
+    emptyReportsGeneratorLogic.generateEmptyReports(params.date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("empty-reports-generated", { data: result });
     }).catch((error) => {
@@ -16,4 +16,4 @@ const reportsGeneratorIpc = () => {
   });
 }
 
-module.exports = reportsGeneratorIpc;
+module.exports = emptyReportsGeneratorIpc;

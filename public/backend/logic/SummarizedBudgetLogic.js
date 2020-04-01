@@ -5,7 +5,6 @@ const QuarterlyStatsLogic = require('../logic/QuarterlyStatsLogic');
 const YearlyStatsLogic = require('../logic/YearlyStatsLogic');
 const DefaultExpansesCodesLogic = require('../logic/DefaultExpansesCodesLogic');
 const SummarizedSectionsLogic = require('../logic/SummarizedSectionsLogic');
-const RegisteredReportsLogic = require('./RegisteredReportsLogic');
 const connectionPool = require('../connection/ConnectionPool');
 
 class SummarizedBudgetLogic {
@@ -15,7 +14,7 @@ class SummarizedBudgetLogic {
     this.registeredYearsLogic = new RegisteredYearsLogic();
     this.quarterlyStatsLogic = new QuarterlyStatsLogic();
     this.yearlyStatsLogic = new YearlyStatsLogic();
-    this.registeredReportsLogic = new RegisteredReportsLogic();
+
     this.defaultExpansesCodesLogic = new DefaultExpansesCodesLogic();
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
   }
@@ -122,16 +121,11 @@ class SummarizedBudgetLogic {
    */
   async createEmptyReport(buildingName, date, trx) {
 
-    if (trx === undefined) {
-      trx = await connectionPool.getTransaction();
-    }
-
     const registeredYear = await this.registeredYearsLogic.getRegisteredYearTrx(buildingName, date.year, trx);
 
     //if the year is already registered
     //return empty promise
     if (registeredYear.length > 0) {
-      trx.commit();
       return Promise.resolve([]);
     }
 
@@ -171,19 +165,6 @@ class SummarizedBudgetLogic {
 
     //register the new year
     await this.registeredYearsLogic.registerNewYear(buildingName, { year: date.year }, trx);
-
-    //get all the budgets of the previous year if exists
-    const returnData = await this.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
-
-    await this.registeredReportsLogic.addNewReport({
-      year: date.year,
-      month: date.monthNum
-    }, trx);
-
-    //trx.commit();
-
-    return returnData;
-
   }
 
   generateEmptyQuarterlyStats(date) {

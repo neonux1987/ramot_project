@@ -43,7 +43,8 @@ export const fetchBudgetExecutions = (params = Object) => {
         //and empty report should be generated.
         if (arg.data.data.length === 0) {
           //show a notification that the generation of 
-          generateEmptyReport(params, dispatch);
+          //generateEmptyReport(params, dispatch);
+          dispatch(receiveBudgetExecutions([], params.buildingName));
         }
 
         //success store the data

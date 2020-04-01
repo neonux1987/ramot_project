@@ -1,6 +1,7 @@
 // LIBRARIES IMPORTS
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 // ACTIONS IMPORTS
 import {
@@ -23,7 +24,6 @@ import DatePicker from '../../components/DatePicker/DatePicker';
 import TableControls from '../../components/table/TableControls/TableControls';
 import EditControls from '../../components/EditControls/EditControls';
 import { notify, notificationTypes } from '../../components/Notifications/Notification';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Spinner from '../../components/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
@@ -40,6 +40,9 @@ import HeaderRow from '../../components/table/HeaderRow';
 // HOC
 import withTableLogic from '../../HOC/withTableLogic';
 import SelectColumn from '../../components/table/SelectColumn';
+
+// AUDIO
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 const MonthExpansesTableContainer = props => {
 
@@ -98,13 +101,10 @@ const MonthExpansesTableContainer = props => {
   const addNewExpanseSubmit = (formInputs, reset) => {
     const valid = validateFormInputs(formInputs);
     if (!valid) {
-
-      notify({
-        isError: true,
-        type: notificationTypes.validation,
-        message: "קוד או שם חשבון לא יכולים להיות ריקים"
+      // send the error to the notification center
+      toast.error("קוד או שם חשבון לא יכולים להיות ריקים", {
+        onOpen: () => playSound(soundTypes.error)
       });
-      playSound(soundTypes.error);
       return;
     }
 

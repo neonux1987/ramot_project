@@ -15,7 +15,7 @@ class RegisteredMonthsDao {
     return this.connection.select()
       .from(`${buildingName}_registered_months`)
       .where({ year })
-      .orderBy('id', 'asc')
+      .orderBy('monthNum', 'asc')
       .catch((error) => {
         throw error;
       });

@@ -46,7 +46,8 @@ export const fetchSummarizedBudgets = (params = Object) => {
         //and empty report should be generated.
         if (arg.data.data.length === 0) {
           //generate empty report
-          generateEmptyReport(params, dispatch);
+          //generateEmptyReport(params, dispatch);
+          dispatch(receiveSummarizedBudgets([], params.date, params.buildingName));
         } else {
           //success store the data
           dispatch(receiveSummarizedBudgets(arg.data.data, params.date, params.buildingName));

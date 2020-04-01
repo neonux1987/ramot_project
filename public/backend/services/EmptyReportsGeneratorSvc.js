@@ -6,7 +6,7 @@ const Helper = require('../../helpers/Helper');
 const rendererNotificationSvc = require('./RendererNotificationSvc');
 
 
-class ReportsGenerator {
+class EmptyReportsGeneratorSvc {
 
   constructor() {
 
@@ -162,4 +162,4 @@ class ReportsGenerator {
 
 }
 
-module.exports = new ReportsGenerator();
+module.exports = new EmptyReportsGeneratorSvc();

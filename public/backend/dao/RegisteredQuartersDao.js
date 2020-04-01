@@ -13,7 +13,7 @@ class RegisteredQuartersDao {
   getAllRegisteredQuarters(buildingName, year) {
     return this.connection.select().from(`${buildingName}_registered_quarters`)
       .where({ year })
-      .orderBy('id', 'asc')
+      .orderBy('quarter', 'asc')
       .catch((error) => {
         throw error;
       });

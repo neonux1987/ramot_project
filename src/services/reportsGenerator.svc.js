@@ -1,4 +1,6 @@
 import { ipcRenderer } from 'electron';
+import { playSound, soundTypes } from '../audioPlayer/audioPlayer';
+import { toast } from 'react-toastify';
 
 export const generateEmptyReports = (date) => {
   // request request to backend to get the data
@@ -6,11 +8,15 @@ export const generateEmptyReports = (date) => {
 
   return new Promise((resolve, reject) => {
     // listen when the data comes back
-    return ipcRenderer.once("empty-reports-generated", (event, arg) => {
+    ipcRenderer.once("empty-reports-generated", (event, arg) => {
       if (arg.error) {
-        reject(arg.error);
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
       } else {
-        resolve("דוחות ריקים לחודשים שבחרת נוצרו בהצלחה.");
+        toast.success("דוחות ריקים נוצרו בהצלחה לתאריך שבחרת.", {
+          onOpen: () => playSound(soundTypes.error)
+        });
       } // end else
     });
   })

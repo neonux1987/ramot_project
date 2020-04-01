@@ -12,6 +12,7 @@ class RegisteredYearsDao {
    */
   getAllRegisteredYears(buildingName) {
     return this.connection.select().from(`${buildingName}_registered_years`)
+      .orderBy('year', 'asc')
       .catch((error) => {
         throw error;
       });

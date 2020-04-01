@@ -257,18 +257,13 @@ class MonthExpansesLogic {
     await this.registeredMonthsLogic.registerNewMonth(buildingName, {
       year: date.year,
       month: date.month,
-      monthHeb: date.monthHeb
+      monthHeb: date.monthHeb,
+      monthNum: date.monthNum
     },
       trx);
 
-    //new data
-    const returnData = await this.getAllMonthExpansesTrx(buildingName, date, trx);
-
     //call to create budget execution empty report data
     await this.budgetExecutionLogic.createEmptyReport(buildingName, date, trx);
-
-    return returnData;
-
   }
 
 }

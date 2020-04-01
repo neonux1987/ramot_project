@@ -1,15 +1,35 @@
-import React, { useState } from 'react';
+// LIBRARIES
+import React, { useState, useEffect } from 'react';
 import { Select, Button, MenuItem, Typography, Divider } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+
+// UTILS
 import Helper from '../../../../../helpers/Helper';
-import styles from './ReportsGenerator.module.css';
 import classnames from 'classnames';
+
+// SERVICES
 import { generateEmptyReports } from '../../../../../services/reportsGenerator.svc';
 
+//CSS
+import styles from './ReportsGenerator.module.css';
+
+// ACTIONS
+import { fetchRegisteredReports } from '../../../../../redux/actions/registeredReportsActions';
+
 export default props => {
+  const date = new Date();//current date
+
   const [selectDate, setSelectDate] = useState({
-    year: 2020,
-    month: 2
+    year: date.getFullYear(),
+    month: date.getMonth()
   });
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchRegisteredReports());
+  }, []);
+
+  const registeredReports = useSelector(store => store.registeredReports)
 
   // default on change handler
   // for months and quarters

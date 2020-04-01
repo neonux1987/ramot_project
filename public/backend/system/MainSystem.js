@@ -20,6 +20,7 @@ const generalSettingsIpc = require('../../electron/ipcs/generalSettings.ipc');
 const registeredMonthsIpc = require('../../electron/ipcs/registeredMonths.ipc');
 const registeredYearsIpc = require('../../electron/ipcs/registeredYears.ipc');
 const registeredQuartersIpc = require('../../electron/ipcs/registeredQuarters.ipc');
+const registeredReportsIpc = require('../../electron/ipcs/registeredReports.ipc');
 const monthlyStatsIpc = require('../../electron/ipcs/monthlyStats.ipc');
 const quarterlyStatsIpc = require('../../electron/ipcs/quarterlyStats.ipc');
 const yearlyStatsIpc = require('../../electron/ipcs/yearlyStats.ipc');
@@ -28,10 +29,10 @@ const IOIpc = require('../../electron/ipcs/IO.ipc');
 const settingsIpc = require('../../electron/ipcs/settings.ipc');
 const dbBackupIpc = require('../../electron/ipcs/dbBackup.ipc');
 const excelIpc = require('../../electron/ipcs/excel.ipc');
-const reportsGeneratorIpc = require('../../electron/ipcs/reportsGenerator.ipc');
+const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenerator.ipc');
 
 //========================= services =========================//
-const reportsGeneratorSvc = require('../services/ReportsGeneratorSvc');
+const emptyReportsGeneratorSvc = require('../services/EmptyReportsGeneratorSvc');
 const dbBackupSvc = require('../services/DbBackupSvc');
 
 const connectionPool = require('../connection/ConnectionPool');
@@ -142,7 +143,9 @@ class MainSystem {
 
     excelIpc();
 
-    reportsGeneratorIpc();
+    emptyReportsGeneratorIpc();
+
+    registeredReportsIpc();
 
     //servicesIpc();
   }
@@ -151,8 +154,8 @@ class MainSystem {
     //start the backup service
     dbBackupSvc.init();
 
-    // start the reports generator service
-    reportsGeneratorSvc.init();
+    // start the empty reports generator service
+    emptyReportsGeneratorSvc.init();
   }
 
   async startSystem() {

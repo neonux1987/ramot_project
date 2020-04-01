@@ -5,9 +5,8 @@ class RegisteredReportsDao {
   /**
    * get registered reports
    */
-  getRegisteredReports() {
-    const connection = connectionPool.getConnection();
-    return connection.select()
+  getRegisteredReports(trx = connectionPool.getConnection()) {
+    return trx.select()
       .from("registered_reports")
       .orderBy('year', 'desc')
       .orderBy('month', 'desc')
@@ -16,6 +15,15 @@ class RegisteredReportsDao {
       });
   }
 
+  getRegisteredReportsGroupedByYear(trx = connectionPool.getConnection()) {
+    return trx.select()
+      .from("registered_reports")
+      .orderBy('year', 'desc')
+      .groupBy('year')
+      .catch((error) => {
+        throw error;
+      });
+  }
 
   /**
    * add new registered report
