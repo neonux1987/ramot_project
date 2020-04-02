@@ -1,6 +1,7 @@
 const MonthExpansesLogic = require('./MonthExpansesLogic');
 const RegisteredReportsLogic = require('./RegisteredReportsLogic');
 const MenuDao = require('../dao/MenuDao');
+const Helper = require('../../helpers/Helper');
 const connectionPool = require('../connection/ConnectionPool');
 
 class EmptyReportsGeneratorLogic {
@@ -17,37 +18,52 @@ class EmptyReportsGeneratorLogic {
    * @param {*} date 
    */
   async generateEmptyReports(date) {
-
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
 
-    const reports = await this.registeredReportsLogic.getRegisteredReports(trx);
+    // all the months of the chosen quarter
+    const months = Helper.getQuarterMonthsNum(date.quarter);
 
-    // using for loop instead of forEach method
-    // because of problems with await/async
-    for (let i = 0; i < reports.length; i++) {
-      // if reports for the specific date already exist
-      // don't allow them to be created twice.
-      if (reports[i].year === date.year && reports[i].month === date.monthNum) {
-        await trx.commit();
-        throw new Error("הפעולה נכשלה. הדוחות לתאריכים שנבחרו כבר קיימים בבסיס נתונים.");
-      }
+    let reports = await this.registeredReportsLogic.getRegisteredReportsByYearAndQuarter(date.year, date.quarter, trx);
+    if (reports.length > 0) {
+      await trx.commit();
+      throw new Error("הפעולה נכשלה. הדוחות לתאריכים שנבחרו כבר קיימים בבסיס נתונים.");
     }
 
     const buildings = await this.menuDao.getMenu(trx);
 
+    for (let i = 0; i < months.length; i++) {
+      const dateCopy = { ...date };
+
+      // set the new month
+      dateCopy.monthNum = months[i];
+      dateCopy.month = Helper.getCurrentMonthEng(months[i]);
+      dateCopy.monthHeb = Helper.getCurrentMonthHeb(months[i]);
+
+      // create empty reports for the specific month
+      await this.createEmptyReportsByMonth(buildings, dateCopy, trx);
+
+      // register new report
+      await this.registereNewReport(dateCopy, trx);
+    }
+
+    await trx.commit();
+  }
+
+  async createEmptyReportsByMonth(buildings, date, trx) {
     // create reports for each bulding
     for (let i = 0; i < buildings.length; i++) {
       await this.monthExpansesLogic.createEmptyReport(buildings[i].engLabel, date, trx);
     }
+  }
 
+  async registereNewReport(date, trx) {
     // register the date of the new reports
     await this.registeredReportsLogic.addNewReport({
       year: date.year,
-      month: date.monthNum
+      month: date.monthNum,
+      quarter: date.quarter
     }, trx);
-
-    await trx.commit();
   }
 
 }

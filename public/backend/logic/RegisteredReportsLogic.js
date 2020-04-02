@@ -10,6 +10,14 @@ class RegisteredReportsLogic {
     return this.registeredReportsDao.getRegisteredReports(trx);
   }
 
+  getRegisteredReportsByYearAndQuarter(year, quarter, trx) {
+    return this.registeredReportsDao.getRegisteredReportsByYearAndQuarter(year, quarter, trx);
+  }
+
+  getRegisteredReportsByYear(year, trx) {
+    return this.registeredReportsDao.getRegisteredReportsByYear(year, trx);
+  }
+
   getRegisteredReportsGroupedByYear(trx) {
     return this.registeredReportsDao.getRegisteredReportsGroupedByYear(trx);
   }

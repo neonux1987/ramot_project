@@ -15,6 +15,32 @@ class RegisteredReportsDao {
       });
   }
 
+  getRegisteredReportsByYearAndQuarter(
+    year,
+    quarter,
+    trx = connectionPool.getConnection()
+  ) {
+    return trx.select()
+      .from("registered_reports")
+      .where({ year, quarter })
+      .groupBy("quarter")
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  getRegisteredReportsByYear(
+    year,
+    trx = connectionPool.getConnection()
+  ) {
+    return trx.select()
+      .from("registered_reports")
+      .where({ year })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   getRegisteredReportsGroupedByYear(trx = connectionPool.getConnection()) {
     return trx.select()
       .from("registered_reports")

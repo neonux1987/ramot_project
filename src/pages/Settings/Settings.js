@@ -82,12 +82,12 @@ const Settings = ({ classes, match }, props) => {
           />
           <Tab
             classes={{ root: classes.tab, selected: classes.selected }}
-            label="דוחות"
+            label="הפקת דוחות"
             component={NavLink}
             to={{
-              pathname: `${match.path}/דוחות`,
+              pathname: `${match.path}/הפקת דוחות`,
               state: {
-                page: "דוחות",
+                page: "הפקת דוחות",
                 buildingName: "הגדרות"
               }
             }}
@@ -95,6 +95,18 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab, selected: classes.selected }}
             label="גיבוי ושחזור"
+            component={NavLink}
+            to={{
+              pathname: `${match.path}/גיבוי ושחזור`,
+              state: {
+                page: "גיבוי ושחזור",
+                buildingName: "הגדרות"
+              }
+            }}
+          />
+          <Tab
+            classes={{ root: classes.tab, selected: classes.selected }}
+            label="שירותי מערכת"
             component={NavLink}
             to={{
               pathname: `${match.path}/גיבוי ושחזור`,
@@ -112,7 +124,8 @@ const Settings = ({ classes, match }, props) => {
           <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
           <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
-          <Route path={`${match.path}/דוחות`} component={Reports} />
+          <Route path={`${match.path}/הפקת דוחות`} component={Reports} />
+          <Route path={`${match.path}/שירותי מערכת`} component={BackupAndRestore} />
           <Route component={General} />
         </Switch>
       </div>

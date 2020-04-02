@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
-import ReportsGenerator from './ReportsGenerator/ReportsGenerator';
-import { generateEmptyReports } from '../../../../services/reportsGenerator.svc';
+import React, { useEffect } from 'react';
+import EmptyReportsGenerator from './EmptyReportsGenerator/EmptyReportsGenerator';
 import styles from './Reports.module.css';
+import ExcelReportsGenerator from './ExcelReportsGenerator/ExcelReportsGenerator';
 
 export default props => {
 
@@ -11,10 +11,8 @@ export default props => {
 
   return (
     <div className={styles.container}>
-      <ReportsGenerator />
-      <div>
-        מייצר דוחות אוטומטי
-  </div>
+      <EmptyReportsGenerator />
+      <ExcelReportsGenerator />
     </div>
   );
 
