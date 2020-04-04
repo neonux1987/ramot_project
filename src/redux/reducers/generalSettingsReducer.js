@@ -39,6 +39,19 @@ export default (state = initState, action) => {
           error: action.payload
         }
       }
+    case "UPDATE_VAT": {
+      const copyData = state.generalSettings.data;
+      copyData[0].tax = action.vat
+
+      return {
+        ...state,
+        generalSettings: {
+          ...state.generalSettings,
+          data: copyData
+        }
+      }
+    }
+
     default: return state;
   }
 }

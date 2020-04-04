@@ -1,6 +1,6 @@
 import React from 'react';
 
-import WarningModal from '../WarningModal';
+import WarningModal from '../modalTypes/WarningModal';
 
 export default props => {
 

@@ -12,7 +12,8 @@ import Home from '../pages/Home/Home';
 import BudgetExecutions from '../pages/BudgetExecutions/BudgetExecutions';
 import SummarizedBudgets from '../pages/SummarizedBudgets/SummarizedBudgets';
 import Settings from '../pages/Settings/Settings';
-import Statistics from '../pages/Statistics/Statistics'
+import Management from '../pages/Management/Management';
+import Statistics from '../pages/Statistics/Statistics';
 
 // COMPONENTS
 import LoadingCircle from '../components/LoadingCircle';
@@ -89,6 +90,7 @@ class MainContainer extends Component {
       case "ביצוע מול תקציב": return BudgetExecutions;
       case "סיכום תקציבי": return SummarizedBudgets;
       case "סטטיסטיקה": return Statistics;
+      case "ניהול": return Management;
       default: return Home;
     }
   }
@@ -120,6 +122,7 @@ class MainContainer extends Component {
                 {this.generateRoutes(this.props.sidebar.sidebar.data)}
                 <Route path="/דף-הבית" component={Home} />
                 <Route path="/הגדרות" component={Settings} />
+                <Route path="/ניהול" component={Management} />
                 <Route exact path="/" component={Home} history={{
                   page: "דף-הבית",
                   buildingName: "דף הבית",

@@ -2,7 +2,7 @@
 import React from 'react';
 import WarningIcon from '@material-ui/icons/Warning';
 
-import Modal from './Modal';
+import Modal from '../Modal';
 
 export default props => {
 

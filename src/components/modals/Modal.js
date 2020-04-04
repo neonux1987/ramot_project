@@ -12,7 +12,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText }) => {
+export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, children }) => {
 
   const [open, setOpen] = React.useState(true);
   const { hideModal } = useModalLogic();
@@ -27,6 +27,10 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText }) => {
     setOpen(false);
     hideModal();
   }
+
+  const content = !contentText ? children : <DialogContentText id="alert-dialog-slide-description">
+    {contentText}
+  </DialogContentText>;
 
   return (
     <div>
@@ -48,9 +52,7 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText }) => {
         </div>
 
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {contentText}
-          </DialogContentText>
+          {content}
         </DialogContent>
         <DialogActions>
           <Button onClick={cancel} color="primary">

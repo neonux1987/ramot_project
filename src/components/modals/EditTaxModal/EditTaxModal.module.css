@@ -1,0 +1,15 @@
+.form{
+  padding-right: 5px;
+}
+
+.textField{
+  width: 160px;
+  display: flex;
+  margin-top: 10px;
+}
+
+.saveBtn{
+  background-color: #439dd2;
+  display: flex;
+  margin-top: 40px;
+}

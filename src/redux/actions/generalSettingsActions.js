@@ -80,10 +80,40 @@ const updateGeneralSettings = (params = Object, tableData) => {
   }
 };
 
+const updateVat = (params = Object) => {
+  return dispatch => {
+    //send a request to backend to get the data
+    ipcRenderer.send("update-general-settings", params);
+    //listen when the data comes back
+    ipcRenderer.once("updated-general-settings", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        dispatch(updateVatInStore(params.settings.tax));
+        //send success notification
+        toast.success('המע"מ עודכן בהצלחה.', {
+          onOpen: () => playSound(soundTypes.message)
+        });
+      }
+    });
+  }
+};
+
+const updateVatInStore = function (vat) {
+  return {
+    type: "UPDATE_VAT",
+    vat
+  }
+};
+
 export default {
   fetchGeneralSettings,
   updateGeneralSettings,
   fetchingFailed,
   receiveGeneralSettings,
-  requestGeneralSettings
+  requestGeneralSettings,
+  updateVat
 };

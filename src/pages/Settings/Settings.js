@@ -3,9 +3,6 @@ import { withStyles, Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import { Route, Switch, NavLink } from 'react-router-dom';
 import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
-import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
-import SummarizedSections from './pages/SummarizedSections/SummarizedSections';
-import Reports from './pages/Reports/Reports';
 import General from './pages/General/General';
 
 const styles = (theme) => ({
@@ -59,41 +56,6 @@ const Settings = ({ classes, match }, props) => {
           />
           <Tab
             classes={{ root: classes.tab, selected: classes.selected }}
-            label="קודי הנהלת חשבונות"
-            component={NavLink}
-            to={{
-              pathname: `${match.path}/קודי הנהלת חשבונות`,
-              state: {
-                page: "קודי הנהלת חשבונות",
-                buildingName: "הגדרות"
-              }
-            }}
-          />
-          <Tab
-            classes={{ root: classes.tab, selected: classes.selected }}
-            label="סעיפים מסכמים" component={NavLink}
-            to={{
-              pathname: `${match.path}/סעיפים מסכמים`,
-              state: {
-                page: "סעיפים מסכמים",
-                buildingName: "הגדרות"
-              }
-            }}
-          />
-          <Tab
-            classes={{ root: classes.tab, selected: classes.selected }}
-            label="הפקת דוחות"
-            component={NavLink}
-            to={{
-              pathname: `${match.path}/הפקת דוחות`,
-              state: {
-                page: "הפקת דוחות",
-                buildingName: "הגדרות"
-              }
-            }}
-          />
-          <Tab
-            classes={{ root: classes.tab, selected: classes.selected }}
             label="גיבוי ושחזור"
             component={NavLink}
             to={{
@@ -121,10 +83,7 @@ const Settings = ({ classes, match }, props) => {
       <div>
         <Switch>
           <Route path={`${match.path}/כללי`} component={General} />
-          <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
-          <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
-          <Route path={`${match.path}/הפקת דוחות`} component={Reports} />
           <Route path={`${match.path}/שירותי מערכת`} component={BackupAndRestore} />
           <Route component={General} />
         </Switch>
