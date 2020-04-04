@@ -5,7 +5,7 @@ import Section from '../../Section/Section';
 
 import EditModal from '../modalTypes/EditModal';
 
-import styles from './EditTaxModal.module.css';
+import styles from './EditVatModal.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 
 // ACTIONS
@@ -60,11 +60,13 @@ export default props => {
           <TextField
             name="tax"
             type="number"
+            autoFocus
             min="1"
             max="100"
             value={state.formInputs.tax}
             classes={{ root: styles.textField }}
             onClick={(event => event.target.select())}
+            InputProps={{ min: 0, max: 100 }}
           />
         </form>
       </Section>

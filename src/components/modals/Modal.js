@@ -28,6 +28,15 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
     hideModal();
   }
 
+  const onKeyPressHandler = (event) => {
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      agree();
+    }
+  }
+
   const content = !contentText ? children : <DialogContentText id="alert-dialog-slide-description">
     {contentText}
   </DialogContentText>;
@@ -38,14 +47,18 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
         open={open}
         TransitionComponent={Transition}
         keepMounted
+        //onEnter={agree}
         onClose={cancel}
+        onEscapeKeyDown={cancel}
+        onKeyPress={onKeyPressHandler}
+        PaperProps={{ onKeyPress: onKeyPressHandler }}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <Icon style={{
             margin: "16px 24px 16px 0",
-            color: "#ffb100",
+            color: "#000000",
             fontSize: "28px",
           }} />
           <DialogTitle style={{ paddingRight: "12px", flex: "initial" }} id="alert-dialog-slide-title">{title}</DialogTitle>
@@ -55,10 +68,10 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
           {content}
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancel} color="primary">
+          <Button onClick={cancel} color="primary" variant="contained">
             בטל
           </Button>
-          <Button onClick={agree} color="primary">
+          <Button onClick={agree} color="primary" variant="contained">
             {agreeBtnText || "בצע פעולה"}
           </Button>
         </DialogActions>

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import sidebarActions from '../../redux/actions/sidebarActions';
 import Spinner from "../../components/Spinner/Spinner";
 import useModalLogic from "../../customHooks/useModalLogic";
-import EditTaxModal from "../../components/modals/EditTaxModal/EditTaxModal";
+import EditVatModal from "../../components/modals/EditVatModal/EditVatModal";
 
 const Toolbar = ({ buildingName, page }) => {
 
@@ -32,7 +32,7 @@ const Toolbar = ({ buildingName, page }) => {
 
   const taxClickHandler = () => {
     handleClose();
-    showModal(EditTaxModal);
+    showModal(EditVatModal);
 
   }
 
