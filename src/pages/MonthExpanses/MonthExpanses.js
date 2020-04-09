@@ -4,11 +4,9 @@ import { withRouter } from 'react-router';
 import { TableChart } from '@material-ui/icons';
 
 // COMMON COMPONENTS
-import Header from '../../components/Header/Header';
-import Section from '../../components/Section/Section';
+import ExpandableSection from '../../components/Section/ExpandableSection';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import SectionHeader from '../../components/SectionHeader/SectionHeader';
 
 // DATA FETHCER
 import DateProvider from '../../renderProps/providers/DateProvider';
@@ -46,13 +44,12 @@ const MonthExpanses = props => {
             return (
               <Fragment>
 
-                <SectionHeader
+                <ExpandableSection
                   title={TABLE_TITLE}
                   TitleIcon={TableChart}
                   extraDetails={props.dateDetails(onlyDate)}
-                />
-
-                <Section>
+                  collapsable={false}
+                >
 
                   <MonthExpansesTableContainer
                     location={props.location}
@@ -62,7 +59,7 @@ const MonthExpanses = props => {
                     pageTitle={PAGE_TITLE}
                   />
 
-                </Section>
+                </ExpandableSection>
 
               </Fragment>
             );

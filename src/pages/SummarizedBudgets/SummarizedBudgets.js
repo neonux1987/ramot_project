@@ -5,7 +5,7 @@ import { Equalizer, TableChart } from '@material-ui/icons';
 
 // COMMON COMPONENTS
 import Header from '../../components/Header/Header';
-import Section from '../../components/Section/Section';
+import ExpandableSection from '../../components/Section/ExpandableSection';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import SectionHeader from '../../components/SectionHeader/SectionHeader';
@@ -23,6 +23,7 @@ import withPageLogic from '../../HOC/withPageLogic';
 
 // UTILS
 import Helper from '../../helpers/Helper';
+import StyledSection from '../../components/Section/StyledSection';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -55,24 +56,25 @@ const SummarizedBudgets = props => {
           return (
             <Fragment>
 
-              <SectionHeader title={STATS_TITLE} TitleIcon={Equalizer} />
-
-              <Section>
+              <StyledSection
+                title={STATS_TITLE}
+                TitleIcon={Equalizer}
+              >
                 <YearStatsContainer
                   buildingName={buildingNameEng}
                   date={date[buildingNameEng]}
                   pageName={PAGE_NAME}
                 />
-              </Section>
+              </StyledSection>
 
-              <SectionHeader
+              <ExpandableSection
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
                 iconBoxBg={"rgb(255, 117, 37)"}
                 extraDetails={props.dateDetails(onlyDate)}
-              />
+                marginBottom={"100px"}
+              >
 
-              <Section marginBottom={"100px"}>
 
                 <SummarizedBudgetsTableContainer
                   location={props.location}
@@ -82,7 +84,7 @@ const SummarizedBudgets = props => {
                   pageTitle={PAGE_TITLE}
                 />
 
-              </Section>
+              </ExpandableSection>
 
             </Fragment>
           );

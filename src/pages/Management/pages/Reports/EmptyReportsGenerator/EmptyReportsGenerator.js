@@ -58,7 +58,7 @@ export default props => {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <div style={{ paddingBottom: "0px", fontSize: "28px" }}>
         <Typography variant="h5">
           הפקת דוחות חדשים (ריקים)

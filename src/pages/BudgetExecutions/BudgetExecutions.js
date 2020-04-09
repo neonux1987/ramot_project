@@ -4,11 +4,9 @@ import { withRouter } from 'react-router';
 import { Equalizer, TableChart } from '@material-ui/icons';
 
 // COMMON COMPONENTS
-import Header from '../../components/Header/Header';
-import Section from '../../components/Section/Section';
+import ExpandableSection from '../../components/Section/ExpandableSection';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import SectionHeader from '../../components/SectionHeader/SectionHeader';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
@@ -20,6 +18,7 @@ import Helper from '../../helpers/Helper';
 
 // HOC
 import withPageLogic from '../../HOC/withPageLogic';
+import StyledSection from '../../components/Section/StyledSection';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "לב תל אביב - מעקב ביצוע מול תקציב";
@@ -61,26 +60,24 @@ const BudgetExecutions = props => {
           return (
             <Fragment>
 
-              <SectionHeader title={STATS_TITLE} TitleIcon={Equalizer} />
-
-              <Section>
+              <StyledSection
+                title={STATS_TITLE}
+                TitleIcon={Equalizer}
+              >
                 <QuarterStatsContainer
                   buildingName={buildingNameEng}
                   date={date[buildingNameEng]}
                   pageName={PAGE_NAME}
                 />
-              </Section>
+              </StyledSection>
 
-
-
-              <SectionHeader
+              <ExpandableSection
+                marginBottom={"100px"}
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
                 iconBoxBg={"rgb(255, 117, 37)"}
                 extraDetails={props.dateDetails(onlyDate)}
-              />
-
-              <Section marginBottom={"100px"}>
+              >
                 <BudgetExecutionsTableContainer
                   location={props.location}
                   date={date[buildingNameEng]}
@@ -88,7 +85,7 @@ const BudgetExecutions = props => {
                   pageName={PAGE_NAME}
                   pageTitle={PAGE_TITLE}
                 />
-              </Section>
+              </ExpandableSection>
 
             </Fragment>
           );

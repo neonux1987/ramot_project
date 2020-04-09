@@ -3,8 +3,7 @@ import React, { Fragment } from 'react';
 import { TableChart } from '@material-ui/icons';
 
 // COMPONENTS
-import SectionHeader from '../../../../components/SectionHeader/SectionHeader';
-import Section from '../../../../components/Section/Section';
+import ExpandableSection from '../../../../components/Section/ExpandableSection';
 
 // CONTAINERS
 import ExpansesCodesTableContainer from './ExpansesCodesTableContainer';
@@ -16,13 +15,11 @@ const ExpansesCodes = () => {
   return (
     <Fragment>
 
-      <SectionHeader title={TABLE_TITLE} TitleIcon={TableChart} />
-
-      <Section>
+      <ExpandableSection title={TABLE_TITLE} TitleIcon={TableChart}>
 
         <ExpansesCodesTableContainer />
 
-      </Section> {/* end Section */}
+      </ExpandableSection> {/* end Section */}
 
     </Fragment>
   );

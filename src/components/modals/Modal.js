@@ -12,15 +12,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, children }) => {
+export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, children, valid }) => {
 
   const [open, setOpen] = React.useState(true);
   const { hideModal } = useModalLogic();
 
   const agree = () => {
-    setOpen(false);
-    onAgreeHandler();
-    hideModal();
+    if (valid === undefined || valid) {
+      setOpen(false);
+      onAgreeHandler();
+      hideModal();
+    }
   };
 
   const cancel = () => {
@@ -30,7 +32,7 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
 
   const onKeyPressHandler = (event) => {
     // Number 13 is the "Enter" key on the keyboard
-    if (event.keyCode === 13) {
+    if (event.key === "Enter") {
       // Cancel the default action, if needed
       event.preventDefault();
       agree();
@@ -47,11 +49,9 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
         open={open}
         TransitionComponent={Transition}
         keepMounted
-        //onEnter={agree}
         onClose={cancel}
         onEscapeKeyDown={cancel}
         onKeyPress={onKeyPressHandler}
-        PaperProps={{ onKeyPress: onKeyPressHandler }}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
@@ -61,7 +61,7 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
             color: "#000000",
             fontSize: "28px",
           }} />
-          <DialogTitle style={{ paddingRight: "12px", flex: "initial" }} id="alert-dialog-slide-title">{title}</DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title" style={{ paddingRight: "12px", flex: "initial" }} id="alert-dialog-slide-title">{title}</DialogTitle>
         </div>
 
         <DialogContent>

@@ -1,9 +1,12 @@
 .container{
-  margin-top: 80px;
+  margin-top: 20px;
+  background: #fff;
+  padding: 40px 20px 60px;
+  border-radius: 4px;
 }
 
 .divider{
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   margin-top: 5px;
 }
 
