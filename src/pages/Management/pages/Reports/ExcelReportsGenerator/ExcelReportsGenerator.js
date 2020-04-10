@@ -18,6 +18,7 @@ import styles from './ExcelReportsGenerator.module.css';
 
 // ACTIONS
 import { fetchRegisteredReports } from '../../../../../redux/actions/registeredReportsActions';
+import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 
 export default props => {
   const date = new Date();//current date
@@ -84,14 +85,11 @@ export default props => {
   }
 
   return (
-    <div className={styles.container}>
-      <div style={{ paddingBottom: "0px", fontSize: "28px" }}>
-        <Typography variant="h5">
-          הפקת דוחות אקסל
-    </Typography>
-      </div>
-
-      <Divider className={styles.divider} />
+    <StyledExpandableSection
+      title={"הפקת דוחות אקסל"}
+      iconBoxBg={"#1b966e"}
+      padding={"40px 20px"}
+    >
 
       <div style={{ paddingBottom: "10px", fontSize: "28px" }}>
         <Typography className={styles.description} variant="h6">
@@ -157,6 +155,6 @@ export default props => {
         color="secondary">
         צור
       </Button>
-    </div>
+    </StyledExpandableSection>
   )
 }

@@ -11,6 +11,7 @@ export default ({ bgColor = "", span = 1, show = true, children, style }) => {
         gridColumn: `span ${span}`,
         color: "#fff",
         fontWeight: "600",
+        borderRight: "none",
         ...style
       }}
     >

@@ -18,7 +18,7 @@ import Helper from '../../helpers/Helper';
 
 // HOC
 import withPageLogic from '../../HOC/withPageLogic';
-import StyledSection from '../../components/Section/StyledSection';
+import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "לב תל אביב - מעקב ביצוע מול תקציב";
@@ -60,7 +60,7 @@ const BudgetExecutions = props => {
           return (
             <Fragment>
 
-              <StyledSection
+              <StyledExpandableSection
                 title={STATS_TITLE}
                 TitleIcon={Equalizer}
               >
@@ -69,13 +69,14 @@ const BudgetExecutions = props => {
                   date={date[buildingNameEng]}
                   pageName={PAGE_NAME}
                 />
-              </StyledSection>
+              </StyledExpandableSection>
 
-              <ExpandableSection
+              <StyledExpandableSection
                 marginBottom={"100px"}
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
                 iconBoxBg={"rgb(255, 117, 37)"}
+                padding={"10px"}
                 extraDetails={props.dateDetails(onlyDate)}
               >
                 <BudgetExecutionsTableContainer
@@ -85,7 +86,7 @@ const BudgetExecutions = props => {
                   pageName={PAGE_NAME}
                   pageTitle={PAGE_TITLE}
                 />
-              </ExpandableSection>
+              </StyledExpandableSection>
 
             </Fragment>
           );

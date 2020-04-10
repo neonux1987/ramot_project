@@ -22,8 +22,6 @@ export default ({
   const useStyles = makeStyles((theme) => ({
     contentInnerClassName: {
       padding,
-    },
-    classParentString: {
       backgroundColor: bgColor
     }
   }));
@@ -40,11 +38,7 @@ export default ({
 
   const headerWrapper = () => {
 
-    const displayExpandIcon = collapsable ? <div className={styles.expandIconWrapper} onClick={expandClick}>
-      {expandIcon}
-    </div> : null;
-
-    return (<div className={styles.wrapper}>
+    return (<div className={styles.wrapper} onClick={expandClick}>
 
       <div className={styles.titleWrapper}>
         <div className={styles.iconBox} style={{ backgroundColor: iconBoxBg }}>
@@ -59,7 +53,7 @@ export default ({
         {extraDetails && extraDetails()}
       </div>
 
-      {collapsable && <div className={styles.expandIconWrapper} onClick={expandClick}>
+      {collapsable && <div className={styles.expandIconWrapper}>
         {expandIcon}
       </div>}
 
@@ -67,13 +61,12 @@ export default ({
   }
 
   return (
-    <Box mt={marginTop} mb={marginBottom} mx={"20px"}>
+    <Box mt={marginTop} mb={marginBottom} mx={"20px"} style={{ borderRadius: "4px" }}>
       <Collapsible
         transitionTime={100}
         open={open}
         triggerDisabled={true}
         trigger={headerWrapper() || ""}
-        classParentString={classes.classParentString}
         contentInnerClassName={classnames(classes.contentInnerClassName)}
       >
         {children}

@@ -6,8 +6,8 @@ export default props => {
   return (
     <ExpandableSection
       {...props}
-      bgColor={"#ffffff"}
-      padding={"20px"}
+      bgColor={props.bgColor || "#ffffff"}
+      padding={props.padding || "20px"}
     >
       {props.children}
     </ExpandableSection>

@@ -11,8 +11,8 @@
   background: none;
   margin: 0 6px;
   display: inline-flex;
-  height: 36px;
-  width: 42px;
+  /* height: 36px;
+  width: 42px; */
   justify-content: center;
   align-items: center;
   border-radius: 4px;

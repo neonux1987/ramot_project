@@ -53,7 +53,7 @@ export default ({ title, income, outcome, unicodeSymbol, bgColor = "#7553c5", lo
             </div>
           </div>
 
-          <span data-line={200} className={utilStyles.fadingLine}></span>
+          {/* <span data-line={200} className={utilStyles.fadingLine}></span> */}
 
         </div> {/* end header */}
 

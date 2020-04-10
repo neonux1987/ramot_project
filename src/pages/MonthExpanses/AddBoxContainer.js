@@ -8,12 +8,11 @@ import * as expansesCodesActions from '../../redux/actions/expansesCodesActions'
 
 const styles = theme => ({
   container: {
-    margin: "10px 0 10px",
-    padding: "10px",
+    margin: "0px 0 10px",
+    padding: "10px 10px 0",
     background: "#ffffff",
     //boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.06)",
-    borderRadius: "4px",
-    border: "1px solid #00000024",
+    borderBottom: "1px solid #00000024",
     position: "relative",
     zIndex: "3"
   },
@@ -49,11 +48,18 @@ const styles = theme => ({
   },
   button: {
     margin: "8px 0 8px 8px",
-    backgroundColor: "#fbfbfb",
-    border: "1px solid #dedede",
     color: "#000",
-    background: "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%)",
+    background: "none",
     boxShadow: "none",
+    fontWeight: "bold",
+    "&:hover": {
+      background: "rgb(243, 243, 243)",
+      boxShadow: "none",
+      border: "1px solid #dedede"
+    }
+  },
+  inputUnderline: {
+    borderBottom: "none"
   },
   inputLabel: {
     color: "#000"

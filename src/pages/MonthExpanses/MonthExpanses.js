@@ -16,6 +16,7 @@ import MonthExpansesTableContainer from './MonthExpansesTableContainer';
 
 // HOC
 import withPageLogic from '../../HOC/withPageLogic';
+import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -44,11 +45,11 @@ const MonthExpanses = props => {
             return (
               <Fragment>
 
-                <ExpandableSection
+                <StyledExpandableSection
                   title={TABLE_TITLE}
                   TitleIcon={TableChart}
                   extraDetails={props.dateDetails(onlyDate)}
-                  collapsable={false}
+                  padding={"10px"}
                 >
 
                   <MonthExpansesTableContainer
@@ -59,7 +60,7 @@ const MonthExpanses = props => {
                     pageTitle={PAGE_TITLE}
                   />
 
-                </ExpandableSection>
+                </StyledExpandableSection>
 
               </Fragment>
             );

@@ -23,7 +23,6 @@ import PageControls from '../../components/PageControls/PageControls';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import TableControls from '../../components/table/TableControls/TableControls';
 import EditControls from '../../components/EditControls/EditControls';
-import { notify, notificationTypes } from '../../components/Notifications/Notification';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Spinner from '../../components/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';

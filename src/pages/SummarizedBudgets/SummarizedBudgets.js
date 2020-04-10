@@ -23,7 +23,7 @@ import withPageLogic from '../../HOC/withPageLogic';
 
 // UTILS
 import Helper from '../../helpers/Helper';
-import StyledSection from '../../components/Section/StyledSection';
+import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -56,7 +56,7 @@ const SummarizedBudgets = props => {
           return (
             <Fragment>
 
-              <StyledSection
+              <StyledExpandableSection
                 title={STATS_TITLE}
                 TitleIcon={Equalizer}
               >
@@ -65,14 +65,15 @@ const SummarizedBudgets = props => {
                   date={date[buildingNameEng]}
                   pageName={PAGE_NAME}
                 />
-              </StyledSection>
+              </StyledExpandableSection>
 
-              <ExpandableSection
+              <StyledExpandableSection
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
                 iconBoxBg={"rgb(255, 117, 37)"}
                 extraDetails={props.dateDetails(onlyDate)}
                 marginBottom={"100px"}
+                padding={"10px"}
               >
 
 
@@ -84,7 +85,7 @@ const SummarizedBudgets = props => {
                   pageTitle={PAGE_TITLE}
                 />
 
-              </ExpandableSection>
+              </StyledExpandableSection>
 
             </Fragment>
           );

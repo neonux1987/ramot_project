@@ -3,11 +3,11 @@
 }
 
 .editBtn{
-  background-color: #fbfbfb;
+  background-color: #edf0f3;
   border-color: #343a40;
   border: 1px solid #dedede;
   color: #000;
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
+  /* background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%); */
 }
 
 /* .addNewBtn{
@@ -24,7 +24,7 @@
   border-color: #343a40;
   border: 1px solid #dedede;
   color: #10589a;
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
+  background: #edf0f3;
 }
 
 .addNewBtn, .editBtn{
@@ -32,6 +32,7 @@
   box-shadow: none;
   font-weight: 600;
   font-size: 13px;
+  border: none;
 }
 
 .addIcon, .editIcon{
@@ -40,7 +41,8 @@
 }
 
 .editBtn:hover,.addNewBtn:hover{
-  background: rgb(248, 248, 249);
+  background: rgb(243, 243, 243);
+  box-shadow: none;
 }
 
 .red{

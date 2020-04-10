@@ -3,10 +3,11 @@ import React, { Fragment } from 'react';
 import { TableChart } from '@material-ui/icons';
 
 // COMPONENTS
-import ExpandableSection from '../../../../components/Section/ExpandableSection';
+import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
 
 // CONTAINERS
 import ExpansesCodesTableContainer from './ExpansesCodesTableContainer';
+
 
 const TABLE_TITLE = "טבלת מעקב וניהול קודי הנהלת חשבונות";
 
@@ -15,11 +16,11 @@ const ExpansesCodes = () => {
   return (
     <Fragment>
 
-      <ExpandableSection title={TABLE_TITLE} TitleIcon={TableChart}>
+      <StyledExpandableSection title={TABLE_TITLE} TitleIcon={TableChart}>
 
         <ExpansesCodesTableContainer />
 
-      </ExpandableSection> {/* end Section */}
+      </StyledExpandableSection> {/* end Section */}
 
     </Fragment>
   );

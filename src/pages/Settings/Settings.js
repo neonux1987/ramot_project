@@ -8,7 +8,7 @@ import General from './pages/General/General';
 const styles = (theme) => ({
   tabs: {
     flexGrow: 1,
-    backgroundColor: "#333333"
+    backgroundColor: "rgb(46, 55, 62)"
     //backgroundColor: theme.palette.background.paper
   },
   tab: {
