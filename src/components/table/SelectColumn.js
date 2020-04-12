@@ -33,7 +33,7 @@ export default ({
       index
     });
   }
-  console.log(selectValue);
+
   const render = select ?
     <ReactSelect
       inputValue={selectValue}
