@@ -22,7 +22,8 @@ export default ({
   const useStyles = makeStyles((theme) => ({
     contentInnerClassName: {
       padding,
-      backgroundColor: bgColor
+      backgroundColor: bgColor,
+      position: "relative"
     }
   }));
 

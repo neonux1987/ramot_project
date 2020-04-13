@@ -155,7 +155,7 @@ class MainSystem {
     dbBackupSvc.init();
 
     // start the empty reports generator service
-    emptyReportsGeneratorSvc.init();
+    //emptyReportsGeneratorSvc.init();
   }
 
   async startSystem() {

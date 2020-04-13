@@ -1,6 +1,9 @@
 import React from 'react';
 import { FormControl, InputLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
 import styles from './Restore.module.css';
+import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
+import { Restore } from '@material-ui/icons';
+import SaveButton from '../../../../../components/SaveButton/SaveButton';
 
 export default (props) => {
 
@@ -25,7 +28,15 @@ export default (props) => {
   return (
 
 
-    <div style={{ marginTop: "60px" }}>{/* db restore start */}
+    <StyledExpandableSection
+      title={"שיחזור בסיס נתונים"}
+      TitleIcon={Restore}
+      iconBoxBg={"#1b966e"}
+      padding={"20px"}
+      extraDetails={() =>
+        <SaveButton>שמור</SaveButton>
+      }
+    >{/* db restore start */}
       <div style={{ paddingBottom: "5px" }}>
         <Typography variant="h5" className={styles.dbRestoreTitle}>
           שיחזור בסיס נתונים
@@ -70,6 +81,6 @@ export default (props) => {
         *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה חירום.
     </Typography>
 
-      {/* db restore end */}</div>
+      {/* db restore end */}</StyledExpandableSection>
   );
 }

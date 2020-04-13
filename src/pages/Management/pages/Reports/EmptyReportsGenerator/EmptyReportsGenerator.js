@@ -17,6 +17,7 @@ import styles from './EmptyReportsGenerator.module.css';
 // ACTIONS
 import { fetchRegisteredReports } from '../../../../../redux/actions/registeredReportsActions';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
+import { Description } from '@material-ui/icons';
 
 export default props => {
   const date = new Date();//current date
@@ -61,6 +62,7 @@ export default props => {
   return (
     <StyledExpandableSection
       title={"הפקת דוחות חדשים (ריקים)"}
+      TitleIcon={Description}
       iconBoxBg={"#1b966e"}
       padding={"40px 20px"}
     >

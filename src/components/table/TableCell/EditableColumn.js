@@ -53,11 +53,15 @@ export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFo
 
   return <div className={styles.wrapper}>{renderer}</div>;
 
-},
-  areEqual);
+});
 
 function areEqual(prevProps, nextProps) {
-  if (prevProps.value === nextProps.value)
+  if (
+    prevProps.value === nextProps.value ||
+    prevProps.type === nextProps.type ||
+    prevProps.dataIndex === nextProps.dataIndex ||
+    prevProps.dataKey === nextProps.dataKey
+  )
     return true;
   else return false;
 }

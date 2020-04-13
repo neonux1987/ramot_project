@@ -55,23 +55,23 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", background: "rgb(46, 55, 62)" }}>
           <Icon style={{
             margin: "16px 24px 16px 0",
-            color: "#000000",
+            color: "#ffffff",
             fontSize: "28px",
           }} />
-          <DialogTitle id="alert-dialog-slide-title" style={{ paddingRight: "12px", flex: "initial" }} id="alert-dialog-slide-title">{title}</DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title" style={{ paddingRight: "12px", flex: "initial", color: "#ffffff" }} id="alert-dialog-slide-title">{title}</DialogTitle>
         </div>
 
         <DialogContent>
           {content}
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancel} color="primary" variant="contained">
+          <Button onClick={cancel} color="primary" style={{ background: "rgb(46, 55, 62)" }} variant="contained">
             בטל
           </Button>
-          <Button onClick={agree} color="primary" variant="contained">
+          <Button onClick={agree} color="primary" style={{ background: "rgb(46, 55, 62)" }} variant="contained">
             {agreeBtnText || "בצע פעולה"}
           </Button>
         </DialogActions>

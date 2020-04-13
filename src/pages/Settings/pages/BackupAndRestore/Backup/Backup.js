@@ -1,13 +1,73 @@
+// LIBRARIES
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormControlLabel, FormControl, InputLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
+import { Backup } from '@material-ui/icons';
 import DateFnsUtils from '@date-io/date-fns';
 import heLocale from "date-fns/locale/he";
+import { toast } from 'react-toastify';
+
+// UTILS
+import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
+
+// CSS
 import styles from './Backup.module.css';
+
+// COMPONENTS
+import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
+import SaveButton from '../../../../../components/SaveButton/SaveButton';
+
+// ACTIONS
+import { saveSettings } from '../../../../../redux/actions/settingsActions';
 
 export default (props) => {
 
   const { db_backup } = props;
+
+  const dispatch = useDispatch();
+
+  const data = useSelector(store => store.settings.settings.data);
+
+  const save = (event) => {
+    event.stopPropagation();
+    const { db_backup } = data;
+
+    //the init that it's not valid
+    let valid = isDaysOfWeekValid(db_backup.days_of_week);
+    //if the backup is active and noValid is true
+    //based on the no days were selected
+    if (!valid && db_backup.active) {
+      //send the error to the notification center
+      toast.error("חייב לבחור לפחות יום אחד.", {
+        onOpen: () => playSound(soundTypes.error)
+      });
+    } else {
+      console.log("hello");
+      dispatch(saveSettings(data));
+    }
+  }
+
+  const isDaysOfWeekValid = (days_of_week) => {
+    //get the keys of the object
+    const keys = Object.keys(days_of_week);
+    //the init that it's not valid
+    let notValid = true;
+    //if at least on of the days
+    //is checked, then it's valid and notValid should be false
+    for (let i = 0; i < keys.length; i++) {
+      if (days_of_week[keys[i]]) {
+        notValid = false;
+      }
+    }
+    //if the backup is active and noValid is true
+    //based on the no days were selected
+    if (notValid) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   //to render the last update of the backup
   const BackupDateTime = new Date(db_backup.last_update);
@@ -28,8 +88,16 @@ export default (props) => {
 
   return (
 
-    < div >{/* db backup start */}
-      <div style={{ paddingBottom: "0px", fontSize: "28px" }}>
+    <StyledExpandableSection
+      title={"גיבוי בסיס נתונים"}
+      TitleIcon={Backup}
+      iconBoxBg={"#1b966e"}
+      extraDetails={() =>
+        <SaveButton onClick={save}>שמור</SaveButton>
+      }
+      padding={"30px 20px"}
+    >{/* db backup start */}
+      {/* <div style={{ paddingBottom: "0px", fontSize: "28px" }}>
         <Typography variant="h5" className={styles.dbBackupTitle}>
           גיבוי בסיס נתונים
     </Typography>
@@ -37,7 +105,7 @@ export default (props) => {
         {dbActiveButton}
       </div>
 
-      <Divider className={styles.divider} />
+      <Divider className={styles.divider} /> */}
 
       <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography>
 
@@ -225,6 +293,6 @@ export default (props) => {
         <Button style={{ marginRight: "10px", display: "inline-flex" }} variant="contained" color="primary" onClick={props.dbIndependentBackup}>גבה בסיס נתונים</Button>
       </div>
 
-      {/* db backup end */}</div >
+      {/* db backup end */}</StyledExpandableSection >
   );
 }

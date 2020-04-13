@@ -1,0 +1,51 @@
+.container{
+  margin: 0 20px;
+}
+
+.header{
+  background: rgb(41, 114, 171);
+  color: #fff;
+}
+
+.tableCellHeader{
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.tableCell{
+  font-size: 15px;
+}
+
+.serviceRow{
+  display: flex;
+  padding: 10px 0;
+}
+
+.serviceRowTitle{
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.serviceRowStatus{
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.serviceRowActions{
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn{
+  background-color: #edf0f3;
+  color: #000;
+  min-width:90px;
+  box-shadow: none;
+  font-weight: 600;
+  font-size: 13px;
+  border: 1px solid #dadada;
+}

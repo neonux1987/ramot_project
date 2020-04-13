@@ -119,7 +119,7 @@ class App extends Component {
       }
     });
     //start services
-    //ipcRenderer.send("system-start-services");
+    ipcRenderer.send("system-start-services");
   }
 
   closeButtonHandler = () => {

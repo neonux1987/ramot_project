@@ -1,10 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import generalSettingsActions from '../../../../redux/actions/generalSettingsActions';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Typography, Box } from '@material-ui/core';
 import LoadingCircle from '../../../../components/LoadingCircle';
 import styles from './General.module.css';
 import Section from '../../../../components/Section/Section';
+import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
+import { Settings } from '@material-ui/icons';
+import SaveButton from '../../../../components/SaveButton/SaveButton';
 
 class General extends Component {
 
@@ -64,21 +67,53 @@ class General extends Component {
     return (
       <Fragment>
 
-        <Section>
+        <StyledExpandableSection
+          TitleIcon={Settings}
+          iconBoxBg={"#1b966e"}
+          extraDetails={() =>
+            <SaveButton>שמור</SaveButton>
+          }
+          padding={"30px 20px 40px"}
+        >
           <form className={styles.form} onChange={(event) => this.formOnChange(event)} onSubmit={(event) => event.preventDefault()}>
-            <label>מע"מ:</label>
+
+            <Typography variant="subtitle1" style={{ margin: "0px 0 10px" }}>
+              <Box fontWeight="600">
+                מיקום בסיס הנתונים
+              </Box>
+            </Typography>
+
+            <Button variant="contained" color="primary" >בחר מיקום</Button>
             <TextField
-              name="tax"
-              type="number"
-              value={this.state.formInputs.tax}
-              classes={{ root: styles.textField }}
-              onClick={(event => event.target.select())}
+              id="outlined-bare"
+              disabled
+              classes={{ root: styles.dbFileTextFieldLocationWrapper }}
+              value={"מיקום"}
+              onChange={() => { }}
+              variant="outlined"
+              inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
             />
-            <Button className={styles.saveBtn} style={{}} name="submit" variant="contained" color="primary" onClick={(event) => this.saveSettings(event)}>
-              שמור
-          </Button>
+
+            <Typography variant="subtitle1" style={{ margin: "40px 0 10px" }}>
+              <Box fontWeight="600">
+                מיקום דוחות מוכנים
+              </Box>
+            </Typography>
+
+            <Button variant="contained" color="primary" >בחר מיקום</Button>
+            <TextField
+              id="outlined-bare"
+              disabled
+              classes={{ root: styles.dbFileTextFieldLocationWrapper }}
+              value={"מיקום"}
+              onChange={() => { }}
+              variant="outlined"
+              inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
+            />
+
           </form>
-        </Section>
+        </StyledExpandableSection>
+
 
       </Fragment>
     );

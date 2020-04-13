@@ -1,3 +1,8 @@
+.container{
+  background: #ffffff;
+  padding: 20px;
+}
+
 .form{
   padding-right: 5px;
 }
@@ -8,8 +13,13 @@
   margin-top: 10px;
 }
 
-.saveBtn{
-  background-color: #439dd2;
-  display: flex;
-  margin-top: 40px;
+.dbFileTextFieldLocationWrapper{
+  margin-top: 0px;
+  width: 580px;
+  background-color: #ffffff;
+}
+
+.dbFileTextFieldLocationInput{
+  padding: 9px 14px;
+  direction: ltr;
 }

@@ -240,11 +240,6 @@ class BackupAndRestore extends Component {
               backupsNames={this.props.backupsNames.backupsNames}
             />
 
-            <Divider className={styles.divider} />
-
-            <Button className={styles.saveBtn} style={{ margin: "80px 0" }} name="submit" variant="contained" color="primary" onClick={this.saveSettings}>
-              שמור
-            </Button>
           </div>
           <Prompt when={this.settingsSaved} message="האם אתה בטוח שברצונך לצאת בלי לשמור הגדרות?" />
         </Fragment>
