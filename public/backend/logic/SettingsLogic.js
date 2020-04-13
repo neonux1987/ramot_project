@@ -29,6 +29,18 @@ class SettingsLogic {
     });
   }
 
+  getSpecificSetting(settingName) {
+    return this.getSettings(settingName).then((settings) => {
+      return settings[settingName];
+    });
+  }
+
+  async updateSpecificSetting(name, payload) {
+    const settings = await this.getSpecificSetting(name);
+    settings[name] = payload;
+    return this.updateSettings(settings);
+  }
+
   updateSettings(data) {
     return this.iOLogic.writeFile(CONFIG_LOCATION, JSON.stringify(data, null, 2));
   }

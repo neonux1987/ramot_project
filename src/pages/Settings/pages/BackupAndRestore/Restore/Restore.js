@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormControl, InputLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
 import styles from './Restore.module.css';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import { Restore } from '@material-ui/icons';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
+import LoadingCircle from '../../../../../components/LoadingCircle';
+import { useDispatch, useSelector } from 'react-redux';
+
+// ACTIONS
+import {
+  fetchBackupsNames,
+  initializeBackupNames
+} from '../../../../../redux/actions/backupsNamesActions';
 
 export default (props) => {
 
-  const { backupsNames, } = props;
+  const dispatch = useDispatch();
+
+  const backupsNames = useSelector(store => store.backupsNames);
+
+  useEffect(() => {
+    dispatch(fetchBackupsNames());
+  }, [dispatch]);
+
   const [selectedBackupDate, SetSelectedBackupDate] = React.useState(backupsNames.data[0] ? backupsNames.data[0].backupDateTime : "לא קיימים גיבויים שמורים");
+
+  if (backupsNames.isFetching) {
+    return <LoadingCircle loading={backupsNames.isFetching} />
+  }
 
   const backupsNamesRender = backupsNames.data.length > 0 ? backupsNames.data.map((backup, index) => {
     const date = new Date(backup.backupDateTime);
@@ -26,7 +45,6 @@ export default (props) => {
   }
 
   return (
-
 
     <StyledExpandableSection
       title={"שיחזור בסיס נתונים"}

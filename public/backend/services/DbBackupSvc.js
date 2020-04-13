@@ -61,7 +61,7 @@ class DbBackupSvc {
 
   }
 
-  async activate() {
+  async start() {
     let settings = null;
     try {
       //fetch db backup settings
@@ -71,13 +71,13 @@ class DbBackupSvc {
     }
 
     //check if none of te days are selected, if none
-    //selected, don't allow to activate the backup service
+    //selected, don't allow to start the backup service
     const valid = this.validateDaysOfWeek(settings.db_backup.days_of_week);
     if (!valid) {
       return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעת שמירה."));
     }
 
-    //activate the backup
+    //start the backup
     settings.db_backup.active = true;
 
     const backupTime = new Date(settings.db_backup.time);
@@ -177,7 +177,7 @@ class DbBackupSvc {
     } catch (e) {
       return Promise.reject(e);
     }
-    //activate the backup
+    //start the backup
     settings.db_backup.active = false;
 
     //make sure that the scheduler object in not null
@@ -198,6 +198,14 @@ class DbBackupSvc {
       return Promise.resolve("the job is cancelled.");
     } else {
       return Promise.reject("unable to cancel scheduled job.");
+    }
+  }
+
+  async restart() {
+    if (this.backupSchedule) {
+      this.stop();
+      this.backupSchedule = null;
+      this.start();
     }
   }
 

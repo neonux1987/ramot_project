@@ -1,5 +1,5 @@
 // LIBRARIES
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormControlLabel, FormControl, InputLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
@@ -20,18 +20,22 @@ import SaveButton from '../../../../../components/SaveButton/SaveButton';
 
 // ACTIONS
 import { saveSettings } from '../../../../../redux/actions/settingsActions';
+import { fetchSpecificSetting } from '../../../../../redux/actions/settingsActions';
+import LoadingCircle from '../../../../../components/LoadingCircle';
 
 export default (props) => {
 
-  const { db_backup } = props;
-
   const dispatch = useDispatch();
 
-  const data = useSelector(store => store.settings.settings.data);
+  const settings = useSelector(store => store.settings);
+  const { db_backup } = settings.data;
+
+  useEffect(() => {
+    dispatch(fetchSpecificSetting("db_backup"));
+  }, [dispatch]);
 
   const save = (event) => {
     event.stopPropagation();
-    const { db_backup } = data;
 
     //the init that it's not valid
     let valid = isDaysOfWeekValid(db_backup.days_of_week);
@@ -43,8 +47,7 @@ export default (props) => {
         onOpen: () => playSound(soundTypes.error)
       });
     } else {
-      console.log("hello");
-      dispatch(saveSettings(data));
+      dispatch(saveSettings(db_backup));
     }
   }
 
@@ -69,17 +72,14 @@ export default (props) => {
     }
   }
 
+  if (settings.isFetching) {
+    return <LoadingCircle loading={settings.isFetching} />
+  }
+
   //to render the last update of the backup
   const BackupDateTime = new Date(db_backup.last_update);
   const backupDateRender = `${BackupDateTime.getDate()}/${BackupDateTime.getMonth() + 1}/${BackupDateTime.getFullYear()}`;
   const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
-
-  let dbActiveButton = !db_backup.active ? <Button style={{ float: "left" }} onClick={props.toggleDbBackupActivation} variant="contained" color="primary">הפעל</Button> :
-    <Button style={{ float: "left" }} onClick={props.toggleDbBackupActivation} variant="contained" color="secondary">השבת</Button>;
-
-  let dbActiveText = db_backup.active ? <Typography variant="h5" className={styles.dbBackupStatus + " " + styles.dbBackupActive}>פעיל</Typography> :
-    <Typography variant="h5" className={styles.dbBackupStatus + " " + styles.dbBackupDisabled}>מושבת</Typography>
-
 
   let backups_to_save = [];
   for (let i = 1; i <= db_backup.max_num_of_histor_backups; i++) {
@@ -87,7 +87,6 @@ export default (props) => {
   }
 
   return (
-
     <StyledExpandableSection
       title={"גיבוי בסיס נתונים"}
       TitleIcon={Backup}
@@ -97,15 +96,6 @@ export default (props) => {
       }
       padding={"30px 20px"}
     >{/* db backup start */}
-      {/* <div style={{ paddingBottom: "0px", fontSize: "28px" }}>
-        <Typography variant="h5" className={styles.dbBackupTitle}>
-          גיבוי בסיס נתונים
-    </Typography>
-        {dbActiveText}
-        {dbActiveButton}
-      </div>
-
-      <Divider className={styles.divider} /> */}
 
       <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography>
 

@@ -10,7 +10,8 @@ export const TYPES = {
   SETTINGS_RECEIVE: "SETTINGS_RECEIVE",
   SETTINGS_FETCHING_FAILED: "SETTINGS_FETCHING_FAILED",
   SETTINGS_UPDATE: "SETTINGS_UPDATE",
-  SETTINGS_DB_BACKUP_UPDATE: "SETTINGS_DB_BACKUP_UPDATE"
+  SETTINGS_DB_BACKUP_UPDATE: "SETTINGS_DB_BACKUP_UPDATE",
+  SETTINGS_RECEIVE_SPECIFIC_SETTING: "SETTINGS_RECEIVE_SPECIFIC_SETTING"
 }
 
 /**
@@ -18,7 +19,7 @@ export const TYPES = {
  * @param {*} params 
  */
 export const fetchSettings = () => {
-
+  console.log("yes");
   return dispatch => {
 
     //let react know that the fetching is started
@@ -37,8 +38,33 @@ export const fetchSettings = () => {
         });
       } else {
         //success store the data
-        console.log(arg);
         dispatch(receiveSettings(arg.data));
+      }
+    });
+  }
+};
+
+export const fetchSpecificSetting = (settingName) => {
+
+  return dispatch => {
+
+    //let react know that the fetching is started
+    //dispatch(requestSettings());
+
+    //request request to backend to get the data
+    ipcRenderer.send("get-specific-setting", settingName);
+    //listen when the data comes back
+    ipcRenderer.once("specific-setting-data", (event, arg) => {
+      if (arg.error) {
+        //let react know that an erro occured while trying to fetch
+        // dispatch(fetchingFailed(arg.error));
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        //success store the data
+        dispatch(receiveSpecificSetting(settingName, arg.data));
       }
     });
   }
@@ -53,7 +79,15 @@ const requestSettings = function () {
 const receiveSettings = function (data) {
   return {
     type: TYPES.SETTINGS_RECEIVE,
-    data: data
+    data
+  }
+}
+
+const receiveSpecificSetting = function (settingName, data) {
+  return {
+    type: TYPES.SETTINGS_RECEIVE_SPECIFIC_SETTING,
+    settingName,
+    data
   }
 }
 

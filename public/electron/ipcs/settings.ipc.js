@@ -16,6 +16,24 @@ const settingsIpc = () => {
     });
   });
 
+  ipcMain.on('get-specific-setting', (event, settingName) => {
+    settingsLogic.getSpecificSetting(settingName).then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("specific-setting-data", { data: result });
+    }).catch((error) => {
+      event.reply("specific-setting-data", { error: error.message });
+    });
+  });
+
+  ipcMain.on('update-specific-setting', (event, settingName, payload) => {
+    settingsLogic.updateSpecificSetting(settingName, payload).then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("specific-setting-updated", { data: result });
+    }).catch((error) => {
+      event.reply("specific-setting-updated", { error: error.message });
+    });
+  });
+
   ipcMain.on('save-settings', (event, data) => {
     settingsLogic.updateSettings(data).then((result) => {
       //re-schedule backup date and time

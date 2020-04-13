@@ -2,15 +2,11 @@
 import { TYPES } from '../actions/settingsActions';
 
 const initState = {
-  pageName: "settings",
-  headerTitle: "כללי",
-  settings: {
-    isFetching: true,
-    saved: true,
-    status: "",
-    error: "",
-    data: {}
-  }
+  isFetching: true,
+  saved: true,
+  status: "",
+  error: "",
+  data: {}
 }
 
 export default (state = initState, action) => {
@@ -18,29 +14,30 @@ export default (state = initState, action) => {
     case TYPES.SETTINGS_RECEIVE:
       return {
         ...state,
-        settings: {
-          ...state.settings,
-          isFetching: false,
-          status: "success",
-          data: action.data
+        isFetching: false,
+        status: "success",
+        data: action.data
+      }
+    case TYPES.SETTINGS_RECEIVE_SPECIFIC_SETTING:
+      return {
+        ...state,
+        isFetching: false,
+        status: "success",
+        data: {
+          ...state.data,
+          [action.settingName]: action.data
         }
       }
     case TYPES.SETTINGS_REQUEST:
       return {
         ...state,
-        settings: {
-          ...state.settings,
-          isFetching: true,
-        }
+        isFetching: true,
       }
     case TYPES.SETTINGS_FETCHING_FAILED:
       return {
         ...state,
-        settings: {
-          ...state.settings,
-          status: "error",
-          error: action.payload
-        }
+        status: "error",
+        error: action.payload
       }
     case TYPES.SETTINGS_UPDATE:
       {
@@ -48,10 +45,7 @@ export default (state = initState, action) => {
         data[action.name] = action.data;
         return {
           ...state,
-          settings: {
-            ...state.settings,
-            data: data
-          }
+          data
         }
       }
     case TYPES.SETTINGS_DB_BACKUP_UPDATE:
@@ -60,10 +54,7 @@ export default (state = initState, action) => {
         data.db_backup[action.key] = action.data;
         return {
           ...state,
-          settings: {
-            ...state.settings,
-            data: data
-          }
+          data
         }
       }
     default: return state;

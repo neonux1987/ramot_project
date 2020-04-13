@@ -13,7 +13,6 @@ import { ipcRenderer } from 'electron';
 
 // ACTIONS
 import * as settingsActions from '../../../../redux/actions/settingsActions';
-import backupsNamesActions from '../../../../redux/actions/backupsNamesActions';
 import * as modalActions from '../../../../redux/actions/modalActions';
 
 // COMPONENTS
@@ -46,8 +45,8 @@ class BackupAndRestore extends Component {
 
 
   componentDidMount() {
-    this.props.fetchSettings();
-    this.props.fetchBackupsNames();
+    //this.props.fetchSettings();
+    //this.props.fetchBackupsNames();
     ipcRenderer.on("settings-updated", (event, type, settings) => {
       this.props.updateBackupSettings("last_update", settings.db_backup.last_update);
     });
@@ -57,7 +56,7 @@ class BackupAndRestore extends Component {
   }
 
   onDbTimeChange = (name, value) => {
-    const db_backup = { ...this.props.settings.settings.data.db_backup };
+    const db_backup = { ...this.props.settings.data.db_backup };
 
     //must convert it to string to ensure electron won't change it to different time zone
     let date = new Date(value);
@@ -71,7 +70,7 @@ class BackupAndRestore extends Component {
   }
 
   onDbDayChange = (event) => {
-    const db_backup = { ...this.props.settings.settings.data.db_backup };
+    const db_backup = { ...this.props.settings.data.db_backup };
     const { name, checked } = event.target;
     const keys = Object.keys(db_backup.days_of_week);
 
@@ -110,7 +109,7 @@ class BackupAndRestore extends Component {
   }
 
   saveSettings = (message, enableSound) => {
-    const { db_backup } = this.props.settings.settings.data;
+    const { db_backup } = this.props.settings.data;
     //the init that it's not valid
     let valid = this.isDaysOfWeekValid(db_backup.days_of_week);
     //if the backup is active and noValid is true
@@ -122,7 +121,7 @@ class BackupAndRestore extends Component {
       });
     } else {
       this.setState({ settingsSaved: true });
-      this.props.saveSettings(this.props.settings.settings.data, message, enableSound);
+      this.props.saveSettings(this.props.settings.data, message, enableSound);
     }
   }
 
@@ -149,11 +148,11 @@ class BackupAndRestore extends Component {
 
   dbSelectFolderHandler = () => {
     const options = {
-      defaultPath: this.props.settings.settings.data.db_backup.path
+      defaultPath: this.props.settings.data.db_backup.path
     }
     selectFolderDialog(options).then(({ canceled, filePaths }) => {
       if (!canceled) {
-        const db_backup = { ...this.props.settings.settings.data.db_backup };
+        const db_backup = { ...this.props.settings.data.db_backup };
 
         if (db_backup.path !== filePaths[0]) {
           this.props.showModal(ConfirmDbPathChangeModel, {
@@ -188,7 +187,7 @@ class BackupAndRestore extends Component {
   }
 
   toggleDbBackupActivation = () => {
-    const db_backup = { ...this.props.settings.settings.data.db_backup };
+    const db_backup = { ...this.props.settings.data.db_backup };
 
     db_backup.active = !db_backup.active;
 
@@ -202,24 +201,12 @@ class BackupAndRestore extends Component {
 
   backupsToSaveChangeHandler = (event) => {
     const { value } = event.target;
-    const db_backup = { ...this.props.settings.settings.data.db_backup };
+    const db_backup = { ...this.props.settings.data.db_backup };
     db_backup.backups_to_save = value;
     this.props.updateSettings("db_backup", db_backup);
   }
 
   render() {
-    const {
-      settings
-    } = this.props.settings;
-
-    const {
-      backupsNames
-    } = this.props.backupsNames;
-
-    if (settings.isFetching || backupsNames.isFetching) {
-      return <LoadingCircle loading={settings.isFetching || backupsNames.isFetching} />
-    }
-
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap["he"]}>
         <Fragment>
@@ -227,7 +214,6 @@ class BackupAndRestore extends Component {
           <div className={styles.form} disabled>
 
             <Backup
-              db_backup={settings.data.db_backup}
               toggleDbBackupActivation={this.toggleDbBackupActivation}
               backupsToSaveChangeHandler={this.backupsToSaveChangeHandler}
               onDbTimeChange={this.onDbTimeChange}
@@ -236,9 +222,7 @@ class BackupAndRestore extends Component {
               dbIndependentBackup={this.dbIndependentBackup}
             />
 
-            <Restore
-              backupsNames={this.props.backupsNames.backupsNames}
-            />
+            <Restore />
 
           </div>
           <Prompt when={this.settingsSaved} message="האם אתה בטוח שברצונך לצאת בלי לשמור הגדרות?" />
@@ -262,8 +246,6 @@ const mapDispatchToProps = dispatch => ({
   disableDbBackup: (data) => dispatch(settingsActions.disableDbBackup(data)),
   dbIndependentBackup: (filePath) => dispatch(settingsActions.dbIndependentBackup(filePath)),
   updateBackupSettings: (key, data) => dispatch(settingsActions.updateBackupSettings(key, data)),
-  fetchBackupsNames: () => dispatch(backupsNamesActions.fetchBackupsNames()),
-  initializeBackupNames: () => dispatch(backupsNamesActions.initializeBackupNames()),
   showModal: (modelComponent, props) => dispatch(modalActions.showModal(modelComponent, props)),
 });
 

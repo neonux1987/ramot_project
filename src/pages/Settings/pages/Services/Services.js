@@ -1,4 +1,7 @@
+// LIBRARIES
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -9,13 +12,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+// STYLES
 import styles from './Services.module.css'
-import Section from '../../../../components/Section/Section';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
 
-import { fetchSettings } from '../../../../redux/actions/settingsActions';
+// COMPONENTS
+import Section from '../../../../components/Section/Section';
 import LoadingCircle from '../../../../components/LoadingCircle';
+
+// ACTIONS
+import { fetchSettings } from '../../../../redux/actions/settingsActions';
+import { startService, stopService } from '../../../../redux/actions/servicesActions';
 
 const useStyles = makeStyles({
   table: {
@@ -29,21 +35,37 @@ export default props => {
 
   const dispatch = useDispatch();
 
-  const { settings } = useSelector(store => store.settings)
+  const settings = useSelector(store => store.settings);
 
   useEffect(() => {
     dispatch(fetchSettings());
-  }, []);
+  }, [dispatch]);
 
   if (settings.isFetching) {
     return <LoadingCircle loading={settings.isFetching} />
   }
 
-  const renderServices = settings.data.services.map(({ serviceNameHeb, enabled }, index) => {
+  const { services } = settings.data;
+
+  const keys = Object.keys(services);
+
+  const toggleService = (service) => {
+    if (service.enabled)
+      dispatch(startService(service.serviceName));
+    else
+      dispatch(stopService(service.serviceName));
+  }
+
+  const renderServices = keys.map((key, index) => {
+    const {
+      serviceNameHeb,
+      enabled
+    } = services[key];
     return <ServiceRow
       name={serviceNameHeb}
       enabled={enabled}
       key={index}
+      clickHandler={toggleService}
     />
   });
 
@@ -67,7 +89,7 @@ export default props => {
   );
 }
 
-const ServiceRow = ({ name, enabled }) => {
+const ServiceRow = ({ name, enabled, clickHandler }) => {
 
   const btnActionText = enabled ? "הפסק" : "הפעל";
   const btnActionTextStyle = !enabled ? "green" : "red";
@@ -82,7 +104,7 @@ const ServiceRow = ({ name, enabled }) => {
     <TableCell className={styles.tableCell} align="right" style={{ color: statusTextStyle }}>{status}</TableCell>
     <TableCell className={styles.tableCell} style={{ width: "250px" }} align="center">
       <Button className={styles.btn} variant="contained">אתחל</Button>
-      <Button className={styles.btn} style={{ marginRight: "10px", color: btnActionTextStyle }} variant="contained">{btnActionText}</Button>
+      <Button className={styles.btn} style={{ marginRight: "10px", color: btnActionTextStyle }} variant="contained" onClick={() => clickHandler({ serviceName: name, enabled })}>{btnActionText}</Button>
     </TableCell>
   </TableRow>;
 }

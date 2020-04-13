@@ -3,16 +3,24 @@ import { ipcRenderer } from 'electron';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
 
+export const TYPES = {
+  BACKUPS_NAMES_REQUEST: "BACKUPS_NAMES_REQUEST",
+  BACKUPS_NAMES_RECEIVE: "BACKUPS_NAMES_RECEIVE",
+  BACKUPS_NAMES_FETCHING_FAILED: "BACKUPS_NAMES_FETCHING_FAILED",
+  BACKUPS_NAMES_INIT: "BACKUPS_NAMES_INIT",
+  BACKUPS_NAMES_REQUEST: "BACKUPS_NAMES_REQUEST"
+}
+
 /**
  * fetch general settings
  * @param {*} params 
  */
-const fetchBackupsNames = () => {
+export const fetchBackupsNames = () => {
 
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestSettings());
+    dispatch(requestBackupsNames());
 
     //request request to backend to get the data
     ipcRenderer.send("get-backups-names");
@@ -33,34 +41,34 @@ const fetchBackupsNames = () => {
           return date1.getTime() < date2.getTime() ? 1 : -1;
         });
         //success store the data
-        dispatch(receiveSettings(newDataArr));
+        dispatch(receiveBackupsNames(newDataArr));
       }
     });
   }
 };
 
-const requestSettings = function () {
+const requestBackupsNames = function () {
   return {
-    type: "REQUEST_BACKUPS_NAMES"
+    type: TYPES.BACKUPS_NAMES_REQUEST
   }
 };
 
-const receiveSettings = function (data) {
+const receiveBackupsNames = function (data) {
   return {
-    type: "RECEIVE_BACKUPS_NAMES",
+    type: TYPES.BACKUPS_NAMES_RECEIVE,
     data: data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "BACKUPS_NAMES_FETCHING_FAILED",
+    type: TYPES.BACKUPS_NAMES_FETCHING_FAILED,
     payload: error
   }
 };
 
 
-const initializeBackupNames = () => {
+export const initializeBackupNames = () => {
   return dispatch => {
 
     //request request to backend to get the data
@@ -74,16 +82,9 @@ const initializeBackupNames = () => {
         });
       } else {
         dispatch({
-          type: "BACKUPS_NAMES_INIT"
+          type: TYPES.BACKUPS_NAMES_INIT
         })
       }
     });
   }
 }
-
-
-
-export default {
-  fetchBackupsNames,
-  initializeBackupNames
-};

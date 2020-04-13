@@ -30,6 +30,9 @@ const settingsIpc = require('../../electron/ipcs/settings.ipc');
 const dbBackupIpc = require('../../electron/ipcs/dbBackup.ipc');
 const excelIpc = require('../../electron/ipcs/excel.ipc');
 const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenerator.ipc');
+const servicesIpc = require('../../electron/ipcs/services.ipc');
+
+const ServicesLogic = require('../logic/ServicesLogic');
 
 //========================= services =========================//
 const emptyReportsGeneratorSvc = require('../services/EmptyReportsGeneratorSvc');
@@ -61,6 +64,10 @@ const configPath = platform === "linux" ? `${appConfigFolder}/config.json` : `${
 const backupsNamesPath = platform === "linux" ? `${appConfigFolder}/backupsNames.json` : `${appConfigFolder}\\backupsNames.json`;
 
 class MainSystem {
+
+  constructor() {
+    this.servicesLogic = new ServicesLogic();
+  }
 
   initDBConnection() {
     // create the connection pool
@@ -147,15 +154,11 @@ class MainSystem {
 
     registeredReportsIpc();
 
-    //servicesIpc();
+    servicesIpc();
   }
 
   startServices() {
-    //start the backup service
-    dbBackupSvc.init();
-
-    // start the empty reports generator service
-    //emptyReportsGeneratorSvc.init();
+    this.servicesLogic.startAllServices();
   }
 
   async startSystem() {
