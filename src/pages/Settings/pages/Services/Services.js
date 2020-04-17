@@ -20,7 +20,7 @@ import Section from '../../../../components/Section/Section';
 import LoadingCircle from '../../../../components/LoadingCircle';
 
 // ACTIONS
-import { fetchSettings } from '../../../../redux/actions/settingsActions';
+import { fetchSpecificSetting } from '../../../../redux/actions/settingsActions';
 import { startService, stopService } from '../../../../redux/actions/servicesActions';
 
 const useStyles = makeStyles({
@@ -29,6 +29,8 @@ const useStyles = makeStyles({
   },
 });
 
+const SERVICES = "services";
+
 export default props => {
 
   const classes = useStyles();
@@ -36,9 +38,9 @@ export default props => {
   const dispatch = useDispatch();
 
   const settings = useSelector(store => store.settings);
-
+  console.log(settings);
   useEffect(() => {
-    dispatch(fetchSettings());
+    dispatch(fetchSpecificSetting(SERVICES));
   }, [dispatch]);
 
   if (settings.isFetching) {

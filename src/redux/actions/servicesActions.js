@@ -12,34 +12,6 @@ export const TYPES = {
   SERVICES_STOP_SERVICE: "SERVICES_STOP_SERVICE"
 }
 
-export const fetchServices = (params = Object) => {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      //let react know that the fetching is started
-      dispatch(requestServices(params.buildingName));
-
-      //request request to backend to get the data
-      ipcRenderer.send("get-services", params);
-      //listen when the data comes back
-      return ipcRenderer.once("services-data", (event, arg) => {
-        if (arg.error) {
-          //let react know that an erro occured while trying to fetch
-          dispatch(fetchingFailed(arg.error));
-          //send the error to the notification center
-          toast.error(arg.error, {
-            onOpen: () => playSound(soundTypes.error)
-          });
-          reject(arg.error);
-        } else {
-          //success store the data
-          dispatch(receiveServices(arg.data, params.buildingName));
-          resolve(arg.data);
-        }
-      });
-    });
-  }
-};
-
 export const startService = (serviceName) => {
   return dispatch => {
     //request request to backend to get the data
@@ -75,6 +47,27 @@ export const stopService = (serviceName) => {
       } else {
         //success
         toast.success("השירות בוטל בהצלחה.", {
+          onOpen: () => playSound(soundTypes.success)
+        });
+      }
+    });
+  }
+};
+
+export const restartService = (serviceName) => {
+  return dispatch => {
+    //request request to backend to get the data
+    ipcRenderer.send("restart-service", serviceName);
+    //listen when the data comes back
+    return ipcRenderer.once("service-restarted", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        //success
+        toast.success("השירות אותחל בהצלחה.", {
           onOpen: () => playSound(soundTypes.success)
         });
       }
@@ -139,28 +132,6 @@ export const stopServiceStore = (serviceName) => {
     enable: true
   }
 }
-
-export const requestServices = function (page) {
-  return {
-    type: TYPES.SERVICES_REQUEST,
-    page
-  }
-};
-
-export const receiveServices = function (data, page) {
-  return {
-    type: TYPES.SERVICES_RECEIVE,
-    data,
-    page
-  }
-}
-
-export const fetchingFailed = function (error) {
-  return {
-    type: TYPES.SERVICES_FETCHING_FAILED,
-    payload: error
-  }
-};
 
 export const cleanupServices = () => {
   return {

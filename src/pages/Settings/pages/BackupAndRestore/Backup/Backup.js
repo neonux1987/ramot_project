@@ -17,22 +17,30 @@ import styles from './Backup.module.css';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
+import LoadingCircle from '../../../../../components/LoadingCircle';
 
 // ACTIONS
-import { saveSettings } from '../../../../../redux/actions/settingsActions';
-import { fetchSpecificSetting } from '../../../../../redux/actions/settingsActions';
-import LoadingCircle from '../../../../../components/LoadingCircle';
+import {
+  saveSettings,
+  updateSettings,
+  updateSepcificSetting
+} from '../../../../../redux/actions/settingsActions';
+import { fetchSpecificSetting, cleanup } from '../../../../../redux/actions/settingsActions';
 
 export default (props) => {
 
+  // dispatch
   const dispatch = useDispatch();
 
+  // redux state
   const settings = useSelector(store => store.settings);
   const { db_backup } = settings.data;
 
+  // useEffect
   useEffect(() => {
     dispatch(fetchSpecificSetting("db_backup"));
-  }, [dispatch]);
+    return cleanupStore;
+  }, [dispatch, cleanupStore]);
 
   const save = (event) => {
     event.stopPropagation();
@@ -47,10 +55,15 @@ export default (props) => {
         onOpen: () => playSound(soundTypes.error)
       });
     } else {
-      dispatch(saveSettings(db_backup));
+      dispatch(updateSepcificSetting("db_backup", db_backup));
     }
   }
 
+  const cleanupStore = () => {
+    dispatch(cleanup("db_backup", db_backup));
+  }
+
+  // validation
   const isDaysOfWeekValid = (days_of_week) => {
     //get the keys of the object
     const keys = Object.keys(days_of_week);
@@ -74,6 +87,12 @@ export default (props) => {
 
   if (settings.isFetching) {
     return <LoadingCircle loading={settings.isFetching} />
+  }
+
+  const backupsToSaveChangeHandler = (event) => {
+    const { value } = event.target;
+    db_backup.backups_to_save = value;
+    dispatch(updateSettings("db_backup", db_backup));
   }
 
   //to render the last update of the backup
@@ -123,7 +142,7 @@ export default (props) => {
 
         <Select
           value={db_backup.backups_to_save}
-          onChange={props.backupsToSaveChangeHandler}
+          onChange={backupsToSaveChangeHandler}
           inputProps={{
             name: 'age',
             id: 'age-simple',

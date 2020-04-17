@@ -6,20 +6,12 @@ const servicesIpc = () => {
   //fetch month expanses data
   const servicesLogic = new ServicesLogic();
 
-  ipcMain.on('get-services', (event) => {
-    servicesLogic.getServices().then((result) => {
-      //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.reply("services-data", { data: result });
-    }).catch((error) => {
-      event.reply("services-data", { error: error.message });
-    });
-  });
-
   ipcMain.on('start-service', (event, serviceName) => {
     servicesLogic.startService(serviceName).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("service-started", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("service-started", { error: error.message });
     });
   });
@@ -29,6 +21,7 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("service-stopped", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("service-stopped", { error: error.message });
     });
   });
@@ -38,6 +31,7 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("service-restarted", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("service-restarted", { error: error.message });
     });
   });
@@ -47,6 +41,7 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("all-services-started", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("all-services-started", { error: error.message });
     });
   });
@@ -56,6 +51,7 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("all-services-stopped", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("all-services-stopped", { error: error.message });
     });
   });

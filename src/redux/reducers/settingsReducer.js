@@ -41,7 +41,7 @@ export default (state = initState, action) => {
       }
     case TYPES.SETTINGS_UPDATE:
       {
-        const data = { ...state.settings.data };
+        const data = { ...state.data };
         data[action.name] = action.data;
         return {
           ...state,
@@ -50,11 +50,26 @@ export default (state = initState, action) => {
       }
     case TYPES.SETTINGS_DB_BACKUP_UPDATE:
       {
-        const data = { ...state.settings.data };
+        const data = { ...state.data };
         data.db_backup[action.key] = action.data;
         return {
           ...state,
           data
+        }
+      }
+    case TYPES.SETTINGS_CLEANUP:
+      {
+        const { serviceName } = action;
+
+        const dataCopy = { ...state.data };
+        delete dataCopy[serviceName];
+
+        return {
+          isFetching: true,
+          saved: true,
+          status: "",
+          error: "",
+          data: dataCopy
         }
       }
     default: return state;

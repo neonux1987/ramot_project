@@ -202,9 +202,11 @@ class DbBackupSvc {
   }
 
   async restart() {
+    const enabled = await this.settingsLogic.getSpecificSetting("services");
+    console.log(enabled);
+    // only restart the service if it's enabled
     if (this.backupSchedule) {
       this.stop();
-      this.backupSchedule = null;
       this.start();
     }
   }

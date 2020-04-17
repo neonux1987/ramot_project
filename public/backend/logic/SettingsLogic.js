@@ -36,8 +36,9 @@ class SettingsLogic {
   }
 
   async updateSpecificSetting(name, payload) {
-    const settings = await this.getSpecificSetting(name);
+    const settings = await this.getSettings(name);
     settings[name] = payload;
+
     return this.updateSettings(settings);
   }
 

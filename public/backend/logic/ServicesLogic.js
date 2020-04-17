@@ -9,65 +9,59 @@ class ServicesLogic {
     this.settingsLogic = new SettingsLogic();
   }
 
-  async getServices() {
-    return this.settingsLogic.getSpecificSetting(SERVICES);
-  }
-
-  async saveServiceSettings(serviceName, payload) {
-    const serviceSettings = await this.settingsLogic.updateSpecificSetting(serviceName, payload);
-
-    const services = this.settingsLogic.getSpecificSetting(SERVICES);
-
-  }
-
   async startService(serviceName) {
-    const services = await this.settingsLogic.getSpecificSetting(SERVICES);
+    const AllServicesSettings = await this.settingsLogic.getSpecificSetting(SERVICES);
 
-    const service = services[serviceName];
+    const serviceSetting = AllServicesSettings[serviceName];
 
-    if (service.enabled)
+    if (serviceSetting.enabled)
       throw new Error("השירות כבר פעיל. לא ניתן להפעיל שירות שכבר פעיל.")
 
     service.enabled = true;
 
+    const selectedService = servicesObjects[serviceName];
+
     switch (serviceName) {
-      case 'db_backup': dbBackupSvc.activate();
+      case 'db_backup': selectedService.start();
         break;
-      case 'db_backup': dbBackupSvc.activate();
+      case 'db_backup': selectedService.start();
         break;
       default: null;
     }
   }
 
   async restartService(serviceName) {
-    const services = await this.settingsLogic.getSpecificSetting(SERVICES);
+    const AllServicesSettings = await this.settingsLogic.getSpecificSetting(SERVICES);
 
-    const service = services[serviceName];
+    const serviceSetting = AllServicesSettings[serviceName];
 
-    if (!service.enabled)
-      throw new Error("לא ניתן לאתחל שירות לא פעיל. הפעל את השירות ולאחר מכן אתחל במקרה הצורך.")
+    if (!serviceSetting.enabled)
+      throw new Error("לא ניתן לאתחל שירות לא פעיל. הפעל את השירות ולאחר מכן אתחל במקרה הצורך.");
+
+    const selectedService = servicesObjects[serviceName];
 
     switch (serviceName) {
-      case 'db_backup': dbBackupSvc.restart();
+      case 'db_backup': selectedService.restart();
         break;
-      case 'db_backup': dbBackupSvc.restart();
+      case 'db_backup2': selectedService.restart();
         break;
       default: null;
     }
   }
 
   async stopService(serviceName) {
-    const services = await this.settingsLogic.getSpecificSetting(SERVICES);
+    const AllServicesSettings = await this.settingsLogic.getSpecificSetting(SERVICES);
 
-    const service = services[serviceName];
+    const serviceSetting = AllServicesSettings[serviceName];
 
-    if (!service.enabled)
+    if (!serviceSetting.enabled)
       throw new Error("השירות כבר מופסק. לא ניתן להפסיק שירות שכבר מופסק.")
 
+    const selectedService = servicesObjects[serviceName];
     switch (serviceName) {
-      case 'db_backup': dbBackupSvc.stop();
+      case 'db_backup': selectedService.stop();
         break;
-      case 'db_backup': dbBackupSvc.stop();
+      case 'db_backup': selectedService.stop();
         break;
       default: null;
     }
@@ -76,6 +70,7 @@ class ServicesLogic {
   async startAllServices() {
     const services = await this.settingsLogic.getSpecificSetting(SERVICES);
     const keys = Object.keys(services);
+
     keys.forEach((key) => {
       const selectedService = servicesObjects[key];
       selectedService.start();

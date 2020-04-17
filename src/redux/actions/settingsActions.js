@@ -4,6 +4,8 @@ import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
 
+import { restartService } from './servicesActions';
+
 // TYPES
 export const TYPES = {
   SETTINGS_REQUEST: "SETTINGS_REQUEST",
@@ -11,7 +13,8 @@ export const TYPES = {
   SETTINGS_FETCHING_FAILED: "SETTINGS_FETCHING_FAILED",
   SETTINGS_UPDATE: "SETTINGS_UPDATE",
   SETTINGS_DB_BACKUP_UPDATE: "SETTINGS_DB_BACKUP_UPDATE",
-  SETTINGS_RECEIVE_SPECIFIC_SETTING: "SETTINGS_RECEIVE_SPECIFIC_SETTING"
+  SETTINGS_RECEIVE_SPECIFIC_SETTING: "SETTINGS_RECEIVE_SPECIFIC_SETTING",
+  SETTINGS_CLEANUP: "SETTINGS_CLEANUP"
 }
 
 /**
@@ -136,6 +139,28 @@ export const saveSettings = (data) => {
         toast.success("ההגדרות נשמרו בהצלחה.", {
           onOpen: () => playSound(soundTypes.message)
         });
+      }
+    });
+  }
+};
+
+export const updateSepcificSetting = (settingName, payload) => {
+  return dispatch => {
+    //send a request to backend to get the data
+    ipcRenderer.send("update-specific-setting", settingName, payload);
+    //listen when the data comes back
+    ipcRenderer.once("specific-setting-updated", (event, arg) => {
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      } else {
+        //success
+        toast.success("ההגדרות נשמרו בהצלחה.", {
+          onOpen: () => playSound(soundTypes.message)
+        });
+        dispatch(restartService(settingName));
       }
     });
   }
@@ -276,5 +301,11 @@ export const disableReportsGenerator = (reports_generator) => {
         dispatch(updateSettingsInStore("reports_generator", reports_generator));
       }
     });
+  }
+}
+
+export const cleanup = () => {
+  return {
+    type: TYPES.SETTINGS_CLEANUP
   }
 }

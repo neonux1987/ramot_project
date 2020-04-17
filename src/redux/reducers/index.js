@@ -8,6 +8,7 @@ import registeredMonths from './registeredMonthsReducer';
 import registeredYears from './registeredYearsReducer';
 import registeredQuarters from './registeredQuartersReducer';
 import settings from './settingsReducer';
+import services from './servicesReducer';
 import backupsNames from './backupsNamesReducer';
 import monthlyStats from './monthlyStatsReducer';
 import quarterlyStats from './quarterlyStatsReducer';
@@ -52,6 +53,7 @@ export default combineReducers({
   registeredYears,
   registeredQuarters,
   settings,
+  services,
   backupsNames,
   monthlyStats,
   quarterlyStats,

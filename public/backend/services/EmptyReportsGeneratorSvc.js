@@ -72,6 +72,10 @@ class EmptyReportsGeneratorSvc {
 
   }
 
+  restart() {
+
+  }
+
   async generateMissingReports() {
 
     rendererNotificationSvc.notifyRenderer("notify-renderer", "reportsGenerationStarted", "המערכת מייצרת כעת דוחות לכל הבניינים...");
