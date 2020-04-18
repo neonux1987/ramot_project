@@ -20,8 +20,8 @@ import Section from '../../../../components/Section/Section';
 import LoadingCircle from '../../../../components/LoadingCircle';
 
 // ACTIONS
-import { fetchSpecificSetting } from '../../../../redux/actions/settingsActions';
 import { startService, stopService } from '../../../../redux/actions/servicesActions';
+import { fetchSettings, updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 
 const useStyles = makeStyles({
   table: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-const SERVICES = "services";
+const SETTINGS_NAME = "services";
 
 export default props => {
 
@@ -37,34 +37,39 @@ export default props => {
 
   const dispatch = useDispatch();
 
-  const settings = useSelector(store => store.settings);
-  console.log(settings);
+  const settings = useSelector(store => store.settings[SETTINGS_NAME]);
+
+  const {
+    isFetching,
+    data
+  } = settings;
+
   useEffect(() => {
-    dispatch(fetchSpecificSetting(SERVICES));
+    dispatch(fetchSettings(SETTINGS_NAME));
   }, [dispatch]);
 
-  if (settings.isFetching) {
-    return <LoadingCircle loading={settings.isFetching} />
+  if (isFetching) {
+    return <LoadingCircle loading={isFetching} />
   }
 
-  const { services } = settings.data;
-
-  const keys = Object.keys(services);
+  const keys = Object.keys(data);
 
   const toggleService = (service) => {
     if (service.enabled)
-      dispatch(startService(service.serviceName));
-    else
       dispatch(stopService(service.serviceName));
+    else
+      dispatch(startService(service.serviceName));
   }
 
   const renderServices = keys.map((key, index) => {
     const {
       serviceNameHeb,
+      serviceName,
       enabled
-    } = services[key];
+    } = data[key];
     return <ServiceRow
-      name={serviceNameHeb}
+      name={serviceName}
+      nameHeb={serviceNameHeb}
       enabled={enabled}
       key={index}
       clickHandler={toggleService}
@@ -78,7 +83,7 @@ export default props => {
           <TableHead className={styles.header}>
             <TableRow>
               <TableCell className={styles.tableCellHeader}>שירות</TableCell>
-              <TableCell className={styles.tableCellHeader} align="right">סטטוס</TableCell>
+              <TableCell className={styles.tableCellHeader} align="center">סטטוס</TableCell>
               <TableCell size="small" className={styles.tableCellHeader} style={{ width: "250px" }} align="center">פעולות</TableCell>
             </TableRow>
           </TableHead>
@@ -91,19 +96,21 @@ export default props => {
   );
 }
 
-const ServiceRow = ({ name, enabled, clickHandler }) => {
+const ServiceRow = ({ name, nameHeb, enabled, clickHandler }) => {
 
   const btnActionText = enabled ? "הפסק" : "הפעל";
   const btnActionTextStyle = !enabled ? "green" : "red";
 
-  const statusTextStyle = enabled ? "green" : "red";
-  const status = enabled ? "מופעל" : "מופסק";
+  const statusTextStyle = enabled ? "#5baf5b" : "#e44242";
+  const status = enabled ? "פעיל" : "הופסק";
 
   return <TableRow>
     <TableCell className={styles.tableCell} component="th" scope="row">
-      {name}
+      {nameHeb}
     </TableCell>
-    <TableCell className={styles.tableCell} align="right" style={{ color: statusTextStyle }}>{status}</TableCell>
+    <TableCell className={styles.tableCell} style={{ width: "200px" }} align="center">
+      <div className={styles.statusTextWrapper} style={{ background: statusTextStyle }}>{status}</div>
+    </TableCell>
     <TableCell className={styles.tableCell} style={{ width: "250px" }} align="center">
       <Button className={styles.btn} variant="contained">אתחל</Button>
       <Button className={styles.btn} style={{ marginRight: "10px", color: btnActionTextStyle }} variant="contained" onClick={() => clickHandler({ serviceName: name, enabled })}>{btnActionText}</Button>

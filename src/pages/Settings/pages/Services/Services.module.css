@@ -49,3 +49,11 @@
   font-size: 13px;
   border: 1px solid #dadada;
 }
+
+.statusTextWrapper{
+  width: 70px;
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 0;
+  margin:auto;
+}

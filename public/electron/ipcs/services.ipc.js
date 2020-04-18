@@ -6,6 +6,16 @@ const servicesIpc = () => {
   //fetch month expanses data
   const servicesLogic = new ServicesLogic();
 
+  ipcMain.on('get-services', (event) => {
+    servicesLogic.getServices().then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("servicse-data", { data: result });
+    }).catch((error) => {
+      console.log(error);
+      event.reply("services-data", { error: error.message });
+    });
+  });
+
   ipcMain.on('start-service', (event, serviceName) => {
     servicesLogic.startService(serviceName).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);

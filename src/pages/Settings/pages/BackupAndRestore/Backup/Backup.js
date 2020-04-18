@@ -23,44 +23,50 @@ import LoadingCircle from '../../../../../components/LoadingCircle';
 import {
   saveSettings,
   updateSettings,
-  updateSepcificSetting
+  fetchSettings,
+  cleanup
 } from '../../../../../redux/actions/settingsActions';
-import { fetchSpecificSetting, cleanup } from '../../../../../redux/actions/settingsActions';
+import { restartService } from '../../../../../redux/actions/servicesActions';
+
+const SETTINGS_NAME = "db_backup";
 
 export default (props) => {
 
-  // dispatch
   const dispatch = useDispatch();
 
-  // redux state
-  const settings = useSelector(store => store.settings);
-  const { db_backup } = settings.data;
+  // state
+  const settings = useSelector(store => store.settings[SETTINGS_NAME]);
+  const {
+    isFetching,
+    data
+  } = settings;
 
-  // useEffect
   useEffect(() => {
-    dispatch(fetchSpecificSetting("db_backup"));
+    dispatch(fetchSettings("db_backup"));
     return cleanupStore;
   }, [dispatch, cleanupStore]);
 
-  const save = (event) => {
+  const save = async (event) => {
     event.stopPropagation();
 
     //the init that it's not valid
-    let valid = isDaysOfWeekValid(db_backup.days_of_week);
+    let valid = isDaysOfWeekValid(data.days_of_week);
     //if the backup is active and noValid is true
     //based on the no days were selected
-    if (!valid && db_backup.active) {
+    if (!valid && data.active) {
       //send the error to the notification center
       toast.error("חייב לבחור לפחות יום אחד.", {
         onOpen: () => playSound(soundTypes.error)
       });
     } else {
-      dispatch(updateSepcificSetting("db_backup", db_backup));
+      const success = await dispatch(saveSettings(SETTINGS_NAME, data));
+      if (success && data.enabled)
+        dispatch(restartService(SETTINGS_NAME, data));
     }
   }
 
   const cleanupStore = () => {
-    dispatch(cleanup("db_backup", db_backup));
+    dispatch(cleanup(SETTINGS_NAME, data));
   }
 
   // validation
@@ -85,23 +91,71 @@ export default (props) => {
     }
   }
 
-  if (settings.isFetching) {
-    return <LoadingCircle loading={settings.isFetching} />
+  if (isFetching) {
+    return <LoadingCircle loading={isFetching} />
+  }
+
+  const onDbTimeChange = (value) => {
+    //must convert it to string to ensure electron won't change it to different time zone
+    let date = new Date(value);
+    const localeString = date.toLocaleString();
+    date = new Date(localeString);
+
+    data.time = date.toString();
+
+    dispatch(updateSettings(SETTINGS_NAME, data));
+  }
+
+  const onDbDayChange = (event) => {
+    const { name, checked } = event.target;
+    const keys = Object.keys(data.days_of_week);
+
+    if (name === "everything" && checked === true) {
+      for (let i = 0; i < keys.length; i++) {
+        data.days_of_week[keys[i]] = true;
+      }
+    } else if (name === "everything" && checked === false) {
+      const keys = Object.keys(data.days_of_week);
+      for (let i = 0; i < keys.length; i++) {
+        data.days_of_week[keys[i]] = false;
+      }
+    }
+    else {
+      data.days_of_week = {
+        ...data.days_of_week,
+        [name]: checked,//set the selected day
+        ["everything"]: checked ? data.days_of_week["everything"] : false
+      };
+
+      let fullDays = true;
+      //iterate and find if all days are selected
+      for (let i = 0; i < keys.length; i++) {
+        if (!data.days_of_week[keys[i]] && keys[i] !== "everything") {
+          fullDays = false;
+        }
+      }
+      //if all the days selected then select everything checkbox
+      if (fullDays) {
+        data.days_of_week["everything"] = true
+      }
+
+    }
+    dispatch(updateSettings(SETTINGS_NAME, data));
   }
 
   const backupsToSaveChangeHandler = (event) => {
     const { value } = event.target;
-    db_backup.backups_to_save = value;
-    dispatch(updateSettings("db_backup", db_backup));
+    data.backups_to_save = value;
+    dispatch(updateSettings(SETTINGS_NAME, data));
   }
 
   //to render the last update of the backup
-  const BackupDateTime = new Date(db_backup.last_update);
+  const BackupDateTime = new Date(data.last_update);
   const backupDateRender = `${BackupDateTime.getDate()}/${BackupDateTime.getMonth() + 1}/${BackupDateTime.getFullYear()}`;
   const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
 
   let backups_to_save = [];
-  for (let i = 1; i <= db_backup.max_num_of_histor_backups; i++) {
+  for (let i = 1; i <= data.max_num_of_histor_backups; i++) {
     backups_to_save.push(<MenuItem value={i} key={i}>{i}</MenuItem>)
   }
 
@@ -128,8 +182,8 @@ export default (props) => {
         <TimePicker
           ampm={false}
           classes={{ root: styles.time }}
-          value={db_backup.time}
-          onChange={(event) => props.onDbTimeChange("db_backup", event)}
+          value={data.time}
+          onChange={onDbTimeChange}
         />
       </div>
 
@@ -141,7 +195,7 @@ export default (props) => {
         </Typography>
 
         <Select
-          value={db_backup.backups_to_save}
+          value={data.backups_to_save}
           onChange={backupsToSaveChangeHandler}
           inputProps={{
             name: 'age',
@@ -168,8 +222,8 @@ export default (props) => {
           control={
             <Checkbox
               name="everything"
-              checked={db_backup.days_of_week["everything"]}
-              onChange={props.onDbDayChange}
+              checked={data.days_of_week["everything"]}
+              onChange={onDbDayChange}
               value="checkedB"
               color="primary"
             />
@@ -182,8 +236,8 @@ export default (props) => {
           control={
             <Checkbox
               name="0"
-              checked={db_backup.days_of_week["0"]}
-              onChange={props.onDbDayChange}
+              checked={data.days_of_week["0"]}
+              onChange={onDbDayChange}
               value="checkedB"
               color="primary"
             />
@@ -196,8 +250,8 @@ export default (props) => {
           control={
             <Checkbox
               name="1"
-              checked={db_backup.days_of_week["1"]}
-              onChange={props.onDbDayChange}
+              checked={data.days_of_week["1"]}
+              onChange={onDbDayChange}
               value="checkedB"
               color="primary"
             />
@@ -210,8 +264,8 @@ export default (props) => {
           control={
             <Checkbox
               name="2"
-              checked={db_backup.days_of_week["2"]}
-              onChange={props.onDbDayChange}
+              checked={data.days_of_week["2"]}
+              onChange={onDbDayChange}
               value="checkedB"
               color="primary"
             />
@@ -224,8 +278,8 @@ export default (props) => {
           control={
             <Checkbox
               name="3"
-              checked={db_backup.days_of_week["3"]}
-              onChange={props.onDbDayChange}
+              checked={data.days_of_week["3"]}
+              onChange={onDbDayChange}
               value="checkedB"
               color="primary"
             />
@@ -238,8 +292,8 @@ export default (props) => {
           control={
             <Checkbox
               name="4"
-              checked={db_backup.days_of_week["4"]}
-              onChange={props.onDbDayChange}
+              checked={data.days_of_week["4"]}
+              onChange={onDbDayChange}
               value="checkedB"
               color="primary"
             />
@@ -252,8 +306,8 @@ export default (props) => {
           control={
             <Checkbox
               name="5"
-              checked={db_backup.days_of_week["5"]}
-              onChange={props.onDbDayChange}
+              checked={data.days_of_week["5"]}
+              onChange={onDbDayChange}
               value="checkedB"
               color="primary"
             />
@@ -266,8 +320,8 @@ export default (props) => {
           control={
             <Checkbox
               name="6"
-              checked={db_backup.days_of_week["6"]}
-              onChange={props.onDbDayChange}
+              checked={data.days_of_week["6"]}
+              onChange={onDbDayChange}
               value="checkedB"
               color="primary"
             />
@@ -288,7 +342,7 @@ export default (props) => {
           id="outlined-bare"
           disabled
           classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-          value={db_backup.path}
+          value={data.path}
           onChange={() => { }}
           variant="outlined"
           inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}

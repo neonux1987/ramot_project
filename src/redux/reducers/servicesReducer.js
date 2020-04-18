@@ -1,17 +1,15 @@
 import { TYPES } from '../actions/servicesActions';
 
 const initState = {
-  isFetching: false,
+  isFetching: true,
   status: "",
   error: "",
-  data: []
+  data: {}
 }
 
 export default (state = initState, action) => {
   switch (action.type) {
     case TYPES.SERVICES_CLEANUP:
-
-
       return {
         ...state,
         isFetching: false,
@@ -20,29 +18,33 @@ export default (state = initState, action) => {
         data: []
       }
     case TYPES.SERVICES_START_SERVICE: {
-      const servicesCopy = [...state.data]
-
-      state.data.forEach((service, index) => {
-        if (service.serviceName === action.serviceName)
-          servicesCopy[index].enabled = true;
-      });
+      const { serviceName } = action;
+      const service = { ...state.data[serviceName] };
+      console.log(state.data);
+      if (service.serviceName === action.serviceName)
+        service.enabled = true;
 
       return {
         ...state,
-        data: servicesCopy
+        data: {
+          ...state.data,
+          [serviceName]: service
+        }
       }
     }
     case TYPES.SERVICES_STOP_SERVICE: {
-      const servicesCopy = [...state.data]
+      const { serviceName } = action;
+      const service = { ...state.data[serviceName] };
 
-      state.data.forEach((service, index) => {
-        if (service.serviceName === action.serviceName)
-          servicesCopy[index].enabled = false;
-      });
+      if (service.serviceName === action.serviceName)
+        service.enabled = false;
 
       return {
         ...state,
-        data: servicesCopy
+        data: {
+          ...state.data,
+          [serviceName]: service
+        }
       }
     }
     default: return state;

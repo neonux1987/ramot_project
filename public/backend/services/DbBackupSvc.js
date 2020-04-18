@@ -25,7 +25,7 @@ class DbBackupSvc {
       return Promise.reject(e);
     }
 
-    if (settings.db_backup.active) {
+    if (settings.db_backup.enabled) {
       const backupTime = new Date(settings.db_backup.time);
 
       //apply the settings to the scheduler
@@ -77,30 +77,28 @@ class DbBackupSvc {
       return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעת שמירה."));
     }
 
-    //start the backup
-    settings.db_backup.active = true;
-
     const backupTime = new Date(settings.db_backup.time);
 
-    //apply the settings to the scheduler
+    // apply the settings to the scheduler
     this.rule.hour = backupTime.getHours();
     this.rule.minute = backupTime.getMinutes();
     this.rule.dayOfWeek = [];
-    //convert the enabled days of week from object to array
+    // convert the enabled days of week from object to array
+    // for the scheduler
     for (let i = 0; i < 7; i++) {
       if (settings.db_backup.days_of_week[i]) {
         this.rule.dayOfWeek.push(i)
       }
     }
 
-    //if non of the days selected, we must
-    //set the dayOfWeek to null otherwise
-    //the node-schedule module will crash for some reason
+    // if non of the days selected, we must
+    // set the dayOfWeek to null otherwise
+    // the node-schedule module will crash for some reason
     if (this.rule.dayOfWeek.length === 0) {
       this.rule.dayOfWeek = null;
     }
 
-    //execute scheduler
+    // execute scheduler
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
 
       this.backupDbCallback(settings).catch((error) => {
@@ -112,7 +110,7 @@ class DbBackupSvc {
     if (this.backupSchedule.nextInvocation() === null) {
       return Promise.reject();
     }
-    return this.settingsLogic.updateSettings(settings);
+    //return this.settingsLogic.updateSettings(settings);
   }
 
   async modifySchedule() {
@@ -126,7 +124,7 @@ class DbBackupSvc {
 
     //dont do anything if the db backup is 
     //not active
-    if (!settings.db_backup.active) {
+    if (!settings.db_backup.enabled) {
       return Promise.resolve();
     }
 
@@ -166,7 +164,7 @@ class DbBackupSvc {
     if (this.backupSchedule.nextInvocation() === null) {
       return Promise.reject();
     }
-    return this.settingsLogic.updateSettings(settings);
+    //return this.settingsLogic.updateSettings(settings);
   }
 
   async stop() {
@@ -177,8 +175,6 @@ class DbBackupSvc {
     } catch (e) {
       return Promise.reject(e);
     }
-    //start the backup
-    settings.db_backup.active = false;
 
     //make sure that the scheduler object in not null
     if (this.backupSchedule === null) {
@@ -202,8 +198,6 @@ class DbBackupSvc {
   }
 
   async restart() {
-    const enabled = await this.settingsLogic.getSpecificSetting("services");
-    console.log(enabled);
     // only restart the service if it's enabled
     if (this.backupSchedule) {
       this.stop();

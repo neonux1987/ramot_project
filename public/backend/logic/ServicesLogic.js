@@ -9,15 +9,19 @@ class ServicesLogic {
     this.settingsLogic = new SettingsLogic();
   }
 
+  getServices() {
+    return this.settingsLogic.getSpecificSetting(SERVICES);
+  }
+
   async startService(serviceName) {
-    const AllServicesSettings = await this.settingsLogic.getSpecificSetting(SERVICES);
+    // list of all the services configurations
+    const AllServices = await this.settingsLogic.getSpecificSetting(SERVICES);
 
-    const serviceSetting = AllServicesSettings[serviceName];
+    // the service
+    const service = AllServices[serviceName];
 
-    if (serviceSetting.enabled)
+    if (service.enabled)
       throw new Error("השירות כבר פעיל. לא ניתן להפעיל שירות שכבר פעיל.")
-
-    service.enabled = true;
 
     const selectedService = servicesObjects[serviceName];
 
@@ -28,6 +32,17 @@ class ServicesLogic {
         break;
       default: null;
     }
+
+    // settings of the specific service
+    const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
+
+    // enable in both places in the services
+    // and in the specific service settings
+    service.enabled = true;
+    serviceSettings.enabled = true;
+
+    this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
+    this.settingsLogic.updateSpecificSetting(SERVICES, AllServices);
   }
 
   async restartService(serviceName) {
@@ -50,12 +65,14 @@ class ServicesLogic {
   }
 
   async stopService(serviceName) {
-    const AllServicesSettings = await this.settingsLogic.getSpecificSetting(SERVICES);
+    // list of all the services configurations
+    const AllServices = await this.settingsLogic.getSpecificSetting(SERVICES);
 
-    const serviceSetting = AllServicesSettings[serviceName];
+    // the service
+    const service = AllServices[serviceName];
 
-    if (!serviceSetting.enabled)
-      throw new Error("השירות כבר מופסק. לא ניתן להפסיק שירות שכבר מופסק.")
+    if (!service.enabled)
+      throw new Error("השירות כבר מופסק. לא ניתן להפסיק שירות שכבר מופסק.");
 
     const selectedService = servicesObjects[serviceName];
     switch (serviceName) {
@@ -65,6 +82,17 @@ class ServicesLogic {
         break;
       default: null;
     }
+
+    // settings of the specific service
+    const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
+
+    // disable in both places in the services
+    // and in the specific service settings
+    service.enabled = false;
+    serviceSettings.enabled = false;
+
+    this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
+    this.settingsLogic.updateSpecificSetting(SERVICES, AllServices);
   }
 
   async startAllServices() {
