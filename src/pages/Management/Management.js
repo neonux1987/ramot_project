@@ -5,6 +5,7 @@ import { Route, Switch, NavLink } from 'react-router-dom';
 import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
 import SummarizedSections from './pages/SummarizedSections/SummarizedSections';
 import Reports from './pages/Reports/Reports';
+import Settings from '../Settings/Settings';
 
 const styles = (theme) => ({
   tabs: {
@@ -46,6 +47,7 @@ const Management = ({ classes, match }, props) => {
           <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
           <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />
           <Route path={`${match.path}/הפקת דוחות`} component={Reports} />
+          <Route path={`${match.path}/הגדרות`} component={Settings} />
           <Route component={Reports} />
         </Switch>
       </div>

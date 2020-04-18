@@ -52,3 +52,7 @@
   display: flex;
   margin-top: 10px;
 }
+
+.restartRequired{
+  color: red;
+}

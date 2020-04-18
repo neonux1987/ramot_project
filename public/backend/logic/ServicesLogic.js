@@ -1,21 +1,34 @@
 const SettingsLogic = require("../logic/SettingsLogic");
+const IOLogic = require("../logic/IOLogic");
 const servicesObjects = require("../services/index");
+const os = require('os');
+const platform = os.platform();
+const homedir = os.homedir();
+
+const SERVICES_LOCATION = platform === "linux" ? homedir + "/Dropbox/ndts/config/services.json" : `${homedir}\\AppData\\Roaming\\ndts\\config\\services.json`;
 
 const SERVICES = "services";
 
 class ServicesLogic {
 
   constructor() {
+    this.iOLogic = new IOLogic();
     this.settingsLogic = new SettingsLogic();
   }
 
   getServices() {
-    return this.settingsLogic.getSpecificSetting(SERVICES);
+    return this.iOLogic.readFile(SERVICES_LOCATION).then((services) => {
+      return JSON.parse(services);
+    });
+  }
+
+  updateServices(data) {
+    return this.iOLogic.writeFile(SERVICES_LOCATION, JSON.stringify(data, null, 2));
   }
 
   async startService(serviceName) {
     // list of all the services configurations
-    const AllServices = await this.settingsLogic.getSpecificSetting(SERVICES);
+    const AllServices = await this.getServices();
 
     // the service
     const service = AllServices[serviceName];
@@ -33,20 +46,14 @@ class ServicesLogic {
       default: null;
     }
 
-    // settings of the specific service
+    // set the restartRequired to false
     const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
-
-    // enable in both places in the services
-    // and in the specific service settings
-    service.enabled = true;
-    serviceSettings.enabled = true;
-
+    serviceSettings.restartRequired = false;
     this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
-    this.settingsLogic.updateSpecificSetting(SERVICES, AllServices);
   }
 
   async restartService(serviceName) {
-    const AllServicesSettings = await this.settingsLogic.getSpecificSetting(SERVICES);
+    const AllServicesSettings = await this.getServices();
 
     const serviceSetting = AllServicesSettings[serviceName];
 
@@ -62,11 +69,16 @@ class ServicesLogic {
         break;
       default: null;
     }
+
+    // set the restartRequired to false
+    const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
+    serviceSettings.restartRequired = false;
+    this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
   }
 
   async stopService(serviceName) {
     // list of all the services configurations
-    const AllServices = await this.settingsLogic.getSpecificSetting(SERVICES);
+    const AllServices = await this.getServices();
 
     // the service
     const service = AllServices[serviceName];
@@ -82,21 +94,10 @@ class ServicesLogic {
         break;
       default: null;
     }
-
-    // settings of the specific service
-    const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
-
-    // disable in both places in the services
-    // and in the specific service settings
-    service.enabled = false;
-    serviceSettings.enabled = false;
-
-    this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
-    this.settingsLogic.updateSpecificSetting(SERVICES, AllServices);
   }
 
   async startAllServices() {
-    const services = await this.settingsLogic.getSpecificSetting(SERVICES);
+    const services = await this.getServices();
     const keys = Object.keys(services);
 
     keys.forEach((key) => {
@@ -106,7 +107,7 @@ class ServicesLogic {
   }
 
   async stopAllServices() {
-    const services = await this.settingsLogic.getSpecificSetting(SERVICES);
+    const services = await this.getServices();
     const keys = Object.keys(services);
     keys.forEach((key) => {
       const selectedService = servicesObjects[key];

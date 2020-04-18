@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormControlLabel, FormControl, InputLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
@@ -34,6 +34,8 @@ export default (props) => {
 
   const dispatch = useDispatch();
 
+  const [restartMessage, setRestartMessage] = useState(false);
+
   // state
   const settings = useSelector(store => store.settings[SETTINGS_NAME]);
   const {
@@ -59,9 +61,15 @@ export default (props) => {
         onOpen: () => playSound(soundTypes.error)
       });
     } else {
-      const success = await dispatch(saveSettings(SETTINGS_NAME, data));
-      if (success && data.enabled)
-        dispatch(restartService(SETTINGS_NAME, data));
+      const dataCopy = { ...data };
+      dataCopy.restartRequired = true;
+
+      dispatch(updateSettings(SETTINGS_NAME, dataCopy))
+
+      const success = await dispatch(saveSettings(SETTINGS_NAME, dataCopy));
+
+      /* if (success && data.enabled)
+        dispatch(restartService(SETTINGS_NAME, data)); */
     }
   }
 
@@ -155,7 +163,7 @@ export default (props) => {
   const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
 
   let backups_to_save = [];
-  for (let i = 1; i <= data.max_num_of_histor_backups; i++) {
+  for (let i = 1; i <= data.max_num_of_history_backups; i++) {
     backups_to_save.push(<MenuItem value={i} key={i}>{i}</MenuItem>)
   }
 
@@ -172,7 +180,12 @@ export default (props) => {
 
       <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography>
 
+      {data.enabled && data.restartRequired && <Typography className={styles.restartRequired} variant="subtitle1">
+        {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
+      </Typography>}
+
       <div style={{ marginBottom: "40px" }}>
+
         <Typography variant="subtitle1">
           <Box fontWeight="600">
             בחר שעה לביצוע הגיבוי:

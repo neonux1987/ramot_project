@@ -3,57 +3,153 @@ import { ipcRenderer } from 'electron';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
+import { fetchSettings, saveSettings } from './settingsActions';
 
 // TYPES
 export const TYPES = {
+  SERVICES_REQUEST: "SERVICES_REQUEST",
+  SERVICES_RECEIVE: "SERVICES_RECEIVE",
+  SERVICES_UPDATE: "SERVICES_UPDATE",
   SERVICES_FETCHING_FAILED: "SERVICES_FETCHING_FAILED",
   SERVICES_CLEANUP: "SERVICES_CLEANUP",
   SERVICES_START_SERVICE: "SERVICES_START_SERVICE",
   SERVICES_STOP_SERVICE: "SERVICES_STOP_SERVICE"
 }
 
-export const startService = (serviceName) => {
+export const fetchServices = (params = Object) => {
   return dispatch => {
-    dispatch(startServiceStore());
+    return new Promise((resolve, reject) => {
+      //let react know that the fetching is started
+      dispatch(requestServices(params.buildingName));
+
+      //request request to backend to get the data
+      ipcRenderer.send("get-services", params);
+      //listen when the data comes back
+      return ipcRenderer.once("services-data", (event, arg) => {
+        if (arg.error) {
+          //let react know that an erro occured while trying to fetch
+          dispatch(fetchingFailed(arg.error));
+          //send the error to the notification center
+          toast.error(arg.error, {
+            onOpen: () => playSound(soundTypes.error)
+          });
+          reject(arg.error);
+        } else {
+          //success store the data
+          dispatch(receiveServices(arg.data, params.buildingName));
+          resolve(arg.data);
+        }
+      });
+    });
+  }
+};
+
+export const updateServices = (data) => {
+  return dispatch => {
     //request request to backend to get the data
-    //ipcRenderer.send("start-service", serviceName);
+    ipcRenderer.send("update-services", data);
     //listen when the data comes back
-    return ipcRenderer.once("service-started", (event, arg) => {
+    return ipcRenderer.once("services-updated", (event, arg) => {
       if (arg.error) {
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
         });
         dispatch(stopServiceStore());
-      } else {
-        //success
-        toast.success("השירות הופעל בהצלחה.", {
-          onOpen: () => playSound(soundTypes.success)
+      }
+    });
+  }
+};
+
+export const updateServicesInStore = (data) => {
+  return {
+    type: TYPES.SERVICES_UPDATE,
+    data
+  }
+}
+
+export const startService = (serviceName) => {
+  return (dispatch, getState) => {
+    const services = getState().services;
+    const servicesDataCopy = { ...services.data };
+
+    dispatch(startServiceStore(serviceName));
+    playSound(soundTypes.success);
+
+    //request request to backend to get the data
+    ipcRenderer.send("start-service", serviceName);
+    //listen when the data comes back
+    return ipcRenderer.once("service-started", async (event, arg) => {
+      const settings = await dispatch(fetchSettings(serviceName));
+      const settingsCopy = { ...settings };
+
+      if (arg.error) {
+        //send the error to the notification center
+        toast.error(arg.error, {
+          onOpen: () => playSound(soundTypes.error)
         });
+        // on service falied to start
+        // set the service to disabled in store 
+        // an set to disabled in the service settings
+        dispatch(stopServiceStore(serviceName));
+
+        settingsCopy.enabled = false;
+        servicesDataCopy[serviceName].enabled = false;
+
+        dispatch(saveSettings(serviceName, settingsCopy, false));
+        dispatch(updateServices(servicesDataCopy));
+
+      } else {
+        // on success service was enabled
+        // update settings set the service to enabled
+        settingsCopy.enabled = true;
+        servicesDataCopy[serviceName].enabled = true;
+
+        dispatch(saveSettings(serviceName, settingsCopy, false));
+        dispatch(updateServices(servicesDataCopy));
       }
     });
   }
 };
 
 export const stopService = (serviceName) => {
-  return dispatch => {
-    dispatch(startServiceStore());
+  return (dispatch, getState) => {
+    const services = getState().services;
+    const servicesDataCopy = { ...services.data };
+
+    dispatch(stopServiceStore(serviceName));
+    playSound(soundTypes.success);
 
     //request request to backend to get the data
-    //ipcRenderer.send("stop-service", serviceName);
+    ipcRenderer.send("stop-service", serviceName);
     //listen when the data comes back
-    return ipcRenderer.once("service-stopped", (event, arg) => {
+    return ipcRenderer.once("service-stopped", async (event, arg) => {
+      const settings = await dispatch(fetchSettings(serviceName));
+      const settingsCopy = { ...settings };
+
       if (arg.error) {
         //send the error to the notification center
         toast.error(arg.error, {
           onOpen: () => playSound(soundTypes.error)
         });
-        dispatch(stopServiceStore());
+        // on service falied to start
+        // set the service to disabled in store 
+        // an set to disabled in the service settings
+        dispatch(startServiceStore(serviceName));
+
+        settingsCopy.enabled = true;
+        servicesDataCopy[serviceName].enabled = true;
+
+        dispatch(saveSettings(serviceName, settingsCopy, false));
+        dispatch(updateServices(servicesDataCopy));
       } else {
-        //success
-        toast.success("השירות בוטל בהצלחה.", {
-          onOpen: () => playSound(soundTypes.success)
-        });
+        // on success service was enabled
+        // update settings set the service to enabled
+        settingsCopy.enabled = false;
+        servicesDataCopy[serviceName].enabled = false;
+
+        dispatch(saveSettings(serviceName, settingsCopy, false));
+        dispatch(updateServices(servicesDataCopy));
       }
     });
   }
@@ -166,6 +262,28 @@ export const stopServiceStore = (serviceName) => {
     serviceName
   }
 }
+
+export const requestServices = function (page) {
+  return {
+    type: TYPES.SERVICES_REQUEST,
+    page
+  }
+};
+
+export const receiveServices = function (data, page) {
+  return {
+    type: TYPES.SERVICES_RECEIVE,
+    data,
+    page
+  }
+}
+
+export const fetchingFailed = function (error) {
+  return {
+    type: TYPES.SERVICES_FETCHING_FAILED,
+    payload: error
+  }
+};
 
 export const cleanupServices = () => {
   return {

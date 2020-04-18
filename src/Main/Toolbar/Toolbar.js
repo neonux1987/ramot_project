@@ -13,6 +13,7 @@ import sidebarActions from '../../redux/actions/sidebarActions';
 import Spinner from "../../components/Spinner/Spinner";
 import useModalLogic from "../../customHooks/useModalLogic";
 import EditVatModal from "../../components/modals/EditVatModal/EditVatModal";
+import { Divider } from "@material-ui/core";
 
 const Toolbar = ({ buildingName, page }) => {
 
@@ -138,6 +139,25 @@ const Toolbar = ({ buildingName, page }) => {
 
           <MenuItem onClick={taxClickHandler}>
             שינוי מע"מ
+          </MenuItem>
+
+          <Divider style={{ margin: "0 10px" }} />
+
+          <MenuItem className={styles.menuItem} onClick={handleClose}>
+            <NavLink
+              className={styles.menuItemLink}
+              to={{
+                pathname: "/הגדרות",
+                state: {
+                  page: "הגדרות",
+                  buildingName: "הגדרות",
+                  buildingNameEng: "settings"
+                }
+              }}
+              exact
+            >
+              הגדרות
+            </NavLink>
           </MenuItem>
 
         </Menu>

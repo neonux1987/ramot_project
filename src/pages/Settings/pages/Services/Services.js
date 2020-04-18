@@ -20,8 +20,7 @@ import Section from '../../../../components/Section/Section';
 import LoadingCircle from '../../../../components/LoadingCircle';
 
 // ACTIONS
-import { startService, stopService } from '../../../../redux/actions/servicesActions';
-import { fetchSettings, updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
+import { startService, stopService, fetchServices, restartService } from '../../../../redux/actions/servicesActions';
 
 const useStyles = makeStyles({
   table: {
@@ -29,23 +28,21 @@ const useStyles = makeStyles({
   },
 });
 
-const SETTINGS_NAME = "services";
-
 export default props => {
 
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
-  const settings = useSelector(store => store.settings[SETTINGS_NAME]);
+  const services = useSelector(store => store.services);
 
   const {
     isFetching,
     data
-  } = settings;
+  } = services;
 
   useEffect(() => {
-    dispatch(fetchSettings(SETTINGS_NAME));
+    dispatch(fetchServices());
   }, [dispatch]);
 
   if (isFetching) {
@@ -54,11 +51,16 @@ export default props => {
 
   const keys = Object.keys(data);
 
-  const toggleService = (service) => {
-    if (service.enabled)
+  const serviceToggleHandler = (service) => {
+    if (service.enabled) {
       dispatch(stopService(service.serviceName));
+    }
     else
       dispatch(startService(service.serviceName));
+  }
+
+  const restartServiceHandler = (serviceName) => {
+    dispatch(restartService(serviceName));
   }
 
   const renderServices = keys.map((key, index) => {
@@ -72,7 +74,8 @@ export default props => {
       nameHeb={serviceNameHeb}
       enabled={enabled}
       key={index}
-      clickHandler={toggleService}
+      serviceToggleHandler={serviceToggleHandler}
+      restartServiceHandler={restartServiceHandler}
     />
   });
 
@@ -96,7 +99,7 @@ export default props => {
   );
 }
 
-const ServiceRow = ({ name, nameHeb, enabled, clickHandler }) => {
+const ServiceRow = ({ name, nameHeb, enabled, serviceToggleHandler, restartServiceHandler }) => {
 
   const btnActionText = enabled ? "הפסק" : "הפעל";
   const btnActionTextStyle = !enabled ? "green" : "red";
@@ -112,8 +115,8 @@ const ServiceRow = ({ name, nameHeb, enabled, clickHandler }) => {
       <div className={styles.statusTextWrapper} style={{ background: statusTextStyle }}>{status}</div>
     </TableCell>
     <TableCell className={styles.tableCell} style={{ width: "250px" }} align="center">
-      <Button className={styles.btn} variant="contained">אתחל</Button>
-      <Button className={styles.btn} style={{ marginRight: "10px", color: btnActionTextStyle }} variant="contained" onClick={() => clickHandler({ serviceName: name, enabled })}>{btnActionText}</Button>
+      <Button className={styles.btn} variant="contained" onClick={() => restartServiceHandler(name)}>אתחל</Button>
+      <Button className={styles.btn} style={{ marginRight: "10px", color: btnActionTextStyle }} variant="contained" onClick={() => serviceToggleHandler({ serviceName: name, enabled })}>{btnActionText}</Button>
     </TableCell>
   </TableRow>;
 }

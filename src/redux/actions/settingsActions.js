@@ -18,24 +18,28 @@ export const TYPES = {
 
 export const fetchSettings = (settingName) => {
   return dispatch => {
-    //let react know that the fetching is started
-    dispatch(requestSettings(settingName));
+    return new Promise((resolve, reject) => {
+      //let react know that the fetching is started
+      dispatch(requestSettings(settingName));
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-specific-setting", settingName);
-    //listen when the data comes back
-    ipcRenderer.once("specific-setting-data", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success store the data
-        dispatch(receiveSettings(settingName, arg.data));
-      }
+      //request request to backend to get the data
+      ipcRenderer.send("get-specific-setting", settingName);
+      //listen when the data comes back
+      ipcRenderer.once("specific-setting-data", (event, arg) => {
+        if (arg.error) {
+          //let react know that an erro occured while trying to fetch
+          dispatch(fetchingFailed(arg.error));
+          //send the error to the notification center
+          toast.error(arg.error, {
+            onOpen: () => playSound(soundTypes.error)
+          });
+          reject(arg.error);
+        } else {
+          //success store the data
+          dispatch(receiveSettings(settingName, arg.data));
+          resolve(arg.data);
+        }
+      });
     });
   }
 };
@@ -78,7 +82,7 @@ export const updateSettings = (settingName, data) => {
   }
 }
 
-export const saveSettings = (settingName, payload) => {
+export const saveSettings = (settingName, payload, notifOn = true) => {
 
   return dispatch => {
     return new Promise((resolve, reject) => {
@@ -93,10 +97,11 @@ export const saveSettings = (settingName, payload) => {
           });
           reject(false);
         } else {
-          // success
-          toast.success("ההגדרות נשמרו בהצלחה.", {
-            onOpen: () => playSound(soundTypes.message)
-          });
+          if (notifOn)
+            // success
+            toast.success("ההגדרות נשמרו בהצלחה.", {
+              onOpen: () => playSound(soundTypes.message)
+            });
           resolve(true);
         }
       });

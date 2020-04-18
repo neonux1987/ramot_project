@@ -9,10 +9,20 @@ const servicesIpc = () => {
   ipcMain.on('get-services', (event) => {
     servicesLogic.getServices().then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.reply("servicse-data", { data: result });
+      event.reply("services-data", { data: result });
     }).catch((error) => {
       console.log(error);
       event.reply("services-data", { error: error.message });
+    });
+  });
+
+  ipcMain.on('update-services', (event, payload) => {
+    servicesLogic.updateServices(payload).then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("services-updated", { data: result });
+    }).catch((error) => {
+      console.log(error);
+      event.reply("services-updated", { error: error.message });
     });
   });
 

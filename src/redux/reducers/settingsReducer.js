@@ -45,13 +45,14 @@ export default (state = initState, action) => {
       }
     case TYPES.SETTINGS_UPDATE:
       {
-        const data = { ...state[action.settingName].data };
-        data[action.settingName] = action.data;
         return {
           ...state,
           [action.settingName]: {
             ...state[action.settingName],
-            data
+            data: {
+              ...state[action.settingName].data,
+              ...action.data
+            }
           }
         }
       }
