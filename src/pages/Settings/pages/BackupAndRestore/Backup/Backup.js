@@ -18,6 +18,10 @@ import styles from './Backup.module.css';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
 import LoadingCircle from '../../../../../components/LoadingCircle';
+import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
+
+// SERVICES
+import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogs.svc';
 
 // ACTIONS
 import {
@@ -26,15 +30,18 @@ import {
   fetchSettings,
   cleanup
 } from '../../../../../redux/actions/settingsActions';
-import { restartService } from '../../../../../redux/actions/servicesActions';
+import {
+  initializeBackupNames
+} from '../../../../../redux/actions/backupsNamesActions';
+import { showModal } from '../../../../../redux/actions/modalActions';
+import { dbIndependentBackup } from '../../../../../redux/actions/dbBackupActions';
+
 
 const SETTINGS_NAME = "db_backup";
 
 export default (props) => {
 
   const dispatch = useDispatch();
-
-  const [restartMessage, setRestartMessage] = useState(false);
 
   // state
   const settings = useSelector(store => store.settings[SETTINGS_NAME]);
@@ -65,11 +72,7 @@ export default (props) => {
       dataCopy.restartRequired = true;
 
       dispatch(updateSettings(SETTINGS_NAME, dataCopy))
-
-      const success = await dispatch(saveSettings(SETTINGS_NAME, dataCopy));
-
-      /* if (success && data.enabled)
-        dispatch(restartService(SETTINGS_NAME, data)); */
+      dispatch(saveSettings(SETTINGS_NAME, dataCopy));
     }
   }
 
@@ -155,6 +158,41 @@ export default (props) => {
     const { value } = event.target;
     data.backups_to_save = value;
     dispatch(updateSettings(SETTINGS_NAME, data));
+  }
+
+  const dbSelectFolderHandler = () => {
+    const options = {
+      defaultPath: data.path
+    }
+    selectFolderDialog(options).then(({ canceled, filePaths }) => {
+      if (!canceled) {
+        if (data.path !== filePaths[0]) {
+          dispatch(
+            showModal(ConfirmDbPathChangeModel, {
+              onAgreeHandler: () => {
+                data.path = filePaths[0];
+                dispatch(initializeBackupNames());
+                dispatch(updateSettings(SETTINGS_NAME, data));
+              }
+            }) // end show modal
+          ); // end dispatch
+        } // end if
+      } // end if
+    }); //end selectFolderDialog
+  }
+
+  const dbIndependentBackupHandler = () => {
+
+    const currentDate = new Date();
+
+    const fileName = `mezach-db-backup-${currentDate.getDay()}-${currentDate.getDate()}-${currentDate.getFullYear()}.sqlite`;
+
+    saveToFileDialog(fileName, undefined).then(({ canceled, filePath }) => {
+      if (!canceled) {
+        dispatch(dbIndependentBackup(filePath));
+      }
+    });
+
   }
 
   //to render the last update of the backup
@@ -350,7 +388,7 @@ export default (props) => {
         </Box>
         </Typography>
 
-        <Button variant="contained" color="primary" onClick={props.dbSelectFolderHandler}>בחר מיקום</Button>
+        <Button variant="contained" color="primary" onClick={dbSelectFolderHandler}>בחר מיקום</Button>
         <TextField
           id="outlined-bare"
           disabled
@@ -366,7 +404,7 @@ export default (props) => {
         <Typography variant="subtitle1" style={{ display: "inline-flex" }}>
           <Box fontWeight="600">לגיבוי ידני ושמירת הגיבוי במקום אחר לחץ</Box>
         </Typography>
-        <Button style={{ marginRight: "10px", display: "inline-flex" }} variant="contained" color="primary" onClick={props.dbIndependentBackup}>גבה בסיס נתונים</Button>
+        <Button style={{ marginRight: "10px", display: "inline-flex" }} variant="contained" color="primary" onClick={dbIndependentBackupHandler}>גבה בסיס נתונים</Button>
       </div>
 
       {/* db backup end */}</StyledExpandableSection >

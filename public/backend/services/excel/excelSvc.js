@@ -20,6 +20,23 @@ function getPageWorkbook(buildingName, buildingNameEng, pageName, date, data) {
   }
 }
 
+const getMonthExpansesFilename = (buildingName, date = { year: Number, month: String }) => {
+  let monthHebName = this.convertEngToHebMonth(date.month);
+  return `${buildingName} מעקב הוצאות חודש ${monthHebName} ${date.year}`;
+}
+
+const getBudgetExecutionFilename = (buildingName, date = { year: Number, quarter: Number }) => {
+  let quarter = this.getQuarterHeb(date.quarter);
+  return `${buildingName} ביצוע מול תקציב ${quarter} ${date.year}`;
+}
+
+const getSummarizedBudgetsFilename = (buildingName, date = { year: Number }) => {
+  return `${buildingName} סיכום שנתי ${date.year}`;
+}
+
 module.exports = {
-  exportExcel
+  exportExcel,
+  getMonthExpansesFilename,
+  getBudgetExecutionFilename,
+  getSummarizedBudgetsFilename
 };

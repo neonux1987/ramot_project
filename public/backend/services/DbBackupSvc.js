@@ -100,61 +100,6 @@ class DbBackupSvc {
 
     // execute scheduler
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-
-      this.backupDbCallback(settings).catch((error) => {
-        console.log(error);
-        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
-      });
-    });
-
-    if (this.backupSchedule.nextInvocation() === null) {
-      return Promise.reject();
-    }
-    //return this.settingsLogic.updateSettings(settings);
-  }
-
-  async modifySchedule() {
-    let settings = null;
-    try {
-      //fetch db backup settings
-      settings = await this.settingsLogic.getSettings();
-    } catch (e) {
-      return Promise.reject(e);
-    }
-
-    //dont do anything if the db backup is 
-    //not active
-    if (!settings.db_backup.enabled) {
-      return Promise.resolve();
-    }
-
-    //cancel the job
-    this.backupSchedule.cancel();
-    this.backupSchedule = null;
-
-    const backupTime = new Date(settings.db_backup.time);
-
-    //apply the settings to the scheduler
-    this.rule.hour = backupTime.getHours();
-    this.rule.minute = backupTime.getMinutes();
-    this.rule.dayOfWeek = [];
-    //convert the enabled days of week from object to array
-    for (let i = 0; i < 7; i++) {
-      if (settings.db_backup.days_of_week[i]) {
-        this.rule.dayOfWeek.push(i)
-      }
-    }
-
-    //if non of the days selected, we must
-    //set the dayOfWeek to null otherwise
-    //the node-schedule module will crash for some reason
-    if (this.rule.dayOfWeek.length === 0) {
-      this.rule.dayOfWeek = null;
-    }
-
-    //execute scheduler
-    this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-
       this.backupDbCallback(settings).catch((error) => {
         console.log(error);
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");

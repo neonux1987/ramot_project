@@ -58,22 +58,24 @@ export default props => {
   const checkBoxHandler = (event) => {
     const { name, checked } = event.target;
 
-    if (!checked && name === "byQuarter")
+    if (checked && name === "byQuarter")
       setCheckBox({
         ["byMonth"]: false,
         ["byQuarter"]: true
       });
-    else if (!checked && name === "byMonth")
+    else if (checked && name === "byMonth")
       setCheckBox({
         ["byMonth"]: true,
         ["byQuarter"]: false
       });
-    else
+    else {
       setCheckBox({
         ["byMonth"]: false,
         ["byQuarter"]: false,
         [name]: checked
       });
+    }
+
   }
 
   const onClickHandler = () => {
@@ -116,7 +118,7 @@ export default props => {
         <FormControlLabel
           control={
             <Checkbox
-              checked={checkBox.byMonth}
+              checked={checkBox.byQuarter}
               onChange={checkBoxHandler}
               name="byQuarter"
               color="primary"

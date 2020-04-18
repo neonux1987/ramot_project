@@ -44,134 +44,6 @@ class BackupAndRestore extends Component {
   }
 
 
-  componentDidMount() {
-    //this.props.fetchSettings();
-    //this.props.fetchBackupsNames();
-    ipcRenderer.on("settings-updated", (event, type, settings) => {
-      this.props.updateBackupSettings("last_update", settings.db_backup.last_update);
-    });
-  }
-
-  componentWillUnmount() {
-  }
-
-  onDbTimeChange = (name, value) => {
-    const db_backup = { ...this.props.settings.data.db_backup };
-
-    //must convert it to string to ensure electron won't change it to different time zone
-    let date = new Date(value);
-    const localeString = date.toLocaleString();
-    date = new Date(localeString);
-
-    db_backup.time = date.toString();
-
-    this.setState({ settingsSaved: false });
-    this.props.updateSettings(name, db_backup);
-  }
-
-  onDbDayChange = (event) => {
-    const db_backup = { ...this.props.settings.data.db_backup };
-    const { name, checked } = event.target;
-    const keys = Object.keys(db_backup.days_of_week);
-
-    if (name === "everything" && checked === true) {
-      for (let i = 0; i < keys.length; i++) {
-        db_backup.days_of_week[keys[i]] = true;
-      }
-    } else if (name === "everything" && checked === false) {
-      const keys = Object.keys(db_backup.days_of_week);
-      for (let i = 0; i < keys.length; i++) {
-        db_backup.days_of_week[keys[i]] = false;
-      }
-    }
-    else {
-      db_backup.days_of_week = {
-        ...db_backup.days_of_week,
-        [name]: checked,//set the selected day
-        ["everything"]: checked ? db_backup.days_of_week["everything"] : false
-      };
-
-      let fullDays = true;
-      //iterate and find if all days are selected
-      for (let i = 0; i < keys.length; i++) {
-        if (!db_backup.days_of_week[keys[i]] && keys[i] !== "everything") {
-          fullDays = false;
-        }
-      }
-      //if all the days selected then select everything checkbox
-      if (fullDays) {
-        db_backup.days_of_week["everything"] = true
-      }
-
-    }
-    this.setState({ settingsSaved: false });
-    this.props.updateSettings("db_backup", db_backup);
-  }
-
-  saveSettings = (message, enableSound) => {
-    const { db_backup } = this.props.settings.data;
-    //the init that it's not valid
-    let valid = this.isDaysOfWeekValid(db_backup.days_of_week);
-    //if the backup is active and noValid is true
-    //based on the no days were selected
-    if (!valid && db_backup.active) {
-      //send the error to the notification center
-      toast.error("חייב לבחור לפחות יום אחד.", {
-        onOpen: () => playSound(soundTypes.error)
-      });
-    } else {
-      this.setState({ settingsSaved: true });
-      this.props.saveSettings(this.props.settings.data, message, enableSound);
-    }
-  }
-
-  isDaysOfWeekValid = (days_of_week) => {
-    //get the keys of the object
-    const keys = Object.keys(days_of_week);
-    //the init that it's not valid
-    let notValid = true;
-    //if at least on of the days
-    //is checked, then it's valid and notValid should be false
-    for (let i = 0; i < keys.length; i++) {
-      if (days_of_week[keys[i]]) {
-        notValid = false;
-      }
-    }
-    //if the backup is active and noValid is true
-    //based on the no days were selected
-    if (notValid) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  dbSelectFolderHandler = () => {
-    const options = {
-      defaultPath: this.props.settings.data.db_backup.path
-    }
-    selectFolderDialog(options).then(({ canceled, filePaths }) => {
-      if (!canceled) {
-        const db_backup = { ...this.props.settings.data.db_backup };
-
-        if (db_backup.path !== filePaths[0]) {
-          this.props.showModal(ConfirmDbPathChangeModel, {
-            onAgreeHandler: () => {
-              db_backup.path = filePaths[0];
-              this.setState({ settingsSaved: false });
-              this.props.initializeBackupNames();
-              this.props.updateSettings("db_backup", db_backup);
-            }
-          });
-        }
-
-
-      }
-    });
-
-
-  }
-
   dbIndependentBackup = () => {
 
     const currentDate = new Date();
@@ -183,19 +55,6 @@ class BackupAndRestore extends Component {
         this.props.dbIndependentBackup(filePath);
       }
     });
-
-  }
-
-  toggleDbBackupActivation = () => {
-    const db_backup = { ...this.props.settings.data.db_backup };
-
-    db_backup.active = !db_backup.active;
-
-    if (db_backup.active) {
-      this.props.enableDbBackup(db_backup);
-    } else {
-      this.props.disableDbBackup(db_backup);
-    }
 
   }
 
@@ -242,10 +101,7 @@ const mapDispatchToProps = dispatch => ({
   fetchSettings: () => dispatch(settingsActions.fetchSettings()),
   saveSettings: (data) => dispatch(settingsActions.saveSettings(data)),
   updateSettings: (key, data) => dispatch(settingsActions.updateSettings(key, data)),
-  enableDbBackup: (data) => dispatch(settingsActions.enableDbBackup(data)),
-  disableDbBackup: (data) => dispatch(settingsActions.disableDbBackup(data)),
   dbIndependentBackup: (filePath) => dispatch(settingsActions.dbIndependentBackup(filePath)),
-  updateBackupSettings: (key, data) => dispatch(settingsActions.updateBackupSettings(key, data)),
   showModal: (modelComponent, props) => dispatch(modalActions.showModal(modelComponent, props)),
 });
 

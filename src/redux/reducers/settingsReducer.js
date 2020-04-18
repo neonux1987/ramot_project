@@ -56,18 +56,6 @@ export default (state = initState, action) => {
           }
         }
       }
-    case TYPES.SETTINGS_DB_BACKUP_UPDATE:
-      {
-        const data = { ...state.data };
-        data.db_backup[action.key] = action.data;
-        return {
-          ...state,
-          [action.settingName]: {
-            ...state[action.settingName],
-            data
-          }
-        }
-      }
     case TYPES.SETTINGS_CLEANUP:
       {
         const { serviceName } = action;

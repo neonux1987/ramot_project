@@ -18,6 +18,17 @@ class IOLogic {
     return this.iODao.removeFile(filePath);
   }
 
+  dirExist(dir) {
+    return this.iODao.dirExist(dir);
+  }
+
+  async createDir(dir) {
+    const exist = await this.dirExist(dir);
+    if (!exist)
+      return this.iODao.createDir(dir)
+    else return Promise.resolve();
+  }
+
 }
 
 

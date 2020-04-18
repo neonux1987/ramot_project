@@ -51,9 +51,6 @@ export default (props) => {
       TitleIcon={Restore}
       iconBoxBg={"#1b966e"}
       padding={"20px"}
-      extraDetails={() =>
-        <SaveButton>שמור</SaveButton>
-      }
     >{/* db restore start */}
       <div style={{ paddingBottom: "5px" }}>
         <Typography variant="h5" className={styles.dbRestoreTitle}>

@@ -1,5 +1,7 @@
 const fs = require('fs').promises;
 
+
+
 class IODao {
 
   readFile(filePath, settings) {
@@ -18,6 +20,16 @@ class IODao {
     return fs.unlink(filePath).catch(() => {
       throw new Error("מחיקת הקובץ לא הצליחה.");
     });
+  }
+
+  createDir(dir) {
+    return fs.mkdirSync(dir).catch(() => {
+      throw new Error("מחיקת הקובץ לא הצליחה.");
+    });
+  }
+
+  dirExist() {
+    return fs.existsSync(dir);
   }
 
 }

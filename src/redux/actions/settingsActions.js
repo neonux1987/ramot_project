@@ -109,66 +109,6 @@ export const saveSettings = (settingName, payload, notifOn = true) => {
   }; // end dispatch func
 };
 
-/**
- * update db backup specific settings
- * @param {*} key 
- * @param {*} data 
- */
-export const updateBackupSettings = (key, data) => {
-  return dispatch => {
-    dispatch({
-      type: TYPES.SETTINGS_DB_BACKUP_UPDATE,
-      key,
-      data
-    });
-  }
-}
-
-export const enableDbBackup = (db_backup) => {
-
-  return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("enable-db-backup");
-    //listen when the data comes back
-    ipcRenderer.once("db-backup-enabled", (event, arg) => {
-
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success
-        toast.success("גיבוי בסיס הנתונים הופעל.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
-        dispatch(updateSettingsInStore("db_backup", db_backup));
-      }
-    });
-  }
-}
-
-export const disableDbBackup = (db_backup) => {
-  return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("disable-db-backup");
-    //listen when the data comes back
-    ipcRenderer.once("db-backup-disabled", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //send the error to the notification center
-        toast.warn("גיבוי בסיס הנתונים הושבת.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
-        dispatch(updateSettingsInStore("db_backup", db_backup));
-      }
-    });
-  }
-}
 
 export const dbIndependentBackup = (fullPath) => {
   return dispatch => {
