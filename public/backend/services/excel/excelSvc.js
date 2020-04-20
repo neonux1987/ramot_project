@@ -2,13 +2,32 @@
 const monthExpansesWorkbook = require('./workbooks/monthExpansesWorkbook');
 const budgetExecutionWorkbook = require('./workbooks/budgetExecutionWorkbook');
 const summarizedBudgetsWorkbook = require('./workbooks/summarizedBudgetsWorkbook');
+const SettingsLogic = require('../../logic/SettingsLogic');
+const IOLogic = require('../../logic/IOLogic');
 
-const exportExcel = (buildingName, buildingNameEng, pageName, fileName, date, data) => {
+const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, date, data) => {
   // fill the workbook with data
   const filledWorkBook = getPageWorkbook(buildingName, buildingNameEng, pageName, date, data);
   return filledWorkBook.then((workbook) => {
     return workbook.xlsx.writeFile(`${fileName}.xlsx`);
   })
+}
+
+function createStructure(pageName, fileName, reportsFolderPath) {
+
+  const settingsLogic = new SettingsLogic();
+  const iOLogic = new IOLogic();
+
+  const locations = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.LOCATIONS);
+
+  const reportsFolderPath = locations["reports_folder"];
+  console.log(reportsFolderPath);
+  console.log(fileName);
+
+  switch (pageName) {
+
+  }
+
 }
 
 function getPageWorkbook(buildingName, buildingNameEng, pageName, date, data) {

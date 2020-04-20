@@ -11,6 +11,14 @@ const excelIpc = (connection) => {
     });
   });
 
+  ipcMain.on('export-to-excel-bulk', (event, { buildingName, buildingNameEng, pageName, fileName, date, data }) => {
+    exportExcel(buildingName, buildingNameEng, pageName, fileName, date, data).then((result) => {
+      event.sender.send("excel-bulk-exported", { data: result });
+    }).catch((error) => {
+      event.reply("excel-bulk-exported", { error: error.message });
+    });
+  });
+
 }
 
 module.exports = excelIpc;

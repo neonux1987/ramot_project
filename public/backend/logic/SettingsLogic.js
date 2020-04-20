@@ -17,7 +17,7 @@ class SettingsLogic {
 
     settingsPromise.then((settings) => {
       const parsedSettings = JSON.parse(settings);
-      parsedSettings.general.db_path = dbPath;
+      parsedSettings.locations.db_path = dbPath;
       this.iOLogic.writeFile(CONFIG_LOCATION, JSON.stringify(parsedSettings, null, 2));
     })
 
@@ -58,6 +58,12 @@ class SettingsLogic {
 
   initializeBackupNames() {
     return this.updateBackupsNames([]);
+  }
+
+  static SETTINGS_NAMES = {
+    LOCATIONS: "locations",
+    DB_BACKUP: "db_backup",
+    DB_RESTORE: "db_restore"
   }
 
 }

@@ -65,6 +65,9 @@
     "win": {
       "target": [
         "nsis"
+      ],
+      "publish": [
+        "github"
       ]
     },
     "directories": {

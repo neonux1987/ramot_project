@@ -29,7 +29,12 @@ class IODao {
   }
 
   dirExist(dir) {
-    return fs.existsSync(dir);
+    return fs.access(dir)
+      .then(() => true)
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
   }
 
 }
