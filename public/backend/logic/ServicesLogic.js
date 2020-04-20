@@ -50,14 +50,18 @@ class ServicesLogic {
     const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
     serviceSettings.restartRequired = false;
     this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
+
+    // update services
+    service.restartRequired = false;
+    this.updateServices(AllServices);
   }
 
   async restartService(serviceName) {
-    const AllServicesSettings = await this.getServices();
+    const AllServices = await this.getServices();
 
-    const serviceSetting = AllServicesSettings[serviceName];
+    const service = AllServices[serviceName];
 
-    if (!serviceSetting.enabled)
+    if (!service.enabled)
       throw new Error("לא ניתן לאתחל שירות לא פעיל. הפעל את השירות ולאחר מכן אתחל במקרה הצורך.");
 
     const selectedService = servicesObjects[serviceName];
@@ -74,6 +78,10 @@ class ServicesLogic {
     const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
     serviceSettings.restartRequired = false;
     this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
+
+    // update services
+    service.restartRequired = false;
+    this.updateServices(AllServices);
   }
 
   async stopService(serviceName) {
@@ -101,9 +109,11 @@ class ServicesLogic {
     const keys = Object.keys(services);
 
     keys.forEach((key) => {
-      const selectedService = servicesObjects[key];
-      selectedService.start();
-    })
+      if (services[key].enabled) {
+        const selectedService = servicesObjects[key];
+        selectedService.start();
+      }
+    });
   }
 
   async stopAllServices() {

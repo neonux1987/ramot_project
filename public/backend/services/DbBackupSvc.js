@@ -100,7 +100,7 @@ class DbBackupSvc {
 
     // execute scheduler
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-      this.backupDbCallback(settings).catch((error) => {
+      this.backupDbCallback().catch((error) => {
         console.log(error);
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
       });
@@ -150,7 +150,15 @@ class DbBackupSvc {
     }
   }
 
-  async backupDbCallback(settings) {
+  async backupDbCallback() {
+    let settings = null;
+    try {
+      //fetch db backup settings
+      settings = await this.settingsLogic.getSettings();
+    } catch (e) {
+      return Promise.reject(e);
+    }
+
     const { db_backup, general } = settings;
 
     //fetch db backup settings

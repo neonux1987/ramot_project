@@ -68,14 +68,6 @@ export default props => {
         ["byMonth"]: true,
         ["byQuarter"]: false
       });
-    else {
-      setCheckBox({
-        ["byMonth"]: false,
-        ["byQuarter"]: false,
-        [name]: checked
-      });
-    }
-
   }
 
   const onClickHandler = () => {

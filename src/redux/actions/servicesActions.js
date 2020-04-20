@@ -95,6 +95,7 @@ export const startService = (serviceName) => {
 
         settingsCopy.enabled = false;
         servicesDataCopy[serviceName].enabled = false;
+        servicesDataCopy[serviceName].restartRequired = true;
 
         dispatch(saveSettings(serviceName, settingsCopy, false));
         dispatch(updateServices(servicesDataCopy));
@@ -104,6 +105,7 @@ export const startService = (serviceName) => {
         // update settings set the service to enabled
         settingsCopy.enabled = true;
         servicesDataCopy[serviceName].enabled = true;
+        servicesDataCopy[serviceName].restartRequired = false;
 
         dispatch(saveSettings(serviceName, settingsCopy, false));
         dispatch(updateServices(servicesDataCopy));
@@ -139,6 +141,7 @@ export const stopService = (serviceName) => {
 
         settingsCopy.enabled = true;
         servicesDataCopy[serviceName].enabled = true;
+        servicesDataCopy[serviceName].restartRequired = false;
 
         dispatch(saveSettings(serviceName, settingsCopy, false));
         dispatch(updateServices(servicesDataCopy));
@@ -147,6 +150,7 @@ export const stopService = (serviceName) => {
         // update settings set the service to enabled
         settingsCopy.enabled = false;
         servicesDataCopy[serviceName].enabled = false;
+        servicesDataCopy[serviceName].restartRequired = false;
 
         dispatch(saveSettings(serviceName, settingsCopy, false));
         dispatch(updateServices(servicesDataCopy));

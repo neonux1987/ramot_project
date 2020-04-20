@@ -23,12 +23,12 @@ class IODao {
   }
 
   createDir(dir) {
-    return fs.mkdirSync(dir).catch(() => {
-      throw new Error("מחיקת הקובץ לא הצליחה.");
+    return fs.mkdir(dir).catch((error) => {
+      console.log(error);
     });
   }
 
-  dirExist() {
+  dirExist(dir) {
     return fs.existsSync(dir);
   }
 

@@ -23,10 +23,7 @@ class IOLogic {
   }
 
   async createDir(dir) {
-    const exist = await this.dirExist(dir);
-    if (!exist)
-      return this.iODao.createDir(dir)
-    else return Promise.resolve();
+    return this.iODao.createDir(dir)
   }
 
 }

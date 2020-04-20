@@ -33,10 +33,7 @@ const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenera
 const servicesIpc = require('../../electron/ipcs/services.ipc');
 
 const ServicesLogic = require('../logic/ServicesLogic');
-
-//========================= services =========================//
-const emptyReportsGeneratorSvc = require('../services/EmptyReportsGeneratorSvc');
-const dbBackupSvc = require('../services/DbBackupSvc');
+const IOLogic = require('../logic/IOLogic');
 
 const connectionPool = require('../connection/ConnectionPool');
 
@@ -63,10 +60,15 @@ const configPath = platform === "linux" ? `${appConfigFolder}/config.json` : `${
 // backup names file location
 const backupsNamesPath = platform === "linux" ? `${appConfigFolder}/backupsNames.json` : `${appConfigFolder}\\backupsNames.json`;
 
+// user excel reports folder
+const usersOutputFolder = platform === "linux" ? path.join(homedir, 'Documents/רמות מז"ח') : `${homedir}\\Documents\\רמות מז"ח`;
+const excelReportsFolder = platform === "linux" ? `${usersOutputFolder}/דוחות` : `${usersOutputFolder}\\דוחות`;
+
 class MainSystem {
 
   constructor() {
     this.servicesLogic = new ServicesLogic();
+    this.iOLogic = new IOLogic();
   }
 
   initDBConnection() {
@@ -111,6 +113,10 @@ class MainSystem {
       })
     }
 
+  }
+
+  createFoldersStructure() {
+    this.iOLogic.createDir();
   }
 
   initializeIpcs() {
@@ -163,6 +169,9 @@ class MainSystem {
 
   async startSystem() {
     await this.initDBConnection();
+
+    //this.iOLogic.createDir(usersOutputFolder);
+
     this.initializeIpcs();
   }
 
