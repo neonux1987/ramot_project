@@ -60,7 +60,7 @@ export default (props) => {
 
       <Divider className={styles.divider} />
 
-      <Typography className={styles.restoreLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע ב- ${12321}`}</Typography>
+      {/* <Typography className={styles.restoreLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע ב- ${12321}`}</Typography> */}
 
       <Typography variant="subtitle1" style={{ marginBottom: "20px" }}>
         <Box fontWeight="600">

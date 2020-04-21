@@ -33,90 +33,20 @@ const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenera
 const servicesIpc = require('../../electron/ipcs/services.ipc');
 
 const ServicesLogic = require('../logic/ServicesLogic');
-const IOLogic = require('../logic/IOLogic');
+
+const ConfigurationLogic = require('../logic/ConfigurationLogic');
 
 const connectionPool = require('../connection/ConnectionPool');
-
-const readFilePromise = util.promisify(fs.readFile);
-const writeFilePromise = util.promisify(fs.writeFile);
-
-// location of the settings folder
-const appSettingsFolderLocation = platform === "linux" ? path.join(homedir, "Dropbox") : `${homedir}\\AppData\\Roaming`;
-const appSettingsFolder = platform === "linux" ? path.join(appSettingsFolderLocation, "/ndts/") : `${appSettingsFolderLocation}\\ndts\\`;
-// app settings folder structure
-const appDBFolder = platform === "linux" ? path.join(appSettingsFolder, "/db") : `${appSettingsFolder}\\db`;
-const appConfigFolder = platform === "linux" ? path.join(appSettingsFolder, "/config") : `${appSettingsFolder}\\config`;
-const appBackupFolder = platform === "linux" ? path.join(appSettingsFolder, "/backup") : `${appSettingsFolder}\\backup`;
-
-// database file name
-const DB_NAME = "mezach-db.sqlite";
-
-// database file location
-const dbFilePath = platform === "linux" ? `${appDBFolder}/${DB_NAME}` : `${appDBFolder}\\${DB_NAME}`;
-
-// config file location
-const configPath = platform === "linux" ? `${appConfigFolder}/config.json` : `${appConfigFolder}\\config.json`;
-
-// backup names file location
-const backupsNamesPath = platform === "linux" ? `${appConfigFolder}/backupsNames.json` : `${appConfigFolder}\\backupsNames.json`;
-
-// user excel reports folder
-const usersOutputFolder = platform === "linux" ? path.join(homedir, 'Documents/רמות מז"ח') : `${homedir}\\Documents\\רמות מז"ח`;
-const excelReportsFolder = platform === "linux" ? `${usersOutputFolder}/דוחות` : `${usersOutputFolder}\\דוחות`;
 
 class MainSystem {
 
   constructor() {
-    this.servicesLogic = new ServicesLogic();
-    this.iOLogic = new IOLogic();
+    this.servicesLogic = undefined;
+    this.configurationLogic = new ConfigurationLogic();
   }
 
   initDBConnection() {
-    // create the connection pool
-    connectionPool.createConnection(dbFilePath);
-  }
 
-  async firstTimeSetup({ userDBFilePath, reportsPath }) {
-
-    if (!fs.existsSync("./ramotmezach")) {
-      await fs.mkdir("./ramotmezach");
-    }
-
-    if (!fs.existsSync(appDBFolder)) {
-      fs.mkdirSync(appDBFolder);
-    }
-    if (!fs.existsSync(appConfigFolder)) {
-      fs.mkdirSync(appConfigFolder);
-    }
-    if (!fs.existsSync(appBackupFolder)) {
-      fs.mkdirSync(appBackupFolder);
-    }
-
-    // create a stdout and file logger
-    //this.log = simpleNodeLogger.createSimpleLogger(appSettingsFolder + 'project.log');
-
-    // if the user passed a location to a previous exisitng database,
-    // copy the user's database to the location of the app database
-    if (userDBFilePath) {
-      const dbFile = await readFilePromise(userDBFilePath);
-      await writeFilePromise(`${dbPath}bdika.sqlite`, dbFile)
-    }
-    // create an empty database if the user did not
-    // specify his own exisiting database
-    else {
-      this.db = new sqlite3.Database(`${dbPath}/mezach-db-test.sqlite`, (err) => {
-        if (err) {
-          console.log('Could not connect to database', err)
-        } else {
-          console.log('Connected to database')
-        }
-      })
-    }
-
-  }
-
-  createFoldersStructure() {
-    this.iOLogic.createDir();
   }
 
   initializeIpcs() {
@@ -164,14 +94,29 @@ class MainSystem {
   }
 
   startServices() {
-    this.servicesLogic.startAllServices();
+    try {
+      this.servicesLogic.startAllServices();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async startSystem() {
-    await this.initDBConnection();
 
-    //this.iOLogic.createDir(usersOutputFolder);
+    try {
+      // if the app runs for the first time
+      await this.configurationLogic.firstTimeSetup();
 
+      this.servicesLogic = new ServicesLogic();
+
+      // set up the db connection
+      await connectionPool.createConnection(ConfigurationLogic.paths.db_path);
+    } catch (e) {
+      console.log(e);
+    }
+
+    // initialize all the ipc's for connection
+    // between the main process and the renderer
     this.initializeIpcs();
   }
 

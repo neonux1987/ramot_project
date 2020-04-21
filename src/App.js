@@ -115,6 +115,9 @@ class App extends Component {
             }
           });
           break;
+        case "errorTest":
+          toast.error(message);
+          break;
         default: return null;
       }
     });

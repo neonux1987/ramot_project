@@ -1,7 +1,10 @@
 const MonthExpansesLogic = require('./MonthExpansesLogic');
 const RegisteredReportsLogic = require('./RegisteredReportsLogic');
-const MenuDao = require('../dao/MenuDao');
+const SettingsLogic = require('./SettingsLogic');
+const BuildingsDao = require('../dao/BuildingsDao');
 const Helper = require('../../helpers/Helper');
+const fse = require('fs-extra');
+const path = require('path');
 const connectionPool = require('../connection/ConnectionPool');
 
 class EmptyReportsGeneratorLogic {
@@ -9,7 +12,8 @@ class EmptyReportsGeneratorLogic {
   constructor() {
     this.monthExpansesLogic = new MonthExpansesLogic();
     this.registeredReportsLogic = new RegisteredReportsLogic();
-    this.menuDao = new MenuDao();
+    this.settingsLogic = new SettingsLogic();
+    this.buildingsDao = new BuildingsDao();
   }
 
   /**
@@ -30,7 +34,7 @@ class EmptyReportsGeneratorLogic {
       throw new Error("הפעולה נכשלה. הדוחות לתאריכים שנבחרו כבר קיימים בבסיס נתונים.");
     }
 
-    const buildings = await this.menuDao.getMenu(trx);
+    const buildings = await this.buildingsDao.getBuidlings(trx);
 
     for (let i = 0; i < months.length; i++) {
       const dateCopy = { ...date };
@@ -48,12 +52,44 @@ class EmptyReportsGeneratorLogic {
     }
 
     await trx.commit();
+
+    this.createEmptyFolderStrcture(date, buildings);
+  }
+
+  async createEmptyFolderStrcture(date, buildings) {
+    const {
+      year,
+      quarterHeb
+    } = date;
+
+    // quarter months
+
+    // folder names
+    const yearFolderName = `שנת ${year}`;
+
+    const locations = await this.settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.LOCATIONS);
+
+    buildings.forEach(async (building) => {
+
+      // building path
+      const buildingPath = path.join(locations.reports_folder, building.buildingName);
+      // year folder
+      const yearFolder = path.join(buildingPath, yearFolderName);
+      // quarter folder
+      const quarterFolder = path.join(yearFolder, quarterHeb);
+
+      // ensures that the path exists, if not
+      // it will create all the dirs that don't exists
+      // in the path
+      await fse.ensureDir(quarterFolder);
+    });
+
   }
 
   async createEmptyReportsByMonth(buildings, date, trx) {
     // create reports for each bulding
     for (let i = 0; i < buildings.length; i++) {
-      await this.monthExpansesLogic.createEmptyReport(buildings[i].engLabel, date, trx);
+      await this.monthExpansesLogic.createEmptyReport(buildings[i].buildingNameEng, date, trx);
     }
   }
 

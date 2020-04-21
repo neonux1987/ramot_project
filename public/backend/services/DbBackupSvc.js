@@ -159,10 +159,10 @@ class DbBackupSvc {
       return Promise.reject(e);
     }
 
-    const { db_backup, general } = settings;
+    const { db_backup, locations } = settings;
 
     //fetch db backup settings
-    let dbFile = await this.ioLogic.readFile(general.db_path);
+    let dbFile = await this.ioLogic.readFile(locations.db_path);
 
     //fetch db backup settings
     const backupsNames = await this.settingsLogic.getBackupsNames();
@@ -246,7 +246,7 @@ class DbBackupSvc {
     }
 
     //fetch db backup settings
-    let fileToBackup = await this.ioLogic.readFile(settings.general.db_path);
+    let fileToBackup = await this.ioLogic.readFile(settings.locations.db_path);
 
     //write the file physically to the drive
     await this.ioLogic.writeFile(fullPath, fileToBackup);

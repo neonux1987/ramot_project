@@ -1,8 +1,5 @@
 //========================= electron imports =========================//
-const { app, BrowserWindow, ipcMain } = require('electron');
-
-//========================= my db config imports =========================//
-const createDBConnection = require('./backend/dao/connection/dbconfig');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 
 //========================= services =========================//
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
@@ -10,8 +7,9 @@ const rendererotificationSvc = require('./backend/services/RendererNotificationS
 
 const mainSystem = require('./backend/system/MainSystem');
 
+const fse = require('fs-extra');
+
 const path = require('path');
-const os = require('os');
 const isDev = require('electron-is-dev');
 const contextMenu = require('electron-context-menu');
 
@@ -71,7 +69,7 @@ let mainWindow = null;
 
 const gotTheLock = app.requestSingleInstanceLock();
 
-function createWindow() {
+async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     minWidth: 1280,
@@ -105,7 +103,11 @@ function createWindow() {
   ipcMain.on('system-start-services', (event, arg) => {
     mainSystem.startServices();
   });
+  /* console.log(process.resourcesPath);
+  console.log(app.getAppPath()); */
+  //const testJson = await fse.readJson(path.join(process.resourcePath, 'extraResources', 'confgis\\config.json'));
 
+  //dialog.showErrorBox("error", __dirname);
   //add react dev tools
   /* BrowserWindow.addDevToolsExtension(
     path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0')
@@ -147,13 +149,6 @@ if (!gotTheLock) {
     }
   });
 }
-
-//create db connection
-let knex = createDBConnection();
-
-/* mainSystem.firstTimeSetup({
-  //dbFilePath: "/home/ag1987/Dropbox/ndts/db/mezach-db.sqlite"
-}); */
 
 mainSystem.startSystem();
 

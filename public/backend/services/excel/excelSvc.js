@@ -4,6 +4,7 @@ const budgetExecutionWorkbook = require('./workbooks/budgetExecutionWorkbook');
 const summarizedBudgetsWorkbook = require('./workbooks/summarizedBudgetsWorkbook');
 const SettingsLogic = require('../../logic/SettingsLogic');
 const IOLogic = require('../../logic/IOLogic');
+const fse = require('fs-extra')
 
 const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, date, data) => {
   // fill the workbook with data
@@ -13,20 +14,27 @@ const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, da
   })
 }
 
-function createStructure(pageName, fileName, reportsFolderPath) {
+async function createStructure(pageName, fileName, date) {
 
   const settingsLogic = new SettingsLogic();
   const iOLogic = new IOLogic();
 
   const locations = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.LOCATIONS);
 
-  const reportsFolderPath = locations["reports_folder"];
-  console.log(reportsFolderPath);
-  console.log(fileName);
+  const { reports_folder } = locations;
 
-  switch (pageName) {
+  // With Promises:
+  fse.ensureDir(reports_folder)
+    .catch(err => {
+      console.error(err);
+      throw err;
+    });
 
-  }
+  /*  switch(pageName){
+     case "monthExpanses": {
+       
+     }
+   } */
 
 }
 

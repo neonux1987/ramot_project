@@ -216,7 +216,7 @@ export default (props) => {
       padding={"30px 20px"}
     >{/* db backup start */}
 
-      <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography>
+      {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}
 
       {data.enabled && data.restartRequired && <Typography className={styles.restartRequired} variant="subtitle1">
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}

@@ -1,13 +1,9 @@
 const SettingsLogic = require("../logic/SettingsLogic");
 const IOLogic = require("../logic/IOLogic");
+const ConfigurationLogic = require("../logic/ConfigurationLogic");
 const servicesObjects = require("../services/index");
-const os = require('os');
-const platform = os.platform();
-const homedir = os.homedir();
 
-const SERVICES_LOCATION = platform === "linux" ? homedir + "/Dropbox/ndts/config/services.json" : `${homedir}\\AppData\\Roaming\\ndts\\config\\services.json`;
-
-const SERVICES = "services";
+const SERVICES_LOCATION = ConfigurationLogic.paths.services_path;
 
 class ServicesLogic {
 
