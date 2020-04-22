@@ -19,9 +19,36 @@ const settingsIpc = () => {
   ipcMain.on('get-specific-setting', (event, settingName) => {
     settingsLogic.getSpecificSetting(settingName).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.reply("specific-setting-data", { data: result });
+      event.reply("specific-setting-data", { data: result, settingName });
     }).catch((error) => {
       event.reply("specific-setting-data", { error: error.message });
+    });
+  });
+
+  ipcMain.on('get-locations-settings', (event, settingName) => {
+    settingsLogic.getLocationsSettings().then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("locations-settings-data", { data: result, settingName });
+    }).catch((error) => {
+      event.reply("locations-settings-data", { error: error.message });
+    });
+  });
+
+  ipcMain.on('get-db-backup-settings', (event, settingName) => {
+    settingsLogic.getDbBackupSettings().then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("db-backup-settings-data", { data: result, settingName });
+    }).catch((error) => {
+      event.reply("db-backup-settings-data", { error: error.message });
+    });
+  });
+
+  ipcMain.on('get-db-restore-settings', (event, settingName) => {
+    settingsLogic.getDbRestoreSettings().then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.reply("db-restore-settings-data", { data: result, settingName });
+    }).catch((error) => {
+      event.reply("db-restore-settings-data", { error: error.message });
     });
   });
 

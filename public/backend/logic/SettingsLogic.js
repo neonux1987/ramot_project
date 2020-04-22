@@ -5,8 +5,8 @@ const homedir = os.homedir();
 const path = require('path');
 const ConfigurationLogic = require('../logic/ConfigurationLogic');
 
-const CONFIG_LOCATION = platform === "linux" ? homedir + "/Dropbox/ndts/config/config.json" : `${homedir}\\AppData\\Roaming\\ndts\\config\\config.json`;
-const CONFIG_BACKUPS_NAMES = platform === "linux" ? homedir + "/Dropbox/ndts/config/backupsNames.json" : `${homedir}\\AppData\\Roaming\\ndts\\config\\backupsNames.json`;
+const CONFIG_LOCATION = ConfigurationLogic.paths.config_path;
+const CONFIG_BACKUPS_NAMES = ConfigurationLogic.paths.backups_names_path;
 
 class SettingsLogic {
 
@@ -15,7 +15,7 @@ class SettingsLogic {
   }
 
   getSettings() {
-    return this.iOLogic.readFile(ConfigurationLogic.paths.config_path).then((settings) => {
+    return this.iOLogic.readFile(CONFIG_LOCATION).then((settings) => {
       return JSON.parse(settings);
     });
   }
@@ -24,6 +24,18 @@ class SettingsLogic {
     return this.getSettings(settingName).then((settings) => {
       return settings[settingName];
     });
+  }
+
+  getLocationsSettings() {
+    return this.getSpecificSetting(SETTINGS_NAMES.LOCATIONS);
+  }
+
+  getDbBackupSettings() {
+    return this.getSpecificSetting(SETTINGS_NAMES.DB_BACKUP);
+  }
+
+  getDbRestoreSettings() {
+    return this.getSpecificSetting(SETTINGS_NAMES.DB_RESTORE);
   }
 
   async updateSpecificSetting(name, payload) {

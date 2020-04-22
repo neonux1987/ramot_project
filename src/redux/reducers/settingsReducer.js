@@ -1,7 +1,7 @@
 
 import { TYPES } from '../actions/settingsActions';
 
-const pages = ["db_backup", "empty_reports_generator", "general", "services"];
+const pages = ["db_backup", "empty_reports_generator", "locations"];
 
 const initState = {};
 

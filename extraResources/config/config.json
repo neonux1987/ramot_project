@@ -26,8 +26,14 @@
     "last_update": "8.10.2019, 23:37:00"
   },
   "locations": {
-    "db_path": "",
-    "reports_folder": ""
+    "db_file_path": "",
+    "db_folder_path": "",
+    "db_backups_folder_path": "",
+    "reports_folder_path": "",
+    "config_folder_path": "",
+    "config_file_path": "",
+    "services_file_path": "",
+    "backups_names_file_path": ""
   },
   "reports_backup": {
     "active": true,

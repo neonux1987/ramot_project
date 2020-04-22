@@ -8,6 +8,7 @@ import Section from '../../../../components/Section/Section';
 import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
 import { Settings } from '@material-ui/icons';
 import SaveButton from '../../../../components/SaveButton/SaveButton';
+import Locations from './Locations/Locations';
 
 class General extends Component {
 
@@ -67,52 +68,7 @@ class General extends Component {
     return (
       <Fragment>
 
-        <StyledExpandableSection
-          TitleIcon={Settings}
-          iconBoxBg={"#1b966e"}
-          extraDetails={() =>
-            <SaveButton>שמור</SaveButton>
-          }
-          padding={"30px 20px 40px"}
-        >
-          <form className={styles.form} onChange={(event) => this.formOnChange(event)} onSubmit={(event) => event.preventDefault()}>
-
-            <Typography variant="subtitle1" style={{ margin: "0px 0 10px" }}>
-              <Box fontWeight="600">
-                מיקום בסיס הנתונים
-              </Box>
-            </Typography>
-
-            <Button variant="contained" color="primary" >בחר מיקום</Button>
-            <TextField
-              id="outlined-bare"
-              disabled
-              classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-              value={"מיקום"}
-              onChange={() => { }}
-              variant="outlined"
-              inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
-            />
-
-            <Typography variant="subtitle1" style={{ margin: "40px 0 10px" }}>
-              <Box fontWeight="600">
-                מיקום דוחות מוכנים
-              </Box>
-            </Typography>
-
-            <Button variant="contained" color="primary" >בחר מיקום</Button>
-            <TextField
-              id="outlined-bare"
-              disabled
-              classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-              value={"מיקום"}
-              onChange={() => { }}
-              variant="outlined"
-              inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
-            />
-
-          </form>
-        </StyledExpandableSection>
+        <Locations />
 
 
       </Fragment>

@@ -1,11 +1,13 @@
+const ConfigurationLogic = require('../logic/ConfigurationLogic');
+
 class ConnectionPool {
 
-  createConnection(dbFilePath) {
+  createConnection() {
     //create database connection
     this.knex = require('knex')({
       client: 'sqlite3',
       connection: {
-        filename: dbFilePath,
+        filename: ConfigurationLogic.paths.db_file_path,
       },
       useNullAsDefault: true
     });

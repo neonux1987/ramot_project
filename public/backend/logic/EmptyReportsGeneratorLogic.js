@@ -72,7 +72,7 @@ class EmptyReportsGeneratorLogic {
     buildings.forEach(async (building) => {
 
       // building path
-      const buildingPath = path.join(locations.reports_folder, building.buildingName);
+      const buildingPath = path.join(locations.reports_folder_path, building.buildingName);
       // year folder
       const yearFolder = path.join(buildingPath, yearFolderName);
       // quarter folder

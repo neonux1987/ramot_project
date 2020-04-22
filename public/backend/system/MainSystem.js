@@ -45,10 +45,6 @@ class MainSystem {
     this.configurationLogic = new ConfigurationLogic();
   }
 
-  initDBConnection() {
-
-  }
-
   initializeIpcs() {
     sidebarIpc();
 
@@ -110,7 +106,7 @@ class MainSystem {
       this.servicesLogic = new ServicesLogic();
 
       // set up the db connection
-      await connectionPool.createConnection(ConfigurationLogic.paths.db_path);
+      await connectionPool.createConnection();
     } catch (e) {
       console.log(e);
     }

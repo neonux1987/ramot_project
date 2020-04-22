@@ -51,7 +51,7 @@ export default (props) => {
   } = settings;
 
   useEffect(() => {
-    dispatch(fetchSettings("db_backup"));
+    dispatch(fetchSettings(SETTINGS_NAME));
     return cleanupStore;
   }, [dispatch, cleanupStore]);
 
@@ -388,7 +388,7 @@ export default (props) => {
         </Box>
         </Typography>
 
-        <Button variant="contained" color="primary" onClick={dbSelectFolderHandler}>בחר מיקום</Button>
+        <Button variant="contained" color="primary" onClick={dbSelectFolderHandler}>שנה מיקום</Button>
         <TextField
           id="outlined-bare"
           disabled

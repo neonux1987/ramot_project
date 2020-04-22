@@ -162,7 +162,7 @@ class DbBackupSvc {
     const { db_backup, locations } = settings;
 
     //fetch db backup settings
-    let dbFile = await this.ioLogic.readFile(locations.db_path);
+    let dbFile = await this.ioLogic.readFile(locations.db_file_path);
 
     //fetch db backup settings
     const backupsNames = await this.settingsLogic.getBackupsNames();

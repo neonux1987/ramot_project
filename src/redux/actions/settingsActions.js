@@ -36,7 +36,7 @@ export const fetchSettings = (settingName) => {
           reject(arg.error);
         } else {
           //success store the data
-          dispatch(receiveSettings(settingName, arg.data));
+          dispatch(receiveSettings(arg.settingName, arg.data));
           resolve(arg.data);
         }
       });
@@ -187,8 +187,9 @@ export const disableReportsGenerator = (reports_generator) => {
   }
 }
 
-export const cleanup = () => {
+export const cleanup = (settingName) => {
   return {
-    type: TYPES.SETTINGS_CLEANUP
+    type: TYPES.SETTINGS_CLEANUP,
+    settingName
   }
 }

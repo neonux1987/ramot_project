@@ -1,0 +1,33 @@
+.container{
+  background: #ffffff;
+  padding: 20px;
+}
+
+.form{
+  padding-right: 5px;
+}
+
+.divider{
+  margin: 40px 0;
+}
+
+.headerTitle{
+  margin-bottom: 10px;
+}
+
+.textField{
+  width: 160px;
+  display: flex;
+  margin-top: 10px;
+}
+
+.dbFileTextFieldLocationWrapper{
+  margin-top: 0px;
+  width: 580px;
+  background-color: #ffffff;
+}
+
+.dbFileTextFieldLocationInput{
+  padding: 9px 14px;
+  direction: ltr;
+}

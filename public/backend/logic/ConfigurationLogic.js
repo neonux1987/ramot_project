@@ -8,21 +8,24 @@ const path = require('path');
 const { getDocumentsFolder, getDataHome } = require('platform-folders');
 const fse = require('fs-extra');
 
-const usersAppDataFolder = getDataHome();
+const usersAppDataFolder = platform === "linux" ? homedir : getDataHome();
 
 // configuration files paths
 const NDTS_FOLDER_PATH = platform === "linux" ? path.join(usersAppDataFolder, "Dropbox/ndts") : path.join(usersAppDataFolder, "ndts");
-const CONFIG_FOLDER_PATH = platform === "linux" ? path.join(NDTS_FOLDER_PATH, "config") : path.join(NDTS_FOLDER_PATH, "config");
+
+const CONFIG_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "config");
 const CONFIG_PATH = platform === "linux" ? path.join(CONFIG_FOLDER_PATH, "config.json") : path.join(CONFIG_FOLDER_PATH, "config.json");
 const BACKUPS_NAMES_PATH = platform === "linux" ? path.join(CONFIG_FOLDER_PATH, "backupsNames.json") : path.join(CONFIG_FOLDER_PATH, "backupsNames.json");
 const SERVICES_PATH = platform === "linux" ? path.join(CONFIG_FOLDER_PATH, "services.json") : path.join(CONFIG_FOLDER_PATH, "services.json");
-const DB_FOLDER_PATH = platform === "linux" ? path.join(homedir, "Dropbox/ndts/db") : path.join(usersAppDataFolder, "ndts\\db");
+
+const DB_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db");
 const DB_PATH = platform === "linux" ? path.join(DB_FOLDER_PATH, "mezach-db.sqlite") : path.join(DB_FOLDER_PATH, "mezach-db.sqlite");
+const DB_BACKUPS_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db backups");
 
 // user documents
 const userDocuments = getDocumentsFolder();
 // user main folder
-USER_MAIN_FOLDER = platform === "linux" ? path.join(homedir, `רמות מזח`) : path.join(userDocuments, `רמות מזח`);
+USER_MAIN_FOLDER = platform === "linux" ? path.join(userDocuments, `רמות מזח`) : path.join(userDocuments, `רמות מזח`);
 
 // ndts setup files path
 const APP_ROOT_PATH = app.getAppPath();
@@ -40,7 +43,8 @@ class ConfigurationLogic {
     backups_names_path: BACKUPS_NAMES_PATH,
     services_path: SERVICES_PATH,
     db_folder_path: DB_FOLDER_PATH,
-    db_path: DB_PATH,
+    db_file_path: DB_PATH,
+    db_backup_folder_path: DB_BACKUPS_FOLDER_PATH,
     user_main_folder: USER_MAIN_FOLDER,
     setup_ndts_folder_path: SETUP_NDTS_FOLDER_PATH,
     app_root_path: APP_ROOT_PATH
@@ -61,6 +65,7 @@ class ConfigurationLogic {
         await fse.ensureDir(NDTS_FOLDER_PATH);
         await fse.ensureDir(CONFIG_FOLDER_PATH);
         await fse.ensureDir(DB_FOLDER_PATH);
+        await fse.ensureDir(DB_BACKUPS_FOLDER_PATH);
         await fse.ensureDir(USER_MAIN_FOLDER);
 
         // copy configurations files to user system
@@ -71,12 +76,11 @@ class ConfigurationLogic {
         //copy clean database file to user system
         await fse.copy(path.join(SETUP_NDTS_FOLDER_PATH, "db/mezach-db.sqlite"), `${DB_PATH}`, COPY_OPTIONS);
 
+        setupJsonFile.firstTime = false;
+        await fse.writeJSON(path.join(SETUP_NDTS_FOLDER_PATH, "firstTimeSetup.json"), setupJsonFile);
+
+        this.setLocations();
       }
-
-      setupJsonFile.firstTime = false;
-      await fse.writeJSON(path.join(SETUP_NDTS_FOLDER_PATH, "firstTimeSetup.json"), setupJsonFile);
-
-      this.setLocations();
     } catch (e) {
       console.log(e);
     }
@@ -84,8 +88,18 @@ class ConfigurationLogic {
 
   async setLocations() {
     const config = await fse.readJson(CONFIG_PATH);
-    config.locations.db_path = DB_PATH;
-    config.locations.reports_folder = USER_MAIN_FOLDER;
+
+    config.locations.db_file_path = DB_PATH;
+    config.locations.db_folder_path = DB_FOLDER_PATH;
+    config.locations.db_backups_folder_path = DB_BACKUPS_FOLDER_PATH;
+
+    config.locations.reports_folder_path = USER_MAIN_FOLDER;
+
+    config.locations.config_folder_path = CONFIG_FOLDER_PATH;
+    config.locations.config_file_path = CONFIG_PATH;
+    config.locations.services_file_path = SERVICES_PATH;
+    config.locations.backups_names_file_path = BACKUPS_NAMES_PATH;
+
     await fse.writeJSON(CONFIG_PATH, config);
   }
 
