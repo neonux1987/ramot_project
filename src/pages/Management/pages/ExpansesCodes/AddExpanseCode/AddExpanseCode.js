@@ -9,7 +9,8 @@ const AddExpanseCode = (props) => {
   const [formInputs, setFormInput] = useState({
     code: "",
     codeName: "",
-    summarized_section_id: ""
+    summarized_section_id: "",
+    with_vat: 0
   });
 
   const selectDataRender = props.summarizedSections ? props.summarizedSections.map((summarizedSection) => {
@@ -59,6 +60,19 @@ const AddExpanseCode = (props) => {
             <em></em>
           </MenuItem>
           {selectDataRender}
+        </Select>
+      </FormControl>
+
+      <FormControl className={styles.formControl}>
+        <InputLabel className={styles.inputLabel} htmlFor="age-helper">כולל מע"מ בביצוע:</InputLabel>
+        <Select
+          name="with_vat"
+          id="with_vat"
+          value={formInputs.with_vat}
+          onChange={(event) => props.changeHandler(event, formInputs, setFormInput)}
+        >
+          <MenuItem value={0} key={0}>לא</MenuItem>
+          <MenuItem value={1} key={1}>כן</MenuItem>
         </Select>
       </FormControl>
 

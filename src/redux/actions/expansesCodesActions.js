@@ -125,7 +125,8 @@ export const updateExpanseCode = (newCopy, oldCopy, index) => {
       data: {
         summarized_section_id: newCopy.summarized_section_id,
         code: newCopy.code,
-        codeName: newCopy.codeName
+        codeName: newCopy.codeName,
+        with_vat: newCopy.with_vat
       }
     };
 

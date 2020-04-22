@@ -128,6 +128,7 @@ class MonthExpansesDao {
       "building.tax AS tax",
       "sc.id AS summarized_section_id",
       "sc.section AS section",
+      "ec.with_vat AS with_vat"
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .catch((error) => {

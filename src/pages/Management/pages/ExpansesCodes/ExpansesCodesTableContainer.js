@@ -28,8 +28,8 @@ import withTableLogic from '../../../../HOC/withTableLogic';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import { toast } from 'react-toastify';
 
-const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(3,1fr)";
-const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(3,1fr)";
+const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
+const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
 class ExpansesCodes extends React.PureComponent {
 
@@ -192,6 +192,7 @@ class ExpansesCodes extends React.PureComponent {
       <Column style={defaultheaderStyle}>{"קוד הנהח\"ש"}</Column>
       <Column style={defaultheaderStyle}>{"שם חשבון"}</Column>
       <Column style={defaultheaderStyle}>{"מקושר לסעיף מסכם..."}</Column>
+      <Column style={defaultheaderStyle}>{`כולל מע"מ בביצוע`}</Column>
     </HeaderRow>
   }
 
@@ -204,6 +205,8 @@ class ExpansesCodes extends React.PureComponent {
 
     // row data
     const rowData = this.getDataObject(index);
+    // convert 1 or 0 (true or false) to text
+    const with_vat = rowData.with_vat === 0 ? "לא" : "כן";
 
     return <Row style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData, index)} /> : null}
@@ -219,6 +222,20 @@ class ExpansesCodes extends React.PureComponent {
           name={"summarized_section_id"}
         /> :
         <Column>{this.getSection(rowData["summarized_section_id"])}</Column>}
+
+      {editMode ?
+        <SelectDropDown
+          targetValue={rowData.with_vat}
+          index={index}
+          itemsArr={[
+            <MenuItem value={0} key={0}>לא</MenuItem>,
+            <MenuItem value={1} key={1}>כן</MenuItem>
+          ]}
+          selectChangeHandler={this.onBlurSelectHandler}
+          name={"with_vat"}
+        /> :
+        <Column>{with_vat}</Column>}
+
     </Row>
   }
 

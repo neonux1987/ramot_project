@@ -8,6 +8,7 @@
 .formControl {
   margin: 8px;
   width: 65%;
+  justify-self: center;
 }
 
 .inputLabel {

@@ -134,7 +134,11 @@ class MonthExpansesLogic {
     //because in a rare case, they could have 
     //different tax values
     for (let i = 0; i < monthExpanses.length; i++) {
-      totalSum += Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax);
+
+      if (monthExpanses[i].with_vat === 1)
+        totalSum += monthExpanses[i].sum;
+      else
+        totalSum += Helper.calculateWithoutTax(monthExpanses[i].sum, monthExpanses[i].tax);
     }
 
     //subtract month's old execution value from the total execution
