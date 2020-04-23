@@ -39,11 +39,14 @@ class ExpansesCodes extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.fetchSummarizedSections("active").then((data) => {
+    this.props.fetchSummarizedSections("all").then((data) => {
       const dataArr = [];
 
       const selectItems = data.map((row, index) => {
-        dataArr[row.id] = row.section;
+        if (row.status === "deleted") {
+          row.section = `${row.section} (לא קיים)`;
+        }
+        dataArr[row.id] = row;
         return <MenuItem value={row.id} key={row.id}>{row.section}</MenuItem>;
       })
 
@@ -208,6 +211,8 @@ class ExpansesCodes extends React.PureComponent {
     // convert 1 or 0 (true or false) to text
     const with_vat = rowData.with_vat === 0 ? "לא" : "כן";
 
+    const section = this.getSection(rowData["summarized_section_id"]);
+
     return <Row style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData, index)} /> : null}
       <Column>{index + 1}</Column>
@@ -221,7 +226,9 @@ class ExpansesCodes extends React.PureComponent {
           selectChangeHandler={this.onBlurSelectHandler}
           name={"summarized_section_id"}
         /> :
-        <Column>{this.getSection(rowData["summarized_section_id"])}</Column>}
+        <Column style={{ color: section.status === "deleted" ? "red" : "initial" }}>
+          {section.section}
+        </Column>}
 
       {editMode ?
         <SelectDropDown

@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+// LIBRARIES
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import styles from './AddExpanseCode.module.css'
+
+// ACTIONS
+import { fetchSummarizedSections } from '../../../../../redux/actions/summarizedSectionsActions';
 
 const keys = ["code", "codeName", "summarized_section_id", "submit"];
 
@@ -14,12 +18,15 @@ const AddExpanseCode = (props) => {
   });
 
   const selectDataRender = props.summarizedSections ? props.summarizedSections.map((summarizedSection) => {
-    return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
+    if (summarizedSection.status === "deleted")
+      return;
+    else
+      return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
   }) : "";
 
   return (
 
-    <form id="inputExpanses"
+    <form
       className={styles.boxWrapper}
       noValidate
       autoComplete="off"

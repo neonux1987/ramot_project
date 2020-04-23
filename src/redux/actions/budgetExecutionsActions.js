@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
 import monthlyStatsActions from './monthlyStatsActions';
 import quarterlyStatsActions from './quarterlyStatsActions';
-import { ar } from 'date-fns/locale';
+import { ipcSendReceive } from './util/util';
 
 const TOAST_AUTO_CLOSE = 3000;
 
@@ -167,19 +167,7 @@ const removeBudgetExecutionInStore = (payload) => {
 
 export const addBudgetExecution = (params = Object) => {
   return dispatch => {
-
-    return new Promise((resolve, reject) => {
-      //request request to backend to get the data
-      ipcRenderer.send("add-budget-execution", params);
-      //listen when the data comes back
-      ipcRenderer.once("budget-execution-added", (event, arg) => {
-        if (arg.error)
-          reject(arg.error);
-        else
-          resolve(true);
-      });
-    });
-
+    return ipcSendReceive("add-budget-execution", params, "budget-execution-added");
   }
 };
 

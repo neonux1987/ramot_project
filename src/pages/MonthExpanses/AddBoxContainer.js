@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 import * as summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
 import * as expansesCodesActions from '../../redux/actions/expansesCodesActions';
+import { toast } from 'react-toastify';
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 const styles = theme => ({
   container: {
@@ -82,6 +84,9 @@ const styles = theme => ({
     display: "inline-flex",
     width: "212px",
     justifyContent: "center"
+  },
+  warningColor: {
+    color: "red"
   }
 });
 
@@ -127,7 +132,14 @@ class InputExpansesField extends Component {
     }, () => {
       //find the section filld in the data
       //and fill the input if section exist
-      const summarizedSection = this.findSection();
+      let summarizedSection = this.findSection();
+
+      if (summarizedSection === undefined) {
+        summarizedSection = {
+          section: "סעיף מסכם לא קיים"
+        }
+      }
+
       if (summarizedSection) {
         this.setState({
           formInputs: {
@@ -165,14 +177,10 @@ class InputExpansesField extends Component {
   findSection = () => {
     const { code } = this.state.formInputs;
     const { data } = this.props.summarizedSections;
-    let foundObj = null;
 
-    if (code) {
-      foundObj = data.find((section) => {
-        return section.id === code.summarized_section_id;
-      });
-    }
-    return foundObj;
+    return data.find((section) => {
+      return section.id === code.summarized_section_id;
+    });
   }
 
   findExpanse = (code) => {
@@ -242,7 +250,15 @@ class InputExpansesField extends Component {
   }
 
   submit = () => {
-    this.props.submitData(this.state.formInputs, this.reset);
+    if (this.state.formInputs.section === "סעיף מסכם לא קיים")
+      // send the error to the notification center
+      toast.error(`הוספת שורה נכשלה. 
+      קוד הנהלת חשבונות מקושר לסעיף מסכם שלא קיים. 
+      נא צור את הסעיף בטבלת ניהול סעיפים מסכמים או קשר לסעיף אחר בטבלת ניהול ומעקב קודי הנהלת חשבונות`, {
+        onOpen: () => playSound(soundTypes.error)
+      });
+    else
+      this.props.submitData(this.state.formInputs, this.reset);
   }
 
   componentDidMount() {

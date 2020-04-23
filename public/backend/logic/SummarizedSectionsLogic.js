@@ -8,7 +8,10 @@ class SummarizedSectionsLogic {
   }
 
   getAllSummarizedSectionsOrderedTrx(status) {
-    return this.summarizedSectionsDao.getAllSummarizedSectionsOrderedTrx(status);
+    if (status === "all")
+      return this.getAllSummarizedSectionsTrx();
+    else
+      return this.summarizedSectionsDao.getAllSummarizedSectionsOrderedTrx(status);
   }
 
   getAllSummarizedSectionsTrx(trx) {

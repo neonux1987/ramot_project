@@ -1,5 +1,5 @@
 // LIBRARIES IMPORTS
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -42,6 +42,7 @@ import SelectColumn from '../../components/table/SelectColumn';
 
 // AUDIO
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { fetchSummarizedSections } from '../../redux/actions/summarizedSectionsActions';
 
 const MonthExpansesTableContainer = props => {
 
@@ -316,7 +317,7 @@ const MonthExpansesTableContainer = props => {
         <Column>{rowData["code"]}</Column>}
 
       <Column>{rowData["codeName"]}</Column>
-      <Column>{rowData["section"]}</Column>
+      <Column >{rowData["section"]}</Column>
 
       {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}
       {editMode ? numberInput("sum", rowData["sum"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
@@ -428,7 +429,7 @@ const headers = [
     headerStyle
   },
   {
-    title: "מקושר לסעיף",
+    title: "מקושר לסעיף מסכם...",
     headerStyle
   },
   {
