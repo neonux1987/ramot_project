@@ -97,7 +97,7 @@ const MonthExpansesTableContainer = props => {
     return cleanup;
   }, [date, buildingNameEng, dispatch]);
 
-  const addNewExpanseSubmit = (formInputs, reset) => {
+  const addNewExpanseSubmit = async (formInputs, reset) => {
     const valid = validateFormInputs(formInputs);
     if (!valid) {
       // send the error to the notification center
@@ -124,10 +124,16 @@ const MonthExpansesTableContainer = props => {
       date: date
     }
 
-    dispatch(addMonthExpanse(params, params.expanse));
+    try {
+      const success = await dispatch(addMonthExpanse(params, params.expanse));
+      if (success) {
+        //reset form state
+        reset();
+      }
+    } catch (e) {
 
-    //reset form state
-    reset();
+    }
+
 
   }
 

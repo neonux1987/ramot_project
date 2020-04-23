@@ -48,9 +48,83 @@ class BudgetExecutionLogic {
     return this.budgetExecutionDao.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
   }
 
-  getBudgetExecutionById(buildingName = String, date = Object, id = Number) {
+  getBudgetExecutionById(buildingName = String, date = Object, id = Number, trx) {
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
-    return this.budgetExecutionDao.getBudgetExecutionById(buildingName, date, quarterQuery, id);
+    return this.budgetExecutionDao.getBudgetExecutionById(buildingName, date, quarterQuery, id, trx);
+  }
+
+  async addBudgetExecutionTrx({ buildingName = String, date = Object, payload = Object }) {
+    const trx = await connectionPool.getTransaction();
+
+    const returnedBudgetExecution = await this.getBudgetExecutionTrx(buildingName, date, payload.id, trx);
+
+    if (returnedBudgetExecution.length > 0) {
+      trx.rollback();
+      throw new Error("לא ניתן להוסיף סעיף מסכם שכבר קיים.");
+    }
+
+    // prepare budget execution object
+    const readyPayload = this.prepareBudgetExecutionForAdd(date, payload.id);
+
+    // add budget execution
+    await this.budgetExecutionDao.addBudgetExecution(buildingName, date.quarter, readyPayload, trx);
+
+    // prepare summarized budget object for add
+    const sammarizedBudgetPayload = this.prepareSammarizedBudgetForAdd(date, payload.id);
+
+    await this.summarizedBudgetLogic.addSummarizedBudgetTrx(buildingName, sammarizedBudgetPayload, trx);
+
+    trx.commit();
+  }
+
+  prepareBudgetExecutionForAdd(date, summarized_section_id) {
+    const {
+      year,
+      quarter
+    } = date;
+
+    const payload = {
+      summarized_section_id,
+      year,
+      quarter,
+      evaluation: 0.0,
+      total_budget: 0.0,
+      total_execution: 0.0,
+      difference: 0.0,
+      notes: null
+    };
+
+    const months = Helper.getQuarterMonths(quarter);
+
+    months.forEach((month) => {
+      payload[`${month}_budget`] = 0.0;
+      payload[`${month}_budget_execution`] = 0.0;
+    });
+
+    return payload;
+  }
+
+  prepareSammarizedBudgetForAdd(date, summarized_section_id) {
+    const {
+      year,
+      quarter
+    } = date;
+
+    const payload = {
+      summarized_section_id,
+      year,
+      evaluation: 0.0,
+      year_total_budget: 0.0,
+      year_total_execution: 0.0,
+      notes: null
+    };
+
+    for (let i = 1; i <= 4; i++) {
+      payload[`quarter${i}_budget`] = 0.0;
+      payload[`quarter${i}_execution`] = 0.0;
+    }
+
+    return payload;
   }
 
   async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, special = false }, trx) {

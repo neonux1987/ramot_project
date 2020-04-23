@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
 import monthlyStatsActions from './monthlyStatsActions';
 import quarterlyStatsActions from './quarterlyStatsActions';
+import { ar } from 'date-fns/locale';
 
 const TOAST_AUTO_CLOSE = 3000;
 
@@ -150,14 +151,35 @@ export const budgetExecutionsCleanup = function (buildingName) {
   }
 }
 
-export const addBudgetExecution = (params = Object, tableData) => {
+const addBudgetExecutionInStore = (payload) => {
+  return {
+    type: TYPES.BUDGET_EXECUTIONS_ADD,
+    payload
+  }
+}
+
+const removeBudgetExecutionInStore = (payload) => {
+  return {
+    type: TYPES.BUDGET_EXECUTIONS_ADD,
+    payload
+  }
+}
+
+export const addBudgetExecution = (params = Object) => {
   return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("add-new-month-expanse", params);
-    //listen when the data comes back
-    ipcRenderer.once("month-expanse-added", () => {
-      dispatch(receiveBudgetExecutions(tableData, params.buildingName));
+
+    return new Promise((resolve, reject) => {
+      //request request to backend to get the data
+      ipcRenderer.send("add-budget-execution", params);
+      //listen when the data comes back
+      ipcRenderer.once("budget-execution-added", (event, arg) => {
+        if (arg.error)
+          reject(arg.error);
+        else
+          resolve(true);
+      });
     });
+
   }
 };
 

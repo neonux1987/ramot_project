@@ -24,6 +24,15 @@ const budgetExecutionIpc = (connection) => {
     });
   });
 
+  ipcMain.on('add-budget-execution', (event, arg) => {
+    budgetExecutionLogic.addBudgetExecutionTrx(arg).then((result) => {
+      event.sender.send("budget-execution-added", { data: result });
+    }).catch((error) => {
+      console.log(error);
+      event.reply("budget-execution-added", { error: error.message });
+    });
+  });
+
   ipcMain.on('delete-budget-execution', (event, params) => {
     budgetExecutionLogic.deleteBudgetExecution(params).then((result) => {
       event.sender.send("budget-execution-deleted", { data: result });

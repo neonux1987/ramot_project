@@ -27,6 +27,7 @@ class SummarizedSectionsLogic {
 
       return returnedSummarizedSection.id;
     } else {
+      summarizedSection.status = "active";
       return this.summarizedSectionsDao.addSummarizedSection(summarizedSection)
         .then((result) => {
           // extract the id of the added summarized

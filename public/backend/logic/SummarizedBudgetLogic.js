@@ -10,7 +10,7 @@ const connectionPool = require('../connection/ConnectionPool');
 class SummarizedBudgetLogic {
 
   constructor() {
-    this.sbd = new SummarizedBudgetDao();
+    this.summarizedBudgetDao = new SummarizedBudgetDao();
     this.registeredYearsLogic = new RegisteredYearsLogic();
     this.quarterlyStatsLogic = new QuarterlyStatsLogic();
     this.yearlyStatsLogic = new YearlyStatsLogic();
@@ -20,12 +20,12 @@ class SummarizedBudgetLogic {
   }
 
   getBuildingSummarizedBudgetTrx(buildingName, date, trx) {
-    return this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
+    return this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
   }
 
   getSummarizedBudgetsByRange(buildingName, date, range) {
-    return this.sbd.getSummarizedBudgetsByRange(buildingName, date, range).then((data) => {
-      return this.sbd.dataRowCount(buildingName, date).then((count) => {
+    return this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingName, date, range).then((data) => {
+      return this.summarizedBudgetDao.dataRowCount(buildingName, date).then((count) => {
         return {
           data,
           info: {
@@ -37,7 +37,11 @@ class SummarizedBudgetLogic {
   }
 
   getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx) {
-    return this.sbd.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
+    return this.summarizedBudgetDao.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
+  }
+
+  addSummarizedBudgetTrx(buildingName = String, payload = Object, trx) {
+    return this.summarizedBudgetDao.addSummarizedBudgetTrx(buildingName, payload, trx);
   }
 
   async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object, special = false }, trx) {
@@ -46,9 +50,9 @@ class SummarizedBudgetLogic {
       trx = await connectionPool.getTransaction();
     }
 
-    await this.sbd.updateSummarizedBudgetTrx(summarized_section_id, buildingName, summarizedBudget, date, trx);
+    await this.summarizedBudgetDao.updateSummarizedBudgetTrx(summarized_section_id, buildingName, summarizedBudget, date, trx);
 
-    const allSummarizedBudgets = await this.sbd.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
+    const allSummarizedBudgets = await this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
 
     if (!special) {
       const yearStats = this.prepareYearStats(allSummarizedBudgets);
@@ -89,7 +93,7 @@ class SummarizedBudgetLogic {
   }
 
   batchInsert(buildingName, rows, trx) {
-    return this.sbd.batchInsert(buildingName, rows, trx);
+    return this.summarizedBudgetDao.batchInsert(buildingName, rows, trx);
   }
 
   prepareDefaultBatchInsertion(data, date) {

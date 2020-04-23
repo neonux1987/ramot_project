@@ -89,6 +89,7 @@ class SummarizedBudgetDao {
       .where({ year: date.year })
       .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id")
       .limit(pageSettings.pageSize).offset(pageSettings.startElement)
+      .orderBy("section")
       .catch((error) => {
         throw error;
       });
@@ -128,6 +129,18 @@ class SummarizedBudgetDao {
     }).catch((error) => {
       throw error;
     });
+  }
+
+  addSummarizedBudgetTrx(
+    buildingName,
+    payload,
+    trx = this.connection
+  ) {
+    return trx(buildingName + "_summarized_budget")
+      .insert(payload)
+      .catch((error) => {
+        throw error;
+      });
   }
 
   /**

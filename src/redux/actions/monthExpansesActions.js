@@ -155,34 +155,44 @@ const monthExpansesFetchingFailed = function (error, buildingName) {
 export const addMonthExpanse = (params = Object, expanse = Object) => {
   return dispatch => {
 
-    //send a request to backend to get the data
-    ipcRenderer.send("add-new-month-expanse", params);
+    return new Promise((resolve, reject) => {
 
-    //listen when the data comes back
-    ipcRenderer.once("month-expanse-added", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(monthExpansesFetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-        playSound(soundTypes.error);
-      } else {
-        //set the new id from the saved object in the db
-        expanse.id = arg.data;
+      //send a request to backend to get the data
+      ipcRenderer.send("add-new-month-expanse", params);
 
-        //success store the data
-        dispatch(addMonthExpanseInStore(expanse, params.buildingName, sortByCode));
+      //listen when the data comes back
+      ipcRenderer.once("month-expanse-added", (event, arg) => {
+        if (arg.error) {
+          //let react know that an erro occured while trying to fetch
+          dispatch(monthExpansesFetchingFailed(arg.error));
+          //send the error to the notification center
+          toast.error(arg.error, {
+            onOpen: () => playSound(soundTypes.error)
+          });
+          playSound(soundTypes.error);
 
-        //send success notification
-        toast.success("השורה נוספה בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
-      } // end else
-    }); // end ipc renderer
-  }
-};
+          reject(false);
+        } else {
+          //set the new id from the saved object in the db
+          expanse.id = arg.data;
+
+          //success store the data
+          dispatch(addMonthExpanseInStore(expanse, params.buildingName, sortByCode));
+
+          //send success notification
+          toast.success("השורה נוספה בהצלחה.", {
+            onOpen: () => playSound(soundTypes.message)
+          });
+
+          resolve(true);
+        } // end else
+      }); // end ipc renderer
+
+    }); // end promise
+
+  } // end annonymous method
+
+}
 
 const addMonthExpanseInStore = (payload, buildingName, sortByCode) => {
   return {

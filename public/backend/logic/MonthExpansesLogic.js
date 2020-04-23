@@ -99,11 +99,20 @@ class MonthExpansesLogic {
     }
 
     //get the total sum of expanses that are related
-    //of the same summarized section id
+    //to the same summarized section id
     const monthExpanses = await this.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, expanse.summarized_section_id, trx);
 
     //get budget execution after it was updated
     let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx);
+
+    // if there is no refference to a sammarized section
+    // in the budget execution data for a specific date,
+    // the user must add it to the data before adding/updating the 
+    // month expanses data
+    if (budgetExecution.length === 0) {
+      trx.rollback();
+      throw new Error("קרתה שגיאה. לא ניתן להוסיף או לעדכן שורה כל עוד הסעיף המסכם לא קיים בטבלת ביצוע מול תקציב.")
+    }
 
     //caluclate execution and prepare an object for te insertion or update
     const budgetExec = this.prepareBudgetExecutionObj(budgetExecution[0], monthExpanses, date, tax);
@@ -187,6 +196,7 @@ class MonthExpansesLogic {
     const budgetExec = this.prepareBudgetExecutionObj(budgetExecution[0], monthExpansesList, date);
 
     if (monthExpanseObj.length === 0) {
+      trx.rollback();
       throw new Error(`השורה לא קיית בבסיס נתונים, כנראה כבר נמחקה.`);
     }
 

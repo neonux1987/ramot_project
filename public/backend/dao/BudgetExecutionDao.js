@@ -148,6 +148,7 @@ class BudgetExecutionDao {
         "exec.notes AS notes"
       ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
       .limit(pageSettings.pageSize).offset(pageSettings.startElement)
+      .orderBy("section")
       .catch((error) => {
         throw error;
       });
@@ -252,6 +253,19 @@ class BudgetExecutionDao {
     return trx(buildingName + "_budget_execution_quarter" + date.quarter)
       .where({ id: id, year: date.year })
       .del()
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  addBudgetExecution(
+    buildingName,
+    quarter = Number,
+    payload,
+    trx = this.connection
+  ) {
+    return trx(`${buildingName}_budget_execution_quarter${quarter}`)
+      .insert(payload)
       .catch((error) => {
         throw error;
       });

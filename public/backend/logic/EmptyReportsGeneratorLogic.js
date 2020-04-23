@@ -30,7 +30,7 @@ class EmptyReportsGeneratorLogic {
 
     let reports = await this.registeredReportsLogic.getRegisteredReportsByYearAndQuarter(date.year, date.quarter, trx);
     if (reports.length > 0) {
-      await trx.commit();
+      await trx.rollback();
       throw new Error("הפעולה נכשלה. הדוחות לתאריכים שנבחרו כבר קיימים בבסיס נתונים.");
     }
 

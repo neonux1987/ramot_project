@@ -44,6 +44,7 @@ import ConfirmDeleteAllMonthExpansesModal from '../../components/modals/ConfirmD
 
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
+import AddNewContainer from './AddNewContainer/AddNewContainer';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -336,6 +337,8 @@ const BudgetExecutionsTable = props => {
     pageSettings,
   } = page;
 
+  const addNewBox = addNewMode ? <AddNewContainer date={date} buildingName={buildingNameEng} /> : null;
+
   return (
     <TableWrapper>
 
@@ -375,6 +378,8 @@ const BudgetExecutionsTable = props => {
         } // end leftPane
 
       /> {/* End TableControls */}
+
+      {addNewBox}
 
       <Table
         Row={TableRow}
