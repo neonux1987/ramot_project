@@ -87,13 +87,18 @@ const MonthExpansesTableContainer = props => {
       }
     }
 
-    const returnedPromise = dispatch(initMonthExpansesState(params.buildingName));
+    const dispatchActions = async () => {
+      await dispatch(initMonthExpansesState(params.buildingName));
 
-    returnedPromise.then(() => {
-      dispatch(fetchMonthExpanses(params));
-    });
+      dispatch(fetchMonthExpanses(params)).catch((result) => {
+        toast.info(result.error, {
+          onClose: () => playSound(soundTypes.error)
+        })
+      });
 
-    dispatch(fetchExpansesCodesByStatus("active"));
+      dispatch(fetchExpansesCodesByStatus("active"));
+    }
+    dispatchActions();
 
     return cleanup;
   }, [date, buildingNameEng, dispatch]);

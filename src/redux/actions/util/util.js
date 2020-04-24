@@ -7,9 +7,15 @@ export const ipcSendReceive = (sendChannel, sendArgs, receiveChannel) => {
     //listen when the data comes back
     ipcRenderer.once(receiveChannel, (event, arg) => {
       if (arg.error)
-        reject(arg.error);
+        reject({
+          success: false,
+          error: arg.error
+        });
       else
-        resolve(true);
+        resolve({
+          success: true,
+          data: arg.data
+        });
     });
   });
 }

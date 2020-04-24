@@ -5,6 +5,7 @@ import React from 'react';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
 import ToastRender from '../../components/ToastRender/ToastRender';
+import { ipcSendReceive } from './util/util';
 
 const TOAST_AUTO_CLOSE = 3000;
 
@@ -25,80 +26,32 @@ export const TYPES = {
  * @param {*} params 
  */
 export const fetchMonthExpanses = (params = Object) => {
-  return dispatch => {
+  return async dispatch => {
     // let react know that the fetching is started
     dispatch(requestMonthExpanses(params.buildingName));
 
-    // request request to backend to get the data
-    ipcRenderer.send("get-month-expanses-data-by-range", params);
+    return ipcSendReceive("get-month-expanses-data-by-range", params, "month-expanses-data-by-range")
+      .then((result) => {
 
-    // listen when the data comes back
-    return ipcRenderer.once("month-expanses-data-by-range", (event, arg) => {
-      if (arg.error) {
-        // let react know that an erro occured while trying to fetch
-        dispatch(monthExpansesFetchingFailed(arg.error, params.buildingName));
-        // send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
         // if there is no data, that means it's a new month and 
         // and empty report should be generated.
-        if (arg.data.data.length === 0) {
+        if (result.data.data.length === 0) {
           // generate empty report
           //generateEmptyReport(params, dispatch);
           dispatch(receiveMonthExpanses([], params.buildingName));
         } else {
           // store the data
-          dispatch(receiveMonthExpanses(arg.data.data, params.buildingName));
+          dispatch(receiveMonthExpanses(result.data.data, params.buildingName));
         }
-      } // end else
-    });
+
+      })
+      .catch((result) => {
+        // let react know that an erro occured while trying to fetch
+        dispatch(monthExpansesFetchingFailed(result.error, params.buildingName));
+      });
+
   } // end return
 };
-
-const generateEmptyReport = (params, dispatch) => {
-  //empty report process started
-  const toastId = toast.info(<ToastRender spinner={true} message={"מייצר דוח חודשי חדש..."} />, {
-    autoClose: false,
-    onOpen: () => playSound(soundTypes.message)
-  });
-
-  //request request to backend to get the data
-  ipcRenderer.send("generate-empty-month-expanses-report", params);
-
-  return ipcRenderer.once("generated-empty-month-expanses-data", (event, arg) => {
-    if (arg.error) {
-      playSound(soundTypes.error);
-      //empty report process finished
-      toast.update(toastId, {
-        render: <ToastRender done={true} message={arg.error} />,
-        type: toast.TYPE.ERROR,
-        delay: 2000,
-        autoClose: TOAST_AUTO_CLOSE,
-        onClose: () => {
-          //let react know that an erro occured while trying to fetch
-          dispatch(monthExpansesFetchingFailed(arg.error));
-        }
-      });
-    } else {
-      //empty report process finished
-      toast.update(toastId, {
-        render: <ToastRender done={true} message={"דוח חודשי חדש נוצר בהצלחה."} />,
-        type: toast.TYPE.SUCCESS,
-        autoClose: TOAST_AUTO_CLOSE,
-        delay: 2000,
-        onClose: () => {
-          //success store the data
-          dispatch(receiveMonthExpanses(arg.data, params.buildingName));
-          dispatch(registeredMonthsActions.fetchRegisteredMonths(params));
-          dispatch(registeredYearsActions.fetchRegisteredYears(params));
-        }
-      }); // end toast
-
-    } // end else
-  });
-}
 
 const requestMonthExpanses = function (buildingName) {
   return {

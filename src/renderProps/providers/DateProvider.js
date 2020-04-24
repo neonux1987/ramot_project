@@ -1,59 +1,50 @@
-import React from 'react';
+// LIBRARIES
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as dateActions from '../../redux/actions/dateActions';
+import { useSelector, useDispatch } from 'react-redux';
 
-class DateProvider extends React.Component {
+// ACTIONS
+import {
+  updateDate,
+  initDateState,
+  dateCleanup
+} from '../../redux/actions/dateActions';
 
-  componentDidMount() {
-    const {
-      pageName,
-      buildingName,
-      initState
-    } = this.props;
+const DateProvider = (props) => {
 
+  const {
+    pageName,
+    buildingName,
+    initState,
+  } = props;
+
+  const date = useSelector(store => store.date.pages[pageName]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
     // init the state first
-    this.props.initDateState(pageName, buildingName, initState);
-  }
+    dispatch(initDateState(pageName, buildingName, initState));
 
-  componentWillUnmount() {
-    const {
-      pageName,
-      buildingName
-    } = this.props;
+    return cleanupStore;
+  }, [pageName, buildingName, initState, dispatch]);
 
+  const cleanupStore = () => {
     //cleanup
-    this.props.dateCleanup(pageName, buildingName);
+    dispatch(dateCleanup(pageName, buildingName));
   }
 
-  render() {
-    const {
-      date,
-      updateDate
-    } = this.props;
-
-    return this.props.children({
-      date,
-      actions: {
-        updateDate
-      }
-    });
-  }
+  return props.children({
+    date,
+    actions: {
+      updateDate: () => dispatch(updateDate(pageName, buildingName, date))
+    }
+  });
 
 };
-
-const mapStateToProps = (state, ownProps) => ({
-  date: state.date.pages[ownProps.pageName]
-});
-
-const mapDispatchToProps = dispatch => ({
-  initDateState: (pageName, buildingName, initState) => dispatch(dateActions.initDateState(pageName, buildingName, initState)),
-  dateCleanup: (pageName, buildingName) => dispatch(dateActions.dateCleanup(pageName, buildingName)),
-  updateDate: (pageName, buildingName, date) => dispatch(dateActions.updateDate(pageName, buildingName, date))
-});
 
 DateProvider.propTypes = {
   pageName: PropTypes.string.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DateProvider);
+export default DateProvider;
