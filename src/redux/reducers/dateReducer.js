@@ -10,7 +10,6 @@ export default (state = initialState, action) => {
         pageName,
         date
       } = action;
-
       return setDateState(state, pageName, buildingName, date);
     }
     case `DATE_INIT_PAGE`: {
@@ -22,7 +21,9 @@ export default (state = initialState, action) => {
         ...state,
         pages: {
           ...state.pages,
-          [pageName]: {}
+          [pageName]: {
+            ...state.pages[pageName]
+          }
         }
       };
     }

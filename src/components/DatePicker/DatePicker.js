@@ -99,18 +99,6 @@ const DatePicker = ({
     const { value } = event.target;
     const year = Number.parseInt(value);
 
-    // we must intialize month and quarter to empty
-    // string so the current date won't interfer 
-    // with the selected values, because current date
-    // maybe different than the selected values
-    /* setDate({
-      year,
-      month: "",
-      monthHeb: "",
-      quarterHeb: "",
-      quarterEng: ""
-    }); */
-
     if (month) {
       dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, date: { year } }))).then((result) => {
         // get the earliest month in the list 
@@ -199,19 +187,10 @@ const DatePicker = ({
   return (
     <div id="dates" className={styles.dates}>
       <form className={styles.formControl}>
-
         {month && renderMonths}
         {quarter && renderQuarters}
         {renderYears}
-
       </form>
-      {/* <Button variant="contained" color="secondary" className={styles.button} onClick={() => submitHandler({
-        year: selectDate.year,
-        quarter: selectDate.quarter,
-        month: selectDate.month
-      })}>
-        טען
-    </Button> */}
     </div>
   );
 

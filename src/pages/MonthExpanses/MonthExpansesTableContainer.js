@@ -231,6 +231,7 @@ const MonthExpansesTableContainer = props => {
       buildingName: buildingNameEng,
       date
     };
+
     //update expanse
     dispatch(updateMonthExpanse(params, oldExpanseCopy, index));
     e.target.blur();

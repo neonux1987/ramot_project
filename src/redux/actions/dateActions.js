@@ -35,7 +35,6 @@ export const dateCleanup = function (pageName, buildingName) {
 }
 
 export const updateDate = (pageName, buildingName, date) => {
-  console.log(date);
   return {
     type: TYPES.DATE_UPDATE,
     pageName,
