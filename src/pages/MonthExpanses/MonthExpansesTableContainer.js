@@ -194,8 +194,7 @@ const MonthExpansesTableContainer = props => {
     //get the building month expanses
     dispatch(fetchMonthExpanses(params));
 
-    dispatch(dateActions.updateDate(pageName, buildingNameEng, params.date));
-
+    //dispatch(dateActions.updateDate(pageName, buildingNameEng, params.date));
   }
 
   const onBlurHandler = (e) => {
@@ -368,6 +367,7 @@ const MonthExpansesTableContainer = props => {
             date={date}
             buildingName={buildingNameEng}
             submitHandler={loadDataByDate}
+            pageName={pageName}
           />
 
         } // end middlePane
@@ -408,7 +408,7 @@ const MonthExpansesTableContainer = props => {
 
 const ConnectedComponent = withTableLogic(MonthExpansesTableContainer);
 
-export default React.memo(ConnectedComponent, areEqual);
+export default ConnectedComponent;
 
 const headerStyle = {
   backgroundColor: "rgb(232, 236, 241)",

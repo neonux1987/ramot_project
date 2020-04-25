@@ -60,7 +60,7 @@ class BudgetExecutionLogic {
 
     if (returnedBudgetExecution.length > 0) {
       trx.rollback();
-      throw new Error("לא ניתן להוסיף סעיף מסכם שכבר קיים.");
+      throw new Error("לא ניתן להוסיף שורה עם סעיף מסכם שכבר קיים.");
     }
 
     // prepare budget execution object

@@ -358,6 +358,7 @@ const BudgetExecutionsTable = props => {
             date={date}
             buildingName={buildingNameEng}
             submitHandler={loadDataByDate}
+            pageName={pageName}
           />
         } // end middlePane
         leftPane={

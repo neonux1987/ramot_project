@@ -23,16 +23,10 @@ const DateProvider = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // init the state first
-    dispatch(initDateState(pageName, buildingName, initState));
-
-    return cleanupStore;
-  }, [pageName, buildingName, initState, dispatch]);
-
-  const cleanupStore = () => {
-    //cleanup
-    dispatch(dateCleanup(pageName, buildingName));
-  }
+    if (date === undefined || date[buildingName] === undefined)
+      // init the state first
+      dispatch(initDateState(pageName, buildingName, initState));
+  }, [pageName, buildingName, initState, dispatch, date]);
 
   return props.children({
     date,

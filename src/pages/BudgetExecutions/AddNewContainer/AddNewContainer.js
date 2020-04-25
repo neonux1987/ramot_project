@@ -59,8 +59,8 @@ const AddNewContainer = (props) => {
       payload: formInputs
     }
 
-    const promiseSuccess = await dispatch(addBudgetExecution(params)).catch((error) => {
-      toast.error(error, {
+    const promiseSuccess = await dispatch(addBudgetExecution(params)).catch((result) => {
+      toast.error(result.error, {
         onOpen: () => playSound(soundTypes.error)
       });
     });

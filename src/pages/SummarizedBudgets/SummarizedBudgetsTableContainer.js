@@ -275,6 +275,7 @@ const SummarizedBudgetsTableContainer = props => {
             buildingName={buildingNameEng}
             date={date}
             submitHandler={loadDataByDate}
+            pageName={pageName}
           />
         } // end middlePane
         leftPane={<PageControls

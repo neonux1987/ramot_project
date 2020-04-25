@@ -1,6 +1,8 @@
 .infoBoxWrapper{
     margin: 0 0 0 15px;
-    border-left: 1px solid #eaeaea;
+    /* border-left: 1px solid #eaeaea; */
+    border: 1px solid #ececec;
+    background: #f7f7f7;
 }
 
 .infoBoxWrapper:last-child{
@@ -8,7 +10,7 @@
 }
 
 .infoBox{
-  background: #ffffff;
+  /* background: #ffffff; */
     height: 170px;
     border-radius: 4px;
     /* box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14); */

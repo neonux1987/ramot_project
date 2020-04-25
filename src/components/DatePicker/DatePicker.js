@@ -6,13 +6,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import registeredMonthsActions from '../../redux/actions/registeredMonthsActions';
 import registeredQuartersActions from '../../redux/actions/registeredQuartersActions';
 import registeredYearsActions from '../../redux/actions/registeredYearsActions';
+import { updateDate } from '../../redux/actions/dateActions';
+import Helper from '../../helpers/Helper';
 
 const DatePicker = ({
   quarter = false,
   month = false,
   date,
   submitHandler,
-  buildingName
+  buildingName,
+  pageName
 }) => {
 
   const [selectDate, setDate] = useState({
@@ -46,6 +49,8 @@ const DatePicker = ({
         })));
     });
 
+    dispatch(updateDate(pageName, buildingName, selectDate));
+
     // cleanup
     const cleanup = () => {
       dispatch((registeredYearsActions.cleanupYears(buildingName)))
@@ -56,7 +61,27 @@ const DatePicker = ({
     }
 
     return cleanup;
-  }, [month, quarter, dispatch, buildingName, date.year]);
+  }, [month, quarter, dispatch, buildingName, date.year, selectDate]);
+
+
+  const onMonthChange = (event) => {
+    const { value } = event.target;
+
+    const monthNum = Helper.convertEngToMonthNum(value);
+    const newDate = {
+      month: value,
+      monthNum: monthNum,
+      monthHeb: Helper.convertEngToHebMonth(value),
+      quarter: Helper.getCurrentQuarter(monthNum),
+      quarterEng: Helper.convertMonthNumToQuarterEng(monthNum),
+      quarterHeb: Helper.getCurrentQuarterHeb(monthNum)
+    }
+
+    setDate({
+      ...selectDate,
+      ...newDate
+    });
+  }
 
   // default on change handler
   // for months and quarters
@@ -78,13 +103,13 @@ const DatePicker = ({
     // string so the current date won't interfer 
     // with the selected values, because current date
     // maybe different than the selected values
-    setDate({
+    /* setDate({
       year,
       month: "",
       monthHeb: "",
       quarterHeb: "",
       quarterEng: ""
-    });
+    }); */
 
     if (month) {
       dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, date: { year } }))).then((result) => {
@@ -139,7 +164,7 @@ const DatePicker = ({
     name="month"
     className={styles.formSelect}
     value={selectDate.month || ""}
-    onChange={onChangeHandler}
+    onChange={onMonthChange}
   >
     {months.data.map((month) => {
       return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
@@ -180,13 +205,13 @@ const DatePicker = ({
         {renderYears}
 
       </form>
-      <Button variant="contained" color="secondary" className={styles.button} onClick={() => submitHandler({
+      {/* <Button variant="contained" color="secondary" className={styles.button} onClick={() => submitHandler({
         year: selectDate.year,
         quarter: selectDate.quarter,
         month: selectDate.month
       })}>
         טען
-    </Button>
+    </Button> */}
     </div>
   );
 
