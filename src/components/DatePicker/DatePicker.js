@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Button, MenuItem } from '@material-ui/core';
-import styles from './DatePicker.module.css';
+import { Select, MenuItem, InputLabel } from '@material-ui/core';
+import { pickerWrapper, pickerLabel, formSelect, formControl, dates, select } from './DatePicker.module.css';
 import Spinner from '../Spinner/Spinner';
 import { useSelector, useDispatch } from 'react-redux';
 import registeredMonthsActions from '../../redux/actions/registeredMonthsActions';
@@ -148,45 +148,60 @@ const DatePicker = ({
   }
 
   //if months data exist, render it
-  const renderMonths = !months.isFetching && months.data.length > 0 ? <Select
-    name="month"
-    className={styles.formSelect}
-    value={selectDate.month || ""}
-    onChange={onMonthChange}
-  >
-    {months.data.map((month) => {
-      return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
-    })}
-  </Select> : <FormSelectDummy />;
+  const renderMonths = !months.isFetching && months.data.length > 0 ?
+    <div className={pickerWrapper}>
+      <InputLabel className={pickerLabel} id="label">חודש:</InputLabel>
+      <Select
+        name="month"
+        className={formSelect}
+        value={selectDate.month || ""}
+        onChange={onMonthChange}
+      >
+        {months.data.map((month) => {
+          return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
+        })}
+      </Select>
+    </div>
+    : <FormSelectDummy />;
 
   //if quarters data exist, render it
-  const renderQuarters = !quarters.isFetching && quarters.data.length > 0 ? <Select
-    name="quarter"
-    className={styles.formSelect}
-    value={selectDate.quarter || ""}
-    onChange={onChangeHandler}
-  >
-    {quarters.data.map((quarter) => {
-      return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
-    })}
-  </Select> : <FormSelectDummy />;
+  const renderQuarters = !quarters.isFetching && quarters.data.length > 0 ?
+    <div className={pickerWrapper}>
+      <InputLabel className={pickerLabel} id="label">רבעון:</InputLabel>
+      <Select
+        name="quarter"
+        className={formSelect}
+        value={selectDate.quarter || ""}
+        onChange={onChangeHandler}
+      >
+        {quarters.data.map((quarter) => {
+          return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
+        })}
+      </Select>
+    </div>
+    : <FormSelectDummy />;
 
   //if quarters data exist, render it
-  const renderYears = !years.isFetching && years.data.length > 0 && yearExist() ? <Select
-    name="year"
-    className={styles.formSelect}
-    value={selectDate.year || ""}
-    onChange={onYearChangeHandler}
-    classes={{ select: styles.select }}
-  >
-    {years.data.map((year) => {
-      return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
-    })}
-  </Select> : <FormSelectDummy />;
+  const renderYears = !years.isFetching && years.data.length > 0 && yearExist() ?
+    <div className={pickerWrapper}>
+      <InputLabel className={pickerLabel} id="label">שנה:</InputLabel>
+      <Select
+        name="year"
+        className={formSelect}
+        value={selectDate.year || ""}
+        onChange={onYearChangeHandler}
+        classes={{ select }}
+      >
+        {years.data.map((year) => {
+          return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
+        })}
+      </Select>
+    </div>
+    : <FormSelectDummy />;
 
   return (
-    <div id="dates" className={styles.dates}>
-      <form className={styles.formControl}>
+    <div id="dates" className={dates}>
+      <form className={formControl}>
         {month && renderMonths}
         {quarter && renderQuarters}
         {renderYears}
@@ -197,7 +212,7 @@ const DatePicker = ({
 }
 
 const FormSelectDummy = () => {
-  return <div className={styles.formSelect}>
+  return <div className={formSelect}>
     <Spinner size={18} />
   </div>
 }
