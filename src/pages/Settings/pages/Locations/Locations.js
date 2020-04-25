@@ -42,7 +42,6 @@ export const General = () => {
 
   const save = (event) => {
     event.stopPropagation();
-
     dispatch(saveSettings(SETTINGS_NAME, data));
   }
 

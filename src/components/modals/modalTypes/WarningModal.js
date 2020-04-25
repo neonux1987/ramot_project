@@ -10,6 +10,7 @@ export default props => {
     <Modal
       Icon={WarningIcon}
       agreeBtnText={"המשך"}
+      iconColor={"rgb(231, 234, 28)"}
       {...props}
     />
   );

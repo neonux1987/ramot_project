@@ -18,7 +18,7 @@ export default (props) => {
     isFetching,
     data,
     selectHandler,
-    save
+    saveHandler
   } = props;
 
   if (isFetching) {
@@ -35,7 +35,7 @@ export default (props) => {
       TitleIcon={Backup}
       iconBoxBg={"#1b966e"}
       extraDetails={() =>
-        <SaveButton onClick={save}>שמור</SaveButton>
+        <SaveButton onClick={saveHandler}>שמור</SaveButton>
       }
       padding={"30px 20px"}
     >

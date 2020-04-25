@@ -1,14 +1,12 @@
 // LIBRARIES
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
-import { deleteMonthExpansesBySummarizedSectionId } from '../../redux/actions/monthExpansesActions';
 import {
   initBudgetExecutionsState,
   fetchBudgetExecutions,
   updateBudgetExecution,
-  addBudgetExecution,
   deleteBudgetExecution,
   budgetExecutionsCleanup
 } from '../../redux/actions/budgetExecutionsActions';
@@ -40,7 +38,7 @@ import GroupRow from '../../components/table/GroupRow';
 // HOC
 import withColumnColorLogic from '../../HOC/withColumnColorLogic';
 import withTableLogic from '../../HOC/withTableLogic';
-import ConfirmDeleteAllMonthExpansesModal from '../../components/modals/ConfirmDeleteAllMonthExpansesModal/ConfirmDeleteAllMonthExpansesModal';
+import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution';
 
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
@@ -173,14 +171,10 @@ const BudgetExecutionsTable = props => {
 
   const deleteHandler = (id, summarized_section_id) => {
 
-    showModal(ConfirmDeleteAllMonthExpansesModal, {
-      onAgreeHandler: () => dispatch(deleteBudgetExecution(buildingNameEng, date, id))
+    showModal(ConfirmDeleteBudgetExecution, {
+      onAgreeHandler: () => {/* dispatch(deleteBudgetExecution(buildingNameEng, date, id)) */ }
     });
-    //dispatch(deleteMonthExpansesBySummarizedSectionId(buildingNameEng, summarized_section_id, date))
-    /* dispatch(deleteBudgetExecution(buildingNameEng, date, id))
-      .catch(() => {
 
-      }); */
   }
 
   /**
