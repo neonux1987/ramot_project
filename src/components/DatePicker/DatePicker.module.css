@@ -21,7 +21,8 @@ justify-content: center;
   text-align: center;
   margin: 0 5px;
   width: 110px;
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
+  /* background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%); */
+  background-color: #ffffff;
   font-size: 14px;
   border-radius: 4px;
   color: rgb(46, 55, 62);

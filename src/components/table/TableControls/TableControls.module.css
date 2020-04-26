@@ -3,6 +3,10 @@
   background: #fbfbfb;
   margin-bottom: 10px;
   padding: 0 10px;
+  /* background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);  */
+  /* box-shadow: 0 0 14px -5px #0000002b; */
+  border-right: 5px solid #3e6ca7;
+  border-left: 5px solid #3e6ca7;
 }
 
 .controls{

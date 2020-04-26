@@ -177,14 +177,16 @@ class BudgetExecutionLogic {
     //get budget execution after it was updated
     const summarizedBudgetObj = await this.summarizedBudgetLogic.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
 
-    const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(date.quarter, budgetExecution[0].total_budget, budgetExecution[0].total_execution, summarizedBudgetObj[0]);
+    const { total_budget, total_execution, evaluation } = budgetExecution[0];
+
+    const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(date.quarter, total_budget, total_execution, evaluation, summarizedBudgetObj[0]);
 
     //update summarized budget data
     await this.summarizedBudgetLogic.updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget: preparedSumBudgetObj, buildingName, date, special }, trx);
 
   }
 
-  prepareSummarizedBudgetObj(quarter, totalBudget, totalExecution, summarizedBudgetObj) {
+  prepareSummarizedBudgetObj(quarter, totalBudget, totalExecution, evaluation, summarizedBudgetObj) {
 
     let total_execution = 0;
     let total_budget = 0;
@@ -201,7 +203,8 @@ class BudgetExecutionLogic {
       [`quarter${quarter}_budget`]: summarizedBudgetObj[`quarter${quarter}_budget`],
       [`quarter${quarter}_execution`]: summarizedBudgetObj[`quarter${quarter}_execution`],
       year_total_execution: total_execution,
-      year_total_budget: total_budget
+      year_total_budget: total_budget,
+      evaluation: summarizedBudgetObj[`evaluation`] + evaluation
     }
 
   }
