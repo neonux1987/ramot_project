@@ -269,12 +269,6 @@ const MonthExpansesTableContainer = props => {
     return page.data[index];
   }
 
-  const HeaderGroups = () => {
-    return <GroupRow>
-      <GroupColumn></GroupColumn>
-    </GroupRow>
-  }
-
   const HeadersRow = () => {
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
@@ -396,7 +390,6 @@ const MonthExpansesTableContainer = props => {
 
       <Table
         Row={TableRow}
-        GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
         itemCount={data.length}
@@ -412,7 +405,7 @@ const ConnectedComponent = withTableLogic(MonthExpansesTableContainer);
 export default ConnectedComponent;
 
 const headerStyle = {
-  backgroundColor: "rgb(232, 236, 241)",
+  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",

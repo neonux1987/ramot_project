@@ -151,23 +151,30 @@ export const budgetExecutionsCleanup = function (buildingName) {
   }
 }
 
-const addBudgetExecutionInStore = (payload) => {
+const addBudgetExecutionInStore = (buildingName, payload) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_ADD,
+    buildingName,
     payload
   }
 }
 
-const removeBudgetExecutionInStore = (payload) => {
+const removeBudgetExecutionInStore = (buildingName, index) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_ADD,
-    payload
+    buildingName,
+    index
   }
 }
 
 export const addBudgetExecution = (params = Object) => {
   return dispatch => {
-    return ipcSendReceive("add-budget-execution", params, "budget-execution-added");
+    return ipcSendReceive("add-budget-execution", params, "budget-execution-added").then((result) => {
+      const { buildingName, payload } = params;
+      console.log(result);
+      return result;
+      //dispatch(addBudgetExecutionInStore(buildingName, payload));
+    });
   }
 };
 
@@ -272,19 +279,6 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
 
 export const deleteBudgetExecution = (buildingName, date, id) => {
   return dispatch => {
-
-    return new Promise((resolve, reject) => {
-      //request request to backend to get the data
-      ipcRenderer.send("delete-budget-execution", { buildingName, date, id });
-      //listen when the data comes back
-      ipcRenderer.once("budget-execution-deleted", (event, arg) => {
-        if (arg.error) {
-          reject(arg.error);
-        } else {
-          resolve();
-        }
-      });
-    })
-
+    return ipcSendReceive("delete-budget-execution", { buildingName, date, id }, "budget-execution-deleted");
   }
 };

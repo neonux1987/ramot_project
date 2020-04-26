@@ -189,11 +189,11 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
   }
 };
 
-const updateMonthExpanseInStore = (buildingName, expanse, index) => {
+const updateMonthExpanseInStore = (buildingName, payload, index) => {
   return {
     type: TYPES.MONTH_EXPANSES_UPDATE,
     index,
-    payload: expanse,
+    payload,
     buildingName
   };
 }

@@ -181,10 +181,6 @@ class ExpansesCodes extends React.PureComponent {
     return this.props.expansesCodes.data[index];
   }
 
-  HeaderGroups = () => {
-    return <GroupRow><GroupColumn></GroupColumn></GroupRow>
-  }
-
   HeadersRow = () => {
     const editMode = this.props.editMode;
 
@@ -285,7 +281,6 @@ class ExpansesCodes extends React.PureComponent {
 
         <Table
           Row={this.Row}
-          GroupComponent={this.HeaderGroups}
           HeaderComponent={this.HeadersRow}
           isFetching={isFetching || data.length === 0}
           itemCount={data.length}
@@ -316,7 +311,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 );
 
 const defaultheaderStyle = {
-  backgroundColor: "rgb(232, 236, 241)",
+  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",

@@ -4,9 +4,11 @@ const MonthlyStatsLogic = require('./MonthlyStatsLogic');
 const QuarterlyStatsLogic = require('./QuarterlyStatsLogic');
 const SummarizedSectionsLogic = require('./SummarizedSectionsLogic');
 const SummarizedBudgetLogic = require('./SummarizedBudgetLogic');
+const SummarizedBudgetDao = require('../dao/SummarizedBudgetDao');
 const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
 const MonthExpansesDao = require('../dao/MonthExpansesDao');
 const Helper = require('../../helpers/Helper');
+const { asyncForEach } = require('../../helpers/utils');
 const connectionPool = require('../connection/ConnectionPool');
 
 class BudgetExecutionLogic {
@@ -20,6 +22,7 @@ class BudgetExecutionLogic {
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
     this.registeredQuartersLogic = new RegisteredQuartersLogic();
     this.monthExpansesDao = new MonthExpansesDao();
+    this.summarizedBudgetDao = new SummarizedBudgetDao();
   }
 
   getAllBudgetExecutionsTrx(buildingName, date, trx) {
@@ -67,14 +70,18 @@ class BudgetExecutionLogic {
     const readyPayload = this.prepareBudgetExecutionForAdd(date, payload.id);
 
     // add budget execution
-    await this.budgetExecutionDao.addBudgetExecution(buildingName, date.quarter, readyPayload, trx);
+    const returnedId = await this.budgetExecutionDao.addBudgetExecution(buildingName, date.quarter, readyPayload, trx);
 
     // prepare summarized budget object for add
     const sammarizedBudgetPayload = this.prepareSammarizedBudgetForAdd(date, payload.id);
 
     await this.summarizedBudgetLogic.addSummarizedBudgetTrx(buildingName, sammarizedBudgetPayload, trx);
 
+    const returnToRenderer = await this.getBudgetExecutionTrx(buildingName, date, returnedId[0].id, trx);
+
     trx.commit();
+
+    return returnToRenderer;
   }
 
   prepareBudgetExecutionForAdd(date, summarized_section_id) {
@@ -106,8 +113,7 @@ class BudgetExecutionLogic {
 
   prepareSammarizedBudgetForAdd(date, summarized_section_id) {
     const {
-      year,
-      quarter
+      year
     } = date;
 
     const payload = {
@@ -342,37 +348,48 @@ class BudgetExecutionLogic {
   }
 
   async deleteBudgetExecution({ buildingName, date, id }) {
-
+    console.log(buildingName, date, id);
     const quarterMonths = Helper.getQuarterMonths(date.quarter);
 
     const trx = await connectionPool.getTransaction();
 
     const budgetExecution = await this.getBudgetExecutionById(buildingName, date, id, trx);
 
-    const ids = [];
+    const { summarized_section_id } = budgetExecution[0];
 
-    for (let i = 0; i < quarterMonths.length; i++) {
+    // loop through the quarter months
+    asyncForEach(quarterMonths, async (month) => {
+
       const newDate = {
         year: date.year,
-        month: quarterMonths[i]
+        month: month
       };
 
+      // fetch month expanses of the new date
       const monthExpanses = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(
         buildingName,
         newDate,
-        budgetExecution[0].summarized_section_id,
+        summarized_section_id,
         trx
       );
 
       // extract the ids of te month expanses
       // and put them in array
-      monthExpanses.forEach(item => {
-        ids.push(item.id);
-      })
+      asyncForEach(monthExpanses, async (item) => {
+        const payload = {
+          linked: false
+        }
 
-    }
+        await this.monthExpansesDao.updateMonthExpanseTrx(buildingName, item.id, payload, trx);
+      });
 
-    this.monthExpansesDao.deleteMonthExpansesBulkByIds(buildingName, ids, trx);
+    });
+
+    await this.budgetExecutionDao.deleteBudgetExecutionTrx(buildingName, date, id, trx);
+
+    await this.summarizedBudgetDao.deleteBySummarizedSectionIdTrx(buildingName, date.year, summarized_section_id, trx);
+
+    trx.commit();
 
   }
 

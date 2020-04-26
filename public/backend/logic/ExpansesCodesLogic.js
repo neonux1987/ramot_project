@@ -23,7 +23,7 @@ class ExpansesCodesLogic {
     const result = await this.expansesCodesDao.getExpanseCodeByCode(data.code);
     const expanseCode = result[0];
 
-    if (expanseCode) {
+    if (expanseCode && expanseCode.status === "deleted") {
       //set the new fields
       expanseCode.codeName = data.codeName;
       expanseCode.summarized_section_id = data.summarized_section_id;
@@ -33,6 +33,11 @@ class ExpansesCodesLogic {
 
       return expanseCode.id;
     } else {
+
+      if (expanseCode && expanseCode.status === "active") {
+        throw new Error("הקוד כבר קיים ברשימה. לא ניתן להוסיף אותו קוד יותר מפעם אחת.");
+      }
+
       const returnedData = await this.expansesCodesDao.addExpanseCode(data);
       return returnedData[0];
     }

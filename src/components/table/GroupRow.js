@@ -5,7 +5,8 @@ export default ({ gridTemplateColumns, style = {}, children }) => {
   return (
     <Row
       style={{
-        borderBottom: "1px solid #fff",
+        //borderBottom: "1px solid #fff",
+        borderBottom: "none",
         borderTopRightRadius: "4px",
         borderTopLeftRadius: "4px",
         borderTop: "1px solid rgba(0, 0, 0, 0.00)",

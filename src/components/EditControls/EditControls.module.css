@@ -3,28 +3,12 @@
 }
 
 .editBtn{
-  background-color: #edf0f3;
-  border-color: #343a40;
-  border: 1px solid #dedede;
-  color: #000;
-  /* background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%); */
+  color: rgb(46, 55, 62);
 }
-
-/* .addNewBtn{
-  margin-right: 10px;
-  background: #21aae0;
-  color: #fff;
-  border: 1px solid #219dce;
-  background: linear-gradient(180deg, rgba(33,170,224,1) 0%, rgba(32,164,215,1) 100%);
-} */
 
 .addNewBtn{
   margin-right: 10px;
-  background-color: #fbfbfb;
-  border-color: #343a40;
-  border: 1px solid #dedede;
   color: #10589a;
-  background: #edf0f3;
 }
 
 .addNewBtn, .editBtn{
@@ -32,6 +16,9 @@
   box-shadow: none;
   font-weight: 600;
   font-size: 13px;
+  /* background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
+  border: 1px solid #dedede; */
+  background: none;
   border: none;
 }
 

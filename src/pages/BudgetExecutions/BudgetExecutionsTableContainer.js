@@ -1,6 +1,7 @@
 // LIBRARIES
 import React, { useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 // ACTIONS
 import {
@@ -14,6 +15,7 @@ import {
 // UTILS
 import Helper from '../../helpers/Helper';
 import { areEqual } from '../util';
+import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 // CONTEXT
 import GlobalContext from '../../context/GlobalContext';
@@ -169,11 +171,27 @@ const BudgetExecutionsTable = props => {
     e.target.blur();
   }
 
-  const deleteHandler = (id, summarized_section_id) => {
-
+  const deleteHandler = (id) => {
     showModal(ConfirmDeleteBudgetExecution, {
-      onAgreeHandler: () => {/* dispatch(deleteBudgetExecution(buildingNameEng, date, id)) */ }
+      onAgreeHandler: () => onAgreeHandler(buildingNameEng, date, id)
     });
+  }
+
+  const onAgreeHandler = async (buildingNameEng, date, id) => {
+    const promise = await dispatch(deleteBudgetExecution(buildingNameEng, date, id))
+      .catch((result) => {
+        // send the error to the notification center
+        toast.error(result.error, {
+          onOpen: () => playSound(soundTypes.error)
+        });
+      });
+
+    if (promise.success) {
+      // send the error to the notification center
+      toast.success("השורה נמחקה בהצלחה.", {
+        onOpen: () => playSound(soundTypes.success)
+      });
+    }
 
   }
 
@@ -289,6 +307,8 @@ const BudgetExecutionsTable = props => {
 
     // row data
     const rowData = getDataObject(index);
+    if (rowData.section === "בדיקה")
+      console.log(rowData);
 
     // list of months of specific quarter
     const months = Helper.getQuarterMonthsEng(date.quarter);
@@ -393,7 +413,7 @@ const ConnectedComponent = withTableLogic(BudgetExecutionsTable);
 export default React.memo(ConnectedComponent, areEqual);
 
 const defaultheaderStyle = {
-  backgroundColor: "rgb(232, 236, 241)",
+  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",

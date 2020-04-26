@@ -70,7 +70,7 @@ const SummarizedBudgets = props => {
               <StyledExpandableSection
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
-                iconBoxBg={"rgb(255, 117, 37)"}
+                iconBoxBg={"rgb(126, 89, 197)"}
                 extraDetails={props.dateDetails(onlyDate)}
                 marginBottom={"100px"}
                 padding={"10px"}

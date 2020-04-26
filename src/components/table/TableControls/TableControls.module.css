@@ -1,10 +1,14 @@
 .wrapper{
-    margin-bottom: 0px;
+  border: 1px solid #efecec;
+  background: #fbfbfb;
+  margin-bottom: 10px;
+  padding: 0 10px;
 }
 
 .controls{
   display: flex;
   align-items: center;
+  height: 48px;
 }
 
 .leftPane{
@@ -28,4 +32,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: rgb(46, 55, 62);
 }

@@ -143,6 +143,24 @@ class SummarizedBudgetDao {
       });
   }
 
+  deleteSummarizedBudgetTrx(buildingName = String, year, id = Number, trx) {
+    return trx(buildingName + "_summarized_budget")
+      .where({ id, year })
+      .del()
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  deleteBySummarizedSectionIdTrx(buildingName = String, year, summarized_section_id = Number, trx) {
+    return trx(buildingName + "_summarized_budget")
+      .where({ summarized_section_id, year })
+      .del()
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   /**
    * update expanse code record
    * @param {*} data 

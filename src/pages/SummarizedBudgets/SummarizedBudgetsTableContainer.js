@@ -313,7 +313,7 @@ const ConnectedComponent = withTableLogic(SummarizedBudgetsTableContainer);
 export default React.memo(ConnectedComponent, areEqual);
 
 const defaultheaderStyle = {
-  backgroundColor: "rgb(232, 236, 241)",
+  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",

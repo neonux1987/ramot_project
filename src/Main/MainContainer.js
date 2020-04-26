@@ -121,7 +121,11 @@ class MainContainer extends Component {
               <Switch>
                 {this.generateRoutes(this.props.sidebar.sidebar.data)}
                 <Route path="/דף-הבית" component={Home} />
-                <Route path="/הגדרות" component={Settings} />
+                <Route path="/הגדרות" component={Settings}
+                  render={routeProps => (
+                    <Settings {...routeProps} />
+                  )}
+                />
                 <Route path="/ניהול" component={Management} />
                 <Route exact path="/" component={Home} history={{
                   page: "דף-הבית",

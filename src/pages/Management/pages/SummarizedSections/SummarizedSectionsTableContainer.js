@@ -177,10 +177,6 @@ const SummarizedSectionsTableContainer = props => {
     return data[index];
   }
 
-  const HeaderGroups = () => {
-    return <GroupRow><GroupColumn></GroupColumn></GroupRow>
-  }
-
   const HeadersRow = () => {
     return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} >
 
@@ -227,7 +223,6 @@ const SummarizedSectionsTableContainer = props => {
 
       <Table
         Row={TableRow}
-        GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
         itemCount={data.length}
@@ -251,10 +246,10 @@ function areEqual(prevProps, nextProps) {
 }
 
 const defaultheaderStyle = {
-  backgroundColor: "rgb(232, 236, 241)",
+  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",
-  height: "27px",
+  height: "32px",
   alignItems: "center"
 };

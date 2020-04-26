@@ -49,7 +49,7 @@ export default (props) => {
         </Typography>
 
         <Typography variant="subtitle2" className={styles.headerTitle}>
-          מיקום התיקייה שאליה המערכת מייצאה את דוחות האקסל.
+          מיקום התיקייה שאליה המערכת מייצאת את דוחות האקסל.
           אם ברצונך לשנות מיקום זה, לחץ על שנה מיקום.
         </Typography>
 

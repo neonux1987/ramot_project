@@ -62,6 +62,7 @@ class DbBackupSvc {
   }
 
   async start() {
+    console.log("dbBackup service started...");
     let settings = null;
     try {
       //fetch db backup settings
