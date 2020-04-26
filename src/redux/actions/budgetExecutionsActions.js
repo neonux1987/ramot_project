@@ -151,29 +151,39 @@ export const budgetExecutionsCleanup = function (buildingName) {
   }
 }
 
-const addBudgetExecutionInStore = (buildingName, payload) => {
+const removeBudgetExecutionInStore = (buildingName, index) => {
   return {
-    type: TYPES.BUDGET_EXECUTIONS_ADD,
+    type: TYPES.BUDGET_EXECUTIONS_DELETE,
     buildingName,
-    payload
+    index
   }
 }
 
-const removeBudgetExecutionInStore = (buildingName, index) => {
+export const deleteBudgetExecution = (buildingName, date, index, rollbackData) => {
+  return dispatch => {
+    const rollbackDataCopy = { ...rollbackData };
+    dispatch(removeBudgetExecutionInStore(buildingName, index));
+    return ipcSendReceive("delete-budget-execution", { buildingName, date, id: rollbackData.id }, "budget-execution-deleted", null, () => {
+      dispatch(addBudgetExecutionInStore(buildingName, rollbackDataCopy, sortByCode));
+    });
+  }
+};
+
+const addBudgetExecutionInStore = (buildingName, payload, compareFunc) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_ADD,
     buildingName,
-    index
+    payload,
+    compareFunc
   }
 }
 
 export const addBudgetExecution = (params = Object) => {
   return dispatch => {
     return ipcSendReceive("add-budget-execution", params, "budget-execution-added").then((result) => {
-      const { buildingName, payload } = params;
-      console.log(result);
+      const { buildingName } = params;
+      dispatch(addBudgetExecutionInStore(buildingName, result.data, sortByCode));
       return result;
-      //dispatch(addBudgetExecutionInStore(buildingName, payload));
     });
   }
 };
@@ -277,8 +287,13 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
   };
 };
 
-export const deleteBudgetExecution = (buildingName, date, id) => {
-  return dispatch => {
-    return ipcSendReceive("delete-budget-execution", { buildingName, date, id }, "budget-execution-deleted");
+export function sortByCode(a, b) {
+  if (a.section < b.section) {
+    return -1;
   }
-};
+  if (a.section > b.section) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}

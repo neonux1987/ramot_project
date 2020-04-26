@@ -252,6 +252,13 @@ const deleteMonthExpanseInStore = (index, buildingName) => {
   }
 }
 
-function sortByCode(a, b) {
-  return a.code - b.code;
+export function sortByCode(a, b) {
+  if (a.code < b.code) {
+    return -1;
+  }
+  if (a.code > b.code) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
 }

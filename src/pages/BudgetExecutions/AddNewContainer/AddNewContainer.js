@@ -66,7 +66,7 @@ const AddNewContainer = (props) => {
     });
 
     if (promiseSuccess)
-      toast.success("סעיף מסכם נוסף בהצלחה.", {
+      toast.success("השורה נוספה בהצלחה.", {
         onOpen: () => playSound(soundTypes.success)
       });
   }

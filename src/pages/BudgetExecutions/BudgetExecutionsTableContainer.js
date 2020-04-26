@@ -171,14 +171,14 @@ const BudgetExecutionsTable = props => {
     e.target.blur();
   }
 
-  const deleteHandler = (id) => {
+  const deleteHandler = (index, rowData) => {
     showModal(ConfirmDeleteBudgetExecution, {
-      onAgreeHandler: () => onAgreeHandler(buildingNameEng, date, id)
+      onAgreeHandler: () => onAgreeHandler(buildingNameEng, date, index, rowData)
     });
   }
 
-  const onAgreeHandler = async (buildingNameEng, date, id) => {
-    const promise = await dispatch(deleteBudgetExecution(buildingNameEng, date, id))
+  const onAgreeHandler = async (buildingNameEng, date, index, rowData) => {
+    const promise = await dispatch(deleteBudgetExecution(buildingNameEng, date, index, rowData))
       .catch((result) => {
         // send the error to the notification center
         toast.error(result.error, {
@@ -186,7 +186,7 @@ const BudgetExecutionsTable = props => {
         });
       });
 
-    if (promise.success) {
+    if (promise && promise.success) {
       // send the error to the notification center
       toast.success("השורה נמחקה בהצלחה.", {
         onOpen: () => playSound(soundTypes.success)
@@ -307,8 +307,6 @@ const BudgetExecutionsTable = props => {
 
     // row data
     const rowData = getDataObject(index);
-    if (rowData.section === "בדיקה")
-      console.log(rowData);
 
     // list of months of specific quarter
     const months = Helper.getQuarterMonthsEng(date.quarter);
@@ -328,7 +326,7 @@ const BudgetExecutionsTable = props => {
     const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
 
     return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData.id, rowData.summarized_section_id)} /> : null}
+      {editMode ? <TableActions deleteHandler={() => deleteHandler(index, rowData)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
       {monthColumns}

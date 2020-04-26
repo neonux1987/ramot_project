@@ -57,6 +57,7 @@ class BudgetExecutionLogic {
   }
 
   async addBudgetExecutionTrx({ buildingName = String, date = Object, payload = Object }) {
+
     const trx = await connectionPool.getTransaction();
 
     const returnedBudgetExecution = await this.getBudgetExecutionTrx(buildingName, date, payload.id, trx);
@@ -77,11 +78,11 @@ class BudgetExecutionLogic {
 
     await this.summarizedBudgetLogic.addSummarizedBudgetTrx(buildingName, sammarizedBudgetPayload, trx);
 
-    const returnToRenderer = await this.getBudgetExecutionTrx(buildingName, date, returnedId[0].id, trx);
+    const returnToRenderer = await this.getBudgetExecutionById(buildingName, date, returnedId[0], trx);
 
     trx.commit();
 
-    return returnToRenderer;
+    return returnToRenderer[0];
   }
 
   prepareBudgetExecutionForAdd(date, summarized_section_id) {
@@ -348,7 +349,7 @@ class BudgetExecutionLogic {
   }
 
   async deleteBudgetExecution({ buildingName, date, id }) {
-    console.log(buildingName, date, id);
+    //console.log(buildingName, date, id);
     const quarterMonths = Helper.getQuarterMonths(date.quarter);
 
     const trx = await connectionPool.getTransaction();
@@ -356,7 +357,8 @@ class BudgetExecutionLogic {
     const budgetExecution = await this.getBudgetExecutionById(buildingName, date, id, trx);
 
     const { summarized_section_id } = budgetExecution[0];
-
+    trx.rollback();
+    throw new Error("yes");
     // loop through the quarter months
     asyncForEach(quarterMonths, async (month) => {
 
