@@ -146,8 +146,8 @@ class DbBackupSvc {
   async restart() {
     // only restart the service if it's enabled
     if (this.backupSchedule) {
-      this.stop();
-      this.start();
+      await this.stop();
+      await this.start();
     }
   }
 

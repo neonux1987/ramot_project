@@ -1,6 +1,6 @@
 import React from "react";
 import { Notifications, MoreVert, Settings } from '@material-ui/icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -40,6 +40,9 @@ const Toolbar = ({ buildingName, page }) => {
   const dispatch = useDispatch();
 
   const { isFetching, data } = useSelector(store => store.generalSettings.generalSettings);
+
+  const route = useSelector(store => store.route);
+  const location = useLocation();
 
   const tax = isFetching ?
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :

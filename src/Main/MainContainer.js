@@ -66,6 +66,12 @@ class MainContainer extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      console.log(this.props.location);
+    }
+  }
+
   componentWillUnmount() {
     Events.scrollEvent.remove('begin');
     Events.scrollEvent.remove('end');
@@ -121,7 +127,7 @@ class MainContainer extends Component {
               <Switch>
                 {this.generateRoutes(this.props.sidebar.sidebar.data)}
                 <Route path="/דף-הבית" component={Home} />
-                <Route path="/הגדרות" component={Settings}
+                <Route path="/הגדרות"
                   render={routeProps => (
                     <Settings {...routeProps} />
                   )}

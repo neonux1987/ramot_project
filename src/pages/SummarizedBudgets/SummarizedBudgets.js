@@ -28,7 +28,7 @@ import StyledExpandableSection from '../../components/Section/StyledExpandableSe
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
 const STATS_TITLE = "סיכום הוצאות והכנסות שנתי";
-const TABLE_TITLE = "טבלת מעקב שנתית";
+const TABLE_TITLE = "טבלת מעקב שנתי";
 
 const SummarizedBudgets = props => {
   //building name

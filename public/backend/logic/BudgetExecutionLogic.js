@@ -360,8 +360,7 @@ class BudgetExecutionLogic {
     const budgetExecution = await this.getBudgetExecutionById(buildingName, date, id, trx);
 
     const { summarized_section_id } = budgetExecution[0];
-    trx.rollback();
-    throw new Error("yes");
+
     // loop through the quarter months
     asyncForEach(quarterMonths, async (month) => {
 

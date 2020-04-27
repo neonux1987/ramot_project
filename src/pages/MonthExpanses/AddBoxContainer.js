@@ -16,7 +16,11 @@ const styles = theme => ({
     //boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.06)",
     borderBottom: "1px solid #00000024",
     position: "relative",
-    zIndex: "3"
+    zIndex: "3",
+    background: "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%)",
+    boxShadow: "0 0 14px -5px #0000002b",
+    borderRight: "5px solid #3e6ca7",
+    borderLeft: "5px solid #3e6ca7"
   },
   form: {
     display: "flex",

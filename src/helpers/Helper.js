@@ -465,6 +465,18 @@ class Helper {
     }
   }
 
+  static generateAllDateByMonthName(monthName) {
+    const monthNum = Helper.convertEngToMonthNum(monthName);
+    return {
+      month: monthName,
+      monthNum: monthNum,
+      monthHeb: this.convertEngToHebMonth(monthName),
+      quarter: this.getCurrentQuarter(monthNum),
+      quarterEng: this.convertMonthNumToQuarterEng(monthNum),
+      quarterHeb: this.getCurrentQuarterHeb(monthNum)
+    }
+  }
+
   static quarterMonthsColors = ["rgb(123, 91, 199)", "rgb(78, 143, 226)", "rgb(44, 193, 136)"];
 
   static endQuarterColor = "rgb(232, 67, 104)";

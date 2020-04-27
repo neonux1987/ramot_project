@@ -1,6 +1,8 @@
 import React from 'react';
 import { ListItem, ListItemIcon, ListItemText, withStyles } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { updateRoute } from '../redux/actions/routesActions';
 
 const styles = theme => ({
   navLinkHome: {
@@ -35,6 +37,19 @@ const NavButton = (props) => {
 
   let active = props.active ? props.activeClass : "";
 
+  const dispatch = useDispatch();
+
+  const onClickHandler = () => {
+    const active = {
+      pageName: props.page,
+      parent: {
+        pageName: props.buildingName,
+        parent: null
+      }
+    };
+    dispatch(updateRoute(active));
+    props.clicked();
+  }
   return (
     <NavLink style={props.style} className={props.classes.navLinkHome + " " + active} to={{
       pathname: "/" + props.path,
@@ -46,7 +61,7 @@ const NavButton = (props) => {
     }}
       exact
     >
-      <ListItem classes={{ root: props.classes.listItem }} onClick={props.clicked} button>
+      <ListItem classes={{ root: props.classes.listItem }} onClick={onClickHandler} button>
         <ListItemIcon classes={{ root: props.classes.listItemIcon }} children={props.children} />
         <ListItemText classes={{ root: props.classes.listItemTextRoot, primary: props.classes.listItemText }} primary={props.page} />
       </ListItem>

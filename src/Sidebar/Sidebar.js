@@ -128,6 +128,13 @@ class Sidebar extends Component {
               page: menuItem.submenu[0].label,
               buildingName: menuItem.label,
               buildingNameEng: menuItem.engLabel,
+              active: {
+                pageName: menuItem.submenu[0].label,
+                parent: {
+                  pageName: menuItem.label,
+                  parent: null
+                }
+              }
             }
             this.props.history.replace(`/${menuItem.path}/הוצאות-חודשי`, state);
           }

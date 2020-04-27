@@ -2,7 +2,7 @@ import { TYPES } from '../actions/routesActions';
 
 const initState = {
   active: {
-    label: "",
+    pageName: "",
     parent: null
   }
 }
@@ -10,10 +10,19 @@ const initState = {
 export default (state = initState, action) => {
   switch (action.type) {
     case TYPES.ROUTES_UPDATE: {
-      return {
-        ...state,
-        active: action.active
-      }
+      if (state.active.pageName === action.active.parent.pageName) {
+        return {
+          ...state,
+          active: {
+            pageName: action.pageName,
+            parent: { ...state.parent }
+          }
+        }
+      } else
+        return {
+          ...state,
+          active: { ...action.active }
+        }
     }
     default: return state;
   }

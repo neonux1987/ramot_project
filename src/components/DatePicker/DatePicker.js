@@ -67,15 +67,7 @@ const DatePicker = ({
   const onMonthChange = (event) => {
     const { value } = event.target;
 
-    const monthNum = Helper.convertEngToMonthNum(value);
-    const newDate = {
-      month: value,
-      monthNum: monthNum,
-      monthHeb: Helper.convertEngToHebMonth(value),
-      quarter: Helper.getCurrentQuarter(monthNum),
-      quarterEng: Helper.convertMonthNumToQuarterEng(monthNum),
-      quarterHeb: Helper.getCurrentQuarterHeb(monthNum)
-    }
+    const newDate = Helper.generateAllDateByMonthName(value);
 
     setDate({
       ...selectDate,
@@ -104,10 +96,12 @@ const DatePicker = ({
         // get the earliest month in the list 
         const month = result[0].month;
 
+        const newDate = Helper.generateAllDateByMonthName(month);
+
         setDate({
           ...selectDate,
           year,
-          month
+          ...newDate
         });
       });
     }
@@ -123,10 +117,16 @@ const DatePicker = ({
         const quarter = result[0].quarter;
         const parsedQuarter = Number.parseInt(quarter);
 
+        const newDate = {
+          quarter: parsedQuarter,
+          quarterEng: Helper.convertQuarterToEng(parsedQuarter),
+          quarterHeb: Helper.getQuarterHeb(parsedQuarter)
+        }
+
         setDate({
           ...selectDate,
           year,
-          quarter: parsedQuarter
+          ...newDate
         });
       });
     }

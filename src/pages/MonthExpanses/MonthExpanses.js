@@ -41,7 +41,7 @@ const MonthExpanses = props => {
             return <AlignCenterMiddle><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
           else {
             const onlyDate = date[buildingNameEng];
-
+            //console.log(onlyDate);
             return (
               <Fragment>
 
