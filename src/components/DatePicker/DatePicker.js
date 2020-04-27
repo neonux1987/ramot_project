@@ -49,8 +49,6 @@ const DatePicker = ({
         })));
     });
 
-    dispatch(updateDate(pageName, buildingName, selectDate));
-
     // cleanup
     const cleanup = () => {
       dispatch((registeredYearsActions.cleanupYears(buildingName)))
@@ -61,7 +59,11 @@ const DatePicker = ({
     }
 
     return cleanup;
-  }, [month, quarter, dispatch, buildingName, date.year, selectDate]);
+  }, [month, quarter, dispatch, buildingName, date.year]);
+
+  useEffect(() => {
+    dispatch(updateDate(pageName, buildingName, selectDate));
+  }, [selectDate]);
 
 
   const onMonthChange = (event) => {

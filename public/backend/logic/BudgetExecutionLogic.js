@@ -352,7 +352,7 @@ class BudgetExecutionLogic {
   }
 
   async deleteBudgetExecution({ buildingName, date, id }) {
-    //console.log(buildingName, date, id);
+
     const quarterMonths = Helper.getQuarterMonths(date.quarter);
 
     const trx = await connectionPool.getTransaction();
