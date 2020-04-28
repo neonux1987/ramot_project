@@ -1,21 +1,16 @@
 // LIBRARIES
-import React, { Component } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import { MemoryRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { ToastContainer, toast, Flip } from 'react-toastify';
 
 // COMPONENTS
 import Sidebar from "./Sidebar/Sidebar";
 import RTL from './components/RTL';
 import ToastRender from './components/ToastRender/ToastRender';
-//import AlertDialogSlide from './components/common/AlertDialogSlide/AlertDialogSlide';
 import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
-
-// ACTIONS
-import generalSettingsActions from './redux/actions/generalSettingsActions';
 
 // CONTEXT
 import GlobalContext from './context/GlobalContext';
@@ -30,7 +25,10 @@ import './assets/css/style.css';
 // CONTAINERS
 import MainContainer from './Main/MainContainer';
 import ModalRoot from './components/modals/ModalRoot';
+import { myToasts } from './CustomToasts/myToasts';
+import CustomCloseButton from './components/CustomCloseButton/CustomCloseButton';
 
+// ELECTRON
 const remote = require('electron').remote;
 const { ipcRenderer } = require('electron');
 
@@ -48,20 +46,16 @@ const theme = createMuiTheme({
 
 const TOAST_AUTO_CLOSE = 3000;
 
-class App extends Component {
+const App = props => {
 
-  constructor(props) {
-    super(props);
-    this.toggleSidebarAnimation = "";
-    this.mainContainer = React.createRef();
-  }
+  const toggleSidebarAnimation = "";
+  const mainContainer = useRef(null);
 
-  state = {
+  const [state, setState] = useState({
     toastId: null
-  }
+  })
 
-  componentDidMount() {
-
+  useEffect(() => {
     ipcRenderer.on('update_available', () => {
       ipcRenderer.removeAllListeners('update_available');
       console.log("update available");
@@ -70,58 +64,47 @@ class App extends Component {
       ipcRenderer.removeAllListeners('update_downloaded');
       console.log("update downloaded");
     });
+  }, [])
 
-    this.props.fetchGeneralSettings();
+  useEffect(() => {
     //listen when the data comes back
     ipcRenderer.on("notify-renderer", (event, action, message) => {
-      console.log(message, "hello");
       let toastId = null;
       switch (action) {
         case "dbBackupStarted":
-          toastId = toast.info(<ToastRender spinner={true} message={message} />, {
-            autoClose: false,
-            onOpen: () => playSound(soundTypes.message)
+          toastId = myToasts.info(<ToastRender spinner={true} message={message} />, {
+            autoClose: false
           });
-          this.setState({ toastId: toastId });
+          setState({ toastId });
           break;
         case "dbBackupFinished":
-          toast.update(this.state.toastId, {
+          myToasts.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: toast.TYPE.SUCCESS,
+            type: myToasts.TYPE.SUCCESS,
             delay: 2000,
-            autoClose: TOAST_AUTO_CLOSE,
-            onOpen: () => {
-              playSound(soundTypes.message)
-            }
+            autoClose: TOAST_AUTO_CLOSE
           });
           break;
         case "dbBackupError":
-          toast.update(this.state.toastId, {
+          myToasts.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: toast.TYPE.ERROR,
+            type: myToasts.TYPE.ERROR,
             delay: 2000,
-            autoClose: TOAST_AUTO_CLOSE,
-            onOpen: () => {
-              playSound(soundTypes.message)
-            }
+            autoClose: TOAST_AUTO_CLOSE
           });
           break;
         case "reportsGenerationStarted":
           toastId = toast.info(<ToastRender spinner={true} message={message} />, {
-            autoClose: false,
-            onOpen: () => playSound(soundTypes.message)
+            autoClose: false
           });
-          this.setState({ toastId: toastId });
+          setState({ toastId: toastId });
           break;
         case "reportsGenerationFinished":
-          toast.update(this.state.toastId, {
+          toast.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
             type: toast.TYPE.SUCCESS,
             delay: 2000,
-            autoClose: TOAST_AUTO_CLOSE,
-            onOpen: () => {
-              playSound(soundTypes.message)
-            }
+            autoClose: TOAST_AUTO_CLOSE
           });
           break;
         case "errorTest":
@@ -132,19 +115,19 @@ class App extends Component {
     });
     //start services
     ipcRenderer.send("system-start-services");
-  }
+  }, []);
 
-  closeButtonHandler = () => {
+  const closeButtonHandler = () => {
     const window = remote.getCurrentWindow();
     window.close();
   }
 
-  minimizeButtonHandler = () => {
+  const minimizeButtonHandler = () => {
     const window = remote.getCurrentWindow();
     window.minimize();
   }
 
-  maximizeButtonHandler = () => {
+  const maximizeButtonHandler = () => {
     const window = remote.getCurrentWindow();
 
     if (!window.isMaximized()) {
@@ -154,53 +137,59 @@ class App extends Component {
     }
   }
 
-  render() {
-
-    return (
-      <RTL>
-        <MuiThemeProvider theme={theme}>
-          <MemoryRouter>
-            <ScrollToTop mainContainer={this.mainContainer} />
-            <AppFrame handlers={{
-              close: this.closeButtonHandler,
-              minimize: this.minimizeButtonHandler,
-              maximize: this.maximizeButtonHandler
-            }} />
-            <div style={{
-              display: "flex",
-              padding: "0",
-              flex: "1",
-              overflow: "hidden"
-            }}>
-              <CssBaseline />
-
-              <Sidebar toggleStyle={" " + this.toggleSidebarAnimation} />
-
-              <MainContainer mainContainer={this.mainContainer} toggleMain={" showMainAnimation"} />
-
-            </div>
-            <ToastContainer
-              position="bottom-right"
-              autoClose={TOAST_AUTO_CLOSE}
-              hideProgressBar={true}
-              newestOnTop={false}
-              rtl
-              pauseOnVisibilityChange
-              draggable={false}
-              pauseOnHover
-              transition={Flip}
-            />
-            <ModalRoot />
-
-          </MemoryRouter>
-        </MuiThemeProvider>
-      </RTL>
-    );
+  const showUpdate = () => {
+    myToasts.info("קיים עדכון תוכנה חדש.");
   }
+
+  return (
+    <RTL>
+      <MuiThemeProvider theme={theme}>
+        <MemoryRouter>
+          <ScrollToTop mainContainer={mainContainer} />
+          <AppFrame handlers={{
+            close: closeButtonHandler,
+            minimize: minimizeButtonHandler,
+            maximize: maximizeButtonHandler
+          }} />
+          <div style={{
+            display: "flex",
+            padding: "0",
+            flex: "1",
+            overflow: "hidden"
+          }}>
+            <CssBaseline />
+
+            <Sidebar toggleStyle={" " + toggleSidebarAnimation} />
+
+            <MainContainer mainContainer={mainContainer} toggleMain={" showMainAnimation"} />
+
+          </div>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={TOAST_AUTO_CLOSE}
+            hideProgressBar={true}
+            newestOnTop={false}
+            rtl
+            pauseOnVisibilityChange
+            draggable={false}
+            pauseOnHover
+            transition={Flip}
+            closeButton={<CustomCloseButton />}
+          />
+          <ModalRoot />
+
+        </MemoryRouter>
+      </MuiThemeProvider>
+    </RTL>
+  );
+
 }
 
-const mapDispatchToProps = dispatch => ({
-  fetchGeneralSettings: () => dispatch(generalSettingsActions.fetchGeneralSettings())
-});
 
-export default connect(null, mapDispatchToProps)(App);
+const UpdateNotification = () => {
+  return (<div style={{ background: "#fff" }}>
+    update is available.
+  </div>)
+}
+
+export default App;

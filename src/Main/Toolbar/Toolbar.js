@@ -1,19 +1,27 @@
-import React from "react";
+// LIBRARIES
+import React, { useEffect } from "react";
 import { Notifications, MoreVert, Settings } from '@material-ui/icons';
 import { NavLink } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
-import styles from './Toolbar.module.css';
+import { Divider } from "@material-ui/core";
 import classnames from 'classnames';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
-import sidebarActions from '../../redux/actions/sidebarActions';
+// CSS
+import styles from './Toolbar.module.css';
+
+// COMPONENTS
 import Spinner from "../../components/Spinner/Spinner";
-import useModalLogic from "../../customHooks/useModalLogic";
 import EditVatModal from "../../components/modals/EditVatModal/EditVatModal";
-import { Divider } from "@material-ui/core";
+
+// ACTIONS
+import sidebarActions from '../../redux/actions/sidebarActions';
+import generalSettingsActions from '../../redux/actions/generalSettingsActions';
+
+// HOOKS
+import useModalLogic from "../../customHooks/useModalLogic";
 
 const Toolbar = ({ buildingName, page }) => {
 
@@ -41,6 +49,9 @@ const Toolbar = ({ buildingName, page }) => {
 
   const { isFetching, data } = useSelector(store => store.generalSettings.generalSettings);
 
+  useEffect(() => {
+    dispatch(generalSettingsActions.fetchGeneralSettings());
+  }, []);
 
   const tax = isFetching ?
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :

@@ -1,0 +1,25 @@
+.info,.warning,.error,.success{
+  background: #ffffff;
+  border-radius: 4px;
+  border-right: 30px solid #258db5;
+}
+
+.info{
+  color: #10475d;
+  border-color: #258db5;
+}
+
+.success{
+  color: rgb(0, 102, 68);
+  border-color: rgb(54, 179, 126);
+}
+
+.error{
+  color: rgb(189, 42, 42);
+  border-color: rgb(241, 52, 52);
+}
+
+.warning{
+  color: rgb(212, 117, 0);
+    border-color: rgb(255, 141, 0);
+}

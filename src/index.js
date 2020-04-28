@@ -7,7 +7,7 @@ import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import LoadingCircle from './components/LoadingCircle';
 import 'typeface-roboto';
-console.log(store);
+
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={<LoadingCircle />} persistor={persistor}>

@@ -1,6 +1,6 @@
 {
   "name": "ramot-mezach-dohot",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
     "react-slick": "^0.25.2",
     "react-spinners": "^0.6.1",
     "react-textarea-autosize": "^7.1.2",
+    "react-toast-notifications": "^2.4.0",
     "react-toastify": "^5.4.1",
     "react-virtuoso": "^0.12.3",
     "redux": "^4.0.5",
@@ -51,8 +52,8 @@
     "typeface-roboto": "0.0.75"
   },
   "author": {
-    "name": "Your Name",
-    "email": "your.email@domain.com",
+    "name": "Andrey Glemb",
+    "email": "neonux1987@gmail.com",
     "url": "https://your-website.com"
   },
   "build": {
