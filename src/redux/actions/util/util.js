@@ -1,20 +1,27 @@
 import { ipcRenderer } from 'electron';
 
-export const ipcSendReceive = (sendChannel, sendArgs, receiveChannel, successCallback, errorCallback) => {
+export const ipcSendReceive = (details) => {
+  const
+    {
+      send,
+      receive,
+      onSuccess,
+      onError,
+    } = details;
   return new Promise((resolve, reject) => {
     //request request to backend to get the data
-    ipcRenderer.send(sendChannel, sendArgs);
+    ipcRenderer.send(send.channel, send.params);
     //listen when the data comes back
-    ipcRenderer.once(receiveChannel, (event, arg) => {
+    ipcRenderer.once(receive.channel, (event, arg) => {
       if (arg.error) {
-        errorCallback && errorCallback();
+        onError && onError(arg);
         reject({
           success: false,
           error: arg.error
         });
       }
       else {
-        successCallback && successCallback();
+        onSuccess && onSuccess(arg);
         resolve({
           success: true,
           data: arg.data
@@ -24,3 +31,28 @@ export const ipcSendReceive = (sendChannel, sendArgs, receiveChannel, successCal
     });
   });
 }
+
+/* export const ipcSendReceive = (sendChannel, sendArgs, receiveChannel, successCallback, errorCallback) => {
+  return new Promise((resolve, reject) => {
+    //request request to backend to get the data
+    ipcRenderer.send(sendChannel, sendArgs);
+    //listen when the data comes back
+    ipcRenderer.once(receiveChannel, (event, arg) => {
+      if (arg.error) {
+        errorCallback && errorCallback(arg);
+        reject({
+          success: false,
+          error: arg.error
+        });
+      }
+      else {
+        successCallback && successCallback(arg);
+        resolve({
+          success: true,
+          data: arg.data
+        });
+      }
+
+    });
+  });
+} */

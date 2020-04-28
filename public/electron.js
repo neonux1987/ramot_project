@@ -1,13 +1,11 @@
 //========================= electron imports =========================//
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { autoUpdater } = require('electron-updater');
 
 //========================= services =========================//
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
-//const reportsGeneratorSvc = require('./backend/services/ReportsGeneratorSvc');
 
 const mainSystem = require('./backend/system/MainSystem');
-
-const fse = require('fs-extra');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -36,30 +34,6 @@ contextMenu({
     inspect: 'Inspect'
   }
 });
-
-/* {
-  label: 'תפריט',
-    menu: actions => [
-      actions.copyLink({
-        transform: content => `modified_link_${content}`
-      }),
-      actions.separator(),
-      {
-        label: 'Unicorn'
-      },
-      actions.separator(),
-      actions.copy({
-        transform: content => `modified_copy_${content}`
-      }),
-      {
-        label: 'Invisible',
-        visible: false
-      },
-      actions.paste({
-        transform: content => `modified_paste_${content}`
-      })
-    ]
-} */
 
 //app details
 const companyName = "NDT Solutions";
@@ -102,6 +76,10 @@ async function createWindow() {
 
   ipcMain.on('system-start-services', (event, arg) => {
     mainSystem.startServices();
+  });
+
+  mainWindow.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify();
   });
   /* console.log(process.resourcesPath);
   console.log(app.getAppPath()); */
@@ -151,6 +129,17 @@ if (!gotTheLock) {
 }
 
 mainSystem.startSystem();
+
+autoUpdater.on('update-available', () => {
+  mainWindow.webContents.send('update_available');
+});
+autoUpdater.on('update-downloaded', () => {
+  mainWindow.webContents.send('update_downloaded');
+});
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
+});
 
 
 

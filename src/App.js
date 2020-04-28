@@ -62,6 +62,15 @@ class App extends Component {
 
   componentDidMount() {
 
+    ipcRenderer.on('update_available', () => {
+      ipcRenderer.removeAllListeners('update_available');
+      console.log("update available");
+    });
+    ipcRenderer.on('update_downloaded', () => {
+      ipcRenderer.removeAllListeners('update_downloaded');
+      console.log("update downloaded");
+    });
+
     this.props.fetchGeneralSettings();
     //listen when the data comes back
     ipcRenderer.on("notify-renderer", (event, action, message) => {

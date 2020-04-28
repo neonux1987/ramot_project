@@ -2,9 +2,8 @@ import React from 'react'
 
 import './table.css';
 import Spinner from '../Spinner/Spinner';
-import SavedNotification from '../SavedNotification/SavedNotification';
 
-import { Virtuoso } from 'react-virtuoso'
+import { Virtuoso } from 'react-virtuoso';
 
 export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, dataSaved }) => {
 
@@ -29,8 +28,6 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, d
       {/* END HEADERS */}
 
       {Loading}
-
-      {/* <SavedNotification saved={dataSaved} /> */}
 
     </div>
 

@@ -1,0 +1,4 @@
+appId: com.my-website.ramot-mezach-dohot
+publish:
+  provider: github
+  token: 3a9e7f2f32482a421ff30ab8c6389416315596cd

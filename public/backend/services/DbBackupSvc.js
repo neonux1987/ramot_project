@@ -179,7 +179,7 @@ class DbBackupSvc {
     //filename of the file to save
     const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}.sqlite`;
     const path = `${db_backup.path}/${fileName}`;
-
+    console.log("what is happening");
     try {
       //notify that the backup process started
       rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "מתבצע כעת גיבוי בסיס נתונים...");

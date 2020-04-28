@@ -132,11 +132,15 @@ const MonthExpansesTableContainer = props => {
 
     const promise = await dispatch(addMonthExpanse(params, params.expanse))
       .catch((result) => {
-        toast.info(result.error, {
-          onClose: () => playSound(soundTypes.error)
+        toast.error(result.error, {
+          onOpen: () => playSound(soundTypes.error)
         })
       });
-    if (promise) {
+    if (promise && promise.success) {
+      //send success notification
+      toast.success("השורה נוספה בהצלחה.", {
+        onOpen: () => playSound(soundTypes.message)
+      });
       //reset form state
       reset();
     }

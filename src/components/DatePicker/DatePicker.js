@@ -133,6 +133,13 @@ const DatePicker = ({
       });
     }
 
+    if (!month && !quarter) {
+      setDate({
+        ...selectDate,
+        year
+      });
+    }
+
   }
 
   // the current year maybe will not be in the registered years 

@@ -1,7 +1,11 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "ramot-mezach-dohot",
+  "version": "1.0.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neonux1987/financial_reports_management_system.git"
+  },
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
     "@material-ui/core": "^4.7.2",
@@ -11,6 +15,7 @@
     "date-fns": "^2.8.1",
     "electron-context-menu": "^0.15.1",
     "electron-is-dev": "^1.1.0",
+    "electron-updater": "^4.3.1",
     "event-emitter": "^0.3.5",
     "exceljs": "^3.8.2",
     "fs-extra": "^9.0.0",
@@ -51,8 +56,8 @@
     "url": "https://your-website.com"
   },
   "build": {
-    "appId": "com.my-website.my-app",
-    "productName": "MyApp",
+    "appId": "com.my-website.ramot-mezach-dohot",
+    "productName": "רמות מזח דוחות",
     "copyright": "Copyright © 2019 ${author}",
     "files": [
       "build/**/*",
@@ -89,7 +94,8 @@
     "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "npm run build",
-    "electron-pack": "electron-builder"
+    "electron-pack": "electron-builder --win --publish never",
+    "electron-publish": "electron-builder --win --publish always"
   },
   "eslintConfig": {
     "extends": "react-app"

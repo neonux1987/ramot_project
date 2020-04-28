@@ -30,9 +30,15 @@ export const fetchMonthExpanses = (params = Object) => {
     // let react know that the fetching is started
     dispatch(requestMonthExpanses(params.buildingName));
 
-    return ipcSendReceive("get-month-expanses-data-by-range", params, "month-expanses-data-by-range")
-      .then((result) => {
-
+    return ipcSendReceive({
+      send: {
+        channel: "get-month-expanses-data-by-range",
+        params
+      },
+      receive: {
+        channel: "month-expanses-data-by-range"
+      },
+      onSuccess: (result) => {
         // if there is no data, that means it's a new month and 
         // and empty report should be generated.
         if (result.data.data.length === 0) {
@@ -43,12 +49,12 @@ export const fetchMonthExpanses = (params = Object) => {
           // store the data
           dispatch(receiveMonthExpanses(result.data.data, params.buildingName));
         }
-
-      })
-      .catch((result) => {
+      },
+      onError: (result) => {
         // let react know that an erro occured while trying to fetch
         dispatch(monthExpansesFetchingFailed(result.error, params.buildingName));
-      });
+      }
+    });//end ipc send receive
 
   } // end return
 };
@@ -108,40 +114,28 @@ const monthExpansesFetchingFailed = function (error, buildingName) {
 export const addMonthExpanse = (params = Object, expanse = Object) => {
   return dispatch => {
 
-    return new Promise((resolve, reject) => {
 
-      //send a request to backend to get the data
-      ipcRenderer.send("add-new-month-expanse", params);
+    return ipcSendReceive({
+      send: {
+        channel: "add-new-month-expanse",
+        params
+      },
+      receive: {
+        channel: "month-expanse-added"
+      },
+      onSuccess: (result) => {
+        //set the new id from the saved object in the db
+        expanse.id = result.data;
 
-      //listen when the data comes back
-      ipcRenderer.once("month-expanse-added", (event, arg) => {
-        if (arg.error) {
-          //let react know that an erro occured while trying to fetch
-          dispatch(monthExpansesFetchingFailed(arg.error));
-          //send the error to the notification center
-          toast.error(arg.error, {
-            onOpen: () => playSound(soundTypes.error)
-          });
-          playSound(soundTypes.error);
-
-          reject(false);
-        } else {
-          //set the new id from the saved object in the db
-          expanse.id = arg.data;
-
-          //success store the data
-          dispatch(addMonthExpanseInStore(expanse, params.buildingName, sortByCode));
-
-          //send success notification
-          toast.success("השורה נוספה בהצלחה.", {
-            onOpen: () => playSound(soundTypes.message)
-          });
-
-          resolve(true);
-        } // end else
-      }); // end ipc renderer
-
-    }); // end promise
+        //success store the data
+        dispatch(addMonthExpanseInStore(expanse, params.buildingName, sortByCode));
+      },
+      onError: (result) => {
+        //let react know that an erro occured while trying to fetch
+        dispatch(monthExpansesFetchingFailed(result.error));
+        //send the error to the notification center
+      }
+    })
 
   } // end annonymous method
 

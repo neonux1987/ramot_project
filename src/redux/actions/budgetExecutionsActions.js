@@ -163,9 +163,19 @@ export const deleteBudgetExecution = (buildingName, date, index, rollbackData) =
   return dispatch => {
     const rollbackDataCopy = { ...rollbackData };
     dispatch(removeBudgetExecutionInStore(buildingName, index));
-    return ipcSendReceive("delete-budget-execution", { buildingName, date, id: rollbackData.id }, "budget-execution-deleted", null, () => {
-      dispatch(addBudgetExecutionInStore(buildingName, rollbackDataCopy, sortByCode));
-    });
+
+    return ipcSendReceive({
+      send: {
+        channel: "delete-budget-execution",
+        params: { buildingName, date, id: rollbackData.id }
+      },
+      receive: {
+        channel: "budget-execution-deleted"
+      },
+      onError: () => {
+        dispatch(addBudgetExecutionInStore(buildingName, rollbackDataCopy, sortByCode));
+      }
+    });//end ipc send receive
   }
 };
 
@@ -180,11 +190,19 @@ const addBudgetExecutionInStore = (buildingName, payload, compareFunc) => {
 
 export const addBudgetExecution = (params = Object) => {
   return dispatch => {
-    return ipcSendReceive("add-budget-execution", params, "budget-execution-added").then((result) => {
-      const { buildingName } = params;
-      dispatch(addBudgetExecutionInStore(buildingName, result.data, sortByCode));
-      return result;
-    });
+    return ipcSendReceive({
+      send: {
+        channel: "add-budget-execution",
+        params
+      },
+      receive: {
+        channel: "budget-execution-added"
+      },
+      onSuccess: (result) => {
+        const { buildingName } = params;
+        dispatch(addBudgetExecutionInStore(buildingName, result.data, sortByCode));
+      }
+    });//end ipc send receive
   }
 };
 
