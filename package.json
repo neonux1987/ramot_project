@@ -1,6 +1,6 @@
 {
   "name": "ramot-mezach-dohot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "repository": {
     "type": "git",
@@ -61,7 +61,8 @@
     "copyright": "Copyright © 2019 ${author}",
     "files": [
       "build/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "package.json"
     ],
     "extraResources": [
       "./extraResources/**"
@@ -74,7 +75,7 @@
     },
     "win": {
       "target": [
-        "nsis"
+        "zip"
       ],
       "publish": [
         "github"
