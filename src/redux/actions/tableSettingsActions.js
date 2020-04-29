@@ -1,40 +1,38 @@
-import { ipcRenderer } from 'electron';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { toast } from 'react-toastify';
+import { ipcSendReceive } from './util/util';
+import { myToasts } from '../../CustomToasts/myToasts';
 
-export const REQUEST_TABLE_SETTINGS = "REQUEST_TABLE_SETTINGS";
-export const RECEIVE_TABLE_SETTINGS = "RECEIVE_TABLE_SETTINGS";
-export const TABLE_SETTINGS_FETCHING_FAILED = "TABLE_SETTINGS_FETCHING_FAILED";
-export const UPDATE_TABLE_SETTINGS = "UPDATE_TABLE_SETTINGS";
-export const TABLE_SETTINGS_CLEANUP = "UPDATE_TABLE_SETTINGS";
-export const SET_START_ELEMENT = "SET_START_ELEMENT";
-export const INIT_TABLE_SETTINGS = "INIT_TABLE_SETTINGS";
+export const TYPES = {
+  TABLE_SETTINGS_REQUEST: "REQUEST_TABLE_SETTINGS",
+  TABLE_SETTINGS_RECEIVE: "RECEIVE_TABLE_SETTINGS",
+  TABLE_SETTINGS_FETCHING_FAILED: "TABLE_SETTINGS_FETCHING_FAILED",
+  TABLE_SETTINGS_UPDATE: "TABLE_SETTINGS_UPDATE",
+  TABLE_SETTINGS_CLEANUP: "TABLE_SETTINGS_CLEANUP",
+  TABLE_SETTINGS_SET_START_ELEMENT: "TABLE_SETTINGS_SET_START_ELEMENT",
+  TABLE_SETTINGS_INIT: "TABLE_SETTINGS_INIT"
+}
 
 export const fetchTableSettings = (pageName) => {
   return dispatch => {
-    return new Promise((resolve, reject) => {
-      //let react know that the fetching is started
-      dispatch(requestTableSettings(pageName));
 
-      //request request to backend to get the data
-      ipcRenderer.send("get-table-settings", pageName);
-      //listen when the data comes back
-      return ipcRenderer.once("table-settings", (event, arg) => {
-        if (arg.error) {
-          //let react know that an erro occured while trying to fetch
-          dispatch(tableSettingsFetchingFailed(arg.error));
-          //send the error to the notification center
-          toast.error(arg.error, {
-            onOpen: () => playSound(soundTypes.error)
-          });
-          reject(arg.error);
-        } else {
-          //success store the data
-          dispatch(receiveTableSettings(pageName, arg.data));
-          resolve(arg.data);
-        }
-      });
-    }); // end Promise
+    //let react know that the fetching is started
+    dispatch(requestTableSettings(pageName));
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-table-settings",
+        params: pageName
+      },
+      receive: {
+        channel: "table-settings"
+      },
+      onSuccess: (result) => dispatch(receiveTableSettings(pageName, result.data)),
+      onError: (result) => {
+        dispatch(tableSettingsFetchingFailed(result.error));
+
+        myToasts.error(result.error);
+      }
+    });
+
   } // end dispatch function
 };
 
@@ -43,27 +41,25 @@ export const updateTableSettings = (pageName, settings) => {
 
     // write update in store first logic here
 
-    //request request to backend to get the data
-    ipcRenderer.send("update-table-settings", { pageName, settings });
-    //listen when the data comes back
-    return ipcRenderer.once("updated-table-settings", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success store the data
-        dispatch(receiveTableSettings(pageName, arg.data));
-      }
+    return ipcSendReceive({
+      send: {
+        channel: "update-table-settings",
+        params: { pageName, settings }
+      },
+      receive: {
+        channel: "updated-table-settings"
+      },
+      onSuccess: (result) => dispatch(receiveTableSettings(pageName, result.data)),
+      onError: (result) => myToasts.error(result.error)
     });
+
   }
 };
 
 export const updateTableSettingsStore = (pageName, data) => {
   return dispatch => {
     dispatch({
-      type: UPDATE_TABLE_SETTINGS,
+      type: TYPES.TABLE_SETTINGS_UPDATE,
       pageName,
       data
     });
@@ -73,7 +69,7 @@ export const updateTableSettingsStore = (pageName, data) => {
 export const setStartElement = (pageName, value) => {
   return dispatch => {
     dispatch({
-      type: SET_START_ELEMENT,
+      type: TYPES.SET_START_ELEMENT,
       value
     });
   }
@@ -81,14 +77,14 @@ export const setStartElement = (pageName, value) => {
 
 const requestTableSettings = function (pageName) {
   return {
-    type: REQUEST_TABLE_SETTINGS,
+    type: TYPES.TABLE_SETTINGS_REQUEST,
     pageName
   }
 };
 
 const receiveTableSettings = function (pageName, settings) {
   return {
-    type: RECEIVE_TABLE_SETTINGS,
+    type: TYPES.TABLE_SETTINGS_RECEIVE,
     pageName,
     settings
   }
@@ -96,14 +92,14 @@ const receiveTableSettings = function (pageName, settings) {
 
 const tableSettingsFetchingFailed = function (error) {
   return {
-    type: TABLE_SETTINGS_FETCHING_FAILED,
+    type: TYPES.TABLE_SETTINGS_FETCHING_FAILED,
     payload: error
   }
 };
 
 export const tableSettingsCleanup = (pageName) => {
   return {
-    type: TABLE_SETTINGS_CLEANUP,
+    type: TYPES.TABLE_SETTINGS_CLEANUP,
     pageName
   }
 }
@@ -113,7 +109,7 @@ export const initTableSettings = (pageName) => {
     return new Promise((resolve, reject) => {
       if (pageName) {
         dispatch({
-          type: INIT_TABLE_SETTINGS,
+          type: TYPES.TABLE_SETTINGS_INIT,
           pageName
         });
         resolve();

@@ -1,6 +1,5 @@
-import { ipcRenderer } from 'electron';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { toast } from 'react-toastify';
+import { myToasts } from '../../CustomToasts/myToasts';
+import { ipcSendReceive } from './util/util';
 
 // TYPES
 export const TYPES = {
@@ -18,29 +17,24 @@ export const TYPES = {
 export const fetchSummarizedSections = (status) => {
   return dispatch => {
 
-    return new Promise((resolve, reject) => {
-      //let react know that the fetching started
-      dispatch(requestSummarizedSections());
+    //let react know that the fetching started
+    dispatch(requestSummarizedSections());
 
-      //request request to backend to get the data
-      ipcRenderer.send("get-summarized-sections-data", status);
-      //listen when the data comes back
-      ipcRenderer.once("summarized-sections-data", (event, arg) => {
-        if (arg.error) {
-          //let react know that an erro occured while trying to fetch
-          dispatch(fetchingFailed(arg.error));
-          //send the error to the notification center
-          toast.error(arg.error, {
-            onOpen: () => playSound(soundTypes.error)
-          });
-          reject("שליפת סעיפים מסכמים מהבסיס הנתונים נכשלה.")
-        } else {
-          //success store the data
-          dispatch(receiveSummarizedSections(arg.data));
-          resolve(arg.data);
-        }
-      });
-    })
+    return ipcSendReceive({
+      send: {
+        channel: "get-summarized-sections-data",
+        params: status
+      },
+      receive: {
+        channel: "summarized-sections-data"
+      },
+      onSuccess: (result) => dispatch(receiveSummarizedSections(result.data)),
+      onError: (result) => {
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error)
+      }
+    });
 
   }
 };
@@ -67,29 +61,27 @@ const fetchingFailed = function (error) {
 
 export const addSummarizedSection = (params = Object) => {
   return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("add-summarized-section", params);
-    //listen when the data comes back
-    ipcRenderer.once("summarized-section-added", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
+
+    return ipcSendReceive({
+      send: {
+        channel: "add-summarized-section",
+        params
+      },
+      receive: {
+        channel: "summarized-section-added"
+      },
+      onSuccess: (result) => {
         // add the returned id to the new summarized
         // section object and save it in the store
-        params.summarizedSection.id = arg.data;
+        params.summarizedSection.id = result.data;
         dispatch(addSummarizedSectionStoreOnly(params.summarizedSection));
 
         //send success notification
-        toast.success("הסעיף עודכן בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
-      }
+        myToasts.success("הסעיף נוסף בהצלחה.");
+      },
+      onError: (result) => myToasts.error(result.error)
     });
+
   }
 };
 
@@ -117,24 +109,22 @@ export const updateSummarizedSection = (newCopy, oldCopy, index) => {
       summarizedSection: {
         section: newCopy.section
       }
-    }
+    };
 
-    //send a request to backend to get the data
-    ipcRenderer.send("update-summarized-section", params);
-    //listen when the data comes back
-    ipcRenderer.once("summarized-section-updated", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
+    return ipcSendReceive({
+      send: {
+        channel: "update-summarized-section",
+        params
+      },
+      receive: {
+        channel: "summarized-section-updated"
+      },
+      onSuccess: () => myToasts.success("הסעיף עודכן בהצלחה."),
+      onError: (result) => {
         // rollback
         dispatch(updateSummarizedSectionStoreOnly(oldCopy, index));
-      } else {
-        //send success notification
-        toast.success("הסעיף עודכן בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
+
+        myToasts.error(result.error)
       }
     });
 
@@ -145,22 +135,20 @@ export const deleteSummarizedSection = (oldCopy, index) => {
   return dispatch => {
     dispatch(deleteSummarizedSectionStoreOnly(index));
 
-    //send a request to backend to get the data
-    ipcRenderer.send("delete-summarized-section", { id: oldCopy.id });
-    //listen when the data comes back
-    ipcRenderer.once("summarized-section-deleted", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
+    return ipcSendReceive({
+      send: {
+        channel: "delete-summarized-section",
+        params: { id: oldCopy.id }
+      },
+      receive: {
+        channel: "summarized-section-deleted"
+      },
+      onSuccess: () => myToasts.success("הסעיף נמחק בהצלחה."),
+      onError: (result) => {
         // rollback
         dispatch(addSummarizedSectionStoreOnly(oldCopy));
-      } else {
-        //send success notification
-        toast.success("הסעיף נמחק בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
+
+        myToasts.error(result.error)
       }
     });
 

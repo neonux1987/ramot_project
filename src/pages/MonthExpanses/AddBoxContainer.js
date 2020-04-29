@@ -5,15 +5,12 @@ import { connect } from 'react-redux';
 
 import * as summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
 import * as expansesCodesActions from '../../redux/actions/expansesCodesActions';
-import { toast } from 'react-toastify';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
+import { myToasts } from '../../CustomToasts/myToasts';
 
 const styles = theme => ({
   container: {
     margin: "0px 0 10px",
     padding: "10px 10px 0",
-    background: "#ffffff",
-    //boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.06)",
     borderBottom: "1px solid #00000024",
     position: "relative",
     zIndex: "3",
@@ -256,11 +253,9 @@ class InputExpansesField extends Component {
   submit = () => {
     if (this.state.formInputs.section === "סעיף מסכם לא קיים")
       // send the error to the notification center
-      toast.error(`הוספת שורה נכשלה. 
+      myToasts.error(`הוספת שורה נכשלה. 
       קוד הנהלת חשבונות מקושר לסעיף מסכם שלא קיים. 
-      נא צור את הסעיף בטבלת ניהול סעיפים מסכמים או קשר לסעיף אחר בטבלת ניהול ומעקב קודי הנהלת חשבונות`, {
-        onOpen: () => playSound(soundTypes.error)
-      });
+      נא צור את הסעיף בטבלת ניהול סעיפים מסכמים או קשר לסעיף אחר בטבלת ניהול ומעקב קודי הנהלת חשבונות`);
     else
       this.props.submitData(this.state.formInputs, this.reset);
   }

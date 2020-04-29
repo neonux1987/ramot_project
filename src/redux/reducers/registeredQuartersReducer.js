@@ -1,3 +1,4 @@
+import { TYPES } from '../actions/registeredQuartersActions';
 
 const initState = {
   isFetching: false,
@@ -8,25 +9,25 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_REGISTERED_QUARTERS":
+    case TYPES.REGISTERED_QUARTERS_RECEIVE:
       return {
         ...state,
         isFetching: false,
         status: "success",
         data: action.data
       }
-    case "REQUEST_REGISTERED_QUARTERS":
+    case TYPES.REGISTERED_QUARTERS_REQUEST:
       return {
         ...state,
         isFetching: true
       }
-    case "REGISTERED_QUARTERS_FETCHING_FAILED":
+    case TYPES.REGISTERED_QUARTERS_FETCHING_FAILED:
       return {
         ...state,
         status: "error",
         error: action.payload
       }
-    case "CLEANUP_QUARTERS":
+    case TYPES.REGISTERED_QUARTERS_CLEANUP:
       return {
         ...state,
         isFetching: false,

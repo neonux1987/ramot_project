@@ -1,6 +1,5 @@
-import { ipcRenderer } from 'electron';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { toast } from 'react-toastify';
+import { myToasts } from '../../CustomToasts/myToasts';
+import { ipcSendReceive } from './util/util';
 
 // TYPES
 export const TYPES = {
@@ -10,34 +9,25 @@ export const TYPES = {
   REGISTERED_REPORTS_CLEANUP: "REGISTERED_REPORTS_CLEANUP"
 }
 
-/**
- * fetch month expanses
- * @param {*} params 
- */
 export const fetchRegisteredReports = (params = Object) => {
   return dispatch => {
-    return new Promise((resolve, reject) => {
-      //let react know that the fetching is started
-      dispatch(requestRegisteredReports(params.buildingName));
+    //let react know that the fetching is started
+    dispatch(requestRegisteredReports(params.buildingName));
 
-      //request request to backend to get the data
-      ipcRenderer.send("get-registered-reports-grouped-by-year", params);
-      //listen when the data comes back
-      return ipcRenderer.once("registered-reports-grouped-by-year-data", (event, arg) => {
-        if (arg.error) {
-          //let react know that an erro occured while trying to fetch
-          dispatch(fetchingFailed(arg.error));
-          //send the error to the notification center
-          toast.error(arg.error, {
-            onOpen: () => playSound(soundTypes.error)
-          });
-          reject(arg.error);
-        } else {
-          //success store the data
-          dispatch(receiveRegisteredReports(arg.data, params.buildingName));
-          resolve(arg.data);
-        }
-      });
+    return ipcSendReceive({
+      send: {
+        channel: "get-registered-reports-grouped-by-year",
+        params
+      },
+      receive: {
+        channel: "registered-reports-grouped-by-year-data"
+      },
+      onSuccess: (result) => dispatch(receiveRegisteredReports(result.data, params.buildingName)),
+      onError: (result) => {
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error)
+      }
     });
   }
 };

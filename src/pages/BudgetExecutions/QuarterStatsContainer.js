@@ -3,8 +3,8 @@ import React from 'react';
 import propTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import monthlyStatsActions from '../../redux/actions/monthlyStatsActions';
-import quarterlyStatsActions from '../../redux/actions/quarterlyStatsActions';
+import * as monthlyStatsActions from '../../redux/actions/monthlyStatsActions';
+import * as quarterlyStatsActions from '../../redux/actions/quarterlyStatsActions';
 
 import Helper from '../../helpers/Helper';
 

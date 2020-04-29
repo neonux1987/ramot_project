@@ -1,78 +1,81 @@
-import { ipcRenderer } from 'electron';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { toast } from 'react-toastify';
+import { myToasts } from "../../CustomToasts/myToasts";
+import { ipcSendReceive } from "./util/util";
 
-/**
- * fetch month expanses
- * @param {*} params 
- */
-const fetchQuarterStats = (params = Object) => {
+export const TYPES = {
+  REQUEST_QUARTERLY_STATS: "REQUEST_QUARTERLY_STATS",
+  RECEIVE_QUARTERLY_STATS: "RECEIVE_QUARTERLY_STATS",
+  UPDATE_QUARTER_STATS_STORE_ONLY: "UPDATE_QUARTER_STATS_STORE_ONLY",
+  QUARTERLY_STATS_FETCHING_FAILED: "QUARTERLY_STATS_FETCHING_FAILED",
+  CLEANUP_QUARTERLY_STATS: "CLEANUP_QUARTERLY_STATS",
+}
+
+export const fetchQuarterStats = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
     dispatch(requestQuarterlyStats());
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-quarter-stats", params);
-    //listen when the data comes back
-    return ipcRenderer.once("quarter-stats", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success store the data
-        dispatch(receiveQuarterlyStats(arg.data));
+    return ipcSendReceive({
+      send: {
+        channel: "get-quarter-stats",
+        params
+      },
+      receive: {
+        channel: "quarter-stats"
+      },
+      onSuccess: (result) => dispatch(receiveQuarterlyStats(result.data)),
+      onError: (result) => {
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error)
       }
     });
+
   }
 };
 
-const fetchAllQuartersStatsByYear = (params = Object) => {
+export const fetchAllQuartersStatsByYear = (params = Object) => {
   return dispatch => {
     //let react know that the fetching is started
     dispatch(requestQuarterlyStats());
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-all-quarters-stats-by-year", params);
-    //listen when the data comes back
-    return ipcRenderer.once("all-quarters-stats-by-year", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success store the data
-        dispatch(receiveQuarterlyStats(arg.data));
+    return ipcSendReceive({
+      send: {
+        channel: "get-all-quarters-stats-by-year",
+        params
+      },
+      receive: {
+        channel: "all-quarters-stats-by-year"
+      },
+      onSuccess: (result) => dispatch(receiveQuarterlyStats(result.data)),
+      onError: (result) => {
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error)
       }
     });
+
   }
 };
 
 const requestQuarterlyStats = function (page) {
   return {
-    type: "REQUEST_QUARTERLY_STATS",
+    type: TYPES.REQUEST_QUARTERLY_STATS,
     page
   }
 };
 
 const receiveQuarterlyStats = function (data) {
   return {
-    type: "RECEIVE_QUARTERLY_STATS",
+    type: TYPES.RECEIVE_QUARTERLY_STATS,
     data
   }
 }
 
-const updateQuarterStatsStoreOnly = (quarterStatsObj) => {
+export const updateQuarterStatsStoreOnly = (quarterStatsObj) => {
   return dispatch => {
     dispatch({
-      type: "UPDATE_QUARTER_STATS_STORE_ONLY",
+      type: TYPES.UPDATE_QUARTER_STATS_STORE_ONLY,
       quarterStatsObj
     });
   }
@@ -80,23 +83,13 @@ const updateQuarterStatsStoreOnly = (quarterStatsObj) => {
 
 const fetchingFailed = function (error) {
   return {
-    type: "QUARTERLY_STATS_FETCHING_FAILED",
+    type: TYPES.QUARTERLY_STATS_FETCHING_FAILED,
     payload: error
   }
 };
 
-const cleanupQuarterlyStats = () => {
+export const cleanupQuarterlyStats = () => {
   return {
-    type: "CLEANUP_QUARTERLY_STATS"
+    type: TYPES.CLEANUP_QUARTERLY_STATS
   }
 }
-
-export default {
-  fetchQuarterStats,
-  fetchAllQuartersStatsByYear,
-  fetchingFailed,
-  receiveQuarterlyStats,
-  requestQuarterlyStats,
-  cleanupQuarterlyStats,
-  updateQuarterStatsStoreOnly
-};

@@ -4,11 +4,8 @@ import { withRouter } from 'react-router';
 import { Equalizer, TableChart } from '@material-ui/icons';
 
 // COMMON COMPONENTS
-import Header from '../../components/Header/Header';
-import ExpandableSection from '../../components/Section/ExpandableSection';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import SectionHeader from '../../components/SectionHeader/SectionHeader';
 
 // CONTAINERS
 //import SummarizedBudgetTableContainer from './SummarizedBudgetTableContainer';

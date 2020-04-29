@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@material-ui/core';
 import styles from './StatBox.module.css';
-import utilStyles from '../../../assets/css/util.module.css';
 import Spinner from '../../Spinner/Spinner';
 
 export default ({ title, income, outcome, unicodeSymbol, bgColor = "#7553c5", loading = true }) => {

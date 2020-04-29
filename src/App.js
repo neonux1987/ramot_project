@@ -15,9 +15,6 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 // CONTEXT
 import GlobalContext from './context/GlobalContext';
 
-// UTILS
-import { playSound, soundTypes } from './audioPlayer/audioPlayer';
-
 // CSS
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/css/style.css';
@@ -58,11 +55,11 @@ const App = props => {
   useEffect(() => {
     ipcRenderer.on('update_available', () => {
       ipcRenderer.removeAllListeners('update_available');
-      console.log("update available");
+      myToasts.info("המערכת זיהתה גירסה יותר עדכנית 1.0.1");
     });
     ipcRenderer.on('update_downloaded', () => {
       ipcRenderer.removeAllListeners('update_downloaded');
-      console.log("update downloaded");
+      myToasts.info("המערכת הורידה את העדכון והוא מוכן להתקנה.");
     });
   }, [])
 
@@ -115,7 +112,7 @@ const App = props => {
     });
     //start services
     ipcRenderer.send("system-start-services");
-  }, []);
+  });
 
   const closeButtonHandler = () => {
     const window = remote.getCurrentWindow();
@@ -135,10 +132,6 @@ const App = props => {
     } else {
       window.unmaximize();
     }
-  }
-
-  const showUpdate = () => {
-    myToasts.info("קיים עדכון תוכנה חדש.");
   }
 
   return (
@@ -183,13 +176,6 @@ const App = props => {
     </RTL>
   );
 
-}
-
-
-const UpdateNotification = () => {
-  return (<div style={{ background: "#fff" }}>
-    update is available.
-  </div>)
 }
 
 export default App;

@@ -1,7 +1,6 @@
 // LIBRARIES IMPORTS
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 
 // ACTIONS IMPORTS
 import {
@@ -16,7 +15,6 @@ import { fetchExpansesCodesByStatus } from '../../redux/actions/expansesCodesAct
 
 // UTILITY IMPORTS
 import Helper from '../../helpers/Helper';
-import { areEqual } from '../util';
 
 // COMMON COMPONENTS IMPORTS
 import PageControls from '../../components/PageControls/PageControls';
@@ -41,8 +39,7 @@ import withTableLogic from '../../HOC/withTableLogic';
 import SelectColumn from '../../components/table/SelectColumn';
 
 // AUDIO
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { fetchSummarizedSections } from '../../redux/actions/summarizedSectionsActions';
+import { myToasts } from '../../CustomToasts/myToasts';
 
 const MonthExpansesTableContainer = props => {
 
@@ -91,9 +88,7 @@ const MonthExpansesTableContainer = props => {
       await dispatch(initMonthExpansesState(params.buildingName));
 
       dispatch(fetchMonthExpanses(params)).catch((result) => {
-        toast.info(result.error, {
-          onClose: () => playSound(soundTypes.error)
-        })
+        myToasts.info(result.error)
       });
 
       dispatch(fetchExpansesCodesByStatus("active"));
@@ -107,9 +102,7 @@ const MonthExpansesTableContainer = props => {
     const valid = validateFormInputs(formInputs);
     if (!valid) {
       // send the error to the notification center
-      toast.error("קוד או שם חשבון לא יכולים להיות ריקים", {
-        onOpen: () => playSound(soundTypes.error)
-      });
+      myToasts.error("קוד או שם חשבון לא יכולים להיות ריקים");
       return;
     }
 
@@ -130,20 +123,9 @@ const MonthExpansesTableContainer = props => {
       date: date
     }
 
-    const promise = await dispatch(addMonthExpanse(params, params.expanse))
-      .catch((result) => {
-        toast.error(result.error, {
-          onOpen: () => playSound(soundTypes.error)
-        })
-      });
-    if (promise && promise.success) {
-      //send success notification
-      toast.success("השורה נוספה בהצלחה.", {
-        onOpen: () => playSound(soundTypes.message)
-      });
-      //reset form state
+    dispatch(addMonthExpanse(params, params.expanse)).then(() => {
       reset();
-    }
+    });
 
   }
 

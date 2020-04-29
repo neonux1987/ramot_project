@@ -1,10 +1,5 @@
-import { ipcRenderer } from 'electron';
-import React from 'react';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { toast } from 'react-toastify';
-import ToastRender from '../../components/ToastRender/ToastRender';
-
-import { restartService } from './servicesActions';
+import { myToasts } from '../../CustomToasts/myToasts';
+import { ipcSendReceive } from './util/util';
 
 // TYPES
 export const TYPES = {
@@ -18,29 +13,26 @@ export const TYPES = {
 
 export const fetchSettings = (settingName) => {
   return dispatch => {
-    return new Promise((resolve, reject) => {
-      //let react know that the fetching is started
-      dispatch(requestSettings(settingName));
 
-      //request request to backend to get the data
-      ipcRenderer.send("get-specific-setting", settingName);
-      //listen when the data comes back
-      ipcRenderer.once("specific-setting-data", (event, arg) => {
-        if (arg.error) {
-          //let react know that an erro occured while trying to fetch
-          dispatch(fetchingFailed(arg.error));
-          //send the error to the notification center
-          toast.error(arg.error, {
-            onOpen: () => playSound(soundTypes.error)
-          });
-          reject(arg.error);
-        } else {
-          //success store the data
-          dispatch(receiveSettings(arg.settingName, arg.data));
-          resolve(arg.data);
-        }
-      });
+    //let react know that the fetching is started
+    dispatch(requestSettings(settingName));
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-specific-setting",
+        params: settingName
+      },
+      receive: {
+        channel: "specific-setting-data"
+      },
+      onSuccess: (result) => dispatch(receiveSettings(result.settingName, result.data)),
+      onError: (result) => {
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error)
+      }
     });
+
   }
 };
 
@@ -83,109 +75,26 @@ export const updateSettings = (settingName, data) => {
 }
 
 export const saveSettings = (settingName, payload, notifOn = true) => {
-
   return dispatch => {
-    return new Promise((resolve, reject) => {
-      //send a request to backend to get the data
-      ipcRenderer.send("update-specific-setting", settingName, payload);
-      //listen when the data comes back
-      ipcRenderer.once("specific-setting-updated", (event, arg) => {
-        if (arg.error) {
-          //send the error to the notification center
-          toast.error(arg.error, {
-            onOpen: () => playSound(soundTypes.error)
-          });
-          reject(false);
-        } else {
-          if (notifOn)
-            // success
-            toast.success("ההגדרות נשמרו בהצלחה.", {
-              onOpen: () => playSound(soundTypes.message)
-            });
-          resolve(true);
-        }
-      });
-    }); // end promise
+
+    return ipcSendReceive({
+      send: {
+        channel: "update-specific-setting",
+        params: { settingName, payload }
+      },
+      receive: {
+        channel: "specific-setting-updated"
+      },
+      onSuccess: () => myToasts.success("ההגדרות נשמרו בהצלחה."),
+      onError: (result) => {
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error)
+      }
+    });
+
   }; // end dispatch func
 };
-
-
-export const dbIndependentBackup = (fullPath) => {
-  return dispatch => {
-    //backup started message
-    const toastId = toast.info(<ToastRender spinner={true} message={"מתבצע כעת גיבוי בסיס נתונים..."} />, {
-      autoClose: false,
-      onOpen: () => playSound(soundTypes.message)
-    });
-    //send a request to backend to get the data
-    ipcRenderer.send("db-independent-backup", fullPath);
-    //listen when the data comes back
-    ipcRenderer.once("db-independently-backed-up", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //send the error to the notification center
-        toast.success(<ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה."} />, {
-          delay: 2000,
-          autoClose: 3000,
-          onOpen: () => {
-            toast.dismiss(toastId);
-            playSound(soundTypes.message)
-          }
-        });
-      }
-    });
-  }
-}
-
-export const activateReportsGenerator = (reports_generator) => {
-  return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("activate-reports-generator");
-    //listen when the data comes back
-    ipcRenderer.once("reports-generator-activated", (event, arg) => {
-
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success
-        toast.success("שירות יצירת הדוחות האוטומטי הופעל בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
-        dispatch(updateSettingsInStore("reports_generator", reports_generator));
-      }
-    });
-  }
-}
-
-export const disableReportsGenerator = (reports_generator) => {
-  return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("disable-reports-generator");
-    //listen when the data comes back
-    ipcRenderer.once("reports-generator-disabled", (event, arg) => {
-
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success
-        toast.success("שירות יצירת הדוחות האוטומטי בוטל בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
-        dispatch(updateSettingsInStore("reports_generator", reports_generator));
-      }
-    });
-  }
-}
 
 export const cleanup = (settingName) => {
   return {

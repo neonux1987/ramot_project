@@ -17,7 +17,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import EditVatModal from "../../components/modals/EditVatModal/EditVatModal";
 
 // ACTIONS
-import sidebarActions from '../../redux/actions/sidebarActions';
+import { toggleSidebar } from '../../redux/actions/sidebarActions';
 import generalSettingsActions from '../../redux/actions/generalSettingsActions';
 
 // HOOKS
@@ -64,7 +64,7 @@ const Toolbar = ({ buildingName, page }) => {
 
         <button
           className={styles.toggleBtn}
-          onClick={() => dispatch(sidebarActions.toggleSidebar())}
+          onClick={() => dispatch(toggleSidebar())}
         >
           <MenuIcon style={{ display: "flex" }} />
         </button>

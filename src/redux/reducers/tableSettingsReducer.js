@@ -1,13 +1,5 @@
 
-import {
-  REQUEST_TABLE_SETTINGS,
-  RECEIVE_TABLE_SETTINGS,
-  TABLE_SETTINGS_FETCHING_FAILED,
-  UPDATE_TABLE_SETTINGS,
-  TABLE_SETTINGS_CLEANUP,
-  SET_START_ELEMENT,
-  INIT_TABLE_SETTINGS
-} from '../actions/tableSettingsActions';
+import { TYPES } from '../actions/tableSettingsActions';
 
 const initState = {
   pages: {
@@ -16,7 +8,7 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case RECEIVE_TABLE_SETTINGS:
+    case TYPES.TABLE_SETTINGS_RECEIVE:
       return {
         ...state,
         pages: {
@@ -29,7 +21,7 @@ export default (state = initState, action) => {
           }
         }
       }
-    case REQUEST_TABLE_SETTINGS:
+    case TYPES.TABLE_SETTINGS_REQUEST:
       return {
         ...state,
         pages: {
@@ -40,7 +32,7 @@ export default (state = initState, action) => {
           }
         }
       }
-    case TABLE_SETTINGS_FETCHING_FAILED:
+    case TYPES.TABLE_SETTINGS_FETCHING_FAILED:
       return {
         ...state,
         pages: {
@@ -52,7 +44,7 @@ export default (state = initState, action) => {
           }
         }
       }
-    case UPDATE_TABLE_SETTINGS:
+    case TYPES.TABLE_SETTINGS_UPDATE:
       return {
         ...state,
         pages: {
@@ -63,7 +55,7 @@ export default (state = initState, action) => {
           }
         }
       }
-    case TABLE_SETTINGS_CLEANUP: {
+    case TYPES.TABLE_SETTINGS_CLEANUP: {
       const pagesCopy = { ...state.pages };
       delete pagesCopy[action.pageName];
       return {
@@ -71,7 +63,7 @@ export default (state = initState, action) => {
         pages: pagesCopy
       }
     }
-    case SET_START_ELEMENT: {
+    case TYPES.TABLE_SETTINGS_SET_START_ELEMENT: {
       const pagesCopy = { ...state.pages };
       delete pagesCopy[action.pageName];
       return {
@@ -85,7 +77,7 @@ export default (state = initState, action) => {
         }
       }
     }
-    case INIT_TABLE_SETTINGS:
+    case TYPES.TABLE_SETTINGS_INIT:
       return {
         pages: {
           [action.pageName]: {

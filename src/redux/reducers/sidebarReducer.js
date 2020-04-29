@@ -1,3 +1,5 @@
+import { TYPES } from '../actions/sidebarActions';
+
 const initState = {
   showSidebar: true,
   sidebar: {
@@ -10,12 +12,12 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "TOGGLE_SIDEBAR":
+    case TYPES.SIDEBAR_TOGGLE:
       return {
         ...state,
         showSidebar: !state.showSidebar
       }
-    case "RECEIVE_SIDEBAR":
+    case TYPES.SIDEBAR_RECEIVE:
       return {
         ...state,
         sidebar: {
@@ -25,7 +27,7 @@ export default (state = initState, action) => {
           data: action.data
         }
       }
-    case "REQUEST_SIDEBAR":
+    case TYPES.SIDEBAR_REQUEST:
       return {
         ...state,
         sidebar: {
@@ -33,7 +35,7 @@ export default (state = initState, action) => {
           isFetching: true,
         }
       }
-    case "FETCHING_FAILED":
+    case TYPES.SIDEBAR_FETCHING_FAILED:
       return {
         ...state,
         sidebar: {

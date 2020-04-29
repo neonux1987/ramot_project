@@ -26,7 +26,7 @@ import withTableLogic from '../../../../HOC/withTableLogic';
 
 // CONTAINERS
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
-import { toast } from 'react-toastify';
+import { myToasts } from '../../../../CustomToasts/myToasts';
 
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
@@ -39,10 +39,10 @@ class ExpansesCodes extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.fetchSummarizedSections("all").then((data) => {
+    this.props.fetchSummarizedSections("all").then((result) => {
       const dataArr = [];
 
-      const selectItems = data.map((row, index) => {
+      const selectItems = result.data.map((row, index) => {
         if (row.status === "deleted") {
           row.section = `${row.section} (לא קיים)`;
         }
@@ -104,7 +104,7 @@ class ExpansesCodes extends React.PureComponent {
     }
 
     if (!valid)
-      toast.error(message);
+      myToasts.error(message);
 
     return valid;
   }
@@ -128,13 +128,13 @@ class ExpansesCodes extends React.PureComponent {
     const valid = this.validateFormInputs(formInputs);
 
     if (!valid) {
-      toast.error("כל השדות לא יכולים להיות ריקים.");
+      myToasts.error("כל השדות לא יכולים להיות ריקים.");
       return;
     }
 
     const exist = this.dataExist(formInputs.code);
     if (exist) {
-      toast.error("הקוד כבר קיים ברשימה, לא ניתן להוסיף את אותו הקוד.");
+      myToasts.error("הקוד כבר קיים ברשימה, לא ניתן להוסיף את אותו הקוד.");
       return;
     }
 

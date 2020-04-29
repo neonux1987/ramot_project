@@ -1,17 +1,23 @@
+// LIBRARIES
 import React, { useEffect } from 'react';
-import { FormControl, InputLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
-import styles from './Restore.module.css';
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import { Restore } from '@material-ui/icons';
-import SaveButton from '../../../../../components/SaveButton/SaveButton';
-import LoadingCircle from '../../../../../components/LoadingCircle';
+import { FormControl, Box, Button, Typography, Divider, Select, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { Restore } from '@material-ui/icons';
+
+// CSS
+import styles from './Restore.module.css';
+
+// COMPONENTS
+import LoadingCircle from '../../../../../components/LoadingCircle';
+import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 
 // ACTIONS
 import {
-  fetchBackupsNames,
-  initializeBackupNames
+  fetchBackupsNames
 } from '../../../../../redux/actions/backupsNamesActions';
+
+// TOASTS
+import { myToasts } from '../../../../../CustomToasts/myToasts';
 
 export default (props) => {
 
@@ -20,7 +26,9 @@ export default (props) => {
   const backupsNames = useSelector(store => store.backupsNames);
 
   useEffect(() => {
-    dispatch(fetchBackupsNames());
+    dispatch(fetchBackupsNames()).catch((result) => {
+      myToasts.error(result.error);
+    });
   }, [dispatch]);
 
   const [selectedBackupDate, SetSelectedBackupDate] = React.useState(backupsNames.data[0] ? backupsNames.data[0].backupDateTime : "לא קיימים גיבויים שמורים");

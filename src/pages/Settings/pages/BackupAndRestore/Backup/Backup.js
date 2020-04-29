@@ -35,6 +35,8 @@ import {
 } from '../../../../../redux/actions/backupsNamesActions';
 import { showModal } from '../../../../../redux/actions/modalActions';
 import { dbIndependentBackup } from '../../../../../redux/actions/dbBackupActions';
+import { myToasts } from '../../../../../CustomToasts/myToasts';
+import ToastRender from '../../../../../components/ToastRender/ToastRender';
 
 
 const SETTINGS_NAME = "db_backup";
@@ -64,9 +66,7 @@ export default (props) => {
     //based on the no days were selected
     if (!valid && data.active) {
       //send the error to the notification center
-      toast.error("חייב לבחור לפחות יום אחד.", {
-        onOpen: () => playSound(soundTypes.error)
-      });
+      myToasts.error("חייב לבחור לפחות יום אחד.");
     } else {
       const dataCopy = { ...data };
       dataCopy.restartRequired = true;
@@ -171,7 +171,9 @@ export default (props) => {
             showModal(ConfirmDbPathChangeModel, {
               onAgreeHandler: () => {
                 data.path = filePaths[0];
-                dispatch(initializeBackupNames());
+                dispatch(initializeBackupNames()).catch((result) => {
+                  myToasts.error(result.error);
+                });
                 dispatch(updateSettings(SETTINGS_NAME, data));
               }
             }) // end show modal
@@ -189,7 +191,23 @@ export default (props) => {
 
     saveToFileDialog(fileName, undefined).then(({ canceled, filePath }) => {
       if (!canceled) {
-        dispatch(dbIndependentBackup(filePath));
+
+        //backup started message
+        const toastId = myToasts.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים..."} />, {
+          autoClose: false
+        });
+
+        dispatch(dbIndependentBackup(filePath))
+          .then(() => {
+            //send the error to the notification center
+            myToasts.success(<ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה."} />, {
+              delay: 2000,
+              autoClose: 3000,
+              onOpen: () => {
+                myToasts.dismiss(toastId);
+              }
+            });
+          });
       }
     });
 

@@ -247,7 +247,7 @@ class DbBackupSvc {
     }
 
     //fetch db backup settings
-    let fileToBackup = await this.ioLogic.readFile(settings.locations.db_path);
+    let fileToBackup = await this.ioLogic.readFile(settings.locations.db_file_path);
 
     //write the file physically to the drive
     await this.ioLogic.writeFile(fullPath, fileToBackup);

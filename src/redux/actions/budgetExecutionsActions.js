@@ -1,15 +1,7 @@
-import { ipcRenderer } from 'electron';
-import React from 'react';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import registeredQuartersActions from './registeredQuartersActions';
-import registeredYearsActions from './registeredYearsActions';
-import { toast } from 'react-toastify';
-import ToastRender from '../../components/ToastRender/ToastRender';
-import monthlyStatsActions from './monthlyStatsActions';
-import quarterlyStatsActions from './quarterlyStatsActions';
+import * as monthlyStatsActions from './monthlyStatsActions';
+import * as quarterlyStatsActions from './quarterlyStatsActions';
 import { ipcSendReceive } from './util/util';
-
-const TOAST_AUTO_CLOSE = 3000;
+import { myToasts } from '../../CustomToasts/myToasts';
 
 // TYPES
 export const TYPES = {
@@ -28,76 +20,34 @@ export const fetchBudgetExecutions = (params = Object) => {
     //let react know that the fetching is started
     dispatch(requestBudgetExecutions(params.buildingName));
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-budget-executions", params);
-    //listen when the data comes back
-    ipcRenderer.once("budget-executions", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(budgetExecutionsFetchingFailed(arg.error, params.buildingName));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
+    return ipcSendReceive({
+      send: {
+        channel: "get-budget-executions",
+        params
+      },
+      receive: {
+        channel: "budget-executions",
+      },
+      onSuccess: (result) => {
         //if there is no data, that means it's a new month and 
         //and empty report should be generated.
-        if (arg.data.data.length === 0) {
+        if (result.data.data.length === 0) {
           //show a notification that the generation of 
           //generateEmptyReport(params, dispatch);
           dispatch(receiveBudgetExecutions([], params.buildingName));
         }
 
         //success store the data
-        dispatch(receiveBudgetExecutions(arg.data.data, params.buildingName));
+        dispatch(receiveBudgetExecutions(result.data.data, params.buildingName));
+      },
+      onError: (result) => {
+        //let react know that an erro occured while trying to fetch
+        dispatch(budgetExecutionsFetchingFailed(result.error, params.buildingName));
       }
     });
 
   }
 };
-
-const generateEmptyReport = (params, dispatch) => {
-  //empty report process started
-  const toastId = toast.info(<ToastRender spinner={true} message={"מייצר דוח רבעוני חדש..."} />, {
-    autoClose: false,
-    onOpen: () => playSound(soundTypes.message)
-  });
-  //request request to backend to get the data
-  ipcRenderer.send("generate-budget-execution-report", params);
-  return ipcRenderer.once("generated-budget-execution-data", (event, arg) => {
-    if (arg.error) {
-      playSound(soundTypes.error);
-      //empty report process finished
-      toast.update(toastId, {
-        render: <ToastRender done={true} message={arg.error} />,
-        type: toast.TYPE.ERROR,
-        delay: 2000,
-        autoClose: TOAST_AUTO_CLOSE,
-        onClose: () => {
-          //let react know that an erro occured while trying to fetch
-          dispatch(budgetExecutionsFetchingFailed(arg.error, params.buildingName));
-        }
-      });
-    } else {
-      //empty report process finished
-      toast.update(toastId, {
-        render: <ToastRender done={true} message={"דוח רבעוני חדש נוצר בהצלחה."} />,
-        type: toast.TYPE.SUCCESS,
-        autoClose: TOAST_AUTO_CLOSE,
-        delay: 2000,
-        onClose: () => {
-          //success store the data
-          dispatch(receiveBudgetExecutions(arg.data, params.buildingName));
-          dispatch(registeredQuartersActions.fetchRegisteredQuarters(params));
-          dispatch(registeredYearsActions.fetchRegisteredYears(params));
-          dispatch(monthlyStatsActions.fetchAllMonthsStatsByQuarter(params));
-          dispatch(quarterlyStatsActions.fetchQuarterStats(params));
-        }
-      });
-
-    }
-  });
-}
 
 const requestBudgetExecutions = function (buildingName) {
   return {
@@ -172,8 +122,11 @@ export const deleteBudgetExecution = (buildingName, date, index, rollbackData) =
       receive: {
         channel: "budget-execution-deleted"
       },
-      onError: () => {
+      onSuccess: () => myToasts.success("השורה נמחקה בהצלחה."),
+      onError: (result) => {
         dispatch(addBudgetExecutionInStore(buildingName, rollbackDataCopy, sortByCode));
+
+        myToasts.error(result.error);
       }
     });//end ipc send receive
   }
@@ -201,6 +154,11 @@ export const addBudgetExecution = (params = Object) => {
       onSuccess: (result) => {
         const { buildingName } = params;
         dispatch(addBudgetExecutionInStore(buildingName, result.data, sortByCode));
+
+        myToasts.success("השורה נוספה בהצלחה.");
+      },
+      onError: (result) => {
+        myToasts.error(result.error);
       }
     });//end ipc send receive
   }
@@ -218,89 +176,82 @@ export const updateBudgetExecutionStoreOnly = (payload, index, buildingName) => 
 export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudgetExec = Object, index = Number) => {
   return (dispatch, getState) => {
 
-    return new Promise((resolve, reject) => {
-      //get te state
-      const state = getState();
+    //get te state
+    const state = getState();
 
-      //stats of all months
-      const monthlyStatsArr = [...state.monthlyStats.monthlyStats.data];
+    //stats of all months
+    const monthlyStatsArr = [...state.monthlyStats.monthlyStats.data];
 
-      let monthStatsIndex = null;
+    let monthStatsIndex = null;
 
-      //quarter total stats
-      const quarterlyStatsData = { ...state.quarterlyStats.quarterlyStats.data[0] };
+    //quarter total stats
+    const quarterlyStatsData = { ...state.quarterlyStats.quarterlyStats.data[0] };
 
-      //copy for rollback
-      const quarterStatsOld = { ...quarterlyStatsData };
+    //copy for rollback
+    const quarterStatsOld = { ...quarterlyStatsData };
 
-      if (params.date.month) {
+    if (params.date.month) {
 
-        for (let i = 0; i < monthlyStatsArr.length; i++) {
-          if (monthlyStatsArr[i].month === params.date.monthHeb) {
-            monthStatsIndex = i;
-          }
+      for (let i = 0; i < monthlyStatsArr.length; i++) {
+        if (monthlyStatsArr[i].month === params.date.monthHeb) {
+          monthStatsIndex = i;
         }
-
-        //make a copy of month total object to avoid mutating the original
-        const monthStatsObject = { ...monthlyStatsArr[monthStatsIndex] };
-
-        //subtract the old month budge value from
-        //total budget and then add the new month budget value
-        monthStatsObject.income = monthStatsObject.income - oldBudgetExec[`${params.date.month}_budget`] + newBudgetExec[`${params.date.month}_budget`];
-
-        //subtract the old quarter budget value from
-        //total budget and then add the new quarter budget value
-        quarterlyStatsData.income = quarterlyStatsData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
-
-        //update month total
-        dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(monthStatsObject, monthStatsIndex));
-
-        //update quarter total
-        dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterlyStatsData));
       }
 
-      //copy of the un-modified month total object for rollback
-      const oldMonthStatsObj = { ...monthlyStatsArr[monthStatsIndex] };
+      //make a copy of month total object to avoid mutating the original
+      const monthStatsObject = { ...monthlyStatsArr[monthStatsIndex] };
 
-      //create a a budget execution object
-      //with full properties to be saved in the store
-      const budgetExecStoreObj = {
-        ...oldBudgetExec,
-        ...newBudgetExec
+      //subtract the old month budge value from
+      //total budget and then add the new month budget value
+      monthStatsObject.income = monthStatsObject.income - oldBudgetExec[`${params.date.month}_budget`] + newBudgetExec[`${params.date.month}_budget`];
+
+      //subtract the old quarter budget value from
+      //total budget and then add the new quarter budget value
+      quarterlyStatsData.income = quarterlyStatsData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
+
+      //update month total
+      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(monthStatsObject, monthStatsIndex));
+
+      //update quarter total
+      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterlyStatsData));
+    }
+
+    //copy of the un-modified month total object for rollback
+    const oldMonthStatsObj = { ...monthlyStatsArr[monthStatsIndex] };
+
+    //create a a budget execution object
+    //with full properties to be saved in the store
+    const budgetExecStoreObj = {
+      ...oldBudgetExec,
+      ...newBudgetExec
+    }
+
+    //update the new data in the store first for
+    //better and fast user experience
+    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingName));
+
+    return ipcSendReceive({
+      send: {
+        channel: "update-budget-execution",
+        params
+      },
+      receive: {
+        channel: "budget-execution-updated",
+      },
+      onSuccess: () => myToasts.success("השורה עודכנה בהצלחה."),
+      onError: (result) => {
+        //rollback to the old budget execution object
+        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingName));
+
+        //rollback to the old month total stats
+        dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));
+
+        //rollback to old quarter total
+        dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterStatsOld));
+
+        myToasts.error(result.error);
       }
-
-      //update the new data in the store first for
-      //better and fast user experience
-      dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingName));
-
-      //send a request to backend to get the data
-      ipcRenderer.send("update-budget-execution", params);
-
-      //listen when the data comes back
-      ipcRenderer.once("budget-execution-updated", (event, arg) => {
-        if (arg.error) {
-          //send the error to the notification center
-          toast.error(arg.error, {
-            onOpen: () => playSound(soundTypes.error)
-          });
-
-          //rollback to the old budget execution object
-          dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingName));
-
-          //rollback to the old month total stats
-          dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));
-
-          //rollback to old quarter total
-          dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterStatsOld));
-          reject();
-        } else {
-          toast.success("השורה עודכנה בהצלחה.", {
-            onOpen: () => playSound(soundTypes.message)
-          });
-          resolve();
-        }
-      });
-    })
+    });
 
   };
 };

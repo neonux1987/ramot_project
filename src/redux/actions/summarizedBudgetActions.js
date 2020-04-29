@@ -1,13 +1,10 @@
 import { ipcRenderer } from 'electron';
-import registeredYearsActions from './registeredYearsActions';
-import yearlyStatsActions from './yearlyStatsActions';
-import quarterlyStatsActions from './quarterlyStatsActions';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import React from 'react';
-import { toast } from 'react-toastify';
-import ToastRender from '../../components/ToastRender/ToastRender';
 
-const TOAST_AUTO_CLOSE = 3000;
+import { toast } from 'react-toastify';
+import { myToasts } from '../../CustomToasts/myToasts';
+import { ipcSendReceive } from './util/util';
+
 
 // TYPES
 export const TYPES = {
@@ -21,85 +18,30 @@ export const TYPES = {
   SUMMARIZED_BUDGETS_CLEANUP: "SUMMARIZED_BUDGETS_CLEANUP"
 }
 
-/**
- * fetch summarized budgets
- * @param {*} params 
- */
 export const fetchSummarizedBudgets = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
     dispatch(requestSummarizedBudgets(params.buildingName));
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-summarized-budgets", params);
-    //listen when the data comes back
-    ipcRenderer.once("summarized-budgets", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(summarizedBudgetsFetchingFailed(arg.error, params.buildingName));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //and empty report should be generated.
-        if (arg.data.data.length === 0) {
-          //generate empty report
-          //generateEmptyReport(params, dispatch);
-          dispatch(receiveSummarizedBudgets([], params.date, params.buildingName));
-        } else {
-          //success store the data
-          dispatch(receiveSummarizedBudgets(arg.data.data, params.date, params.buildingName));
-          //if there is no data, that means it's a new month and 
-        }
+    return ipcSendReceive({
+      send: {
+        channel: "get-summarized-budgets",
+        params
+      },
+      receive: {
+        channel: "summarized-budgets"
+      },
+      onSuccess: (result) => dispatch(receiveSummarizedBudgets(result.data.data, params.date, params.buildingName)),
+      onError: (result) => {
+        dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingName));
+
+        myToasts.error(result.error)
       }
     });
 
   }
 };
-
-const generateEmptyReport = (params, dispatch) => {
-  //empty report process started
-  const toastId = toast.info(<ToastRender spinner={true} message={"מייצר דוח רבעוני חדש..."} />, {
-    autoClose: false,
-    onOpen: () => playSound(soundTypes.message)
-  });
-
-  //request request to backend to get the data
-  ipcRenderer.send("generate-empty-summarized-budget-report", params);
-  return ipcRenderer.once("generated-empty-summarized-budget-data", (event, arg) => {
-    if (arg.error) {
-      playSound(soundTypes.error);
-      //empty report process finished
-      toast.update(toastId, {
-        render: <ToastRender done={true} message={arg.error} />,
-        type: toast.TYPE.ERROR,
-        delay: 2000,
-        autoClose: TOAST_AUTO_CLOSE,
-        onClose: () => {
-          //let react know that an erro occured while trying to fetch
-          dispatch(summarizedBudgetsFetchingFailed(arg.error, params.buildingName));
-        }
-      });
-    } else {
-      //empty report process finished
-      toast.update(toastId, {
-        render: <ToastRender done={true} message={"דוח שנתי חדש נוצר בהצלחה."} />,
-        type: toast.TYPE.SUCCESS,
-        delay: 2000,
-        autoClose: TOAST_AUTO_CLOSE,
-        onClose: () => {
-          //success store the data
-          dispatch(receiveSummarizedBudgets(arg.data, params.date, params.buildingName));
-          dispatch(registeredYearsActions.fetchRegisteredYears(params));
-          dispatch(quarterlyStatsActions.fetchAllQuartersStatsByYear(params));
-          dispatch(yearlyStatsActions.fetchYearStats(params));
-        }
-      });
-    }
-  });
-}
 
 const requestSummarizedBudgets = function (buildingName) {
   return {
@@ -154,25 +96,23 @@ export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
     // first update the store for fast user response
     dispatch(updateSummarizedBudgetInStore(buildingName, fullSummarizedBudget, index));
 
-    // send a request to backend to get the data
-    ipcRenderer.send("update-summarized-budget", params);
-
-    // listen when the data comes back
-    ipcRenderer.once("summarized-budget-updated", (event, arg) => {
-      if (arg.error) {
+    return ipcSendReceive({
+      send: {
+        channel: "update-summarized-budget",
+        params
+      },
+      receive: {
+        channel: "summarized-budget-updated"
+      },
+      onSuccess: () => myToasts.success("השורה עודכנה בהצלחה."),
+      onError: (result) => {
         // rollback to old expanse
         updateSummarizedBudgetInStore(buildingName, oldCopy, index)
-        // send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        // send success notification
-        toast.success("השורה עודכנה בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
+
+        myToasts.error(result.error)
       }
     });
+
   }
 };
 

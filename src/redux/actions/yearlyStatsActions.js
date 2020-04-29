@@ -1,66 +1,60 @@
-import { ipcRenderer } from 'electron';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { toast } from 'react-toastify';
+import { myToasts } from '../../CustomToasts/myToasts';
+import { ipcSendReceive } from './util/util';
 
-/**
- * fetch month expanses
- * @param {*} params 
- */
-const fetchYearStats = (params = Object) => {
+export const TYPES = {
+  YEARLY_STATS_REQUEST: "YEARLY_STATS_REQUEST",
+  YEARLY_STATS_RECEIVE: "YEARLY_STATS_RECEIVE",
+  YEARLY_STATS_FETCHING_FAILED: "YEARLY_STATS_FETCHING_FAILED",
+  YEARLY_STATS_CLEANUP: "YEARLY_STATS_CLEANUP"
+}
+
+export const fetchYearStats = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
     dispatch(requestYearlyStats());
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-year-stats", params);
-    //listen when the data comes back
-    return ipcRenderer.once("year-stats", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success store the data
-        dispatch(receiveYearlyStats(arg.data));
+    return ipcSendReceive({
+      send: {
+        channel: "get-year-stats",
+        params
+      },
+      receive: {
+        channel: "year-stats"
+      },
+      onSuccess: (result) => dispatch(receiveYearlyStats(result.data)),
+      onError: (result) => {
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error);
       }
     });
+
   }
 };
 
 const requestYearlyStats = function (page) {
   return {
-    type: "REQUEST_YEARLY_STATS"
+    type: TYPES.YEARLY_STATS_REQUEST
   }
 };
 
 const receiveYearlyStats = function (data) {
   return {
-    type: "RECEIVE_YEARLY_STATS",
+    type: TYPES.YEARLY_STATS_RECEIVE,
     data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "YEARLY_STATS_FETCHING_FAILED",
+    type: TYPES.YEARLY_STATS_FETCHING_FAILED,
     payload: error
   }
 };
 
-const cleanupYearlyStats = () => {
+export const cleanupYearlyStats = () => {
   return {
-    type: "CLEANUP_YEARLY_STATS"
+    type: TYPES.YEARLY_STATS_CLEANUP
   }
 }
-
-export default {
-  fetchYearStats,
-  fetchingFailed,
-  receiveYearlyStats,
-  requestYearlyStats,
-  cleanupYearlyStats
-};

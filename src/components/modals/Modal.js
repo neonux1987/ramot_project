@@ -61,7 +61,7 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
             color: iconColor,
             fontSize: "28px",
           }} />
-          <DialogTitle id="alert-dialog-slide-title" style={{ paddingRight: "12px", flex: "initial", color: "#ffffff" }} id="alert-dialog-slide-title">{title}</DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title" style={{ paddingRight: "12px", flex: "initial", color: "#ffffff" }}>{title}</DialogTitle>
         </div>
 
         <DialogContent>

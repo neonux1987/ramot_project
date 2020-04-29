@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 
 // ACTIONS
 import {
@@ -15,7 +14,6 @@ import {
 // UTILS
 import Helper from '../../helpers/Helper';
 import { areEqual } from '../util';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 
 // CONTEXT
 import GlobalContext from '../../context/GlobalContext';
@@ -178,21 +176,7 @@ const BudgetExecutionsTable = props => {
   }
 
   const onAgreeHandler = async (buildingNameEng, date, index, rowData) => {
-    const promise = await dispatch(deleteBudgetExecution(buildingNameEng, date, index, rowData))
-      .catch((result) => {
-        // send the error to the notification center
-        toast.error(result.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      });
-
-    if (promise && promise.success) {
-      // send the error to the notification center
-      toast.success("השורה נמחקה בהצלחה.", {
-        onOpen: () => playSound(soundTypes.success)
-      });
-    }
-
+    dispatch(deleteBudgetExecution(buildingNameEng, date, index, rowData));
   }
 
   /**

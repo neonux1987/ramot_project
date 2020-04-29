@@ -1,40 +1,43 @@
-import { ipcRenderer } from 'electron';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { toast } from 'react-toastify';
+import { myToasts } from '../../CustomToasts/myToasts';
+import { ipcSendReceive } from './util/util';
 
-/**
- * fetch month expanses
- * @param {*} params 
- */
-const fetchAllMonthsStatsByQuarter = (params = Object) => {
+export const TYPES = {
+  REQUEST_MONTHLY_STATS: "REQUEST_MONTHLY_STATS",
+  RECEIVE_MONTHLY_STATS: "RECEIVE_MONTHLY_STATS",
+  MONTHLY_STATS_FETCHING_FAILED: "MONTHLY_STATS_FETCHING_FAILED",
+  CLEANUP_MONTHLY_STATS: "CLEANUP_MONTHLY_STATS",
+  UPDATE_MONTH_STATS_STORE_ONLY: "UPDATE_MONTH_STATS_STORE_ONLY"
+}
+
+export const fetchAllMonthsStatsByQuarter = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
     dispatch(requestMonthlyStats());
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-all-months-stats-by-quarter", params);
-    //listen when the data comes back
-    return ipcRenderer.once("all-months-stats-by-quarter", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //success store the data
-        dispatch(receiveMonthlyStats(arg.data));
+    return ipcSendReceive({
+      send: {
+        channel: "get-all-months-stats-by-quarter",
+        params
+      },
+      receive: {
+        channel: "all-months-stats-by-quarter"
+      },
+      onSuccess: (result) => dispatch(receiveMonthlyStats(result.data)),
+      onError: (result) => {
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error)
       }
     });
+
   }
 };
 
-const updateMonthStatsStoreOnly = (monthStatsObj, index) => {
+export const updateMonthStatsStoreOnly = (monthStatsObj, index) => {
   return dispatch => {
     dispatch({
-      type: "UPDATE_MONTH_STATS_STORE_ONLY",
+      type: TYPES.UPDATE_MONTH_STATS_STORE_ONLY,
       monthStatsObj,
       index
     });
@@ -43,35 +46,26 @@ const updateMonthStatsStoreOnly = (monthStatsObj, index) => {
 
 const requestMonthlyStats = function (page) {
   return {
-    type: "REQUEST_MONTHLY_STATS"
+    type: TYPES.REQUEST_MONTHLY_STATS
   }
 };
 
 const receiveMonthlyStats = function (data) {
   return {
-    type: "RECEIVE_MONTHLY_STATS",
+    type: TYPES.RECEIVE_MONTHLY_STATS,
     data
   }
 }
 
 const fetchingFailed = function (error) {
   return {
-    type: "MONTHLY_STATS_FETCHING_FAILED",
+    type: TYPES.MONTHLY_STATS_FETCHING_FAILED,
     payload: error
   }
 };
 
-const cleanupMonthlyStats = () => {
+export const cleanupMonthlyStats = () => {
   return {
-    type: "CLEANUP_MONTHLY_STATS"
+    type: TYPES.CLEANUP_MONTHLY_STATS
   }
 }
-
-export default {
-  fetchAllMonthsStatsByQuarter,
-  fetchingFailed,
-  receiveMonthlyStats,
-  requestMonthlyStats,
-  cleanupMonthlyStats,
-  updateMonthStatsStoreOnly
-};

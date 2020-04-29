@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import app from './appReducer';
 import sidebar from './sidebarReducer';
 import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
@@ -42,7 +41,6 @@ const summarizedBudgets = createPageReducer("SUMMARIZED_BUDGETS", {
 });
 
 export default combineReducers({
-  app,
   sidebar,
   monthExpanses,
   budgetExecutions,

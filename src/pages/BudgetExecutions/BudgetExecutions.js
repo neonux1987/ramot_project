@@ -4,7 +4,6 @@ import { withRouter } from 'react-router';
 import { Equalizer, TableChart } from '@material-ui/icons';
 
 // COMMON COMPONENTS
-import ExpandableSection from '../../components/Section/ExpandableSection';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 

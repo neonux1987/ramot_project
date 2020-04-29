@@ -1,3 +1,4 @@
+import { TYPES } from '../actions/monthlyStatsActions';
 
 const initState = {
   monthlyStats: {
@@ -10,7 +11,7 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_MONTHLY_STATS":
+    case TYPES.RECEIVE_MONTHLY_STATS:
       return {
         ...state,
         monthlyStats: {
@@ -20,7 +21,7 @@ export default (state = initState, action) => {
           data: action.data
         }
       }
-    case "REQUEST_MONTHLY_STATS":
+    case TYPES.REQUEST_MONTHLY_STATS:
       return {
         ...state,
         monthlyStats: {
@@ -28,7 +29,7 @@ export default (state = initState, action) => {
           isFetching: true
         }
       }
-    case "UPDATE_MONTH_STATS_STORE_ONLY": {
+    case TYPES.UPDATE_MONTH_STATS_STORE_ONLY: {
       //copy the array
       const monthlyStatsArr = [...state.monthlyStats.data];
       //set the new object
@@ -42,7 +43,7 @@ export default (state = initState, action) => {
         }
       }
     }
-    case "MONTHLY_STATS_FETCHING_FAILED":
+    case TYPES.MONTHLY_STATS_FETCHING_FAILED:
       return {
         ...state,
         monthlyStats: {
@@ -51,7 +52,7 @@ export default (state = initState, action) => {
           error: action.payload
         }
       }
-    case "CLEANUP_MONTHLY_STATS":
+    case TYPES.CLEANUP_MONTHLY_STATS:
       return {
         ...state,
         monthlyStats: {

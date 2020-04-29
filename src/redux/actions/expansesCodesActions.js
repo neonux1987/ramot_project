@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
+import { ipcSendReceive } from './util/util';
+import { myToasts } from '../../CustomToasts/myToasts';
 
 // TYPES
 export const TYPES = {
@@ -26,22 +28,25 @@ export const fetchExpansesCodesByStatus = (status) => {
     //let react know that the fetching is started
     dispatch(requestExpansesCodes());
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-expanses-codes-by-status", status);
-    //listen when the data comes back
-    ipcRenderer.once("expanses-codes-by-status", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
+    return ipcSendReceive({
+      send: {
+        channel: "get-expanses-codes-by-status",
+        params: status
+      },
+      receive: {
+        channel: "expanses-codes-by-status"
+      },
+      onSuccess: (result) => {
         //success store the data
-        dispatch(receiveExpansesCodes(arg.data));
+        dispatch(receiveExpansesCodes(result.data));
+      },
+      onError: (result) => {
+        myToasts.error(result.error);
+        //let react know that an erro occured while trying to fetch
+        dispatch(fetchingFailed(result.error));
       }
     });
+
   }
 };
 
@@ -72,25 +77,30 @@ const fetchingFailed = function (error) {
  */
 export const addExpanseCode = (expanseCode) => {
   return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("add-expanse-code", expanseCode);
-    //listen when the data comes back
-    ipcRenderer.once("expanse-code-added", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        expanseCode.id = arg.data;
-        console.log(arg);
+
+    return ipcSendReceive({
+      send: {
+        channel: "add-expanse-code",
+        params: expanseCode
+      },
+      receive: {
+        channel: "expanse-code-added"
+      },
+      onSuccess: (result) => {
+        expanseCode.id = result.data;
+
         dispatch(addStoreOnly(expanseCode));
         //send success notification
-        toast.success("הקוד נוסף בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
+        myToasts.success("הקוד נוסף בהצלחה.");
+      },
+      onError: (result) => {
+        //let react know that an erro occured while trying to fetch
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error);
       }
     });
+
   }
 };
 
@@ -130,24 +140,26 @@ export const updateExpanseCode = (newCopy, oldCopy, index) => {
       }
     };
 
-    //send a request to backend to get the data
-    ipcRenderer.send("update-expanse-code", params);
-    //listen when the data comes back
-    ipcRenderer.once("expanse-code-updated", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
+    return ipcSendReceive({
+      send: {
+        channel: "update-expanse-code",
+        params
+      },
+      receive: {
+        channel: "expanse-code-updated"
+      },
+      onSuccess: (result) => {
+        //send success notification
+        myToasts.success("הקוד עודכן בהצלחה.");
+      },
+      onError: (result) => {
         // rollback
         dispatch(updateStoreOnly(oldCopy, index));
-      } else {
-        //send success notification
-        toast.success("הקוד עודכן בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
+
+        myToasts.error(result.error);
       }
     });
+
   }
 };
 
@@ -163,24 +175,26 @@ export const deleteExpanseCode = (id, oldCopy, index) => {
     //delete the item in store first
     dispatch(deleteStoreOnly(index));
 
-    //request request to backend to get the data
-    ipcRenderer.send("delete-expanse-code", id);
-    //listen when the data comes back
-    ipcRenderer.once("expanse-code-deleted", (event, arg) => {
-      if (arg.error) {
+    return ipcSendReceive({
+      send: {
+        channel: "delete-expanse-code",
+        params: id
+      },
+      receive: {
+        channel: "expanse-code-deleted"
+      },
+      onSuccess: (result) => {
+        //send success notification
+        myToasts.success("הקוד נמחקה בהצלחה.");
+      },
+      onError: (result) => {
         //delete the item in store first
         dispatch(addStoreOnly(oldCopy));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
-        //send the error to the notification center
-        toast.success("השורה נמחקה בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
+
+        myToasts.error(result.error);
       }
     });
+
   }
 };
 

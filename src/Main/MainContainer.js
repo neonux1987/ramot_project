@@ -21,7 +21,7 @@ import Toolbar from './Toolbar/Toolbar';
 import Helper from '../helpers/Helper';
 
 // ACTIONS
-import sidebarActions from '../redux/actions/sidebarActions';
+import * as sidebarActions from '../redux/actions/sidebarActions';
 
 const styles = theme => ({
   main: {

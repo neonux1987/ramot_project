@@ -1,4 +1,4 @@
-
+import { TYPES } from '../actions/yearlyStatsActions';
 const initState = {
   yearlyStats: {
     isFetching: false,
@@ -10,7 +10,7 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_YEARLY_STATS":
+    case TYPES.YEARLY_STATS_RECEIVE:
       return {
         ...state,
         yearlyStats: {
@@ -20,7 +20,7 @@ export default (state = initState, action) => {
           data: action.data
         }
       }
-    case "REQUEST_YEARLY_STATS":
+    case TYPES.YEARLY_STATS_REQUEST:
       return {
         ...state,
         yearlyStats: {
@@ -28,7 +28,7 @@ export default (state = initState, action) => {
           isFetching: true
         }
       }
-    case "YEARLY_STATS_FETCHING_FAILED":
+    case TYPES.YEARLY_STATS_FETCHING_FAILED:
       return {
         ...state,
         yearlyStats: {
@@ -37,7 +37,7 @@ export default (state = initState, action) => {
           error: action.payload
         }
       }
-    case "CLEANUP_YEARLY_STATS":
+    case TYPES.YEARLY_STATS_CLEANUP:
       return {
         ...state,
         yearlyStats: {

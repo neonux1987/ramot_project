@@ -52,7 +52,7 @@ const settingsIpc = () => {
     });
   });
 
-  ipcMain.on('update-specific-setting', (event, settingName, payload) => {
+  ipcMain.on('update-specific-setting', (event, { settingName, payload }) => {
     settingsLogic.updateSpecificSetting(settingName, payload).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("specific-setting-updated", { data: result });

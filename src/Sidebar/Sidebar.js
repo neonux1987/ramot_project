@@ -1,17 +1,21 @@
+// LIBRARIES
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import Menu from './Menu';
 import { withStyles, Drawer } from '@material-ui/core';
-import Logo from './Logo/Logo'
 import PropTypes from 'prop-types';
-import NavButton from './NavButton';
 import { Dashboard, Tune } from '@material-ui/icons';
-import LoadingCircle from '../components/LoadingCircle';
-import sidebarActions from '../redux/actions/sidebarActions';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+
+// COMPONENTS
+import Menu from './Menu';
+import Logo from './Logo/Logo'
+import NavButton from './NavButton';
+import LoadingCircle from '../components/LoadingCircle';
 import Menuitem from './Menuitem';
-import bgImage from '../assets/images/texture.jpg';
+
+// ACTIONS
+import * as sidebarActions from '../redux/actions/sidebarActions';
 
 const drawerWidth = 240;
 

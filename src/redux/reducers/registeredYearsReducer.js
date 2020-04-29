@@ -1,3 +1,4 @@
+import { TYPES } from '../actions/registeredYearsActions';
 
 const initState = {
   isFetching: false,
@@ -8,25 +9,25 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_REGISTERED_YEARS":
+    case TYPES.REGISTERED_YEARS_RECEIVE:
       return {
         ...state,
         isFetching: false,
         status: "success",
         data: action.data
       }
-    case "REQUEST_REGISTERED_YEARS":
+    case TYPES.REGISTERED_YEARS_REQUEST:
       return {
         ...state,
         isFetching: true
       }
-    case "REGISTERED_YEARS_FETCHING_FAILED":
+    case TYPES.REGISTERED_YEARS_FETCHING_FAILED:
       return {
         ...state,
         status: "error",
         error: action.payload
       }
-    case "CLEANUP_YEARS":
+    case TYPES.REGISTERED_YEARS_CLEANUP:
       return {
         ...state,
         isFetching: false,

@@ -1,6 +1,6 @@
 .info,.warning,.error,.success{
-  background: #ffffff;
-  border-radius: 4px;
+  background: #ffffff !important;
+  border-radius: 4px !important;
   border-right: 30px solid #258db5;
 }
 

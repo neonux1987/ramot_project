@@ -2,6 +2,8 @@ import { ipcRenderer } from 'electron';
 
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
+import { ipcSendReceive } from './util/util';
+import { myToasts } from '../../CustomToasts/myToasts';
 
 export const TYPES = {
   BACKUPS_NAMES_REQUEST: "BACKUPS_NAMES_REQUEST",
@@ -22,28 +24,31 @@ export const fetchBackupsNames = () => {
     //let react know that the fetching is started
     dispatch(requestBackupsNames());
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-backups-names");
-    //listen when the data comes back
-    ipcRenderer.once("backups-names-data", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
+    return ipcSendReceive({
+      send: {
+        channel: "get-backups-names",
+      },
+      receive: {
+        channel: "backups-names-data",
+      },
+      onSuccess: (result) => {
         //sort the date
-        const newDataArr = arg.data.sort((backup1, backup2) => {
+        const newDataArr = result.data.sort((backup1, backup2) => {
           const date1 = new Date(backup1.backupDateTime);
           const date2 = new Date(backup2.backupDateTime);
           return date1.getTime() < date2.getTime() ? 1 : -1;
         });
         //success store the data
         dispatch(receiveBackupsNames(newDataArr));
+      },
+      onError: (result) => {
+        //let react know that an erro occured while trying to fetch
+        dispatch(fetchingFailed(result.error));
+        //send the error to the notification center
+        myToasts.error(result.error);
       }
     });
+
   }
 };
 
@@ -71,20 +76,19 @@ const fetchingFailed = function (error) {
 export const initializeBackupNames = () => {
   return dispatch => {
 
-    //request request to backend to get the data
-    ipcRenderer.send("initialize-backups-names");
-    //listen when the data comes back
-    ipcRenderer.once("backups-names-initialized", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
+    return ipcSendReceive({
+      send: {
+        channel: "initialize-backups-names",
+      },
+      receive: {
+        channel: "backups-names-initialized",
+      },
+      onSuccess: () => {
         dispatch({
           type: TYPES.BACKUPS_NAMES_INIT
         })
       }
     });
+
   }
 }

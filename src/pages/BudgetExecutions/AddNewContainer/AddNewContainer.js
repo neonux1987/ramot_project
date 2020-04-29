@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@material-ui/core";
-import { toast } from 'react-toastify';
 
 // CSS
 import {
@@ -19,8 +18,8 @@ import { addBudgetExecution } from "../../../redux/actions/budgetExecutionsActio
 // COMPONENTS
 import ReactSelect from "../../../components/ReactSelect/ReactSelect";
 
-// SOUND
-import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
+// TOASTS
+import { myToasts } from "../../../CustomToasts/myToasts";
 
 const AddNewContainer = (props) => {
 
@@ -59,16 +58,7 @@ const AddNewContainer = (props) => {
       payload: formInputs
     }
 
-    const promiseSuccess = await dispatch(addBudgetExecution(params)).catch((result) => {
-      toast.error(result.error, {
-        onOpen: () => playSound(soundTypes.error)
-      });
-    });
-
-    if (promiseSuccess)
-      toast.success("השורה נוספה בהצלחה.", {
-        onOpen: () => playSound(soundTypes.success)
-      });
+    dispatch(addBudgetExecution(params));
   }
 
   return (

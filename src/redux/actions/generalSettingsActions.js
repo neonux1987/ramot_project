@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron';
 import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
 import { toast } from 'react-toastify';
+import { ipcSendReceive } from './util/util';
+import { myToasts } from '../../CustomToasts/myToasts';
 
 /**
  * fetch general settings
@@ -13,24 +15,25 @@ const fetchGeneralSettings = () => {
     //let react know that the fetching is started
     dispatch(requestGeneralSettings());
 
-    //request request to backend to get the data
-    ipcRenderer.send("get-general-settings");
-    //listen when the data comes back
-    ipcRenderer.once("general-settings-data", (event, arg) => {
-      if (arg.error) {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(arg.error));
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
+    return ipcSendReceive({
+      send: {
+        channel: "get-general-settings",
+      },
+      receive: {
+        channel: "general-settings-data"
+      },
+      onSuccess: (result) => {
         //success store the data
-        dispatch(receiveGeneralSettings(arg.data));
-        //play welcome sound when settings loaded
-        playSound(soundTypes.welcome);
+        dispatch(receiveGeneralSettings(result.data));
+      },
+      onError: (result) => {
+        //let react know that an erro occured while trying to fetch
+        dispatch(fetchingFailed(result.error));
+
+        myToasts.error(result.error);
       }
     });
+
   }
 };
 
@@ -60,45 +63,46 @@ const fetchingFailed = function (error) {
  */
 const updateGeneralSettings = (params = Object, tableData) => {
   return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("update-general-settings", params);
-    //listen when the data comes back
-    ipcRenderer.once("updated-general-settings", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
+
+    return ipcSendReceive({
+      send: {
+        channel: "update-general-settings",
+        params
+      },
+      receive: {
+        channel: "updated-general-settings"
+      },
+      onSuccess: (result) => {
+        //success store the data
         dispatch(receiveGeneralSettings(tableData));
-        //send success notification
-        toast.success("ההגדרות עודכנו בהצלחה.", {
-          onOpen: () => playSound(soundTypes.message)
-        });
-      }
+
+        myToasts.success("ההגדרות עודכנו בהצלחה.");
+      },
+      onError: (result) => myToasts.error(result.error)
     });
+
   }
 };
 
 const updateVat = (params = Object) => {
   return dispatch => {
-    //send a request to backend to get the data
-    ipcRenderer.send("update-general-settings", params);
-    //listen when the data comes back
-    ipcRenderer.once("updated-general-settings", (event, arg) => {
-      if (arg.error) {
-        //send the error to the notification center
-        toast.error(arg.error, {
-          onOpen: () => playSound(soundTypes.error)
-        });
-      } else {
+
+    return ipcSendReceive({
+      send: {
+        channel: "update-general-settings",
+        params
+      },
+      receive: {
+        channel: "updated-general-settings"
+      },
+      onSuccess: (result) => {
         dispatch(updateVatInStore(params.settings.tax));
-        //send success notification
-        toast.success('המע"מ עודכן בהצלחה.', {
-          onOpen: () => playSound(soundTypes.message)
-        });
-      }
+
+        myToasts.success('המע"מ עודכן בהצלחה.');
+      },
+      onError: (result) => myToasts.error(result.error)
     });
+
   }
 };
 

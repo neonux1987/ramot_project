@@ -3,9 +3,9 @@ import { Select, MenuItem, InputLabel } from '@material-ui/core';
 import { pickerWrapper, pickerLabel, formSelect, formControl, dates, select } from './DatePicker.module.css';
 import Spinner from '../Spinner/Spinner';
 import { useSelector, useDispatch } from 'react-redux';
-import registeredMonthsActions from '../../redux/actions/registeredMonthsActions';
-import registeredQuartersActions from '../../redux/actions/registeredQuartersActions';
-import registeredYearsActions from '../../redux/actions/registeredYearsActions';
+import * as registeredMonthsActions from '../../redux/actions/registeredMonthsActions';
+import * as registeredQuartersActions from '../../redux/actions/registeredQuartersActions';
+import * as registeredYearsActions from '../../redux/actions/registeredYearsActions';
 import { updateDate } from '../../redux/actions/dateActions';
 import Helper from '../../helpers/Helper';
 
@@ -13,7 +13,6 @@ const DatePicker = ({
   quarter = false,
   month = false,
   date,
-  submitHandler,
   buildingName,
   pageName
 }) => {
@@ -63,7 +62,7 @@ const DatePicker = ({
 
   useEffect(() => {
     dispatch(updateDate(pageName, buildingName, selectDate));
-  }, [selectDate]);
+  }, [selectDate, pageName, buildingName, dispatch]);
 
 
   const onMonthChange = (event) => {
@@ -96,7 +95,7 @@ const DatePicker = ({
     if (month) {
       dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, date: { year } }))).then((result) => {
         // get the earliest month in the list 
-        const month = result[0].month;
+        const month = result.data[0].month;
 
         const newDate = Helper.generateAllDateByMonthName(month);
 
@@ -116,7 +115,7 @@ const DatePicker = ({
         }
       }))).then((result) => {
         // get the earliest quarter in the list
-        const quarter = result[0].quarter;
+        const quarter = result.data[0].quarter;
         const parsedQuarter = Number.parseInt(quarter);
 
         const newDate = {

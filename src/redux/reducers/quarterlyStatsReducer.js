@@ -1,3 +1,4 @@
+import { TYPES } from '../actions/quarterlyStatsActions';
 
 const initState = {
   quarterlyStats: {
@@ -10,7 +11,7 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case "RECEIVE_QUARTERLY_STATS":
+    case TYPES.RECEIVE_QUARTERLY_STATS:
       return {
         ...state,
         quarterlyStats: {
@@ -20,7 +21,7 @@ export default (state = initState, action) => {
           data: action.data
         }
       }
-    case "REQUEST_QUARTERLY_STATS":
+    case TYPES.REQUEST_QUARTERLY_STATS:
       return {
         ...state,
         quarterlyStats: {
@@ -28,7 +29,7 @@ export default (state = initState, action) => {
           isFetching: true
         }
       }
-    case "UPDATE_QUARTER_STATS_STORE_ONLY": {
+    case TYPES.UPDATE_QUARTER_STATS_STORE_ONLY: {
       //create new array with the new object
       const newDataArray = [action.quarterStatsObj];
       return {
@@ -39,7 +40,7 @@ export default (state = initState, action) => {
         }
       }
     }
-    case "QUARTERLY_STATS_FETCHING_FAILED":
+    case TYPES.QUARTERLY_STATS_FETCHING_FAILED:
       return {
         ...state,
         quarterlyStats: {
@@ -48,7 +49,7 @@ export default (state = initState, action) => {
           error: action.payload
         }
       }
-    case "CLEANUP_QUARTERLY_STATS":
+    case TYPES.CLEANUP_QUARTERLY_STATS:
       return {
         ...state,
         quarterlyStats: {
