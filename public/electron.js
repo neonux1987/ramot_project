@@ -1,5 +1,5 @@
 //========================= electron imports =========================//
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 
 //========================= services =========================//

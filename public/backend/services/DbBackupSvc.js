@@ -63,6 +63,7 @@ class DbBackupSvc {
 
   async start() {
     console.log("dbBackup service started...");
+
     let settings = null;
     try {
       //fetch db backup settings
@@ -149,6 +150,10 @@ class DbBackupSvc {
       await this.stop();
       await this.start();
     }
+  }
+
+  isRunning() {
+    return this.backupSchedule === null ? false : true;
   }
 
   async backupDbCallback() {

@@ -107,7 +107,11 @@ class ServicesLogic {
     keys.forEach((key) => {
       if (services[key].enabled) {
         const selectedService = servicesObjects[key];
-        selectedService.start();
+
+        const isRunning = selectedService.isRunning();
+
+        if (!isRunning)
+          selectedService.start();
       }
     });
   }

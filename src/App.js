@@ -25,6 +25,9 @@ import ModalRoot from './components/modals/ModalRoot';
 import { myToasts } from './CustomToasts/myToasts';
 import CustomCloseButton from './components/CustomCloseButton/CustomCloseButton';
 
+// SOUND
+import { playSound, soundTypes } from './audioPlayer/audioPlayer';
+
 // ELECTRON
 const remote = require('electron').remote;
 const { ipcRenderer } = require('electron');
@@ -61,6 +64,9 @@ const App = props => {
       ipcRenderer.removeAllListeners('update_downloaded');
       myToasts.info("המערכת הורידה את העדכון והוא מוכן להתקנה.");
     });
+
+    //play welcome sound when settings loaded
+    playSound(soundTypes.welcome);
   }, [])
 
   useEffect(() => {
@@ -110,6 +116,7 @@ const App = props => {
         default: return null;
       }
     });
+
     //start services
     ipcRenderer.send("system-start-services");
   });

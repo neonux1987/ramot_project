@@ -76,6 +76,10 @@ class EmptyReportsGeneratorSvc {
 
   }
 
+  isRunning() {
+    return this.backupSchedule === null ? false : true;
+  }
+
   async generateMissingReports() {
 
     rendererNotificationSvc.notifyRenderer("notify-renderer", "reportsGenerationStarted", "המערכת מייצרת כעת דוחות לכל הבניינים...");
