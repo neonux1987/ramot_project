@@ -1,13 +1,12 @@
 import React from 'react';
-import { withStyles, Tabs, Tab } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import { Route, Switch, NavLink } from 'react-router-dom';
+import { withStyles } from '@material-ui/core';
+import { Route, Switch } from 'react-router-dom';
 import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
 import SummarizedSections from './pages/SummarizedSections/SummarizedSections';
 import Reports from './pages/Reports/Reports';
 import Settings from '../Settings/Settings';
 
-const styles = (theme) => ({
+const styles = () => ({
   tabs: {
     flexGrow: 1,
     backgroundColor: "#333333"
@@ -32,13 +31,7 @@ const styles = (theme) => ({
 
 //const PAGE_NAME = "settings";
 
-const Management = ({ classes, match }, props) => {
-
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+const Management = ({ match }) => {
 
   return (
     <div>

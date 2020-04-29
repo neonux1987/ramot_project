@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import styles from './AddSummarizedSectionContainer.module.css'
 
 const AddSummarizedSectionContainer = (props) => {

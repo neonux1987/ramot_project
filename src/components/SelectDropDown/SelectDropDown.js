@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import React from 'react';
+import { Select, FormControl } from '@material-ui/core';
 import styles from './SelectDropDown.module.css';
 
 const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler, index, name }) => {

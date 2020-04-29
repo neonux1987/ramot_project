@@ -1,15 +1,9 @@
 // LIBRARIES
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormControlLabel, FormControl, InputLabel, Checkbox, Box, Button, Typography, Divider, TextField, Select, MenuItem } from '@material-ui/core';
-import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
+import { FormControlLabel, Checkbox, Box, Button, Typography, TextField, Select, MenuItem } from '@material-ui/core';
+import { TimePicker } from '@material-ui/pickers';
 import { Backup } from '@material-ui/icons';
-import DateFnsUtils from '@date-io/date-fns';
-import heLocale from "date-fns/locale/he";
-import { toast } from 'react-toastify';
-
-// UTILS
-import { playSound, soundTypes } from '../../../../../audioPlayer/audioPlayer';
 
 // CSS
 import styles from './Backup.module.css';
@@ -41,7 +35,7 @@ import ToastRender from '../../../../../components/ToastRender/ToastRender';
 
 const SETTINGS_NAME = "db_backup";
 
-export default (props) => {
+export default () => {
 
   const dispatch = useDispatch();
 
@@ -52,10 +46,14 @@ export default (props) => {
     data
   } = settings;
 
+  const memoizedCleanupStore = useCallback(() => {
+    dispatch(cleanup(SETTINGS_NAME));
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch(fetchSettings(SETTINGS_NAME));
-    return cleanupStore;
-  }, [dispatch, cleanupStore]);
+    return memoizedCleanupStore;
+  }, [dispatch, memoizedCleanupStore]);
 
   const save = async (event) => {
     event.stopPropagation();
@@ -74,10 +72,6 @@ export default (props) => {
       dispatch(updateSettings(SETTINGS_NAME, dataCopy))
       dispatch(saveSettings(SETTINGS_NAME, dataCopy));
     }
-  }
-
-  const cleanupStore = () => {
-    dispatch(cleanup(SETTINGS_NAME, data));
   }
 
   // validation
@@ -135,7 +129,7 @@ export default (props) => {
       data.days_of_week = {
         ...data.days_of_week,
         [name]: checked,//set the selected day
-        ["everything"]: checked ? data.days_of_week["everything"] : false
+        everything: checked ? data.days_of_week["everything"] : false
       };
 
       let fullDays = true;
@@ -214,9 +208,9 @@ export default (props) => {
   }
 
   //to render the last update of the backup
-  const BackupDateTime = new Date(data.last_update);
-  const backupDateRender = `${BackupDateTime.getDate()}/${BackupDateTime.getMonth() + 1}/${BackupDateTime.getFullYear()}`;
-  const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
+  //const BackupDateTime = new Date(data.last_update);
+  //const backupDateRender = `${BackupDateTime.getDate()}/${BackupDateTime.getMonth() + 1}/${BackupDateTime.getFullYear()}`;
+  //const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
 
   let backups_to_save = [];
   for (let i = 1; i <= data.max_num_of_history_backups; i++) {

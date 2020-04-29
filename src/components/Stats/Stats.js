@@ -4,7 +4,7 @@ import { Box } from '@material-ui/core';
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+//import Slider from "react-slick";
 
 export default ({ stats, columns = 4 }) => {
   return (

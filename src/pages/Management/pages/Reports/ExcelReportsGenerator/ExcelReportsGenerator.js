@@ -1,7 +1,7 @@
 // LIBRARIES
 import React, { useState, useEffect } from 'react';
-import { Select, Button, MenuItem, Typography, Divider } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { Select, Button, MenuItem, Typography, } from '@material-ui/core';
+import { useDispatch, /* useSelector */ } from 'react-redux';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -40,9 +40,9 @@ export default props => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchRegisteredReports());
-  }, []);
+  }, [dispatch]);
 
-  const registeredReports = useSelector(store => store.registeredReports)
+  //const registeredReports = useSelector(store => store.registeredReports)
 
   // default on change handler
   // for months and quarters
@@ -60,23 +60,23 @@ export default props => {
 
     if (checked && name === "byQuarter")
       setCheckBox({
-        ["byMonth"]: false,
-        ["byQuarter"]: true
+        byMonth: false,
+        byQuarter: true
       });
     else if (checked && name === "byMonth")
       setCheckBox({
-        ["byMonth"]: true,
-        ["byQuarter"]: false
+        byMonth: true,
+        byQuarter: false
       });
   }
 
   const onClickHandler = () => {
-    const newDate = {
+    /* const newDate = {
       year: selectDate.year,
       quarter: selectDate.quarter,
       quarterHeb: Helper.getQuarterHeb(selectDate.quarter),
       quarterEng: Helper.convertQuarterToEng(selectDate.quarter)
-    }
+    } */
   }
 
   return (

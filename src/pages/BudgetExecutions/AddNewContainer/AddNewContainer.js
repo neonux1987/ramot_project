@@ -18,9 +18,6 @@ import { addBudgetExecution } from "../../../redux/actions/budgetExecutionsActio
 // COMPONENTS
 import ReactSelect from "../../../components/ReactSelect/ReactSelect";
 
-// TOASTS
-import { myToasts } from "../../../CustomToasts/myToasts";
-
 const AddNewContainer = (props) => {
 
   const dispatch = useDispatch();

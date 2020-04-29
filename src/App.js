@@ -13,7 +13,7 @@ import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 // CONTEXT
-import GlobalContext from './context/GlobalContext';
+//import GlobalContext from './context/GlobalContext';
 
 // CSS
 import 'react-toastify/dist/ReactToastify.css';

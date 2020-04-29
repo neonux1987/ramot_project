@@ -1,7 +1,3 @@
-import { ipcRenderer } from 'electron';
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-
-import { toast } from 'react-toastify';
 import { myToasts } from '../../CustomToasts/myToasts';
 import { ipcSendReceive } from './util/util';
 

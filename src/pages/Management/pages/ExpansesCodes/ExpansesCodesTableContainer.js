@@ -15,10 +15,8 @@ import TableControls from '../../../../components/table/TableControls/TableContr
 import TableWrapper from '../../../../components/table/TableWrapper/TableWrapper';
 import Column from '../../../../components/table/Column';
 import HeaderRow from '../../../../components/table/HeaderRow';
-import GroupRow from '../../../../components/table/GroupRow';
 import Row from '../../../../components/table/Row';
 import Table from '../../../../components/table/Table';
-import GroupColumn from '../../../../components/table/GroupColumn';
 
 // HOC
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';

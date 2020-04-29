@@ -1,6 +1,5 @@
 // LIBRARIES
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Box, Button, Typography, TextField } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
 

@@ -153,24 +153,6 @@ class InputExpansesField extends Component {
     });
   };
 
-  reactSelectOnBlurHandler = (event) => {
-    //this.supplierInput.focus();
-  }
-
-  reactSelectInputChangeHandler = (value, name) => {
-
-    /* this.setState({
-      formInputs: {
-        ...this.state.formInputs,
-        [name]: {
-          [name]: value
-        }
-      }
-    }, () => {
-      console.log(this.state.formInputs);
-    }); */
-  }
-
   onMenuCloseHandler = () => {
     this.supplierInput.focus();
   }
@@ -288,7 +270,6 @@ class InputExpansesField extends Component {
       id="inputExpanses"
       noValidate
       autoComplete="off"
-      //onKeyPress={(event) => this.inputEnterPress(event)}
       onChange={this.formChangeHandler} >
 
       <ReactSelect
@@ -299,7 +280,6 @@ class InputExpansesField extends Component {
         getOptionLabel={(option) => option.code}
         getOptionValue={(option) => option.code}
         placeholder="הזן קוד:"
-        onBlurHandler={this.reactSelectOnBlurHandler}
         autoFocus={true}
         onMenuClose={this.onMenuCloseHandler}
         inputId="code"
@@ -315,9 +295,7 @@ class InputExpansesField extends Component {
         getOptionLabel={(option) => option.codeName}
         getOptionValue={(option) => option.codeName}
         placeholder="הזן שם חשבון:"
-        onBlurHandler={this.reactSelectOnBlurHandler}
         onMenuClose={this.onMenuCloseHandler}
-        //onInputChange={e => this.reactSelectInputChangeHandler(e, "codeName")}
         inputId="codeName"
         isLoading={sectionsFetching}
         isDisabled={sectionsFetching || codesFetching}

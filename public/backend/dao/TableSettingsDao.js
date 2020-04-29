@@ -1,6 +1,6 @@
 const connectionPool = require('../connection/ConnectionPool');
 
-class MonthExpansesTableSettingsDao {
+class TableSettingsDao {
 
   constructor() {
     this.connection = connectionPool.getConnection();
@@ -27,4 +27,4 @@ class MonthExpansesTableSettingsDao {
 
 }
 
-module.exports = MonthExpansesTableSettingsDao;
+module.exports = TableSettingsDao;

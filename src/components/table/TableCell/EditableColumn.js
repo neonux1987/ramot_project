@@ -55,7 +55,7 @@ export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFo
 
 });
 
-function areEqual(prevProps, nextProps) {
+/* function areEqual(prevProps, nextProps) {
   if (
     prevProps.value === nextProps.value ||
     prevProps.type === nextProps.type ||
@@ -64,4 +64,4 @@ function areEqual(prevProps, nextProps) {
   )
     return true;
   else return false;
-}
+} */

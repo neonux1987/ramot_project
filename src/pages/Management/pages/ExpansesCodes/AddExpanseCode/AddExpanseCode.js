@@ -1,10 +1,8 @@
 // LIBRARIES
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TextField, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import styles from './AddExpanseCode.module.css'
 
-// ACTIONS
-import { fetchSummarizedSections } from '../../../../../redux/actions/summarizedSectionsActions';
 
 const keys = ["code", "codeName", "summarized_section_id", "submit"];
 
@@ -19,7 +17,7 @@ const AddExpanseCode = (props) => {
 
   const selectDataRender = props.summarizedSections ? props.summarizedSections.map((summarizedSection) => {
     if (summarizedSection.status === "deleted")
-      return;
+      return null;
     else
       return <MenuItem value={summarizedSection.id} key={summarizedSection.id}>{summarizedSection.section}</MenuItem>
   }) : "";

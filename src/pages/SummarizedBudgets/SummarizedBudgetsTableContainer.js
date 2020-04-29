@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useEffect, useContext } from 'react';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // ACTIONS
 import {
@@ -37,9 +37,6 @@ import GroupRow from '../../components/table/GroupRow';
 // HOC 
 import withTableLogic from '../../HOC/withTableLogic';
 
-// CUSTOM HOOKS
-import useModalLogic from '../../customHooks/useModalLogic';
-
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 
@@ -54,9 +51,7 @@ const SummarizedBudgetsTableContainer = props => {
     pageName,
     pageTitle,
     editMode,
-    toggleEditMode,
-    addNewMode,
-    toggleAddNewMode
+    toggleEditMode
   } = props;
 
   const globalContext = useContext(GlobalContext);
@@ -256,7 +251,7 @@ const SummarizedBudgetsTableContainer = props => {
   const {
     data,
     isFetching,
-    pageSettings,
+    //pageSettings
   } = page;
 
   return (

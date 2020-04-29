@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useEffect } from "react";
-import { Notifications, MoreVert, Settings } from '@material-ui/icons';
+import { Notifications, MoreVert } from '@material-ui/icons';
 import { NavLink } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -51,7 +51,7 @@ const Toolbar = ({ buildingName, page }) => {
 
   useEffect(() => {
     dispatch(generalSettingsActions.fetchGeneralSettings());
-  }, []);
+  }, [dispatch]);
 
   const tax = isFetching ?
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :

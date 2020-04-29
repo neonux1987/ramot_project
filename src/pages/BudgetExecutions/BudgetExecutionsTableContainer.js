@@ -330,7 +330,7 @@ const BudgetExecutionsTable = props => {
   const {
     data,
     isFetching,
-    pageSettings,
+    //pageSettings
   } = page;
 
   const addNewBox = addNewMode ? <AddNewContainer date={date} buildingName={buildingNameEng} /> : null;

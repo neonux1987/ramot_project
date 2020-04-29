@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   updateDate,
   initDateState,
-  dateCleanup
+  //dateCleanup
 } from '../../redux/actions/dateActions';
 
 const DateProvider = (props) => {

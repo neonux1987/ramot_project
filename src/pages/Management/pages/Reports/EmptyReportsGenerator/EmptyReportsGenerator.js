@@ -1,7 +1,7 @@
 // LIBRARIES
 import React, { useState, useEffect } from 'react';
-import { Select, Button, MenuItem, Typography, Divider } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { Select, Button, MenuItem, Typography } from '@material-ui/core';
+import { useDispatch, /* useSelector */ } from 'react-redux';
 
 
 // UTILS
@@ -34,9 +34,9 @@ export default props => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchRegisteredReports());
-  }, []);
+  }, [dispatch]);
 
-  const registeredReports = useSelector(store => store.registeredReports)
+  //const registeredReports = useSelector(store => store.registeredReports)
 
   // default on change handler
   // for months and quarters

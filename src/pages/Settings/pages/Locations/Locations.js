@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { shell } from 'electron';
 
@@ -31,14 +31,16 @@ export const General = () => {
     data
   } = settings;
 
+  const memoizedCallback = useCallback(
+    () => dispatch(cleanup(SETTINGS_NAME))
+    , [dispatch]
+  );
+
   useEffect(() => {
     dispatch(fetchSettings(SETTINGS_NAME));
-    return cleanupStore;
-  }, [dispatch, cleanupStore]);
 
-  const cleanupStore = () => {
-    dispatch(cleanup(SETTINGS_NAME, data));
-  }
+    return memoizedCallback;
+  }, [dispatch, memoizedCallback]);
 
   const save = (event) => {
     event.stopPropagation();

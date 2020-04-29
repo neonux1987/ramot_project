@@ -1,7 +1,3 @@
-import { ipcRenderer } from 'electron';
-
-import { playSound, soundTypes } from '../../audioPlayer/audioPlayer';
-import { toast } from 'react-toastify';
 import { ipcSendReceive } from './util/util';
 import { myToasts } from '../../CustomToasts/myToasts';
 
@@ -9,14 +5,9 @@ export const TYPES = {
   BACKUPS_NAMES_REQUEST: "BACKUPS_NAMES_REQUEST",
   BACKUPS_NAMES_RECEIVE: "BACKUPS_NAMES_RECEIVE",
   BACKUPS_NAMES_FETCHING_FAILED: "BACKUPS_NAMES_FETCHING_FAILED",
-  BACKUPS_NAMES_INIT: "BACKUPS_NAMES_INIT",
-  BACKUPS_NAMES_REQUEST: "BACKUPS_NAMES_REQUEST"
+  BACKUPS_NAMES_INIT: "BACKUPS_NAMES_INIT"
 }
 
-/**
- * fetch general settings
- * @param {*} params 
- */
 export const fetchBackupsNames = () => {
 
   return dispatch => {

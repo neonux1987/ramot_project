@@ -1,5 +1,5 @@
 // LIBRARIES IMPORTS
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // ACTIONS IMPORTS
@@ -26,8 +26,6 @@ import Spinner from '../../components/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import AddBox from './AddBoxContainer';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
-import GroupRow from '../../components/table/GroupRow';
-import GroupColumn from '../../components/table/GroupColumn';
 import Table from '../../components/table/Table';
 import Row from '../../components/table/Row';
 import Column from '../../components/table/Column';
@@ -36,7 +34,6 @@ import HeaderRow from '../../components/table/HeaderRow';
 
 // HOC
 import withTableLogic from '../../HOC/withTableLogic';
-import SelectColumn from '../../components/table/SelectColumn';
 
 // AUDIO
 import { myToasts } from '../../CustomToasts/myToasts';
@@ -48,7 +45,6 @@ const MonthExpansesTableContainer = props => {
 
   const {
     date,
-    dateActions,
     pageName,
     pageTitle,
     editMode,
@@ -61,9 +57,6 @@ const MonthExpansesTableContainer = props => {
 
   // page data
   const page = useSelector(store => store.monthExpanses.pages[buildingNameEng]);
-
-  // page data
-  const expansesCodes = useSelector(store => store.expansesCodes);
 
   // page data
   const tax = useSelector(store => store.generalSettings.generalSettings.data[0].tax);
@@ -223,23 +216,6 @@ const MonthExpansesTableContainer = props => {
     e.target.blur();
   }
 
-  const selectOnBlurHandler = (event) => {
-    const { data, index } = event;
-
-    //will be used for rollback
-    const oldExpanseCopy = { ...data[index] };
-
-    //prepare the params
-    let params = {
-      data,
-      buildingName: buildingNameEng,
-      date
-    };
-
-    //update expanse
-    //dispatch(updateMonthExpanse(params, oldExpanseCopy, index));
-  }
-
   const deleteExpanseHandler = (id, index) => {
 
     //prepare the params
@@ -289,18 +265,7 @@ const MonthExpansesTableContainer = props => {
 
       <Column>{index + 1}</Column>
 
-      {editMode ? <SelectColumn
-        value={rowData["code"]}
-        options={expansesCodes.data}
-        onBlurHandler={selectOnBlurHandler}
-        index={index}
-        type={"code"}
-        isFetching={expansesCodes.isFetching}
-      >
-        {rowData["code"]}
-      </SelectColumn> :
-        <Column>{rowData["code"]}</Column>}
-
+      <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
       <Column >{rowData["section"]}</Column>
 
@@ -318,7 +283,7 @@ const MonthExpansesTableContainer = props => {
   const {
     data,
     isFetching,
-    pageSettings,
+    //pageSettings
   } = page;
 
   //add new month expanse box

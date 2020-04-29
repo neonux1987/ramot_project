@@ -13,27 +13,19 @@ import {
 
 // COMPONENTS
 import EditControls from '../../../../components/EditControls/EditControls';
-import SelectDropDown from '../../../../components/SelectDropDown/SelectDropDown';
 import TableActions from '../../../../components/table/TableActions/TableActions';
 import TableControls from '../../../../components/table/TableControls/TableControls';
 import TableWrapper from '../../../../components/table/TableWrapper/TableWrapper';
 import Column from '../../../../components/table/Column';
 import HeaderRow from '../../../../components/table/HeaderRow';
-import GroupRow from '../../../../components/table/GroupRow';
 import Row from '../../../../components/table/Row';
 import Table from '../../../../components/table/Table';
-import GroupColumn from '../../../../components/table/GroupColumn';
 
 // HOC
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 import withTableLogic from '../../../../HOC/withTableLogic';
 
-// CONTAINERS
-//import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
-import { toast } from 'react-toastify';
-
 // CUSTOM HOOKS
-import useModalLogic from '../../../../customHooks/useModalLogic';
 import AddSummarizedSectionContainer from './AddSummarizedSectionContainer/AddSummarizedSectionContainer';
 import { myToasts } from '../../../../CustomToasts/myToasts';
 
@@ -56,7 +48,6 @@ const SummarizedSectionsTableContainer = props => {
     data
   } = useSelector(store => store.summarizedSections);
 
-  const { showModal } = useModalLogic();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -69,12 +60,6 @@ const SummarizedSectionsTableContainer = props => {
 
     return cleanup;
   }, [dispatch]);
-
-
-
-  const onBlurSelectHandler = (name, value, index) => {
-    onBlurAction(name, value, index);
-  }
 
   const onBlurHandler = (event) => {
     const target = event.target;
