@@ -4,6 +4,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import { MemoryRouter } from 'react-router-dom';
 import { ToastContainer, toast, Flip } from 'react-toastify';
+import { withGoodBye } from 'react-goodbye';
 
 // COMPONENTS
 import Sidebar from "./Sidebar/Sidebar";
@@ -11,9 +12,10 @@ import RTL from './components/RTL';
 import ToastRender from './components/ToastRender/ToastRender';
 import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import AppLoader from './components/AnimatedLoaders/AppLoader';
 
 // CONTEXT
-//import GlobalContext from './context/GlobalContext';
+import SettingsContext from './context/SettingsContext';
 
 // CSS
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,6 +29,10 @@ import CustomCloseButton from './components/CustomCloseButton/CustomCloseButton'
 
 // SOUND
 import { playSound, soundTypes } from './audioPlayer/audioPlayer';
+import { useDispatch, useSelector } from 'react-redux';
+
+// ACTIONS
+import { fetchSettings } from './redux/actions/settingsActions';
 
 // ELECTRON
 const remote = require('electron').remote;
@@ -53,7 +59,11 @@ const App = props => {
 
   const [state, setState] = useState({
     toastId: null
-  })
+  });
+
+  const settings = useSelector(store => store.settings);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     ipcRenderer.on('update_available', () => {
@@ -65,9 +75,12 @@ const App = props => {
       myToasts.info("המערכת הורידה את העדכון והוא מוכן להתקנה.");
     });
 
-    //play welcome sound when settings loaded
-    playSound(soundTypes.welcome);
-  }, [])
+    dispatch(fetchSettings()).then(() => {
+      //play welcome sound when settings loaded
+      playSound(soundTypes.welcome);
+    });
+
+  }, [dispatch])
 
   useEffect(() => {
     //listen when the data comes back
@@ -141,48 +154,69 @@ const App = props => {
     }
   }
 
+  if (settings.isFetching) {
+    return <AppLoader loading={settings.isFetching} />
+  }
+
   return (
     <RTL>
+
       <MuiThemeProvider theme={theme}>
-        <MemoryRouter>
+
+        <EnhancedRouter>
+
           <ScrollToTop mainContainer={mainContainer} />
-          <AppFrame handlers={{
-            close: closeButtonHandler,
-            minimize: minimizeButtonHandler,
-            maximize: maximizeButtonHandler
-          }} />
-          <div style={{
-            display: "flex",
-            padding: "0",
-            flex: "1",
-            overflow: "hidden"
-          }}>
-            <CssBaseline />
 
-            <Sidebar toggleStyle={" " + toggleSidebarAnimation} />
+          <SettingsContext.Provider value={settings.data}>
 
-            <MainContainer mainContainer={mainContainer} toggleMain={" showMainAnimation"} />
+            <AppFrame handlers={{
+              close: closeButtonHandler,
+              minimize: minimizeButtonHandler,
+              maximize: maximizeButtonHandler
+            }} />
 
-          </div>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={TOAST_AUTO_CLOSE}
-            hideProgressBar={true}
-            newestOnTop={false}
-            rtl
-            pauseOnVisibilityChange
-            draggable={false}
-            pauseOnHover
-            transition={Flip}
-            closeButton={<CustomCloseButton />}
-          />
+            <div style={{
+              display: "flex",
+              padding: "0",
+              flex: "1",
+              overflow: "hidden"
+            }}>
+
+              <CssBaseline />
+
+              <Sidebar toggleStyle={" " + toggleSidebarAnimation} />
+
+              <MainContainer mainContainer={mainContainer} toggleMain={" showMainAnimation"} />
+
+            </div>
+
+            <ToastContainer
+              position="bottom-right"
+              autoClose={TOAST_AUTO_CLOSE}
+              hideProgressBar={true}
+              newestOnTop={false}
+              rtl
+              pauseOnVisibilityChange
+              draggable={false}
+              pauseOnHover
+              transition={Flip}
+              closeButton={<CustomCloseButton />}
+            />
+          </SettingsContext.Provider>
+
           <ModalRoot />
 
-        </MemoryRouter>
+        </EnhancedRouter>
+
       </MuiThemeProvider>
+
     </RTL>
   );
 
 }
+
+// allows to prompt a dialog to the user on route
+// change when the user didn't save data
+const EnhancedRouter = withGoodBye(MemoryRouter);
 
 export default App;

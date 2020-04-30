@@ -28,6 +28,7 @@
     "react": "^16.13.1",
     "react-collapsible": "^2.7.0",
     "react-dom": "^16.13.1",
+    "react-goodbye": "^0.4.0",
     "react-icons": "^3.8.0",
     "react-jss": "^10.0.0",
     "react-portal": "^4.2.0",

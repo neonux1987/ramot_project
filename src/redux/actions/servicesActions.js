@@ -1,4 +1,4 @@
-import { fetchSettings, saveSettings } from './settingsActions';
+import { saveSettings, updateSettings } from './settingsActions';
 import { ipcSendReceive } from './util/util';
 import { myToasts } from '../../CustomToasts/myToasts';
 
@@ -66,13 +66,15 @@ export const updateServicesInStore = (data) => {
 
 export const startService = (serviceName) => {
   return async (dispatch, getState) => {
-    const services = getState().services;
+    const state = getState();
+
+    const services = state.services;
     const servicesDataCopy = { ...services.data };
 
     dispatch(startServiceStore(serviceName));
 
-    const settings = await dispatch(fetchSettings(serviceName));
-    const settingsCopy = { ...settings };
+    const settingsCopy = { ...state.settings.data };
+    const settingsData = settingsCopy[serviceName];
 
     return ipcSendReceive({
       send: {
@@ -85,11 +87,12 @@ export const startService = (serviceName) => {
       onSuccess: () => {
         // on success service was enabled
         // update settings set the service to enabled
-        settingsCopy.enabled = true;
+        settingsData.enabled = true;
+        settingsData.restartRequired = false;
         servicesDataCopy[serviceName].enabled = true;
         servicesDataCopy[serviceName].restartRequired = false;
 
-        dispatch(saveSettings(serviceName, settingsCopy, false));
+        dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
 
         myToasts.success("השירות הופעל בהצלחה.");
@@ -100,11 +103,12 @@ export const startService = (serviceName) => {
         // an set to disabled in the service settings
         dispatch(stopServiceStore(serviceName));
 
-        settingsCopy.enabled = false;
+        settingsData.enabled = false;
+        settingsData.restartRequired = false;
         servicesDataCopy[serviceName].enabled = false;
         servicesDataCopy[serviceName].restartRequired = true;
 
-        dispatch(saveSettings(serviceName, settingsCopy, false));
+        dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
 
         myToasts.error(result.error);
@@ -116,13 +120,15 @@ export const startService = (serviceName) => {
 
 export const stopService = (serviceName) => {
   return async (dispatch, getState) => {
-    const services = getState().services;
+    const state = getState();
+
+    const services = state.services;
     const servicesDataCopy = { ...services.data };
 
     dispatch(stopServiceStore(serviceName));
 
-    const settings = await dispatch(fetchSettings(serviceName));
-    const settingsCopy = { ...settings };
+    const settingsCopy = { ...state.settings.data };
+    const settingsData = settingsCopy[serviceName];
 
     return ipcSendReceive({
       send: {
@@ -135,11 +141,12 @@ export const stopService = (serviceName) => {
       onSuccess: () => {
         // on success service was enabled
         // update settings set the service to enabled
-        settingsCopy.enabled = false;
+        settingsData.enabled = false;
+        settingsData.restartRequired = false;
         servicesDataCopy[serviceName].enabled = false;
         servicesDataCopy[serviceName].restartRequired = false;
 
-        dispatch(saveSettings(serviceName, settingsCopy, false));
+        dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
 
         myToasts.success("השירות הופסק בהצלחה.");
@@ -150,11 +157,12 @@ export const stopService = (serviceName) => {
         // an set to disabled in the service settings
         dispatch(startServiceStore(serviceName));
 
-        settingsCopy.enabled = true;
+        settingsData.enabled = true;
+        settingsData.restartRequired = true;
         servicesDataCopy[serviceName].enabled = true;
         servicesDataCopy[serviceName].restartRequired = false;
 
-        dispatch(saveSettings(serviceName, settingsCopy, false));
+        dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
 
         myToasts.error(result.error);
@@ -165,7 +173,11 @@ export const stopService = (serviceName) => {
 };
 
 export const restartService = (serviceName) => {
-  return () => {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    const settingsCopy = { ...state.settings.data };
+    const settingsData = settingsCopy[serviceName];
 
     return ipcSendReceive({
       send: {
@@ -176,9 +188,13 @@ export const restartService = (serviceName) => {
         channel: "service-restarted"
       },
       onSuccess: (reult) => {
+        settingsData.restartRequired = false;
+        updateSettings(serviceName, settingsData);
         myToasts.success("השירות אותחל בהצלחה.");
       },
       onError: (result) => {
+        settingsData.restartRequired = true;
+        updateSettings(serviceName, settingsData);
         myToasts.error(result.error);
       }
     });

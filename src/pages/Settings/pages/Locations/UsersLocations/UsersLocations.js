@@ -9,20 +9,14 @@ import styles from './UsersLocations.module.css';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
-import LoadingCircle from '../../../../../components/LoadingCircle';
 
 export default (props) => {
 
   const {
-    isFetching,
     data,
     selectHandler,
     saveHandler
   } = props;
-
-  if (isFetching) {
-    return <LoadingCircle loading={isFetching} />
-  }
 
   const {
     reports_folder_path,

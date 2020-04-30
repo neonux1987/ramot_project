@@ -9,21 +9,15 @@ import styles from './SystemLocations.module.css';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
-import LoadingCircle from '../../../../../components/LoadingCircle';
 
 export default (props) => {
 
   const {
-    isFetching,
     data,
     openFileInFolder,
     selectHandler,
     saveHandler
   } = props;
-
-  if (isFetching) {
-    return <LoadingCircle loading={isFetching} />
-  }
 
   const {
     db_file_path,

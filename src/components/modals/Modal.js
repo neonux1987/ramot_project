@@ -12,7 +12,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, children, valid, iconColor = "#ffffff" }) => {
+export default ({
+  onAgreeHandler,
+  onCancelHandler,
+  title,
+  contentText,
+  Icon,
+  agreeBtnText = "בצע פעולה",
+  cancelBtnText = "בטל",
+  children,
+  valid,
+  iconColor = "#ffffff",
+  disableBackdropClick = false
+}) => {
 
   const [open, setOpen] = React.useState(true);
   const { hideModal } = useModalLogic();
@@ -27,6 +39,7 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
 
   const cancel = () => {
     setOpen(false);
+    onCancelHandler && onCancelHandler();
     hideModal();
   }
 
@@ -54,6 +67,7 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
         onKeyPress={onKeyPressHandler}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
+        disableBackdropClick={disableBackdropClick}
       >
         <div style={{ display: "flex", alignItems: "center", background: "rgb(46, 55, 62)" }}>
           <Icon style={{
@@ -69,10 +83,10 @@ export default ({ onAgreeHandler, title, contentText, Icon, agreeBtnText, childr
         </DialogContent>
         <DialogActions>
           <Button onClick={cancel} color="primary" style={{ background: "rgb(46, 55, 62)" }} variant="contained">
-            בטל
+            {cancelBtnText}
           </Button>
           <Button onClick={agree} color="primary" style={{ background: "rgb(46, 55, 62)" }} variant="contained">
-            {agreeBtnText || "בצע פעולה"}
+            {agreeBtnText}
           </Button>
         </DialogActions>
       </Dialog>

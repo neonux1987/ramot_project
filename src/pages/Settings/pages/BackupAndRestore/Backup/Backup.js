@@ -1,9 +1,10 @@
 // LIBRARIES
-import React, { useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormControlLabel, Checkbox, Box, Button, Typography, TextField, Select, MenuItem } from '@material-ui/core';
+import { FormControlLabel, Checkbox, Box, Button, Typography, TextField, Select, MenuItem, Modal } from '@material-ui/core';
 import { TimePicker } from '@material-ui/pickers';
 import { Backup } from '@material-ui/icons';
+import GoodBye from 'react-goodbye';
 
 // CSS
 import styles from './Backup.module.css';
@@ -11,18 +12,15 @@ import styles from './Backup.module.css';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
-import LoadingCircle from '../../../../../components/LoadingCircle';
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
-
+import LeaveWithoutSavingModal from '../../../../../components/modals/LeaveWithoutSavingModal/LeaveWithoutSavingModal';
 // SERVICES
 import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogs.svc';
 
 // ACTIONS
 import {
   saveSettings,
-  updateSettings,
-  fetchSettings,
-  cleanup
+  updateSettings
 } from '../../../../../redux/actions/settingsActions';
 import {
   initializeBackupNames
@@ -40,20 +38,11 @@ export default () => {
   const dispatch = useDispatch();
 
   // state
-  const settings = useSelector(store => store.settings[SETTINGS_NAME]);
-  const {
-    isFetching,
-    data
-  } = settings;
+  const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
-  const memoizedCleanupStore = useCallback(() => {
-    dispatch(cleanup(SETTINGS_NAME));
-  }, [dispatch]);
+  const [data, setData] = useState(settings)
 
-  useEffect(() => {
-    dispatch(fetchSettings(SETTINGS_NAME));
-    return memoizedCleanupStore;
-  }, [dispatch, memoizedCleanupStore]);
+  const [dirty, setDirty] = useState(false);
 
   const save = async (event) => {
     event.stopPropagation();
@@ -70,7 +59,9 @@ export default () => {
       dataCopy.restartRequired = true;
 
       dispatch(updateSettings(SETTINGS_NAME, dataCopy))
-      dispatch(saveSettings(SETTINGS_NAME, dataCopy));
+      dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
+        setDirty(false);
+      });
     }
   }
 
@@ -96,62 +87,71 @@ export default () => {
     }
   }
 
-  if (isFetching) {
-    return <LoadingCircle loading={isFetching} />
-  }
-
   const onDbTimeChange = (value) => {
     //must convert it to string to ensure electron won't change it to different time zone
     let date = new Date(value);
     const localeString = date.toLocaleString();
     date = new Date(localeString);
 
-    data.time = date.toString();
+    const time = date.toString();
 
-    dispatch(updateSettings(SETTINGS_NAME, data));
+    setData({
+      ...data,
+      time
+    });
+    setDirty(true);
   }
 
   const onDbDayChange = (event) => {
     const { name, checked } = event.target;
     const keys = Object.keys(data.days_of_week);
 
+    const dataCopy = { ...data };
+
     if (name === "everything" && checked === true) {
       for (let i = 0; i < keys.length; i++) {
-        data.days_of_week[keys[i]] = true;
+        dataCopy.days_of_week[keys[i]] = true;
       }
     } else if (name === "everything" && checked === false) {
-      const keys = Object.keys(data.days_of_week);
+      const keys = Object.keys(dataCopy.days_of_week);
       for (let i = 0; i < keys.length; i++) {
-        data.days_of_week[keys[i]] = false;
+        dataCopy.days_of_week[keys[i]] = false;
       }
     }
     else {
-      data.days_of_week = {
-        ...data.days_of_week,
+      dataCopy.days_of_week = {
+        ...dataCopy.days_of_week,
         [name]: checked,//set the selected day
-        everything: checked ? data.days_of_week["everything"] : false
+        everything: checked ? dataCopy.days_of_week["everything"] : false
       };
 
       let fullDays = true;
       //iterate and find if all days are selected
       for (let i = 0; i < keys.length; i++) {
-        if (!data.days_of_week[keys[i]] && keys[i] !== "everything") {
+        if (!dataCopy.days_of_week[keys[i]] && keys[i] !== "everything") {
           fullDays = false;
         }
       }
       //if all the days selected then select everything checkbox
       if (fullDays) {
-        data.days_of_week["everything"] = true
+        dataCopy.days_of_week["everything"] = true
       }
 
     }
-    dispatch(updateSettings(SETTINGS_NAME, data));
+
+    setData(dataCopy);
+    setDirty(true);
   }
 
   const backupsToSaveChangeHandler = (event) => {
     const { value } = event.target;
-    data.backups_to_save = value;
-    dispatch(updateSettings(SETTINGS_NAME, data));
+    const backups_to_save = value;
+
+    setData({
+      ...data,
+      backups_to_save
+    });
+    setDirty(true);
   }
 
   const dbSelectFolderHandler = () => {
@@ -164,11 +164,15 @@ export default () => {
           dispatch(
             showModal(ConfirmDbPathChangeModel, {
               onAgreeHandler: () => {
-                data.path = filePaths[0];
+                const newPath = filePaths[0];
+                setData({
+                  ...data,
+                  path: newPath
+                });
+                setDirty(true);
                 dispatch(initializeBackupNames()).catch((result) => {
                   myToasts.error(result.error);
                 });
-                dispatch(updateSettings(SETTINGS_NAME, data));
               }
             }) // end show modal
           ); // end dispatch
@@ -419,6 +423,14 @@ export default () => {
         <Button style={{ marginRight: "10px", display: "inline-flex" }} variant="contained" color="primary" onClick={dbIndependentBackupHandler}>גבה בסיס נתונים</Button>
       </div>
 
-      {/* db backup end */}</StyledExpandableSection >
+      <GoodBye when={dirty}>
+        {({ isShow, handleOk, handleCancel }) =>
+          isShow && (
+            <LeaveWithoutSavingModal onAgreeHandler={handleOk} onCancelHandler={handleCancel} />
+          )
+        }
+      </GoodBye>
+
+    </StyledExpandableSection >
   );
 }

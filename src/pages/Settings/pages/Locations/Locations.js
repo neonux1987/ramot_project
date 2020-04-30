@@ -1,14 +1,12 @@
 // LIBRARIES
-import React, { Fragment, useEffect, useCallback } from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { shell } from 'electron';
 
 // ACTIONS
 import {
-  fetchSettings,
   updateSettings,
-  saveSettings,
-  cleanup
+  saveSettings
 } from '../../../../redux/actions/settingsActions';
 import UsersLocations from './UsersLocations/UsersLocations';
 import SystemLocations from './SystemLocations/SystemLocations';
@@ -24,23 +22,7 @@ export const General = () => {
   const dispatch = useDispatch();
 
   // state
-  const settings = useSelector(store => store.settings[SETTINGS_NAME]);
-
-  const {
-    isFetching,
-    data
-  } = settings;
-
-  const memoizedCallback = useCallback(
-    () => dispatch(cleanup(SETTINGS_NAME))
-    , [dispatch]
-  );
-
-  useEffect(() => {
-    dispatch(fetchSettings(SETTINGS_NAME));
-
-    return memoizedCallback;
-  }, [dispatch, memoizedCallback]);
+  const data = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
   const save = (event) => {
     event.stopPropagation();
@@ -70,7 +52,6 @@ export const General = () => {
     <Fragment>
 
       <UsersLocations
-        isFetching={isFetching}
         data={data}
         settingsName={SETTINGS_NAME}
         saveHandler={save}
@@ -78,7 +59,6 @@ export const General = () => {
       />
 
       <SystemLocations
-        isFetching={isFetching}
         data={data}
         settingsName={SETTINGS_NAME}
         saveHandler={save}

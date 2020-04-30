@@ -44,6 +44,7 @@ class ServicesLogic {
 
     // set the restartRequired to false
     const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
+
     serviceSettings.restartRequired = false;
     this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
 
