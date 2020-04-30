@@ -22,6 +22,7 @@ import Helper from '../helpers/Helper';
 
 // ACTIONS
 import * as sidebarActions from '../redux/actions/sidebarActions';
+import * as routesActions from '../redux/actions/routesActions';
 
 const styles = theme => ({
   main: {
@@ -68,7 +69,7 @@ class MainContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
-      //console.log(this.props.location);
+      this.props.updateRoute(this.props.location.state.active)
     }
   }
 
@@ -150,11 +151,13 @@ class MainContainer extends Component {
 
 const mapStateToProps = state => ({
   generalSettings: state.generalSettings,
-  sidebar: state.sidebar
+  sidebar: state.sidebar,
+  routes: state.routes
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar())
+  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar()),
+  updateRoute: (active) => dispatch(routesActions.updateRoute(active))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

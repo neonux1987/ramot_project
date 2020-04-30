@@ -12,19 +12,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default ({
-  onAgreeHandler,
-  onCancelHandler,
-  title,
-  contentText,
-  Icon,
-  agreeBtnText = "בצע פעולה",
-  cancelBtnText = "בטל",
-  children,
-  valid,
-  iconColor = "#ffffff",
-  disableBackdropClick = false
-}) => {
+export default (props) => {
+
+  const {
+    agreeBtnText = "בצע פעולה",
+    cancelBtnText = "בטל",
+    valid,
+    iconColor = "#ffffff",
+    onAgreeHandler,
+    onCancelHandler,
+    title,
+    contentText,
+    Icon,
+    children
+  } = props;
 
   const [open, setOpen] = React.useState(true);
   const { hideModal } = useModalLogic();
@@ -67,29 +68,32 @@ export default ({
         onKeyPress={onKeyPressHandler}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
-        disableBackdropClick={disableBackdropClick}
       >
-        <div style={{ display: "flex", alignItems: "center", background: "rgb(46, 55, 62)" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Icon style={{
             margin: "16px 24px 16px 0",
             color: iconColor,
             fontSize: "28px",
           }} />
-          <DialogTitle id="alert-dialog-slide-title" style={{ paddingRight: "12px", flex: "initial", color: "#ffffff" }}>{title}</DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title" style={{ paddingRight: "12px", flex: "initial" }}>{title}</DialogTitle>
         </div>
 
         <DialogContent>
           {content}
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancel} color="primary" style={{ background: "rgb(46, 55, 62)" }} variant="contained">
+          <StyledButton onClick={cancel}>
             {cancelBtnText}
-          </Button>
-          <Button onClick={agree} color="primary" style={{ background: "rgb(46, 55, 62)" }} variant="contained">
+          </StyledButton>
+          <StyledButton onClick={agree}>
             {agreeBtnText}
-          </Button>
+          </StyledButton>
         </DialogActions>
       </Dialog>
     </div>
   );
+}
+
+const StyledButton = (props) => {
+  return <Button {...props} style={{ color: "rgb(0, 0, 0)", fontSize: "16px", fontWeight: "600" }}>{props.children}</Button>
 }

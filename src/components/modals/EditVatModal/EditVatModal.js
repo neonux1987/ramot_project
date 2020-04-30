@@ -64,7 +64,7 @@ export default props => {
     >
       <Section>
         <form className={styles.form} style={{ width: "400px" }} onChange={(event) => formOnChange(event)} onSubmit={(event) => event.preventDefault()}>
-          <label>מע"מ:</label>
+          <label className={styles.label}>מע"מ:</label>
           <TextField
             name="vat"
             type="number"

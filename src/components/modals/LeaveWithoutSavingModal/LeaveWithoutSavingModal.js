@@ -1,14 +1,11 @@
 import React from 'react';
 
-import WarningModal from '../modalTypes/WarningModal';
+import InfoModal from '../modalTypes/InfoModal';
 
 export default props => {
 
   return (
-    <WarningModal
-      disableBackdropClick={true}
-      title={"אזהרה"}
-      agreeBtnText={"המשך"}
+    <InfoModal
       cancelBtnText={"הישאר"}
       contentText={`
       האם אתה בטוח שברצונך להמשיך ללא שמירת ההגדרות?

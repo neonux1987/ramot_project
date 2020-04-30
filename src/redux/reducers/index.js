@@ -14,7 +14,7 @@ import quarterlyStats from './quarterlyStatsReducer';
 import yearlyStats from './yearlyStatsReducer';
 import tableSettings from './tableSettingsReducer';
 import registeredReports from './registeredReportsReducer';
-import route from './routesReducer';
+import routes from './routesReducer';
 import date from './dateReducer';
 import modal from './modalReducer';
 import { createPageReducer } from './util/util';
@@ -61,5 +61,5 @@ export default combineReducers({
   date,
   modal,
   registeredReports,
-  route
+  routes
 });

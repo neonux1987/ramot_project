@@ -27,7 +27,8 @@ const persistConfig = {
     "yearlyStats",
     "tableSettings",
     "modal",
-    "registeredReports"
+    "registeredReports",
+    "routes"
   ]
 
 }

@@ -45,7 +45,7 @@ const Settings = ({ classes, match }, props) => {
       <AppBar classes={{ root: classes.appBar }} position="static" style={{ margin: "20px 20px 30px 20px" }}>
         <Tabs classes={{ root: classes.tabs, indicator: classes.indicator }} value={value} onChange={handleChange}>
           <Tab
-            classes={{ root: classes.tab, selected: classes.selected }}
+            classes={{ root: classes.tab }}
             label="כללי"
             component={NavLink}
             to={{
@@ -57,7 +57,7 @@ const Settings = ({ classes, match }, props) => {
             }}
           />
           <Tab
-            classes={{ root: classes.tab, selected: classes.selected }}
+            classes={{ root: classes.tab }}
             label="גיבוי ושחזור"
             component={NavLink}
             to={{
@@ -69,7 +69,7 @@ const Settings = ({ classes, match }, props) => {
             }}
           />
           <Tab
-            classes={{ root: classes.tab, selected: classes.selected }}
+            classes={{ root: classes.tab }}
             label="מיקום קבצים"
             component={NavLink}
             to={{
@@ -81,7 +81,7 @@ const Settings = ({ classes, match }, props) => {
             }}
           />
           <Tab
-            classes={{ root: classes.tab, selected: classes.selected }}
+            classes={{ root: classes.tab }}
             label="שירותי מערכת"
             component={NavLink}
             to={{
