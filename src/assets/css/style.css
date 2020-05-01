@@ -24,7 +24,8 @@ html{
 }
 
 body{
-  background: #f3f4f8;
+  /* background: #f3f4f8; */
+  background-color: #eee;
 }
 
 #root{

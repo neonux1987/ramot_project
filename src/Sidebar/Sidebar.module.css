@@ -1,0 +1,58 @@
+.list{
+  width: 100%;
+    max-width: 360;
+    background:  none;
+}
+
+.nested{
+  padding-right: 32px;
+}
+
+.drawer {
+  width: 240px;
+  flex-shrink: 0;
+  z-index: 2;
+  box-shadow: none;
+}
+
+.drawerPaper {
+  width: 240px;
+  background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%);
+  overflow: initial;
+  position: relative;
+  border: none;
+
+}
+
+.loadingWrapper {
+  display: flex;
+  height: 50%;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.loadingText {
+  color: #fff;
+  font-size: 22px;
+}
+
+.loadingCircle {
+  margin: 16px;
+  color: #fff;
+}
+
+.settingsWrapper {
+  position: fixed;
+  bottom: 0;
+  width: 240px;
+  padding-bottom: 10px;
+}
+
+.listItemIcon {
+  color: #cbcdda;
+  font-size: 22px;
+}
+
+.homeButton{
+  color: #cbcdda;
+}

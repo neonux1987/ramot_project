@@ -1,0 +1,10 @@
+.list{
+  overflow-y: overlay;
+  overflow-x: hidden;
+  margin-bottom: 100px;
+  background:  none;
+}
+
+.listSubheader{
+  color: #cbcdda;
+}

@@ -29,7 +29,6 @@ const styles = theme => ({
     flexGrow: 1,
     //backgroundColor: theme.palette.background.default,
     //backgroundColor: "#f3f4f8",
-    backgroundColor: "#eee",
     //padding: theme.spacing.unit * 3,
     overflow: "auto",
     display: "block",

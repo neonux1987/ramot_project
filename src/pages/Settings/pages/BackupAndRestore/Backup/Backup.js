@@ -1,7 +1,7 @@
 // LIBRARIES
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormControlLabel, Checkbox, Box, Button, Typography, TextField, Select, MenuItem, Modal } from '@material-ui/core';
+import { FormControlLabel, Checkbox, Box, Button, Typography, TextField, Select, MenuItem } from '@material-ui/core';
 import { TimePicker } from '@material-ui/pickers';
 import { Backup } from '@material-ui/icons';
 import GoodBye from 'react-goodbye';
