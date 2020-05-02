@@ -5,7 +5,7 @@ import { RotateLoader } from 'react-spinners';
 export default (props) => {
 
   return (
-    <AlignCenterMiddle style={{ height: "100%" }}>
+    <AlignCenterMiddle style={{ height: "100%", ...props.style }}>
       <div
         style={{
           marginLeft: "50px",

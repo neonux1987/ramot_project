@@ -13,12 +13,13 @@ import {
   list,
   listSubheader
 } from './Menu.module.css';
+import { useSelector } from 'react-redux';
 
 const DEFAULT_PAGE = "הוצאות חודשי";
 
 const Menu = (props) => {
 
-  const { data } = props;
+  const { data, routeState } = props;
 
   const [state, setState] = React.useState(() => {
     let newState = {};
@@ -29,7 +30,7 @@ const Menu = (props) => {
     });
     return newState;
   });
-  console.log(data);
+
   const generateIcon = (pageName) => {
     switch (pageName) {
       case "הוצאות חודשי": return AttachMoney;
@@ -77,6 +78,7 @@ const Menu = (props) => {
 
       {submenu.map((subItem) => {
         const { label, id, path } = subItem;
+
         return <Menuitem
           label={label}
           Icon={generateIcon(label)}
@@ -89,6 +91,7 @@ const Menu = (props) => {
               buildingNameEng: item.engLabel
             }
           }}
+          active={routeState.page === label && routeState.buildingName === item.label}
         />;
       })}
 

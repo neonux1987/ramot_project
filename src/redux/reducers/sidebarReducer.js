@@ -2,7 +2,7 @@ import { TYPES } from '../actions/sidebarActions';
 
 const initState = {
   showSidebar: true,
-  sidebar: {
+  menu: {
     isFetching: true,
     status: "",
     error: "",
@@ -20,8 +20,8 @@ export default (state = initState, action) => {
     case TYPES.SIDEBAR_RECEIVE:
       return {
         ...state,
-        sidebar: {
-          ...state.sidebar,
+        menu: {
+          ...state.menu,
           isFetching: false,
           status: "success",
           data: action.data
@@ -30,16 +30,16 @@ export default (state = initState, action) => {
     case TYPES.SIDEBAR_REQUEST:
       return {
         ...state,
-        sidebar: {
-          ...state.sidebar,
+        menu: {
+          ...state.menu,
           isFetching: true,
         }
       }
     case TYPES.SIDEBAR_FETCHING_FAILED:
       return {
         ...state,
-        sidebar: {
-          ...state.sidebar,
+        menu: {
+          ...state.menu,
           status: "error",
           error: action.payload
         }

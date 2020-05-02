@@ -25,9 +25,8 @@ const Menuitem = (props) => {
     <ListItem
       component={NavLink}
       button
-      className={classnames(listItem, className)}
+      className={classnames(listItem, className, active ? "activeButton" : "")}
       style={style}
-      //activeClassName={active.pageName === label}
       to={to}
     >
       <ListItemIcon className={listItemIcon}>

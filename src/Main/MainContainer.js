@@ -16,7 +16,7 @@ import Management from '../pages/Management/Management';
 import Statistics from '../pages/Statistics/Statistics';
 
 // COMPONENTS
-import LoadingCircle from '../components/LoadingCircle';
+import AppLoader from '../components/AnimatedLoaders/AppLoader';
 import Toolbar from './Toolbar/Toolbar';
 import Helper from '../helpers/Helper';
 
@@ -30,7 +30,7 @@ const styles = theme => ({
     //backgroundColor: theme.palette.background.default,
     //backgroundColor: "#f3f4f8",
     //padding: theme.spacing.unit * 3,
-    overflow: "auto",
+    overflow: "overlay",
     display: "block",
     position: "relative",
     right: "-1960px",
@@ -68,7 +68,14 @@ class MainContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
-      this.props.updateRoute(this.props.location.state.active)
+      const { pathname, state } = this.props.location;
+
+      const active = {
+        pathname,
+        state
+      };
+
+      this.props.updateRoute(active)
     }
   }
 
@@ -110,8 +117,8 @@ class MainContainer extends Component {
       };
     }
 
-    if (this.props.sidebar.sidebar.isFetching) {
-      return <LoadingCircle wrapperStyle={this.props.classes.loadingWrapper} />;
+    if (this.props.sidebar.menu.isFetching) {
+      return <AppLoader style={{ width: "100%" }} loading={this.props.sidebar.menu.isFetching} />;
     } else {
       return (
         <Element id="mainContainer" className={this.props.classes.main + this.props.toggleMain}>
@@ -125,7 +132,7 @@ class MainContainer extends Component {
             />
             <div /* style={{ padding: "15px 24px 24px 24px" }} */ style={{ height: "100%" }}>
               <Switch>
-                {this.generateRoutes(this.props.sidebar.sidebar.data)}
+                {this.generateRoutes(this.props.sidebar.menu.data)}
                 <Route path="/דף-הבית" component={Home} />
                 <Route path="/הגדרות"
                   render={routeProps => (

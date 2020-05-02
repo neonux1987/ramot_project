@@ -1,11 +1,12 @@
 import React from 'react';
 import { withStyles, Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import { Route, Switch, NavLink } from 'react-router-dom';
+import { Route, Switch, NavLink, Redirect } from 'react-router-dom';
 import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
 import Services from './pages/Services/Services';
 import General from './pages/General/General';
 import Locations from './pages/Locations/Locations';
+import { useSelector } from 'react-redux';
 
 const styles = (theme) => ({
   tabs: {
@@ -40,10 +41,18 @@ const Settings = ({ classes, match }, props) => {
     setValue(newValue)
   }
 
+  const currentActive = useSelector(store => store.routes.active);
+  const pageState = currentActive.state;
+
   return (
     <div>
       <AppBar classes={{ root: classes.appBar }} position="static" style={{ margin: "20px 20px 30px 20px" }}>
-        <Tabs classes={{ root: classes.tabs, indicator: classes.indicator }} value={value} onChange={handleChange}>
+        <Tabs
+          classes={{ root: classes.tabs, indicator: classes.indicator }}
+          value={value}
+          TabIndicatorProps={{ style: { background: "none" } }}
+          onChange={handleChange}
+        >
           <Tab
             classes={{ root: classes.tab }}
             label="כללי"
@@ -55,6 +64,7 @@ const Settings = ({ classes, match }, props) => {
                 buildingName: "הגדרות"
               }
             }}
+            className={pageState.page === "כללי" ? "activeButton2" : ""}
           />
           <Tab
             classes={{ root: classes.tab }}
@@ -67,6 +77,7 @@ const Settings = ({ classes, match }, props) => {
                 buildingName: "הגדרות"
               }
             }}
+            className={pageState.page === "גיבוי ושחזור" ? "activeButton2" : ""}
           />
           <Tab
             classes={{ root: classes.tab }}
@@ -79,6 +90,7 @@ const Settings = ({ classes, match }, props) => {
                 buildingName: "הגדרות"
               }
             }}
+            className={pageState.page === "מיקום קבצים" ? "activeButton2" : ""}
           />
           <Tab
             classes={{ root: classes.tab }}
@@ -91,6 +103,7 @@ const Settings = ({ classes, match }, props) => {
                 buildingName: "הגדרות"
               }
             }}
+            className={pageState.page === "שירותי מערכת" ? "activeButton2" : ""}
           />
         </Tabs>
       </AppBar>
@@ -100,7 +113,18 @@ const Settings = ({ classes, match }, props) => {
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
           <Route path={`${match.path}/מיקום קבצים`} component={Locations} />
           <Route path={`${match.path}/שירותי מערכת`} component={Services} />
-          <Route component={General} />
+          <Redirect
+            exact
+            from="/הגדרות"
+            to={{
+              pathname: "/הגדרות/כללי",
+              state: {
+                page: "כללי",
+                buildingName: "הגדרות",
+                buildingNameEng: "settings"
+              }
+            }}
+          />
         </Switch>
       </div>
     </div>

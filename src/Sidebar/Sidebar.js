@@ -37,7 +37,9 @@ const Sidebar = (props) => {
 
   const dispatch = useDispatch();
 
-  const { sidebar, showSidebar } = useSelector(store => store.sidebar);
+  const { menu, showSidebar } = useSelector(store => store.sidebar);
+
+  const routeState = useSelector(store => store.routes.active.state);
 
   useEffect(() => {
     dispatch(fetchSidebar());
@@ -58,40 +60,16 @@ const Sidebar = (props) => {
 
   };
 
-  if (sidebar.isFetching) {
+  if (menu.isFetching) {
     return <LoadingCircle wrapperStyle={styles.loadingWrapper} textStyle={styles.loadingText} circleStyle={styles.loadingCircle} />;
   }
 
-  const NavigationBtn = ({ page, path, active, activeClass, clicked }) => {
-    return <NavButton
-      page={page}
-      path={path}
-      active={active}
-      activeClass={activeClass}
-      clicked={clicked}
-    >
-      <Dashboard classes={{ root: styles.listItemIcon }} />
-    </NavButton>;
-  }
-
   toggleSidebarAnimation = !showSidebar ? "hideAnimation" : "showAnimation";
-
-  /* const menuItems = sidebar.data.map((item, index) => {
-    return (<Menuitem item={item} key={index} active={state.active} clicked={activeItem} expandClick={expandMenuItem} />)
-  }); */
 
   return (
     <Drawer id="sidebar" variant="permanent" classes={{ paper: styles.drawerPaper }} anchor="left" className={classnames(styles.drawer, toggleSidebarAnimation)}>
 
       <Logo />
-
-      {/* <NavigationBtn
-        page="דף הבית"
-        path="דף-הבית"
-        active={state.active.subMenuItemId === state.homeButtonId || state.active.subMenuItemId === 0}
-        activeClass={activeButtonClass}
-        clicked={() => (activeItem(state.homeButtonId, state.homeButtonId))}
-      /> */}
 
       <Menuitem
         className={styles.homeButton}
@@ -105,13 +83,10 @@ const Sidebar = (props) => {
             buildingNameEng: ""
           }
         }}
+        active={routeState.page === "דף הבית"}
       />
 
-      {/*  <Menu>
-        {menuItems}
-      </Menu> */}
-
-      <Menu data={sidebar.data} />
+      <Menu data={menu.data} routeState={routeState} />
 
       <div className={styles.settingsWrapper}>
 
@@ -127,8 +102,10 @@ const Sidebar = (props) => {
               buildingNameEng: ""
             }
           }}
+          active={routeState.page === "הגדרות"}
         />
       </div>
+
     </Drawer>
   );
 

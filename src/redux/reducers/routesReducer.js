@@ -2,7 +2,12 @@ import { TYPES } from '../actions/routesActions';
 
 const initState = {
   active: {
-    pageName: ""
+    pathname: "/דף-הבית",
+    state: {
+      page: "דף הבית",
+      buildingName: "",
+      buildingNameEng: ""
+    }
   }
 }
 

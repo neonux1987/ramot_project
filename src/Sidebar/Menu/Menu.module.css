@@ -3,8 +3,10 @@
   overflow-x: hidden;
   margin-bottom: 100px;
   background:  none;
+  margin-top: 10px;
 }
 
 .listSubheader{
   color: #cbcdda;
+  background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%);
 }
