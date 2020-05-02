@@ -38,7 +38,6 @@ import { fetchSettings } from './redux/actions/settingsActions';
 const remote = require('electron').remote;
 const { ipcRenderer } = require('electron');
 
-console.log("hello");
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
   typography: {
