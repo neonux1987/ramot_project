@@ -13,7 +13,6 @@ import {
   list,
   listSubheader
 } from './Menu.module.css';
-import { useSelector } from 'react-redux';
 
 const DEFAULT_PAGE = "הוצאות חודשי";
 
