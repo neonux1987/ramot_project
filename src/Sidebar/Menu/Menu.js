@@ -65,7 +65,7 @@ const Menu = (props) => {
 
   const menuRender = data.map((item) => {
 
-    const { label, submenu, id, engLabel, path } = item;
+    const { label, submenu, id, engLabel } = item;
 
     return <ExpandableMenuItem
       label={label}

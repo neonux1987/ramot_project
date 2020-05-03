@@ -31,6 +31,7 @@ const dbBackupIpc = require('../../electron/ipcs/dbBackup.ipc');
 const excelIpc = require('../../electron/ipcs/excel.ipc');
 const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenerator.ipc');
 const servicesIpc = require('../../electron/ipcs/services.ipc');
+const mainProcessIpc = require('../../electron/ipcs/mainProcess.ipc');
 
 const ServicesLogic = require('../logic/ServicesLogic');
 
@@ -46,6 +47,9 @@ class MainSystem {
   }
 
   initializeIpcs() {
+
+    mainProcessIpc();
+
     sidebarIpc();
 
     monthExpansesIpc();

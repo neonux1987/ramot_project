@@ -22,6 +22,7 @@ import generalSettingsActions from '../../redux/actions/generalSettingsActions';
 
 // HOOKS
 import useModalLogic from "../../customHooks/useModalLogic";
+import { restartApp } from "../../services/mainProcess.svc";
 
 const Toolbar = ({ buildingName, page }) => {
 
@@ -42,7 +43,6 @@ const Toolbar = ({ buildingName, page }) => {
   const taxClickHandler = () => {
     handleClose();
     showModal(EditVatModal);
-
   }
 
   const dispatch = useDispatch();
@@ -52,6 +52,10 @@ const Toolbar = ({ buildingName, page }) => {
   useEffect(() => {
     dispatch(generalSettingsActions.fetchGeneralSettings());
   }, [dispatch]);
+
+  const restartAppHandler = () => {
+    restartApp();
+  }
 
   const tax = isFetching ?
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :
@@ -170,6 +174,10 @@ const Toolbar = ({ buildingName, page }) => {
             >
               הגדרות
             </NavLink>
+          </MenuItem>
+
+          <MenuItem className={styles.menuItem} onClick={restartAppHandler}>
+            אתחל אפליקציה
           </MenuItem>
 
         </Menu>

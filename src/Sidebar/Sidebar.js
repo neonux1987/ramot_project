@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Drawer } from '@material-ui/core';
 import { Dashboard, Tune } from '@material-ui/icons';
@@ -12,7 +12,6 @@ import styles from './Sidebar.module.css';
 // COMPONENTS
 import Menu from './Menu/Menu';
 import Logo from './Logo/Logo'
-import NavButton from './NavButton';
 import LoadingCircle from '../components/LoadingCircle';
 //import Menuitem from './Menuitem';
 
@@ -20,20 +19,9 @@ import LoadingCircle from '../components/LoadingCircle';
 import { fetchSidebar } from '../redux/actions/sidebarActions';
 import Menuitem from './MenuItem/Menuitem';
 
-const activeButtonClass = "activeButton";
-
-const Sidebar = (props) => {
+const Sidebar = () => {
 
   let toggleSidebarAnimation = "";
-
-  const [state, setState] = useState({
-    active: {
-      menuItemId: 0,
-      subMenuItemId: 0
-    },
-    homeButtonId: 99,
-    settingsButtonId: 100
-  });
 
   const dispatch = useDispatch();
 
@@ -44,21 +32,6 @@ const Sidebar = (props) => {
   useEffect(() => {
     dispatch(fetchSidebar());
   }, [dispatch]);
-
-  const activeItem = (menuItemId, subMenuItemId) => {
-
-    //copy active object
-    let active = { ...state.active }
-
-    active.menuItemId = menuItemId;
-    active.subMenuItemId = subMenuItemId;
-
-    setState({
-      ...state,
-      active: active
-    });
-
-  };
 
   if (menu.isFetching) {
     return <LoadingCircle wrapperStyle={styles.loadingWrapper} textStyle={styles.loadingText} circleStyle={styles.loadingCircle} />;

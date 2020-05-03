@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
 import { fetchSettings } from './redux/actions/settingsActions';
+import { quitApp } from './services/mainProcess.svc';
 
 // ELECTRON
 const remote = require('electron').remote;
@@ -134,8 +135,9 @@ const App = props => {
   });
 
   const closeButtonHandler = () => {
-    const window = remote.getCurrentWindow();
-    window.close();
+    //const window = remote.getCurrentWindow();
+    //window.close();
+    quitApp();
   }
 
   const minimizeButtonHandler = () => {

@@ -47,7 +47,7 @@ class DbBackupSvc {
 
       //execute scheduler
       this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-        this.backupDbCallback(settings).catch((error) => {
+        this.initiateBackup(settings).catch((error) => {
           console.log(error);
           rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
         });
@@ -102,7 +102,7 @@ class DbBackupSvc {
 
     // execute scheduler
     this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-      this.backupDbCallback().catch((error) => {
+      this.initiateBackup().catch((error) => {
         console.log(error);
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
       });
@@ -156,7 +156,7 @@ class DbBackupSvc {
     return this.backupSchedule === null ? false : true;
   }
 
-  async backupDbCallback() {
+  async initiateBackup() {
     let settings = null;
     try {
       //fetch db backup settings
@@ -184,7 +184,7 @@ class DbBackupSvc {
     //filename of the file to save
     const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}.sqlite`;
     const path = `${db_backup.path}/${fileName}`;
-    console.log("what is happening");
+
     try {
       //notify that the backup process started
       rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "מתבצע כעת גיבוי בסיס נתונים...");
@@ -231,7 +231,8 @@ class DbBackupSvc {
       rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
 
     } catch (e) {
-      throw new Error(e);
+      console.log(e);
+      //throw new Error(e);
     }
 
   }

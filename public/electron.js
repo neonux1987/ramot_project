@@ -1,9 +1,10 @@
 //========================= electron imports =========================//
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, powerMonitor } = require('electron');
 const { autoUpdater } = require('electron-updater');
 
 //========================= services =========================//
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
+const dbBackupSvc = require('./backend/services/DbBackupSvc');
 
 const mainSystem = require('./backend/system/MainSystem');
 
@@ -91,11 +92,12 @@ async function createWindow() {
     path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0')
   ); */
 
-  /* powerMonitor.on('resume', () => {
+  powerMonitor.on('resume', () => {
     console.log('The system is up');
-    const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
-    console.log(generateReports);
-  }) */
+    //const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
+    //console.log(generateReports);
+  });
+
 }
 
 if (!gotTheLock) {
@@ -111,9 +113,12 @@ if (!gotTheLock) {
 
   app.on('ready', createWindow);
 
-  /* app.on('web-contents-created', (event, webContents) => {
-    
-  }) */
+  app.on('before-quit', async (event) => {
+    event.preventDefault();
+    console.log("before i quit");
+    await dbBackupSvc.initiateBackup();
+    //app.exit(0);
+  });
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
