@@ -50,7 +50,7 @@ const theme = createMuiTheme({
 });
 
 const TOAST_AUTO_CLOSE = 3000;
-
+console.log("hello");
 const App = props => {
 
   const toggleSidebarAnimation = "";
