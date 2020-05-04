@@ -1,0 +1,10 @@
+.numOfBackupsWrapper{
+  display: flex;
+  margin-bottom: 40px;
+  align-items: center;
+}
+
+.numOfBackups{
+  margin-right: 20px;
+  width: 40px;
+}

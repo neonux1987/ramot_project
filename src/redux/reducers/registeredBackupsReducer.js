@@ -1,4 +1,5 @@
-import { TYPES } from '../actions/backupsNamesActions';
+import { TYPES } from '../actions/registeredBackupsActions';
+
 const initState = {
   isFetching: false,
   status: "",
@@ -8,25 +9,25 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case TYPES.BACKUPS_NAMES_RECEIVE:
+    case TYPES.REGISTERED_BACKUPS_RECEIVE:
       return {
         ...state,
         isFetching: false,
         status: "success",
         data: action.data
       }
-    case TYPES.BACKUPS_NAMES_REQUEST:
+    case TYPES.REGISTERED_BACKUPS_REQUEST:
       return {
         ...state,
         isFetching: true,
       }
-    case TYPES.BACKUPS_NAMES_FETCHING_FAILED:
+    case TYPES.REGISTERED_BACKUPS_FETCHING_FAILED:
       return {
         ...state,
         status: "error",
         error: action.payload
       }
-    case TYPES.BACKUPS_NAMES_INIT:
+    case TYPES.REGISTERED_BACKUPS_INIT:
       return {
         ...state,
         isFetching: false,

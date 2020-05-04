@@ -1,0 +1,18 @@
+.container{
+  margin-bottom: 40px;
+}
+
+.subtitle{
+  margin-bottom: 10px;
+}
+
+.dbFileTextFieldLocationWrapper{
+  margin-top: 0px;
+  width: 580px;
+  background-color: #ffffff;
+}
+
+.dbFileTextFieldLocationInput{
+  padding: 9px 14px;
+  direction: ltr;
+}

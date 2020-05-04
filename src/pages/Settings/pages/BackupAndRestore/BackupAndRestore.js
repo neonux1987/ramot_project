@@ -8,7 +8,7 @@ import heLocale from "date-fns/locale/he";
 import styles from './BackupAndRestore.module.css';
 
 // CONTAINERS
-import Backup from './Backup/Backup';
+import BackupContainer from './Backup/BackupContainer';
 import Restore from './Restore/Restore';
 
 const localeMap = {
@@ -22,7 +22,7 @@ const BackupAndRestore = () => {
 
       <div className={styles.form}>
 
-        <Backup />
+        <BackupContainer />
 
         <Restore />
 

@@ -1,10 +1,13 @@
+// LIBRARIES
 import React, { useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
-import styles from './ExpandableSection.module.css';
 import Collapsible from 'react-collapsible';
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
+
+// CSS
+import styles from './ExpandableSection.module.css';
 
 export default ({
   TitleIcon,

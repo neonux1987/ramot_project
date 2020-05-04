@@ -1,7 +1,7 @@
 const fse = require('fs-extra');
 const schedule = require('node-schedule');
 const SettingsLogic = require('../logic/SettingsLogic');
-const IOLogic = require('../logic/IOLogic');
+const RegisteredBackupsLogic = require('../logic/RegisteredBackupsLogic');
 const rendererNotificationSvc = require('./RendererNotificationSvc');
 
 const DB_BACKUP_FILENAME = "mezach-db-backup";
@@ -11,7 +11,7 @@ class DbBackupSvc {
   constructor() {
 
     this.settingsLogic = new SettingsLogic();
-    this.ioLogic = new IOLogic();
+    this.registeredBackupsLogic = new RegisteredBackupsLogic();
     this.rule = new schedule.RecurrenceRule();
     this.backupSchedule = null;
   }
@@ -145,11 +145,11 @@ class DbBackupSvc {
     return this.backupSchedule === null ? false : true;
   }
 
-  async schedulerCallback() {
+  schedulerCallback = async () => {
     //notify that the backup process started
     rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
 
-    await initiateBackup().catch((error) => {
+    await this.initiateBackup().catch((error) => {
       console.log(error);
       rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
     });
@@ -159,21 +159,13 @@ class DbBackupSvc {
   }
 
   async initiateBackup() {
-    let settings = null;
-    try {
-      //fetch db backup settings
-      settings = await this.settingsLogic.getSettings();
-    } catch (e) {
-      return Promise.reject(e);
-    }
+    //fetch db backup settings
+    let settings = await this.settingsLogic.getSettings();
 
     const { db_backup, locations } = settings;
 
     //fetch db backup settings
-    let dbFile = fse.readFile(locations.db_file_path);
-
-    //fetch db backup settings
-    const backupsNames = await this.settingsLogic.getBackupsNames();
+    const registeredBackups = await this.registeredBackupsLogic.getRegisteredBackups();
 
     //current date
     let date = new Date();
@@ -187,50 +179,32 @@ class DbBackupSvc {
     const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}.sqlite`;
     const path = `${db_backup.path}/${fileName}`;
 
-    try {
+    if (registeredBackups.length >= db_backup.backups_to_save) {
 
-      if (backupsNames.length < db_backup.backups_to_save) {
+      //filename of the file to remove, the first and oldest in the array
+      const removedFileName = registeredBackups[0].fileName;
 
-        //write the file physically to the drive
-        await fse.writeFile(path, dbFile);
+      //remove the file physically from the drive
+      await fse.remove(`${db_backup.path}/${removedFileName}`);
 
-        //push the new file to the array
-        backupsNames.push({ backupDateTime: date, fileName: fileName });
+      //remove the filename from the array
+      registeredBackups.shift();
 
-      } else {
-
-        //filename of the file to remove, the first and oldest in the array
-        const removedFileName = backupsNames[0].fileName;
-
-        //remove the file physically from the drive
-        await this.ioLogic.removeFile(`${db_backup.path}/${removedFileName}`);
-
-        //remove the filename from the array
-        backupsNames.shift();
-
-        //write the file physically to the drive
-        await fse.writeFile(path, dbFile);
-
-        //push the new file to the array
-        backupsNames.push({ backupDateTime: date, fileName: fileName });
-      }
-
-      //save it to the settings obj
-      settings.db_backup.last_update = date.toString();
-
-      //write the new settings
-      await this.settingsLogic.updateSettings(settings).then((result) => {
-        //notify that the backup process ended
-        rendererNotificationSvc.notifyRenderer("settings-updated", null, settings);
-        return result;
-      });
-
-      await this.settingsLogic.updateBackupsNames(backupsNames);
-
-    } catch (e) {
-      console.log(e);
-      //throw new Error(e);
     }
+
+    //write the file physically to the drive
+    await fse.copy(locations.db_file_path, path);
+
+    //push the new file to the array
+    registeredBackups.push({ backupDateTime: date, fileName: fileName });
+
+    //save it to the settings obj
+    settings.db_backup.last_update = date.toString();
+
+    //write the new settings
+    await this.settingsLogic.updateSettings(settings);
+
+    await this.registeredBackupsLogic.updateRegisteredBackups(registeredBackups);
 
   }
 
@@ -241,13 +215,8 @@ class DbBackupSvc {
       throw new Error("the path can not be null or undefined.")
     }
 
-    let settings = null;
-    try {
-      //fetch db backup settings
-      settings = await this.settingsLogic.getSettings();
-    } catch (e) {
-      throw e;
-    }
+    //fetch db backup settings
+    let settings = await this.settingsLogic.getSettings();
 
     //fetch db backup settings
     let fileToBackup = await fse.readFile(settings.locations.db_file_path);

@@ -1,6 +1,5 @@
 const { ipcMain } = require('electron');
 const SettingsLogic = require('../../backend/logic/SettingsLogic');
-const dbBackupSvc = require('../../backend/services/DbBackupSvc');
 
 const settingsIpc = () => {
 
@@ -67,24 +66,6 @@ const settingsIpc = () => {
     }).catch((error) => {
       console.log(error);
       event.reply("saved-settings", { error: error.message });
-    });
-  });
-
-  ipcMain.on('get-backups-names', (event) => {
-    settingsLogic.getBackupsNames().then((result) => {
-      //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.reply("backups-names-data", { data: result });
-    }).catch((error) => {
-      event.reply("backups-names-data", { error: error.message });
-    });
-  });
-
-  ipcMain.on('initialize-backups-names', (event) => {
-    settingsLogic.initializeBackupNames().then((result) => {
-      //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.reply("backups-names-initialized", { data: result });
-    }).catch((error) => {
-      event.reply("backups-names-initialized", { error: error.message });
     });
   });
 

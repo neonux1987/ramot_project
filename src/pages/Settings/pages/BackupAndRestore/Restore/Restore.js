@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { FormControl, Box, Button, Typography, Divider, Select, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { Restore } from '@material-ui/icons';
@@ -8,36 +8,32 @@ import { Restore } from '@material-ui/icons';
 import styles from './Restore.module.css';
 
 // COMPONENTS
-import LoadingCircle from '../../../../../components/LoadingCircle';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 
 // ACTIONS
 import {
-  fetchBackupsNames
-} from '../../../../../redux/actions/backupsNamesActions';
+  fetchRegisteredBackups
+} from '../../../../../redux/actions/registeredBackupsActions';
 
 // TOASTS
 import { myToasts } from '../../../../../CustomToasts/myToasts';
+import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoader';
 
 export default (props) => {
 
   const dispatch = useDispatch();
 
-  const backupsNames = useSelector(store => store.backupsNames);
+  const { isFetching, data } = useSelector(store => store.registeredBackups);
+
+  const [selectedBackupDate, SetSelectedBackupDate] = React.useState(data[0] ? data[0].backupDateTime : "לא קיימים גיבויים שמורים");
 
   useEffect(() => {
-    dispatch(fetchBackupsNames()).catch((result) => {
+    dispatch(fetchRegisteredBackups()).catch((result) => {
       myToasts.error(result.error);
     });
   }, [dispatch]);
 
-  const [selectedBackupDate, SetSelectedBackupDate] = React.useState(backupsNames.data[0] ? backupsNames.data[0].backupDateTime : "לא קיימים גיבויים שמורים");
-
-  if (backupsNames.isFetching) {
-    return <LoadingCircle loading={backupsNames.isFetching} />
-  }
-
-  const backupsNamesRender = backupsNames.data.length > 0 ? backupsNames.data.map((backup, index) => {
+  const backupsNamesRender = data.length > 0 ? data.map((backup, index) => {
     const date = new Date(backup.backupDateTime);
     const locale = date.toLocaleString();
     //to get rid off of the AM or PM
@@ -52,14 +48,10 @@ export default (props) => {
     SetSelectedBackupDate(value);
   }
 
-  return (
-
-    <StyledExpandableSection
-      title={"שיחזור בסיס נתונים"}
-      TitleIcon={Restore}
-      iconBoxBg={"#1b966e"}
-      padding={"20px"}
-    >{/* db restore start */}
+  const render = isFetching ?
+    <DefaultLoader loading={isFetching} />
+    :
+    <Fragment>
       <div style={{ paddingBottom: "5px" }}>
         <Typography variant="h5" className={styles.dbRestoreTitle}>
           שיחזור בסיס נתונים
@@ -103,7 +95,17 @@ export default (props) => {
       <Typography variant="body2">
         *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה חירום.
     </Typography>
+    </Fragment>
 
-      {/* db restore end */}</StyledExpandableSection>
+  return (
+
+    <StyledExpandableSection
+      title={"שיחזור בסיס נתונים"}
+      TitleIcon={Restore}
+      iconBoxBg={"#1b966e"}
+      padding={"20px"}
+    >
+      {render}
+    </StyledExpandableSection>
   );
 }

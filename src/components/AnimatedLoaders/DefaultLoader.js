@@ -1,25 +1,29 @@
 import React from 'react';
 import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
-import { RotateLoader } from 'react-spinners';
+import { ScaleLoader } from 'react-spinners';
 
 export default (props) => {
-
+  const { loading, title = "טוען הגדרות", loaderColor = "#000000" } = props;
   return (
     <AlignCenterMiddle style={{ height: "100%", ...props.style }}>
       <div
         style={{
-          marginLeft: "50px",
+          marginLeft: "20px",
           color: "#000000",
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: "16px",
         }}
-      >טוען הגדרות
+      >
+        {title}
       </div>
-      <RotateLoader
+      <ScaleLoader
         margin={2}
-        size={15}
-        color={"#000000"}
-        loading={props.loading}
+        radius={2}
+        width={4}
+        height={35}
+        size={10}
+        color={loaderColor}
+        loading={loading}
       />
     </AlignCenterMiddle>
   );

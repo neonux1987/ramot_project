@@ -27,6 +27,7 @@ const yearlyStatsIpc = require('../../electron/ipcs/yearlyStats.ipc');
 const tableSettingsIpc = require('../../electron/ipcs/tableSettings.ipc');
 const IOIpc = require('../../electron/ipcs/IO.ipc');
 const settingsIpc = require('../../electron/ipcs/settings.ipc');
+const registeredBackupsIpc = require('../../electron/ipcs/registeredBackups.ipc');
 const dbBackupIpc = require('../../electron/ipcs/dbBackup.ipc');
 const excelIpc = require('../../electron/ipcs/excel.ipc');
 const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenerator.ipc');
@@ -81,6 +82,8 @@ class MainSystem {
     IOIpc();
 
     settingsIpc();
+
+    registeredBackupsIpc();
 
     dbBackupIpc();
 

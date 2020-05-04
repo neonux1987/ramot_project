@@ -1,13 +1,12 @@
 // LIBRARIES
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormControlLabel, Checkbox, Box, Button, Typography, TextField, Select, MenuItem } from '@material-ui/core';
-import { TimePicker } from '@material-ui/pickers';
+import { Typography, MenuItem } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
 import GoodBye from 'react-goodbye';
 
 // CSS
-import styles from './Backup.module.css';
+import styles from './BackupContainer.module.css';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
@@ -23,8 +22,8 @@ import {
   updateSettings
 } from '../../../../../redux/actions/settingsActions';
 import {
-  initializeBackupNames
-} from '../../../../../redux/actions/backupsNamesActions';
+  initializeRegisteredBackups
+} from '../../../../../redux/actions/registeredBackupsActions';
 import { showModal } from '../../../../../redux/actions/modalActions';
 
 // SERVICES
@@ -33,6 +32,11 @@ import { dbIndependentBackup } from '../../../../../services/dbBackup.svc';
 // TOASTS
 import { myToasts } from '../../../../../CustomToasts/myToasts';
 import ToastRender from '../../../../../components/ToastRender/ToastRender';
+import DaysOfWeekSelector from './DaysOfWeekSelector/DaysOfWeekSelector';
+import NumOfBackupsSelector from './NumOfBackupsSelector/NumOfBackupsSelector';
+import BackupFolderSelector from './BackupFolderSelector/BackupFolderSelector';
+import TimeSelector from './TimeSelector/TimeSelector';
+import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 
 
 const SETTINGS_NAME = "db_backup";
@@ -174,7 +178,7 @@ export default () => {
                   path: newPath
                 });
                 setDirty(true);
-                dispatch(initializeBackupNames()).catch((result) => {
+                dispatch(initializeRegisteredBackups()).catch((result) => {
                   myToasts.error(result.error);
                 });
               }
@@ -234,7 +238,7 @@ export default () => {
         <SaveButton onClick={save}>שמור</SaveButton>
       }
       padding={"30px 20px"}
-    >{/* db backup start */}
+    >
 
       {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}
 
@@ -242,188 +246,17 @@ export default () => {
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
       </Typography>}
 
-      <div style={{ marginBottom: "40px" }}>
+      <TimeSelector time={data.time} onChange={onDbTimeChange} />
 
-        <Typography variant="subtitle1">
-          <Box fontWeight="600">
-            בחר שעה לביצוע הגיבוי:
-        </Box>
-        </Typography>
+      <NumOfBackupsSelector onChange={backupsToSaveChangeHandler} numOfBackups={data.backups_to_save}>
+        {backups_to_save}
+      </NumOfBackupsSelector>
 
-        <TimePicker
-          ampm={false}
-          classes={{ root: styles.time }}
-          value={settings.time}
-          onChange={onDbTimeChange}
-        />
-      </div>
+      <DaysOfWeekSelector onChange={onDbDayChange} daysOfWeek={data.days_of_week} />
 
-      <div style={{ marginBottom: "40px" }}>
-        <Typography variant="subtitle1">
-          <Box fontWeight="600">
-            בחר כמה גיבויים לשמור לאחור:
-        </Box>
-        </Typography>
+      <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} />
 
-        <Select
-          value={settings.backups_to_save}
-          onChange={backupsToSaveChangeHandler}
-          inputProps={{
-            name: 'age',
-            id: 'age-simple',
-          }}
-        >
-          {backups_to_save}
-        </Select>
-      </div>
-
-      <div style={{ marginBottom: "40px" }}>
-        <Typography variant="subtitle1" style={{ marginBottom: "20px" }}>
-          <Box fontWeight="600">
-            בחר באיזה ימים הנך מעוניין שהגיבוי יתבצע:
-        </Box>
-        </Typography>
-
-        <FormControlLabel
-          labelPlacement="top"
-          label="הכל"
-          style={{ marginRight: "-8px", borderLeft: "1px solid #808080", paddingLeft: "25px" }}
-          control={
-            <Checkbox
-              name="everything"
-              checked={settings.days_of_week["everything"]}
-              onChange={onDbDayChange}
-              value="checkedB"
-              color="primary"
-            />
-          }
-        />
-
-        <FormControlLabel
-          labelPlacement="top"
-          label="יום א'"
-          control={
-            <Checkbox
-              name="0"
-              checked={settings.days_of_week["0"]}
-              onChange={onDbDayChange}
-              value="checkedB"
-              color="primary"
-            />
-          }
-        />
-
-        <FormControlLabel
-          labelPlacement="top"
-          label="יום ב'"
-          control={
-            <Checkbox
-              name="1"
-              checked={settings.days_of_week["1"]}
-              onChange={onDbDayChange}
-              value="checkedB"
-              color="primary"
-            />
-          }
-        />
-
-        <FormControlLabel
-          labelPlacement="top"
-          label="יום ג'"
-          control={
-            <Checkbox
-              name="2"
-              checked={settings.days_of_week["2"]}
-              onChange={onDbDayChange}
-              value="checkedB"
-              color="primary"
-            />
-          }
-        />
-
-        <FormControlLabel
-          labelPlacement="top"
-          label="יום ד'"
-          control={
-            <Checkbox
-              name="3"
-              checked={settings.days_of_week["3"]}
-              onChange={onDbDayChange}
-              value="checkedB"
-              color="primary"
-            />
-          }
-        />
-
-        <FormControlLabel
-          labelPlacement="top"
-          label="יום ה'"
-          control={
-            <Checkbox
-              name="4"
-              checked={settings.days_of_week["4"]}
-              onChange={onDbDayChange}
-              value="checkedB"
-              color="primary"
-            />
-          }
-        />
-
-        <FormControlLabel
-          labelPlacement="top"
-          label="יום ו'"
-          control={
-            <Checkbox
-              name="5"
-              checked={settings.days_of_week["5"]}
-              onChange={onDbDayChange}
-              value="checkedB"
-              color="primary"
-            />
-          }
-        />
-
-        <FormControlLabel
-          labelPlacement="top"
-          label="יום ש'"
-          control={
-            <Checkbox
-              name="6"
-              checked={settings.days_of_week["6"]}
-              onChange={onDbDayChange}
-              value="checkedB"
-              color="primary"
-            />
-          }
-        />
-
-      </div>
-
-      <div style={{ marginBottom: "40px" }}>
-        <Typography variant="subtitle1" style={{ marginBottom: "10px" }}>
-          <Box fontWeight="600">
-            בחר מיקום לשמירת הגיבוי:
-        </Box>
-        </Typography>
-
-        <Button variant="contained" color="primary" onClick={dbSelectFolderHandler}>שנה מיקום</Button>
-        <TextField
-          id="outlined-bare"
-          disabled
-          classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-          value={settings.path}
-          onChange={() => { }}
-          variant="outlined"
-          inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
-        />
-      </div>
-
-      <div style={{ marginBottom: "40px" }}>
-        <Typography variant="subtitle1" style={{ display: "inline-flex" }}>
-          <Box fontWeight="600">לגיבוי ידני ושמירת הגיבוי במקום אחר לחץ</Box>
-        </Typography>
-        <Button style={{ marginRight: "10px", display: "inline-flex" }} variant="contained" color="primary" onClick={dbIndependentBackupHandler}>גבה בסיס נתונים</Button>
-      </div>
+      <ManualBackupSelector onClick={dbIndependentBackupHandler} />
 
       <GoodBye when={dirty}>
         {({ isShow, handleOk, handleCancel }) =>

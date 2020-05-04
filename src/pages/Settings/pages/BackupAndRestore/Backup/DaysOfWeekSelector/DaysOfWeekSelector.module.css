@@ -1,0 +1,13 @@
+.container{
+  margin-bottom: 40px;
+}
+
+.subtitle{
+  margin-bottom: 20px;
+}
+
+.formControlLabel{
+  margin-right: -8px;
+  border-left: 1px solid #808080;
+  padding-left: 25px;
+}

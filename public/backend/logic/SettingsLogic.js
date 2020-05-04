@@ -36,19 +36,9 @@ class SettingsLogic {
   }
 
   updateSettings(data) {
-    return fse.writeJSON(CONFIG_LOCATION, data);
-  }
-
-  getBackupsNames() {
-    return fse.readJSON(CONFIG_BACKUPS_NAMES);
-  }
-
-  updateBackupsNames(data) {
-    return fse.writeJSON(CONFIG_BACKUPS_NAMES, data);;
-  }
-
-  initializeBackupNames() {
-    return this.updateBackupsNames([]);
+    return fse.writeJSON(CONFIG_LOCATION, data, {
+      spaces: 2
+    });
   }
 
   static SETTINGS_NAMES = {

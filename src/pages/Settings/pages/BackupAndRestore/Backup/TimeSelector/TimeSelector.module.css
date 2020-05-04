@@ -1,0 +1,14 @@
+.timeWrapper{
+  display: flex;
+  margin-bottom: 40px;
+  align-items: center;
+}
+
+.time{
+  width: 100px;
+  margin-right: 20px;
+}
+
+.timeInput{
+  text-align: center;
+}

@@ -162,7 +162,7 @@ const App = props => {
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
-          quitApp();
+          //quitApp();
         }
       });
 
