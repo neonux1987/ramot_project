@@ -3,11 +3,11 @@ const dbBackupSvc = require('../../backend/services/DbBackupSvc');
 
 const dbBackupIpc = () => {
 
-  ipcMain.on('initiate-backup', (event) => {
+  ipcMain.on('initiate-db-backup', (event) => {
     dbBackupSvc.initiateBackup().then((result) => {
-      event.reply("backup-initiated", { data: result });
+      event.reply("db-backup-initiated", { data: result });
     }).catch((error) => {
-      event.reply("backup-initiated", { error: error.message });
+      event.reply("db-backup-initiated", { error: error.message });
     });
   });
 

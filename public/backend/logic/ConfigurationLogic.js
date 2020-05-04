@@ -2,30 +2,28 @@ const { app, dialog } = require('electron');
 
 const isDev = require('electron-is-dev');
 const os = require('os');
-const platform = os.platform();
-const homedir = os.homedir();
 const path = require('path');
 const { getDocumentsFolder, getDataHome } = require('platform-folders');
 const fse = require('fs-extra');
 
-const usersAppDataFolder = platform === "linux" ? homedir : getDataHome();
+const usersAppDataFolder = getDataHome();
 
 // configuration files paths
-const NDTS_FOLDER_PATH = platform === "linux" ? path.join(usersAppDataFolder, "Dropbox/ndts") : path.join(usersAppDataFolder, "ndts");
+const NDTS_FOLDER_PATH = path.join(usersAppDataFolder, "ndts");
 
 const CONFIG_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "config");
-const CONFIG_PATH = platform === "linux" ? path.join(CONFIG_FOLDER_PATH, "config.json") : path.join(CONFIG_FOLDER_PATH, "config.json");
-const BACKUPS_NAMES_PATH = platform === "linux" ? path.join(CONFIG_FOLDER_PATH, "backupsNames.json") : path.join(CONFIG_FOLDER_PATH, "backupsNames.json");
-const SERVICES_PATH = platform === "linux" ? path.join(CONFIG_FOLDER_PATH, "services.json") : path.join(CONFIG_FOLDER_PATH, "services.json");
+const CONFIG_PATH = path.join(CONFIG_FOLDER_PATH, "config.json");
+const BACKUPS_NAMES_PATH = path.join(CONFIG_FOLDER_PATH, "backupsNames.json");
+const SERVICES_PATH = path.join(CONFIG_FOLDER_PATH, "services.json");
 
 const DB_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db");
-const DB_PATH = platform === "linux" ? path.join(DB_FOLDER_PATH, "mezach-db.sqlite") : path.join(DB_FOLDER_PATH, "mezach-db.sqlite");
+const DB_PATH = path.join(DB_FOLDER_PATH, "mezach-db.sqlite");
 const DB_BACKUPS_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db backups");
 
 // user documents
 const userDocuments = getDocumentsFolder();
 // user main folder
-USER_MAIN_FOLDER = platform === "linux" ? path.join(userDocuments, `רמות מזח`) : path.join(userDocuments, `רמות מזח`);
+USER_MAIN_FOLDER = path.join(userDocuments, `רמות מזח`);
 
 // ndts setup files path
 const APP_ROOT_PATH = app.getAppPath();
@@ -91,7 +89,9 @@ class ConfigurationLogic {
 
     config.locations.db_file_path = DB_PATH;
     config.locations.db_folder_path = DB_FOLDER_PATH;
+
     config.locations.db_backups_folder_path = DB_BACKUPS_FOLDER_PATH;
+    config.db_backup.path = DB_BACKUPS_FOLDER_PATH;
 
     config.locations.reports_folder_path = USER_MAIN_FOLDER;
 

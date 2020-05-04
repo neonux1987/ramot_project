@@ -35,6 +35,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchSettings } from './redux/actions/settingsActions';
 import { quitApp } from './services/mainProcess.svc';
 
+// SERVICES
+import { initiateDbBackup } from './services/dbBackup.svc';
+
 // ELECTRON
 const remote = require('electron').remote;
 const { ipcRenderer } = require('electron');
@@ -83,8 +86,8 @@ const App = props => {
   }, [dispatch])
 
   useEffect(() => {
-    //listen when the data comes back
-    ipcRenderer.on("notify-renderer", (event, action, message) => {
+
+    const listenerCallback = (event, action, message) => {
       let toastId = null;
       switch (action) {
         case "dbBackupStarted":
@@ -116,7 +119,7 @@ const App = props => {
           setState({ toastId: toastId });
           break;
         case "reportsGenerationFinished":
-          toast.update(state.toastId, {
+          myToasts.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
             type: toast.TYPE.SUCCESS,
             delay: 2000,
@@ -124,20 +127,45 @@ const App = props => {
           });
           break;
         case "errorTest":
-          toast.error(message);
+          myToasts.error(message);
           break;
         default: return null;
       }
-    });
+    };
+
+    // when he state updates it re-runs useEffect again
+    // to avoid multiple register of of the same event
+    // unregister all events
+    ipcRenderer.removeAllListeners("notify-renderer");
+
+    //listen when the data comes back
+    ipcRenderer.on("notify-renderer", listenerCallback);
 
     //start services
     ipcRenderer.send("system-start-services");
-  });
+  }, [state.toastId]);
 
-  const closeButtonHandler = () => {
+  const closeButtonHandler = async () => {
     //const window = remote.getCurrentWindow();
     //window.close();
-    quitApp();
+
+    const id = myToasts.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס הנתונים לפני יציאה..."} />, {
+      autoClose: false
+    });
+
+    const promise = await initiateDbBackup();
+
+    if (promise.success)
+      myToasts.update(id, {
+        render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
+        type: myToasts.TYPE.SUCCESS,
+        delay: 2000,
+        autoClose: 2500,
+        onClose: () => {
+          quitApp();
+        }
+      });
+
   }
 
   const minimizeButtonHandler = () => {

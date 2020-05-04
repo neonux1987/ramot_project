@@ -1,8 +1,5 @@
 const IOLogic = require("../logic/IOLogic");
-const os = require('os');
-const platform = os.platform();
-const homedir = os.homedir();
-const path = require('path');
+const fse = require('fs-extra');
 const ConfigurationLogic = require('../logic/ConfigurationLogic');
 
 const CONFIG_LOCATION = ConfigurationLogic.paths.config_path;
@@ -15,9 +12,7 @@ class SettingsLogic {
   }
 
   getSettings() {
-    return this.iOLogic.readFile(CONFIG_LOCATION).then((settings) => {
-      return JSON.parse(settings);
-    });
+    return fse.readJson(CONFIG_LOCATION);
   }
 
   getSpecificSetting(settingName) {

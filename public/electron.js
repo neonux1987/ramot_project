@@ -4,7 +4,6 @@ const { autoUpdater } = require('electron-updater');
 
 //========================= services =========================//
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
-const dbBackupSvc = require('./backend/services/DbBackupSvc');
 
 const mainSystem = require('./backend/system/MainSystem');
 
@@ -72,8 +71,7 @@ async function createWindow() {
   }
   mainWindow.on('closed', () => mainWindow = null);
 
-  //init the renderer notification service
-  rendererotificationSvc.setWebContents(mainWindow.webContents);
+
 
   ipcMain.on('system-start-services', (event, arg) => {
     mainSystem.startServices();
@@ -113,12 +111,16 @@ if (!gotTheLock) {
 
   app.on('ready', createWindow);
 
-  app.on('before-quit', async (event) => {
-    event.preventDefault();
-    console.log("before i quit");
-    await dbBackupSvc.initiateBackup();
-    //app.exit(0);
+  //
+  app.on('browser-window-created', (event, webContents) => {
+    //init the renderer notification service
+    rendererotificationSvc.setWebContents(webContents);
   });
+
+  /* app.on('before-quit', async (event) => {
+    event.preventDefault();
+    app.exit(0);
+  }); */
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

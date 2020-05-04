@@ -26,7 +26,11 @@ import {
   initializeBackupNames
 } from '../../../../../redux/actions/backupsNamesActions';
 import { showModal } from '../../../../../redux/actions/modalActions';
-import { dbIndependentBackup } from '../../../../../redux/actions/dbBackupActions';
+
+// SERVICES
+import { dbIndependentBackup } from '../../../../../services/dbBackup.svc';
+
+// TOASTS
 import { myToasts } from '../../../../../CustomToasts/myToasts';
 import ToastRender from '../../../../../components/ToastRender/ToastRender';
 
@@ -40,7 +44,7 @@ export default () => {
   // state
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
-  const [data, setData] = useState(settings)
+  const [data, setData] = useState(settings);
 
   const [dirty, setDirty] = useState(false);
 
@@ -195,7 +199,7 @@ export default () => {
           autoClose: false
         });
 
-        dispatch(dbIndependentBackup(filePath))
+        dbIndependentBackup(filePath)
           .then(() => {
             //send the error to the notification center
             myToasts.success(<ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה."} />, {
@@ -234,7 +238,7 @@ export default () => {
 
       {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}
 
-      {data.enabled && data.restartRequired && <Typography className={styles.restartRequired} variant="subtitle1">
+      {settings.enabled && settings.restartRequired && <Typography className={styles.restartRequired} variant="subtitle1">
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
       </Typography>}
 
@@ -249,7 +253,7 @@ export default () => {
         <TimePicker
           ampm={false}
           classes={{ root: styles.time }}
-          value={data.time}
+          value={settings.time}
           onChange={onDbTimeChange}
         />
       </div>
@@ -262,7 +266,7 @@ export default () => {
         </Typography>
 
         <Select
-          value={data.backups_to_save}
+          value={settings.backups_to_save}
           onChange={backupsToSaveChangeHandler}
           inputProps={{
             name: 'age',
@@ -287,7 +291,7 @@ export default () => {
           control={
             <Checkbox
               name="everything"
-              checked={data.days_of_week["everything"]}
+              checked={settings.days_of_week["everything"]}
               onChange={onDbDayChange}
               value="checkedB"
               color="primary"
@@ -301,7 +305,7 @@ export default () => {
           control={
             <Checkbox
               name="0"
-              checked={data.days_of_week["0"]}
+              checked={settings.days_of_week["0"]}
               onChange={onDbDayChange}
               value="checkedB"
               color="primary"
@@ -315,7 +319,7 @@ export default () => {
           control={
             <Checkbox
               name="1"
-              checked={data.days_of_week["1"]}
+              checked={settings.days_of_week["1"]}
               onChange={onDbDayChange}
               value="checkedB"
               color="primary"
@@ -329,7 +333,7 @@ export default () => {
           control={
             <Checkbox
               name="2"
-              checked={data.days_of_week["2"]}
+              checked={settings.days_of_week["2"]}
               onChange={onDbDayChange}
               value="checkedB"
               color="primary"
@@ -343,7 +347,7 @@ export default () => {
           control={
             <Checkbox
               name="3"
-              checked={data.days_of_week["3"]}
+              checked={settings.days_of_week["3"]}
               onChange={onDbDayChange}
               value="checkedB"
               color="primary"
@@ -357,7 +361,7 @@ export default () => {
           control={
             <Checkbox
               name="4"
-              checked={data.days_of_week["4"]}
+              checked={settings.days_of_week["4"]}
               onChange={onDbDayChange}
               value="checkedB"
               color="primary"
@@ -371,7 +375,7 @@ export default () => {
           control={
             <Checkbox
               name="5"
-              checked={data.days_of_week["5"]}
+              checked={settings.days_of_week["5"]}
               onChange={onDbDayChange}
               value="checkedB"
               color="primary"
@@ -385,7 +389,7 @@ export default () => {
           control={
             <Checkbox
               name="6"
-              checked={data.days_of_week["6"]}
+              checked={settings.days_of_week["6"]}
               onChange={onDbDayChange}
               value="checkedB"
               color="primary"
@@ -407,7 +411,7 @@ export default () => {
           id="outlined-bare"
           disabled
           classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-          value={data.path}
+          value={settings.path}
           onChange={() => { }}
           variant="outlined"
           inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}

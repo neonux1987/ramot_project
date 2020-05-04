@@ -47,7 +47,7 @@ export const myToasts = {
   ),
   update: (id, properties) => (
     toast.update(id, {
-      className: styles.error,
+      className: styles[properties.type],
       ...properties
     })
   ),

@@ -46,12 +46,7 @@ class DbBackupSvc {
       }
 
       //execute scheduler
-      this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-        this.initiateBackup(settings).catch((error) => {
-          console.log(error);
-          rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
-        });
-      });
+      this.backupSchedule = schedule.scheduleJob(this.rule, this.schedulerCallback);
 
       if (this.backupSchedule.nextInvocation() === null) {
         return Promise.reject();
@@ -62,8 +57,6 @@ class DbBackupSvc {
   }
 
   async start() {
-    console.log("dbBackup service started...");
-
     let settings = null;
     try {
       //fetch db backup settings
@@ -101,12 +94,7 @@ class DbBackupSvc {
     }
 
     // execute scheduler
-    this.backupSchedule = schedule.scheduleJob(this.rule, () => {
-      this.initiateBackup().catch((error) => {
-        console.log(error);
-        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
-      });
-    });
+    this.backupSchedule = schedule.scheduleJob(this.rule, this.schedulerCallback);
 
     if (this.backupSchedule.nextInvocation() === null) {
       return Promise.reject();
@@ -156,6 +144,19 @@ class DbBackupSvc {
     return this.backupSchedule === null ? false : true;
   }
 
+  async schedulerCallback() {
+    //notify that the backup process started
+    rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
+
+    await initiateBackup().catch((error) => {
+      console.log(error);
+      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
+    });
+
+    //notify that the backup process ended
+    rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
+  }
+
   async initiateBackup() {
     let settings = null;
     try {
@@ -186,8 +187,6 @@ class DbBackupSvc {
     const path = `${db_backup.path}/${fileName}`;
 
     try {
-      //notify that the backup process started
-      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "מתבצע כעת גיבוי בסיס נתונים...");
 
       if (backupsNames.length < db_backup.backups_to_save) {
 
@@ -226,9 +225,6 @@ class DbBackupSvc {
       });
 
       await this.settingsLogic.updateBackupsNames(backupsNames);
-
-      //notify that the backup process ended
-      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
 
     } catch (e) {
       console.log(e);
