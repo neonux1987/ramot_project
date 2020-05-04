@@ -1,4 +1,3 @@
-const IOLogic = require("../logic/IOLogic");
 const fse = require('fs-extra');
 const ConfigurationLogic = require('../logic/ConfigurationLogic');
 
@@ -7,16 +6,12 @@ const CONFIG_BACKUPS_NAMES = ConfigurationLogic.paths.backups_names_path;
 
 class SettingsLogic {
 
-  constructor() {
-    this.iOLogic = new IOLogic();
-  }
-
   getSettings() {
     return fse.readJson(CONFIG_LOCATION);
   }
 
   getSpecificSetting(settingName) {
-    return this.getSettings(settingName).then((settings) => {
+    return this.getSettings().then((settings) => {
       return settings[settingName];
     });
   }
@@ -41,17 +36,15 @@ class SettingsLogic {
   }
 
   updateSettings(data) {
-    return this.iOLogic.writeFile(CONFIG_LOCATION, JSON.stringify(data, null, 2));
+    return fse.writeJSON(CONFIG_LOCATION, data);
   }
 
   getBackupsNames() {
-    return this.iOLogic.readFile(CONFIG_BACKUPS_NAMES).then((settings) => {
-      return JSON.parse(settings);
-    });
+    return fse.readJSON(CONFIG_BACKUPS_NAMES);
   }
 
   updateBackupsNames(data) {
-    return this.iOLogic.writeFile(CONFIG_BACKUPS_NAMES, JSON.stringify(data, null, 2));
+    return fse.writeJSON(CONFIG_BACKUPS_NAMES, data);;
   }
 
   initializeBackupNames() {

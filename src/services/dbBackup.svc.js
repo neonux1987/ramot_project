@@ -1,7 +1,5 @@
-import React from 'react';
 import { ipcSendReceive } from "../redux/actions/util/util";
 import { myToasts } from "../CustomToasts/myToasts";
-import ToastRender from "../components/ToastRender/ToastRender";
 
 export const dbIndependentBackup = (fullPath) => {
   return ipcSendReceive({

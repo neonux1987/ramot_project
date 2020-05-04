@@ -1,5 +1,5 @@
+const fse = require('fs-extra');
 const SettingsLogic = require("../logic/SettingsLogic");
-const IOLogic = require("../logic/IOLogic");
 const ConfigurationLogic = require("../logic/ConfigurationLogic");
 const servicesObjects = require("../services/index");
 
@@ -8,18 +8,15 @@ const SERVICES_LOCATION = ConfigurationLogic.paths.services_path;
 class ServicesLogic {
 
   constructor() {
-    this.iOLogic = new IOLogic();
     this.settingsLogic = new SettingsLogic();
   }
 
   getServices() {
-    return this.iOLogic.readFile(SERVICES_LOCATION).then((services) => {
-      return JSON.parse(services);
-    });
+    return fse.readJSON(SERVICES_LOCATION);
   }
 
   updateServices(data) {
-    return this.iOLogic.writeFile(SERVICES_LOCATION, JSON.stringify(data, null, 2));
+    return fse.writeJSON(SERVICES_LOCATION, data);
   }
 
   async startService(serviceName) {

@@ -1,3 +1,4 @@
+const fse = require('fs-extra');
 const schedule = require('node-schedule');
 const SettingsLogic = require('../logic/SettingsLogic');
 const IOLogic = require('../logic/IOLogic');
@@ -169,7 +170,7 @@ class DbBackupSvc {
     const { db_backup, locations } = settings;
 
     //fetch db backup settings
-    let dbFile = await this.ioLogic.readFile(locations.db_file_path);
+    let dbFile = fse.readFile(locations.db_file_path);
 
     //fetch db backup settings
     const backupsNames = await this.settingsLogic.getBackupsNames();
@@ -191,7 +192,7 @@ class DbBackupSvc {
       if (backupsNames.length < db_backup.backups_to_save) {
 
         //write the file physically to the drive
-        await this.ioLogic.writeFile(path, dbFile);
+        await fse.writeFile(path, dbFile);
 
         //push the new file to the array
         backupsNames.push({ backupDateTime: date, fileName: fileName });
@@ -208,7 +209,7 @@ class DbBackupSvc {
         backupsNames.shift();
 
         //write the file physically to the drive
-        await this.ioLogic.writeFile(path, dbFile);
+        await fse.writeFile(path, dbFile);
 
         //push the new file to the array
         backupsNames.push({ backupDateTime: date, fileName: fileName });
@@ -249,10 +250,10 @@ class DbBackupSvc {
     }
 
     //fetch db backup settings
-    let fileToBackup = await this.ioLogic.readFile(settings.locations.db_file_path);
+    let fileToBackup = await fse.readFile(settings.locations.db_file_path);
 
     //write the file physically to the drive
-    await this.ioLogic.writeFile(fullPath, fileToBackup);
+    await fse.writeFile(fullPath, fileToBackup);
 
   }
 
