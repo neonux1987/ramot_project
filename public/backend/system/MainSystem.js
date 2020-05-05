@@ -1,13 +1,7 @@
 // LIBRARIES
-const path = require('path');
-const os = require('os');
-const platform = os.platform();
-const homedir = os.homedir();
-const sqlite3 = require('sqlite3');
-//const simpleNodeLogger = require('simple-node-logger');
+const { dialog } = require('electron');
 
-const fs = require('fs').promises;
-const util = require('util');
+const rendererNotificationSvc = require('../services/RendererNotificationSvc');
 
 //========================= my ipc's imports =========================//
 const monthExpansesIpc = require('../../electron/ipcs/monthExpanses.ipc');
@@ -96,17 +90,17 @@ class MainSystem {
     servicesIpc();
   }
 
-  startServices() {
-    try {
-      this.servicesLogic.startAllServices();
-    } catch (e) {
-      console.log(e);
-    }
+  async startServices() {
+    await this.servicesLogic.startAllServices()
+      .catch((result) => {
+        rendererNotificationSvc.notifyRenderer("notify-renderer", "systemError", result.message);
+      });
   }
 
   async startSystem() {
-
     try {
+      logManager.createErrorLog();
+
       // if the app runs for the first time
       await this.configurationLogic.firstTimeSetup();
 
@@ -114,13 +108,24 @@ class MainSystem {
 
       // set up the db connection
       await connectionPool.createConnection();
+
+      // initialize all the ipc's for connection
+      // between the main process and the renderer
+      this.initializeIpcs();
     } catch (e) {
-      console.log(e);
+      const log = logManager.getLogger();
+
+      log.error("test");
+
+      const title = "שגיאת הפעלה";
+      const message = `
+      המערכת נכשלה בעת ההפעלה עקב תקלה.\n
+      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא ב:
+      C:\\ramot-mezach-error-log.txt
+      `;
+      dialog.showErrorBox(title, message);
     }
 
-    // initialize all the ipc's for connection
-    // between the main process and the renderer
-    this.initializeIpcs();
   }
 
 }

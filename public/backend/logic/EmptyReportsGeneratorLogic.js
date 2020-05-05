@@ -69,8 +69,7 @@ class EmptyReportsGeneratorLogic {
 
     const locations = await this.settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.LOCATIONS);
 
-    buildings.forEach(async (building) => {
-
+    await asyncForEach(buildings, async (building) => {
       // building path
       const buildingPath = path.join(locations.reports_folder_path, building.buildingName);
       // year folder

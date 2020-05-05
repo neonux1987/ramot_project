@@ -16,7 +16,7 @@ class RegisteredBackupsLogic {
   }
 
   initializeBackupsList() {
-    return this.updateBackupsNames([]);
+    return this.updateRegisteredBackups([]);
   }
 
 }

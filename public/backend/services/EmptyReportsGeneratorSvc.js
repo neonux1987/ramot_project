@@ -127,7 +127,7 @@ class EmptyReportsGeneratorSvc {
     rendererNotificationSvc.notifyRenderer("notify-renderer", "reportsGenerationFinished", "המערכת סיימה. הדוחות החדשים מוכנם.");
   }
 
-  generateReport(year, month, buildings) {
+  async generateReport(year, month, buildings) {
     const dateObj = {
       year,
       month: Helper.getCurrentMonthEng(month),
@@ -135,7 +135,7 @@ class EmptyReportsGeneratorSvc {
       quarter: Helper.getCurrentQuarter(month),
       quarterHeb: Helper.getCurrentQuarterHeb()
     }
-    buildings.forEach(async building => {
+    await asyncForEach(buildings, async (building) => {
       await this.monthExpansesLogic.createEmptyReport(building.engLabel, dateObj);
     });
   }

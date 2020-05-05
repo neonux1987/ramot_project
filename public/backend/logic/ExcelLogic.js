@@ -29,15 +29,15 @@ class ExcelLogic {
     if (byQuarter) {
       const quarterMonths = Helper.getQuarterMonths(date.quarter);
 
-      quarterMonths.forEach((month) => {
 
-        buildings.forEach((building) => {
+      await asyncForEach(quarterMonths, async (month) => {
+
+        await asyncForEach(buildings, async (building) => {
           const { buildingName, buildingNameEng } = building;
           //exportExcel(buildingName, buildingNameEng, "monthExpanses", fileName, date, data);
-
         });
-
       });
+
 
     }
 

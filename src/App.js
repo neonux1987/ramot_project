@@ -126,7 +126,7 @@ const App = props => {
             autoClose: TOAST_AUTO_CLOSE
           });
           break;
-        case "errorTest":
+        case "systemError":
           myToasts.error(message);
           break;
         default: return null;
@@ -153,9 +153,21 @@ const App = props => {
       autoClose: false
     });
 
-    const promise = await initiateDbBackup();
 
-    if (promise.success)
+    const promise = await initiateDbBackup().catch((result) => {
+      myToasts.update(id, {
+        render: <ToastRender message={result.error} />,
+        type: myToasts.TYPE.ERROR,
+        delay: 2000,
+        autoClose: 2500,
+        onClose: () => {
+          //quitApp();
+        }
+      });
+    });
+
+    // success
+    if (promise)
       myToasts.update(id, {
         render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
         type: myToasts.TYPE.SUCCESS,

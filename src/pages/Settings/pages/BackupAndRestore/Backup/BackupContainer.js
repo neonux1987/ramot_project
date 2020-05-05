@@ -151,6 +151,34 @@ export default () => {
     setDirty(true);
   }
 
+  const onCheckBoxChange = (event) => {
+
+    const { name, checked } = event.target;
+
+    if (checked && name === "byTime")
+      setData({
+        ...data,
+        byHour: false,
+        byTime: true
+      });
+    else if (checked && name === "byHour")
+      setData({
+        ...data,
+        byHour: true,
+        byTime: false
+      });
+    setDirty(true);
+  }
+
+  const onHourChange = (event) => {
+    const { value } = event.target;
+    setData({
+      ...data,
+      every_x_hours: Number.parseInt(value)
+    });
+    setDirty(true);
+  }
+
   const backupsToSaveChangeHandler = (event) => {
     const { value } = event.target;
     const backups_to_save = value;
@@ -246,7 +274,15 @@ export default () => {
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
       </Typography>}
 
-      <TimeSelector time={data.time} onChange={onDbTimeChange} />
+      <TimeSelector
+        time={data.time}
+        every_x_hours={data.every_x_hours}
+        byHour={data.byHour}
+        byTime={data.byTime}
+        onTimeChange={onDbTimeChange}
+        onCheckBoxChange={onCheckBoxChange}
+        onHourChange={onHourChange}
+      />
 
       <NumOfBackupsSelector onChange={backupsToSaveChangeHandler} numOfBackups={data.backups_to_save}>
         {backups_to_save}

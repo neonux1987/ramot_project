@@ -16,47 +16,6 @@ class DbBackupSvc {
     this.backupSchedule = null;
   }
 
-  async init() {
-
-    let settings = null;
-    try {
-      //fetch db backup settings
-      settings = await this.settingsLogic.getSettings();
-    } catch (e) {
-      return Promise.reject(e);
-    }
-
-    if (settings.db_backup.enabled) {
-      const backupTime = new Date(settings.db_backup.time);
-
-      //apply the settings to the scheduler
-      this.rule.hour = backupTime.getHours();
-      this.rule.minute = backupTime.getMinutes();
-      this.rule.dayOfWeek = [];
-      //convert the enabled days of week from object to array
-      for (let i = 0; i < 7; i++) {
-        if (settings.db_backup.days_of_week[i]) {
-          this.rule.dayOfWeek.push(i)
-        }
-      }
-      //if non of the days selected, we must
-      //set the dayOfWeek to null otherwise
-      //the node-schedule module will crash for some reason
-      if (this.rule.dayOfWeek.length === 0) {
-        this.rule.dayOfWeek = null;
-      }
-
-      //execute scheduler
-      this.backupSchedule = schedule.scheduleJob(this.rule, this.schedulerCallback);
-
-      if (this.backupSchedule.nextInvocation() === null) {
-        return Promise.reject();
-      }
-      return Promise.resolve();
-    }
-
-  }
-
   async start() {
     let settings = null;
     try {
@@ -66,23 +25,37 @@ class DbBackupSvc {
       return Promise.reject(e);
     }
 
-    //check if none of te days are selected, if none
+    const {
+      days_of_week,
+      time,
+      byHour,
+      byTime,
+      every_x_hours
+    } = settings.db_backup;
+
+    //check if none of the days are selected, if none
     //selected, don't allow to start the backup service
-    const valid = this.validateDaysOfWeek(settings.db_backup.days_of_week);
+    const valid = this.validateDaysOfWeek(days_of_week);
     if (!valid) {
       return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעת שמירה."));
     }
 
-    const backupTime = new Date(settings.db_backup.time);
+    this.rule = new schedule.RecurrenceRule();
 
-    // apply the settings to the scheduler
-    this.rule.hour = backupTime.getHours();
-    this.rule.minute = backupTime.getMinutes();
     this.rule.dayOfWeek = [];
+    if (byTime) {
+      const backupTime = new Date(time);
+      // apply the settings to the scheduler
+      this.rule.hour = backupTime.getHours();
+      this.rule.minute = backupTime.getMinutes();
+    } else if (byHour) {
+      this.rule.hour = every_x_hours;
+    }
+
     // convert the enabled days of week from object to array
     // for the scheduler
     for (let i = 0; i < 7; i++) {
-      if (settings.db_backup.days_of_week[i]) {
+      if (days_of_week[i]) {
         this.rule.dayOfWeek.push(i)
       }
     }
@@ -125,6 +98,7 @@ class DbBackupSvc {
     if (!this.backupSchedule.nextInvocation()) {
       //init scheduler
       this.backupSchedule = null;
+      this.rule = null;
       //save settings
       this.settingsLogic.updateSettings(settings);
       return Promise.resolve("the job is cancelled.");
@@ -149,13 +123,14 @@ class DbBackupSvc {
     //notify that the backup process started
     rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
 
-    await this.initiateBackup().catch((error) => {
+    const promise = await this.initiateBackup().catch((error) => {
       console.log(error);
       rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
     });
 
-    //notify that the backup process ended
-    rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
+    if (promise)
+      //notify that the backup process ended
+      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
   }
 
   async initiateBackup() {

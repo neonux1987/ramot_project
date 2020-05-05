@@ -1,7 +1,5 @@
-const { app, dialog } = require('electron');
-
+const { app } = require('electron');
 const isDev = require('electron-is-dev');
-const os = require('os');
 const path = require('path');
 const { getDocumentsFolder, getDataHome } = require('platform-folders');
 const fse = require('fs-extra');

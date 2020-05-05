@@ -23,9 +23,6 @@ export const initiateDbBackup = () => {
     },
     receive: {
       channel: "db-backup-initiated",
-    },
-    onError: (result) => {
-      myToasts.error(result.error);
     }
   });
 }

@@ -362,7 +362,7 @@ class BudgetExecutionLogic {
     const { summarized_section_id } = budgetExecution[0];
 
     // loop through the quarter months
-    asyncForEach(quarterMonths, async (month) => {
+    await asyncForEach(quarterMonths, async (month) => {
 
       const newDate = {
         year: date.year,
@@ -379,7 +379,7 @@ class BudgetExecutionLogic {
 
       // extract the ids of te month expanses
       // and put them in array
-      asyncForEach(monthExpanses, async (item) => {
+      await asyncForEach(monthExpanses, async (item) => {
         const payload = {
           linked: false
         }

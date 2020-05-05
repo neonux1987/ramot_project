@@ -2,6 +2,7 @@ const fse = require('fs-extra');
 const SettingsLogic = require("../logic/SettingsLogic");
 const ConfigurationLogic = require("../logic/ConfigurationLogic");
 const servicesObjects = require("../services/index");
+const { asyncForEach } = require('../../helpers/utils');
 
 const SERVICES_LOCATION = ConfigurationLogic.paths.services_path;
 
@@ -43,11 +44,11 @@ class ServicesLogic {
     const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
 
     serviceSettings.restartRequired = false;
-    this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
+    await this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
 
     // update services
     service.restartRequired = false;
-    this.updateServices(AllServices);
+    await this.updateServices(AllServices);
   }
 
   async restartService(serviceName) {
@@ -71,11 +72,11 @@ class ServicesLogic {
     // set the restartRequired to false
     const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
     serviceSettings.restartRequired = false;
-    this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
+    await this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
 
     // update services
     service.restartRequired = false;
-    this.updateServices(AllServices);
+    await this.updateServices(AllServices);
   }
 
   async stopService(serviceName) {
@@ -102,14 +103,14 @@ class ServicesLogic {
     const services = await this.getServices();
     const keys = Object.keys(services);
 
-    keys.forEach((key) => {
+    await asyncForEach(keys, async (key) => {
       if (services[key].enabled) {
         const selectedService = servicesObjects[key];
 
         const isRunning = selectedService.isRunning();
 
         if (!isRunning)
-          selectedService.start();
+          await selectedService.start();
       }
     });
   }
@@ -117,10 +118,12 @@ class ServicesLogic {
   async stopAllServices() {
     const services = await this.getServices();
     const keys = Object.keys(services);
-    keys.forEach((key) => {
-      const selectedService = servicesObjects[key];
-      selectedService.stop();
-    })
+    await asyncForEach(keys, async (key) => {
+      if (services[key].enabled) {
+        const selectedService = servicesObjects[key];
+        await selectedService.stop();
+      }
+    });
   }
 
 }

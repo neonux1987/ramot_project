@@ -13,7 +13,7 @@ export default (props) => {
           fontWeight: "600",
           fontSize: "18px",
         }}
-      >טוען הגדרות
+      >טוען את האפליקציה
       </div>
       <RotateLoader
         margin={2}

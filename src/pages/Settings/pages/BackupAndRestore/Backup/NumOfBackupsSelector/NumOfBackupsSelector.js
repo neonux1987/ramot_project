@@ -22,10 +22,6 @@ const NumOfBackupsSelector = (props) => {
         className={styles.numOfBackups}
         value={numOfBackups}
         onChange={onChange}
-        inputProps={{
-          name: 'age',
-          id: 'age-simple',
-        }}
       >
         {children}
       </Select>
