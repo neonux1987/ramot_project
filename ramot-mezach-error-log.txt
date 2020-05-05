@@ -1,0 +1,2 @@
+{"message":"asdasdasd","level":"error"}
+{"message":"dadada","level":"error"}

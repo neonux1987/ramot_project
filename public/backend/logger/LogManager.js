@@ -1,25 +1,31 @@
-const simpleNodeLogger = require('simple-node-logger');
+const winston = require('winston');
+const path = require('path');
 
 class LogManager {
 
   createErrorLog() {
     this.logger = winston.createLogger({
-      level: 'info',
       format: winston.format.json(),
-      defaultMeta: { service: 'user-service' },
       transports: [
         //
-        // - Write to all logs with level `info` and below to `combined.log` 
         // - Write all logs error (and below) to `error.log`.
         //
-        new winston.transports.File({ filename: 'c:\\ramot-mezach-error-log.txt', level: 'error' })
+        new winston.transports.File({
+          filename: "./ramot-mezach-error-log.txt",
+          level: 'error',
+          colorize: false,
+          timestamp: true,
+          maxsize: 50 * 1024,
+          maxFiles: 1,
+          prettyPrint: true
+        })
       ]
     });
 
   }
 
   getLogger() {
-    return this.log;
+    return this.logger;
   }
 
 }

@@ -1,6 +1,6 @@
 // LIBRARIES
 const { dialog } = require('electron');
-
+const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
 
 //========================= my ipc's imports =========================//
@@ -113,9 +113,9 @@ class MainSystem {
       // between the main process and the renderer
       this.initializeIpcs();
     } catch (e) {
-      const log = logManager.getLogger();
+      const logger = logManager.getLogger();
 
-      log.error("test");
+      logger.error('dadada');
 
       const title = "שגיאת הפעלה";
       const message = `
