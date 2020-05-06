@@ -1,32 +1,29 @@
-const {
-  createLogger,
-  transports,
-  format
-} = require('winston');
-const path = require('path');
+const log4js = require('log4js');
 
 class LogManager {
 
   constructor() {
-    this.logger = createLogger({
-      transports: [
-        //
-        // - Write all logs error (and below) to `error.log`.
-        //
-        new transports.File({
-          filename: "c:\\ramot-mezach-error-log.txt",
-          level: 'error',
-          format: format.combine(format.timestamp(), format.json()),
-          prettyPrint: true,
-          options: { flags: 'w' }
-        })
-      ]
+    // will add the ability to log in json format
+    /* log4js.addLayout('json', (config) => {
+      return function (logEvent) { return JSON.stringify(logEvent) + config.separator; }
+    }); */
+
+    log4js.configure({
+      appenders: {
+        Application: {
+          type: 'file',
+          filename: './logs/ramot-mezach-errors.log',
+          //layout: { type: 'json', separator: ',' },
+          maxLogSize: 1048576
+        }
+      },
+      categories: { default: { appenders: ['Application'], level: 'error' } }
     });
 
   }
 
   getLogger() {
-    return this.logger;
+    return log4js.getLogger('Application');
   }
 
 }

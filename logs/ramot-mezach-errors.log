@@ -1,0 +1,48 @@
+{"startTime":"2020-05-06T12:37:54.148Z","categoryName":"app","data":["wtf"],"level":{"level":40000,"levelStr":"ERROR","colour":"red"},"context":{},"pid":15524},
+{"startTime":"2020-05-06T12:47:56.975Z","categoryName":"app","data":["Error: wtf\n    at ConnectionPool.createConnection (E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:6:11)\n    at MainSystem.startSystem (E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\system\\MainSystem.js:110:28)"],"level":{"level":40000,"levelStr":"ERROR","colour":"red"},"context":{},"pid":1800},
+{"startTime":"2020-05-06T12:49:33.250Z","categoryName":"app","data":["Error: wtf"],"level":{"level":40000,"levelStr":"ERROR","colour":"red"},"context":{},"pid":3104},
+[2020-05-06T16:00:23.044] [ERROR] app - Error: wtf
+[2020-05-06T16:04:06.031] [ERROR] ramot_mezach - wtf
+[2020-05-06T16:25:44.443] [ERROR] Application - undefined
+[2020-05-06T16:44:56.741] [ERROR] Application - CustomError {
+  message: 'wtf',
+  stack: 'Error: wtf\n' +
+    '    at ConnectionPool.createConnection (E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:6:11)\n' +
+    '    at MainSystem.startSystem (E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\system\\MainSystem.js:111:28)',
+  fileName: 'MainSystem.js',
+  lineNumber: undefined
+}
+[2020-05-06T16:49:19.981] [ERROR] Application - 
+      ERROR MESSAGE: wtf 
+
+      HAPPENED AT LINE: undefined 
+
+      IN FILE: MainSystem.js 
+
+      STACK: Error: wtf
+    at ConnectionPool.createConnection (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\public\backend\connection\ConnectionPool.js:6:11)
+    at MainSystem.startSystem (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\public\backend\system\MainSystem.js:111:28) 
+
+    
+[2020-05-06T16:54:04.784] [ERROR] Application - {
+      ERROR MESSAGE: wtf 
+
+      HAPPENED AT LINE: undefined 
+
+      IN FILE: MainSystem.js 
+
+      STACK: Error: wtf
+    at ConnectionPool.createConnection (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\public\backend\connection\ConnectionPool.js:6:11)
+    at MainSystem.startSystem (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\public\backend\system\MainSystem.js:111:28) 
+
+    }
+    
+[2020-05-06T17:01:52.637] [ERROR] Application - {
+      error message: wtf
+      happened at line: undefined
+      in file: MainSystem.js
+      full stack: Error: wtf
+    at ConnectionPool.createConnection (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\public\backend\connection\ConnectionPool.js:6:11)
+    at MainSystem.startSystem (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\public\backend\system\MainSystem.js:111:28)
+    }
+    

@@ -2,6 +2,7 @@
 const { dialog } = require('electron');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
+const CustomError = require('../modals/CustomError');
 
 //========================= my ipc's imports =========================//
 const monthExpansesIpc = require('../../electron/ipcs/monthExpanses.ipc');
@@ -112,8 +113,8 @@ class MainSystem {
       // initialize all the ipc's for connection
       // between the main process and the renderer
       this.initializeIpcs();
-    } catch (e) {
-      this.logger.error(e.message);
+    } catch (error) {
+      this.logger.error(new CustomError("MainSystem.js", error).toString());
 
       const title = "שגיאת הפעלה";
       const message = `
