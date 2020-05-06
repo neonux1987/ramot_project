@@ -1,23 +1,24 @@
-const winston = require('winston');
+const {
+  createLogger,
+  transports,
+  format
+} = require('winston');
 const path = require('path');
 
 class LogManager {
 
-  createErrorLog() {
-    this.logger = winston.createLogger({
-      format: winston.format.json(),
+  constructor() {
+    this.logger = createLogger({
       transports: [
         //
         // - Write all logs error (and below) to `error.log`.
         //
-        new winston.transports.File({
-          filename: "./ramot-mezach-error-log.txt",
+        new transports.File({
+          filename: "c:\\ramot-mezach-error-log.txt",
           level: 'error',
-          colorize: false,
-          timestamp: true,
-          maxsize: 50 * 1024,
-          maxFiles: 1,
-          prettyPrint: true
+          format: format.combine(format.timestamp(), format.json()),
+          prettyPrint: true,
+          options: { flags: 'w' }
         })
       ]
     });

@@ -39,6 +39,7 @@ class MainSystem {
   constructor() {
     this.servicesLogic = undefined;
     this.configurationLogic = new ConfigurationLogic();
+    this.logger = logManager.getLogger();
   }
 
   initializeIpcs() {
@@ -94,13 +95,12 @@ class MainSystem {
     await this.servicesLogic.startAllServices()
       .catch((result) => {
         rendererNotificationSvc.notifyRenderer("notify-renderer", "systemError", result.message);
+        this.logger.error(result.error);
       });
   }
 
   async startSystem() {
     try {
-      logManager.createErrorLog();
-
       // if the app runs for the first time
       await this.configurationLogic.firstTimeSetup();
 
@@ -113,9 +113,7 @@ class MainSystem {
       // between the main process and the renderer
       this.initializeIpcs();
     } catch (e) {
-      const logger = logManager.getLogger();
-
-      logger.error('dadada');
+      this.logger.error(e.message);
 
       const title = "שגיאת הפעלה";
       const message = `

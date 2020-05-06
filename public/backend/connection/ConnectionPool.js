@@ -3,6 +3,7 @@ const ConfigurationLogic = require('../logic/ConfigurationLogic');
 class ConnectionPool {
 
   createConnection() {
+    throw new Error("wtf")
     //create database connection
     this.knex = require('knex')({
       client: 'sqlite3',

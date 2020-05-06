@@ -1,2 +1,1 @@
-{"message":"asdasdasd","level":"error"}
-{"message":"dadada","level":"error"}
+{"message":"wtf","level":"error","timestamp":"2020-05-06T03:12:25.823Z"}
