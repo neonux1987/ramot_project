@@ -123,14 +123,16 @@ class DbBackupSvc {
     //notify that the backup process started
     rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
 
-    const promise = await this.initiateBackup().catch((error) => {
-      console.log(error);
-      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
-    });
+    await this.initiateBackup()
+      .then(() => {
+        //notify that the backup process ended
+        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
+      })
+      .catch((error) => {
+        console.log(error);
+        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
+      });
 
-    if (promise)
-      //notify that the backup process ended
-      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
   }
 
   async initiateBackup() {
@@ -151,7 +153,7 @@ class DbBackupSvc {
     date = new Date(dateLocalString);
 
     //filename of the file to save
-    const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}.sqlite`;
+    const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.sqlite`;
     const path = `${db_backup.path}/${fileName}`;
 
     if (registeredBackups.length >= db_backup.backups_to_save) {
