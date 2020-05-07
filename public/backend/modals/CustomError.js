@@ -1,23 +1,19 @@
 class CustomError extends Error {
 
-  constructor(fileName, error) {
-    if (!fileName && !error && !(error instanceof Error))
-      throw new Error("you must pass fileName as first argument and an Error object as second");
-
-    this.message = error.message;
-    this.stack = error.stack;
+  constructor(message, fileName, originalError) {
+    super(message)
     this.fileName = fileName;
-    this.lineNumber = error.lineNumber;
+    this.orginalError = originalError;
   }
 
-  toString() {
-    return `{
-      error message: ${this.message}
-      happened at line: ${this.lineNumber}
-      in file: ${this.fileName}
-      full stack: ${this.stack}
-    }
-    `
+  toString = () => {
+    const printStack = this.originalError ? this.originalError : this.stack;
+    return `${this.name} 
+  happened in file: ${this.fileName}
+  error: ${this.message}
+  stack: {
+    ${printStack}
+  }`
   }
 
 }

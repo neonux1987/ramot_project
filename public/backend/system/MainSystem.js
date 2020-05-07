@@ -114,7 +114,7 @@ class MainSystem {
       // between the main process and the renderer
       this.initializeIpcs();
     } catch (error) {
-      this.logger.error(new CustomError("MainSystem.js", error).toString());
+      this.logger.error(error.toString());
 
       const title = "שגיאת הפעלה";
       const message = `
