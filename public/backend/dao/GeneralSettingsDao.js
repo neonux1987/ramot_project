@@ -13,7 +13,9 @@ class GeneralSettingsDao {
     return trx.select("*")
       .from("general")
       .catch((error) => {
-        throw error;
+        const newError = new DbError("המערכת לא הצליחה לשלוף נתונים לגבי הגדרות כלליות", FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -26,7 +28,10 @@ class GeneralSettingsDao {
       .where({ id: id })
       .update(settings)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לעדכן את ההגדרות הכלליות לפי המזהה ${id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

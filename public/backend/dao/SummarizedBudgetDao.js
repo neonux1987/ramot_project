@@ -52,7 +52,10 @@ class SummarizedBudgetDao {
       .where({ year: date.year })
       .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id")
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -91,7 +94,10 @@ class SummarizedBudgetDao {
       .limit(pageSettings.pageSize).offset(pageSettings.startElement)
       .orderBy("section")
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${date.year} לפי טווח`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -127,7 +133,10 @@ class SummarizedBudgetDao {
     return data.then((result) => {
       return result;
     }).catch((error) => {
-      throw error;
+      const msg = `המערכת לא הצליחה לשלוף רשומה מנתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${date.year} לפי מזהה ${summarized_section_id}`;
+      const newError = new DbError(msg, FILENAME, error);
+      this.logger.error(newError.toString())
+      throw newError;
     });
   }
 
@@ -139,7 +148,10 @@ class SummarizedBudgetDao {
     return trx(buildingName + "_summarized_budget")
       .insert(payload)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומה לנתוני סיכום שנתי לבניין ${buildingName}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -148,7 +160,10 @@ class SummarizedBudgetDao {
       .where({ id, year })
       .del()
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה למחוק רשומה מנתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${year} לפי מזהה ${id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -157,7 +172,10 @@ class SummarizedBudgetDao {
       .where({ summarized_section_id, year })
       .del()
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה למחוק רשומה מנתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${year} לפי מזהה סעיף מסכם ${summarized_section_id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -195,7 +213,10 @@ class SummarizedBudgetDao {
         }
       })
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לעדכן רשומה בנתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${date.year} לפי מזהה סעיף מסכם ${summarized_section_id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -206,7 +227,10 @@ class SummarizedBudgetDao {
   ) {
     return trx.batchInsert(`${buildingName}_summarized_budget`, rows, CHUNKSIZE)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומות בנתוני סיכום שנתי לבניין ${buildingName}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -220,6 +244,12 @@ class SummarizedBudgetDao {
       .then((result) => {
         return result[0]['count(`id`)'];
       })
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף מידע אודות מספר השורות בנתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
   }
 
 }

@@ -15,7 +15,10 @@ class YearlyStatsDao {
       .where({ year: date.year })
       .from(`${buildingName}_yearly_stats`)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה שנתית לבניין ${buildingName} לפי שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -29,7 +32,10 @@ class YearlyStatsDao {
       .where({ year: date.year })
       .update(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לעדכן רשומה בנתוני סטטיסטיקה שנתית לבניין ${buildingName} לשנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -40,7 +46,10 @@ class YearlyStatsDao {
   ) {
     return trx(buildingName + "_yearly_stats").insert(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסי רשומה לנתוני סטטיסטיקה שנתית לבניין ${buildingName} לשנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

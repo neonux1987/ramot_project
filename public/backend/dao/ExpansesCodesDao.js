@@ -13,7 +13,9 @@ class ExpansesCodesDao {
     return this.connection.select().from("expanses_codes")
       .orderBy(['code', { column: 'codeName', order: 'asc' }])
       .catch((error) => {
-        throw error;
+        const newError = new DbError("המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות", FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -22,7 +24,10 @@ class ExpansesCodesDao {
       .orderBy(['code', { column: 'codeName', order: 'asc' }])
       .where({ status: status })
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות לפי סטטוס ${status}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -30,7 +35,10 @@ class ExpansesCodesDao {
     return this.connection.select().from("expanses_codes")
       .where({ code })
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף את קוד הנהלת החשבונות לפי קוד ${code}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -48,7 +56,10 @@ class ExpansesCodesDao {
         }
       })
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לעדכן את קוד הנהלת החשבונות לפי המזהה ${id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -60,7 +71,10 @@ class ExpansesCodesDao {
     return this.connection("expanses_codes")
       .insert(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף את קוד הנהלת החשבונות`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -69,7 +83,10 @@ class ExpansesCodesDao {
       .where({ id: id })
       .del()
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה למחוק את קוד הנהלת החשבונות לפי המזהה ${id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

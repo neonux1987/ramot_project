@@ -4,7 +4,7 @@ class LogicError extends CustomError {
 
   constructor(...args) {
     super(...args);
-    this.name = "database_error";
+    this.name = "logic_error";
     Error.captureStackTrace(this, LogicError);
   }
 

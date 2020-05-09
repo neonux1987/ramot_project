@@ -44,6 +44,8 @@ export const fetchBudgetExecutions = (params = Object) => {
         //let react know that an erro occured while trying to fetch
         dispatch(budgetExecutionsFetchingFailed(result.error, params.buildingName));
       }
+    }).catch(() => {
+      myToasts.error("המערכת נכשלה בשליפת הנתונים של ביצוע מול תקציב לתאריך הנבחר");
     });
 
   }

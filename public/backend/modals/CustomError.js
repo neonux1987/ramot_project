@@ -3,17 +3,22 @@ class CustomError extends Error {
   constructor(message, fileName, originalError) {
     super(message)
     this.fileName = fileName;
-    this.orginalError = originalError;
+    this.originalError = originalError;
+
   }
 
-  toString = () => {
-    const printStack = this.originalError ? this.originalError : this.stack;
+  toString() {
+    const originalError = this.originalError ?
+      `original error: {
+    ${this.originalError}
+  }` : "";
     return `${this.name} 
   happened in file: ${this.fileName}
   error: ${this.message}
   stack: {
-    ${printStack}
-  }`
+    ${this.stack}
+  }
+  ${originalError}`
   }
 
 }

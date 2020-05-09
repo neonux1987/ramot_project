@@ -1,14 +1,8 @@
 const ConfigurationLogic = require('../logic/ConfigurationLogic');
-const DbError = require('../modals/DbError');
 
 class ConnectionPool {
 
   createConnection() {
-    throw new DbError(
-      "Couldn't create connection to the database",
-      "ConnectionPool.js",
-      new Error("wtf")
-    )
     //create database connection
     this.knex = require('knex')({
       client: 'sqlite3',

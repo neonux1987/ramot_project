@@ -45,7 +45,9 @@ class MenuDao {
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
     }).catch((error) => {
-      throw error;
+      const newError = new DbError("המערכת לא הצליחה לשלוף נתוני תפריט", FILENAME, error);
+      this.logger.error(newError.toString())
+      throw newError;
     });
   }
 

@@ -11,7 +11,10 @@ class RegisteredReportsDao {
       .orderBy('year', 'desc')
       .orderBy('month', 'desc')
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -25,7 +28,10 @@ class RegisteredReportsDao {
       .where({ year, quarter })
       .groupBy("quarter")
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לפי רבעון ${date.quarter} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -37,7 +43,10 @@ class RegisteredReportsDao {
       .from("registered_reports")
       .where({ year })
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לפי שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -47,7 +56,10 @@ class RegisteredReportsDao {
       .orderBy('year', 'desc')
       .groupBy('year')
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים ממויינים לפי השנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -63,7 +75,10 @@ class RegisteredReportsDao {
     return trx("registered_reports")
       .insert(payload)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומה לדוחות הרשומים`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

@@ -55,9 +55,13 @@ class MonthExpansesDao {
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
-    }).catch((error) => {
-      throw error;
-    });
+    })
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
   }
 
   getMonthExpansesByRange = (
@@ -92,9 +96,13 @@ class MonthExpansesDao {
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
-    }).catch((error) => {
-      throw error;
-    });
+    })
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי טווח`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
   }
 
   dataRowCount(
@@ -107,6 +115,12 @@ class MonthExpansesDao {
       .then((result) => {
         return result[0]['count(`id`)'];
       })
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף מידע לגבי מספר השורות בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי טווח`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
   }
 
   /**
@@ -132,7 +146,10 @@ class MonthExpansesDao {
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי סעיף מסכם ${summarized_section_id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -154,7 +171,10 @@ class MonthExpansesDao {
       ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי סעיף מסכם ${summarized_section_id} ולפי החודשים`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -178,7 +198,10 @@ class MonthExpansesDao {
     ).from(buildingName + "_month_expanses AS building").innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin("summarized_sections AS sc", "ec.summarized_section_id", "sc.id")
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתונים של רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי המזהה ${id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -193,14 +216,20 @@ class MonthExpansesDao {
       .where({ id: id })
       .update(expanse)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לעדכן רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי מזהה ${id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
   addNewMonthExpanseTrx(buildingName = String, record = Object, trx = this.connection) {
     return trx(buildingName + "_month_expanses").insert(record)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומה להוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -213,7 +242,10 @@ class MonthExpansesDao {
       .where({ id: id })
       .del()
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה למחוק רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי מזהה ${id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -226,7 +258,10 @@ class MonthExpansesDao {
       .whereIn("id", ids)
       .del()
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה למחוק רשומות בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי המזההים ${ids}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -237,7 +272,10 @@ class MonthExpansesDao {
   ) {
     return trx.batchInsert(`${buildingName}_month_expanses`, rows, CHUNKSIZE)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומות להוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי המזההים ${ids}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

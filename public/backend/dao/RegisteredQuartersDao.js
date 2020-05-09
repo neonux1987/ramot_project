@@ -15,7 +15,10 @@ class RegisteredQuartersDao {
       .where({ year })
       .orderBy('quarter', 'asc')
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני הרבעונים הרשומים לבניין ${buildingName} לפי ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -26,7 +29,10 @@ class RegisteredQuartersDao {
   getRegisteredQuarterTrx(buildingName, quarter, year, trx = this.connection) {
     return trx.select().from(`${buildingName}_registered_quarters`).where({ quarter: quarter, year: year })
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף רשומה מהרבעונים הרשומים לבניין ${buildingName} לפי רבעון ${date.quarter} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -46,7 +52,10 @@ class RegisteredQuartersDao {
     return trx(`${buildingName}_registered_quarters`)
       .insert(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא להוסיף רשומה לרבעונים הרשומים לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

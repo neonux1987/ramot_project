@@ -12,7 +12,10 @@ class SummarizedSectionsDao {
       .where({ status })
       .orderBy('section', 'asc')
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סיכום שנתי לפי סטטוס ${status}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -21,7 +24,10 @@ class SummarizedSectionsDao {
       .from("summarized_sections")
       .orderBy('section', 'asc')
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף את כל נתוני הסיכום השנתי`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -37,9 +43,13 @@ class SummarizedSectionsDao {
 
     return data.then((result) => {
       return this.nestHydrationJS.nest(result, DEFINITION);
-    }).catch((error) => {
-      throw error;
-    });
+    })
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף רשומה מסעיפים מסכמים לבניין ${buildingName} לפי מזהה ${expanse.summarized_section_id} לפי חודש ${month} שנה ${year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
   }
 
   getSummarizedSectionBySection(section) {
@@ -47,7 +57,10 @@ class SummarizedSectionsDao {
       .from("summarized_sections")
       .where({ section })
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף רשומה מסעיפים מסכמים לפי סעיף ${section}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -56,15 +69,21 @@ class SummarizedSectionsDao {
       .where({ id: id })
       .update(summarizedSection)
       .catch((error) => {
-        throw error;
-      })
+        const msg = `המערכת לא הצליחה לעדכן את הרשומה בנתוני סעיפים מסכמים לפי מזהה ${id}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
   }
 
   addSummarizedSection(summarizedSection = Object) {
     return this.connection("summarized_sections")
       .insert(summarizedSection)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף את הרשומה לנתוני סעיפים מסכמים`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

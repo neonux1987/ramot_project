@@ -2,7 +2,6 @@
 const { dialog } = require('electron');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
-const CustomError = require('../modals/CustomError');
 
 //========================= my ipc's imports =========================//
 const monthExpansesIpc = require('../../electron/ipcs/monthExpanses.ipc');

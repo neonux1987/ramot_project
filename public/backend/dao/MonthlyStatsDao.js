@@ -15,7 +15,10 @@ class MonthlyStatsDao {
       .where({ year: date.year, month: date.month })
       .from(`${buildingName}_monthly_stats`)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף סטטיסטיקה חודשית לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -28,7 +31,10 @@ class MonthlyStatsDao {
       .where({ year: date.year, quarter: date.quarter })
       .from(`${buildingName}_monthly_stats`)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף סטטיסטיקה לחודשים של רבעון ${date.quarter} לבניין ${buildingName} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -42,7 +48,10 @@ class MonthlyStatsDao {
       .where({ year: date.year, month: date.monthHeb })
       .update(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לעדכן רשומה בסטטיסטיקת חודש לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -53,7 +62,10 @@ class MonthlyStatsDao {
   ) {
     return trx(buildingName + "_monthly_stats").insert(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומה לסטטיסטיקת חודש לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -64,7 +76,10 @@ class MonthlyStatsDao {
   ) {
     return trx.batchInsert(`${buildingName}_monthly_stats`, rows, rows.length)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומות לסטטיסטיקת חודש לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

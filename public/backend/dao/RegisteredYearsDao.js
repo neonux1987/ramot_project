@@ -14,7 +14,10 @@ class RegisteredYearsDao {
     return this.connection.select().from(`${buildingName}_registered_years`)
       .orderBy('year', 'asc')
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני השנים הרשומות לבניין ${buildingName}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -25,7 +28,10 @@ class RegisteredYearsDao {
   getRegisteredYearTrx(buildingName, year, trx = this.connection) {
     return trx.select().from(`${buildingName}_registered_years`).where({ year: year })
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף רשומה מהשנים הרשומות לבניין ${buildingName} לפי שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -43,7 +49,10 @@ class RegisteredYearsDao {
     return trx(`${buildingName}_registered_years`)
       .insert(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומה לשנים הרשומות לבניין ${buildingName} לשנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

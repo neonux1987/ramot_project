@@ -15,7 +15,10 @@ class QuarterlyStatsDao {
       .where({ year: date.year, quarter: date.quarter })
       .from(`${buildingName}_quarterly_stats`)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה רבעונית לבניין ${buildingName} לפי רבעון ${date.quarter} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -28,7 +31,10 @@ class QuarterlyStatsDao {
       .where({ year: date.year })
       .from(`${buildingName}_quarterly_stats`)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה רבעונית לבניין ${buildingName} לפי רבעון ${date.quarter} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -42,7 +48,10 @@ class QuarterlyStatsDao {
       .where({ year: date.year, quarter: date.quarter })
       .update(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לעדכן רשומה בסטטיסטיקה רבעונית לבניין ${buildingName} לפי רבעון ${date.quarter} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -53,7 +62,10 @@ class QuarterlyStatsDao {
   ) {
     return trx(buildingName + "_quarterly_stats").insert(data)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומה לסטטיסטיקה רבעונית לבניין ${buildingName} לפי רבעון ${date.quarter} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
   batchInsert(
@@ -63,7 +75,10 @@ class QuarterlyStatsDao {
   ) {
     return trx.batchInsert(`${buildingName}_quarterly_stats`, rows, rows.length)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה להוסיף רשומות לסטטיסטיקה רבעונית לבניין ${buildingName} לפי רבעון ${date.quarter} שנה ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 

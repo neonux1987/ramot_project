@@ -12,7 +12,10 @@ class TableSettingsDao {
       .where({ pageName: pageName })
       .then((result) => result[0])
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לשלוף נתוני טבלה לפי שם עמוד ${pageName}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
@@ -21,7 +24,10 @@ class TableSettingsDao {
       .where({ pageName: pageName })
       .update(settings)
       .catch((error) => {
-        throw error;
+        const msg = `המערכת לא הצליחה לעדכן את נתוני הטבלה לפי שם עמוד ${pageName}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
   }
 
