@@ -10,7 +10,6 @@ const expansesCodesIpc = (connection) => {
     expansesCodesLogic.getExpansesCodesByStatus(status).then((result) => {
       event.sender.send("expanses-codes-by-status", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("expanses-codes-by-status", { error: error.message });
     });
   });
@@ -19,7 +18,6 @@ const expansesCodesIpc = (connection) => {
     expansesCodesLogic.getExpansesCodes(status).then((result) => {
       event.sender.send("expanses-codes", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("expanses-codes", { error: error.message });
     });
   });
@@ -28,7 +26,6 @@ const expansesCodesIpc = (connection) => {
     expansesCodesLogic.updateExpanseCode(params).then((result) => {
       event.sender.send("expanse-code-updated", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("expanse-code-updated", { error: error.message });
     });
   });
@@ -39,7 +36,6 @@ const expansesCodesIpc = (connection) => {
       //extract the id from the array
       event.sender.send("expanse-code-added", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("expanse-code-added", { error: error.message });
     });
   });
@@ -48,7 +44,6 @@ const expansesCodesIpc = (connection) => {
     expansesCodesLogic.deleteExpanseCode(id).then((result) => {
       event.sender.send("expanse-code-deleted", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("expanse-code-deleted", { error: error.message });
     });
   });

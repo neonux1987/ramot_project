@@ -10,7 +10,6 @@ const budgetExecutionIpc = (connection) => {
     budgetExecutionLogic.getBudgetExecutionsByRange(arg.buildingName, arg.date, arg.range).then((result) => {
       event.sender.send("budget-executions", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("budget-executions", { error: error.message });
     });
   });
@@ -19,7 +18,6 @@ const budgetExecutionIpc = (connection) => {
     budgetExecutionLogic.updateBudgetExecutionTrx(arg).then((result) => {
       event.sender.send("budget-execution-updated", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("budget-execution-updated", { error: error.message });
     });
   });
@@ -28,7 +26,6 @@ const budgetExecutionIpc = (connection) => {
     budgetExecutionLogic.addBudgetExecutionTrx(arg).then((result) => {
       event.sender.send("budget-execution-added", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("budget-execution-added", { error: error.message });
     });
   });
@@ -37,7 +34,6 @@ const budgetExecutionIpc = (connection) => {
     budgetExecutionLogic.deleteBudgetExecution(params).then((result) => {
       event.sender.send("budget-execution-deleted", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("budget-execution-deleted", { error: error.message });
     });
   });
@@ -46,7 +42,6 @@ const budgetExecutionIpc = (connection) => {
     budgetExecutionLogic.createEmptyReport(arg.buildingName, arg.date).then((result) => {
       event.sender.send("generated-budget-execution-data", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("generated-budget-execution-data", { error: error.message });
     });
   });

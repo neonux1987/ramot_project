@@ -11,7 +11,6 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("services-data", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("services-data", { error: error.message });
     });
   });
@@ -21,7 +20,6 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("services-updated", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("services-updated", { error: error.message });
     });
   });
@@ -31,7 +29,6 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("service-started", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("service-started", { error: error.message });
     });
   });
@@ -41,7 +38,6 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("service-stopped", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("service-stopped", { error: error.message });
     });
   });
@@ -51,7 +47,6 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("service-restarted", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("service-restarted", { error: error.message });
     });
   });
@@ -61,7 +56,6 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("all-services-started", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("all-services-started", { error: error.message });
     });
   });
@@ -71,7 +65,6 @@ const servicesIpc = () => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("all-services-stopped", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("all-services-stopped", { error: error.message });
     });
   });

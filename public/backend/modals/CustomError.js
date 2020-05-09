@@ -4,21 +4,18 @@ class CustomError extends Error {
     super(message)
     this.fileName = fileName;
     this.originalError = originalError;
-
   }
 
   toString() {
-    const originalError = this.originalError ?
-      `original error: {
-    ${this.originalError}
-  }` : "";
-    return `${this.name} 
-  happened in file: ${this.fileName}
-  error: ${this.message}
-  stack: {
-    ${this.stack}
-  }
-  ${originalError}`
+    const error = {};
+    error.name = this.name;
+    error.fileName = this.fileName;
+    error.message = this.message;
+    error.stack = this.stack;
+    if (this.originalError)
+      error.original = this.originalError.stack;
+
+    return error;
   }
 
 }

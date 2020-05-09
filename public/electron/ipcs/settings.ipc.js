@@ -64,7 +64,6 @@ const settingsIpc = () => {
     settingsLogic.updateSettings(data).then((result) => {
       event.reply("saved-settings", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("saved-settings", { error: error.message });
     });
   });

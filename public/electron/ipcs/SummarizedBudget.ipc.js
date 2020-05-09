@@ -11,7 +11,6 @@ const summarizedBudgetIpc = (connection) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.sender.send("summarized-budgets", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("summarized-budgets", { error: error.message });
     });
   });
@@ -21,7 +20,6 @@ const summarizedBudgetIpc = (connection) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.sender.send("summarized-budget-updated", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("summarized-budget-updated", { error: error.message });
     });
   });
@@ -31,7 +29,6 @@ const summarizedBudgetIpc = (connection) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-summarized-budget-data", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("generated-empty-summarized-budget-data", { error: error.message });
     });
   });

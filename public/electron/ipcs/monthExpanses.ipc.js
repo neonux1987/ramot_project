@@ -28,7 +28,6 @@ const monthExpansesIpc = (connection) => {
     monthExpansesLogic.updateMonthExpanse(data).then((result) => {
       event.reply("month-expanse-updated", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("month-expanse-updated", { error: error.message });
     });
   });
@@ -37,7 +36,7 @@ const monthExpansesIpc = (connection) => {
     monthExpansesLogic.addNewMonthExpanse(data).then((result) => {
       event.reply("month-expanse-added", { data: result });
     }).catch((error) => {
-      console.log(error);
+
       event.reply("month-expanse-added", { error: error.message });
     });
 
@@ -47,7 +46,6 @@ const monthExpansesIpc = (connection) => {
     monthExpansesLogic.deleteMonthExpanseTrx(params).then((result) => {
       event.reply("month-expanse-deleted", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("month-expanse-deleted", { error: error.message });
     });
   });
@@ -56,7 +54,6 @@ const monthExpansesIpc = (connection) => {
     monthExpansesLogic.deleteMonthExpansesBySummarizedSectionId(params).then((result) => {
       event.reply("month-expanses-by-summarized-section-id-deleted", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("month-expanses-by-summarized-section-id-deleted", { error: error.message });
     });
   });
@@ -66,7 +63,6 @@ const monthExpansesIpc = (connection) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-month-expanses-data", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("generated-empty-month-expanses-data", { error: error.message });
     });
   });
