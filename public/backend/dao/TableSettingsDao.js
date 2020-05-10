@@ -1,8 +1,13 @@
+const DbError = require('../customErrors/DbError');
+const logManager = require('../logger/LogManager');
 const connectionPool = require('../connection/ConnectionPool');
+
+const FILENAME = "TableSettingsDao.js"
 
 class TableSettingsDao {
 
   constructor() {
+    this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
   }
 

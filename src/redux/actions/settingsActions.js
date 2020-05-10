@@ -25,12 +25,8 @@ export const fetchSettings = (settingName) => {
       receive: {
         channel: "settings-data"
       },
-      onSuccess: (result) => dispatch(receiveSettings(result.data)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveSettings(result.data)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }
@@ -50,12 +46,8 @@ export const fetchSpecificSetting = (settingName) => {
       receive: {
         channel: "specific-setting-data"
       },
-      onSuccess: (result) => dispatch(receiveSettings(result.settingName, result.data)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveSettings(result.settingName, result.data)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }
@@ -112,11 +104,7 @@ export const saveSettings = (notifOn = true) => {
         if (notifOn)
           myToasts.success("ההגדרות נשמרו בהצלחה.")
       },
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }; // end dispatch func

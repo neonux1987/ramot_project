@@ -23,12 +23,8 @@ export const fetchRegisteredYears = (params = Object) => {
       receive: {
         channel: "registered-years-data"
       },
-      onSuccess: (result) => dispatch(receiveRegisteredYears(result.data, params.buildingName)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveRegisteredYears(result.data, params.buildingName)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }

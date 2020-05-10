@@ -21,12 +21,8 @@ export const fetchRegisteredQuarters = (params = Object) => {
       receive: {
         channel: "registered-quarters-data"
       },
-      onSuccess: (result) => dispatch(receiveRegisteredQuarters(result.data, params.buildingName)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveRegisteredQuarters(result.data, params.buildingName)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
   }
 };

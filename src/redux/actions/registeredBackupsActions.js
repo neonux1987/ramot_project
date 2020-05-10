@@ -32,12 +32,7 @@ export const fetchRegisteredBackups = () => {
         //success store the data
         dispatch(receiveRegisteredBackups(newDataArr));
       },
-      onError: (result) => {
-        //let react know that an erro occured while trying to fetch
-        dispatch(fetchingFailed(result.error));
-        //send the error to the notification center
-        myToasts.error(result.error);
-      }
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }

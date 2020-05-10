@@ -1,13 +1,13 @@
 {
-  "startTime": "2020-05-09T15:32:12.974Z",
+  "startTime": "2020-05-09T22:30:24.978Z",
   "categoryName": "Application",
   "data": [
     {
       "name": "database_error",
-      "fileName": "BudgetExecutionDao.js",
-      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח",
-      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח\n    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:161:26",
-      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarterundefined` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 order by `section` asc limit 1000 - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarterundefined"
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:53:24",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
     }
   ],
   "level": {
@@ -16,18 +16,18 @@
     "colour": "red"
   },
   "context": {},
-  "pid": 19208
+  "pid": 11748
 },
 {
-  "startTime": "2020-05-09T15:34:28.401Z",
+  "startTime": "2020-05-09T22:30:24.980Z",
   "categoryName": "Application",
   "data": [
     {
       "name": "database_error",
-      "fileName": "BudgetExecutionDao.js",
-      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח",
-      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח\n    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:161:26",
-      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarterundefined` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 order by `section` asc limit 1000 - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarterundefined"
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:53:24",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
     }
   ],
   "level": {
@@ -36,17 +36,17 @@
     "colour": "red"
   },
   "context": {},
-  "pid": 8008
+  "pid": 11748
 },
 {
-  "startTime": "2020-05-09T15:35:13.426Z",
+  "startTime": "2020-05-10T02:43:39.068Z",
   "categoryName": "Application",
   "data": [
     {
       "name": "database_error",
       "fileName": "BudgetExecutionDao.js",
-      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח",
-      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח\n    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:161:26",
+      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין לב תל אביב לרבעון 2 שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין לב תל אביב לרבעון 2 שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:162:26",
       "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarterundefined` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 order by `section` asc limit 1000 - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarterundefined"
     }
   ],
@@ -56,5 +56,119 @@
     "colour": "red"
   },
   "context": {},
-  "pid": 14340
+  "pid": 8400
+},
+{
+  "startTime": "2020-05-10T02:44:10.333Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "BudgetExecutionDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין לב תל אביב לרבעון 2 שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין לב תל אביב לרבעון 2 שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:162:26",
+      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarterundefined` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 order by `section` asc limit 1000 - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarterundefined"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 16264
+},
+{
+  "startTime": "2020-05-10T02:45:41.952Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "BudgetExecutionDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין לב תל אביב לרבעון 2 שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין לב תל אביב לרבעון 2 שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:163:26",
+      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarterundefined` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 order by `section` asc limit 1000 - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarterundefined"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 4924
+},
+{
+  "startTime": "2020-05-10T02:55:53.946Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 12272
+},
+{
+  "startTime": "2020-05-10T03:00:59.003Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "BudgetExecutionDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:161:26",
+      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarterundefined` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 order by `section` asc limit 1000 - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarterundefined"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 1348
+},
+{
+  "startTime": "2020-05-10T03:01:05.178Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "BudgetExecutionDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:161:26",
+      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarterundefined` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 order by `section` asc limit 1000 - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarterundefined"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 1348
+},
+{
+  "startTime": "2020-05-10T03:01:10.486Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "BudgetExecutionDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:161:26",
+      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarterundefined` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 order by `section` asc limit 1000 - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarterundefined"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 1348
 },

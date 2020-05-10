@@ -38,7 +38,6 @@ export const fetchExpansesCodesByStatus = (status) => {
         dispatch(receiveExpansesCodes(result.data));
       },
       onError: (result) => {
-        myToasts.error(result.error);
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(result.error));
       }
@@ -93,8 +92,6 @@ export const addExpanseCode = (expanseCode) => {
       onError: (result) => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error);
       }
     });
 
@@ -145,18 +142,15 @@ export const updateExpanseCode = (newCopy, oldCopy, index) => {
       receive: {
         channel: "expanse-code-updated"
       },
-      onSuccess: (result) => {
+      onSuccess: () => {
         //send success notification
         myToasts.success("הקוד עודכן בהצלחה.");
       },
-      onError: (result) => {
+      onError: () => {
         // rollback
         dispatch(updateStoreOnly(oldCopy, index));
-
-        myToasts.error(result.error);
       }
     });
-
   }
 };
 
@@ -184,11 +178,9 @@ export const deleteExpanseCode = (id, oldCopy, index) => {
         //send success notification
         myToasts.success("הקוד נמחקה בהצלחה.");
       },
-      onError: (result) => {
+      onError: () => {
         //delete the item in store first
         dispatch(addStoreOnly(oldCopy));
-
-        myToasts.error(result.error);
       }
     });
 

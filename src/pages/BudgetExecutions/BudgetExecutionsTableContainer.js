@@ -43,7 +43,6 @@ import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteB
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
 import AddNewContainer from './AddNewContainer/AddNewContainer';
-import { myToasts } from '../../CustomToasts/myToasts';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -84,7 +83,7 @@ const BudgetExecutionsTable = props => {
         startElement: 0,
         pageSize: 1000
       }
-    }
+    };
 
     const returnedPromise = dispatch(initBudgetExecutionsState(params.buildingName));
 

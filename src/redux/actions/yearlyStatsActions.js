@@ -22,12 +22,8 @@ export const fetchYearStats = (params = Object) => {
       receive: {
         channel: "year-stats"
       },
-      onSuccess: (result) => dispatch(receiveYearlyStats(result.data)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error);
-      }
+      onSuccess: result => dispatch(receiveYearlyStats(result.data)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }

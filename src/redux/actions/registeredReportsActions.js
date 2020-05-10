@@ -22,12 +22,8 @@ export const fetchRegisteredReports = (params = Object) => {
       receive: {
         channel: "registered-reports-grouped-by-year-data"
       },
-      onSuccess: (result) => dispatch(receiveRegisteredReports(result.data, params.buildingName)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveRegisteredReports(result.data, params.buildingName)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
   }
 };

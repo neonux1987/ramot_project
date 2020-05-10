@@ -26,12 +26,8 @@ export const fetchSidebar = () => {
       receive: {
         channel: "menu-data"
       },
-      onSuccess: (result) => dispatch(receiveSidebar(result.data)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveSidebar(result.data)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }

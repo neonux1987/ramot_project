@@ -1,6 +1,14 @@
+const DbError = require('../customErrors/DbError');
+const logManager = require('../logger/LogManager');
 const connectionPool = require('../connection/ConnectionPool');
 
+const FILENAME = "RegisteredReportsDao.js"
+
 class RegisteredReportsDao {
+
+  constructor() {
+    this.logger = logManager.getLogger();
+  }
 
   /**
    * get registered reports

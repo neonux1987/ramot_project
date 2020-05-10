@@ -25,12 +25,8 @@ export const fetchTableSettings = (pageName) => {
       receive: {
         channel: "table-settings"
       },
-      onSuccess: (result) => dispatch(receiveTableSettings(pageName, result.data)),
-      onError: (result) => {
-        dispatch(tableSettingsFetchingFailed(result.error));
-
-        myToasts.error(result.error);
-      }
+      onSuccess: result => dispatch(receiveTableSettings(pageName, result.data)),
+      onError: result => dispatch(tableSettingsFetchingFailed(result.error))
     });
 
   } // end dispatch function
@@ -49,8 +45,8 @@ export const updateTableSettings = (pageName, settings) => {
       receive: {
         channel: "updated-table-settings"
       },
-      onSuccess: (result) => dispatch(receiveTableSettings(pageName, result.data)),
-      onError: (result) => myToasts.error(result.error)
+      onSuccess: result => dispatch(receiveTableSettings(pageName, result.data)),
+      onError: result => myToasts.error(result.error)
     });
 
   }

@@ -26,12 +26,8 @@ export const fetchServices = (params = Object) => {
       receive: {
         channel: "services-data"
       },
-      onSuccess: (result) => dispatch(receiveServices(result.data, params.buildingName)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveServices(result.data, params.buildingName)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
   }
 };
@@ -47,11 +43,7 @@ export const updateServices = (data) => {
       receive: {
         channel: "services-updated"
       },
-      onError: (result) => {
-        dispatch(stopServiceStore());
-
-        myToasts.error(result.error);
-      }
+      onError: () => dispatch(stopServiceStore())
     });
 
   }
@@ -97,7 +89,7 @@ export const startService = (serviceName) => {
 
         myToasts.success("השירות הופעל בהצלחה.");
       },
-      onError: (result) => {
+      onError: () => {
         // on service falied to start
         // set the service to disabled in store 
         // an set to disabled in the service settings
@@ -110,8 +102,6 @@ export const startService = (serviceName) => {
 
         dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
-
-        myToasts.error(result.error);
       }
     });
 
@@ -151,7 +141,7 @@ export const stopService = (serviceName) => {
 
         myToasts.success("השירות הופסק בהצלחה.");
       },
-      onError: (result) => {
+      onError: () => {
         // on service falied to start
         // set the service to disabled in store 
         // an set to disabled in the service settings
@@ -164,8 +154,6 @@ export const stopService = (serviceName) => {
 
         dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
-
-        myToasts.error(result.error);
       }
     });
 
@@ -187,15 +175,14 @@ export const restartService = (serviceName) => {
       receive: {
         channel: "service-restarted"
       },
-      onSuccess: (reult) => {
+      onSuccess: () => {
         settingsData.restartRequired = false;
         updateSettings(serviceName, settingsData);
         myToasts.success("השירות אותחל בהצלחה.");
       },
-      onError: (result) => {
+      onError: () => {
         settingsData.restartRequired = true;
         updateSettings(serviceName, settingsData);
-        myToasts.error(result.error);
       }
     });
 
@@ -214,9 +201,6 @@ export const startAllServices = () => {
       },
       onSuccess: (reult) => {
         myToasts.success("השירותים אותחלו בהצלחה וכעט פועלים ברקע.");
-      },
-      onError: (result) => {
-        myToasts.error(result.error);
       }
     });
 
@@ -235,9 +219,6 @@ export const stopAllServices = () => {
       },
       onSuccess: (reult) => {
         myToasts.success("השירותים הופסקו בהצלחה.");
-      },
-      onError: (result) => {
-        myToasts.error(result.error);
       }
     });
 

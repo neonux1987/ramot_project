@@ -1,3 +1,5 @@
+const DbError = require('../customErrors/DbError');
+const logManager = require('../logger/LogManager');
 const NestHydrationJS = require('nesthydrationjs');
 const connectionPool = require('../connection/ConnectionPool');
 
@@ -17,10 +19,12 @@ const DEFINITION = [{
 }];
 
 const CHUNKSIZE = 100;
+const FILENAME = "MonthExpansesDao.js"
 
 class MonthExpansesDao {
 
   constructor() {
+    this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
     this.nestHydrationJS = new NestHydrationJS();
   }

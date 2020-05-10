@@ -1,6 +1,6 @@
 const NestHydrationJS = require('nesthydrationjs');
 const connectionPool = require('../connection/ConnectionPool');
-const DbError = require('../modals/DbError');
+const DbError = require('../customErrors/DbError');
 const logManager = require('../logger/LogManager');
 
 const DEFINITION = [{
@@ -118,7 +118,7 @@ class BudgetExecutionDao {
       ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
       .innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
+        const msg = `המערכת נכשלה בשליפת הנתונים של ביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError)
         throw newError;
@@ -153,7 +153,7 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + date.month + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
       .limit(pageSettings.pageSize).offset(pageSettings.startElement)
       .orderBy("section")
       .catch((error) => {
@@ -286,7 +286,7 @@ class BudgetExecutionDao {
     payload,
     trx = this.connection
   ) {
-    return trx(`${buildingName}_budget_execution_quarter${quarter}`)
+    return trx(`${buildingName}_budget_execution_quarters${quarter}`)
       .insert(payload)
       .catch((error) => {
         const msg = `המערכת לא הצליחה להוסיף רשומה לביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;

@@ -37,8 +37,6 @@ export const fetchMonthExpanses = (params = Object) => {
       onError: (result) => {
         // let react know that an erro occured while trying to fetch
         dispatch(monthExpansesFetchingFailed(result.error, params.buildingName));
-
-        myToasts.error(result.error);
       }
     });//end ipc send receive
 
@@ -120,8 +118,6 @@ export const addMonthExpanse = (params = Object, expanse = Object) => {
       onError: (result) => {
         //let react know that an erro occured while trying to fetch
         dispatch(monthExpansesFetchingFailed(result.error));
-
-        myToasts.error(result.error);
       }
     });
 
@@ -155,7 +151,7 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
         // send success notification
         myToasts.success("השורה עודכנה בהצלחה.");
       },
-      onError: (result) => {
+      onError: () => {
         // rollback to old expanse
         dispatch({
           type: TYPES.MONTH_EXPANSES_UPDATE,
@@ -163,9 +159,6 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
           payload: oldExpanse,
           buildingName: params.buildingName
         });
-
-        // send the error to the notification center
-        myToasts.error(result.error);
       }
     });
 
@@ -196,8 +189,7 @@ export const deleteMonthExpanse = (params = Object, index = Number) => {
         dispatch(deleteMonthExpanseInStore(index, params.buildingName));
 
         myToasts.success("השורה נמחקה בהצלחה.");
-      },
-      onError: (result) => myToasts.error(result.error)
+      }
     });
 
   }

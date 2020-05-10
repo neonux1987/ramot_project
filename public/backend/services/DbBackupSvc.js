@@ -2,14 +2,18 @@ const fse = require('fs-extra');
 const schedule = require('node-schedule');
 const SettingsLogic = require('../logic/SettingsLogic');
 const RegisteredBackupsLogic = require('../logic/RegisteredBackupsLogic');
+const ServiceError = require('../customErrors/ServiceError');
+const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('./RendererNotificationSvc');
+
+const FILENAME = "DbBackupSvc.js";
 
 const DB_BACKUP_FILENAME = "mezach-db-backup";
 
 class DbBackupSvc {
 
   constructor() {
-
+    this.logger = logManager.getLogger();
     this.settingsLogic = new SettingsLogic();
     this.registeredBackupsLogic = new RegisteredBackupsLogic();
     this.rule = new schedule.RecurrenceRule();
@@ -129,8 +133,10 @@ class DbBackupSvc {
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
       })
       .catch((error) => {
-        console.log(error);
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
+        const newError = new ServiceError("The system failed to backup the database", FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
       });
 
   }

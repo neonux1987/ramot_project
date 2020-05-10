@@ -28,12 +28,8 @@ export const fetchSummarizedBudgets = (params = Object) => {
       receive: {
         channel: "summarized-budgets"
       },
-      onSuccess: (result) => dispatch(receiveSummarizedBudgets(result.data.data, params.date, params.buildingName)),
-      onError: (result) => {
-        dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingName));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data.data, params.date, params.buildingName)),
+      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingName))
     });
 
   }
@@ -101,12 +97,7 @@ export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
         channel: "summarized-budget-updated"
       },
       onSuccess: () => myToasts.success("השורה עודכנה בהצלחה."),
-      onError: (result) => {
-        // rollback to old expanse
-        updateSummarizedBudgetInStore(buildingName, oldCopy, index)
-
-        myToasts.error(result.error)
-      }
+      onError: () => updateSummarizedBudgetInStore(buildingName, oldCopy, index)
     });
 
   }

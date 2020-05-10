@@ -28,12 +28,8 @@ export const fetchSummarizedSections = (status) => {
       receive: {
         channel: "summarized-sections-data"
       },
-      onSuccess: (result) => dispatch(receiveSummarizedSections(result.data)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveSummarizedSections(result.data)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }
@@ -79,7 +75,7 @@ export const addSummarizedSection = (params = Object) => {
         //send success notification
         myToasts.success("הסעיף נוסף בהצלחה.");
       },
-      onError: (result) => myToasts.error(result.error)
+      onError: result => myToasts.error(result.error)
     });
 
   }
@@ -120,12 +116,8 @@ export const updateSummarizedSection = (newCopy, oldCopy, index) => {
         channel: "summarized-section-updated"
       },
       onSuccess: () => myToasts.success("הסעיף עודכן בהצלחה."),
-      onError: (result) => {
-        // rollback
-        dispatch(updateSummarizedSectionStoreOnly(oldCopy, index));
+      onError: () => dispatch(updateSummarizedSectionStoreOnly(oldCopy, index)) // rollback
 
-        myToasts.error(result.error)
-      }
     });
 
   }
@@ -144,12 +136,8 @@ export const deleteSummarizedSection = (oldCopy, index) => {
         channel: "summarized-section-deleted"
       },
       onSuccess: () => myToasts.success("הסעיף נמחק בהצלחה."),
-      onError: (result) => {
-        // rollback
-        dispatch(addSummarizedSectionStoreOnly(oldCopy));
+      onError: () => dispatch(addSummarizedSectionStoreOnly(oldCopy)) // rollback
 
-        myToasts.error(result.error)
-      }
     });
 
   }

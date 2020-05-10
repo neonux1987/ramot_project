@@ -23,12 +23,8 @@ export const fetchQuarterStats = (params = Object) => {
       receive: {
         channel: "quarter-stats"
       },
-      onSuccess: (result) => dispatch(receiveQuarterlyStats(result.data)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveQuarterlyStats(result.data)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }
@@ -47,12 +43,8 @@ export const fetchAllQuartersStatsByYear = (params = Object) => {
       receive: {
         channel: "all-quarters-stats-by-year"
       },
-      onSuccess: (result) => dispatch(receiveQuarterlyStats(result.data)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onSuccess: result => dispatch(receiveQuarterlyStats(result.data)),
+      onError: result => dispatch(fetchingFailed(result.error))
     });
 
   }

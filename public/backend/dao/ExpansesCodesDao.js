@@ -1,8 +1,13 @@
+const DbError = require('../customErrors/DbError');
+const logManager = require('../logger/LogManager');
 const connectionPool = require('../connection/ConnectionPool');
+
+const FILENAME = "ExpansesCodesDao.js"
 
 class ExpansesCodesDao {
 
   constructor() {
+    this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
   }
 

@@ -1,3 +1,5 @@
+const DbError = require('../customErrors/DbError');
+const logManager = require('../logger/LogManager');
 const NestHydrationJS = require('nesthydrationjs');
 const connectionPool = require('../connection/ConnectionPool');
 
@@ -20,9 +22,12 @@ const DEFINITION = [{
   ]
 }];
 
+const FILENAME = "MenuDao.js"
+
 class MenuDao {
 
   constructor() {
+    this.logger = logManager.getLogger();
     this.nestHydrationJS = new NestHydrationJS();
   }
 

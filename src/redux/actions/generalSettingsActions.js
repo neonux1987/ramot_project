@@ -26,8 +26,6 @@ const fetchGeneralSettings = () => {
       onError: (result) => {
         //let react know that an erro occured while trying to fetch
         dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error);
       }
     });
 
@@ -74,8 +72,7 @@ const updateGeneralSettings = (params = Object, tableData) => {
         dispatch(receiveGeneralSettings(tableData));
 
         myToasts.success("ההגדרות עודכנו בהצלחה.");
-      },
-      onError: (result) => myToasts.error(result.error)
+      }
     });
 
   }
@@ -96,8 +93,7 @@ const updateVat = (params = Object) => {
         dispatch(updateVatInStore(params.settings.tax));
 
         myToasts.success('המע"מ עודכן בהצלחה.');
-      },
-      onError: (result) => myToasts.error(result.error)
+      }
     });
 
   }

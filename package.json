@@ -89,7 +89,7 @@
     "build": "rescripts build",
     "test": "rescripts test",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "npm run build",
     "electron-pack": "electron-builder --win --publish never",
@@ -113,6 +113,7 @@
     "cross-env": "^7.0.2",
     "electron": "8.2.5",
     "electron-builder": "^22.6.0",
+    "nodemon": "^2.0.3",
     "typescript": "^3.8.3",
     "wait-on": "^4.0.2"
   }

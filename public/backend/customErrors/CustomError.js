@@ -13,7 +13,7 @@ class CustomError extends Error {
     error.message = this.message;
     error.stack = this.stack;
     if (this.originalError)
-      error.original = this.originalError.stack;
+      error.original = this.originalError.toString();
 
     return error;
   }

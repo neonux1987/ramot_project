@@ -44,8 +44,6 @@ export const fetchBudgetExecutions = (params = Object) => {
         //let react know that an erro occured while trying to fetch
         dispatch(budgetExecutionsFetchingFailed(result.error, params.buildingName));
       }
-    }).catch(() => {
-      myToasts.error("המערכת נכשלה בשליפת הנתונים של ביצוע מול תקציב לתאריך הנבחר");
     });
 
   }
@@ -127,10 +125,8 @@ export const deleteBudgetExecution = (buildingName, date, index, rollbackData) =
       onSuccess: () => myToasts.success("השורה נמחקה בהצלחה."),
       onError: (result) => {
         dispatch(addBudgetExecutionInStore(buildingName, rollbackDataCopy, sortByCode));
-
-        myToasts.error(result.error);
       }
-    });//end ipc send receive
+    });
   }
 };
 
@@ -162,7 +158,7 @@ export const addBudgetExecution = (params = Object) => {
       onError: (result) => {
         myToasts.error(result.error);
       }
-    });//end ipc send receive
+    });
   }
 };
 
@@ -241,7 +237,7 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
         channel: "budget-execution-updated",
       },
       onSuccess: () => myToasts.success("השורה עודכנה בהצלחה."),
-      onError: (result) => {
+      onError: () => {
         //rollback to the old budget execution object
         dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingName));
 
@@ -251,7 +247,6 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
         //rollback to old quarter total
         dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterStatsOld));
 
-        myToasts.error(result.error);
       }
     });
 

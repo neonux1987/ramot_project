@@ -24,11 +24,7 @@ export const fetchAllMonthsStatsByQuarter = (params = Object) => {
         channel: "all-months-stats-by-quarter"
       },
       onSuccess: (result) => dispatch(receiveMonthlyStats(result.data)),
-      onError: (result) => {
-        dispatch(fetchingFailed(result.error));
-
-        myToasts.error(result.error)
-      }
+      onError: (result) => dispatch(fetchingFailed(result.error))
     });
 
   }

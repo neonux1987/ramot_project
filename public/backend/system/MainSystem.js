@@ -3,6 +3,8 @@ const { dialog } = require('electron');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
 
+const MenuDao = require('../dao/MenuDao');
+
 //========================= my ipc's imports =========================//
 const monthExpansesIpc = require('../../electron/ipcs/monthExpanses.ipc');
 const budgetExecutionIpc = require('../../electron/ipcs/budgetExecution.ipc');
@@ -39,6 +41,7 @@ class MainSystem {
   constructor() {
     this.servicesLogic = undefined;
     this.configurationLogic = new ConfigurationLogic();
+    this.menuDao = new MenuDao();
     this.logger = logManager.getLogger();
   }
 
@@ -109,17 +112,25 @@ class MainSystem {
       // set up the db connection
       await connectionPool.createConnection();
 
+      //fetch menu data
+      const menu = await this.menuDao.getMenu();
+
+      // In the main process.
+      global.sharedObject = {
+        menuData: menu
+      }
+
       // initialize all the ipc's for connection
       // between the main process and the renderer
       this.initializeIpcs();
     } catch (error) {
-      this.logger.error(error.toString());
+      this.logger.error(error);
 
       const title = "שגיאת הפעלה";
       const message = `
       המערכת נכשלה בעת ההפעלה עקב תקלה.\n
       לפרטים נוספים יש לקרוא את יומן האירועים שנמצא ב:
-      C:\\ramot-mezach-error-log.txt
+      ${__dirname}
       `;
       dialog.showErrorBox(title, message);
     }

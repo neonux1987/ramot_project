@@ -2,7 +2,6 @@ const fse = require('fs-extra');
 const ConfigurationLogic = require('../logic/ConfigurationLogic');
 
 const CONFIG_LOCATION = ConfigurationLogic.paths.config_path;
-const CONFIG_BACKUPS_NAMES = ConfigurationLogic.paths.backups_names_path;
 
 class SettingsLogic {
 
