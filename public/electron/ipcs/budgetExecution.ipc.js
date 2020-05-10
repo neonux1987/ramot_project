@@ -6,8 +6,8 @@ const budgetExecutionIpc = (connection) => {
   //fetch month expanses data
   const budgetExecutionLogic = new BudgetExecutionLogic(connection);
 
-  ipcMain.on('get-budget-executions', (event, arg) => {
-    budgetExecutionLogic.getBudgetExecutionsByRange(arg.buildingName, arg.date, arg.range).then((result) => {
+  ipcMain.on('get-budget-executions', (event, { buildingInfo, date, range }) => {
+    budgetExecutionLogic.getBudgetExecutionsByRange(buildingInfo, date, range).then((result) => {
       event.sender.send("budget-executions", { data: result });
     }).catch((error) => {
       event.reply("budget-executions", { error: error.message });

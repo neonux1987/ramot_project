@@ -11,8 +11,7 @@ export const exportToExcel = (excelData) => {
     receive: {
       channel: "excel-exported"
     },
-    onSuccess: () => myToasts.success("ייצוא לקובץ אקסל בוצע בהצלחה."),
-    onError: (result) => myToasts.error(result.error)
+    onSuccess: () => myToasts.success("ייצוא לקובץ אקסל בוצע בהצלחה.")
   });
 
 };
@@ -27,8 +26,7 @@ export const exportToExcelBulk = (excelData) => {
     receive: {
       channel: "excel-bulk-exported"
     },
-    onSuccess: () => myToasts.success("ייצוא לקבצי אקסל בוצע בהצלחה."),
-    onError: (result) => myToasts.error(result.error)
+    onSuccess: () => myToasts.success("ייצוא לקבצי אקסל בוצע בהצלחה.")
   });
 
 };

@@ -76,19 +76,21 @@ const BudgetExecutionsTable = props => {
       dispatch(budgetExecutionsCleanup(buildingNameEng));
     }
 
-    const params = {
-      date: date,
+    const buildingInfo = {
       buildingName: buildingNameEng,
-      range: {
-        startElement: 0,
-        pageSize: 1000
-      }
+      buildingNameHeb: buildingName
     };
 
-    const returnedPromise = dispatch(initBudgetExecutionsState(params.buildingName));
+    // how many rows of data to pull from the database
+    const range = {
+      startElement: 0,
+      pageSize: 1000
+    };
+
+    const returnedPromise = dispatch(initBudgetExecutionsState(buildingNameEng));
 
     returnedPromise.then(() => {
-      dispatch(fetchBudgetExecutions(params));
+      dispatch(fetchBudgetExecutions(buildingInfo, date, range));
     })
 
     return cleanup;

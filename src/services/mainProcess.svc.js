@@ -1,5 +1,4 @@
 import { ipcSendReceive } from '../redux/actions/util/util';
-import { myToasts } from '../CustomToasts/myToasts';
 
 export const quitApp = () => {
 
@@ -9,8 +8,7 @@ export const quitApp = () => {
     },
     receive: {
       channel: "app-terminated"
-    },
-    onError: (result) => myToasts.error(result.error)
+    }
   });
 
 };
@@ -23,8 +21,7 @@ export const restartApp = () => {
     },
     receive: {
       channel: "app-restarted"
-    },
-    onError: (result) => myToasts.error(result.error)
+    }
   });
 
 };

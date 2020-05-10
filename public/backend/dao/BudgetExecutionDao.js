@@ -118,7 +118,7 @@ class BudgetExecutionDao {
       ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
       .innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
       .catch((error) => {
-        const msg = `המערכת נכשלה בשליפת הנתונים של ביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
+        const msg = `המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין ${buildingNameHeb} רבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError)
         throw newError;
@@ -127,11 +127,8 @@ class BudgetExecutionDao {
   }
 
   getBudgetExecutionsByRange(
-    buildingName = String,
-    date = {
-      year: year = Number,
-      quarter: quarter = String
-    },
+    buildingInfo,
+    date,
     pageSettings = {
       pageSize: 100,
       startElement: 0
@@ -139,8 +136,12 @@ class BudgetExecutionDao {
     quarterQuery = Array,
     trx = this.connection
   ) {
+    const { quarter, year } = date;
+    const { buildingName, buildingNameHeb } = buildingInfo;
+    const { pageSize, startElement } = pageSettings;
+
     return trx
-      .where({ year: date.year, quarter: date.quarter })
+      .where({ year, quarter })
       .select(
         "exec.id AS id",
         "exec.summarized_section_id AS summarized_section_id",
@@ -153,11 +154,11 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
-      .limit(pageSettings.pageSize).offset(pageSettings.startElement)
+      ).from(buildingName + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      .limit(pageSize).offset(startElement)
       .orderBy("section")
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתונים של ביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year} לפי טווח`;
+        const msg = `המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין ${buildingNameHeb} רבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

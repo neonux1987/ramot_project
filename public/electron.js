@@ -4,9 +4,8 @@ const { autoUpdater } = require('electron-updater');
 
 //========================= services =========================//
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
-
 const mainSystem = require('./backend/system/MainSystem');
-
+const os = require('os');
 const path = require('path');
 const isDev = require('electron-is-dev');
 const contextMenu = require('electron-context-menu');
@@ -51,27 +50,27 @@ async function createWindow() {
     width: 1280,
     height: 720,
     title: appName + " - " + companyName,
+    titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: true
     },
+    backgroundColor: "#eee",
     frame: false,
-    //backgroundColor: '#191b21'
     resizeable: false,
-    show: false
+    //show: false
   });
 
   mainWindow.maximize();
-  mainWindow.show();
+  //mainWindow.show();
 
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+
   if (isDev) {
     // Open the DevTools.
     //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     mainWindow.webContents.openDevTools();
   }
   mainWindow.on('closed', () => mainWindow = null);
-
-
 
   ipcMain.on('system-start-services', (event, arg) => {
     mainSystem.startServices();
@@ -80,11 +79,7 @@ async function createWindow() {
   mainWindow.once('ready-to-show', () => {
     autoUpdater.checkForUpdatesAndNotify();
   });
-  /* console.log(process.resourcesPath);
-  console.log(app.getAppPath()); */
-  //const testJson = await fse.readJson(path.join(process.resourcePath, 'extraResources', 'confgis\\config.json'));
 
-  //dialog.showErrorBox("error", __dirname);
   //add react dev tools
   /* BrowserWindow.addDevToolsExtension(
     path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0')
@@ -93,7 +88,6 @@ async function createWindow() {
   powerMonitor.on('resume', () => {
     console.log('The system is up');
     //const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
-    //console.log(generateReports);
   });
 
 }

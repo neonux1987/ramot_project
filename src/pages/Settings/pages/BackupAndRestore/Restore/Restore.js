@@ -28,9 +28,7 @@ export default (props) => {
   const [selectedBackupDate, SetSelectedBackupDate] = React.useState(data[0] ? data[0].backupDateTime : "לא קיימים גיבויים שמורים");
 
   useEffect(() => {
-    dispatch(fetchRegisteredBackups()).catch((result) => {
-      myToasts.error(result.error);
-    });
+    dispatch(fetchRegisteredBackups());
   }, [dispatch]);
 
   const backupsNamesRender = data.length > 0 ? data.map((backup, index) => {

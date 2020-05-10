@@ -9,9 +9,6 @@ export const dbIndependentBackup = (fullPath) => {
     },
     receive: {
       channel: "db-independently-backed-up",
-    },
-    onError: (result) => {
-      myToasts.error(result.error);
     }
   });
 }

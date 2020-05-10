@@ -11,8 +11,7 @@ export const generateEmptyReports = (date) => {
     receive: {
       channel: "empty-reports-generated"
     },
-    onSuccess: () => myToasts.success("דוחות ריקים נוצרו בהצלחה לתאריך שבחרת."),
-    onError: (result) => myToasts.error(result.error)
+    onSuccess: () => myToasts.success("דוחות ריקים נוצרו בהצלחה לתאריך שבחרת.")
   });
 
 };

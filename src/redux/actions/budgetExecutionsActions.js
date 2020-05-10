@@ -15,34 +15,29 @@ export const TYPES = {
   BUDGET_EXECUTIONS_CLEANUP: "BUDGET_EXECUTIONS_CLEANUP"
 }
 
-export const fetchBudgetExecutions = (params = Object) => {
+export const fetchBudgetExecutions = (buildingInfo, date, range) => {
   return dispatch => {
+    const { buildingName } = buildingInfo;
+
     //let react know that the fetching is started
-    dispatch(requestBudgetExecutions(params.buildingName));
+    dispatch(requestBudgetExecutions(buildingName));
 
     return ipcSendReceive({
       send: {
         channel: "get-budget-executions",
-        params
+        params: { buildingInfo, date, range }
       },
       receive: {
         channel: "budget-executions",
       },
       onSuccess: (result) => {
-        //if there is no data, that means it's a new month and 
-        //and empty report should be generated.
-        if (result.data.data.length === 0) {
-          //show a notification that the generation of 
-          //generateEmptyReport(params, dispatch);
-          dispatch(receiveBudgetExecutions([], params.buildingName));
-        }
+        dispatch(receiveBudgetExecutions([], buildingName));
 
         //success store the data
-        dispatch(receiveBudgetExecutions(result.data.data, params.buildingName));
+        dispatch(receiveBudgetExecutions(result.data.data, buildingName));
       },
       onError: (result) => {
-        //let react know that an erro occured while trying to fetch
-        dispatch(budgetExecutionsFetchingFailed(result.error, params.buildingName));
+        dispatch(budgetExecutionsFetchingFailed(result.error, buildingName));
       }
     });
 
@@ -154,9 +149,6 @@ export const addBudgetExecution = (params = Object) => {
         dispatch(addBudgetExecutionInStore(buildingName, result.data, sortByCode));
 
         myToasts.success("השורה נוספה בהצלחה.");
-      },
-      onError: (result) => {
-        myToasts.error(result.error);
       }
     });
   }
