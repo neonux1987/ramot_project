@@ -24,7 +24,7 @@ const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, da
 }
 
 const exportExcelBulk = async (date) => {
-  const { year, quarter, quarterHeb, quarterEng } = date;
+  const { year, quarter, quarterHeb } = date;
 
   const settingsLogic = new SettingsLogic();
   const summarizedBudgetLogic = new SummarizedBudgetLogic();
