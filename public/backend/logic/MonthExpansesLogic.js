@@ -5,6 +5,7 @@ const MonthlyStatsLogic = require('../logic/MonthlyStatsLogic');
 const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
 const GeneralSettingsLogic = require('../logic/GeneralSettingsLogic');
 const Helper = require('../../helpers/Helper');
+const LogicError = require('../customErrors/LogicError');
 const connectionPool = require('../connection/ConnectionPool');
 
 const SPECIAL_CODE_PREFIX = "9";
@@ -111,7 +112,7 @@ class MonthExpansesLogic {
     // month expanses data
     if (budgetExecution.length === 0) {
       trx.rollback();
-      throw new Error("קרתה שגיאה. לא ניתן להוסיף או לעדכן שורה כל עוד הסעיף המסכם לא קיים בטבלת ביצוע מול תקציב.")
+      throw new LogicError("קרתה שגיאה. לא ניתן להוסיף או לעדכן שורה כל עוד הסעיף המסכם לא קיים בטבלת ביצוע מול תקציב.")
     }
 
     //caluclate execution and prepare an object for te insertion or update
@@ -197,7 +198,7 @@ class MonthExpansesLogic {
 
     if (monthExpanseObj.length === 0) {
       trx.rollback();
-      throw new Error(`השורה לא קיית בבסיס נתונים, כנראה כבר נמחקה.`);
+      throw new LogicError(`השורה לא קיימת בבסיס נתונים, כנראה כבר נמחקה.`);
     }
 
     //convert the code to string and find out

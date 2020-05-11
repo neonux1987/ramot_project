@@ -378,3 +378,98 @@
   "context": {},
   "pid": 16520
 },
+{
+  "startTime": "2020-05-11T00:31:41.488Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "logic_error",
+      "fileName": "BudgetExecutionLogic.js",
+      "message": "שכבר קיים cshev לא ניתן להוסיף שורה עם סעיף מסכם",
+      "stack": "logic_error: שכבר קיים cshev לא ניתן להוסיף שורה עם סעיף מסכם\n    at BudgetExecutionLogic.addBudgetExecutionTrx (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\logic\\BudgetExecutionLogic.js:74:24)"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 3476
+},
+{
+  "startTime": "2020-05-11T00:32:39.448Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "logic_error",
+      "fileName": "BudgetExecutionLogic.js",
+      "message": "לא ניתן להוסיף שורה עם סעיף מסכם cshev שכבר קיים",
+      "stack": "logic_error: לא ניתן להוסיף שורה עם סעיף מסכם cshev שכבר קיים\n    at BudgetExecutionLogic.addBudgetExecutionTrx (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\logic\\BudgetExecutionLogic.js:74:24)"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 13368
+},
+{
+  "startTime": "2020-05-11T00:32:44.079Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "logic_error",
+      "fileName": "BudgetExecutionLogic.js",
+      "message": "לא ניתן להוסיף שורה עם סעיף מסכם cshev שכבר קיים",
+      "stack": "logic_error: לא ניתן להוסיף שורה עם סעיף מסכם cshev שכבר קיים\n    at BudgetExecutionLogic.addBudgetExecutionTrx (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\logic\\BudgetExecutionLogic.js:74:24)"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 13368
+},
+{
+  "startTime": "2020-05-11T00:32:46.648Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "logic_error",
+      "fileName": "BudgetExecutionLogic.js",
+      "message": "לא ניתן להוסיף שורה עם סעיף מסכם אב בית שכבר קיים",
+      "stack": "logic_error: לא ניתן להוסיף שורה עם סעיף מסכם אב בית שכבר קיים\n    at BudgetExecutionLogic.addBudgetExecutionTrx (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\logic\\BudgetExecutionLogic.js:74:24)"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 13368
+},
+{
+  "startTime": "2020-05-11T00:33:21.824Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "logic_error",
+      "fileName": "BudgetExecutionLogic.js",
+      "message": "לא ניתן להוסיף שורה עם סעיף מסכם 'אב בית' שכבר קיים",
+      "stack": "logic_error: לא ניתן להוסיף שורה עם סעיף מסכם 'אב בית' שכבר קיים\n    at BudgetExecutionLogic.addBudgetExecutionTrx (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\logic\\BudgetExecutionLogic.js:74:24)"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 4772
+},

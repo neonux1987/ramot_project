@@ -3,6 +3,7 @@ const RegisteredReportsLogic = require('./RegisteredReportsLogic');
 const SettingsLogic = require('./SettingsLogic');
 const BuildingsDao = require('../dao/BuildingsDao');
 const Helper = require('../../helpers/Helper');
+const LogicError = require('../customErrors/LogicError');
 const fse = require('fs-extra');
 const path = require('path');
 const connectionPool = require('../connection/ConnectionPool');
@@ -31,7 +32,8 @@ class EmptyReportsGeneratorLogic {
     let reports = await this.registeredReportsLogic.getRegisteredReportsByYearAndQuarter(date.year, date.quarter, trx);
     if (reports.length > 0) {
       await trx.rollback();
-      throw new Error("הפעולה נכשלה. הדוחות לתאריכים שנבחרו כבר קיימים בבסיס נתונים.");
+
+      throw new LogicError("הפעולה נכשלה. הדוחות לתאריכים שנבחרו כבר קיימים בבסיס נתונים.");
     }
 
     const buildings = await this.buildingsDao.getBuidlings(trx);

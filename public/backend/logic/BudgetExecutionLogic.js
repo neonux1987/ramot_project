@@ -8,7 +8,9 @@ const SummarizedBudgetDao = require('../dao/SummarizedBudgetDao');
 const RegisteredQuartersLogic = require('./RegisteredQuartersLogic');
 const MonthExpansesDao = require('../dao/MonthExpansesDao');
 const Helper = require('../../helpers/Helper');
+const LogicError = require('../customErrors/LogicError');
 const { asyncForEach } = require('../../helpers/utils');
+const logManager = require('../logger/LogManager');
 const connectionPool = require('../connection/ConnectionPool');
 
 class BudgetExecutionLogic {
@@ -23,6 +25,7 @@ class BudgetExecutionLogic {
     this.registeredQuartersLogic = new RegisteredQuartersLogic();
     this.monthExpansesDao = new MonthExpansesDao();
     this.summarizedBudgetDao = new SummarizedBudgetDao();
+    this.logger = logManager.getLogger();
   }
 
   getAllBudgetExecutionsTrx(buildingName, date, trx) {
@@ -65,7 +68,7 @@ class BudgetExecutionLogic {
 
     if (returnedBudgetExecution.length > 0) {
       trx.rollback();
-      throw new Error("לא ניתן להוסיף שורה עם סעיף מסכם שכבר קיים.");
+      throw new LogicError(`לא ניתן להוסיף שורה עם סעיף מסכם '${returnedBudgetExecution[0].section}' שכבר קיים`);
     }
 
     // prepare budget execution object

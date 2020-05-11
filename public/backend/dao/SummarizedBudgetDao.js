@@ -213,7 +213,10 @@ class SummarizedBudgetDao {
       .update(data)
       .then((result) => {
         if (result === 0) {
-          throw new Error(`${summarized_section_id} לא קיימת רשומה עם מספר זיהוי`);
+          const msg = `${summarized_section_id} לא קיימת רשומה עם מספר זיהוי`;
+          const newError = new DbError(msg, FILENAME, error);
+          this.logger.error(newError.toString())
+          throw newError;
         }
       })
       .catch((error) => {

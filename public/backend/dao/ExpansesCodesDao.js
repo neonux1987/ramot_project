@@ -57,7 +57,10 @@ class ExpansesCodesDao {
       .update(data)
       .then((result) => {
         if (result === 0) {
-          throw new Error(`${id} לא קיימת רשומה עם מספר זיהוי`);
+          const msg = `${id} לא קיימת רשומה עם מספר זיהוי`;
+          const newError = new DbError(msg, FILENAME, error);
+          this.logger.error(newError.toString())
+          throw newError;
         }
       })
       .catch((error) => {

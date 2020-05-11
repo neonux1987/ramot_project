@@ -2,6 +2,7 @@ const fse = require('fs-extra');
 const SettingsLogic = require("../logic/SettingsLogic");
 const ConfigurationLogic = require("../logic/ConfigurationLogic");
 const servicesObjects = require("../services/index");
+const LogicError = require('../customErrors/LogicError');
 const { asyncForEach } = require('../../helpers/utils');
 
 const SERVICES_LOCATION = ConfigurationLogic.paths.services_path;
@@ -28,7 +29,7 @@ class ServicesLogic {
     const service = AllServices[serviceName];
 
     if (service.enabled)
-      throw new Error("השירות כבר פעיל. לא ניתן להפעיל שירות שכבר פעיל.")
+      throw new LogicError(`השירות '${service.serviceNameHeb}' כבר פעיל. לא ניתן להפעיל שירות שכבר פעיל.`)
 
     const selectedService = servicesObjects[serviceName];
 
@@ -57,7 +58,8 @@ class ServicesLogic {
     const service = AllServices[serviceName];
 
     if (!service.enabled)
-      throw new Error("לא ניתן לאתחל שירות לא פעיל. הפעל את השירות ולאחר מכן אתחל במקרה הצורך.");
+
+      throw new LogicError(`לא ניתן לאתחל את השירות '${service.serviceNameHeb}' הלא פעיל. הפעל את השירות במקום אתחול.`);
 
     const selectedService = servicesObjects[serviceName];
 
@@ -87,7 +89,8 @@ class ServicesLogic {
     const service = AllServices[serviceName];
 
     if (!service.enabled)
-      throw new Error("השירות כבר מופסק. לא ניתן להפסיק שירות שכבר מופסק.");
+
+      throw new LogicError(`השירות '${service.serviceNameHeb}' כבר מופסק. לא ניתן להפסיק שירות שכבר מופסק.`);
 
     const selectedService = servicesObjects[serviceName];
     switch (serviceName) {
