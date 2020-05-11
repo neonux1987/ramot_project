@@ -23,5 +23,14 @@
 }
 
 .description{
+  margin-top: 10px;
+}
+
+.descriptionText{
   font-size: 16px;
+}
+
+.subtitle{
+  padding-bottom: 10px; 
+  font-size: 28px
 }
