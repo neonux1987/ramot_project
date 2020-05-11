@@ -13,6 +13,14 @@ const registeredReportsIpc = (connection) => {
     });
   });
 
+  ipcMain.on('get-registered-reports-by-year', (event, year) => {
+    registeredReportsLogic.getRegisteredReportsByYear(year).then((result) => {
+      event.sender.send("registered-reports-by-year-data", { data: result });
+    }).catch((error) => {
+      event.reply("registered-reports-by-year-data", { error: error.message });
+    });
+  });
+
 }
 
 module.exports = registeredReportsIpc;

@@ -3,8 +3,13 @@ const monthExpansesWorkbook = require('./workbooks/monthExpansesWorkbook');
 const budgetExecutionWorkbook = require('./workbooks/budgetExecutionWorkbook');
 const summarizedBudgetsWorkbook = require('./workbooks/summarizedBudgetsWorkbook');
 const SettingsLogic = require('../../logic/SettingsLogic');
+const MonthExpansesLogic = require('../../logic/MonthExpansesLogic');
+const BudgetExecutionLogic = require('../../logic/BudgetExecutionLogic');
 const SummarizedBudgetLogic = require('../../logic/SummarizedBudgetLogic');
-const MenuDao = require('../../dao/MenuDao');
+const BuildingsDao = require('../../dao/BuildingsDao');
+const RegisteredMonths = require('../../logic/RegisteredMonthsLogic');
+const ServiceError = require('../../customErrors/ServiceError');
+
 const fse = require('fs-extra');
 const path = require('path');
 
@@ -19,46 +24,81 @@ const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, da
 }
 
 const exportExcelBulk = async (date) => {
-
   const { year, quarter, quarterHeb, quarterEng } = date;
 
   const settingsLogic = new SettingsLogic();
   const summarizedBudgetLogic = new SummarizedBudgetLogic();
-  const menuDao = new MenuDao();
+  const monthExpansesLogic = new MonthExpansesLogic();
+  const budgetExecutionLogic = new BudgetExecutionLogic();
+  const buildingsDao = new BuildingsDao();
+  const registeredMonths = new RegisteredMonths();
 
   const locations = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.LOCATIONS);
 
-  const { reports_folder } = locations;
+  // user reports folder
+  const { reports_folder_path } = locations;
 
-  // ensure te folder exist, if not create it
-  await fse.ensureDir(reports_folder);
+  // ensure the user reports folder exist, if not create it
+  await fse.ensureDir(reports_folder_path);
 
-  const menuData = await menuDao.getMenu();
+  // get buildings info
+  const buildingsData = await buildingsDao.getBuidlings();
 
-  await asyncForEach(menuData, async (building) => {
-    const { label, engLabel, submenu } = building;
+  await asyncForEach(buildingsData, async (building) => {
+    const { buildingName, buildingNameEng } = building;
 
-    const buildingFolder = path.join(reports_folder, label);
+    const buildingFolder = path.join(reports_folder_path, buildingName);
     const yearFolder = path.join(buildingFolder, `שנה ${year}`);
     const quarterFolder = path.join(yearFolder, quarterHeb);
 
     //ensure the building folder exist, if not create it
     await fse.ensureDir(buildingFolder);
 
-    //ensure the year folder exist, if not create it
-    await fse.ensureDir(yearFolder);
 
-    const summarizedBudgetsFileName = getSummarizedBudgetsFilename(label, { year });
+    const summarizedBudgetData = await summarizedBudgetLogic.getAll(buildingNameEng, date);
+
+    if (summarizedBudgetData.length === 0)
+      throw new ServiceError(`לא ניתן ליצור קובץ אקסל לסיכום שנתי של שנת ${year}, כי הנתונים לא קיימים.`);
+
+    await fse.ensureDir(yearFolder);//ensure the year folder exist, if not create it
+    const summarizedBudgetsFileName = getSummarizedBudgetsFilename(year);
     const summarizedBudgetsFilePath = path.join(yearFolder, summarizedBudgetsFileName);
+    await exportExcel(buildingName, buildingNameEng, "summarizedBudgets", summarizedBudgetsFilePath, date, summarizedBudgetData);
 
-    const summarizedBudgetData = await summarizedBudgetLogic.getAll(engLabel, date);
+    const budgetExecutionData = await budgetExecutionLogic.getAllByQuarter({
+      buildingName: buildingNameEng,
+      buildingNameHeb: buildingName
+    },
+      date);
 
-    await exportExcel(label, engLabel, "summarizedBudgets", summarizedBudgetsFilePath, date, summarizedBudgetData);
+    if (budgetExecutionData.length === 0)
+      throw new ServiceError(`לא ניתן ליצור קובץ אקסל לביצוע מול תקציב של רבעון ${quarter}, כי הנתונים לא קיימים.`);
 
     //ensure the quarter folder exist, if not create it
     await fse.ensureDir(quarterFolder);
+    const budgetExecutionFileName = getBudgetExecutionFilename(quarterHeb);
+    const budgetExecutionFilePath = path.join(quarterFolder, budgetExecutionFileName);
+    await exportExcel(buildingName, buildingNameEng, "budgetExecutions", budgetExecutionFilePath, date, budgetExecutionData);
 
     //create reports for the registered months
+    const registeredMonthsData = await registeredMonths.getAllByQuarter(buildingNameEng, { year, quarter });
+
+    await asyncForEach(registeredMonthsData, async (registeredMonth) => {
+      const { monthHeb, month } = registeredMonth;
+      //const monthExpansesData = await monthExpansesLogic.getAllMonthExpansesTrx)()
+      // summarized budget excel in the year folder
+      const monthExpansesData = await monthExpansesLogic.getAllMonthExpansesTrx(buildingNameEng, { year, month });
+
+      if (monthExpansesData.length === 0)
+        throw new ServiceError(`לא ניתן ליצור קובץ אקסל להוצאות חודשי של חודש ${monthHeb}, כי הנתונים לא קיימים.`);
+
+      const monthExpansesFileName = getMonthExpansesFilename(monthHeb);
+      const monthExpansesFilePath = path.join(quarterFolder, monthExpansesFileName);
+      // add the month properties to date
+      const newDate = { ...date, monthHeb };
+      await exportExcel(buildingName, buildingNameEng, "monthExpanses", monthExpansesFilePath, newDate, monthExpansesData);
+
+    });
 
   });
 
@@ -73,18 +113,16 @@ function getPageWorkbook(buildingName, buildingNameEng, pageName, date, data) {
   }
 }
 
-const getMonthExpansesFilename = (buildingName, date = { year: Number, month: String }) => {
-  let monthHebName = this.convertEngToHebMonth(date.month);
-  return `${buildingName} מעקב הוצאות חודש ${monthHebName} ${date.year}`;
+const getMonthExpansesFilename = (monthHeb) => {
+  return `הוצאות חודש ${monthHeb}`;
 }
 
-const getBudgetExecutionFilename = (buildingName, date = { year: Number, quarter: Number }) => {
-  let quarter = this.getQuarterHeb(date.quarter);
-  return `${buildingName} ביצוע מול תקציב ${quarter} ${date.year}`;
+const getBudgetExecutionFilename = (quarterHeb) => {
+  return `ביצוע מול תקציב ${quarterHeb}`;
 }
 
-const getSummarizedBudgetsFilename = (buildingName, date = { year: Number }) => {
-  return `${buildingName} סיכום שנתי ${date.year}`;
+const getSummarizedBudgetsFilename = (year) => {
+  return `סיכום שנתי ${year}`;
 }
 
 module.exports = {

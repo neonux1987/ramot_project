@@ -15,6 +15,10 @@ class RegisteredMonthsLogic {
     return this.registeredMonthsDao.getRegisteredMonthTrx(buildingName, month, year, trx);
   }
 
+  getAllByQuarter(buildingName, date, trx) {
+    return this.registeredMonthsDao.getAllByQuarter(buildingName, date, trx);
+  }
+
   registerNewMonth(buildingName, data, trx) {
     return this.registeredMonthsDao.registerNewMonth(buildingName, data, trx);
   }

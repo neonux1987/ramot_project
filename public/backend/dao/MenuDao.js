@@ -29,9 +29,10 @@ class MenuDao {
   constructor() {
     this.logger = logManager.getLogger();
     this.nestHydrationJS = new NestHydrationJS();
+    this.connection = connectionPool.getConnection();
   }
 
-  getMenu(trx = connectionPool.getConnection()) {
+  getMenu(trx = this.connection) {
     let data = trx.select(
       "menu.id AS id",
       "buildings.buildingName AS label",

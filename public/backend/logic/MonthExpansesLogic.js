@@ -273,7 +273,8 @@ class MonthExpansesLogic {
       year: date.year,
       month: date.month,
       monthHeb: date.monthHeb,
-      monthNum: date.monthNum
+      monthNum: date.monthNum,
+      quarter: date.quarter
     },
       trx);
 

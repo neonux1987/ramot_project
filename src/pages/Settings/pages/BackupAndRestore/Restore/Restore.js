@@ -15,8 +15,7 @@ import {
   fetchRegisteredBackups
 } from '../../../../../redux/actions/registeredBackupsActions';
 
-// TOASTS
-import { myToasts } from '../../../../../CustomToasts/myToasts';
+// LOADERS
 import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoader';
 
 export default (props) => {
@@ -68,7 +67,7 @@ export default (props) => {
 
       <FormControl className={styles.restoreDateSelect}>
         <Select
-          value={selectedBackupDate}
+          value={data.length === 0 ? "לא קיימים גיבויים שמורים" : selectedBackupDate}
           onChange={dbBackupSelectHandler}
           inputProps={{
             name: 'backupsDates',

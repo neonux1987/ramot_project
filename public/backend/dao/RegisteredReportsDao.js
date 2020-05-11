@@ -50,6 +50,7 @@ class RegisteredReportsDao {
     return trx.select()
       .from("registered_reports")
       .where({ year })
+      .groupBy("quarter")
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לפי שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);

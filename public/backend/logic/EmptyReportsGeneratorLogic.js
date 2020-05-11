@@ -7,6 +7,7 @@ const LogicError = require('../customErrors/LogicError');
 const fse = require('fs-extra');
 const path = require('path');
 const connectionPool = require('../connection/ConnectionPool');
+const { asyncForEach } = require('../../helpers/utils');
 
 class EmptyReportsGeneratorLogic {
 

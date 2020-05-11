@@ -94,7 +94,7 @@ const BudgetExecutionsTable = props => {
     })
 
     return cleanup;
-  }, [date, buildingNameEng, dispatch]);
+  }, [date, buildingNameEng, buildingName, dispatch]);
 
 
   const loadDataByDate = ({ year, quarter }) => {

@@ -1,4 +1,3 @@
-import { myToasts } from '../../CustomToasts/myToasts';
 import { ipcSendReceive } from './util/util';
 
 // TYPES
@@ -9,21 +8,35 @@ export const TYPES = {
   REGISTERED_REPORTS_CLEANUP: "REGISTERED_REPORTS_CLEANUP"
 }
 
-export const fetchRegisteredReports = (params = Object) => {
+export const fetchRegisteredReportsGroupedByYear = () => {
   return dispatch => {
     //let react know that the fetching is started
-    dispatch(requestRegisteredReports(params.buildingName));
+    dispatch(requestRegisteredReports());
 
     return ipcSendReceive({
       send: {
-        channel: "get-registered-reports-grouped-by-year",
-        params
+        channel: "get-registered-reports-grouped-by-year"
       },
       receive: {
         channel: "registered-reports-grouped-by-year-data"
       },
-      onSuccess: result => dispatch(receiveRegisteredReports(result.data, params.buildingName)),
+      onSuccess: result => dispatch(receiveRegisteredReports(result.data)),
       onError: result => dispatch(fetchingFailed(result.error))
+    });
+  }
+};
+
+export const fetchRegisteredReportsByYear = (year) => {
+  return dispatch => {
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-registered-reports-by-year",
+        params: year
+      },
+      receive: {
+        channel: "registered-reports-by-year-data"
+      }
     });
   }
 };

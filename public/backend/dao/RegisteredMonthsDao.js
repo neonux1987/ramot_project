@@ -29,6 +29,20 @@ class RegisteredMonthsDao {
       });
   }
 
+  getAllByQuarter(buildingName, date, trx = this.connection) {
+    const { year, quarter } = date;
+    return trx.select()
+      .from(`${buildingName}_registered_months`)
+      .where({ year, quarter })
+      .orderBy('monthNum', 'asc')
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף נתוני החודשים הרשומים לבניין ${buildingName} לפי ${date.year}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
   /**
    * get all the months
    * @param {*} buildingName 

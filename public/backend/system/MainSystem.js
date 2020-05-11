@@ -4,6 +4,7 @@ const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
 
 const MenuDao = require('../dao/MenuDao');
+const SchemaBuilder = require('../dao/schemaBuilder/SchemaBuilder');
 
 //========================= my ipc's imports =========================//
 const monthExpansesIpc = require('../../electron/ipcs/monthExpanses.ipc');
@@ -41,7 +42,6 @@ class MainSystem {
   constructor() {
     this.servicesLogic = undefined;
     this.configurationLogic = new ConfigurationLogic();
-    this.menuDao = new MenuDao();
     this.logger = logManager.getLogger();
   }
 
@@ -113,12 +113,17 @@ class MainSystem {
       await connectionPool.createConnection();
 
       //fetch menu data
-      const menu = await this.menuDao.getMenu();
+      /* const menuDao = new MenuDao();
+      const menu = await menuDao.getMenu(); */
 
       // In the main process.
-      global.sharedObject = {
+      /* global.sharedObject = {
         menuData: menu
-      }
+      } */
+
+      /* const schemaBuilder = new SchemaBuilder();
+      //modify table
+      await schemaBuilder.modifyTableSchema(); */
 
       // initialize all the ipc's for connection
       // between the main process and the renderer

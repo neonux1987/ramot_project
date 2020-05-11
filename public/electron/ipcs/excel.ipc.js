@@ -15,7 +15,6 @@ const excelIpc = (connection) => {
     exportExcelBulk(date).then((result) => {
       event.sender.send("excel-bulk-exported", { data: result });
     }).catch((error) => {
-      console.log(error);
       event.reply("excel-bulk-exported", { error: error.message });
     });
   });

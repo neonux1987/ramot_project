@@ -1,17 +1,19 @@
 // LIBRARIES
 import React, { useState, useEffect } from 'react';
 import { Select, Button, MenuItem, Typography, } from '@material-ui/core';
-import { useDispatch, /* useSelector */ } from 'react-redux';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import { useDispatch, useSelector, /* useSelector */ } from 'react-redux';
+import { Description } from '@material-ui/icons';
 
 // UTILS
 import Helper from '../../../../../helpers/Helper';
 import classnames from 'classnames';
 
 // SERVICES
+import { exportToExcelBulk } from '../../../../../services/excel.svc';
 
+// COMPONENTS
+import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
+import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
 
 //CSS
 import {
@@ -24,11 +26,7 @@ import {
 } from './ExcelReportsGenerator.module.css';
 
 // ACTIONS
-import { fetchRegisteredReports } from '../../../../../redux/actions/registeredReportsActions';
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import { Description } from '@material-ui/icons';
-import { exportToExcelBulk } from '../../../../../services/excel.svc';
-import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
+import { fetchRegisteredReportsGroupedByYear, fetchRegisteredReportsByYear } from '../../../../../redux/actions/registeredReportsActions';
 
 export default () => {
   const date = new Date();//current date
@@ -38,15 +36,19 @@ export default () => {
     quarter: Helper.getCurrentQuarter(date.getMonth())
   });
 
-  const quarters = Helper.getYearQuarters();
-  const years = [2018, 2019, 2020];
+  const [quarters, setQuarters] = useState([]);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchRegisteredReports());
-  }, [dispatch]);
 
-  //const registeredReports = useSelector(store => store.registeredReports)
+  useEffect(() => {
+    dispatch(fetchRegisteredReportsGroupedByYear());
+
+    dispatch(fetchRegisteredReportsByYear(selectDate.year)).then((result) => {
+      setQuarters(result.data);
+    });
+  }, [dispatch, selectDate.year]);
+
+  const registeredReports = useSelector(store => store.registeredReports);
 
   // default on change handler
   // for months and quarters
@@ -90,21 +92,23 @@ export default () => {
       <Select
         name="quarter"
         className={classnames(paddingLeft, select)}
-        value={selectDate.quarter}
+        value={quarters.length === 0 ? "" : selectDate.quarter}
         onChange={onChangeHandler}
       >
-        {quarters.map((quarter, index) => {
-          return <MenuItem value={index + 1} key={index + 1}>{quarter}</MenuItem>;
+        {quarters.map((element) => {
+          const { quarter } = element;
+          return <MenuItem value={quarter} key={quarter}>{`רבעון ${quarter}`}</MenuItem>;
         })}
       </Select>
 
       <Select
         name="year"
         className={classnames(paddingLeft, select)}
-        value={selectDate.year}
+        value={quarters.length === 0 ? "" : selectDate.year}
         onChange={onChangeHandler}
       >
-        {years.map((year, index) => {
+        {registeredReports.data.map((element, index) => {
+          const { year } = element;
           return <MenuItem value={year} key={index}>{year}</MenuItem>;
         })}
       </Select>
@@ -126,7 +130,6 @@ export default () => {
           המערכת תדרוס את הישנים ותייצר את החדשים במקום.
     </Typography>
       </div>
-
 
     </StyledExpandableSection>
   )
