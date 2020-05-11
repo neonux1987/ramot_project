@@ -11,7 +11,6 @@ const path = require('path');
 const { asyncForEach } = require('../../../helpers/utils');
 
 const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, date, data) => {
-  console.log(fileName);
   // fill the workbook with data
   const filledWorkBook = getPageWorkbook(buildingName, buildingNameEng, pageName, date, data);
   return filledWorkBook.then((workbook) => {
@@ -40,7 +39,7 @@ const exportExcelBulk = async (date) => {
     const { label, engLabel, submenu } = building;
 
     const buildingFolder = path.join(reports_folder, label);
-    const yearFolder = path.join(buildingFolder, `${year}`);
+    const yearFolder = path.join(buildingFolder, `שנה ${year}`);
     const quarterFolder = path.join(yearFolder, quarterHeb);
 
     //ensure the building folder exist, if not create it
@@ -52,20 +51,14 @@ const exportExcelBulk = async (date) => {
     const summarizedBudgetsFileName = getSummarizedBudgetsFilename(label, { year });
     const summarizedBudgetsFilePath = path.join(yearFolder, summarizedBudgetsFileName);
 
-    const summarizedBudgetData = await summarizedBudgetLogic.getSummarizedBudgetsByRange(engLabel, date);
-    console.log(summarizedBudgetData);
+    const summarizedBudgetData = await summarizedBudgetLogic.getAll(engLabel, date);
+
     await exportExcel(label, engLabel, "summarizedBudgets", summarizedBudgetsFilePath, date, summarizedBudgetData);
 
     //ensure the quarter folder exist, if not create it
     await fse.ensureDir(quarterFolder);
 
-    await asyncForEach(submenu, async (page) => {
-      const pageFolder = path.join(buildingFolder, page.label);
-
-      //ensure the dir exist, if not create it
-      await fse.ensureDir(pageFolder);
-
-    });
+    //create reports for the registered months
 
   });
 

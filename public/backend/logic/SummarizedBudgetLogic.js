@@ -23,18 +23,20 @@ class SummarizedBudgetLogic {
     return this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
   }
 
-  getSummarizedBudgetsByRange(buildingName, date, range) {
-    console.log(buildingName)
-    return this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingName, date, range).then((data) => {
-      return this.summarizedBudgetDao.dataRowCount(buildingName, date).then((count) => {
-        return {
-          data,
-          info: {
-            count: count
-          }
-        }
-      })
-    });
+  getAll(buildingName, date) {
+    return this.summarizedBudgetDao.getAll(buildingName, date);
+  }
+
+  async getSummarizedBudgetsByRange(buildingName, date, range) {
+    const data = await this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingName, date, range);
+    const count = await this.summarizedBudgetDao.dataRowCount(buildingName, date);
+
+    return {
+      data,
+      info: {
+        count: count
+      }
+    }
   }
 
   getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx) {
