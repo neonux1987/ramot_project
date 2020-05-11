@@ -1,5 +1,5 @@
 const { ipcMain } = require('electron');
-const { exportExcel } = require('../../backend/services/excel/excelSvc');
+const { exportExcel, exportExcelBulk } = require('../../backend/services/excel/excelSvc');
 
 const excelIpc = (connection) => {
 
@@ -11,10 +11,11 @@ const excelIpc = (connection) => {
     });
   });
 
-  ipcMain.on('export-to-excel-bulk', (event, { buildingName, buildingNameEng, pageName, fileName, date, data }) => {
-    exportExcel(buildingName, buildingNameEng, pageName, fileName, date, data).then((result) => {
+  ipcMain.on('export-to-excel-bulk', (event, date) => {
+    exportExcelBulk(date).then((result) => {
       event.sender.send("excel-bulk-exported", { data: result });
     }).catch((error) => {
+      console.log(error);
       event.reply("excel-bulk-exported", { error: error.message });
     });
   });

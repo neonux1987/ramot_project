@@ -22,6 +22,7 @@ const DB_BACKUPS_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db backups");
 const userDocuments = getDocumentsFolder();
 // user main folder
 USER_MAIN_FOLDER = path.join(userDocuments, `רמות מזח`);
+USER_REPORTS_FOLDER = path.join(USER_MAIN_FOLDER, `דוחות`);
 
 // ndts setup files path
 const APP_ROOT_PATH = app.getAppPath();
@@ -42,6 +43,7 @@ class ConfigurationLogic {
     db_file_path: DB_PATH,
     db_backup_folder_path: DB_BACKUPS_FOLDER_PATH,
     user_main_folder: USER_MAIN_FOLDER,
+    user_reports_folder: USER_REPORTS_FOLDER,
     setup_ndts_folder_path: SETUP_NDTS_FOLDER_PATH,
     app_root_path: APP_ROOT_PATH
   }
@@ -63,6 +65,7 @@ class ConfigurationLogic {
         await fse.ensureDir(DB_FOLDER_PATH);
         await fse.ensureDir(DB_BACKUPS_FOLDER_PATH);
         await fse.ensureDir(USER_MAIN_FOLDER);
+        await fse.ensureDir(USER_REPORTS_FOLDER);
 
         // copy configurations files to user system
         await fse.copy(path.join(SETUP_NDTS_FOLDER_PATH, "config/config.json"), CONFIG_PATH, COPY_OPTIONS);
@@ -91,7 +94,7 @@ class ConfigurationLogic {
     config.locations.db_backups_folder_path = DB_BACKUPS_FOLDER_PATH;
     config.db_backup.path = DB_BACKUPS_FOLDER_PATH;
 
-    config.locations.reports_folder_path = USER_MAIN_FOLDER;
+    config.locations.reports_folder_path = USER_REPORTS_FOLDER;
 
     config.locations.config_folder_path = CONFIG_FOLDER_PATH;
     config.locations.config_file_path = CONFIG_PATH;

@@ -19,14 +19,16 @@ import styles from './ExcelReportsGenerator.module.css';
 // ACTIONS
 import { fetchRegisteredReports } from '../../../../../redux/actions/registeredReportsActions';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import { Description } from '@material-ui/icons';
+import { Description, Help } from '@material-ui/icons';
+import { exportToExcelBulk } from '../../../../../services/excel.svc';
 
-export default props => {
+export default () => {
   const date = new Date();//current date
 
   const [selectDate, setSelectDate] = useState({
     year: date.getFullYear(),
-    quarter: Helper.getCurrentQuarter()
+    quarter: Helper.getCurrentQuarter(date.getMonth()),
+    month: date.getMonth()
   });
 
   const [checkBox, setCheckBox] = useState({
@@ -34,6 +36,7 @@ export default props => {
     byQuarter: true
   });
 
+  const months = Helper.getMonths();
   const quarters = Helper.getYearQuarters();
   const years = [2018, 2019, 2020];
 
@@ -71,12 +74,23 @@ export default props => {
   }
 
   const onClickHandler = () => {
-    /* const newDate = {
-      year: selectDate.year,
-      quarter: selectDate.quarter,
-      quarterHeb: Helper.getQuarterHeb(selectDate.quarter),
-      quarterEng: Helper.convertQuarterToEng(selectDate.quarter)
-    } */
+    const { year, quarter, month } = selectDate;
+
+    const newDate = {
+      year,
+      quarter,
+      quarterHeb: Helper.getQuarterHeb(quarter),
+      quarterEng: Helper.convertQuarterToEng(quarter)
+    }
+
+    if (checkBox.byMonth)
+      newDate = {
+        month,
+        monthHeb: Helper.getCurrentMonthHeb(month),
+        monthEng: Helper.getCurrentMonth(month)
+      }
+
+    exportToExcelBulk(newDate);
   }
 
   return (
@@ -121,12 +135,24 @@ export default props => {
 
       </FormGroup>
 
+      <Select
+        name="month"
+        className={classnames(styles.paddingLeft, styles.select)}
+        value={selectDate.month}
+        onChange={onChangeHandler}
+        disabled={!checkBox.byMonth}
+      >
+        {months.map((month, index) => {
+          return <MenuItem value={index + 1} key={index + 1}>{month}</MenuItem>;
+        })}
+      </Select>
 
       <Select
         name="quarter"
         className={classnames(styles.paddingLeft, styles.select)}
         value={selectDate.quarter}
         onChange={onChangeHandler}
+        disabled={!checkBox.byQuarter}
       >
         {quarters.map((quarter, index) => {
           return <MenuItem value={index + 1} key={index + 1}>{quarter}</MenuItem>;

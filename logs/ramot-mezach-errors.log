@@ -473,3 +473,43 @@
   "context": {},
   "pid": 4772
 },
+{
+  "startTime": "2020-05-11T03:21:31.596Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "SummarizedBudgetDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין function String() { [native code] } לפי שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין function String() { [native code] } לפי שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\SummarizedBudgetDao.js:102:26\n    at async D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\services\\excel\\excelSvc.js:55:34\n    at async exports.asyncForEach (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\helpers\\utils.js:3:5)\n    at async exportExcelBulk (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\services\\excel\\excelSvc.js:39:3)",
+      "original": "Error: select `building`.`id` as `id`, `building`.`year` as `year`, `sc`.`id` as `summarized_section_id`, `sc`.`section` as `section`, `building`.`quarter1_budget` as `quarter1_budget`, `building`.`quarter1_execution` as `quarter1_execution`, `building`.`quarter2_budget` as `quarter2_budget`, `building`.`quarter2_execution` as `quarter2_execution`, `building`.`quarter3_budget` as `quarter3_budget`, `building`.`quarter3_execution` as `quarter3_execution`, `building`.`quarter4_budget` as `quarter4_budget`, `building`.`quarter4_execution` as `quarter4_execution`, `building`.`evaluation` as `evaluation`, `building`.`year_total_budget` as `year_total_budget`, `building`.`year_total_execution` as `year_total_execution`, `building`.`notes` as `notes` from `function String() { [native code] }_summarized_budget` as `building` inner join `summarized_sections` as `sc` on `building`.`summarized_section_id` = `sc`.`id` where `year` = 2020 order by `section` asc limit 100 - SQLITE_ERROR: no such table: function String() { [native code] }_summarized_budget"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 16860
+},
+{
+  "startTime": "2020-05-11T03:23:19.155Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "SummarizedBudgetDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין function String() { [native code] } לפי שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין function String() { [native code] } לפי שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\SummarizedBudgetDao.js:102:26\n    at async D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\services\\excel\\excelSvc.js:55:34\n    at async exports.asyncForEach (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\helpers\\utils.js:3:5)\n    at async exportExcelBulk (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\services\\excel\\excelSvc.js:39:3)",
+      "original": "Error: select `building`.`id` as `id`, `building`.`year` as `year`, `sc`.`id` as `summarized_section_id`, `sc`.`section` as `section`, `building`.`quarter1_budget` as `quarter1_budget`, `building`.`quarter1_execution` as `quarter1_execution`, `building`.`quarter2_budget` as `quarter2_budget`, `building`.`quarter2_execution` as `quarter2_execution`, `building`.`quarter3_budget` as `quarter3_budget`, `building`.`quarter3_execution` as `quarter3_execution`, `building`.`quarter4_budget` as `quarter4_budget`, `building`.`quarter4_execution` as `quarter4_execution`, `building`.`evaluation` as `evaluation`, `building`.`year_total_budget` as `year_total_budget`, `building`.`year_total_execution` as `year_total_execution`, `building`.`notes` as `notes` from `function String() { [native code] }_summarized_budget` as `building` inner join `summarized_sections` as `sc` on `building`.`summarized_section_id` = `sc`.`id` where `year` = 2020 order by `section` asc limit 100 - SQLITE_ERROR: no such table: function String() { [native code] }_summarized_budget"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 14600
+},

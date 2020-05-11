@@ -24,6 +24,7 @@ class SummarizedBudgetLogic {
   }
 
   getSummarizedBudgetsByRange(buildingName, date, range) {
+    console.log(buildingName)
     return this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingName, date, range).then((data) => {
       return this.summarizedBudgetDao.dataRowCount(buildingName, date).then((count) => {
         return {

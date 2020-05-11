@@ -16,12 +16,12 @@ export const exportToExcel = (excelData) => {
 
 };
 
-export const exportToExcelBulk = (excelData) => {
+export const exportToExcelBulk = (date) => {
 
   return ipcSendReceive({
     send: {
       channel: "export-to-excel-bulk",
-      params: excelData
+      params: date
     },
     receive: {
       channel: "excel-bulk-exported"
