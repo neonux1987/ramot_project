@@ -72,7 +72,7 @@ class BudgetExecutionLogic {
     const readyPayload = this.prepareBudgetExecutionForAdd(date, payload.id);
 
     // add budget execution
-    const returnedId = await this.budgetExecutionDao.addBudgetExecution(buildingName, date.quarter, readyPayload, trx);
+    const returnedId = await this.budgetExecutionDao.addBudgetExecution(buildingName, date, readyPayload, trx);
 
     // prepare summarized budget object for add
     const sammarizedBudgetPayload = this.prepareSammarizedBudgetForAdd(date, payload.id);
@@ -252,8 +252,8 @@ class BudgetExecutionLogic {
     };
   }
 
-  batchInsert(buildingName, quarter, rows, trx) {
-    return this.budgetExecutionDao.batchInsert(buildingName, quarter, rows, trx);
+  batchInsert(buildingName, date, rows, trx) {
+    return this.budgetExecutionDao.batchInsert(buildingName, date, rows, trx);
   }
 
   prepareDefaultBatchInsertion(data, date) {
@@ -313,12 +313,12 @@ class BudgetExecutionLogic {
       //prepare the data for insertion
       const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
       //insert the batch
-      await this.batchInsert(buildingName, date.quarter, preparedDefaultSections, trx);
+      await this.batchInsert(buildingName, date, preparedDefaultSections, trx);
     } else {
       //prepare the data for insertion
       const preparedSections = this.prepareBatchInsertion(budgetExec, date);
       //insert the batch
-      await this.batchInsert(buildingName, date.quarter, preparedSections, trx);
+      await this.batchInsert(buildingName, date, preparedSections, trx);
     }
 
     //all the months of a specific quarter

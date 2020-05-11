@@ -3,21 +3,6 @@ const connectionPool = require('../connection/ConnectionPool');
 const DbError = require('../customErrors/DbError');
 const logManager = require('../logger/LogManager');
 
-const DEFINITION = [{
-  id: { column: 'id', type: 'NUMBER' },
-  expanses_code_id: { column: 'expanses_code_id', type: 'NUMBER' },
-  code: { column: 'code', type: 'NUMBER' },
-  codeName: 'codeName',
-  summarized_section_id: { column: 'summarized_section_id', type: 'NUMBER' },
-  section: 'section',
-  supplierName: 'supplierName',
-  sum: { column: 'sum', type: 'REAL' },
-  notes: 'notes',
-  month: 'month',
-  year: { column: 'year', type: 'INTEGER' }
-}];
-
-
 const quarter1 = [
   "exec.january_budget_execution AS january_budget_execution",
   "exec.january_budget AS january_budget",
@@ -283,14 +268,16 @@ class BudgetExecutionDao {
 
   addBudgetExecution(
     buildingName,
-    quarter = Number,
+    date,
     payload,
     trx = this.connection
   ) {
-    return trx(`${buildingName}_budget_execution_quarters${quarter}`)
+    const { quarter, year } = date;
+
+    return trx(`${buildingName}_budget_execution_quarter${quarter}`)
       .insert(payload)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה להוסיף רשומה לביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה להוסיף רשומה לביצוע מול תקציב לבניין ${buildingName} לרבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -299,13 +286,15 @@ class BudgetExecutionDao {
 
   batchInsert(
     buildingName,
-    quarter,
+    date,
     rows,
     trx
   ) {
+    const { quarter, year } = date;
+
     return trx.batchInsert(`${buildingName}_budget_execution_quarter${quarter}`, rows, CHUNKSIZE)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה להוסיף רשומות לביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה להוסיף רשומות לביצוע מול תקציב לבניין ${buildingName} לרבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

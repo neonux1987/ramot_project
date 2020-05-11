@@ -54,6 +54,8 @@ class DbBackupSvc {
       this.rule.minute = backupTime.getMinutes();
     } else if (byHour) {
       this.rule.hour = every_x_hours;
+      this.rule.minute = 0;
+
     }
 
     // convert the enabled days of week from object to array
@@ -126,13 +128,15 @@ class DbBackupSvc {
   schedulerCallback = async () => {
     //notify that the backup process started
     rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
-
+    console.log("start");
     await this.initiateBackup()
       .then(() => {
+        console.log("success");
         //notify that the backup process ended
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
       })
       .catch((error) => {
+        console.log("failed");
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
         const newError = new ServiceError("The system failed to backup the database", FILENAME, error);
         this.logger.error(newError.toString())

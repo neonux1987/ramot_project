@@ -19,20 +19,17 @@ import LoadingCircle from '../components/LoadingCircle';
 import { fetchSidebar } from '../redux/actions/sidebarActions';
 import Menuitem from './MenuItem/Menuitem';
 
-// ELECTRON
-const menu = require('electron').remote.getGlobal('sharedObject').menuData;
-
 const Sidebar = () => {
   let toggleSidebarAnimation = "";
 
   const dispatch = useDispatch();
 
-  const { showSidebar } = useSelector(store => store.sidebar);
+  const { showSidebar, menu } = useSelector(store => store.sidebar);
 
   const routeState = useSelector(store => store.routes.active.state);
 
   useEffect(() => {
-    //dispatch(fetchSidebar());
+    dispatch(fetchSidebar());
   }, [dispatch]);
 
   if (menu.isFetching) {
@@ -61,7 +58,7 @@ const Sidebar = () => {
         active={routeState.page === "דף הבית"}
       />
 
-      <Menu data={menu} routeState={routeState} />
+      <Menu data={menu.data} routeState={routeState} />
 
       <div className={styles.settingsWrapper}>
 

@@ -178,3 +178,203 @@
   "context": {},
   "pid": 2572
 },
+{
+  "startTime": "2020-05-10T21:20:35.778Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "RegisteredYearsDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני השנים הרשומות לבניין lev_tel_aviv",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני השנים הרשומות לבניין lev_tel_aviv\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\RegisteredYearsDao.js:23:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:20:35.796Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MonthExpansesDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין lev_tel_aviv לחודש may שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין lev_tel_aviv לחודש may שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MonthExpansesDao.js:106:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:20:35.796Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "ExpansesCodesDao.js",
+      "message": "המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות לפי סטטוס active",
+      "stack": "database_error: המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות לפי סטטוס active\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\ExpansesCodesDao.js:33:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:20:35.801Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MonthExpansesDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין lev_tel_aviv לחודש may שנה 2020 לפי טווח",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין lev_tel_aviv לחודש may שנה 2020 לפי טווח\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MonthExpansesDao.js:106:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:20:35.802Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "ExpansesCodesDao.js",
+      "message": "המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות לפי סטטוס active",
+      "stack": "database_error: המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות לפי סטטוס active\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\ExpansesCodesDao.js:33:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:20:36.660Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MonthlyStatsDao.js",
+      "message": "המערכת לא הצליחה לשלוף סטטיסטיקה לחודשים של רבעון 2 לבניין lev_tel_aviv שנה 2020",
+      "stack": "database_error: המערכת לא הצליחה לשלוף סטטיסטיקה לחודשים של רבעון 2 לבניין lev_tel_aviv שנה 2020\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MonthlyStatsDao.js:40:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:20:36.660Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "QuarterlySatsDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני סטטיסטיקה רבעונית לבניין lev_tel_aviv לפי רבעון 2 שנה 2020",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני סטטיסטיקה רבעונית לבניין lev_tel_aviv לפי רבעון 2 שנה 2020\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\QuarterlyStatsDao.js:24:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:20:36.720Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "RegisteredYearsDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני השנים הרשומות לבניין lev_tel_aviv",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני השנים הרשומות לבניין lev_tel_aviv\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\RegisteredYearsDao.js:23:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:20:36.736Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "BudgetExecutionDao.js",
+      "message": "המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין לב תל אביב רבעון 2 שנה 2020",
+      "stack": "database_error: המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין לב תל אביב רבעון 2 שנה 2020\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:162:26",
+      "original": "KnexTimeoutError: Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8804
+},
+{
+  "startTime": "2020-05-10T21:23:39.454Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "BudgetExecutionDao.js",
+      "message": "המערכת לא הצליחה להוסיף רשומה לביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020",
+      "stack": "database_error: המערכת לא הצליחה להוסיף רשומה לביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:295:26\n    at async BudgetExecutionLogic.addBudgetExecutionTrx (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\logic\\BudgetExecutionLogic.js:75:24)",
+      "original": "Error: insert into `lev_tel_aviv_budget_execution_quarters2` (`april_budget`, `april_budget_execution`, `difference`, `evaluation`, `june_budget`, `june_budget_execution`, `may_budget`, `may_budget_execution`, `notes`, `quarter`, `summarized_section_id`, `total_budget`, `total_execution`, `year`) values (0, 0, 0, 0, 0, 0, 0, 0, NULL, 2, 39, 0, 0, 2020) - SQLITE_ERROR: no such table: lev_tel_aviv_budget_execution_quarters2"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 16520
+},
