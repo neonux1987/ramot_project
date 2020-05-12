@@ -15,11 +15,13 @@ import { generateEmptyReports } from '../../../../../services/emptyReportsGenera
 import styles from './EmptyReportsGenerator.module.css';
 
 // ACTIONS
-import { fetchRegisteredReportsGroupedByYear } from '../../../../../redux/actions/registeredReportsActions';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import { Description } from '@material-ui/icons';
 
-export default props => {
+const years = generateYears(new Date().getFullYear());
+const quarters = Helper.getYearQuarters();
+
+export default () => {
   const date = new Date();//current date
 
   const [selectDate, setSelectDate] = useState({
@@ -27,16 +29,6 @@ export default props => {
     month: date.getMonth(),
     quarter: Helper.getCurrentQuarter()
   });
-
-  const quarters = Helper.getYearQuarters();
-  const years = [2018, 2019, 2020];
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchRegisteredReportsGroupedByYear());
-  }, [dispatch]);
-
-  //const registeredReports = useSelector(store => store.registeredReports)
 
   // default on change handler
   // for months and quarters
@@ -105,4 +97,13 @@ export default props => {
       </Button>
     </StyledExpandableSection>
   )
+};
+
+function generateYears(currentYear) {
+  const arr = [];
+  const backToYearLimit = currentYear - 5;
+  for (let i = currentYear; i > backToYearLimit; i--)
+    arr.push(i);
+
+  return arr;
 }

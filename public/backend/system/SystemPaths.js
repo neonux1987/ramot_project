@@ -1,7 +1,7 @@
 const { app } = require('electron');
-const isDev = require('./node_modules/electron-is-dev');
+const isDev = require('electron-is-dev');
 const path = require('path');
-const { getDocumentsFolder, getDataHome } = require('./node_modules/platform-folders');
+const { getDocumentsFolder, getDataHome } = require('platform-folders');
 
 const usersAppDataFolder = getDataHome();
 
@@ -21,6 +21,7 @@ const DB_BACKUPS_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db backups");
 const userDocuments = getDocumentsFolder();
 // user main folder
 USER_MAIN_FOLDER = path.join(userDocuments, `רמות מזח`);
+USER_REPORTS_FOLDER = path.join(USER_MAIN_FOLDER, `דוחות`);
 
 // ndts setup files path
 const APP_ROOT_PATH = app.getAppPath();
@@ -35,6 +36,7 @@ module.exports = systemPaths = {
   db_file_path: DB_PATH,
   db_backup_folder_path: DB_BACKUPS_FOLDER_PATH,
   user_main_folder: USER_MAIN_FOLDER,
+  user_reports_folder: USER_REPORTS_FOLDER,
   setup_ndts_folder_path: SETUP_NDTS_FOLDER_PATH,
   app_root_path: APP_ROOT_PATH
 }
