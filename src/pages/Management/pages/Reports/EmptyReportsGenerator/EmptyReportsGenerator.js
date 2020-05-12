@@ -1,7 +1,6 @@
 // LIBRARIES
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Select, Button, MenuItem, Typography } from '@material-ui/core';
-import { useDispatch, /* useSelector */ } from 'react-redux';
 
 
 // UTILS

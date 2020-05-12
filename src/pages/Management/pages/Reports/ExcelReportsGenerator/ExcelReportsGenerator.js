@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Select, Button, MenuItem, Typography, } from '@material-ui/core';
 import { useDispatch, useSelector, /* useSelector */ } from 'react-redux';
 import { Description } from '@material-ui/icons';
@@ -40,13 +40,38 @@ export default () => {
 
   const dispatch = useDispatch();
 
+  const updateQuarter = useCallback((data) => {
+    let match = false;
+    const firstQuarter = data[0].quarter;
+
+    data.forEach((item) => {
+      if (item.quarter === selectDate.quarter && date.getFullYear() === selectDate.year)
+        match = true;
+    });
+
+    if (!match)
+      setSelectDate({
+        ...selectDate,
+        quarter: firstQuarter
+      });
+    else
+      setSelectDate({
+        ...selectDate,
+        quarter: Helper.getCurrentQuarter(date.getMonth())
+      });
+  }, [selectDate, date]);
+
   useEffect(() => {
     dispatch(fetchRegisteredReportsGroupedByYear());
 
     dispatch(fetchRegisteredReportsByYear(selectDate.year)).then((result) => {
-      setQuarters(result.data);
+      setQuarters(() => {
+        updateQuarter(result.data);
+        return result.data;
+      });
+
     });
-  }, [dispatch, selectDate.year]);
+  }, [dispatch, selectDate.year, updateQuarter]);
 
   const registeredReports = useSelector(store => store.registeredReports);
 
