@@ -1,6 +1,6 @@
 // LIBRARIES
-import React, { useState, useEffect, useCallback } from 'react';
-import { Select, Button, MenuItem, Typography, } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Button, MenuItem, Typography, Select, } from '@material-ui/core';
 import { useDispatch, useSelector, /* useSelector */ } from 'react-redux';
 import { Description } from '@material-ui/icons';
 
@@ -14,6 +14,7 @@ import { exportToExcelBulk } from '../../../../../services/excel.svc';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
+import SelectWithLoading from '../../../../../components/SelectWithLoading/SelectWithLoading';
 
 //CSS
 import {
@@ -31,64 +32,38 @@ import { fetchRegisteredReportsGroupedByYear, fetchRegisteredReportsByYear } fro
 export default () => {
   const date = new Date();//current date
 
-  const [selectDate, setSelectDate] = useState({
-    year: date.getFullYear(),
-    quarter: Helper.getCurrentQuarter(date.getMonth())
-  });
+  const [year, setYear] = useState(date.getFullYear());
+  const [quarter, setQuarter] = useState(Helper.getCurrentQuarter(date.getMonth()));
 
   const [quarters, setQuarters] = useState([]);
 
   const dispatch = useDispatch();
 
-  const updateQuarter = useCallback((data) => {
-    let match = false;
-    const firstQuarter = data[0].quarter;
-
-    data.forEach((item) => {
-      if (item.quarter === selectDate.quarter && date.getFullYear() === selectDate.year)
-        match = true;
-    });
-
-    if (!match)
-      setSelectDate({
-        ...selectDate,
-        quarter: firstQuarter
-      });
-    else
-      setSelectDate({
-        ...selectDate,
-        quarter: Helper.getCurrentQuarter(date.getMonth())
-      });
-  }, [selectDate, date]);
-
   useEffect(() => {
     dispatch(fetchRegisteredReportsGroupedByYear());
 
-    dispatch(fetchRegisteredReportsByYear(selectDate.year)).then((result) => {
-      setQuarters(() => {
-        updateQuarter(result.data);
-        return result.data;
-      });
-
+    dispatch(fetchRegisteredReportsByYear(year)).then(({ data }) => {
+      if (data.length > 0)
+        setQuarters(() => {
+          setQuarter(() => data[0].quarter);
+          return data;
+        });
     });
-  }, [dispatch, selectDate.year, updateQuarter]);
+  }, [dispatch, year]);
 
   const registeredReports = useSelector(store => store.registeredReports);
 
-  // default on change handler
-  // for months and quarters
-  const onChangeHandler = (event) => {
-    const { name, value } = event.target;
+  const onYearChangeHandler = (event) => {
+    const { value } = event.target;
+    setYear(Number.parseInt(value));
+  }
 
-    setSelectDate({
-      ...selectDate,
-      [name]: Number.parseInt(value)
-    });
+  const onQuarterChangeHandler = (event) => {
+    const { value } = event.target;
+    setQuarter(Number.parseInt(value));
   }
 
   const onClickHandler = () => {
-    const { year, quarter } = selectDate;
-
     const newDate = {
       year,
       quarter,
@@ -98,6 +73,7 @@ export default () => {
 
     exportToExcelBulk(newDate);
   }
+
 
   return (
     <StyledExpandableSection
@@ -117,8 +93,8 @@ export default () => {
       <Select
         name="quarter"
         className={classnames(paddingLeft, select)}
-        value={quarters.length === 0 ? "" : selectDate.quarter}
-        onChange={onChangeHandler}
+        value={quarters.length === 0 ? "" : quarter}
+        onChange={onQuarterChangeHandler}
       >
         {quarters.map((element) => {
           const { quarter } = element;
@@ -129,8 +105,8 @@ export default () => {
       <Select
         name="year"
         className={classnames(paddingLeft, select)}
-        value={quarters.length === 0 ? "" : selectDate.year}
-        onChange={onChangeHandler}
+        value={quarters.length === 0 ? "" : year}
+        onChange={onYearChangeHandler}
       >
         {registeredReports.data.map((element, index) => {
           const { year } = element;

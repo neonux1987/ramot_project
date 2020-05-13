@@ -12,13 +12,13 @@ export default (props) => {
   return (
     <div className={styles.manualBackupWrapper}>
       <SubtitleBoldTypography className={styles.subtitle}>
-        לגיבוי ידני ושמירת הגיבוי במקום אחר לחץ
+        ניתן לייצא את בסיס הנתונים לקובץ ולשמור אותו במחשב
           </SubtitleBoldTypography>
       <Button
         className={styles.backupButton}
         variant="contained" color="primary"
         onClick={onClick}
-      >גבה בסיס נתונים
+      >ייצא בסיס נתונים
       </Button>
     </div>
   );

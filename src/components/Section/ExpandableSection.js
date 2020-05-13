@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 // CSS
 import styles from './ExpandableSection.module.css';
+import DefaultLoader from '../AnimatedLoaders/DefaultLoader';
 
 export default ({
   TitleIcon,
@@ -19,7 +20,8 @@ export default ({
   extraDetails,
   collapsable = true,
   bgColor = "initial",
-  padding = "20px 0 0"
+  padding = "20px 0 0",
+  loading = false
 }) => {
 
   const useStyles = makeStyles((theme) => ({
@@ -72,7 +74,7 @@ export default ({
         trigger={headerWrapper() || ""}
         contentInnerClassName={classnames(classes.contentInnerClassName)}
       >
-        {children}
+        {loading ? <DefaultLoader loading={loading} /> : children}
       </Collapsible>
     </Box>
   );

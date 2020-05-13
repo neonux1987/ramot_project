@@ -44,6 +44,10 @@ const exportExcelBulk = async (date) => {
   // get buildings info
   const buildingsData = await buildingsDao.getBuidlings();
 
+  // loop through each building and create a year folder
+  // inside the year folder create the summarized budgets excel
+  // file for that year, also create a quarter folder and inside
+  // that folder create the budget execution excel file
   await asyncForEach(buildingsData, async (building) => {
     const { buildingName, buildingNameEng } = building;
 
@@ -54,9 +58,11 @@ const exportExcelBulk = async (date) => {
     //ensure the building folder exist, if not create it
     await fse.ensureDir(buildingFolder);
 
-
     const summarizedBudgetData = await summarizedBudgetLogic.getAll(buildingNameEng, date);
 
+    // there is no situation where summarized budgets data for 
+    // the specific year doesn't exist while budget executions 
+    // data and month expanses data in that year exist
     if (summarizedBudgetData.length === 0)
       throw new ServiceError(`לא ניתן ליצור קובץ אקסל לסיכום שנתי של שנת ${year}, כי הנתונים לא קיימים.`);
 
@@ -71,9 +77,6 @@ const exportExcelBulk = async (date) => {
     },
       date);
 
-    if (budgetExecutionData.length === 0)
-      throw new ServiceError(`לא ניתן ליצור קובץ אקסל לביצוע מול תקציב של רבעון ${quarter}, כי הנתונים לא קיימים.`);
-
     //ensure the quarter folder exist, if not create it
     await fse.ensureDir(quarterFolder);
     const budgetExecutionFileName = getBudgetExecutionFilename(quarterHeb);
@@ -83,14 +86,13 @@ const exportExcelBulk = async (date) => {
     //create reports for the registered months
     const registeredMonthsData = await registeredMonths.getAllByQuarter(buildingNameEng, { year, quarter });
 
+    // inside the quarter folder create excel reports
+    // for all the months of the quarter
     await asyncForEach(registeredMonthsData, async (registeredMonth) => {
       const { monthHeb, month } = registeredMonth;
-      //const monthExpansesData = await monthExpansesLogic.getAllMonthExpansesTrx)()
+
       // summarized budget excel in the year folder
       const monthExpansesData = await monthExpansesLogic.getAllMonthExpansesTrx(buildingNameEng, { year, month });
-
-      if (monthExpansesData.length === 0)
-        throw new ServiceError(`לא ניתן ליצור קובץ אקסל להוצאות חודשי של חודש ${monthHeb}, כי הנתונים לא קיימים.`);
 
       const monthExpansesFileName = getMonthExpansesFilename(monthHeb);
       const monthExpansesFilePath = path.join(quarterFolder, monthExpansesFileName);

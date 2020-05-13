@@ -24,25 +24,25 @@ export default (props) => {
 
   const { isFetching, data } = useSelector(store => store.registeredBackups);
 
-  const [selectedBackupDate, SetSelectedBackupDate] = React.useState(data[0] ? data[0].backupDateTime : "לא קיימים גיבויים שמורים");
+  const [selectedBackupDate, setSelectedBackupDate] = React.useState("לא קיימים גיבויים שמורים");
 
   useEffect(() => {
-    dispatch(fetchRegisteredBackups());
+    dispatch(fetchRegisteredBackups()).then(({ data }) => {
+      setSelectedBackupDate(data[0].backupDateTime);
+    });
   }, [dispatch]);
 
-  const backupsNamesRender = data.length > 0 ? data.map((backup, index) => {
+  const backupsNamesRender = data.map((backup, index) => {
     const date = new Date(backup.backupDateTime);
     const locale = date.toLocaleString();
     //to get rid off of the AM or PM
     const newLocaleDateTime = locale.slice(0, locale.length - 3);
     return <MenuItem value={backup.backupDateTime} key={index}>{newLocaleDateTime}</MenuItem>
-  }) : <MenuItem value="לא קיימים גיבויים שמורים" disabled>
-      לא קיימים גיבויים
-</MenuItem>;
+  });
 
   const dbBackupSelectHandler = (event) => {
     const { value } = event.target;
-    SetSelectedBackupDate(value);
+    setSelectedBackupDate(value);
   }
 
   const render = isFetching ?
@@ -67,7 +67,7 @@ export default (props) => {
 
       <FormControl className={styles.restoreDateSelect}>
         <Select
-          value={data.length === 0 ? "לא קיימים גיבויים שמורים" : selectedBackupDate}
+          value={selectedBackupDate}
           onChange={dbBackupSelectHandler}
           inputProps={{
             name: 'backupsDates',
@@ -76,7 +76,9 @@ export default (props) => {
           displayEmpty
           name="backupsDates"
         >
-          {backupsNamesRender}
+          {backupsNamesRender || <MenuItem value="לא קיימים גיבויים שמורים" disabled>
+            לא קיימים גיבויים
+</MenuItem>}
         </Select>
       </FormControl>
 

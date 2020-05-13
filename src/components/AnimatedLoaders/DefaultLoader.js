@@ -3,7 +3,7 @@ import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
 import { ScaleLoader } from 'react-spinners';
 
 export default (props) => {
-  const { loading, title = "טוען הגדרות", loaderColor = "#000000" } = props;
+  const { loading, title = "טוען נתונים", loaderColor = "#000000" } = props;
   return (
     <AlignCenterMiddle style={{ height: "100%", ...props.style }}>
       <div

@@ -3,10 +3,8 @@
 }
 
 .subtitle{
-  display: inline-flex;
 }
 
 .backupButton{
-  margin-right: 10px;
-  display: inline-flex;
+  margin-top: 10px;
 }
