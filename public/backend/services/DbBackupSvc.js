@@ -127,7 +127,7 @@ class DbBackupSvc {
   schedulerCallback = async () => {
     //notify that the backup process started
     rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
-
+    console.log("בוצע גיבוי לפי שעה");
     await this.initiateBackup()
       .then(() => {
         //notify that the backup process ended

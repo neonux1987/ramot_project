@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SubtitleBoldTypography from "../../../../../../components/Typographies/SubtitleBoldTypography";
 import styles from './TimeSelector.module.css';
 import { TimePicker } from '@material-ui/pickers';

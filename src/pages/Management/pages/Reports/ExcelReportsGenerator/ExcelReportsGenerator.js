@@ -1,7 +1,7 @@
 // LIBRARIES
 import React, { useState, useEffect, Fragment } from 'react';
 import { Button, MenuItem, Typography, Select, } from '@material-ui/core';
-import { useDispatch, useSelector, /* useSelector */ } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Description } from '@material-ui/icons';
 
 // UTILS
@@ -14,7 +14,6 @@ import { exportToExcelBulk } from '../../../../../services/excel.svc';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
-import SelectWithLoading from '../../../../../components/SelectWithLoading/SelectWithLoading';
 
 //CSS
 import {

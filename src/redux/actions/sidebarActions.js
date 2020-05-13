@@ -1,5 +1,4 @@
 import { ipcSendReceive } from './util/util';
-import { myToasts } from '../../CustomToasts/myToasts';
 
 export const TYPES = {
   SIDEBAR_REQUEST: "REQUEST_SIDEBAR",

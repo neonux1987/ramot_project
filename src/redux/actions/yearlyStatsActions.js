@@ -1,4 +1,3 @@
-import { myToasts } from '../../CustomToasts/myToasts';
 import { ipcSendReceive } from './util/util';
 
 export const TYPES = {

@@ -1,5 +1,4 @@
 import { ipcSendReceive } from "./util/util";
-import { myToasts } from "../../CustomToasts/myToasts";
 
 export const TYPES = {
   REGISTERED_MONTHS_REQUEST: "REGISTERED_MONTHS_REQUEST",

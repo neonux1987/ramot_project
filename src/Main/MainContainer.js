@@ -130,7 +130,7 @@ class MainContainer extends Component {
               quarter={Helper.getCurrentQuarterHeb()}
               month={Helper.getCurrentMonthHeb()}
             />
-            <div /* style={{ padding: "15px 24px 24px 24px" }} */ style={{ height: "100%" }}>
+            <div /* style={{ padding: "15px 24px 24px 24px" }} */ style={{ height: "100%", paddingBottom: "100px" }}>
               <Switch>
                 {this.generateRoutes(this.props.sidebar.menu.data)}
                 <Route path="/דף-הבית" component={Home} />

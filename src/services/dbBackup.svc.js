@@ -1,5 +1,4 @@
 import { ipcSendReceive } from "../redux/actions/util/util";
-import { myToasts } from "../CustomToasts/myToasts";
 
 export const dbIndependentBackup = (fullPath) => {
   return ipcSendReceive({

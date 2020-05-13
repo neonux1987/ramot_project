@@ -55,7 +55,7 @@ const theme = createMuiTheme({
 
 const TOAST_AUTO_CLOSE = 3000;
 
-const App = props => {
+const App = () => {
 
   const toggleSidebarAnimation = "";
   const mainContainer = useRef(null);
@@ -161,7 +161,7 @@ const App = props => {
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
-          //quitApp();
+          quitApp();
         }
       });
     });
