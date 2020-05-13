@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Button, MenuItem, Typography, Select, } from '@material-ui/core';
 import { useDispatch, useSelector, /* useSelector */ } from 'react-redux';
 import { Description } from '@material-ui/icons';
@@ -23,7 +23,8 @@ import {
   select,
   createBtn,
   description,
-  descriptionText
+  descriptionText,
+  error
 } from './ExcelReportsGenerator.module.css';
 
 // ACTIONS
@@ -74,22 +75,8 @@ export default () => {
     exportToExcelBulk(newDate);
   }
 
-
-  return (
-    <StyledExpandableSection
-      title={"הפקת דוחות אקסל"}
-      TitleIcon={Description}
-      iconBoxBg={"#1b966e"}
-      padding={"40px 20px"}
-    >
-
-      <div className={subtitle}>
-
-        <SubtitleBoldTypography>
-          הפקת דוחות לכל הבניינים:
-          </SubtitleBoldTypography>
-      </div>
-
+  const content = () => {
+    return <Fragment>
       <Select
         name="quarter"
         className={classnames(paddingLeft, select)}
@@ -131,6 +118,30 @@ export default () => {
           המערכת תדרוס את הישנים ותייצר את החדשים במקום.
     </Typography>
       </div>
+    </Fragment>
+  }
+
+  const renderContent = registeredReports.data.length === 0 ?
+    <span className={error}>לא קיימים דוחות בבסיס נתונים, לא ניתן לייצא דוחות אקסל.</span>
+    : content();
+
+  return (
+    <StyledExpandableSection
+      title={"הפקת דוחות אקסל"}
+      TitleIcon={Description}
+      iconBoxBg={"#1b966e"}
+      padding={"30px 20px 50px"}
+      loading={registeredReports.isFetching && registeredReports.data.length === 0}
+    >
+
+      <div className={subtitle}>
+
+        <SubtitleBoldTypography>
+          הפקת דוחות לכל הבניינים:
+          </SubtitleBoldTypography>
+      </div>
+
+      {renderContent}
 
     </StyledExpandableSection>
   )

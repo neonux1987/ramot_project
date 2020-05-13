@@ -55,7 +55,7 @@ export default () => {
       title={"הפקת דוחות חדשים (ריקים)"}
       TitleIcon={Description}
       iconBoxBg={"#1b966e"}
-      padding={"40px 20px"}
+      padding={"30px 20px 50px"}
     >
 
       <div style={{ paddingBottom: "10px", fontSize: "28px" }}>
