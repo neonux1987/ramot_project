@@ -11,11 +11,11 @@ const mainProcessIpc = () => {
   });
 
   ipcMain.on('restart-app', (event) => {
-    mainProcessLogic.restart().then((result) => {
-      event.reply("app-restarted", { data: result });
-    }).catch((error) => {
+    try {
+      mainProcessLogic.restart()
+    } catch (error) {
       event.reply("app-restarted", { error: error.message });
-    });
+    }
   });
 
 }

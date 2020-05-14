@@ -17,15 +17,19 @@ export const saveToFileDialog = (defaultFileName = "", options = {}) => {
 
 }
 
+export const selectFileDialog = () => {
+  selectFolderDialog({ properties: ['openFile', 'openDirectory', 'multiSelections'] });
+}
+
 export const selectFolderDialog = (options = {}) => {
 
   const dialog = remote.dialog;
   const WIN = remote.getCurrentWindow();
 
   const copiedOptions = {
-    ...options,
     properties: ['openDirectory'],
-    defaultPath: options.defaultPath ? options.defaultPath : os.homedir()
+    defaultPath: options.defaultPath ? options.defaultPath : os.homedir(),
+    ...options,
   }
 
   //asynchronous - using callback

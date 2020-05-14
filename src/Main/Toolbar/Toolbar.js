@@ -177,7 +177,14 @@ const Toolbar = ({ buildingName, page }) => {
           </MenuItem>
 
           <MenuItem className={styles.menuItem} onClick={restartAppHandler}>
-            אתחל אפליקציה
+            <NavLink
+              className={styles.menuItemLink}
+              to={{}}
+              exact
+            >
+              אתחל אפליקציה
+            </NavLink>
+
           </MenuItem>
 
         </Menu>

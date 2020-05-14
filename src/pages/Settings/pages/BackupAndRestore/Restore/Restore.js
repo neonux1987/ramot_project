@@ -17,6 +17,7 @@ import {
 
 // LOADERS
 import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoader';
+import { selectFileDialog } from '../../../../../services/electronDialogs.svc';
 
 export default (props) => {
 
@@ -40,9 +41,12 @@ export default (props) => {
     return <MenuItem value={backup.backupDateTime} key={index}>{newLocaleDateTime}</MenuItem>
   });
 
-  const dbBackupSelectHandler = (event) => {
-    const { value } = event.target;
-    setSelectedBackupDate(value);
+  const selectDbFileHandler = () => {
+    selectFileDialog().then(({ canceled, filePaths }) => {
+      if (!canceled) {
+        console.log(filePaths);
+      } // end if
+    }); //end selectFolderDialog
   }
 
   const render = isFetching ?
@@ -68,7 +72,7 @@ export default (props) => {
       <FormControl className={styles.restoreDateSelect}>
         <Select
           value={selectedBackupDate}
-          onChange={dbBackupSelectHandler}
+          onChange={selectDbFileHandler}
           inputProps={{
             name: 'backupsDates',
             id: 'backupsDates-label-placeholder',
