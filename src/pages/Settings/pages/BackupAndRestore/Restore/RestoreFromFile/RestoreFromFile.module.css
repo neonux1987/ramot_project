@@ -1,0 +1,17 @@
+.container{
+  margin-bottom: 40px;
+}
+
+.subtitle{
+  margin-bottom: 10px;
+}
+
+.chooseFileWrapper{
+  display: flex;
+}
+
+.chosenfile{
+  color: #2f52b3;
+  font-size: 16px;
+  margin-top: 10px;
+}

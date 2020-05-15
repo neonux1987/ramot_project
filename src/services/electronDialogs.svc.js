@@ -18,11 +18,10 @@ export const saveToFileDialog = (defaultFileName = "", options = {}) => {
 }
 
 export const selectFileDialog = () => {
-  selectFolderDialog({ properties: ['openFile', 'openDirectory', 'multiSelections'] });
+  return selectFolderDialog({ properties: ['openFile'] });
 }
 
 export const selectFolderDialog = (options = {}) => {
-
   const dialog = remote.dialog;
   const WIN = remote.getCurrentWindow();
 

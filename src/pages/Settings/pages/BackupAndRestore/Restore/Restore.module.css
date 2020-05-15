@@ -27,8 +27,7 @@
   margin-top: 5px;
 }
 
-.restoreDateSelect{
-  min-width: 200px;
-  margin-bottom: 30px;
-  height: 32px;
+.restoreButton{
+  display: inline-flex;
+  margin-top: 20px;
 }

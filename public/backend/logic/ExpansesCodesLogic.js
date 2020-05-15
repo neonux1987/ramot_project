@@ -3,8 +3,8 @@ const LogicError = require('../customErrors/LogicError');
 
 class ExpansesCodesLogic {
 
-  constructor(connection) {
-    this.expansesCodesDao = new ExpansesCodesDao(connection);
+  constructor() {
+    this.expansesCodesDao = new ExpansesCodesDao();
   }
 
   getExpansesCodes() {

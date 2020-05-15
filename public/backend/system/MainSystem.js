@@ -142,6 +142,10 @@ class MainSystem {
 
   }
 
+  stopSystem() {
+    connectionPool.destroy();
+  }
+
 }
 
 module.exports = new MainSystem();

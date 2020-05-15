@@ -1,6 +1,14 @@
 import React from 'react';
 import SubtitleBoldTypography from "../../../../../../components/Typographies/SubtitleBoldTypography";
-import styles from './TimeSelector.module.css';
+import {
+  container,
+  subtitle,
+  timePicker,
+  timeInput,
+  timeWrapper,
+  hourWrapper,
+  hoursSelector
+} from './TimeSelector.module.css';
 import { TimePicker } from '@material-ui/pickers';
 import { FormControlLabel, FormGroup, Checkbox, MenuItem, Select } from '@material-ui/core';
 
@@ -23,7 +31,7 @@ export default (props) => {
   });
 
   return (
-    <div className={styles.container}>
+    <div className={container}>
 
       <div>
         <FormGroup row>
@@ -37,20 +45,20 @@ export default (props) => {
                 color="primary"
               />
             }
-            label="פעם ביום"
+            label="לפי שעה"
           />
-
         </FormGroup>
 
-        <div className={styles.timeWrapper}>
-          <SubtitleBoldTypography>
-            בחר שעה לביצוע הגיבוי:
+        <div className={timeWrapper}>
+
+          <SubtitleBoldTypography className={subtitle}>
+            פעם ביום לפי שעה מסויימת:
           </SubtitleBoldTypography>
 
           <TimePicker
             ampm={false}
-            className={styles.time}
-            inputProps={{ className: styles.timeInput }}
+            className={timePicker}
+            inputProps={{ className: timeInput }}
             value={time}
             onChange={onTimeChange}
             disabled={!byTime}
@@ -74,13 +82,13 @@ export default (props) => {
 
         </FormGroup>
 
-        <div className={styles.hourWrapper}>
+        <div className={hourWrapper}>
           <SubtitleBoldTypography>
             בחר כל כמה שעות לבצע גיבוי:
           </SubtitleBoldTypography>
 
           <Select
-            className={styles.hoursSelector}
+            className={hoursSelector}
             value={every_x_hours}
             onChange={onHourChange}
             disabled={!byHour}

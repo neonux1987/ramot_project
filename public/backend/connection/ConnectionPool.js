@@ -21,6 +21,10 @@ class ConnectionPool {
     return this.knex.transaction();
   }
 
+  destroy() {
+    this.knex.destroy();
+  }
+
 }
 
 module.exports = new ConnectionPool();
