@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography, MenuItem } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
@@ -41,7 +41,7 @@ import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 
 const SETTINGS_NAME = "db_backup";
 
-export default () => {
+const BackupContainer = () => {
 
   const dispatch = useDispatch();
 
@@ -305,3 +305,5 @@ export default () => {
     </StyledExpandableSection >
   );
 }
+
+export default memo(BackupContainer);
