@@ -3,11 +3,11 @@ import SubtitleBoldTypography from "../../../../../../components/Typographies/Su
 import {
   container,
   subtitle,
+  byTimeWrapper,
   timePicker,
   timeInput,
-  timeWrapper,
-  hourWrapper,
-  hoursSelector
+  byHourWrapper,
+  hoursSelector,
 } from './TimeSelector.module.css';
 import { TimePicker } from '@material-ui/pickers';
 import { FormControlLabel, FormGroup, Checkbox, MenuItem, Select } from '@material-ui/core';
@@ -33,69 +33,51 @@ export default (props) => {
   return (
     <div className={container}>
 
-      <div>
-        <FormGroup row>
+      <div className={byTimeWrapper}>
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={byTime}
-                onChange={onCheckBoxChange}
-                name="byTime"
-                color="primary"
-              />
-            }
-            label="לפי שעה"
-          />
-        </FormGroup>
+        <Checkbox
+          checked={byTime}
+          onChange={onCheckBoxChange}
+          name="byTime"
+          color="primary"
+        />
 
-        <div className={timeWrapper}>
-
-          <SubtitleBoldTypography className={subtitle}>
-            פעם ביום לפי שעה מסויימת:
+        <SubtitleBoldTypography className={subtitle}>
+          לפי שעה מסויימת:
           </SubtitleBoldTypography>
 
-          <TimePicker
-            ampm={false}
-            className={timePicker}
-            inputProps={{ className: timeInput }}
-            value={time}
-            onChange={onTimeChange}
-            disabled={!byTime}
-          />
-        </div>
+        <TimePicker
+          ampm={false}
+          className={timePicker}
+          inputProps={{ className: timeInput }}
+          value={time}
+          onChange={onTimeChange}
+          disabled={!byTime}
+        />
+
       </div>
 
-      <div>
-        <FormGroup row>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={byHour}
-                onChange={onCheckBoxChange}
-                name="byHour"
-                color="primary"
-              />
-            }
-            label="כל מספר שעות"
-          />
+      <div className={byHourWrapper}>
 
-        </FormGroup>
+        <Checkbox
+          checked={byHour}
+          onChange={onCheckBoxChange}
+          name="byHour"
+          color="primary"
+        />
 
-        <div className={hourWrapper}>
-          <SubtitleBoldTypography>
-            בחר כל כמה שעות לבצע גיבוי:
+        <SubtitleBoldTypography>
+          לפי כל כמה שעות:
           </SubtitleBoldTypography>
 
-          <Select
-            className={hoursSelector}
-            value={every_x_hours}
-            onChange={onHourChange}
-            disabled={!byHour}
-          >
-            {renderHourItems}
-          </Select>
-        </div>
+        <Select
+          className={hoursSelector}
+          value={every_x_hours}
+          onChange={onHourChange}
+          disabled={!byHour}
+        >
+          {renderHourItems}
+        </Select>
       </div>
 
     </div>

@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, useState } from 'react';
 import { Button, Typography, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { Restore } from '@material-ui/icons';
@@ -11,6 +11,9 @@ import {
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
+import Separator from '../../../../../components/Seperator/Separator';
+import RestoreFromList from './RestoreFromList/RestoreFromList';
+import RestoreFromFile from './RestoreFromFile/RestoreFromFile';
 
 // ACTIONS
 import {
@@ -19,9 +22,10 @@ import {
 
 // LOADERS
 import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoader';
+
+// SERVICES
 import { selectFileDialog } from '../../../../../services/electronDialogs.svc';
-import RestoreFromList from './RestoreFromList/RestoreFromList';
-import RestoreFromFile from './RestoreFromFile/RestoreFromFile';
+
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
@@ -31,7 +35,14 @@ export default () => {
 
   const { isFetching, data } = useSelector(store => store.registeredBackups);
 
-  const [selectedBackupDate, setSelectedBackupDate] = React.useState("");
+  const [selectedBackupDate, setSelectedBackupDate] = useState("");
+
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const [checkBoxValue, setCheckBoxValue] = useState({
+    byList: true,
+    byFile: false
+  })
 
   useEffect(() => {
     dispatch(fetchRegisteredBackups()).then(({ data }) => {
@@ -60,10 +71,29 @@ export default () => {
   const selectDbFileHandler = () => {
     selectFileDialog().then(({ canceled, filePaths }) => {
       if (!canceled) {
-        console.log(filePaths);
+        setSelectedFile(filePaths[0]);
       } // end if
     }); //end selectFolderDialog
   }
+
+  const onCheckBoxChangeHandler = (event) => {
+    const { name, checked } = event.target;
+
+    if (name === "byList")
+      setCheckBoxValue({
+        byFile: false,
+        byList: checked
+      });
+    else
+      setCheckBoxValue({
+        byList: false,
+        byFile: checked
+      });
+  };
+
+  const restoreHandler = () => {
+    console.log("restored");
+  };
 
   const render = isFetching ?
     <DefaultLoader loading={isFetching} />
@@ -76,15 +106,24 @@ export default () => {
         onBackupDateChangeHandler={onBackupDateChangeHandler}
         selectedBackupDate={selectedBackupDate}
         backupsNamesRender={backupsNamesRender}
+        onCheckBoxChangeHandler={onCheckBoxChangeHandler}
+        byList={checkBoxValue.byList}
       />
 
-      <RestoreFromFile selectDbFileHandler={selectDbFileHandler} />
+      <Separator title={"או"} />
+
+      <RestoreFromFile
+        selectDbFileHandler={selectDbFileHandler}
+        selectedFile={selectedFile}
+        onCheckBoxChangeHandler={onCheckBoxChangeHandler}
+        byFile={checkBoxValue.byFile}
+      />
 
       <Typography variant="body2">
         *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה חירום.
     </Typography>
 
-      <Button className={restoreButton} variant="contained" color="primary" >בצע שיחזור</Button>
+      <Button className={restoreButton} variant="contained" color="primary" onClick={restoreHandler}>בצע שיחזור</Button>
     </Fragment>
 
   return (
@@ -93,7 +132,7 @@ export default () => {
       title={"שיחזור בסיס נתונים"}
       TitleIcon={Restore}
       iconBoxBg={"#1b966e"}
-      padding={"20px"}
+      padding={"30px 20px"}
     >
       {render}
     </StyledExpandableSection>

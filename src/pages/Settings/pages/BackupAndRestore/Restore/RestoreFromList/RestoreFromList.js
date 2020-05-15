@@ -1,8 +1,9 @@
 import React from 'react';
-import { FormControl, Select } from '@material-ui/core';
+import { FormControl, Select, Checkbox } from '@material-ui/core';
 import {
   restoreDateSelect,
-  subtitle
+  subtitle,
+  container
 } from './RestoreFromList.module.css';
 import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
 
@@ -13,14 +14,23 @@ export default props => {
   const {
     selectedBackupDate,
     onBackupDateChangeHandler,
-    backupsNamesRender
+    backupsNamesRender,
+    onCheckBoxChangeHandler,
+    byList
   } = props;
 
   return (
-    <div>
+    <div className={container}>
+
+      <Checkbox
+        checked={byList}
+        onChange={onCheckBoxChangeHandler}
+        name="byList"
+        color="primary"
+      />
 
       <SubtitleBoldTypography className={subtitle}>
-        בחר גיבוי מהרשימה:
+        גיבוי מהרשימה:
         </SubtitleBoldTypography>
 
       <FormControl className={restoreDateSelect}>

@@ -13,7 +13,7 @@ export default (props) => {
   return (
     <div className={styles.container}>
       <SubtitleBoldTypography className={styles.subtitle}>
-        בחר מיקום לשמירת הגיבוי:
+        המיקום שבו נשמרים הגיבויים:
         </SubtitleBoldTypography>
 
       <Button variant="contained" color="primary" onClick={onClick}>שנה מיקום</Button>

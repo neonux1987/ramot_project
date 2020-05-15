@@ -1,12 +1,8 @@
-.timeWrapper{
-  margin-bottom: 40px;
-  align-items: center;
-}
-
-.timeWrapper{
+.byTimeWrapper{
   display: flex;
   margin-bottom: 20px;
   align-items: center;
+  margin-right: -11px;
 }
 
 .timePicker{
@@ -18,10 +14,15 @@
   text-align: center;
 }
 
-.hourWrapper{
+.formControlLabel{
+  margin-left: 0px;
+}
+
+.byHourWrapper{
   display: flex;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   align-items: center;
+  margin-right: -11px;
 }
 
 .hoursSelector{

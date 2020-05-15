@@ -2,16 +2,18 @@
   margin-bottom: 40px;
 }
 
-.subtitle{
-  margin-bottom: 10px;
-}
-
 .chooseFileWrapper{
   display: flex;
+  align-items: center;
+  margin-right: -11px;
 }
 
 .chosenfile{
   color: #2f52b3;
   font-size: 16px;
   margin-top: 10px;
+}
+
+.chooseFileButton{
+  margin-right: 20px;
 }
