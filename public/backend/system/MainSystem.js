@@ -30,6 +30,7 @@ const excelIpc = require('../../electron/ipcs/excel.ipc');
 const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenerator.ipc');
 const servicesIpc = require('../../electron/ipcs/services.ipc');
 const mainProcessIpc = require('../../electron/ipcs/mainProcess.ipc');
+const restoreDbIpc = require('../../electron/ipcs/restoreDb.ipc');
 
 const ServicesLogic = require('../logic/ServicesLogic');
 
@@ -92,6 +93,8 @@ class MainSystem {
     registeredReportsIpc();
 
     servicesIpc();
+
+    restoreDbIpc();
   }
 
   async startServices() {

@@ -10,8 +10,7 @@ import Menuitem from '../MenuItem/Menuitem';
 
 // CSS
 import {
-  list,
-  listSubheader
+  list
 } from './Menu.module.css';
 
 const DEFAULT_PAGE = "הוצאות חודשי";

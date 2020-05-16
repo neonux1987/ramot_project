@@ -1,10 +1,13 @@
 import React from 'react';
 import { Button, Checkbox } from '@material-ui/core';
+import { MdClose } from 'react-icons/md';
+
 import {
   container,
   chooseFileWrapper,
   chosenfile,
-  chooseFileButton
+  chooseFileButton,
+  closeButton
 } from './RestoreFromFile.module.css';
 import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
 
@@ -12,9 +15,10 @@ export default props => {
 
   const {
     selectDbFileHandler,
-    selectedFile = "mezach.sqlite3",
+    selectedFile = null,
     byFile,
-    onCheckBoxChangeHandler
+    onCheckBoxChangeHandler,
+    initSelectedFile
   } = props;
 
   return (
@@ -32,10 +36,13 @@ export default props => {
           מתוך קובץ גיבוי שנמצא במחשבך:
         </SubtitleBoldTypography>
 
-        <Button className={chooseFileButton} variant="contained" color="primary" onClick={selectDbFileHandler}>בחר קובץ גיבוי</Button>
+        <Button disabled={!byFile} className={chooseFileButton} variant="contained" color="primary" onClick={selectDbFileHandler}>בחר קובץ גיבוי</Button>
       </div>
 
       {selectedFile && <div className={chosenfile}>
+        <Button className={closeButton} onClick={initSelectedFile}>
+          <MdClose />
+        </Button>
         {`נבחר קובץ ${selectedFile}`}
       </div>}
 

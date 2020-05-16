@@ -25,6 +25,7 @@ import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoad
 
 // SERVICES
 import { selectFileDialog } from '../../../../../services/electronDialogs.svc';
+import { restoreFromFile } from '../../../../../services/restoreDbService';
 
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
@@ -92,8 +93,10 @@ export default () => {
   };
 
   const restoreHandler = () => {
-    console.log("restored");
+    restoreFromFile(selectedFile);
   };
+
+  const initSelectedFile = () => setSelectedFile(null);
 
   const render = isFetching ?
     <DefaultLoader loading={isFetching} />
@@ -117,6 +120,7 @@ export default () => {
         selectedFile={selectedFile}
         onCheckBoxChangeHandler={onCheckBoxChangeHandler}
         byFile={checkBoxValue.byFile}
+        initSelectedFile={initSelectedFile}
       />
 
       <Typography variant="body2">
