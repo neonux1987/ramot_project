@@ -1,17 +1,28 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
-import styles from './Logo.module.css';
+import {
+  mainTitle,
+  subtitle,
+  logo,
+  container,
+  LogotextWrapper
+} from './Logo.module.css';
 
 const Logo = () => {
   return (
-    <div className={styles.toolbarRoot} >
-      <Typography className={styles.mainTitle} variant="h4" gutterBottom>
-        רמות מז"ח
+    <div className={container} >
+
+      <div className={logo} />
+
+      <div className={LogotextWrapper}>
+        <Typography className={mainTitle} variant="h4" gutterBottom>
+          קבוצת רמות
         </Typography>
 
-      <Typography className={styles.subtitle} variant="h4" gutterBottom>
-        ניהול הוצאות הכנסות
+        <Typography className={subtitle} variant="h4" gutterBottom>
+          ניהול הוצאות והכנסות
         </Typography>
+      </div>
     </div>
   );
 };

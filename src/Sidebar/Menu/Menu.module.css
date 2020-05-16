@@ -1,9 +1,13 @@
 .list{
-  overflow-y: overlay;
+  overflow-y: hidden;
   overflow-x: hidden;
   margin-bottom: 100px;
   background:  none;
   margin-top: -8px;
+}
+
+.list:hover{
+  overflow-y: overlay;
 }
 
 .listSubheader{

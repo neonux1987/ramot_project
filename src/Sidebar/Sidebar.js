@@ -70,7 +70,8 @@ const Sidebar = () => {
 
       <div className={styles.developedByWrapper}>
         <span className={styles.appVersion}>{`v${appVersion}`}</span>
-        <span className={styles.developedByText}>developed by NDTS</span>
+        <span className={styles.ndtsText}>NDTS</span>
+        <span className={styles.developedByText}>developed by</span>
       </div>
 
     </Drawer>

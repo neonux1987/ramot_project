@@ -95,6 +95,8 @@ class MainSystem {
     servicesIpc();
 
     restoreDbIpc();
+
+    mainProcessIpc();
   }
 
   async startServices() {

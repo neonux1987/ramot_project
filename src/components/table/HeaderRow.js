@@ -10,7 +10,6 @@ export default ({ gridTemplateColumns, style = {}, children }) => {
         borderTop: "1px solid rgba(0, 0, 0, 0.12)",
         borderLeft: "1px solid rgba(0, 0, 0, 0.08)",
         position: "relative",
-        boxShadow: "rgba(0, 0, 0, 0.19) 0px 0px 14px -5px",
         zIndex: "2",
         ...style,
       }}

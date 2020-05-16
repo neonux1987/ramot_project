@@ -356,7 +356,6 @@ const ConnectedComponent = withTableLogic(MonthExpansesTableContainer);
 export default ConnectedComponent;
 
 const headerStyle = {
-  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",

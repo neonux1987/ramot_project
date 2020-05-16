@@ -1,32 +1,42 @@
 .mainTitle{
-  font-family: sans-serif;
+  font-family: 'Rubik', sans-serif;
   text-align: right;
-  padding-right: 22px;
-  font-weight: 400;
+  font-weight: 600;
   margin: 0;
-  color: #7b6ee2;
+  color: #0365a2;
   font-style: normal;
-  font-size: 28px;
+  font-size: 25px;
 }
 
 .subtitle {
-  font-family: sans-serif;
+  font-family: 'Rubik', sans-serif;
   text-align: right;
-  padding-right: 22px;
   font-weight: 400;
-  font-size: 16px;
-  color: #dcdcdc;
+  font-size: 14px;
+  color: #ccd5da;
   margin: 0;
   font-style: normal;
+  letter-spacing: 0.010em;
+  line-height: 10px;
 }
 
-.toolbarRoot {
-  display: initial;
-  min-height: initial;
+.container {
+  display: flex;
   padding-bottom: 12px;
   border-bottom: 1px solid #333a42;
-  margin-bottom: 30px; /* 18px */
-  padding: 30px 0 20px;
-  direction: ltr;
+  /* border-bottom: 1px solid #bfc2c5; */
+  margin-bottom: 15px; /* 18px */
+  padding: 20px 13px 20px 0;
 }
 
+.logo{
+  background: url('../../assets//images//ramot\ group.png') no-repeat;
+  width: 56px;
+  height: 56px;
+  background-size: 56px 56px;
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
+.LogotextWrapper{
+  padding-top: 4px;
+}

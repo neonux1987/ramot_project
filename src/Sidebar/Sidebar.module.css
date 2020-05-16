@@ -13,14 +13,14 @@
   flex-shrink: 0;
   z-index: 2;
   box-shadow: none;
-  background: url('../assets/images/thana-gu.jpg') no-repeat;
-  background-size: cover;
+  /* background: url('../assets/images/thana-gu.jpg') no-repeat;
+  background-size: cover; */
 }
 
 .drawerPaper {
   width: 240px;
-  /* background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%); */
-  background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgba(46, 55, 62, 0.84) 100%);
+  background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%);
+  /* background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgba(46, 55, 62, 0.84) 100%); */
   overflow: initial;
   position: relative;
   border: none;
@@ -83,6 +83,12 @@
     font-style: normal;
     font-weight: 400;
     font-family: 'Roboto';
+}
+
+.ndtsText{
+  margin-left: 3px;
+    font-weight: 600;
+    color: #7a8492;
 }
 
 .appVersion{

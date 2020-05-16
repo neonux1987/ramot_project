@@ -156,7 +156,7 @@ const App = () => {
 
     const promise = await initiateDbBackup().catch((result) => {
       myToasts.update(id, {
-        render: <ToastRender message={result.error} />,
+        render: <ToastRender message={"המערכת לא הצליחה לבצע גיבוי לבסיס נתונים, מבצעת יציאה..."} />,
         type: myToasts.TYPE.ERROR,
         delay: 2000,
         autoClose: 2500,
@@ -174,7 +174,7 @@ const App = () => {
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
-          //quitApp();
+          quitApp();
         }
       });
 
