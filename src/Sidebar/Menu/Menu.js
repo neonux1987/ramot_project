@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { List } from '@material-ui/core';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
-import { Home, AttachMoney, AssignmentTurnedIn, InsertChartOutlined, Receipt, Label } from '@material-ui/icons';
+import { Home, AttachMoney, AssignmentTurnedIn, InsertChartOutlined, Receipt, Label, Dashboard } from '@material-ui/icons';
 
 // COMPONENTS
 import Menuitem from '../MenuItem/Menuitem';
@@ -14,6 +14,8 @@ import {
 } from './Menu.module.css';
 
 const DEFAULT_PAGE = "הוצאות חודשי";
+const HOME_BUTTON_LABEL = "דף הבית";
+const HOME_BUTTON_PATH = "/דף-הבית";
 
 const Menu = (props) => {
 
@@ -103,6 +105,20 @@ const Menu = (props) => {
       aria-labelledby="nested-list-subheader"
       className={list}
     >
+      <Menuitem
+        label={HOME_BUTTON_LABEL}
+        Icon={Dashboard}
+        to={{
+          pathname: HOME_BUTTON_PATH,
+          state: {
+            page: HOME_BUTTON_LABEL,
+            buildingName: "",
+            buildingNameEng: ""
+          }
+        }}
+        active={routeState.page === HOME_BUTTON_LABEL}
+      />
+
       {menuRender}
     </List>
   );

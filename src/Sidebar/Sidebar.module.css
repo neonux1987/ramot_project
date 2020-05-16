@@ -13,8 +13,8 @@
   flex-shrink: 0;
   z-index: 2;
   box-shadow: none;
-  /* background: url('../assets/images/thana-gu.jpg') no-repeat;
-  background-size: cover; */
+  /* background: url('../assets/images/thana-gu.jpg') no-repeat;*/
+  /* background-size: cover; */
 }
 
 .drawerPaper {
@@ -74,6 +74,7 @@
   display: flex;
   justify-content: center;
   border-top: 1px solid #333a42;
+  user-select: none;
 }
 
 .developedByText,.appVersion{

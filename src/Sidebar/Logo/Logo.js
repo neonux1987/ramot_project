@@ -1,12 +1,19 @@
+// LIBRARIES
 import React from 'react';
 import { Typography } from '@material-ui/core';
+
+// CSS
 import {
   mainTitle,
   subtitle,
   logo,
   container,
-  LogotextWrapper
+  LogotextWrapper,
+  appVersionWrapper
 } from './Logo.module.css';
+
+//ELECTRON
+const appVersion = require("electron").remote.app.getVersion();
 
 const Logo = () => {
   return (
@@ -22,6 +29,10 @@ const Logo = () => {
         <Typography className={subtitle} variant="h4" gutterBottom>
           ניהול הוצאות והכנסות
         </Typography>
+      </div>
+
+      <div className={appVersionWrapper}>
+        <span>{`v${appVersion}`}</span>
       </div>
     </div>
   );

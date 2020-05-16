@@ -1,3 +1,7 @@
+.boxWrapper{
+  box-shadow: 0 0 14px 0 rgba(53,64,82,.05);
+}
+
 .wrapper{
   display: flex;
   border-bottom: 1px solid #e2e2e2;
@@ -6,6 +10,7 @@
   /* background: #f7f7f7; */
   cursor: pointer;
   background: linear-gradient(45deg, rgba(54,64,73,1) 0%, rgba(46,55,62,1) 100%);
+  box-shadow: 0 0 14px 0 rgba(53,64,82,.05);
 }
 
 .titleWrapper{

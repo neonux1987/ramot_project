@@ -19,9 +19,6 @@ import LoadingCircle from '../components/LoadingCircle';
 import { fetchSidebar } from '../redux/actions/sidebarActions';
 import Menuitem from './MenuItem/Menuitem';
 
-//ELECTRON
-const appVersion = require("electron").remote.app.getVersion();
-
 const Sidebar = () => {
   let toggleSidebarAnimation = "";
 
@@ -47,26 +44,9 @@ const Sidebar = () => {
       <Logo />
 
 
-
-      <Menuitem
-        className={styles.homeButton}
-        label={"דף הבית"}
-        Icon={Dashboard}
-        to={{
-          pathname: `/דף-הבית`,
-          state: {
-            page: "דף הבית",
-            buildingName: "",
-            buildingNameEng: ""
-          }
-        }}
-        active={routeState.page === "דף הבית"}
-      />
-
       <Menu data={menu.data} routeState={routeState} />
 
       <div className={styles.developedByWrapper}>
-        {/* <span className={styles.appVersion}>{`v${appVersion}`}</span> */}
         <span className={styles.ndtsText}>NDTS</span>
         <span className={styles.developedByText}>developed by</span>
       </div>

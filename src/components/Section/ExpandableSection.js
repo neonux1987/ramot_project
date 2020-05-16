@@ -66,7 +66,7 @@ export default ({
   }
 
   return (
-    <Box mt={marginTop} mb={marginBottom} mx={"20px"} style={{ borderRadius: "4px" }}>
+    <Box className={styles.boxWrapper} mt={marginTop} mb={marginBottom} mx={"20px"} style={{ borderRadius: "4px" }}>
       <Collapsible
         transitionTime={100}
         open={open}

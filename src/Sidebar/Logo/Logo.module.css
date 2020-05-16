@@ -24,9 +24,10 @@
   display: flex;
   padding-bottom: 12px;
   border-bottom: 1px solid #333a42;
-  /* border-bottom: 1px solid #bfc2c5; */
-  margin-bottom: 15px; /* 18px */
+  margin-bottom: 15px;
   padding: 20px 13px 20px 0;
+  position: relative;
+  user-select: none;
 }
 
 .logo{
@@ -39,4 +40,13 @@
 
 .LogotextWrapper{
   padding-top: 4px;
+}
+
+.appVersionWrapper{
+  color: #7a8492;
+  position: absolute;
+  bottom: 5px;
+  left: 15px;
+  font-size: 13px;
+  font-style: italic;
 }

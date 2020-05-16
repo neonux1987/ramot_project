@@ -1,9 +1,10 @@
 .list{
   overflow-y: hidden;
   overflow-x: hidden;
-  margin-bottom: 100px;
+  margin-bottom: 60px;
   background:  none;
   margin-top: -8px;
+  user-select: none;
 }
 
 .list:hover{
@@ -13,4 +14,28 @@
 .listSubheader{
   color: #cbcdda;
   /* background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%); */
+}
+
+/* width */
+.list::-webkit-scrollbar {
+  width: 10px;
+  overflow-x: hidden;
+}
+
+/* Track */
+.list::-webkit-scrollbar-track {
+  background: none;
+  box-shadow: none;
+}
+ 
+/* Handle */
+.list::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #e6e6e6;
+  border-radius: 4px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4; 
 }
