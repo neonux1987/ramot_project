@@ -72,6 +72,7 @@ const Menu = (props) => {
       onClick={() => expandHandleClick(item)}
       open={state[engLabel].open}
       key={id}
+      active={routeState.buildingName === label}
     >
 
       {submenu.map((subItem) => {

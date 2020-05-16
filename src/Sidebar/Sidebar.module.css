@@ -70,9 +70,10 @@
   position: fixed;
   bottom: 0;
   width: 240px;
-  padding-bottom: 10px;
+  padding: 10px 0;
   display: flex;
-    justify-content: center;
+  justify-content: center;
+  border-top: 1px solid #333a42;
 }
 
 .developedByText,.appVersion{
@@ -87,8 +88,9 @@
 
 .ndtsText{
   margin-left: 3px;
-    font-weight: 600;
-    color: #7a8492;
+  font-weight: 600;
+  color: #7a8492;
+  font-style: italic;
 }
 
 .appVersion{

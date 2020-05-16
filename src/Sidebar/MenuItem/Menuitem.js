@@ -24,10 +24,11 @@ const Menuitem = (props) => {
   return (
     <ListItem
       component={NavLink}
-      button
+      //button
       className={classnames(listItem, className, active ? "activeButton" : "")}
       style={style}
       to={to}
+      selected={false}
     >
       <ListItemIcon className={listItemIcon}>
         {Icon && <Icon />}

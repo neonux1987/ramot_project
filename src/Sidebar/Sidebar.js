@@ -63,13 +63,10 @@ const Sidebar = () => {
         active={routeState.page === "דף הבית"}
       />
 
-      <div className={styles.menuTitle}>
-        בניינים:
-        </div>
       <Menu data={menu.data} routeState={routeState} />
 
       <div className={styles.developedByWrapper}>
-        <span className={styles.appVersion}>{`v${appVersion}`}</span>
+        {/* <span className={styles.appVersion}>{`v${appVersion}`}</span> */}
         <span className={styles.ndtsText}>NDTS</span>
         <span className={styles.developedByText}>developed by</span>
       </div>

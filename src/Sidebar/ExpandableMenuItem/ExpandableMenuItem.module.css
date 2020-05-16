@@ -3,10 +3,11 @@
 }
 
 .collapse{
-  background: #000c1847;
+  /* background: #000c1847; */
   padding: 5px 0;
 }
 
 .listItem{
   margin-bottom: 0px;
+  cursor: pointer;
 }

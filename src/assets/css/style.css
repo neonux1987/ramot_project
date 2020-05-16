@@ -76,10 +76,11 @@ a {
   background: rgb(46, 55, 62); 
 }
 
+.activeExpandItem{
+  background: #0365a2;
+}
+
 .activeButton{
-  /* box-shadow: inset -8px 0px 0 #ca2452; */
-  border-radius: initial;
-  /* border-right: 8px solid #ca2452; */
   background: #0365a2;
   margin: 0 10px;
   width: 220px;
@@ -87,7 +88,6 @@ a {
 }
 
 .activeButton2{
-  /* box-shadow: inset -8px 0px 0 #ca2452; */
   border-radius: initial;
   border-bottom: 2px solid #ffffff;
 }

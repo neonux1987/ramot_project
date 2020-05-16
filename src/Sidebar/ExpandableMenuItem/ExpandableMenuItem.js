@@ -7,6 +7,7 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { Fragment } from 'react';
+import classnames from 'classnames';
 
 import {
   listItemIcon,
@@ -23,16 +24,17 @@ export default props => {
     label = "",
     open = false,
     onClick,
-    children
+    children,
+    active = false
   } = props
 
   return (
     <Fragment>
 
       <ListItem
-        button
+        //button
         onClick={onClick}
-        className={listItem}
+        className={classnames(listItem, active ? "activeExpandItem" : "")}
       >
         <ListItemIcon className={listItemIcon}>
           {Icon && <Icon />}
