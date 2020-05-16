@@ -109,12 +109,8 @@ export default () => {
       </Button>
 
       <div className={description}>
-
         <Typography className={descriptionText} variant="h6">
-          המערכת תפיק דוחות לכל הבניינים ולכל הטבלאות. במידה וקיימים דוחות שכבר נוצרו לאותו רבעון,
-    </Typography>
-        <Typography className={descriptionText} variant="h6">
-          המערכת תדרוס את הישנים ותייצר את החדשים במקום.
+          *לתשומת ליבך: המערכת תדרוס דוחות קודמים במיה וקיימים
     </Typography>
       </div>
     </Fragment>

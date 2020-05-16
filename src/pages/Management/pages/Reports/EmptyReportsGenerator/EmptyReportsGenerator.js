@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useState } from 'react';
-import { Select, Button, MenuItem, Typography } from '@material-ui/core';
+import { Select, Button, MenuItem } from '@material-ui/core';
 
 
 // UTILS
@@ -11,11 +11,17 @@ import classnames from 'classnames';
 import { generateEmptyReports } from '../../../../../services/emptyReportsGenerator.svc';
 
 //CSS
-import styles from './EmptyReportsGenerator.module.css';
+import {
+  subtitle,
+  paddingLeft,
+  select,
+  createBtn
+} from './EmptyReportsGenerator.module.css';
 
 // ACTIONS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import { Description } from '@material-ui/icons';
+import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
 
 const years = generateYears(new Date().getFullYear());
 const quarters = Helper.getYearQuarters();
@@ -58,16 +64,15 @@ export default () => {
       padding={"30px 20px 50px"}
     >
 
-      <div style={{ paddingBottom: "10px", fontSize: "28px" }}>
-        <Typography className={styles.description} variant="h6">
-          במידה ומחולל הדוחות האוטומטי לא עובד, באפשרותך ליצור דוחות ריקים חדשים באמצעות
-          מחולל זה לפי התאריכים שתבחר.
-    </Typography>
+      <div className={subtitle}>
+        <SubtitleBoldTypography>
+          הפקת דוחות ריקים לכל הבניינים:
+          </SubtitleBoldTypography>
       </div>
 
       <Select
         name="quarter"
-        className={classnames(styles.paddingLeft, styles.select)}
+        className={classnames(paddingLeft, select)}
         value={selectDate.quarter}
         onChange={onChangeHandler}
       >
@@ -78,7 +83,7 @@ export default () => {
 
       <Select
         name="year"
-        className={classnames(styles.paddingLeft, styles.select)}
+        className={classnames(paddingLeft, select)}
         value={selectDate.year}
         onChange={onChangeHandler}
       >
@@ -88,7 +93,7 @@ export default () => {
       </Select>
 
       <Button
-        className={styles.createBtn}
+        className={createBtn}
         onClick={onClickHandler}
         variant="contained"
         color="secondary">

@@ -1,7 +1,7 @@
 // LIBRARIES
 import React from 'react';
 import { withRouter } from 'react-router';
-import { List, ListSubheader } from '@material-ui/core';
+import { List } from '@material-ui/core';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
 import { Home, AttachMoney, AssignmentTurnedIn, InsertChartOutlined, Receipt, Label } from '@material-ui/icons';
 
@@ -102,11 +102,6 @@ const Menu = (props) => {
       component="nav"
       aria-labelledby="nested-list-subheader"
       className={list}
-      subheader={
-        <ListSubheader className={listSubheader} component="div" id="nested-list-subheader">
-          בניינים:
-        </ListSubheader>
-      }
     >
       {menuRender}
     </List>

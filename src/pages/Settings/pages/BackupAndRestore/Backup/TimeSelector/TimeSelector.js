@@ -10,7 +10,7 @@ import {
   hoursSelector,
 } from './TimeSelector.module.css';
 import { TimePicker } from '@material-ui/pickers';
-import { FormControlLabel, FormGroup, Checkbox, MenuItem, Select } from '@material-ui/core';
+import { Checkbox, MenuItem, Select } from '@material-ui/core';
 
 const HOURS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 

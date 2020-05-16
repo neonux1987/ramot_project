@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Drawer } from '@material-ui/core';
-import { Dashboard, Tune } from '@material-ui/icons';
+import { Dashboard } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 
@@ -18,6 +18,9 @@ import LoadingCircle from '../components/LoadingCircle';
 // ACTIONS
 import { fetchSidebar } from '../redux/actions/sidebarActions';
 import Menuitem from './MenuItem/Menuitem';
+
+//ELECTRON
+const appVersion = require("electron").remote.app.getVersion();
 
 const Sidebar = () => {
   let toggleSidebarAnimation = "";
@@ -43,6 +46,8 @@ const Sidebar = () => {
 
       <Logo />
 
+
+
       <Menuitem
         className={styles.homeButton}
         label={"דף הבית"}
@@ -58,24 +63,14 @@ const Sidebar = () => {
         active={routeState.page === "דף הבית"}
       />
 
+      <div className={styles.menuTitle}>
+        בניינים:
+        </div>
       <Menu data={menu.data} routeState={routeState} />
 
-      <div className={styles.settingsWrapper}>
-
-        <Menuitem
-          className={styles.homeButton}
-          label={"הגדרות"}
-          Icon={Tune}
-          to={{
-            pathname: `/הגדרות`,
-            state: {
-              page: "הגדרות",
-              buildingName: "",
-              buildingNameEng: ""
-            }
-          }}
-          active={routeState.page === "הגדרות"}
-        />
+      <div className={styles.developedByWrapper}>
+        <span className={styles.appVersion}>{`v${appVersion}`}</span>
+        <span className={styles.developedByText}>developed by NDTS</span>
       </div>
 
     </Drawer>

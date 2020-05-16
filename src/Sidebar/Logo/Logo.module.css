@@ -1,25 +1,32 @@
-.typography {
-  /* color: #6057ec; */
-  /*color: #3533e6; */ /*#d0213f*/
-  /* color: #816cd2; */
-  color: #ca2452;
-  width: 70px;
+.mainTitle{
+  font-family: sans-serif;
+  text-align: right;
+  padding-right: 22px;
+  font-weight: 400;
+  margin: 0;
+  color: #7b6ee2;
+  font-style: normal;
   font-size: 28px;
-  font-weight: 600;
-  margin-top: 0.21em;
-  font-family: 'Roboto';
-  font-style: italic;
+}
+
+.subtitle {
+  font-family: sans-serif;
+  text-align: right;
+  padding-right: 22px;
+  font-weight: 400;
+  font-size: 16px;
+  color: #dcdcdc;
+  margin: 0;
+  font-style: normal;
 }
 
 .toolbarRoot {
-  padding-left: 20px;
   display: initial;
   min-height: initial;
-  padding-top: 10px;
   padding-bottom: 12px;
-  /* background-color: #000c187a; */
   border-bottom: 1px solid #333a42;
-  margin-bottom: 18px;
+  margin-bottom: 30px; /* 18px */
+  padding: 30px 0 20px;
   direction: ltr;
 }
 
