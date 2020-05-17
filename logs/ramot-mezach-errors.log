@@ -18,3 +18,415 @@
   "context": {},
   "pid": 7548
 },
+{
+  "startTime": "2020-05-17T01:58:18.095Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 10980
+},
+{
+  "startTime": "2020-05-17T01:58:57.655Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 7900
+},
+{
+  "startTime": "2020-05-17T01:59:19.042Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 1040
+},
+{
+  "startTime": "2020-05-17T02:00:15.117Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 7552
+},
+{
+  "startTime": "2020-05-17T02:00:32.341Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 10068
+},
+{
+  "startTime": "2020-05-17T02:00:49.598Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 15412
+},
+{
+  "startTime": "2020-05-17T02:01:52.933Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 15348
+},
+{
+  "startTime": "2020-05-17T02:02:23.464Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 12868
+},
+{
+  "startTime": "2020-05-17T02:02:38.783Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 9912
+},
+{
+  "startTime": "2020-05-17T02:03:49.002Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 7280
+},
+{
+  "startTime": "2020-05-17T02:04:23.663Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 14956
+},
+{
+  "startTime": "2020-05-17T02:06:18.883Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 1128
+},
+{
+  "startTime": "2020-05-17T02:06:26.852Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 2080
+},
+{
+  "startTime": "2020-05-17T02:06:42.502Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 12296
+},
+{
+  "startTime": "2020-05-17T02:07:17.598Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 4440
+},
+{
+  "startTime": "2020-05-17T02:07:48.485Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 12000
+},
+{
+  "startTime": "2020-05-17T02:08:24.627Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 6468
+},
+{
+  "startTime": "2020-05-17T02:08:59.604Z",
+  "categoryName": "Application",
+  "data": [
+    {}
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 8008
+},
+{
+  "startTime": "2020-05-17T02:55:50.098Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 10960
+},
+{
+  "startTime": "2020-05-17T02:55:50.102Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 10960
+},
+{
+  "startTime": "2020-05-17T03:04:54.627Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 14304
+},
+{
+  "startTime": "2020-05-17T03:04:54.628Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 14304
+},
+{
+  "startTime": "2020-05-17T03:05:03.066Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 14304
+},
+{
+  "startTime": "2020-05-17T03:05:03.069Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 14304
+},
+{
+  "startTime": "2020-05-17T03:14:34.618Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 6204
+},
+{
+  "startTime": "2020-05-17T03:14:34.621Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 6204
+},

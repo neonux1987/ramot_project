@@ -14,9 +14,8 @@ const TableControls = ({ style, rightPane, middlePane, leftPane, editMode }) => 
         <div className={styles.editModeWrapper} style={{ fontWeight: "600" }}>
           <span>מצב עריכה</span>
           <span className={styles.marginText} style={{
-            color: "#fff",
             padding: "0 7px",
-            backgroundColor: editModeColor,
+            color: editModeColor,
             borderRadius: "4px",
             marginRight: "5px"
           }}>{editModeText}</span>

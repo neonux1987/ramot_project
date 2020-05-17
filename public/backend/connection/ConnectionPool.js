@@ -1,15 +1,23 @@
 const ConfigurationLogic = require('../logic/ConfigurationLogic');
+const knex = require('knex');
 
 class ConnectionPool {
 
-  createConnection() {
-    //create database connection
-    this.knex = require('knex')({
-      client: 'sqlite3',
-      connection: {
-        filename: ConfigurationLogic.paths.db_file_path,
-      },
-      useNullAsDefault: true
+  async createConnection() {
+    return new Promise((resolve, reject) => {
+      //create database connection
+      this.knex = knex({
+        client: 'sqlite3',
+        connection: {
+          filename: ConfigurationLogic.paths.db_file_path,
+        },
+        useNullAsDefault: true
+      });
+
+      if (this.knex === undefined)
+        reject("Failed to create a connection to the database")
+
+      resolve();
     });
   }
 
@@ -22,7 +30,9 @@ class ConnectionPool {
   }
 
   destroy() {
-    this.knex.destroy();
+    return this.knex.destroy(() => {
+      this.knex = undefined;
+    });
   }
 
 }

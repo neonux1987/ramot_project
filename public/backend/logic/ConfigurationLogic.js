@@ -42,8 +42,6 @@ class ConfigurationLogic {
     db_folder_path: DB_FOLDER_PATH,
     db_file_path: DB_PATH,
     db_backup_folder_path: DB_BACKUPS_FOLDER_PATH,
-    user_main_folder: USER_MAIN_FOLDER,
-    user_reports_folder: USER_REPORTS_FOLDER,
     setup_ndts_folder_path: SETUP_NDTS_FOLDER_PATH,
     app_root_path: APP_ROOT_PATH
   }

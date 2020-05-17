@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Drawer } from '@material-ui/core';
-import { Dashboard } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 
@@ -17,7 +16,6 @@ import LoadingCircle from '../components/LoadingCircle';
 
 // ACTIONS
 import { fetchSidebar } from '../redux/actions/sidebarActions';
-import Menuitem from './MenuItem/Menuitem';
 
 const Sidebar = () => {
   let toggleSidebarAnimation = "";

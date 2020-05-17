@@ -43,6 +43,7 @@ export default props => {
           }}
           displayEmpty
           name="backupsDates"
+          disabled={!byList}
         >
           {backupsNamesRender}
         </Select>

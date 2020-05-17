@@ -107,32 +107,41 @@ class MainSystem {
       });
   }
 
+  async stopServices() {
+    await this.servicesLogic.stopAllServices()
+      .catch((result) => {
+        rendererNotificationSvc.notifyRenderer("notify-renderer", "systemError", result.message);
+        this.logger.error(result.error);
+      });
+  }
+
   async startSystem() {
+    // if the app runs for the first time
+    await this.configurationLogic.firstTimeSetup();
+
+    this.servicesLogic = new ServicesLogic();
+
+    // set up the db connection
+    await connectionPool.createConnection();
+
+    //fetch menu data
+    /* const menuDao = new MenuDao();
+    const menu = await menuDao.getMenu(); */
+
+    // In the main process.
+    /* global.sharedObject = {
+      menuData: menu
+    } */
+
+    /* const schemaBuilder = new SchemaBuilder();
+    //modify table
+    await schemaBuilder.modifyTableSchema(); */
+
+    // initialize all the ipc's for connection
+    // between the main process and the renderer
+    this.initializeIpcs();
     try {
-      // if the app runs for the first time
-      await this.configurationLogic.firstTimeSetup();
 
-      this.servicesLogic = new ServicesLogic();
-
-      // set up the db connection
-      await connectionPool.createConnection();
-
-      //fetch menu data
-      /* const menuDao = new MenuDao();
-      const menu = await menuDao.getMenu(); */
-
-      // In the main process.
-      /* global.sharedObject = {
-        menuData: menu
-      } */
-
-      /* const schemaBuilder = new SchemaBuilder();
-      //modify table
-      await schemaBuilder.modifyTableSchema(); */
-
-      // initialize all the ipc's for connection
-      // between the main process and the renderer
-      this.initializeIpcs();
     } catch (error) {
       this.logger.error(error);
 
@@ -147,8 +156,9 @@ class MainSystem {
 
   }
 
-  stopSystem() {
-    connectionPool.destroy();
+  async stopSystem() {
+    await this.stopServices();
+    await connectionPool.destroy();
   }
 
 }

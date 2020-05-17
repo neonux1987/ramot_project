@@ -16,15 +16,15 @@ class SettingsLogic {
   }
 
   getLocationsSettings() {
-    return this.getSpecificSetting(SETTINGS_NAMES.LOCATIONS);
+    return this.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.LOCATIONS);
   }
 
   getDbBackupSettings() {
-    return this.getSpecificSetting(SETTINGS_NAMES.DB_BACKUP);
+    return this.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.DB_BACKUP);
   }
 
   getDbRestoreSettings() {
-    return this.getSpecificSetting(SETTINGS_NAMES.DB_RESTORE);
+    return this.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.DB_RESTORE);
   }
 
   async updateSpecificSetting(name, payload) {
