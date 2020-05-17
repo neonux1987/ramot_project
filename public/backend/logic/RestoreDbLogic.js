@@ -23,11 +23,11 @@ class RestoreDbLogic {
     const backupsFolder = locations.db_backups_folder_path;
     const fullFilePath = path.join(backupsFolder, fileName);
 
-    return this.restore(fullFilePath);
+    return await this.restore(fullFilePath);
   }
 
   async restoreFromFile(filePath) {
-    return restore(filePath);
+    return await this.restore(filePath);
   }
 
   async restore(path) {

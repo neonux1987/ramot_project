@@ -14,7 +14,7 @@ export const restore = (payload, byList) => {
       params: payload
     },
     receive: {
-      channel: byList ? "db-restored-from-list" : "db-restored-from-list",
+      channel: byList ? "db-restored-from-list" : "db-restored-from-file",
     },
     onSuccess: () => myToasts.update(toastId, {
       render: <ToastRender done={true} message={"השיחזור בוצע בהצלחה."} />,
@@ -24,6 +24,13 @@ export const restore = (payload, byList) => {
       onClose: () => {
         myToasts.info("המערכת מבצעת איתחול בשביל שהשינויים ייכנסו לתוקף.")
       }
-    })
+    }),
+    onError: (result) => myToasts.update(toastId, {
+      render: result.error,
+      type: myToasts.TYPE.ERROR,
+      delay: 2000,
+      autoClose: 3000
+    }),
+    withError: false
   });
 }

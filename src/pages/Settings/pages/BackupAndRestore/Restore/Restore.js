@@ -26,6 +26,9 @@ import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoad
 // SERVICES
 import { selectFileDialog } from '../../../../../services/electronDialogs.svc';
 import { restore } from '../../../../../services/restoreDbService';
+import { myToasts } from '../../../../../CustomToasts/myToasts';
+import useModalLogic from '../../../../../customHooks/useModalLogic';
+import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
 
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
@@ -33,6 +36,8 @@ const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 export default () => {
 
   const dispatch = useDispatch();
+
+  const { showModal } = useModalLogic();
 
   const { isFetching, data } = useSelector(store => store.registeredBackups);
 
@@ -93,12 +98,21 @@ export default () => {
   };
 
   const restoreHandler = () => {
-    const { byList } = checkBoxValue;
-    // if the byList is checked set the file name
-    // from the list, otherwise it's byFile an
-    // set the name of the selected file by the user
+    const { byList, byFile } = checkBoxValue;
+
+    // if the byList is checked then set the file name
+    // from the list, otherwise byFile is checked so
+    // set the name of the user selected file 
     const payload = byList ? selectedBackupDate : selectedFile;
-    restore(payload, byList);
+
+    if (byFile && selectedFile === null)
+      myToasts.error("לא נבחר קובץ")
+    else {
+      showModal(ConfirmDbRestoreModal, {
+        onAgreeHandler: () => restore(payload, byList)
+      });
+    }
+
   };
 
   const initSelectedFile = () => setSelectedFile(null);

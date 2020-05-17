@@ -8,6 +8,7 @@ export const ipcSendReceive = (details) => {
       receive,
       onSuccess,
       onError,
+      withError = true
     } = details;
   return new Promise((resolve, reject) => {
     //request request to backend to get the data
@@ -31,7 +32,8 @@ export const ipcSendReceive = (details) => {
 
     });
   }).catch(result => {
-    myToasts.error(result.error);
+    if (withError)
+      myToasts.error(result.error);
   });
 }
 

@@ -480,3 +480,43 @@
   "context": {},
   "pid": 10852
 },
+{
+  "startTime": "2020-05-17T13:44:37.616Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 14364
+},
+{
+  "startTime": "2020-05-17T13:44:37.618Z",
+  "categoryName": "Application",
+  "data": [
+    {
+      "name": "database_error",
+      "fileName": "MenuDao.js",
+      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
+      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
+      "original": "Error: Unable to acquire a connection"
+    }
+  ],
+  "level": {
+    "level": 40000,
+    "levelStr": "ERROR",
+    "colour": "red"
+  },
+  "context": {},
+  "pid": 14364
+},
