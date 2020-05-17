@@ -174,7 +174,7 @@ const App = () => {
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
-          quitApp();
+          //quitApp();
         }
       });
 

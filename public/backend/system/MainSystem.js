@@ -2,7 +2,6 @@
 const { dialog } = require('electron');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
-
 const MenuDao = require('../dao/MenuDao');
 const SchemaBuilder = require('../dao/schemaBuilder/SchemaBuilder');
 
@@ -116,34 +115,33 @@ class MainSystem {
   }
 
   async startSystem() {
-    // if the app runs for the first time
-    await this.configurationLogic.firstTimeSetup();
-
-    this.servicesLogic = new ServicesLogic();
-
-    // set up the db connection
-    await connectionPool.createConnection();
-
-    //fetch menu data
-    /* const menuDao = new MenuDao();
-    const menu = await menuDao.getMenu(); */
-
-    // In the main process.
-    /* global.sharedObject = {
-      menuData: menu
-    } */
-
-    /* const schemaBuilder = new SchemaBuilder();
-    //modify table
-    await schemaBuilder.modifyTableSchema(); */
-
-    // initialize all the ipc's for connection
-    // between the main process and the renderer
-    this.initializeIpcs();
     try {
+      // if the app runs for the first time
+      await this.configurationLogic.firstTimeSetup();
 
+      this.servicesLogic = new ServicesLogic();
+
+      // set up the db connection
+      await connectionPool.createConnection();
+
+      //fetch menu data
+      /* const menuDao = new MenuDao();
+      const menu = await menuDao.getMenu(); */
+
+      // In the main process.
+      /* global.sharedObject = {
+        menuData: menu
+      } */
+
+      /* const schemaBuilder = new SchemaBuilder();
+      //modify table
+      await schemaBuilder.modifyTableSchema(); */
+
+      // initialize all the ipc's for connection
+      // between the main process and the renderer
+      this.initializeIpcs();
     } catch (error) {
-      this.logger.error(error);
+      this.logger.error(error.toString());
 
       const title = "שגיאת הפעלה";
       const message = `

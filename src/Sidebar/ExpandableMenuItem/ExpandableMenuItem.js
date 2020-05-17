@@ -43,7 +43,12 @@ export default props => {
         {open ? <ExpandLess className={expandIcon} /> : <ExpandMore className={expandIcon} />}
       </ListItem>
 
-      <Collapse className={collapse} in={open} timeout="auto" unmountOnExit>
+      <Collapse
+        classes={{ wrapperInner: collapse }}
+        in={open}
+        timeout="auto"
+        unmountOnExit
+      >
         <List component="div" disablePadding>
           {children}
         </List>

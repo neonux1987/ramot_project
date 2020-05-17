@@ -25,7 +25,7 @@ import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoad
 
 // SERVICES
 import { selectFileDialog } from '../../../../../services/electronDialogs.svc';
-import { restoreFromFile } from '../../../../../services/restoreDbService';
+import { restore } from '../../../../../services/restoreDbService';
 
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
@@ -50,7 +50,7 @@ export default () => {
       if (data.length === 0)
         setSelectedBackupDate(NO_BACKUPS_MESSAGE);
       else
-        setSelectedBackupDate(data[0].backupDateTime);
+        setSelectedBackupDate(data[0].fileName);
     });
   }, [dispatch]);
 
@@ -59,7 +59,7 @@ export default () => {
     const locale = date.toLocaleString();
     //to get rid off of the AM or PM
     const newLocaleDateTime = locale.slice(0, locale.length - 3);
-    return <MenuItem value={backup.backupDateTime} key={index}>{newLocaleDateTime}</MenuItem>
+    return <MenuItem value={backup.fileName} key={index}>{newLocaleDateTime}</MenuItem>
   }) : <MenuItem value="לא קיימים גיבויים שמורים" disabled>
       לא קיימים גיבויים
 </MenuItem>;
@@ -93,7 +93,12 @@ export default () => {
   };
 
   const restoreHandler = () => {
-    restoreFromFile(selectedFile);
+    const { byList } = checkBoxValue;
+    // if the byList is checked set the file name
+    // from the list, otherwise it's byFile an
+    // set the name of the selected file by the user
+    const payload = byList ? selectedBackupDate : selectedFile;
+    restore(payload, byList);
   };
 
   const initSelectedFile = () => setSelectedFile(null);
