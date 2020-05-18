@@ -238,7 +238,7 @@ const BudgetExecutionsTable = props => {
       >{month}</GroupColumn>;
     });
 
-    return <GroupRow gridTemplateColumns={getGridTemplateColumns()}>
+    return <GroupRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
       {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
       <GroupColumn style={defaultStyle}></GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
@@ -270,7 +270,7 @@ const BudgetExecutionsTable = props => {
       color: groupColors[3]
     }
 
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
@@ -313,7 +313,7 @@ const BudgetExecutionsTable = props => {
 
     const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
 
-    const odd = index % 2 === 0 ? "" : "rgba(0, 0, 0, 0.02)";
+    const odd = index % 2 === 0 ? "" : "";
 
     return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(index, rowData)} /> : null}

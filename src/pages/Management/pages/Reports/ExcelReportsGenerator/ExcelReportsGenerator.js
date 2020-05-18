@@ -133,6 +133,7 @@ export default () => {
       title={"הפקת דוחות אקסל"}
       TitleIcon={Description}
       padding={"30px 20px 50px"}
+      iconColor={"#0365a2"}
       loading={registeredReports.isFetching && registeredReports.data.length === 0}
     >
 

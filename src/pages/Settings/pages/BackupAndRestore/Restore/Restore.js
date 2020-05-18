@@ -154,7 +154,7 @@ export default () => {
     <StyledExpandableSection
       title={"שיחזור בסיס נתונים"}
       TitleIcon={Restore}
-      iconBoxBg={"#1b966e"}
+      iconColor={"#0365a2"}
       padding={"30px 20px"}
     >
       {render}

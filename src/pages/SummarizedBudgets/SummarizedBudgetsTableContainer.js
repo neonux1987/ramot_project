@@ -170,7 +170,7 @@ const SummarizedBudgetsTableContainer = props => {
     });
 
     return <GroupRow
-      gridTemplateColumns={getGridTemplateColumns()} >
+      gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
       {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
       <GroupColumn style={defaultStyle}></GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
@@ -198,7 +198,7 @@ const SummarizedBudgetsTableContainer = props => {
       color: groupColors[4]
     }
 
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
@@ -231,7 +231,7 @@ const SummarizedBudgetsTableContainer = props => {
       quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_execution`}>{rowData[`quarter${i}_execution`]}</NonZeroNumberColumn>);
     }
 
-    const odd = index % 2 === 0 ? "" : "rgba(0, 0, 0, 0.02)";
+    const odd = index % 2 === 0 ? "" : "";
 
     return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData.id, index)} /> : null}

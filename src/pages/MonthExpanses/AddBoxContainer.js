@@ -11,13 +11,9 @@ const styles = theme => ({
   container: {
     margin: "0px 0 10px",
     padding: "10px 10px 0",
-    borderBottom: "1px solid #00000024",
+    border: "1px solid #00000024",
     position: "relative",
-    zIndex: "3",
-    background: "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%)",
-    boxShadow: "0 0 14px -5px #0000002b",
-    borderRight: "5px solid #3e6ca7",
-    borderLeft: "5px solid #3e6ca7"
+    zIndex: "3"
   },
   form: {
     display: "flex",

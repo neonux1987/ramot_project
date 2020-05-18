@@ -265,6 +265,7 @@ const BackupContainer = () => {
         <SaveButton onClick={save}>שמור</SaveButton>
       }
       padding={"30px 20px"}
+      iconColor={"#0365a2"}
     >
 
       {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}

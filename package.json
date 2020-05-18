@@ -41,6 +41,7 @@
     "react-spinners": "^0.8.3",
     "react-textarea-autosize": "^7.1.2",
     "react-toastify": "^5.5.0",
+    "react-transition-group": "^4.4.1",
     "react-virtuoso": "^0.12.3",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",

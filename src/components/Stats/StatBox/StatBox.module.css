@@ -1,9 +1,12 @@
 .infoBoxWrapper{
     margin: 0 0 0 15px;
-    /* border: 1px solid #efecec;
+/*     border: 1px solid #efecec;
     background: #fbfbfb;
     background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%); 
-    box-shadow: 0 0 14px -5px #0000001f;  */
+    box-shadow: 0 0 14px -5px #0000001f; 
+    border: 1px solid #0000000d; */
+    background: #f3f4f8;
+    border: 1px solid #ece9e9;
 }
 
 .infoBox{
@@ -35,6 +38,7 @@
     width: 115px;
     top: -26px;
     border-radius: 4px;
+    /* box-shadow: 0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(0, 0, 0, 0.4); */
 }
 
 .titleText{

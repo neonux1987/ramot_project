@@ -61,6 +61,7 @@ export default () => {
       title={"הפקת דוחות חדשים (ריקים)"}
       TitleIcon={Description}
       padding={"30px 20px 50px"}
+      iconColor={"#0365a2"}
     >
 
       <div className={subtitle}>

@@ -3,33 +3,39 @@
 }
 
 .editBtn{
-  color: rgb(46, 55, 62);
+  color: #ffffff;
+  background-color: #23292d;
+}
+
+.editBtn:hover{
+  background-color: #2a3136;
+  box-shadow: none;
 }
 
 .addNewBtn{
   margin-right: 10px;
-  color: #10589a;
+  color: #ffffff;
+  background-color: #0365a2;
+}
+
+.addNewBtn:hover{
+  background-color: #046fb1;
+  box-shadow: none;
 }
 
 .addNewBtn, .editBtn{
-  min-width:90px;
+  min-width:80px;
   box-shadow: none;
   font-weight: 600;
   font-size: 13px;
   /* background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
   border: 1px solid #dedede; */
-  background: none;
   border: none;
 }
 
 .addIcon, .editIcon{
   font-size: 18px;
-  margin-right: 2px;
-}
-
-.editBtn:hover,.addNewBtn:hover{
-  background: rgb(243, 243, 243);
-  box-shadow: none;
+  /* margin-right: 2px; */
 }
 
 .red{

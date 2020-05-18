@@ -56,6 +56,7 @@ const SummarizedBudgets = props => {
               <StyledExpandableSection
                 title={STATS_TITLE}
                 TitleIcon={Equalizer}
+                iconBoxBg={"rgb(3, 162, 151)"}
               >
                 <YearStatsContainer
                   buildingName={buildingNameEng}

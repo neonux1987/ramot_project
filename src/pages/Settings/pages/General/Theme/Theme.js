@@ -15,7 +15,7 @@ export default () => {
     <StyledExpandableSection
       title={"ערכת נושאים"}
       TitleIcon={Backup}
-      iconBoxBg={"#1b966e"}
+      iconColor={"#0365a2"}
       extraDetails={() => {/* <SaveButton onClick={save}>שמור</SaveButton> */ }}
       padding={"30px 20px"}
     >

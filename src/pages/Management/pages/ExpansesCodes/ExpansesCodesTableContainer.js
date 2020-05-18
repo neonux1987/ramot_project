@@ -182,7 +182,7 @@ class ExpansesCodes extends React.PureComponent {
   HeadersRow = () => {
     const editMode = this.props.editMode;
 
-    return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} >
+    return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
@@ -207,7 +207,7 @@ class ExpansesCodes extends React.PureComponent {
 
     const section = this.getSection(rowData["summarized_section_id"]);
 
-    const odd = index % 2 === 0 ? "" : "rgba(0, 0, 0, 0.02)";
+    const odd = index % 2 === 0 ? "" : "";
 
     return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={this.getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData, index)} /> : null}

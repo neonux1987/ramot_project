@@ -2,7 +2,8 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  color: #033858;
+  color: #3f414d;
+  font-size: 1.100em;
 }
 
 .marginText{

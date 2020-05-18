@@ -235,7 +235,7 @@ const MonthExpansesTableContainer = props => {
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    return <HeaderRow gridTemplateColumns={gridTemplateColumns}>
+    return <HeaderRow gridTemplateColumns={gridTemplateColumns} style={{ backgroundColor: "#f5f6f9" }}>
 
       {editMode ? <Column style={headerStyle}>{"פעולות"}</Column> : null}
       {headers.map((header, index) => {
@@ -260,7 +260,7 @@ const MonthExpansesTableContainer = props => {
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    const odd = index % 2 === 0 ? "" : "rgba(0, 0, 0, 0.02)";
+    const odd = index % 2 === 0 ? "" : "";
 
     return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={gridTemplateColumns}>
       {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}

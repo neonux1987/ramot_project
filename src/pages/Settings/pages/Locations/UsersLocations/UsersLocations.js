@@ -26,7 +26,7 @@ export default (props) => {
     <StyledExpandableSection
       title={"מיקום קבצי משתמש"}
       TitleIcon={Backup}
-      iconBoxBg={"#1b966e"}
+      iconColor={"#0365a2"}
       extraDetails={() =>
         <SaveButton onClick={saveHandler}>שמור</SaveButton>
       }
