@@ -76,6 +76,14 @@ export default () => {
 
   const content = () => {
     return <Fragment>
+
+      <div className={subtitle}>
+
+        <SubtitleBoldTypography>
+          הפקת דוחות לכל הבניינים:
+  </SubtitleBoldTypography>
+      </div>
+
       <Select
         name="quarter"
         className={classnames(paddingLeft, select)}
@@ -117,24 +125,16 @@ export default () => {
   }
 
   const renderContent = registeredReports.data.length === 0 ?
-    <span className={error}>לא קיימים דוחות בבסיס נתונים, לא ניתן לייצא דוחות אקסל.</span>
+    <span className={error}>לא קיימים דוחות בבסיס נתונים, ולכן לא ניתן לייצא לדוחות אקסל.</span>
     : content();
 
   return (
     <StyledExpandableSection
       title={"הפקת דוחות אקסל"}
       TitleIcon={Description}
-      iconBoxBg={"#1b966e"}
       padding={"30px 20px 50px"}
       loading={registeredReports.isFetching && registeredReports.data.length === 0}
     >
-
-      <div className={subtitle}>
-
-        <SubtitleBoldTypography>
-          הפקת דוחות לכל הבניינים:
-          </SubtitleBoldTypography>
-      </div>
 
       {renderContent}
 

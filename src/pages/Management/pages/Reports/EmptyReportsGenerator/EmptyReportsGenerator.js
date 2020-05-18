@@ -60,7 +60,6 @@ export default () => {
     <StyledExpandableSection
       title={"הפקת דוחות חדשים (ריקים)"}
       TitleIcon={Description}
-      iconBoxBg={"#1b966e"}
       padding={"30px 20px 50px"}
     >
 

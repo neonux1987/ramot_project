@@ -261,7 +261,6 @@ const BackupContainer = () => {
     <StyledExpandableSection
       title={"גיבוי בסיס נתונים"}
       TitleIcon={Backup}
-      iconBoxBg={"#1b966e"}
       extraDetails={() =>
         <SaveButton onClick={save}>שמור</SaveButton>
       }

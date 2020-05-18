@@ -176,7 +176,9 @@ const SummarizedSectionsTableContainer = props => {
     // row data
     const rowData = getDataObject(index);
 
-    return <Row style={{ minHeight: "35px" }} gridTemplateColumns={getGridTemplateColumns()}>
+    const odd = index % 2 === 0 ? "" : "rgba(0, 0, 0, 0.02)";
+
+    return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData, index)} /> : null}
       <Column>{index + 1}</Column>
       {editMode ? textInput("section", rowData["section"], index, onBlurHandler) : <Column>{rowData["section"]}</Column>}
@@ -221,7 +223,7 @@ const SummarizedSectionsTableContainer = props => {
 
 const WrappedComponent = withTableLogic(SummarizedSectionsTableContainer);
 
-export default React.memo(WrappedComponent, areEqual)
+export default React.memo(WrappedComponent, areEqual);
 
 function areEqual(prevProps, nextProps) {
   if (
@@ -232,10 +234,9 @@ function areEqual(prevProps, nextProps) {
 }
 
 const defaultheaderStyle = {
-  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",
-  height: "32px",
+  height: "34px",
   alignItems: "center"
 };

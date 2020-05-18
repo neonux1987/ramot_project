@@ -15,12 +15,12 @@ export default ({
   marginTop = "20px",
   marginBottom = "20px",
   children,
-  iconBoxBg,
+  iconColor = "#0365a2",
   title,
   extraDetails,
   collapsable = true,
   bgColor = "initial",
-  padding = "20px 0 0",
+  padding = "20px 15px 0 15px",
   loading = false
 }) => {
 
@@ -46,7 +46,7 @@ export default ({
     return (<div className={styles.wrapper} onClick={expandClick}>
 
       <div className={styles.titleWrapper}>
-        <div className={styles.iconBox} style={{ backgroundColor: iconBoxBg }}>
+        <div className={styles.iconBox} style={{ color: iconColor }}>
           {TitleIcon && <TitleIcon />}
         </div>
         <Typography className={styles.title}>

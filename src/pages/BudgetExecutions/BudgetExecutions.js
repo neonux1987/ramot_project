@@ -74,8 +74,6 @@ const BudgetExecutions = props => {
                 marginBottom={"100px"}
                 title={TABLE_TITLE}
                 TitleIcon={TableChart}
-                iconBoxBg={"rgb(126, 89, 197)"}
-                padding={"10px"}
                 extraDetails={props.dateDetails(onlyDate)}
               >
                 <BudgetExecutionsTableContainer

@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Drawer } from '@material-ui/core';
+import { Settings } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 
@@ -16,6 +17,7 @@ import LoadingCircle from '../components/LoadingCircle';
 
 // ACTIONS
 import { fetchSidebar } from '../redux/actions/sidebarActions';
+import SpinningButton from '../components/SpinningButton/SpinningButton';
 
 const Sidebar = () => {
   let toggleSidebarAnimation = "";
@@ -43,6 +45,22 @@ const Sidebar = () => {
 
 
       <Menu data={menu.data} routeState={routeState} />
+
+      <div className={styles.settingsWrapper}>
+
+        <SpinningButton
+          Icon={Settings}
+          to={{
+            pathname: `/הגדרות`,
+            state: {
+              page: "הגדרות",
+              buildingName: "",
+              buildingNameEng: ""
+            }
+          }}
+          active={routeState.buildingName === "הגדרות"}
+        />
+      </div>
 
       <div className={styles.developedByWrapper}>
         <span className={styles.ndtsText}>NDTS</span>

@@ -5,7 +5,7 @@ import Spinner from '../Spinner/Spinner';
 
 import { Virtuoso } from 'react-virtuoso';
 
-export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, dataSaved }) => {
+export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) => {
 
   const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
     <Virtuoso

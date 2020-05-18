@@ -1,0 +1,23 @@
+.spinner {
+    animation: spin 7s linear infinite;
+  }
+  
+  .spinner:hover{
+  animation-play-state: paused;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .icon{
+    color: #cbcdda;
+    font-size: 32px;
+  }
+
+  .navLink{
+    display: flex;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }

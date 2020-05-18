@@ -207,7 +207,9 @@ class ExpansesCodes extends React.PureComponent {
 
     const section = this.getSection(rowData["summarized_section_id"]);
 
-    return <Row style={{ minHeight: "35px" }} gridTemplateColumns={this.getGridTemplateColumns()}>
+    const odd = index % 2 === 0 ? "" : "rgba(0, 0, 0, 0.02)";
+
+    return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={this.getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData, index)} /> : null}
       <Column>{index + 1}</Column>
       {editMode ? numberInput("code", rowData["code"], index, this.onBlurHandler) : <Column>{rowData["code"]}</Column>}
@@ -257,7 +259,7 @@ class ExpansesCodes extends React.PureComponent {
     const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
 
     //show or hide based of the add new mode status
-    const renderAddewExpanse = addNewMode ? <WrappedAddNewBox submitHandler={this.addNewSubmitHandler} summarizedSections={this.props.summarizedSections.data} /> : null;
+    const renderAddNewExpanse = addNewMode ? <WrappedAddNewBox submitHandler={this.addNewSubmitHandler} summarizedSections={this.props.summarizedSections.data} /> : null;
 
     return (
       <TableWrapper>
@@ -275,7 +277,7 @@ class ExpansesCodes extends React.PureComponent {
           } // end rightPane
         /> {/* end TableControls */}
 
-        {renderAddewExpanse}
+        {renderAddNewExpanse}
 
         <Table
           Row={this.Row}
@@ -309,10 +311,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 );
 
 const defaultheaderStyle = {
-  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",
-  height: "27px",
+  height: "34px",
   alignItems: "center"
 };

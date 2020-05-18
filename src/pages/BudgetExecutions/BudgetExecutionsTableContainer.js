@@ -224,27 +224,29 @@ const BudgetExecutionsTable = props => {
 
     const months = Helper.getQuarterMonths(quarter);
 
+    const defaultStyle = {
+      border: "none",
+      height: "34px"
+    }
+
     const monthColumns = months.map((month, i) => {
       return <GroupColumn
         span={2}
-        bgColor={groupColors[i]}
+        color={groupColors[i]}
         key={i}
+        style={defaultStyle}
       >{month}</GroupColumn>;
     });
 
-    const defaultStyle = {
-      border: "none"
-    }
-
-    return <GroupRow
-      gridTemplateColumns={getGridTemplateColumns()} >
+    return <GroupRow gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
       <GroupColumn style={defaultStyle}></GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
       {monthColumns}
       <GroupColumn
         span={3}
-        bgColor={groupColors[3]}
+        color={groupColors[3]}
+        style={defaultStyle}
       >{`סוף רבעון ${quarter}`}</GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
@@ -268,7 +270,7 @@ const BudgetExecutionsTable = props => {
       color: groupColors[3]
     }
 
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} >
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
@@ -311,7 +313,9 @@ const BudgetExecutionsTable = props => {
 
     const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
 
-    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={getGridTemplateColumns()}>
+    const odd = index % 2 === 0 ? "" : "rgba(0, 0, 0, 0.02)";
+
+    return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(index, rowData)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
@@ -397,10 +401,9 @@ const ConnectedComponent = withTableLogic(BudgetExecutionsTable);
 export default React.memo(ConnectedComponent, areEqual);
 
 const defaultheaderStyle = {
-  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",
-  height: "27px",
+  height: "34px",
   alignItems: "center"
 };

@@ -157,17 +157,17 @@ const SummarizedBudgetsTableContainer = props => {
 
     const quarters = Helper.getYearQuarters(quarter);
 
-    const quarterColumns = quarters.map((quarter, i) => {
-      return <GroupColumn
-        span={2}
-        bgColor={groupColors[i]}
-        key={i}
-      >{quarter}</GroupColumn>;
-    });
-
     const defaultStyle = {
       border: "none"
     }
+
+    const quarterColumns = quarters.map((quarter, i) => {
+      return <GroupColumn
+        span={2}
+        color={groupColors[i]}
+        key={i}
+      >{quarter}</GroupColumn>;
+    });
 
     return <GroupRow
       gridTemplateColumns={getGridTemplateColumns()} >
@@ -177,7 +177,7 @@ const SummarizedBudgetsTableContainer = props => {
       {quarterColumns}
       <GroupColumn
         span={3}
-        bgColor={groupColors[4]}
+        color={groupColors[4]}
       >{`סוף שנת ${year}`}</GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
     </GroupRow>
@@ -198,7 +198,7 @@ const SummarizedBudgetsTableContainer = props => {
       color: groupColors[4]
     }
 
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} >
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
@@ -231,7 +231,9 @@ const SummarizedBudgetsTableContainer = props => {
       quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_execution`}>{rowData[`quarter${i}_execution`]}</NonZeroNumberColumn>);
     }
 
-    return <Row key={index} style={{ minHeight: "35px" }} gridTemplateColumns={getGridTemplateColumns()}>
+    const odd = index % 2 === 0 ? "" : "rgba(0, 0, 0, 0.02)";
+
+    return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
@@ -308,10 +310,9 @@ const ConnectedComponent = withTableLogic(SummarizedBudgetsTableContainer);
 export default React.memo(ConnectedComponent, areEqual);
 
 const defaultheaderStyle = {
-  backgroundColor: "#fbfbfb",
   color: "#000000",
   fontWeight: "600",
   justifyContent: "center",
-  height: "27px",
+  height: "34px",
   alignItems: "center"
 };

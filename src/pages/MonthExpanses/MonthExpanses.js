@@ -48,7 +48,6 @@ const MonthExpanses = props => {
                   title={TABLE_TITLE}
                   TitleIcon={TableChart}
                   extraDetails={props.dateDetails(onlyDate)}
-                  padding={"10px"}
                 >
 
                   <MonthExpansesTableContainer

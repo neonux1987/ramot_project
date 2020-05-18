@@ -66,6 +66,16 @@
   margin-top: 10px;
 }
 
+.settingsWrapper{
+  padding: 10px;
+  position: fixed;
+  bottom: 62px;
+  width: 240px;
+  display: flex;
+  justify-content: flex-start;
+  user-select: none;
+}
+
 .developedByWrapper {
   position: fixed;
   bottom: 0;
