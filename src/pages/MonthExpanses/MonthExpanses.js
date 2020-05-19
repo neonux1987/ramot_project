@@ -27,7 +27,7 @@ const MonthExpanses = props => {
   const { buildingNameEng } = props.location.state;
 
   return (
-    <Fragment>
+    <div className={"page"}>
 
       {/* <Header bgColor="rgb(129, 86, 234)">
         {PAGE_TITLE}
@@ -66,7 +66,7 @@ const MonthExpanses = props => {
         }}
       </DateProvider>
 
-    </Fragment>
+    </div>
   );
 }
 

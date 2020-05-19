@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { Element, Events } from 'react-scroll'
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 // PAGES
 import MonthExpanses from '../pages/MonthExpanses/MonthExpanses';
@@ -23,6 +24,9 @@ import Helper from '../helpers/Helper';
 // ACTIONS
 import * as sidebarActions from '../redux/actions/sidebarActions';
 import * as routesActions from '../redux/actions/routesActions';
+
+// CSS
+import { fade } from '../TransitionsCss/fade.module.css';
 
 const styles = theme => ({
   main: {
@@ -120,6 +124,8 @@ class MainContainer extends Component {
     if (this.props.sidebar.menu.isFetching) {
       return <AppLoader style={{ width: "100%" }} loading={this.props.sidebar.menu.isFetching} />;
     } else {
+      const timeout = { enter: 800, exit: 400 };
+
       return (
         <Element id="mainContainer" className={this.props.classes.main + this.props.toggleMain}>
           <main ref={this.props.mainContainer}>
@@ -130,23 +136,36 @@ class MainContainer extends Component {
               quarter={Helper.getCurrentQuarterHeb()}
               month={Helper.getCurrentMonthHeb()}
             />
-            <div /* style={{ padding: "15px 24px 24px 24px" }} */ style={{ height: "100%", paddingBottom: "80px" }}>
-              <Switch>
-                {this.generateRoutes(this.props.sidebar.menu.data)}
-                <Route path="/דף-הבית" component={Home} />
-                <Route path="/הגדרות"
-                  render={routeProps => (
-                    <Settings {...routeProps} />
-                  )}
-                />
-                <Route path="/ניהול" component={Management} />
-                <Route exact path="/" component={Home} history={{
-                  page: "דף-הבית",
-                  buildingName: "דף הבית",
-                  buildingNameEng: "home"
-                }} />
-              </Switch>
-            </div>
+
+            <Route render={({ location }) => (
+              <TransitionGroup>
+                <CSSTransition
+                  style={{ height: "100%", paddingBottom: "80px" }}
+                  //key={location.key}
+                  timeout={timeout}
+                  className={fade}
+                  mountOnEnter={false}
+                  unmountOnExit={true}
+                >
+                  <Switch location={location}>
+                    {this.generateRoutes(this.props.sidebar.menu.data)}
+                    <Route path="/דף-הבית" component={Home} />
+                    <Route path="/הגדרות"
+                      render={routeProps => (
+                        <Settings {...routeProps} />
+                      )}
+                    />
+                    <Route path="/ניהול" component={Management} />
+                    <Route exact path="/" component={Home} history={{
+                      page: "דף-הבית",
+                      buildingName: "דף הבית",
+                      buildingNameEng: "home"
+                    }} />
+                  </Switch>
+                </CSSTransition>
+              </TransitionGroup>
+            )} />
+
           </main>
         </Element>
       );

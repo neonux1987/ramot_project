@@ -81,9 +81,9 @@ async function createWindow() {
   });
 
   //add react dev tools
-  /* BrowserWindow.addDevToolsExtension(
-    path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.0_0')
-  ); */
+  BrowserWindow.addDevToolsExtension(
+    path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
+  );
 
   powerMonitor.on('resume', () => {
     console.log('The system is up');

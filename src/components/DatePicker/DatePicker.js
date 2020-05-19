@@ -50,6 +50,10 @@ const DatePicker = ({
 
     // cleanup
     const cleanup = () => {
+      // because we're doing page effect transition which shows 2 
+      // pages at the same time for 300ms, when dispatching the cleanup for years,
+      // it overwrites the reducer state of the new mounted page that also
+      // fetching the registered years
       dispatch((registeredYearsActions.cleanupYears(buildingName)))
       if (quarter)
         dispatch((registeredQuartersActions.cleanupQuarters(buildingName)))

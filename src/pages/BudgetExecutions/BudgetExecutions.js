@@ -57,7 +57,7 @@ const BudgetExecutions = props => {
           const onlyDate = date[buildingNameEng];
 
           return (
-            <Fragment>
+            <div className={"page"}>
 
               <StyledExpandableSection
                 title={STATS_TITLE}
@@ -86,7 +86,7 @@ const BudgetExecutions = props => {
                 />
               </StyledExpandableSection>
 
-            </Fragment>
+            </div>
           );
         }
       }}
