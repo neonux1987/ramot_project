@@ -133,7 +133,7 @@ const App = () => {
       }
 
       ipcRenderer.on('update_available', (event, updateInfo) => {
-        myToaster.info(`קיימת גירסה יותר חדשה להורדה ${updateInfo.version}`)
+        myToaster.info(`זה עובד כפרה עובד ${updateInfo.version}`)
       });
       ipcRenderer.on('update_downloaded', () => {
         myToaster.info("הורדת העידכון הסתיימה, האם לעדכן עכשיו?")
