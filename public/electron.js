@@ -57,11 +57,11 @@ async function createWindow() {
     backgroundColor: "#eee",
     frame: false,
     resizeable: false,
-    //show: false
+    show: false
   });
 
   mainWindow.maximize();
-  //mainWindow.show();
+  mainWindow.show();
 
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
 
@@ -131,16 +131,6 @@ if (!gotTheLock) {
 
 mainSystem.startSystem();
 
-autoUpdater.on('update-available', () => {
-  mainWindow.webContents.send('update_available');
-});
-autoUpdater.on('update-downloaded', () => {
-  mainWindow.webContents.send('update_downloaded');
-});
-
-ipcMain.on('restart_app', () => {
-  autoUpdater.quitAndInstall();
-});
 
 
 
