@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select, FormControl } from '@material-ui/core';
 import { formControl, select } from './SelectDropDown.module.css';
 
-const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler, index, name }) => {
+const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler, index, name, item }) => {
 
   const onChangeHandler = (event) => {
     const target = event.target;
     selectChangeHandler(target.name, target.value, index);
   }
+
+  const [menuItem, setMenuItem] = useState(item);
+
+  const display = menuItem ? menuItem : itemsArr;
 
   return (
     <FormControl className={formControl}>
@@ -15,10 +19,10 @@ const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler,
         className={select}
         name={name}
         value={targetValue}
-        renderValue={(value) => value}
         onChange={onChangeHandler}
+        onOpen={() => setMenuItem(null)}
       >
-        {itemsArr}
+        {display}
       </Select>
     </FormControl>
   );

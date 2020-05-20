@@ -264,3 +264,14 @@ border: none;
   background: #f18d12;
   font-size: 16px;
 }
+
+
+/** perfect scrollbar overrides **/
+.ps__rail-y{
+  background: none;
+  border-radius: 6px;
+}
+
+.ps__thumb-y {
+  background-color: #f5f3f3;
+}
