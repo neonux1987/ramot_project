@@ -82,7 +82,7 @@ const App = () => {
       //play welcome sound when settings loaded
       playSound(soundTypes.welcome);
     });
-
+    myToaster.appUpdate();
   }, [dispatch])
 
   useEffect(() => {
