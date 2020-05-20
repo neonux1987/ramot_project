@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { myToasts } from '../../../CustomToasts/myToasts';
+import { myToaster } from '../../../Toasts/toastManager';
 
 export const ipcSendReceive = (details) => {
   const
@@ -33,7 +33,7 @@ export const ipcSendReceive = (details) => {
     });
   }).catch(result => {
     if (withError)
-      myToasts.error(result.error);
+      myToaster.error(result.error);
   });
 }
 

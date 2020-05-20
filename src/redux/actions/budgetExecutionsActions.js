@@ -1,7 +1,7 @@
 import * as monthlyStatsActions from './monthlyStatsActions';
 import * as quarterlyStatsActions from './quarterlyStatsActions';
 import { ipcSendReceive } from './util/util';
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 
 // TYPES
 export const TYPES = {
@@ -117,7 +117,7 @@ export const deleteBudgetExecution = (buildingName, date, index, rollbackData) =
       receive: {
         channel: "budget-execution-deleted"
       },
-      onSuccess: () => myToasts.success("השורה נמחקה בהצלחה."),
+      onSuccess: () => myToaster.success("השורה נמחקה בהצלחה."),
       onError: (result) => {
         dispatch(addBudgetExecutionInStore(buildingName, rollbackDataCopy, sortByCode));
       }
@@ -148,7 +148,7 @@ export const addBudgetExecution = (params = Object) => {
         const { buildingName } = params;
         dispatch(addBudgetExecutionInStore(buildingName, result.data, sortByCode));
 
-        myToasts.success("השורה נוספה בהצלחה.");
+        myToaster.success("השורה נוספה בהצלחה.");
       }
     });
   }
@@ -228,7 +228,7 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
       receive: {
         channel: "budget-execution-updated",
       },
-      onSuccess: () => myToasts.success("השורה עודכנה בהצלחה."),
+      onSuccess: () => myToaster.success("השורה עודכנה בהצלחה."),
       onError: () => {
         //rollback to the old budget execution object
         dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingName));

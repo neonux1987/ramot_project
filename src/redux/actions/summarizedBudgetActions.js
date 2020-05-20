@@ -1,4 +1,4 @@
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 import { ipcSendReceive } from './util/util';
 
 
@@ -96,7 +96,7 @@ export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
       receive: {
         channel: "summarized-budget-updated"
       },
-      onSuccess: () => myToasts.success("השורה עודכנה בהצלחה."),
+      onSuccess: () => myToaster.success("השורה עודכנה בהצלחה."),
       onError: () => updateSummarizedBudgetInStore(buildingName, oldCopy, index)
     });
 

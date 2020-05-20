@@ -1,6 +1,6 @@
 import { saveSettings, updateSettings } from './settingsActions';
 import { ipcSendReceive } from './util/util';
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 
 // TYPES
 export const TYPES = {
@@ -87,7 +87,7 @@ export const startService = (serviceName) => {
         dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
 
-        myToasts.success("השירות הופעל בהצלחה.");
+        myToaster.success("השירות הופעל בהצלחה.");
       },
       onError: () => {
         // on service falied to start
@@ -139,7 +139,7 @@ export const stopService = (serviceName) => {
         dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
 
-        myToasts.success("השירות הופסק בהצלחה.");
+        myToaster.success("השירות הופסק בהצלחה.");
       },
       onError: () => {
         // on service falied to start
@@ -178,7 +178,7 @@ export const restartService = (serviceName) => {
       onSuccess: () => {
         settingsData.restartRequired = false;
         updateSettings(serviceName, settingsData);
-        myToasts.success("השירות אותחל בהצלחה.");
+        myToaster.success("השירות אותחל בהצלחה.");
       },
       onError: () => {
         settingsData.restartRequired = true;
@@ -200,7 +200,7 @@ export const startAllServices = () => {
         channel: "all-services-started"
       },
       onSuccess: (reult) => {
-        myToasts.success("השירותים אותחלו בהצלחה וכעט פועלים ברקע.");
+        myToaster.success("השירותים אותחלו בהצלחה וכעט פועלים ברקע.");
       }
     });
 
@@ -218,7 +218,7 @@ export const stopAllServices = () => {
         channel: "all-services-stopped"
       },
       onSuccess: (reult) => {
-        myToasts.success("השירותים הופסקו בהצלחה.");
+        myToaster.success("השירותים הופסקו בהצלחה.");
       }
     });
 

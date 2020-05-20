@@ -1,3 +1,8 @@
+.basic{
+  background: #ffffff !important;
+  border-radius: 4px !important;
+}
+
 .info,.warning,.error,.success{
   background: #ffffff !important;
   border-radius: 4px !important;

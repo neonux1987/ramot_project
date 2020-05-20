@@ -1,5 +1,5 @@
 import { ipcSendReceive } from './util/util';
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 
 // TYPES
 export const TYPES = {
@@ -87,7 +87,7 @@ export const addExpanseCode = (expanseCode) => {
 
         dispatch(addStoreOnly(expanseCode));
         //send success notification
-        myToasts.success("הקוד נוסף בהצלחה.");
+        myToaster.success("הקוד נוסף בהצלחה.");
       },
       onError: (result) => {
         //let react know that an erro occured while trying to fetch
@@ -144,7 +144,7 @@ export const updateExpanseCode = (newCopy, oldCopy, index) => {
       },
       onSuccess: () => {
         //send success notification
-        myToasts.success("הקוד עודכן בהצלחה.");
+        myToaster.success("הקוד עודכן בהצלחה.");
       },
       onError: () => {
         // rollback
@@ -176,7 +176,7 @@ export const deleteExpanseCode = (id, oldCopy, index) => {
       },
       onSuccess: (result) => {
         //send success notification
-        myToasts.success("הקוד נמחקה בהצלחה.");
+        myToaster.success("הקוד נמחקה בהצלחה.");
       },
       onError: () => {
         //delete the item in store first

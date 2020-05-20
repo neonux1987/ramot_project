@@ -1,9 +1,22 @@
+import React from 'react';
 import { toast } from "react-toastify";
-import styles from './myToasts.module.css'
+import styles from './toastManager.module.css'
 import { playSound, soundTypes } from "../audioPlayer/audioPlayer";
+import AppUpdateToast from "./CustomToasts/AppUpdateToast/AppUpdateToast";
 
-export const myToasts = {
+export const myToaster = {
 
+  appUpdate: (content = <AppUpdateToast />, properties = {}) => (
+    toast.info(content, {
+      className: styles.basic,
+      ...properties,
+      onOpen: () => {
+        properties && properties.onOpen && properties.onOpen();
+        playSound(soundTypes.update);
+      },
+      autoClose: false
+    })
+  ),
   info: (content, properties = {}) => (
     toast.info(content, {
       className: styles.info,
@@ -13,8 +26,7 @@ export const myToasts = {
         playSound(soundTypes.message);
       }
     })
-  )
-  ,
+  ),
   success: (content, properties) => (
     toast.success(content, {
       className: styles.success,

@@ -1,5 +1,5 @@
 import { ipcSendReceive } from './util/util';
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 
 export const TYPES = {
   TABLE_SETTINGS_REQUEST: "REQUEST_TABLE_SETTINGS",
@@ -46,7 +46,7 @@ export const updateTableSettings = (pageName, settings) => {
         channel: "updated-table-settings"
       },
       onSuccess: result => dispatch(receiveTableSettings(pageName, result.data)),
-      onError: result => myToasts.error(result.error)
+      onError: result => myToaster.error(result.error)
     });
 
   }

@@ -36,7 +36,7 @@ import HeaderRow from '../../components/table/HeaderRow';
 import withTableLogic from '../../HOC/withTableLogic';
 
 // AUDIO
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 
 const MonthExpansesTableContainer = props => {
 
@@ -81,7 +81,7 @@ const MonthExpansesTableContainer = props => {
       await dispatch(initMonthExpansesState(params.buildingName));
 
       dispatch(fetchMonthExpanses(params)).catch((result) => {
-        myToasts.info(result.error)
+        myToaster.info(result.error)
       });
 
       dispatch(fetchExpansesCodesByStatus("active"));
@@ -95,7 +95,7 @@ const MonthExpansesTableContainer = props => {
     const valid = validateFormInputs(formInputs);
     if (!valid) {
       // send the error to the notification center
-      myToasts.error("קוד או שם חשבון לא יכולים להיות ריקים");
+      myToaster.error("קוד או שם חשבון לא יכולים להיות ריקים");
       return;
     }
 

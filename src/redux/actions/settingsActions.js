@@ -1,4 +1,4 @@
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 import { ipcSendReceive } from './util/util';
 
 // TYPES
@@ -102,7 +102,7 @@ export const saveSettings = (notifOn = true) => {
       },
       onSuccess: () => {
         if (notifOn)
-          myToasts.success("ההגדרות נשמרו בהצלחה.")
+          myToaster.success("ההגדרות נשמרו בהצלחה.")
       },
       onError: result => dispatch(fetchingFailed(result.error))
     });

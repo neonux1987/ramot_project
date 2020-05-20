@@ -1,11 +1,13 @@
-import error from '../assets/audio/error.wav'
-import message from '../assets/audio/message.wav'
-import welcome from '../assets/audio/welcome.wav'
+import error from '../assets/audio/error.wav';
+import message from '../assets/audio/message.wav';
+import welcome from '../assets/audio/welcome.wav';
+import update from '../assets/audio/update.mp3';
 
 export const soundTypes = {
   error: "error",
   message: "message",
-  welcome: "welcome"
+  welcome: "welcome",
+  update: "update"
 }
 
 export const playSound = (type) => {
@@ -24,6 +26,10 @@ export const playSound = (type) => {
       break;
     case "welcome":
       audio.src = welcome;
+      audio.volume = 0.15;
+      break;
+    case "update":
+      audio.src = update;
       audio.volume = 0.15;
       break;
     default:

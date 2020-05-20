@@ -24,7 +24,7 @@ import './assets/css/style.css';
 // CONTAINERS
 import MainContainer from './Main/MainContainer';
 import ModalRoot from './components/modals/ModalRoot';
-import { myToasts } from './CustomToasts/myToasts';
+import { myToaster } from './Toasts/toastManager';
 import CustomCloseButton from './components/CustomCloseButton/CustomCloseButton';
 
 // SOUND
@@ -71,11 +71,11 @@ const App = () => {
   useEffect(() => {
     ipcRenderer.on('update_available', () => {
       ipcRenderer.removeAllListeners('update_available');
-      myToasts.info("המערכת זיהתה גירסה יותר עדכנית 1.0.1");
+      myToaster.info("המערכת זיהתה גירסה יותר עדכנית 1.0.1");
     });
     ipcRenderer.on('update_downloaded', () => {
       ipcRenderer.removeAllListeners('update_downloaded');
-      myToasts.info("המערכת הורידה את העדכון והוא מוכן להתקנה.");
+      myToaster.info("המערכת הורידה את העדכון והוא מוכן להתקנה.");
     });
 
     dispatch(fetchSettings()).then(() => {
@@ -91,23 +91,23 @@ const App = () => {
       let toastId = null;
       switch (action) {
         case "dbBackupStarted":
-          toastId = myToasts.info(<ToastRender spinner={true} message={message} />, {
+          toastId = myToaster.info(<ToastRender spinner={true} message={message} />, {
             autoClose: false
           });
           setState({ toastId });
           break;
         case "dbBackupFinished":
-          myToasts.update(state.toastId, {
+          myToaster.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: myToasts.TYPE.SUCCESS,
+            type: myToaster.TYPE.SUCCESS,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
           break;
         case "dbBackupError":
-          myToasts.update(state.toastId, {
+          myToaster.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: myToasts.TYPE.ERROR,
+            type: myToaster.TYPE.ERROR,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
@@ -119,7 +119,7 @@ const App = () => {
           setState({ toastId: toastId });
           break;
         case "reportsGenerationFinished":
-          myToasts.update(state.toastId, {
+          myToaster.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
             type: toast.TYPE.SUCCESS,
             delay: 2000,
@@ -127,7 +127,7 @@ const App = () => {
           });
           break;
         case "systemError":
-          myToasts.error(message);
+          myToaster.error(message);
           break;
         default: return null;
       }
@@ -149,15 +149,15 @@ const App = () => {
     //const window = remote.getCurrentWindow();
     //window.close();
 
-    const id = myToasts.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס הנתונים לפני יציאה..."} />, {
+    const id = myToaster.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס הנתונים לפני יציאה..."} />, {
       autoClose: false
     });
 
 
     const promise = await initiateDbBackup().catch((result) => {
-      myToasts.update(id, {
+      myToaster.update(id, {
         render: <ToastRender message={"המערכת לא הצליחה לבצע גיבוי לבסיס נתונים, מבצעת יציאה..."} />,
-        type: myToasts.TYPE.ERROR,
+        type: myToaster.TYPE.ERROR,
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
@@ -168,9 +168,9 @@ const App = () => {
 
     // success
     if (promise)
-      myToasts.update(id, {
+      myToaster.update(id, {
         render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
-        type: myToasts.TYPE.SUCCESS,
+        type: myToaster.TYPE.SUCCESS,
         delay: 2000,
         autoClose: 2500,
         onClose: () => {

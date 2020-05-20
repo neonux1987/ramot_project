@@ -1,5 +1,5 @@
 import { ipcSendReceive } from './util/util';
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 
 /**
  * fetch general settings
@@ -71,7 +71,7 @@ const updateGeneralSettings = (params = Object, tableData) => {
         //success store the data
         dispatch(receiveGeneralSettings(tableData));
 
-        myToasts.success("ההגדרות עודכנו בהצלחה.");
+        myToaster.success("ההגדרות עודכנו בהצלחה.");
       }
     });
 
@@ -92,7 +92,7 @@ const updateVat = (params = Object) => {
       onSuccess: (result) => {
         dispatch(updateVatInStore(params.settings.tax));
 
-        myToasts.success('המע"מ עודכן בהצלחה.');
+        myToaster.success('המע"מ עודכן בהצלחה.');
       }
     });
 

@@ -1,5 +1,5 @@
 import { ipcSendReceive } from './util/util';
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 
 // TYPES
 export const TYPES = {
@@ -113,7 +113,7 @@ export const addMonthExpanse = (params = Object, expanse = Object) => {
         //success store the data
         dispatch(addMonthExpanseInStore(expanse, params.buildingName, sortByCode));
 
-        myToasts.success("השורה נוספה בהצלחה.");
+        myToaster.success("השורה נוספה בהצלחה.");
       },
       onError: (result) => {
         //let react know that an erro occured while trying to fetch
@@ -149,7 +149,7 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
       },
       onSuccess: () => {
         // send success notification
-        myToasts.success("השורה עודכנה בהצלחה.");
+        myToaster.success("השורה עודכנה בהצלחה.");
       },
       onError: () => {
         // rollback to old expanse
@@ -188,7 +188,7 @@ export const deleteMonthExpanse = (params = Object, index = Number) => {
       onSuccess: () => {
         dispatch(deleteMonthExpanseInStore(index, params.buildingName));
 
-        myToasts.success("השורה נמחקה בהצלחה.");
+        myToaster.success("השורה נמחקה בהצלחה.");
       }
     });
 

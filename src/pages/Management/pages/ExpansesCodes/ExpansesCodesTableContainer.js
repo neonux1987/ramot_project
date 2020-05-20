@@ -24,7 +24,7 @@ import withTableLogic from '../../../../HOC/withTableLogic';
 
 // CONTAINERS
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
-import { myToasts } from '../../../../CustomToasts/myToasts';
+import { myToaster } from '../../../../Toasts/toastManager';
 
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
@@ -123,7 +123,7 @@ const ExpansesCodes = props => {
     }
 
     if (!valid)
-      myToasts.error(message);
+      myToaster.error(message);
 
     return valid;
   }
@@ -147,13 +147,13 @@ const ExpansesCodes = props => {
     const valid = validateFormInputs(formInputs);
 
     if (!valid) {
-      myToasts.error("כל השדות לא יכולים להיות ריקים.");
+      myToaster.error("כל השדות לא יכולים להיות ריקים.");
       return;
     }
 
     const exist = dataExist(formInputs.code);
     if (exist) {
-      myToasts.error("הקוד כבר קיים ברשימה, לא ניתן להוסיף את אותו הקוד.");
+      myToaster.error("הקוד כבר קיים ברשימה, לא ניתן להוסיף את אותו הקוד.");
       return;
     }
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { ipcSendReceive } from "../redux/actions/util/util";
-import { myToasts } from "../CustomToasts/myToasts";
+import { myToaster } from "../Toasts/toastManager";
 import ToastRender from "../components/ToastRender/ToastRender";
 
 export const restore = (payload, byList) => {
-  const toastId = myToasts.info(<ToastRender spinner={true} message={"המערכת מבצעת שיחזור של הבסיס נתונים..."} />, {
+  const toastId = myToaster.info(<ToastRender spinner={true} message={"המערכת מבצעת שיחזור של הבסיס נתונים..."} />, {
     autoClose: false
   });
 
@@ -16,18 +16,18 @@ export const restore = (payload, byList) => {
     receive: {
       channel: byList ? "db-restored-from-list" : "db-restored-from-file",
     },
-    onSuccess: () => myToasts.update(toastId, {
+    onSuccess: () => myToaster.update(toastId, {
       render: <ToastRender done={true} message={"השיחזור בוצע בהצלחה."} />,
-      type: myToasts.TYPE.SUCCESS,
+      type: myToaster.TYPE.SUCCESS,
       delay: 2000,
       autoClose: 1500,
       onClose: () => {
-        myToasts.info("המערכת מבצעת איתחול בשביל שהשינויים ייכנסו לתוקף.")
+        myToaster.info("המערכת מבצעת איתחול בשביל שהשינויים ייכנסו לתוקף.")
       }
     }),
-    onError: (result) => myToasts.update(toastId, {
+    onError: (result) => myToaster.update(toastId, {
       render: result.error,
-      type: myToasts.TYPE.ERROR,
+      type: myToaster.TYPE.ERROR,
       delay: 2000,
       autoClose: 3000
     }),

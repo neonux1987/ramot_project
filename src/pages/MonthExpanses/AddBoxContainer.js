@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import * as summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
 import * as expansesCodesActions from '../../redux/actions/expansesCodesActions';
-import { myToasts } from '../../CustomToasts/myToasts';
+import { myToaster } from '../../Toasts/toastManager';
 
 const styles = theme => ({
   container: {
@@ -231,7 +231,7 @@ class InputExpansesField extends Component {
   submit = () => {
     if (this.state.formInputs.section === "סעיף מסכם לא קיים")
       // send the error to the notification center
-      myToasts.error(`הוספת שורה נכשלה. 
+      myToaster.error(`הוספת שורה נכשלה. 
       קוד הנהלת חשבונות מקושר לסעיף מסכם שלא קיים. 
       נא צור את הסעיף בטבלת ניהול סעיפים מסכמים או קשר לסעיף אחר בטבלת ניהול ומעקב קודי הנהלת חשבונות`);
     else
