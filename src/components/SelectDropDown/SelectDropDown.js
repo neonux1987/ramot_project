@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select, FormControl } from '@material-ui/core';
-import styles from './SelectDropDown.module.css';
+import { formControl, select } from './SelectDropDown.module.css';
 
 const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler, index, name }) => {
 
@@ -10,10 +10,12 @@ const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler,
   }
 
   return (
-    <FormControl className={styles.formControl}>
+    <FormControl className={formControl}>
       <Select
+        className={select}
         name={name}
         value={targetValue}
+        renderValue={(value) => value}
         onChange={onChangeHandler}
       >
         {itemsArr}
@@ -21,12 +23,6 @@ const SelectDropDown = React.memo(({ targetValue, itemsArr, selectChangeHandler,
     </FormControl>
   );
 
-}, areEqual);
-
-function areEqual(prevProps, nextProps) {
-  if (prevProps.targetValue === nextProps.targetValue)
-    return true;
-  else return false;
-}
+});
 
 export default SelectDropDown;

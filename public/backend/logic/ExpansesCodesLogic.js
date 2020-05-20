@@ -36,7 +36,7 @@ class ExpansesCodesLogic {
     } else {
 
       if (expanseCode && expanseCode.status === "active") {
-        throw new LogicError(`הקוד ${expanseCode} כבר קיים ברשימה. לא ניתן להוסיף אותו קוד יותר מפעם אחת.`);
+        throw new LogicError(`הקוד ${expanseCode.code} כבר קיים ברשימה. לא ניתן להוסיף אותו קוד יותר מפעם אחת.`);
       }
 
       const returnedData = await this.expansesCodesDao.addExpanseCode(data);

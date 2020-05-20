@@ -1,7 +1,7 @@
 // LIBRARIES
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { Remove, Edit, RemoveCircle } from '@material-ui/icons';
+import { Remove, Edit } from '@material-ui/icons';
 import { RiFileAddLine } from 'react-icons/ri';
 import classnames from 'classnames';
 import { scroller } from 'react-scroll';

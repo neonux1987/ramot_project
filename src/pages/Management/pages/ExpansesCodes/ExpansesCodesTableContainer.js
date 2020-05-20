@@ -1,11 +1,11 @@
 // LIBRARIES
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { MenuItem } from '@material-ui/core';
 
 // ACTIONS
-import * as summarizedSectionsActions from '../../../../redux/actions/summarizedSectionsActions';
-import * as expansesCodesActions from '../../../../redux/actions/expansesCodesActions';
+import { fetchExpansesCodesByStatus, expansesCodesCleanup, updateExpanseCode, addExpanseCode, deleteExpanseCode } from '../../../../redux/actions/expansesCodesActions';
+import { fetchSummarizedSections } from '../../../../redux/actions/summarizedSectionsActions';
 
 // COMPONENTS
 import EditControls from '../../../../components/EditControls/EditControls';
@@ -29,15 +29,38 @@ import { myToasts } from '../../../../CustomToasts/myToasts';
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
-class ExpansesCodes extends React.PureComponent {
+const ExpansesCodes = props => {
 
-  state = {
-    sections: [],
-    selectItems: []
-  }
+  const {
+    editMode,
+    textInput,
+    numberInput,
+    toggleEditMode,
+    addNewMode,
+    toggleAddNewMode
+  } = props;
 
-  componentDidMount() {
-    this.props.fetchSummarizedSections("all").then((result) => {
+  const dispatch = useDispatch();
+
+  const [sections, setSections] = useState([]);
+
+  const [selectItems, setSelectItems] = useState([]);
+
+  const expansesCodes = useSelector(store => store.expansesCodes);
+
+  const summarizedSections = useSelector(store => store.summarizedSections);
+
+  const {
+    isFetching,
+    data
+  } = expansesCodes;
+
+  const cleanup = useCallback(() => {
+    dispatch(expansesCodesCleanup());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchSummarizedSections("all")).then((result) => {
       const dataArr = [];
 
       const selectItems = result.data.map((row, index) => {
@@ -48,39 +71,37 @@ class ExpansesCodes extends React.PureComponent {
         return <MenuItem value={row.id} key={row.id}>{row.section}</MenuItem>;
       })
 
-      this.setState({ sections: dataArr, selectItems });
+      setSections(dataArr);
+      setSelectItems(selectItems);
     });
     //get the building month expanses
-    this.props.fetchExpansesCodesByStatus("active");
+    dispatch(fetchExpansesCodesByStatus("active"));
+
+    return cleanup;
+  }, [dispatch, cleanup]);
+
+  const onBlurSelectHandler = (name, value, index) => {
+    onBlurAction(name, value, index);
   }
 
-  componentWillUnmount() {
-    //on exit init table data
-    this.props.expansesCodesCleanup();
-  }
-
-  onBlurSelectHandler = (name, value, index) => {
-    this.onBlurAction(name, value, index);
-  }
-
-  onBlurHandler = (event) => {
+  const onBlurHandler = (event) => {
     const target = event.target;
     const { key, index } = target.dataset;
     const { value } = target;
 
-    const rowData = this.getDataObject(index);
+    const rowData = getDataObject(index);
 
-    const valid = this.validateOnBlur(key, rowData.id, value);
+    const valid = validateOnBlur(key, rowData.id, value);
 
     if (!valid) {
       target.value = rowData[key];
       return;
     }
 
-    this.onBlurAction(key, value, index);
+    onBlurAction(key, value, index);
   }
 
-  validateOnBlur = (key, expanseCodeId, value) => {
+  const validateOnBlur = (key, expanseCodeId, value) => {
     let valid = true;
     let message = "";
 
@@ -89,7 +110,7 @@ class ExpansesCodes extends React.PureComponent {
       if (value.length < 1) {
         message = `קוד הנהח"ש לא יכול להיות פחות מ-1 ספרות`;
         valid = false;
-      } else if (this.dataExist(expanseCodeId, value)) {
+      } else if (dataExist(expanseCodeId, value)) {
         message = `לא ניתן להוסיף קוד הנהח"ש שכבר קיים.`;
         valid = false;
       }
@@ -107,57 +128,57 @@ class ExpansesCodes extends React.PureComponent {
     return valid;
   }
 
-  onBlurAction = (name, value, index) => {
-    const oldCopy = { ...this.props.expansesCodes.data[index] };
+  const onBlurAction = (name, value, index) => {
+    const oldCopy = { ...expansesCodes.data[index] };
     const newCopy = { ...oldCopy };
 
     // set the new value
     newCopy[name] = value;
 
-    this.props.updateExpanseCode(newCopy, oldCopy, index);
+    dispatch(updateExpanseCode(newCopy, oldCopy, index));
   }
 
 
-  getSection = (id) => {
-    return this.state.sections[id];
+  const getSection = (id) => {
+    return sections[id];
   }
 
-  addNewSubmitHandler = (formInputs) => {
-    const valid = this.validateFormInputs(formInputs);
+  const addNewSubmitHandler = (formInputs) => {
+    const valid = validateFormInputs(formInputs);
 
     if (!valid) {
       myToasts.error("כל השדות לא יכולים להיות ריקים.");
       return;
     }
 
-    const exist = this.dataExist(formInputs.code);
+    const exist = dataExist(formInputs.code);
     if (exist) {
       myToasts.error("הקוד כבר קיים ברשימה, לא ניתן להוסיף את אותו הקוד.");
       return;
     }
 
-    const expanseCode = this.parseFormInputs(formInputs);
-    this.props.addExpanseCode(expanseCode);
+    const expanseCode = parseFormInputs(formInputs);
+    dispatch(addExpanseCode(expanseCode));
   }
 
-  parseFormInputs = (formInputs) => {
+  const parseFormInputs = (formInputs) => {
     const copyFormInputs = { ...formInputs };
     copyFormInputs.code = Number.parseInt(formInputs.code);
     return copyFormInputs;
   }
 
-  validateFormInputs = (formInputs) => {
+  const validateFormInputs = (formInputs) => {
     if (formInputs.code === "" || formInputs.codeName === "" || formInputs.summarized_section_id === "") {
       return false;
     }
     return true;
   }
 
-  dataExist = (id, code) => {
+  const dataExist = (id, code) => {
     let valid = false;
     const parsedCode = Number.parseInt(code);
 
-    this.props.expansesCodes.data.forEach(item => {
+    expansesCodes.data.forEach(item => {
       if (item.code === parsedCode && item.id !== id) {
         valid = true;
       }
@@ -166,23 +187,21 @@ class ExpansesCodes extends React.PureComponent {
     return valid;
   }
 
-  deleteCodeExpanseHandler = (rowData, index) => {
+  const deleteCodeExpanseHandler = (rowData, index) => {
     const expanseCodeCopy = { ...rowData };
-    this.props.deleteExpanseCode(expanseCodeCopy.id, expanseCodeCopy, index);
+    dispatch(deleteExpanseCode(expanseCodeCopy.id, expanseCodeCopy, index));
   }
 
-  getGridTemplateColumns = () => {
-    return this.props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+  const getGridTemplateColumns = () => {
+    return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
-  getDataObject = (index) => {
-    return this.props.expansesCodes.data[index];
+  const getDataObject = (index) => {
+    return expansesCodes.data[index];
   }
 
-  HeadersRow = () => {
-    const editMode = this.props.editMode;
-
-    return <HeaderRow gridTemplateColumns={this.getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
+  const HeadersRow = () => {
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>
@@ -193,33 +212,27 @@ class ExpansesCodes extends React.PureComponent {
     </HeaderRow>
   }
 
-  Row = (index) => {
-    const {
-      editMode,
-      textInput,
-      numberInput
-    } = this.props;
-
+  const TableRow = (index) => {
     // row data
-    const rowData = this.getDataObject(index);
+    const rowData = getDataObject(index);
     // convert 1 or 0 (true or false) to text
     const with_vat = rowData.with_vat === 0 ? "לא" : "כן";
 
-    const section = this.getSection(rowData["summarized_section_id"]);
+    const section = getSection(rowData["summarized_section_id"]);
 
     const odd = index % 2 === 0 ? "" : "";
 
-    return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={this.getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => this.deleteCodeExpanseHandler(rowData, index)} /> : null}
+    return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
+      {editMode ? <TableActions deleteHandler={() => deleteCodeExpanseHandler(rowData, index)} /> : null}
       <Column>{index + 1}</Column>
-      {editMode ? numberInput("code", rowData["code"], index, this.onBlurHandler) : <Column>{rowData["code"]}</Column>}
-      {editMode ? textInput("codeName", rowData["codeName"], index, this.onBlurHandler) : <Column>{rowData["codeName"]}</Column>}
+      {editMode ? numberInput("code", rowData["code"], index, onBlurHandler) : <Column>{rowData["code"]}</Column>}
+      {editMode ? textInput("codeName", rowData["codeName"], index, onBlurHandler) : <Column>{rowData["codeName"]}</Column>}
       {editMode ?
         <SelectDropDown
           targetValue={rowData["summarized_section_id"]}
           index={index}
-          itemsArr={this.state.selectItems}
-          selectChangeHandler={this.onBlurSelectHandler}
+          itemsArr={selectItems}
+          selectChangeHandler={onBlurSelectHandler}
           name={"summarized_section_id"}
         /> :
         <Column style={{ color: section.status === "deleted" ? "red" : "initial" }}>
@@ -234,7 +247,7 @@ class ExpansesCodes extends React.PureComponent {
             <MenuItem value={0} key={0}>לא</MenuItem>,
             <MenuItem value={1} key={1}>כן</MenuItem>
           ]}
-          selectChangeHandler={this.onBlurSelectHandler}
+          selectChangeHandler={onBlurSelectHandler}
           name={"with_vat"}
         /> :
         <Column>{with_vat}</Column>}
@@ -242,73 +255,53 @@ class ExpansesCodes extends React.PureComponent {
     </Row>
   }
 
-  render() {
-    const {
-      editMode,
-      toggleEditMode,
-      addNewMode,
-      toggleAddNewMode
-    } = this.props;
+  //give the box a form functionality
+  const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
 
-    const {
-      isFetching,
-      data
-    } = this.props.expansesCodes;
+  //show or hide based of the add new mode status
+  const renderAddNewExpanse = addNewMode ? <WrappedAddNewBox submitHandler={addNewSubmitHandler} summarizedSections={summarizedSections.data} /> : null;
 
-    //give the box a form functionality
-    const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
+  return (
+    <TableWrapper>
 
-    //show or hide based of the add new mode status
-    const renderAddNewExpanse = addNewMode ? <WrappedAddNewBox submitHandler={this.addNewSubmitHandler} summarizedSections={this.props.summarizedSections.data} /> : null;
+      <TableControls
+        style={{ marginBottom: "7px" }}
+        editMode={editMode}
+        rightPane={
+          <EditControls
+            editMode={editMode}
+            toggleEditMode={toggleEditMode}
+            addNewMode={addNewMode}
+            toggleAddNewMode={toggleAddNewMode}
+          />
+        } // end rightPane
+      /> {/* end TableControls */}
 
-    return (
-      <TableWrapper>
+      {renderAddNewExpanse}
 
-        <TableControls
-          style={{ marginBottom: "7px" }}
-          editMode={editMode}
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              addNewMode={addNewMode}
-              toggleAddNewMode={toggleAddNewMode}
-            />
-          } // end rightPane
-        /> {/* end TableControls */}
+      <Table
+        Row={TableRow}
+        HeaderComponent={HeadersRow}
+        isFetching={isFetching || data.length === 0}
+        itemCount={data.length}
+      />
 
-        {renderAddNewExpanse}
-
-        <Table
-          Row={this.Row}
-          HeaderComponent={this.HeadersRow}
-          isFetching={isFetching || data.length === 0}
-          itemCount={data.length}
-        />
-
-      </TableWrapper>
-    );
-  }
+    </TableWrapper>
+  );
 
 }
 
-const mapStateToProps = state => ({
-  expansesCodes: state.expansesCodes,
-  summarizedSections: state.summarizedSections
-});
+const WrappedComponent = withTableLogic(ExpansesCodes);
 
-const mapDispatchToProps = dispatch => ({
-  fetchExpansesCodesByStatus: (status) => dispatch(expansesCodesActions.fetchExpansesCodesByStatus(status)),
-  updateExpanseCode: (newCopy, oldCopy, index) => dispatch(expansesCodesActions.updateExpanseCode(newCopy, oldCopy, index)),
-  addExpanseCode: (payload) => dispatch(expansesCodesActions.addExpanseCode(payload)),
-  deleteExpanseCode: (id, oldCopy, index) => dispatch(expansesCodesActions.deleteExpanseCode(id, oldCopy, index)),
-  expansesCodesCleanup: () => dispatch(expansesCodesActions.expansesCodesCleanup()),
-  fetchSummarizedSections: (status) => dispatch(summarizedSectionsActions.fetchSummarizedSections(status))
-});
+export default React.memo(WrappedComponent, areEqual);
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withTableLogic(ExpansesCodes)
-);
+function areEqual(prevProps, nextProps) {
+  if (
+    prevProps.editMode === nextProps.editMode &&
+    prevProps.addNewMode === nextProps.addNewMode
+  ) return true;
+  else return false;
+}
 
 const defaultheaderStyle = {
   color: "#000000",
