@@ -83,18 +83,19 @@ export default () => {
   }
 
   const onCheckBoxChangeHandler = (event) => {
-    const { name, checked } = event.target;
+    const { name } = event.target;
 
     if (name === "byList")
       setCheckBoxValue({
         byFile: false,
-        byList: checked
+        byList: true
       });
     else
       setCheckBoxValue({
         byList: false,
-        byFile: checked
+        byFile: true
       });
+
   };
 
   const restoreHandler = () => {

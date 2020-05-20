@@ -67,8 +67,12 @@ async function createWindow() {
 
   if (isDev) {
     // Open the DevTools.
-    //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     mainWindow.webContents.openDevTools();
+
+    //add react dev tools
+    BrowserWindow.addDevToolsExtension(
+      path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
+    );
   }
   mainWindow.on('closed', () => mainWindow = null);
 
@@ -80,18 +84,16 @@ async function createWindow() {
     autoUpdater.checkForUpdatesAndNotify();
   });
 
-  //add react dev tools
-  BrowserWindow.addDevToolsExtension(
-    path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
-  );
-
   powerMonitor.on('resume', () => {
     console.log('The system is up');
     //const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
   });
-
 }
 
+//-------------------------------------------------------------------
+// Will quit if a there's an instance already running,
+// otherwise create the instance
+//-------------------------------------------------------------------
 if (!gotTheLock) {
   app.quit()
 } else {
@@ -129,6 +131,10 @@ if (!gotTheLock) {
   });
 }
 
+//-------------------------------------------------------------------
+// Start the system
+// loads ipc's listeners and all the backend,services etc...
+//-------------------------------------------------------------------
 mainSystem.startSystem();
 
 
