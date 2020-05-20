@@ -85,7 +85,7 @@ const AddExpanseCode = (props) => {
         אפס
         </Button>
 
-      <Button style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => props.submitHandler(formInputs)} className={styles.button}>
+      <Button style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={() => props.submitHandler(formInputs)} className={styles.button}>
         הוסף
         </Button>
 
