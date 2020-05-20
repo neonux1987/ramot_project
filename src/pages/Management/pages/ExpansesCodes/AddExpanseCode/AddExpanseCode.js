@@ -81,7 +81,7 @@ const AddExpanseCode = (props) => {
         </Select>
       </FormControl>
 
-      <Button style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => props.reset({ code: "", codeName: "", summarized_section_id: "" }, setFormInput)} variant="contained" color="primary" className={styles.button}>
+      <Button style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => props.reset({ code: "", codeName: "", summarized_section_id: "", with_vat: 0 }, setFormInput)} variant="contained" color="primary" className={styles.button}>
         אפס
         </Button>
 
