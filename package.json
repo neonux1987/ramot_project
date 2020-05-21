@@ -76,6 +76,13 @@
         "github"
       ]
     },
+    "publish": {
+      "provider": "github",
+      "owner": "neonux1987",
+      "private": true,
+      "releaseType": "release",
+      "protocol": "https"
+    },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
