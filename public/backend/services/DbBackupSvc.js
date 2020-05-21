@@ -25,8 +25,10 @@ class DbBackupSvc {
     try {
       //fetch db backup settings
       settings = await this.settingsLogic.getSettings();
-    } catch (e) {
-      return Promise.reject(e);
+    } catch (error) {
+      const newError = new ServiceError(e.message, FILENAME, error);
+      this.logger.error(newError.toString())
+      throw newError;
     }
 
     const {
@@ -127,7 +129,7 @@ class DbBackupSvc {
   schedulerCallback = async () => {
     //notify that the backup process started
     rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
-    console.log("בוצע גיבוי לפי שעה");
+
     await this.initiateBackup()
       .then(() => {
         //notify that the backup process ended

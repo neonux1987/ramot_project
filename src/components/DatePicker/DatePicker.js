@@ -1,21 +1,13 @@
-// LIBRARIES
 import React, { useState, useEffect } from 'react';
 import { Select, MenuItem, InputLabel } from '@material-ui/core';
 import { pickerWrapper, pickerLabel, formSelect, formControl, dates, select } from './DatePicker.module.css';
-
-// COMPONENTS
 import Spinner from '../Spinner/Spinner';
 import { useSelector, useDispatch } from 'react-redux';
-
-// ACTIONS
 import * as registeredMonthsActions from '../../redux/actions/registeredMonthsActions';
 import * as registeredQuartersActions from '../../redux/actions/registeredQuartersActions';
 import * as registeredYearsActions from '../../redux/actions/registeredYearsActions';
 import { updateDate } from '../../redux/actions/dateActions';
-
-// UTILS
 import Helper from '../../helpers/Helper';
-import DefaultLoader from '../AnimatedLoaders/DefaultLoader';
 
 const DatePicker = ({
   quarter = false,
@@ -38,31 +30,22 @@ const DatePicker = ({
   const years = useSelector(store => store.registeredYears);
 
   useEffect(() => {
+    dispatch((registeredYearsActions.fetchRegisteredYears({ buildingName }))).then(() => {
+      if (month)
+        dispatch((registeredMonthsActions.fetchRegisteredMonths({
+          buildingName,
+          date: {
+            year: date.year
+          }
+        })));
 
-    // must initialize registered years for each building and page
-    const promise = dispatch((registeredYearsActions.initRegisteredYears(buildingName, pageName)));
-
-    promise.then(() => {
-
-      dispatch((registeredYearsActions.fetchRegisteredYears(buildingName, pageName))).then(() => {
-        if (month)
-          dispatch((registeredMonthsActions.fetchRegisteredMonths({
-            buildingName,
-            date: {
-              year: date.year
-            }
-          })));
-
-        if (quarter)
-          dispatch((registeredQuartersActions.fetchRegisteredQuarters({
-            buildingName,
-            date: {
-              year: date.year
-            }
-          })));
-
-      });
-
+      if (quarter)
+        dispatch((registeredQuartersActions.fetchRegisteredQuarters({
+          buildingName,
+          date: {
+            year: date.year
+          }
+        })));
     });
 
     // cleanup
@@ -71,7 +54,7 @@ const DatePicker = ({
       // pages at the same time for 300ms, when dispatching the cleanup for years,
       // it overwrites the reducer state of the new mounted page that also
       // fetching the registered years
-      dispatch((registeredYearsActions.initRegisteredYears(buildingName)))
+      dispatch((registeredYearsActions.cleanupYears(buildingName)))
       if (quarter)
         dispatch((registeredQuartersActions.cleanupQuarters(buildingName)))
       if (month)
@@ -79,7 +62,7 @@ const DatePicker = ({
     }
 
     return cleanup;
-  }, [month, quarter, dispatch, buildingName, pageName, date.year]);
+  }, [month, quarter, dispatch, buildingName, date.year]);
 
   useEffect(() => {
     dispatch(updateDate(pageName, buildingName, selectDate));
@@ -175,12 +158,6 @@ const DatePicker = ({
     });
     return exist;
   }
-  console.log(years);
-  const loading = years.buildings[buildingName] === undefined || years.buildings[buildingName][pageName] === undefined;
-
-  if (loading) {
-    return <DefaultLoader loading={loading} />
-  }
 
   //if months data exist, render it
   const renderMonths = !months.isFetching && months.data.length > 0 ?
@@ -217,7 +194,7 @@ const DatePicker = ({
     : <FormSelectDummy />;
 
   //if quarters data exist, render it
-  const renderYears = !years.buildings[buildingName][pageName].isFetching && years.buildings[buildingName][pageName].data.length > 0 && yearExist() ?
+  const renderYears = !years.isFetching && years.data.length > 0 && yearExist() ?
     <div className={pickerWrapper}>
       <InputLabel className={pickerLabel} id="label">שנה:</InputLabel>
       <Select
