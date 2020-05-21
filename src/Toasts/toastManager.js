@@ -2,12 +2,24 @@ import React from 'react';
 import { toast } from "react-toastify";
 import styles from './toastManager.module.css'
 import { playSound, soundTypes } from "../audioPlayer/audioPlayer";
-import AppUpdateToast from "./CustomToasts/AppUpdateToast/AppUpdateToast";
+import AppUpdateNewVersionToast from "./CustomToasts/AppUpdateNewVersionToast/AppUpdateNewVersionToast";
+import AppUpdateInstallToast from "./CustomToasts/AppUpdateInstallToast/AppUpdateInstallToast";
 
 export const myToaster = {
 
-  appUpdate: (content = <AppUpdateToast />, properties = {}) => (
-    toast.info(content, {
+  AppUpdateNewVersion: (version, properties = {}) => (
+    toast.info(<AppUpdateNewVersionToast version={version} />, {
+      className: styles.basic,
+      ...properties,
+      onOpen: () => {
+        properties && properties.onOpen && properties.onOpen();
+        playSound(soundTypes.update);
+      },
+      autoClose: false
+    })
+  ),
+  AppUpdateInstall: (version, properties = {}) => (
+    toast.info(<AppUpdateInstallToast version={version} />, {
       className: styles.basic,
       ...properties,
       onOpen: () => {

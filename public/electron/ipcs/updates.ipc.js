@@ -1,7 +1,9 @@
-const { ipcMain } = require('electron');
-const { autoUpdater } = require('electron-updater');
+const { ipcMain, BrowserWindow } = require('electron');
+const { autoUpdater, CancellationToken } = require('electron-updater');
 
 const updatesIpc = () => {
+
+  const currentWindow = BrowserWindow.getFocusedWindow();
 
   autoUpdater.on('checking-for-update', () => {
     console.log('Checking for update...');
@@ -11,11 +13,12 @@ const updatesIpc = () => {
     console.log('Update not available.');
   })
 
-  autoUpdater.on('update-available', () => {
-    mainWindow.webContents.send('update_available', autoUpdater.updateInfoAndProvider());
+  autoUpdater.on('update-available', (event) => {
+    currentWindow.webContents.send('update_available', event.version);
   });
   autoUpdater.on('update-downloaded', () => {
-    mainWindow.webContents.send('update_downloaded');
+    //currentWindow.webContents.send('update_downloaded');
+    console.log("downloaded");
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
@@ -30,6 +33,9 @@ const updatesIpc = () => {
   })
 
   ipcMain.on('update-app', () => {
+    appUpdater.downloadUpdate(cancellationToken).catch(() => {
+      cancellationToken.cancel();
+    });
     autoUpdater.quitAndInstall();
   });
 

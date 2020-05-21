@@ -81,9 +81,8 @@ async function createWindow() {
     mainSystem.startServices();
   });
 
-  mainWindow.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
-  });
+  autoUpdater.autoDownload = false;
+  autoUpdater.checkForUpdates();
 
   powerMonitor.on('resume', () => {
     console.log('The system is up');

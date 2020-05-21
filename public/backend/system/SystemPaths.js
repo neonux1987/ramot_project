@@ -20,8 +20,8 @@ const DB_BACKUPS_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db backups");
 // user documents
 const userDocuments = getDocumentsFolder();
 // user main folder
-USER_MAIN_FOLDER = path.join(userDocuments, `רמות מזח`);
-USER_REPORTS_FOLDER = path.join(USER_MAIN_FOLDER, `דוחות`);
+USER_DEFAULT_FOLDER = path.join(userDocuments, `רמות מזח`);
+USER_REPORTS_FOLDER = path.join(USER_DEFAULT_FOLDER, `דוחות`);
 
 // ndts setup files path
 const APP_ROOT_PATH = app.getAppPath();
@@ -35,7 +35,7 @@ module.exports = systemPaths = {
   db_folder_path: DB_FOLDER_PATH,
   db_file_path: DB_PATH,
   db_backup_folder_path: DB_BACKUPS_FOLDER_PATH,
-  user_main_folder: USER_MAIN_FOLDER,
+  user_default_folder: USER_DEFAULT_FOLDER,
   user_reports_folder: USER_REPORTS_FOLDER,
   setup_ndts_folder_path: SETUP_NDTS_FOLDER_PATH,
   app_root_path: APP_ROOT_PATH

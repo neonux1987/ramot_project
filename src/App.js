@@ -69,9 +69,10 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    ipcRenderer.on('update_available', () => {
+    ipcRenderer.on('update_available', (event, version) => {
       ipcRenderer.removeAllListeners('update_available');
-      myToaster.info("המערכת זיהתה גירסה יותר עדכנית 1.0.1");
+      myToaster.AppUpdateNewVersion(version);
+      myToaster.AppUpdateInstall(version);
     });
     ipcRenderer.on('update_downloaded', () => {
       ipcRenderer.removeAllListeners('update_downloaded');
@@ -82,7 +83,7 @@ const App = () => {
       //play welcome sound when settings loaded
       playSound(soundTypes.welcome);
     });
-    myToaster.appUpdate();
+
   }, [dispatch])
 
   useEffect(() => {
@@ -131,13 +132,6 @@ const App = () => {
           break;
         default: return null;
       }
-
-      ipcRenderer.on('update_available', (event, updateInfo) => {
-        myToaster.info(`כן ${updateInfo.version}`)
-      });
-      ipcRenderer.on('update_downloaded', () => {
-        myToaster.info("הורדת העידכון הסתיימה, האם לעדכן עכשיו?")
-      });
     };
 
     // when he state updates it re-runs useEffect again
