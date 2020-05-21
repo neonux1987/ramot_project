@@ -1,5 +1,5 @@
 {
-  "name": "ramot-mezach-dohot",
+  "name": "ramot-group-income-outcome-management",
   "version": "1.0.2",
   "private": true,
   "repository": {
@@ -55,8 +55,8 @@
     "url": "https://your-website.com"
   },
   "build": {
-    "appId": "com.my-website.ramot-mezach-dohot",
-    "productName": "רמות מזח דוחות",
+    "appId": "com.my-website.ramot-group-income-outcome-management",
+    "productName": "קבוצת רמות ניהול הוצאות והכנסות",
     "copyright": "Copyright © 2019 ${author}",
     "files": [
       "build/**/*",
@@ -66,20 +66,20 @@
     "extraResources": [
       "./extraResources/**"
     ],
-    "linux": {
-      "target": [
-        "deb"
-      ],
-      "category": "Development"
-    },
     "win": {
       "target": [
         "zip",
         "nsis"
       ],
+      "icon": "./Icon/ramot-group-icon.ico",
       "publish": [
         "github"
       ]
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "createDesktopShortcut": true
     },
     "directories": {
       "buildResources": "assets"

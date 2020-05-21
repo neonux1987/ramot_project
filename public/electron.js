@@ -55,6 +55,7 @@ async function createWindow() {
       nodeIntegration: true
     },
     backgroundColor: "#eee",
+    icon: path.join(app.getAppPath(), 'Icon/ramot-group-icon.png'),
     frame: false,
     resizeable: false,
     show: false

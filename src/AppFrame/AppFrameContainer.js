@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from './AppFrame.module.css';
+import styles from './AppFrameContainer.module.css';
 import classnames from 'classnames';
 import { Minimize, CheckBoxOutlineBlank, Close } from '@material-ui/icons';
 import Helper from '../helpers/Helper';
+import icon from '../assets/images/ramot-group-icon.ico'
 
 export default ({ handlers }) => {
   return (
@@ -11,7 +12,9 @@ export default ({ handlers }) => {
       <div className={styles.draggableRegion}>
         <div className={styles.section} style={{ flex: "1 1" }}>
           <div className={styles.header}>
-            {/* <span>NDTS</span>&nbsp; */}<span>קבוצת רמות ניהול הוצאות והכנסות</span>
+            <span className={styles.iconWrapper} ><img src={icon} width="20px" height="20px" /></span>
+
+            <span>קבוצת רמות ניהול הוצאות והכנסות</span>
           </div>
         </div>
 

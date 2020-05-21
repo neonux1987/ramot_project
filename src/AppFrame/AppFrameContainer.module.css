@@ -44,15 +44,14 @@ flex-basis: 29px;
   display: flex;
   font-weight: 600;
   padding-right: 4px;
+  align-items: center;
 }
 
-/* .date{
-  -webkit-user-select: none;
-  font-size: 14px;
-  display: flex;
-  font-weight: 600;
-  padding-right: 4px;
-} */
+.iconWrapper{
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
 
 .date{
       /* background: #6c5ab5; */
