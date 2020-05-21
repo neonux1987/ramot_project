@@ -1,6 +1,6 @@
 {
   "name": "ramot-mezach-dohot",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "repository": {
     "type": "git",
@@ -74,7 +74,8 @@
     },
     "win": {
       "target": [
-        "zip"
+        "zip",
+        "nsis"
       ],
       "publish": [
         "github"
