@@ -10,13 +10,7 @@ import NoUpdate from './NoUpdate/NoUpdate';
 
 // SERVICES
 import { checkForUpdates } from '../../../../services/updates.svc';
-import CurrentVersion from './CurrentVersion/CurrentVersion';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
-
-//ELECTRON
-const app = require("electron").remote.app;
-const appCurrentVersion = app.getVersion();
-const appName = app.name;
 
 const SETTINGS_NAME = "appUpdates";
 
@@ -61,18 +55,6 @@ const AppUpdates = () => {
       >
 
         {content}
-
-      </StyledExpandableSection >
-
-      <StyledExpandableSection
-        title={"אודות תוכנה"}
-        TitleIcon={Backup}
-        padding={"30px 20px"}
-        iconColor={"#0365a2"}
-      >
-
-        <span>{appName}</span>
-        <CurrentVersion currentVersion={appCurrentVersion} />
 
       </StyledExpandableSection >
     </Fragment>
