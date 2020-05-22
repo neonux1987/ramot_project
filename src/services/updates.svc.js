@@ -11,17 +11,22 @@ export const checkForUpdates = () => {
       receive: {
         channel: "update_available",
       },
+      withError: false,
       onSuccess: async ({ data }) => {
         const { availableUpdate, updateVersion } = getState().settings.data.appUpdates;
 
-        // dont override settings if it's the same version
-        if (availableUpdate === false && data.version !== updateVersion) {
-          dispatch(updateSettings("appUpdates", { availableUpdate: true, updateVersion: data.version }));
+        if (data) {
+          const { version, releaseDate } = data;
 
-          const promise = await dispatch(saveSettings(false));
+          // dont override settings if it's the same version
+          if (availableUpdate === false && data.version !== updateVersion) {
+            dispatch(updateSettings("appUpdates", { availableUpdate: true, updateVersion: version, releaseDate }));
 
-          if (promise === undefined)
-            dispatch(updateSettings("appUpdates", { availableUpdate: false, updateVersion: "" }));
+            const promise = await dispatch(saveSettings(false));
+
+            if (promise === undefined)
+              dispatch(updateSettings("appUpdates", { availableUpdate: false, updateVersion: "" }));
+          }
         }
 
       }

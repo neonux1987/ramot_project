@@ -1,6 +1,6 @@
 // LIBRARIES
 import React from 'react';
-import { Box, Button, Typography, TextField } from '@material-ui/core';
+import { Box, Typography, TextField } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
 
 // CSS
@@ -9,6 +9,7 @@ import styles from './UsersLocations.module.css';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
+import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
 
 export default (props) => {
 
@@ -46,7 +47,7 @@ export default (props) => {
           אם ברצונך לשנות מיקום זה, לחץ על שנה מיקום.
         </Typography>
 
-        <Button variant="contained" color="primary" onClick={() => selectHandler("reports_folder_path", reports_folder_path)}>שנה מיקום</Button>
+        <PrimaryButton onClick={() => selectHandler("reports_folder_path", reports_folder_path)}>שנה מיקום</PrimaryButton>
         <TextField
           id="outlined-bare"
           disabled

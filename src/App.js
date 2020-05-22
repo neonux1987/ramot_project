@@ -81,7 +81,8 @@ const App = () => {
 
     if (appUpdatesSettings && appUpdatesSettings.availableUpdate === false)
       dispatch(checkForUpdates()).then(({ data }) => {
-        myToaster.AppUpdateNewVersion(data.version);
+        if (data)
+          myToaster.AppUpdateNewVersion(data.version);
       });
   }, [dispatch, settings.data])
 

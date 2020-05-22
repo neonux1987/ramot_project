@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useEffect, Fragment, useState } from 'react';
-import { Button, Typography, MenuItem } from '@material-ui/core';
+import { Typography, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { Restore } from '@material-ui/icons';
 
@@ -29,6 +29,7 @@ import { restore } from '../../../../../services/restoreDbService';
 import { myToaster } from '../../../../../Toasts/toastManager';
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
+import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
 
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
@@ -147,7 +148,7 @@ export default () => {
         *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה חירום.
     </Typography>
 
-      <Button className={restoreButton} variant="contained" color="primary" onClick={restoreHandler}>בצע שיחזור</Button>
+      <PrimaryButton className={restoreButton} onClick={restoreHandler}>בצע שיחזור</PrimaryButton>
     </Fragment>
 
   return (

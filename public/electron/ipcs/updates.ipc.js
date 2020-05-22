@@ -13,6 +13,8 @@ const updatesIpc = () => {
       const { version, releaseDate } = info.versionInfo;
       if (currentVersion !== version)
         event.sender.send('update_available', { data: { version, releaseDate } });
+      else
+        event.sender.send('update_available', { data: null })
     });
   })
 

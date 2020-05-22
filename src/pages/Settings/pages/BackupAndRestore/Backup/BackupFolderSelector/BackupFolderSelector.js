@@ -1,7 +1,8 @@
 import React from 'react';
 import SubtitleBoldTypography from "../../../../../../components/Typographies/SubtitleBoldTypography";
-import { TextField, Button } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import styles from './BackupFolderSelector.module.css';
+import PrimaryButton from '../../../../../../components/Buttons/PrimaryButton';
 
 export default (props) => {
 
@@ -16,7 +17,7 @@ export default (props) => {
         המיקום שבו נשמרים הגיבויים:
         </SubtitleBoldTypography>
 
-      <Button variant="contained" color="primary" onClick={onClick}>שנה מיקום</Button>
+      <PrimaryButton onClick={onClick}>שנה מיקום</PrimaryButton>
       <TextField
         id="outlined-bare"
         disabled

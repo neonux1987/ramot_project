@@ -1,7 +1,7 @@
 import React from 'react';
 import SubtitleBoldTypography from "../../../../../../components/Typographies/SubtitleBoldTypography";
-import { Button } from '@material-ui/core';
 import styles from './ManualBackupSelector.module.css';
+import PrimaryButton from '../../../../../../components/Buttons/PrimaryButton';
 
 export default (props) => {
 
@@ -14,12 +14,11 @@ export default (props) => {
       <SubtitleBoldTypography className={styles.subtitle}>
         ניתן לייצא את בסיס הנתונים לקובץ ולשמור אותו במחשב
           </SubtitleBoldTypography>
-      <Button
+      <PrimaryButton
         className={styles.backupButton}
-        variant="contained" color="primary"
         onClick={onClick}
       >ייצא בסיס נתונים
-      </Button>
+      </PrimaryButton>
     </div>
   );
 }

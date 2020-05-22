@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, memo, useEffect, Fragment } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Backup } from '@material-ui/icons';
 
@@ -14,9 +14,7 @@ import CurrentVersion from './CurrentVersion/CurrentVersion';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
 
 //ELECTRON
-const app = require("electron").remote.app;
-const appCurrentVersion = app.getVersion();
-const appName = app.name;
+const appCurrentVersion = require("electron").remote.app.getVersion();
 
 const SETTINGS_NAME = "appUpdates";
 
@@ -52,30 +50,18 @@ const AppUpdates = () => {
     renderNewUpdate();
 
   return (
-    <Fragment>
-      <StyledExpandableSection
-        title={"עדכוני תוכנה"}
-        TitleIcon={Backup}
-        padding={"30px 20px"}
-        iconColor={"#0365a2"}
-      >
+    <StyledExpandableSection
+      title={"עדכוני תוכנה"}
+      TitleIcon={Backup}
+      padding={"30px 20px"}
+      iconColor={"#0365a2"}
+    >
 
-        {content}
+      {content}
 
-      </StyledExpandableSection >
+      <CurrentVersion currentVersion={appCurrentVersion} />
 
-      <StyledExpandableSection
-        title={"אודות תוכנה"}
-        TitleIcon={Backup}
-        padding={"30px 20px"}
-        iconColor={"#0365a2"}
-      >
-
-        <span>{appName}</span>
-        <CurrentVersion currentVersion={appCurrentVersion} />
-
-      </StyledExpandableSection >
-    </Fragment>
+    </StyledExpandableSection >
   );
 }
 

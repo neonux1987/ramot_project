@@ -1,0 +1,21 @@
+.container{
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.subtitle{
+  margin-bottom: 10px;
+}
+
+.label{
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.releaseInfo{
+  margin-bottom: 20px;
+}
+
+.installButton, .downloadButton{
+  margin-right: 5px;
+}

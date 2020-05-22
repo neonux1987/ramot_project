@@ -1,6 +1,6 @@
 // LIBRARIES
 import React from 'react';
-import { Box, Button, Typography, Divider, TextField } from '@material-ui/core';
+import { Box, Typography, Divider, TextField } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
 
 // CSS
@@ -9,6 +9,7 @@ import styles from './SystemLocations.module.css';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
+import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
 
 export default (props) => {
 
@@ -49,7 +50,7 @@ export default (props) => {
           מיקום התיקיה שבה נמצא בסיס הנתונים שבשימוש המערכת. (לא ניתן לשנות את המיקום שלו)
         </Typography>
 
-        <Button variant="contained" color="primary" onClick={() => openFileInFolder(db_file_path)}>פתח מיקום</Button>
+        <PrimaryButton onClick={() => openFileInFolder(db_file_path)}>פתח מיקום</PrimaryButton>
         <TextField
           id="outlined-bare"
           disabled
@@ -68,7 +69,7 @@ export default (props) => {
           </Box>
         </Typography>
 
-        <Button variant="contained" color="primary" onClick={() => openFileInFolder(config_file_path)}>פתח מיקום</Button>
+        <PrimaryButton onClick={() => openFileInFolder(config_file_path)}>פתח מיקום</PrimaryButton>
         <TextField
           id="outlined-bare"
           disabled
@@ -91,7 +92,7 @@ export default (props) => {
           מיקום התיקייה שבה יישמרו הגיבויים של בסיס הנתונים.
         </Typography>
 
-        <Button variant="contained" color="primary" onClick={() => selectHandler("db_backups_folder_path", db_backups_folder_path)}>שנה מיקום</Button>
+        <PrimaryButton onClick={() => selectHandler("db_backups_folder_path", db_backups_folder_path)}>שנה מיקום</PrimaryButton>
         <TextField
           id="outlined-bare"
           disabled
