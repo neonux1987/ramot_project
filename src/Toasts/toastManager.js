@@ -8,25 +8,27 @@ import AppUpdateInstallToast from "./CustomToasts/AppUpdateInstallToast/AppUpdat
 export const myToaster = {
 
   AppUpdateNewVersion: (version, properties = {}) => (
-    toast.info(<AppUpdateNewVersionToast version={version} />, {
+    toast(<AppUpdateNewVersionToast version={version} />, {
       className: styles.basic,
       ...properties,
       onOpen: () => {
         properties && properties.onOpen && properties.onOpen();
         playSound(soundTypes.update);
       },
-      autoClose: false
+      autoClose: false,
+      closeOnClick: false
     })
   ),
   AppUpdateInstall: (version, properties = {}) => (
-    toast.info(<AppUpdateInstallToast version={version} />, {
+    toast(<AppUpdateInstallToast version={version} />, {
       className: styles.basic,
       ...properties,
       onOpen: () => {
         properties && properties.onOpen && properties.onOpen();
         playSound(soundTypes.update);
       },
-      autoClose: false
+      autoClose: false,
+      closeOnClick: false
     })
   ),
   info: (content, properties = {}) => (

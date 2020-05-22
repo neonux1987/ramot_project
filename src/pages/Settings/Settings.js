@@ -6,6 +6,7 @@ import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
 import Services from './pages/Services/Services';
 import General from './pages/General/General';
 import Locations from './pages/Locations/Locations';
+import AppUpdates from './pages/AppUpdates/AppUpdates';
 import { useSelector } from 'react-redux';
 
 const styles = (theme) => ({
@@ -105,6 +106,19 @@ const Settings = ({ classes, match }, props) => {
             }}
             className={pageState.page === "שירותי מערכת" ? "activeButton2" : ""}
           />
+          <Tab
+            classes={{ root: classes.tab }}
+            label="עדכוני תוכנה"
+            component={NavLink}
+            to={{
+              pathname: `${match.path}/עדכוני תוכנה`,
+              state: {
+                page: "עדכוני תוכנה",
+                buildingName: "הגדרות"
+              }
+            }}
+            className={pageState.page === "עדכוני תוכנה" ? "activeButton2" : ""}
+          />
         </Tabs>
       </AppBar>
       <div>
@@ -113,6 +127,7 @@ const Settings = ({ classes, match }, props) => {
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
           <Route path={`${match.path}/מיקום קבצים`} component={Locations} />
           <Route path={`${match.path}/שירותי מערכת`} component={Services} />
+          <Route path={`${match.path}/עדכוני תוכנה`} component={AppUpdates} />
           <Redirect
             exact
             from="/הגדרות"

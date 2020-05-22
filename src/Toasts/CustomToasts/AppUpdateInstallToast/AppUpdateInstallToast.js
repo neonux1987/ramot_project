@@ -1,7 +1,7 @@
 import React from 'react';
 import { container, button } from './AppUpdateInstallToast.module.css';
 
-export default ({ version }) => {
+export default ({ version, closeToast }) => {
   return (
     <div className={container}>
 
@@ -9,16 +9,10 @@ export default ({ version }) => {
       <br />
 
       <button
-        style={{ marginRight: "0px" }}
         className={button}
         onClick={() => {
-          console.log("updating");
-        }}
-      >בטל</button>
-      <button
-        className={button}
-        onClick={() => {
-          console.log("updating");
+          console.log("installing");
+          closeToast();
         }}
       >התקן</button>
 

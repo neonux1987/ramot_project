@@ -1,6 +1,5 @@
 //========================= electron imports =========================//
 const { app, BrowserWindow, ipcMain, powerMonitor } = require('electron');
-const { autoUpdater } = require('electron-updater');
 
 //========================= services =========================//
 const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
@@ -80,9 +79,6 @@ async function createWindow() {
   ipcMain.on('system-start-services', (event, arg) => {
     mainSystem.startServices();
   });
-
-  autoUpdater.autoDownload = false;
-  autoUpdater.checkForUpdates();
 
   powerMonitor.on('resume', () => {
     console.log('The system is up');

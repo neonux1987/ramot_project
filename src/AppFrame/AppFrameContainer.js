@@ -12,7 +12,7 @@ export default ({ handlers }) => {
       <div className={styles.draggableRegion}>
         <div className={styles.section} style={{ flex: "1 1" }}>
           <div className={styles.header}>
-            <span className={styles.iconWrapper} ><img src={icon} width="20px" height="20px" /></span>
+            <span className={styles.iconWrapper} ><img src={icon} width="20px" height="20px" alt="ramot group icon" /></span>
 
             <span>קבוצת רמות ניהול הוצאות והכנסות</span>
           </div>

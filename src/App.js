@@ -37,6 +37,7 @@ import { quitApp } from './services/mainProcess.svc';
 
 // SERVICES
 import { initiateDbBackup } from './services/dbBackup.svc';
+import { checkForUpdates } from './services/updates.svc';
 
 // ELECTRON
 const remote = require('electron').remote;
@@ -69,22 +70,20 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    ipcRenderer.on('update_available', (event, version) => {
-      ipcRenderer.removeAllListeners('update_available');
-      myToaster.AppUpdateNewVersion(version);
-      myToaster.AppUpdateInstall(version);
-    });
-    ipcRenderer.on('update_downloaded', () => {
-      ipcRenderer.removeAllListeners('update_downloaded');
-      myToaster.info("המערכת הורידה את העדכון והוא מוכן להתקנה.");
-    });
-
     dispatch(fetchSettings()).then(() => {
       //play welcome sound when settings loaded
       playSound(soundTypes.welcome);
     });
-
   }, [dispatch])
+
+  useEffect(() => {
+    const appUpdatesSettings = settings.data["appUpdates"];
+
+    if (appUpdatesSettings && appUpdatesSettings.availableUpdate === false)
+      dispatch(checkForUpdates()).then(({ data }) => {
+        myToaster.AppUpdateNewVersion(data.version);
+      });
+  }, [dispatch, settings.data])
 
   useEffect(() => {
 

@@ -1,6 +1,7 @@
 .basic{
   background: #ffffff !important;
   border-radius: 4px !important;
+  font-size: 16px;
 }
 
 .info,.warning,.error,.success{
@@ -11,7 +12,7 @@
 
 .info{
   color: #10475d;
-  border-color: #258db5;
+  border-color: #0365a2;
 }
 
 .success{
