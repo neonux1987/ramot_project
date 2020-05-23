@@ -84,7 +84,6 @@
       "protocol": "https"
     },
     "nsis": {
-      "differentialPackage": false,
       "allowToChangeInstallationDirectory": false,
       "oneClick": false,
       "createDesktopShortcut": true
