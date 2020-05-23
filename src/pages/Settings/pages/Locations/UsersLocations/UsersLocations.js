@@ -1,7 +1,7 @@
 // LIBRARIES
 import React from 'react';
 import { Box, Typography, TextField } from '@material-ui/core';
-import { Backup } from '@material-ui/icons';
+import { InsertDriveFile } from '@material-ui/icons';
 
 // CSS
 import styles from './UsersLocations.module.css';
@@ -26,7 +26,7 @@ export default (props) => {
   return (
     <StyledExpandableSection
       title={"מיקום קבצי משתמש"}
-      TitleIcon={Backup}
+      TitleIcon={InsertDriveFile}
       iconColor={"#0365a2"}
       extraDetails={() =>
         <SaveButton onClick={saveHandler}>שמור</SaveButton>

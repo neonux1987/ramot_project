@@ -1,7 +1,7 @@
 // LIBRARIES
 import React, { useState, memo, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Backup } from '@material-ui/icons';
+import { SystemUpdateAlt } from '@material-ui/icons';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
@@ -97,7 +97,7 @@ const AppUpdates = () => {
     <Fragment>
       <StyledExpandableSection
         title={"עדכוני תוכנה"}
-        TitleIcon={Backup}
+        TitleIcon={SystemUpdateAlt}
         padding={"30px 20px"}
         iconColor={"#0365a2"}
       >

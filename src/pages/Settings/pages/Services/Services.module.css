@@ -3,12 +3,11 @@
 }
 
 .header{
-  background: rgb(41, 114, 171);
-  color: #fff;
+  color: #000000;
+  background: #f3f4f8;
 }
 
 .tableCellHeader{
-  color: #fff;
   font-size: 15px;
   font-weight: 600;
 }

@@ -10,22 +10,25 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { SettingsInputComposite } from '@material-ui/icons';
 
 // STYLES
 import styles from './Services.module.css'
 
 // COMPONENTS
-import Section from '../../../../components/Section/Section';
 import LoadingCircle from '../../../../components/LoadingCircle';
 
 // ACTIONS
 import { startService, stopService, fetchServices, restartService } from '../../../../redux/actions/servicesActions';
+import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  tableContainer: {
+    borderRadius: "4px"
+  }
 });
 
 export default props => {
@@ -80,8 +83,14 @@ export default props => {
   });
 
   return (
-    <Section className={styles.container}>
-      <TableContainer component={Paper}>
+    <StyledExpandableSection
+      title={"שירותי מערכת"}
+      TitleIcon={SettingsInputComposite}
+      padding={"30px 20px 70px"}
+      iconColor={"#0365a2"}
+    >
+
+      <TableContainer className={classes.tableContainer}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead className={styles.header}>
             <TableRow>
@@ -95,7 +104,8 @@ export default props => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Section>
+
+    </StyledExpandableSection >
   );
 }
 

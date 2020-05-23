@@ -118,7 +118,7 @@ export default () => {
 
       <div className={description}>
         <Typography className={descriptionText} variant="h6">
-          *לתשומת ליבך: המערכת תדרוס דוחות קודמים במיה וקיימים
+          *לתשומת ליבך: המערכת תדרוס דוחות קודמים במידה וקיימים
     </Typography>
       </div>
     </Fragment>
