@@ -2,9 +2,10 @@ const { ipcMain, BrowserWindow } = require('electron');
 const { autoUpdater, cancellationToken } = require('electron-updater');
 
 const updatesIpc = () => {
-
   const currentWindow = BrowserWindow.getFocusedWindow();
+
   autoUpdater.autoDownload = false;
+  autoUpdater.autoInstallOnAppQuit = false;
 
   ipcMain.on('check-for-updates', (event) => {
     const currentVersion = autoUpdater.currentVersion.version;
@@ -47,9 +48,14 @@ const updatesIpc = () => {
 
   ipcMain.on('download-update', () => {
     console.log("download update");
-    autoUpdater.downloadUpdate(cancellationToken).catch(() => {
-      cancellationToken.cancel();
-    });
+    autoUpdater.downloadUpdate(cancellationToken)
+      .then(() => {
+        currentWindow.webContents.send('downloading_update', { data: {} });
+      })
+      .catch(() => {
+        cancellationToken.cancel();
+        currentWindow.webContents.send('downloading_update', { error: "כשל בהורדת העידכון" });
+      });
   });
 
   ipcMain.on('update-app', () => {

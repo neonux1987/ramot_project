@@ -19,3 +19,27 @@
 .installButton, .downloadButton{
   margin-right: 5px;
 }
+
+.downloadProgressWrapper{
+  display: block;
+}
+
+.progressBarWrapper{
+  direction: ltr;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.progressBarInner{
+  width: 500px;
+  margin: 0 5px;
+}
+
+.linearProgressBack{
+  background-color: #eaeaea;
+}
+
+.linearProgressFront{
+  background-color: #0365a2;
+}

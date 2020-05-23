@@ -1,13 +1,34 @@
 // LIBRARIES
 import React from 'react';
-import { container, subtitle, label, releaseInfo, installButton, downloadButton } from './NewUpdate.module.css';
-import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
-import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
+import { LinearProgress } from '@material-ui/core';
 
-const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded }) => {
+// CSS
+import {
+  container,
+  subtitle,
+  label,
+  releaseInfo,
+  installButton,
+  downloadButton,
+  downloadProgressWrapper,
+  progressBarWrapper,
+  progressBarInner,
+  linearProgressBack,
+  linearProgressFront
+} from './NewUpdate.module.css';
+
+// COMPONENTS
+import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
+import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
+
+const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded, downloadHandler, installHandler, isDownloading, progress }) => {
   const date = new Date(releaseDate);
 
-  const renderAction = updateDownloaded === false ? <Download /> : <Install />
+  const renderDownload = updateDownloaded === false && !isDownloading ? <Download downloadHandler={downloadHandler} /> : null;
+
+  const renderInstall = updateDownloaded && !isDownloading ? <Install installHandler={installHandler} /> : null;
+
+  const renderDownloading = updateDownloaded === false && isDownloading ? <DownloadProgress progress={progress} /> : null;
 
   return (
     <div className={container}>
@@ -23,7 +44,13 @@ const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded }) => {
         <span>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</span>
       </div>
 
-      {renderAction}
+      {renderDownload}
+
+      {renderInstall}
+
+      {renderDownloading}
+
+      {/* <DownloadProgress progressValue={progressValue} /> */}
 
     </div>
   );
@@ -31,21 +58,65 @@ const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded }) => {
 
 export default NewUpdate;
 
-const Download = () => {
+const Download = ({ downloadHandler }) => {
   return (
     <div>
       <span>להורדת העידכון לחץ</span>
-      <PrimaryButton className={downloadButton} onClick={() => { }}>הורד</PrimaryButton>
+      <PrimaryButton className={downloadButton} onClick={downloadHandler}>הורד</PrimaryButton>
     </div>
   );
 }
 
-const Install = () => {
+const Install = ({ installHandler }) => {
   return (
     <div>
       <span>המערכת סיימה להוריד את העידכון להתקנת העידכון לחץ</span>
       <span></span>
-      <PrimaryButton className={installButton} onClick={() => { }}>התקן</PrimaryButton>
+      <PrimaryButton className={installButton} onClick={installHandler}>התקן</PrimaryButton>
+    </div>
+  );
+}
+
+const DownloadProgress = ({ progress }) => {
+  const {
+    percent,
+    total,
+    transferred,
+    bytesPerSecond
+  } = progress;
+  console.log(progress);
+  return (
+    <div className={downloadProgressWrapper}>
+
+      <ProgressBar progressValue={percent} />
+
+      <span>קצב הורדה</span>
+      <span>{bytesPerSecond}</span>
+
+      <span>ירד</span>
+      <span>{transferred}</span>
+
+      <span>סה"כ</span>
+      <span>{total}</span>
+
+    </div>
+  );
+}
+
+const ProgressBar = ({ progressValue }) => {
+  const parsedValue = Number.parseInt(progressValue);
+  return (
+    <div className={progressBarWrapper}>
+
+      <div>0%</div>
+
+      <div className={progressBarInner}>
+        <LinearProgress variant="determinate" className={linearProgressBack} value={parsedValue} />
+        <LinearProgress variant="determinate" className={linearProgressFront} value={parsedValue} />
+      </div>
+
+      <div>100%</div>
+
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import { ipcRenderer } from "electron";
 import { ipcSendReceive } from "../redux/actions/util/util";
 import { saveSettings, updateSettings } from "../redux/actions/settingsActions";
 
@@ -35,16 +34,16 @@ export const checkForUpdates = () => {
 }
 
 export const downloadUpdate = () => {
-  ipcRenderer.send("download-update");
-
-  ipcRenderer.on("download_progress", (event, progress) => {
-    let percent = Number.parseInt(progress.percent);
-    console.log(progress);
-
-    if (percent === 100)
-      ipcRenderer.removeAllListeners("download_progress")
-
-  })
+  return dispatch => {
+    return ipcSendReceive({
+      send: {
+        channel: "download-update"
+      },
+      receive: {
+        channel: "downloading_update",
+      }
+    });
+  }
 }
 
 export const installUpdate = () => {

@@ -17,6 +17,7 @@ import { addBudgetExecution } from "../../../redux/actions/budgetExecutionsActio
 
 // COMPONENTS
 import ReactSelect from "../../../components/ReactSelect/ReactSelect";
+import { myToaster } from "../../../Toasts/toastManager";
 
 const AddNewContainer = (props) => {
 
@@ -55,7 +56,10 @@ const AddNewContainer = (props) => {
       payload: formInputs
     }
 
-    dispatch(addBudgetExecution(params));
+    if (formInputs === "")
+      myToaster.error("נא לבחור סעיף מסכם")
+    else
+      dispatch(addBudgetExecution(params));
   }
 
   return (
