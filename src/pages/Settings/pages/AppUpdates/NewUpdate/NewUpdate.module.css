@@ -36,10 +36,11 @@
   margin: 0 5px;
 }
 
-.linearProgressBack{
-  background-color: #eaeaea;
+.bar1Determinate{
+  background-color: #0365a2;
+  direction: ltr;
 }
 
-.linearProgressFront{
-  background-color: #0365a2;
+.colorPrimary{
+  background-color: #f3f4f8;
 }

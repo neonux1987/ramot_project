@@ -13,8 +13,8 @@ import {
   downloadProgressWrapper,
   progressBarWrapper,
   progressBarInner,
-  linearProgressBack,
-  linearProgressFront
+  bar1Determinate,
+  colorPrimary
 } from './NewUpdate.module.css';
 
 // COMPONENTS
@@ -84,20 +84,20 @@ const DownloadProgress = ({ progress }) => {
     transferred,
     bytesPerSecond
   } = progress;
-  console.log(progress);
+
   return (
     <div className={downloadProgressWrapper}>
 
       <ProgressBar progressValue={percent} />
 
-      <span>קצב הורדה</span>
-      <span>{bytesPerSecond}</span>
-
-      <span>ירד</span>
-      <span>{transferred}</span>
-
-      <span>סה"כ</span>
-      <span>{total}</span>
+      <span className={label}>קצב הורדה:</span>
+      <span>{bytesPerSecond}543</span>
+      <br />
+      <span className={label}>ירד:</span>
+      <span>{transferred}534</span>
+      <br />
+      <span className={label}>סה"כ:</span>
+      <span>{total}534</span>
 
     </div>
   );
@@ -108,14 +108,16 @@ const ProgressBar = ({ progressValue }) => {
   return (
     <div className={progressBarWrapper}>
 
-      <div>0%</div>
+      <div>100%</div>
 
       <div className={progressBarInner}>
-        <LinearProgress variant="determinate" className={linearProgressBack} value={parsedValue} />
-        <LinearProgress variant="determinate" className={linearProgressFront} value={parsedValue} />
+        <LinearProgress classes={{
+          colorPrimary,
+          bar1Determinate
+        }} variant="determinate" value={parsedValue} />
       </div>
 
-      <div>100%</div>
+      <div>0%</div>
 
     </div>
   );

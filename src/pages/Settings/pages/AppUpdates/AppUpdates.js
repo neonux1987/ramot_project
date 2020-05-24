@@ -40,8 +40,7 @@ const AppUpdates = () => {
     releaseDate,
     updateDownloaded
   } = appUpdatesSettings;
-
-
+  console.log(progress);
   useEffect(() => {
     let isCancelled = false;
 
@@ -53,8 +52,9 @@ const AppUpdates = () => {
     ipcRenderer.on("download_progress", (event, progress) => {
       let percent = Number.parseInt(progress.percent);
 
-      if (!isCancelled)
-        setProgress(Number.parseInt(progress));
+      if (!isCancelled) {
+        setProgress(progress);
+      }
 
       if (percent === 100)
         ipcRenderer.removeAllListeners("download_progress")
@@ -63,12 +63,25 @@ const AppUpdates = () => {
     return () => isCancelled = true;
   }, [dispatch]);
 
-  const downloadHandler = () => {
+  const downloadHandler = async () => {
+    setIsDownloading(true);
+    let percent = 0;
+    const myTimer = () => {
+      percent += 1;
+      setProgress({ percent });
+    }
+    console.log(percent);
+    const interval = setInterval(myTimer, 1000);
 
-    dispatch(downloadUpdate()).then(() => {
-      setIsDownloading(true);
+    if (percent === 50) {
       console.log("yes");
-    });
+      clearInterval(interval, 1000)
+    }
+
+    /* const promise = await dispatch(downloadUpdate());
+
+    if (promise === undefined)
+      setIsDownloading(false); */
   }
 
   const installHandler = () => {
