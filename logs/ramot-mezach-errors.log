@@ -1,80 +1,236 @@
+[2020-05-24T15:35:35.762] [ERROR] Application - Error: Error: Unable to find latest version on GitHub (https://api.github.com/repos/neonux1987/financial_reports_management_system/releases/latest), please ensure a production release exists: HttpError: 401 Unauthorized
 {
-  "startTime": "2020-05-22T22:30:33.054Z",
-  "categoryName": "Application",
-  "data": [
-    {
-      "name": "database_error",
-      "fileName": "BudgetExecutionDao.js",
-      "message": "המערכת לא הצליחה לשלוף נתונים של רשומה בביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020",
-      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של רשומה בביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:222:26\n    at async BudgetExecutionLogic.addBudgetExecutionTrx (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\logic\\BudgetExecutionLogic.js:72:37)",
-      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarter2` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 and `summarized_section_id` = (select *) - SQLITE_ERROR: no tables specified"
-    }
-  ],
-  "level": {
-    "level": 40000,
-    "levelStr": "ERROR",
-    "colour": "red"
-  },
-  "context": {},
-  "pid": 11884
-},
+  "message": "Bad credentials",
+  "documentation_url": "https://developer.github.com/v3"
+}
+Headers: {
+  "date": "Sun, 24 May 2020 12:35:35 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "83",
+  "server": "GitHub.com",
+  "status": "401 Unauthorized",
+  "x-github-media-type": "github.v3; format=json",
+  "x-ratelimit-limit": "60",
+  "x-ratelimit-remaining": "46",
+  "x-ratelimit-reset": "1590324437",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "1; mode=block",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "x-github-request-id": "CCF7:7348:3651FF5:3F68BAC:5ECA6A17"
+}
+    at createHttpError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:84:10)
+    at IncomingMessage.<anonymous> (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:201:18)
+    at IncomingMessage.emit (events.js:210:5)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+    at newError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\index.js:212:17)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:146:48)
+[2020-05-24T15:36:32.552] [ERROR] Application - Error: Error: Unable to find latest version on GitHub (https://api.github.com/repos/neonux1987/financial_reports_management_system/releases/latest), please ensure a production release exists: HttpError: 401 Unauthorized
 {
-  "startTime": "2020-05-22T22:32:38.355Z",
-  "categoryName": "Application",
-  "data": [
-    {
-      "name": "database_error",
-      "fileName": "BudgetExecutionDao.js",
-      "message": "המערכת לא הצליחה לשלוף נתונים של רשומה בביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020",
-      "stack": "database_error: המערכת לא הצליחה לשלוף נתונים של רשומה בביצוע מול תקציב לבניין lev_tel_aviv לרבעון 2 שנה 2020\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\BudgetExecutionDao.js:222:26\n    at async BudgetExecutionLogic.addBudgetExecutionTrx (D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\logic\\BudgetExecutionLogic.js:72:37)",
-      "original": "Error: select `exec`.`id` as `id`, `exec`.`summarized_section_id` as `summarized_section_id`, `ss`.`section` as `section`, `exec`.`year` as `year`, `exec`.`quarter` as `quarter`, `exec`.`april_budget_execution` as `april_budget_execution`, `exec`.`april_budget` as `april_budget`, `exec`.`may_budget_execution` as `may_budget_execution`, `exec`.`may_budget` as `may_budget`, `exec`.`june_budget_execution` as `june_budget_execution`, `exec`.`june_budget` as `june_budget`, `exec`.`evaluation` as `evaluation`, `exec`.`total_budget` as `total_budget`, `exec`.`total_execution` as `total_execution`, `exec`.`difference` as `difference`, `exec`.`notes` as `notes` from `lev_tel_aviv_budget_execution_quarter2` as `exec` inner join `summarized_sections` as `ss` on `exec`.`summarized_section_id` = `ss`.`id` where `year` = 2020 and `quarter` = 2 and `summarized_section_id` = (select *) - SQLITE_ERROR: no tables specified"
-    }
-  ],
-  "level": {
-    "level": 40000,
-    "levelStr": "ERROR",
-    "colour": "red"
-  },
-  "context": {},
-  "pid": 12988
-},
+  "message": "Bad credentials",
+  "documentation_url": "https://developer.github.com/v3"
+}
+Headers: {
+  "date": "Sun, 24 May 2020 12:36:32 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "83",
+  "server": "GitHub.com",
+  "status": "401 Unauthorized",
+  "x-github-media-type": "github.v3; format=json",
+  "x-ratelimit-limit": "60",
+  "x-ratelimit-remaining": "45",
+  "x-ratelimit-reset": "1590324437",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "1; mode=block",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "x-github-request-id": "CD0F:73B1:455872A:511E827:5ECA6A4F"
+}
+    at createHttpError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:84:10)
+    at IncomingMessage.<anonymous> (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:201:18)
+    at IncomingMessage.emit (events.js:210:5)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+    at newError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\index.js:212:17)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:146:48)
+[2020-05-24T15:36:56.191] [ERROR] Application - Error: Error: Unable to find latest version on GitHub (https://api.github.com/repos/neonux1987/financial_reports_management_system/releases/latest), please ensure a production release exists: HttpError: 401 Unauthorized
 {
-  "startTime": "2020-05-22T23:17:42.404Z",
-  "categoryName": "Application",
-  "data": [
-    {
-      "name": "database_error",
-      "fileName": "MenuDao.js",
-      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
-      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
-      "original": "Error: select `menu`.`id` as `id`, `buildings`.`buildingName` as `label`, `buildings`.`buildingNameEng` as `engLabel`, `menu`.`path` as `path`, `menu`.`expanded` as `expanded`, `submenus`.`id` as `_id`, `submenus`.`label` as `_label`, `submenus`.`menuid` as `_menuid`, `submenus`.`path` as `_path`, `submenus`.`selected` as `_selected`, `submenus`.`order` as `_order`, `submenus`.`icon_name` as `_icon_name` from `submenus` inner join `menu` on `menu`.`id` = `submenus`.`menuid` inner join `buildings` on `buildings`.`id` = `menu`.`building_id` - SQLITE_CORRUPT: database disk image is malformed"
-    }
-  ],
-  "level": {
-    "level": 40000,
-    "levelStr": "ERROR",
-    "colour": "red"
-  },
-  "context": {},
-  "pid": 17096
-},
+  "message": "Bad credentials",
+  "documentation_url": "https://developer.github.com/v3"
+}
+Headers: {
+  "date": "Sun, 24 May 2020 12:36:55 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "83",
+  "server": "GitHub.com",
+  "status": "401 Unauthorized",
+  "x-github-media-type": "github.v3; format=json",
+  "x-ratelimit-limit": "60",
+  "x-ratelimit-remaining": "44",
+  "x-ratelimit-reset": "1590324436",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "1; mode=block",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "x-github-request-id": "CD1D:5987:1B3D4FB:1FD9E58:5ECA6A67"
+}
+    at createHttpError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:84:10)
+    at IncomingMessage.<anonymous> (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:201:18)
+    at IncomingMessage.emit (events.js:210:5)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+    at newError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\index.js:212:17)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:146:48)
+[2020-05-24T15:43:58.225] [ERROR] Application - Error: Error: Unable to find latest version on GitHub (https://api.github.com/repos/neonux1987/financial_reports_management_system/releases/latest), please ensure a production release exists: HttpError: 401 Unauthorized
 {
-  "startTime": "2020-05-22T23:17:42.407Z",
-  "categoryName": "Application",
-  "data": [
-    {
-      "name": "database_error",
-      "fileName": "MenuDao.js",
-      "message": "המערכת לא הצליחה לשלוף נתוני תפריט",
-      "stack": "database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24",
-      "original": "Error: select `menu`.`id` as `id`, `buildings`.`buildingName` as `label`, `buildings`.`buildingNameEng` as `engLabel`, `menu`.`path` as `path`, `menu`.`expanded` as `expanded`, `submenus`.`id` as `_id`, `submenus`.`label` as `_label`, `submenus`.`menuid` as `_menuid`, `submenus`.`path` as `_path`, `submenus`.`selected` as `_selected`, `submenus`.`order` as `_order`, `submenus`.`icon_name` as `_icon_name` from `submenus` inner join `menu` on `menu`.`id` = `submenus`.`menuid` inner join `buildings` on `buildings`.`id` = `menu`.`building_id` - SQLITE_CORRUPT: database disk image is malformed"
-    }
-  ],
-  "level": {
-    "level": 40000,
-    "levelStr": "ERROR",
-    "colour": "red"
-  },
-  "context": {},
-  "pid": 17096
-},
+  "message": "Bad credentials",
+  "documentation_url": "https://developer.github.com/v3"
+}
+Headers: {
+  "date": "Sun, 24 May 2020 12:43:57 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "83",
+  "server": "GitHub.com",
+  "status": "401 Unauthorized",
+  "x-github-media-type": "github.v3; format=json",
+  "x-ratelimit-limit": "60",
+  "x-ratelimit-remaining": "43",
+  "x-ratelimit-reset": "1590324436",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "1; mode=block",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "x-github-request-id": "CD75:27F3E:35C66DC:3EF5569:5ECA6C0D"
+}
+    at createHttpError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:84:10)
+    at IncomingMessage.<anonymous> (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:201:18)
+    at IncomingMessage.emit (events.js:210:5)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+    at newError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\index.js:212:17)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:146:48)
+[2020-05-24T15:59:15.275] [ERROR] Application - Error: Error: Unable to find latest version on GitHub (https://api.github.com/repos/neonux1987/financial_reports_management_system/releases/latest), please ensure a production release exists: HttpError: 401 Unauthorized
+{
+  "message": "Bad credentials",
+  "documentation_url": "https://developer.github.com/v3"
+}
+Headers: {
+  "date": "Sun, 24 May 2020 12:59:14 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "83",
+  "server": "GitHub.com",
+  "status": "401 Unauthorized",
+  "x-github-media-type": "github.v3; format=json",
+  "x-ratelimit-limit": "60",
+  "x-ratelimit-remaining": "59",
+  "x-ratelimit-reset": "1590328754",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "1; mode=block",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "x-github-request-id": "CEA6:7347:2297727:285473C:5ECA6FA2"
+}
+    at createHttpError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:84:10)
+    at IncomingMessage.<anonymous> (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:201:18)
+    at IncomingMessage.emit (events.js:210:5)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+    at newError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\index.js:212:17)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:146:48)
+[2020-05-24T16:04:43.629] [ERROR] Application - Error: Error: Unable to find latest version on GitHub (https://api.github.com/repos/neonux1987/financial_reports_management_system/releases/latest), please ensure a production release exists: HttpError: 401 Unauthorized
+{
+  "message": "Bad credentials",
+  "documentation_url": "https://developer.github.com/v3"
+}
+Headers: {
+  "date": "Sun, 24 May 2020 13:04:43 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "83",
+  "server": "GitHub.com",
+  "status": "401 Unauthorized",
+  "x-github-media-type": "github.v3; format=json",
+  "x-ratelimit-limit": "60",
+  "x-ratelimit-remaining": "58",
+  "x-ratelimit-reset": "1590328755",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "1; mode=block",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "x-github-request-id": "CF4E:5983:EA0A0B:110AA49:5ECA70EB"
+}
+    at createHttpError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:84:10)
+    at IncomingMessage.<anonymous> (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:201:18)
+    at IncomingMessage.emit (events.js:210:5)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+    at newError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\index.js:212:17)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:146:48)
+[2020-05-24T16:09:41.785] [ERROR] Application - Error: Error: Unable to find latest version on GitHub (https://api.github.com/repos/neonux1987/financial_reports_management_system/releases/latest), please ensure a production release exists: HttpError: 401 Unauthorized
+{
+  "message": "Bad credentials",
+  "documentation_url": "https://developer.github.com/v3"
+}
+Headers: {
+  "date": "Sun, 24 May 2020 13:09:41 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "83",
+  "server": "GitHub.com",
+  "status": "401 Unauthorized",
+  "x-github-media-type": "github.v3; format=json",
+  "x-ratelimit-limit": "60",
+  "x-ratelimit-remaining": "57",
+  "x-ratelimit-reset": "1590328755",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "1; mode=block",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "x-github-request-id": "CF92:5985:3538E5B:3E58338:5ECA7215"
+}
+    at createHttpError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:84:10)
+    at IncomingMessage.<anonymous> (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:201:18)
+    at IncomingMessage.emit (events.js:210:5)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+    at newError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\index.js:212:17)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:146:48)
+[2020-05-24T16:12:37.004] [ERROR] Application - Error: Error: Cannot find latest.yml in the release https://github.com/neonux1987/financial_reports_management_system/releases/tag/v0.0.9
+    at newError (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\index.js:212:17)
+    at PrivateGitHubProvider.getLatestVersion (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:95:48)
+    at async NsisUpdater.getUpdateInfoAndProvider (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\AppUpdater.js:487:13)
+    at async NsisUpdater.doCheckForUpdates (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\electron-updater\out\AppUpdater.js:503:20)

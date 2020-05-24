@@ -1,11 +1,12 @@
 const { ipcMain, BrowserWindow } = require('electron');
 const { autoUpdater, cancellationToken } = require('electron-updater');
-
+const logManager = require('../../backend/logger/LogManager')
 const updatesIpc = () => {
   const currentWindow = BrowserWindow.getFocusedWindow();
 
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = false;
+  autoUpdater.logger = logManager.getLogger();
 
   ipcMain.on('check-for-updates', (event) => {
     const currentVersion = autoUpdater.currentVersion.version;
