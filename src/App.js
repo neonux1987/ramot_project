@@ -79,13 +79,14 @@ const App = () => {
 
       const { appUpdates } = data;
 
-      // check for updates only for the first time
-      if (appUpdates.availableUpdate === false)
-        dispatch(checkForUpdates()).then(({ data }) => {
-          if (data !== null) {
+      dispatch(checkForUpdates()).then(({ data }) => {
+        if (data !== null) {
+          const { version } = data;
+
+          if (appUpdates.availableUpdate === false || appUpdates.updateVersion !== version)
             myToaster.AppUpdateNewVersion(data.version);
-          }
-        });
+        }
+      });
 
     });
 
