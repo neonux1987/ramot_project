@@ -17,8 +17,9 @@ import Management from '../pages/Management/Management';
 import Statistics from '../pages/Statistics/Statistics';
 
 // COMPONENTS
-import AppLoader from '../components/AnimatedLoaders/AppLoader';
 import Toolbar from './Toolbar/Toolbar';
+
+// UTILS
 import Helper from '../helpers/Helper';
 
 // ACTIONS
@@ -27,21 +28,15 @@ import * as routesActions from '../redux/actions/routesActions';
 
 // CSS
 import { fade } from '../TransitionsCss/fade.module.css';
-import ClimbingBoxLoader from '../components/AnimatedLoaders/ClimbingBoxLoader';
-import { AlignCenterMiddle } from '../components/AlignCenterMiddle/AlignCenterMiddle';
 
 const styles = theme => ({
   main: {
     flexGrow: 1,
-    //backgroundColor: theme.palette.background.default,
-    //backgroundColor: "#f3f4f8",
-    //padding: theme.spacing.unit * 3,
     overflow: "overlay",
     display: "block",
     position: "relative",
     right: "-1960px",
-    opacity: "0",
-    //paddingTop: "22px"
+    opacity: "0"
   },
   loadingWrapper: {
     display: "flex",
@@ -63,8 +58,6 @@ class MainContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchSidebar();
-
     Events.scrollEvent.register('begin', function () {
     });
 
@@ -98,7 +91,6 @@ class MainContainer extends Component {
       routes.push(route.submenu.map(subRoute => {
         return (<Route path={"/" + route.path + "/" + subRoute.path} exact component={this.whichPageComponent(subRoute.label)} key={route.id} />);
       }));
-      /* routes.push(<Route path={"/" + route.path} exact component={MonthExpanses} key={route.id} />); */
     });
     return routes;
   }
@@ -123,58 +115,51 @@ class MainContainer extends Component {
       };
     }
 
-    if (this.props.sidebar.menu.isFetching) {
-      return <AlignCenterMiddle>
-        <ClimbingBoxLoader size={20} loading={this.props.sidebar.menu.isFetching} />
-      </AlignCenterMiddle>;
+    const timeout = { enter: 800, exit: 400 };
 
-    } else {
-      const timeout = { enter: 800, exit: 400 };
+    return (
+      <Element id="mainContainer" className={this.props.classes.main + this.props.toggleMain}>
+        <main ref={this.props.mainContainer}>
+          <Toolbar
+            buildingName={locationState.buildingName}
+            page={locationState.page}
+            year={Helper.getCurrentYear()}
+            quarter={Helper.getCurrentQuarterHeb()}
+            month={Helper.getCurrentMonthHeb()}
+          />
 
-      return (
-        <Element id="mainContainer" className={this.props.classes.main + this.props.toggleMain}>
-          <main ref={this.props.mainContainer}>
-            <Toolbar
-              buildingName={locationState.buildingName}
-              page={locationState.page}
-              year={Helper.getCurrentYear()}
-              quarter={Helper.getCurrentQuarterHeb()}
-              month={Helper.getCurrentMonthHeb()}
-            />
+          <Route render={({ location }) => (
+            <TransitionGroup>
+              <CSSTransition
+                style={{ height: "100%", paddingBottom: "80px" }}
+                //key={location.key}
+                timeout={timeout}
+                className={fade}
+                mountOnEnter={false}
+                unmountOnExit={true}
+              >
+                <Switch location={location}>
+                  {this.generateRoutes(this.props.sidebar.menu.data)}
+                  <Route path="/דף-הבית" component={Home} />
+                  <Route path="/הגדרות"
+                    render={routeProps => (
+                      <Settings {...routeProps} />
+                    )}
+                  />
+                  <Route path="/ניהול" component={Management} />
+                  <Route exact path="/" component={Home} history={{
+                    page: "דף-הבית",
+                    buildingName: "דף הבית",
+                    buildingNameEng: "home"
+                  }} />
+                </Switch>
+              </CSSTransition>
+            </TransitionGroup>
+          )} />
 
-            <Route render={({ location }) => (
-              <TransitionGroup>
-                <CSSTransition
-                  style={{ height: "100%", paddingBottom: "80px" }}
-                  //key={location.key}
-                  timeout={timeout}
-                  className={fade}
-                  mountOnEnter={false}
-                  unmountOnExit={true}
-                >
-                  <Switch location={location}>
-                    {this.generateRoutes(this.props.sidebar.menu.data)}
-                    <Route path="/דף-הבית" component={Home} />
-                    <Route path="/הגדרות"
-                      render={routeProps => (
-                        <Settings {...routeProps} />
-                      )}
-                    />
-                    <Route path="/ניהול" component={Management} />
-                    <Route exact path="/" component={Home} history={{
-                      page: "דף-הבית",
-                      buildingName: "דף הבית",
-                      buildingNameEng: "home"
-                    }} />
-                  </Switch>
-                </CSSTransition>
-              </TransitionGroup>
-            )} />
-
-          </main>
-        </Element>
-      );
-    }
+        </main>
+      </Element>
+    );
   }
 
 }

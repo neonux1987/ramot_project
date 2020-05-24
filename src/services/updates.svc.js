@@ -1,4 +1,6 @@
 import { ipcSendReceive } from "../redux/actions/util/util";
+import { myToaster } from "../Toasts/toastManager";
+import { saveSettings, updateSettings } from "../redux/actions/settingsActions";
 
 export const checkForUpdates = () => {
   return (dispatch, getState) => {
@@ -9,7 +11,15 @@ export const checkForUpdates = () => {
       receive: {
         channel: "checked_update",
       },
-      withError: false
+      withError: false,
+      onSuccess: ({ data }) => {
+        const appUpdatesSettings = getState().settings.data["appUpdates"];
+
+        handleUpdate(dispatch, data, appUpdatesSettings).catch(({ message }) => {
+          myToaster.error(message);
+        });
+
+      }
     });
   }
 }
@@ -29,4 +39,18 @@ export const downloadUpdate = () => {
 
 export const installUpdate = () => {
 
+}
+
+const handleUpdate = async (dispatch, data, settings) => {
+  if (data) {
+    const { version, releaseDate } = data;
+
+    dispatch(updateSettings("appUpdates", { availableUpdate: true, updateVersion: version, releaseDate }));
+
+    const promise = await dispatch(saveSettings(false));
+
+    if (promise === undefined)
+      dispatch(updateSettings("appUpdates", { availableUpdate: false, updateVersion: "", releaseDate: "" }));
+
+  }
 }

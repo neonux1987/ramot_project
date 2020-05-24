@@ -13,6 +13,7 @@ import ToastRender from './components/ToastRender/ToastRender';
 import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { AlignCenterMiddle } from './components/AlignCenterMiddle/AlignCenterMiddle';
+import PacmanLoader from './components/AnimatedLoaders/PacmanLoader';
 
 // CONTEXT
 import SettingsContext from './context/SettingsContext';
@@ -32,17 +33,16 @@ import { playSound, soundTypes } from './audioPlayer/audioPlayer';
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
-import { fetchSettings, updateSettings, saveSettings } from './redux/actions/settingsActions';
+import { fetchSettings } from './redux/actions/settingsActions';
 import { quitApp } from './services/mainProcess.svc';
+import { fetchSidebar } from './redux/actions/sidebarActions';
 
 // SERVICES
 import { initiateDbBackup } from './services/dbBackup.svc';
 import { checkForUpdates } from './services/updates.svc';
-import PacmanLoader from './components/AnimatedLoaders/PacmanLoader';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
-const appVersion = require("electron").remote.app.getVersion();
 
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
@@ -68,29 +68,29 @@ const App = () => {
 
   const settings = useSelector(store => store.settings);
 
+  const sidebar = useSelector(store => store.sidebar);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchSettings()).then(() => {
+    dispatch(fetchSettings()).then(({ data }) => {
       //play welcome sound when settings loaded
       playSound(soundTypes.welcome);
+
+      const { appUpdates } = data;
+
+      // check for updates only for the first time
+      if (appUpdates.availableUpdate === false)
+        dispatch(checkForUpdates()).then(({ data }) => {
+          if (data !== null) {
+            myToaster.AppUpdateNewVersion(data.version);
+          }
+        });
+
     });
+
+    dispatch(fetchSidebar());
   }, [dispatch])
-
-  useEffect(() => {
-
-    dispatch(checkForUpdates()).then(({ data }) => {
-      if (data !== null) {
-        const { version } = data;
-
-        if (appVersion !== version) {
-          myToaster.AppUpdateNewVersion(version);
-        }
-
-      }
-    });
-
-  }, [dispatch]);
 
   useEffect(() => {
 
@@ -207,7 +207,7 @@ const App = () => {
     }
   }
 
-  if (settings.isFetching) {
+  if (settings.isFetching || sidebar.isFetching) {
     return <AlignCenterMiddle>
       <PacmanLoader size={40} margin={10} loaderColor={"#0365a2"} loading={settings.isFetching} title="" />
     </AlignCenterMiddle>;

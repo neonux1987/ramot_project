@@ -2,7 +2,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Button, MenuItem, Typography, Select, } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { Description } from '@material-ui/icons';
+import { RiFileExcel2Line } from 'react-icons/ri';
 
 // UTILS
 import Helper from '../../../../../helpers/Helper';
@@ -131,9 +131,9 @@ export default () => {
   return (
     <StyledExpandableSection
       title={"הפקת דוחות אקסל"}
-      TitleIcon={Description}
+      TitleIcon={() => <RiFileExcel2Line style={{ width: "24px", height: "24px" }} />}
       padding={"30px 20px 50px"}
-      iconColor={"#0365a2"}
+      iconBoxBg={"rgb(22, 156, 144)"}
       loading={registeredReports.isFetching && registeredReports.data.length === 0}
     >
 
