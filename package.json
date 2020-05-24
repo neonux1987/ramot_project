@@ -1,6 +1,6 @@
 {
   "name": "ramot-group-income-outcome-management",
-  "version": "1.0.1",
+  "version": "0.0.9",
   "private": true,
   "repository": {
     "type": "git",
@@ -84,6 +84,7 @@
       "protocol": "https"
     },
     "nsis": {
+      "differentialPackage": false,
       "allowToChangeInstallationDirectory": false,
       "oneClick": false,
       "createDesktopShortcut": true

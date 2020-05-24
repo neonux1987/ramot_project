@@ -12,10 +12,11 @@ const updatesIpc = () => {
 
     autoUpdater.checkForUpdates().then((info) => {
       const { version, releaseDate } = info.versionInfo;
-      if (currentVersion !== version)
-        event.sender.send('update_available', { data: { version, releaseDate } });
+
+      if (version !== currentVersion)
+        event.sender.send('checked_update', { data: { version, releaseDate } });
       else
-        event.sender.send('update_available', { data: null })
+        event.sender.send('checked_update', { data: null })
     });
   })
 
@@ -27,9 +28,10 @@ const updatesIpc = () => {
     console.log('Update not available');
   })
 
-  /* autoUpdater.on('update-available', (event) => {
-    currentWindow.webContents.send('update_available', event.version);
-  }); */
+  autoUpdater.on('update-available', (event) => {
+    currentWindow.webContents.send('update_available', event);
+  });
+
   autoUpdater.on('update-downloaded', () => {
     //currentWindow.webContents.send('update_downloaded');
     console.log("downloaded");

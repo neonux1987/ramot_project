@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import { MemoryRouter } from 'react-router-dom';
-import { ToastContainer, toast, Flip } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { withGoodBye } from 'react-goodbye';
 
 // COMPONENTS
@@ -12,7 +12,7 @@ import RTL from './components/RTL';
 import ToastRender from './components/ToastRender/ToastRender';
 import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
-import AppLoader from './components/AnimatedLoaders/AppLoader';
+import { AlignCenterMiddle } from './components/AlignCenterMiddle/AlignCenterMiddle';
 
 // CONTEXT
 import SettingsContext from './context/SettingsContext';
@@ -32,16 +32,17 @@ import { playSound, soundTypes } from './audioPlayer/audioPlayer';
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
-import { fetchSettings } from './redux/actions/settingsActions';
+import { fetchSettings, updateSettings, saveSettings } from './redux/actions/settingsActions';
 import { quitApp } from './services/mainProcess.svc';
 
 // SERVICES
 import { initiateDbBackup } from './services/dbBackup.svc';
 import { checkForUpdates } from './services/updates.svc';
+import PacmanLoader from './components/AnimatedLoaders/PacmanLoader';
 
 // ELECTRON
-const remote = require('electron').remote;
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, remote } = require('electron');
+const appVersion = require("electron").remote.app.getVersion();
 
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
@@ -77,14 +78,19 @@ const App = () => {
   }, [dispatch])
 
   useEffect(() => {
-    const appUpdatesSettings = settings.data["appUpdates"];
 
-    if (appUpdatesSettings && appUpdatesSettings.availableUpdate === false)
-      dispatch(checkForUpdates()).then(({ data }) => {
-        if (data)
-          myToaster.AppUpdateNewVersion(data.version);
-      });
-  }, [dispatch, settings.data])
+    dispatch(checkForUpdates()).then(({ data }) => {
+      if (data !== null) {
+        const { version } = data;
+
+        if (appVersion !== version) {
+          myToaster.AppUpdateNewVersion(version);
+        }
+
+      }
+    });
+
+  }, [dispatch]);
 
   useEffect(() => {
 
@@ -114,7 +120,7 @@ const App = () => {
           });
           break;
         case "reportsGenerationStarted":
-          toastId = toast.info(<ToastRender spinner={true} message={message} />, {
+          toastId = myToaster.info(<ToastRender spinner={true} message={message} />, {
             autoClose: false
           });
           setState({ toastId: toastId });
@@ -122,7 +128,7 @@ const App = () => {
         case "reportsGenerationFinished":
           myToaster.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: toast.TYPE.SUCCESS,
+            type: myToaster.TYPE.SUCCESS,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
@@ -149,6 +155,11 @@ const App = () => {
   const closeButtonHandler = async () => {
     //const window = remote.getCurrentWindow();
     //window.close();
+
+    if (settings.isFetching && settings.data.length === 0) {
+      quitApp();
+      return;
+    }
 
     const id = myToaster.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס הנתונים לפני יציאה..."} />, {
       autoClose: false
@@ -197,7 +208,9 @@ const App = () => {
   }
 
   if (settings.isFetching) {
-    return <AppLoader loading={settings.isFetching} />
+    return <AlignCenterMiddle>
+      <PacmanLoader size={40} margin={10} loaderColor={"#0365a2"} loading={settings.isFetching} title="" />
+    </AlignCenterMiddle>;
   }
 
   return (
@@ -241,7 +254,6 @@ const App = () => {
               pauseOnVisibilityChange
               draggable={false}
               pauseOnHover
-              transition={Flip}
               closeButton={<CustomCloseButton />}
             />
           </SettingsContext.Provider>

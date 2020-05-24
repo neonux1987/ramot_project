@@ -96,8 +96,6 @@ class MainSystem {
 
     restoreDbIpc();
 
-    mainProcessIpc();
-
     updatesIpc();
   }
 

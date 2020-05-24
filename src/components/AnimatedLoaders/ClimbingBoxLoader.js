@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import { PacmanLoader } from 'react-spinners';
+import { ClimbingBoxLoader } from 'react-spinners';
 
 export default (props) => {
-  const { loading, title = "טוען נתונים", loaderColor = "#000000", size = 10, margin = 2 } = props;
+  const { loading, title = "", loaderColor = "#000000", size = 15 } = props;
   return (
     <Fragment>
       <div
@@ -15,8 +15,7 @@ export default (props) => {
       >
         {title}
       </div>
-      <PacmanLoader
-        margin={margin}
+      <ClimbingBoxLoader
         size={size}
         color={loaderColor}
         loading={loading}

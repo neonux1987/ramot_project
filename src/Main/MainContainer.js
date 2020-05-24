@@ -27,6 +27,8 @@ import * as routesActions from '../redux/actions/routesActions';
 
 // CSS
 import { fade } from '../TransitionsCss/fade.module.css';
+import ClimbingBoxLoader from '../components/AnimatedLoaders/ClimbingBoxLoader';
+import { AlignCenterMiddle } from '../components/AlignCenterMiddle/AlignCenterMiddle';
 
 const styles = theme => ({
   main: {
@@ -122,7 +124,10 @@ class MainContainer extends Component {
     }
 
     if (this.props.sidebar.menu.isFetching) {
-      return <AppLoader style={{ width: "100%" }} loading={this.props.sidebar.menu.isFetching} />;
+      return <AlignCenterMiddle>
+        <ClimbingBoxLoader size={20} loading={this.props.sidebar.menu.isFetching} />
+      </AlignCenterMiddle>;
+
     } else {
       const timeout = { enter: 800, exit: 400 };
 

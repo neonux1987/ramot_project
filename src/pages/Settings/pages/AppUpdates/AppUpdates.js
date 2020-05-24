@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, memo, useEffect, Fragment } from 'react';
+import React, { useState, memo, useEffect, Fragment, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SystemUpdateAlt } from '@material-ui/icons';
 
@@ -11,9 +11,11 @@ import NoUpdate from './NoUpdate/NoUpdate';
 // SERVICES
 import { checkForUpdates, downloadUpdate } from '../../../../services/updates.svc';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
+import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 
 // ELECTRON
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, remote } = require('electron');
+const appVersion = require("electron").remote.app.getVersion();
 
 const SETTINGS_NAME = "appUpdates";
 
@@ -41,9 +43,42 @@ const AppUpdates = () => {
     updateDownloaded
   } = appUpdatesSettings;
 
+
+  const handleUpdate = useCallback(async (data) => {
+
+    if (data) {
+      const { version, releaseDate } = data;
+
+      // dont override settings if it's the same version
+      if (availableUpdate === false && version !== updateVersion) {
+
+        dispatch(updateSettings("appUpdates", { availableUpdate: true, updateVersion: version, releaseDate }));
+
+        const promise = await dispatch(saveSettings(false));
+
+        if (promise === undefined)
+          dispatch(updateSettings("appUpdates", { availableUpdate: false, updateVersion: "" }));
+
+      }
+
+    } else {
+      dispatch(updateSettings("appUpdates", {
+        availableUpdate: false,
+        updateVersion: "",
+        releaseDate: "",
+        updateDownloaded: false
+      }));
+    }
+
+  }, [dispatch]);
+
   useEffect(() => {
     let isCancelled = false;
-    dispatch(checkForUpdates()).then(() => {
+
+    dispatch(checkForUpdates()).then(({ data }) => {
+
+      handleUpdate(data);
+
       if (!isCancelled)
         setIsChecking(false)
     });
@@ -59,7 +94,7 @@ const AppUpdates = () => {
     });
 
     return () => isCancelled = true;
-  }, [dispatch]);
+  }, [dispatch, handleUpdate]);
 
   const downloadHandler = () => {
 
