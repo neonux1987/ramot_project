@@ -82,7 +82,7 @@ const App = () => {
       dispatch(checkForUpdates()).then(({ data }) => {
         if (data !== null) {
           const { version } = data;
-          console.log(data);
+
           if (appUpdates.availableUpdate === false || appUpdates.updateVersion !== version)
             myToaster.AppUpdateNewVersion(data.version);
         }
