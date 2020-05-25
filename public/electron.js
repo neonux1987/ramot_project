@@ -53,6 +53,7 @@ async function createWindow() {
     webPreferences: {
       nodeIntegration: true
     },
+
     backgroundColor: "#eee",
     icon: path.join(app.getAppPath(), 'Icon/ramot-group-icon.png'),
     frame: false,
@@ -74,7 +75,12 @@ async function createWindow() {
       path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
     );
   }
+
   mainWindow.on('closed', () => mainWindow = null);
+
+  mainWindow.webContents.on('new-window', event => {
+    event.preventDefault()
+  });
 
   ipcMain.on('system-start-services', (event, arg) => {
     mainSystem.startServices();
