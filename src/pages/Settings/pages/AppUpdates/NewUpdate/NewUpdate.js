@@ -1,5 +1,5 @@
 // LIBRARIES
-import React from 'react';
+import React, { Fragment } from 'react';
 import { LinearProgress } from '@material-ui/core';
 
 // CSS
@@ -18,7 +18,10 @@ import {
   downloadDetails,
   downloadTransferred,
   downloadSpeed,
-  downloadTitle
+  downloadTitle,
+  ltr,
+  downloadedDetail,
+  transferredDetail
 } from './NewUpdate.module.css';
 
 // COMPONENTS
@@ -29,25 +32,17 @@ import { formatBytes } from '../../../../../helpers/utils';
 const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded, downloadHandler, installHandler, isDownloading, progress }) => {
   const date = new Date(releaseDate);
 
+  const renderNewVersionAvailable = !updateDownloaded && !isDownloading ? <NewVersionAvailable updateVersion={updateVersion} date={date} /> : null;
+
   const renderDownload = updateDownloaded === false && !isDownloading ? <Download downloadHandler={downloadHandler} /> : null;
 
-  const renderInstall = updateDownloaded && !isDownloading ? <Install installHandler={installHandler} /> : null;
+  const renderInstall = updateDownloaded && !isDownloading ? <Install installHandler={installHandler} updateVersion={updateVersion} date={date} /> : null;
 
-  const renderDownloading = updateDownloaded === false && isDownloading ? <DownloadProgress progress={progress} /> : null;
+  const renderDownloading = updateDownloaded === false && isDownloading ? <DownloadProgress progress={progress} updateVersion={updateVersion} /> : null;
 
   return (
     <div className={container}>
-      <SubtitleBoldTypography className={subtitle}>
-        גירסה חדשה יותר זמינה עכשיו להורדה
-        </SubtitleBoldTypography>
-
-      <div className={releaseInfo}>
-        <span className={label}>גירסה:</span>
-        <span>{updateVersion}</span>
-        <br />
-        <span className={label}>תאריך יציאה:</span>
-        <span>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</span>
-      </div>
+      {renderNewVersionAvailable}
 
       {renderDownload}
 
@@ -63,6 +58,22 @@ const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded, downloadHandl
 
 export default NewUpdate;
 
+const NewVersionAvailable = ({ updateVersion, date }) => {
+  return <Fragment>
+    <SubtitleBoldTypography className={subtitle}>
+      גירסה חדשה יותר זמינה עכשיו להורדה
+        </SubtitleBoldTypography>
+
+    <div className={releaseInfo}>
+      <span className={label}>גירסה:</span>
+      <span>{updateVersion}</span>
+      <br />
+      <span className={label}>תאריך יציאה:</span>
+      <span>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</span>
+    </div>
+  </Fragment>;
+}
+
 const Download = ({ downloadHandler }) => {
   return (
     <div>
@@ -72,17 +83,29 @@ const Download = ({ downloadHandler }) => {
   );
 }
 
-const Install = ({ installHandler }) => {
+const Install = ({ installHandler, updateVersion, date }) => {
   return (
     <div>
-      <span>המערכת סיימה להוריד את העידכון להתקנת העידכון לחץ</span>
+      <SubtitleBoldTypography className={subtitle}>
+        {`המערכת סיימה להוריד את העידכון`}
+      </SubtitleBoldTypography>
+
+      <div className={releaseInfo}>
+        <span className={label}>גירסה:</span>
+        <span>{updateVersion}</span>
+        <br />
+        <span className={label}>תאריך יציאה:</span>
+        <span>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</span>
+      </div>
+
+      <span>להתקנה לחץ</span>
       <span></span>
       <PrimaryButton className={installButton} onClick={installHandler}>התקן</PrimaryButton>
     </div>
   );
 }
 
-const DownloadProgress = ({ progress }) => {
+const DownloadProgress = ({ progress, updateVersion }) => {
   const {
     percent,
     total,
@@ -94,7 +117,7 @@ const DownloadProgress = ({ progress }) => {
     <div className={downloadProgressWrapper}>
 
       <div className={downloadTitle}>
-        <span className={label}>מוריד...</span>
+        <span className={label}>{`מוריד עידכון גירסה ${updateVersion}...`}</span>
       </div>
 
       <ProgressBar progressValue={percent} />
@@ -103,14 +126,19 @@ const DownloadProgress = ({ progress }) => {
 
         <div className={downloadSpeed}>
           <span className={label}>קצב הורדה:</span>
-          <span>{bytesPerSecond}543</span>
+          <span className={ltr}>{`${formatBytes(bytesPerSecond, 2)}/S`}</span>
         </div>
 
         <div className={downloadTransferred}>
-          <span className={label}>ירדו</span>
-          <span>{formatBytes(18000000, 2)}</span>
-          <span className={label}>מתוך</span>
-          <span>{formatBytes(88000000, 2)}</span>
+          <div className={downloadedDetail}>
+            <span className={label}>ירדו</span>
+            <span className={ltr}>{`${formatBytes(transferred, 2)}`}</span>
+          </div>
+
+          <div className={transferredDetail}>
+            <span className={label}>מתוך</span>
+            <span className={ltr}>{`${formatBytes(total, 2)}`}</span>
+          </div>
         </div>
 
       </div>

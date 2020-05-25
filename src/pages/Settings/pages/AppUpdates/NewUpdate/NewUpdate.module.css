@@ -67,3 +67,16 @@
   flex-grow: 1;
   justify-content: flex-end;
 }
+
+.ltr{
+  direction: ltr;
+}
+
+.downloadedDetail{
+  margin-left: 5px;
+  display: flex;
+}
+
+.transferredDetail{
+  display: flex;
+}

@@ -1,5 +1,5 @@
 // LIBRARIES
-const { dialog, shell, app } = require('electron');
+const { dialog, shell, app, BrowserWindow } = require('electron');
 const path = require('path');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
@@ -152,17 +152,18 @@ class MainSystem {
       אשר נמצא בתיקיית התוכנה.
       `;
 
-      const dialogData = await dialog.showMessageBox({
+      const dialogData = await dialog.showMessageBox(newWindow, {
         title,
         message,
         type: "error",
         buttons: ["סגור את האפליקציה", "פתח יומן אירועים"]
       });
 
-      if (dialogData.response === 1)
+      if (dialogData.response === 1) {
         this.openEventsLog();
-      else
         app.quit(0);
+      }
+      else app.quit(0);
 
     }
 

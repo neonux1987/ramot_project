@@ -11,6 +11,7 @@ import NoUpdate from './NoUpdate/NoUpdate';
 // SERVICES
 import { checkForUpdates, downloadUpdate } from '../../../../services/updates.svc';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
+import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 
 // ELECTRON
 const { ipcRenderer } = require('electron');
@@ -53,22 +54,29 @@ const AppUpdates = () => {
     });
 
     ipcRenderer.on("download_progress", (event, progress) => {
+      setIsDownloading(true);
+
       let percent = Number.parseInt(progress.percent);
 
       if (!isCancelled) {
         setProgress(progress);
       }
 
-      if (percent === 100)
-        ipcRenderer.removeAllListeners("download_progress")
+      if (percent === 100) {
+        setIsDownloading(false);
+        ipcRenderer.removeAllListeners("download_progress");
+        dispatch(updateSettings(SETTINGS_NAME, { updateDownloaded: true }));
+        dispatch(saveSettings(false));
+      }
+
     });
 
     return () => isCancelled = true;
-  }, [dispatch]);
+  }, [dispatch, isDownloading]);
 
   const downloadHandler = async () => {
     setIsDownloading(true);
-    let percent = 0;
+    /* let percent = 0;
     const myTimer = () => {
       percent += 1;
       setProgress({ percent });
@@ -79,16 +87,16 @@ const AppUpdates = () => {
     if (percent === 50) {
       console.log("yes");
       clearInterval(interval, 1000)
-    }
+    } */
 
-    /* const promise = await dispatch(downloadUpdate());
+    const promise = await dispatch(downloadUpdate());
 
     if (promise === undefined)
-      setIsDownloading(false); */
+      setIsDownloading(false);
   }
 
   const installHandler = () => {
-    dispatch(downloadUpdate());
+    console.log("installing");
   }
 
   const renderNewUpdate = () => {
@@ -97,9 +105,9 @@ const AppUpdates = () => {
         <NewUpdate
           updateVersion={updateVersion}
           releaseDate={releaseDate}
-          updateDownloaded={false}
+          updateDownloaded={updateDownloaded}
           progress={progress}
-          isDownloading={true}
+          isDownloading={isDownloading}
           downloadHandler={downloadHandler}
           installHandler={installHandler}
         /> :
