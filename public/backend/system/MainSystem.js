@@ -1,5 +1,6 @@
 // LIBRARIES
-const { dialog } = require('electron');
+const { dialog, shell, app } = require('electron');
+const path = require('path');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
 const MenuDao = require('../dao/MenuDao');
@@ -147,12 +148,29 @@ class MainSystem {
       const title = "שגיאת הפעלה";
       const message = `
       המערכת נכשלה בעת ההפעלה עקב תקלה.\n
-      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא ב:
-      ${__dirname}
+      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקיית logs
+      אשר נמצא בתיקיית התוכנה.
       `;
-      dialog.showErrorBox(title, message);
+
+      const dialogData = await dialog.showMessageBox({
+        title,
+        message,
+        type: "error",
+        buttons: ["סגור את האפליקציה", "פתח יומן אירועים"]
+      });
+
+      if (dialogData.response === 1)
+        this.openEventsLog();
+      else
+        app.quit(0);
+
     }
 
+  }
+
+  openEventsLog() {
+    console.log(path.join(app.getAppPath(), "logs", "ramot-mezach-errors.log"));
+    shell.showItemInFolder(path.join(app.getAppPath(), "logs", "ramot-mezach-errors.log"));
   }
 
   async stopSystem() {

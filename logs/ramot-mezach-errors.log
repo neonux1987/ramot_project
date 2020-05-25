@@ -1,40 +1,220 @@
-[2020-05-24T18:05:00.269] [ERROR] Application - {
+[2020-05-25T03:25:10.050] [ERROR] Application - {
   name: 'database_error',
-  fileName: 'MenuDao.js',
-  message: 'המערכת לא הצליחה לשלוף נתוני תפריט',
-  stack: 'database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n' +
-    '    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24',
-  original: 'Error: select `menu`.`id` as `id`, `buildings`.`buildingName` as `label`, `buildings`.`buildingNameEng` as `engLabel`, `menu`.`path` as `path`, `menu`.`expanded` as `expanded`, `submenus`.`id` as `_id`, `submenus`.`label` as `_label`, `submenus`.`menuid` as `_menuid`, `submenus`.`path` as `_path`, `submenus`.`selected` as `_selected`, `submenus`.`order` as `_order`, `submenus`.`icon_name` as `_icon_name` from `submenusss` inner join `menu` on `menu`.`id` = `submenus`.`menuid` inner join `buildings` on `buildings`.`id` = `menu`.`building_id` - SQLITE_ERROR: no such table: submenusss'
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
 }
-[2020-05-24T18:05:00.319] [ERROR] Application - {
+[2020-05-25T03:27:03.641] [ERROR] Application - {
   name: 'database_error',
-  fileName: 'MenuDao.js',
-  message: 'המערכת לא הצליחה לשלוף נתוני תפריט',
-  stack: 'database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n' +
-    '    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24',
-  original: 'Error: select `menu`.`id` as `id`, `buildings`.`buildingName` as `label`, `buildings`.`buildingNameEng` as `engLabel`, `menu`.`path` as `path`, `menu`.`expanded` as `expanded`, `submenus`.`id` as `_id`, `submenus`.`label` as `_label`, `submenus`.`menuid` as `_menuid`, `submenus`.`path` as `_path`, `submenus`.`selected` as `_selected`, `submenus`.`order` as `_order`, `submenus`.`icon_name` as `_icon_name` from `submenusss` inner join `menu` on `menu`.`id` = `submenus`.`menuid` inner join `buildings` on `buildings`.`id` = `menu`.`building_id` - SQLITE_ERROR: no such table: submenusss'
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
 }
-[2020-05-24T18:08:03.724] [ERROR] Application - {
+[2020-05-25T03:27:17.406] [ERROR] Application - {
   name: 'database_error',
-  fileName: 'MenuDao.js',
-  message: 'המערכת לא הצליחה לשלוף נתוני תפריט',
-  stack: 'database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n' +
-    '    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24',
-  original: 'Error: select `menu`.`id` as `id`, `buildings`.`buildingName` as `label`, `buildings`.`buildingNameEng` as `engLabel`, `menu`.`path` as `path`, `menu`.`expanded` as `expanded`, `submenus`.`id` as `_id`, `submenus`.`label` as `_label`, `submenus`.`menuid` as `_menuid`, `submenus`.`path` as `_path`, `submenus`.`selected` as `_selected`, `submenus`.`order` as `_order`, `submenus`.`icon_name` as `_icon_name` from `submenus` inner join `menu` on `menu`.`id` = `submenus`.`menuid` inner join `buildings` on `buildings`.`id` = `menu`.`building_id` - SQLITE_ERROR: no such table: submenus'
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
 }
-[2020-05-24T18:08:03.765] [ERROR] Application - {
+[2020-05-25T03:28:23.414] [ERROR] Application - {
   name: 'database_error',
-  fileName: 'MenuDao.js',
-  message: 'המערכת לא הצליחה לשלוף נתוני תפריט',
-  stack: 'database_error: המערכת לא הצליחה לשלוף נתוני תפריט\n' +
-    '    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\MenuDao.js:54:24',
-  original: 'Error: select `menu`.`id` as `id`, `buildings`.`buildingName` as `label`, `buildings`.`buildingNameEng` as `engLabel`, `menu`.`path` as `path`, `menu`.`expanded` as `expanded`, `submenus`.`id` as `_id`, `submenus`.`label` as `_label`, `submenus`.`menuid` as `_menuid`, `submenus`.`path` as `_path`, `submenus`.`selected` as `_selected`, `submenus`.`order` as `_order`, `submenus`.`icon_name` as `_icon_name` from `submenus` inner join `menu` on `menu`.`id` = `submenus`.`menuid` inner join `buildings` on `buildings`.`id` = `menu`.`building_id` - SQLITE_ERROR: no such table: submenus'
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
 }
-[2020-05-24T18:08:03.765] [ERROR] Application - {
+[2020-05-25T03:28:40.765] [ERROR] Application - {
   name: 'database_error',
-  fileName: 'GeneralSettingsDao.js',
-  message: 'המערכת לא הצליחה לשלוף נתונים לגבי הגדרות כלליות',
-  stack: 'database_error: המערכת לא הצליחה לשלוף נתונים לגבי הגדרות כלליות\n' +
-    '    at E:\\developer\\electron-react-projects\\electron-cra\\financial_reports_management_system\\public\\backend\\dao\\GeneralSettingsDao.js:21:26',
-  original: 'Error: select * from `general` - SQLITE_ERROR: no such table: general'
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:32:27.572] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:32:42.886] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:33:11.605] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:34:44.941] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:35:04.209] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:36:07.970] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:36:56.423] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:37:20.642] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:38:58.203] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:39:42.973] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:40:29.202] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:42:00.735] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T03:42:13.992] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:43:28',
+  original: 'Error: select count(*) from `buildings` - SQLITE_NOTADB: file is not a database'
+}
+[2020-05-25T04:21:04.296] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:38:28',
+  original: 'TypeError: Argument 0 must be a string'
+}
+[2020-05-25T04:48:57.640] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:38:28',
+  original: 'TypeError: Argument 0 must be a string'
+}
+[2020-05-25T04:52:34.646] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:38:28',
+  original: 'TypeError: Argument 0 must be a string'
+}
+[2020-05-25T04:53:46.157] [ERROR] Application - {
+  name: 'database_error',
+  fileName: 'ConnectionPool.js',
+  message: 'המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם',
+  stack: 'database_error: המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite\n' +
+    '          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם\n' +
+    '    at D:\\my projects\\electron-react\\electron-cra\\financial_reports_management_system\\public\\backend\\connection\\ConnectionPool.js:38:28',
+  original: 'TypeError: Argument 0 must be a string'
 }

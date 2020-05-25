@@ -40,9 +40,12 @@ const AppUpdates = () => {
     releaseDate,
     updateDownloaded
   } = appUpdatesSettings;
-  console.log(progress);
+
   useEffect(() => {
     let isCancelled = false;
+
+    // wrap with an if statement to check if
+    // still downloading, is is then don't call to check again
 
     dispatch(checkForUpdates()).then(() => {
       if (!isCancelled)
@@ -94,9 +97,9 @@ const AppUpdates = () => {
         <NewUpdate
           updateVersion={updateVersion}
           releaseDate={releaseDate}
-          updateDownloaded={updateDownloaded}
+          updateDownloaded={false}
           progress={progress}
-          isDownloading={isDownloading}
+          isDownloading={true}
           downloadHandler={downloadHandler}
           installHandler={installHandler}
         /> :

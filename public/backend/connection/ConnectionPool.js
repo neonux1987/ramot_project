@@ -1,6 +1,9 @@
 const ConfigurationLogic = require('../logic/ConfigurationLogic');
 const knex = require('knex');
 const logManager = require('../logger/LogManager');
+const DbError = require('../customErrors/DbError');
+
+const FILENAME = "ConnectionPool.js";
 
 class ConnectionPool {
 
@@ -23,10 +26,21 @@ class ConnectionPool {
         }
       });
 
-      if (this.knex === undefined)
-        reject("Failed to create a connection to the database")
+      // in order to test knex to see if the connection was successful
+      // we must query, and if te query will retrn error then connection was unsuccessful
+      this.knex('buildings').count()
+        .then(() => {
+          resolve();
+        })
+        .catch((error) => {
+          const msg = `המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite
+          או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם`;
+          const newError = new DbError(msg, FILENAME, error);
+          //logger.error(newError.toString())
 
-      resolve();
+          reject(newError);
+        })
+
     });
   }
 
