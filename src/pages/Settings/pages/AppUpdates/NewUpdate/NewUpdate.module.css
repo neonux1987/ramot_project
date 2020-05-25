@@ -80,3 +80,7 @@
 .transferredDetail{
   display: flex;
 }
+
+.abortButtonWrapper{
+  margin-top: 20px;
+}

@@ -121,10 +121,10 @@ class MainSystem {
       // if the app runs for the first time
       await this.configurationLogic.firstTimeSetup();
 
-      this.servicesLogic = new ServicesLogic();
-
       // set up the db connection
       await connectionPool.createConnection();
+
+      this.servicesLogic = new ServicesLogic();
 
       //fetch menu data
       /* const menuDao = new MenuDao();

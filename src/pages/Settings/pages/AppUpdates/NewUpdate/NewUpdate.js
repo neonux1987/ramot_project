@@ -21,7 +21,8 @@ import {
   downloadTitle,
   ltr,
   downloadedDetail,
-  transferredDetail
+  transferredDetail,
+  abortButtonWrapper
 } from './NewUpdate.module.css';
 
 // COMPONENTS
@@ -29,28 +30,31 @@ import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
 import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
 import { formatBytes } from '../../../../../helpers/utils';
 
-const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded, downloadHandler, installHandler, isDownloading, progress }) => {
+const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded, downloadHandler, abortDownloadHandler, deleteUpdateHandler, installHandler, isDownloading, progress }) => {
   const date = new Date(releaseDate);
 
   const renderNewVersionAvailable = !updateDownloaded && !isDownloading ? <NewVersionAvailable updateVersion={updateVersion} date={date} /> : null;
 
   const renderDownload = updateDownloaded === false && !isDownloading ? <Download downloadHandler={downloadHandler} /> : null;
 
-  const renderInstall = updateDownloaded && !isDownloading ? <Install installHandler={installHandler} updateVersion={updateVersion} date={date} /> : null;
+  const renderInstall = updateDownloaded && !isDownloading ? <Install installHandler={installHandler} deleteUpdateHandler={deleteUpdateHandler} updateVersion={updateVersion} date={date} /> : null;
 
-  const renderDownloading = updateDownloaded === false && isDownloading ? <DownloadProgress progress={progress} updateVersion={updateVersion} /> : null;
+  const renderDownloading = updateDownloaded === false && isDownloading ? <DownloadProgress progress={progress} updateVersion={updateVersion} abortDownloadHandler={abortDownloadHandler} /> : null;
+
+  const renderAlreadyDownloadedMsg = updateDownloaded && ~isDownloading ? <SubtitleBoldTypography className={subtitle}>
+    העידכון כבר ירד
+    </SubtitleBoldTypography> : null;
 
   return (
     <div className={container}>
+
       {renderNewVersionAvailable}
 
       {renderDownload}
 
       {renderInstall}
 
-      {renderDownloading}
-
-      {/* <DownloadProgress progressValue={progressValue} /> */}
+      {renderDownloading || renderAlreadyDownloadedMsg}
 
     </div>
   );
@@ -83,7 +87,7 @@ const Download = ({ downloadHandler }) => {
   );
 }
 
-const Install = ({ installHandler, updateVersion, date }) => {
+const Install = ({ installHandler, deleteUpdateHandler, updateVersion, date }) => {
   return (
     <div>
       <SubtitleBoldTypography className={subtitle}>
@@ -101,11 +105,13 @@ const Install = ({ installHandler, updateVersion, date }) => {
       <span>להתקנה לחץ</span>
       <span></span>
       <PrimaryButton className={installButton} onClick={installHandler}>התקן</PrimaryButton>
+
+      <PrimaryButton onClick={(event) => deleteUpdateHandler(event)}>מחק עידכון</PrimaryButton>
     </div>
   );
 }
 
-const DownloadProgress = ({ progress, updateVersion }) => {
+const DownloadProgress = ({ progress, updateVersion, abortDownloadHandler }) => {
   const {
     percent,
     total,
@@ -141,6 +147,10 @@ const DownloadProgress = ({ progress, updateVersion }) => {
           </div>
         </div>
 
+      </div>
+
+      <div className={abortButtonWrapper}>
+        <PrimaryButton onClick={abortDownloadHandler}>בטל הורדה</PrimaryButton>
       </div>
 
 

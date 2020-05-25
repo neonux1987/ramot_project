@@ -3,8 +3,10 @@ const schedule = require('node-schedule');
 const SettingsLogic = require('../logic/SettingsLogic');
 const RegisteredBackupsLogic = require('../logic/RegisteredBackupsLogic');
 const ServiceError = require('../customErrors/ServiceError');
+const connectionPool = require('../connection/ConnectionPool');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('./RendererNotificationSvc');
+const DbError = require('../customErrors/DbError');
 
 const FILENAME = "DbBackupSvc.js";
 
@@ -136,7 +138,7 @@ class DbBackupSvc {
         rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
       })
       .catch((error) => {
-        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", "קרתה תקלה, הגיבוי נכשל.");
+        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", error.message);
         const newError = new ServiceError("המערכת נכשלה בגיבוי בסיס הנתונים.", FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -144,7 +146,27 @@ class DbBackupSvc {
 
   }
 
+  /****************************************************
+   * check if the database is working, if the file
+   * is not corrupt, if it's corrupt or not working
+   * dont back it up
+  *****************************************************/
+  async checkDbHealth() {
+    const connection = await connectionPool.getConnection();
+    return await connection('buildings').count()
+      .catch((error) => {
+        const msg = `
+        הגיבוי נכשל. יש חשד שהבסיס נתונים  פגום. המערכת לא תדרוס את הגיבויים הקודמים
+        מכיוון שהם עדיין תקינים ויכולים לשמש לצורך שיחזור.
+        `;
+        const newError = new DbError(msg, FILENAME, error);
+        throw newError;
+      });
+  }
+
   async initiateBackup() {
+    await this.checkDbHealth();
+
     //fetch db backup settings
     let settings = await this.settingsLogic.getSettings();
 

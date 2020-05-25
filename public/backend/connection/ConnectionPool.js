@@ -36,8 +36,6 @@ class ConnectionPool {
           const msg = `המערכת נכשלה בהתחברות לבסיס נתונים מכיוון שהקובץ אינו קובץ בסיס נתונים מסוג sqlite
           או שקובץ בסיס הנתונים הוחלף בקובץ אחר שהוא לא בסיס נתונים מסוג sqlite או שהקובץ נפגם`;
           const newError = new DbError(msg, FILENAME, error);
-          //logger.error(newError.toString())
-
           reject(newError);
         })
 

@@ -31,6 +31,6 @@ export const restore = (payload, byList) => {
       delay: 2000,
       autoClose: 3000
     }),
-    withError: false
+    withErrorNotification: false
   });
 }

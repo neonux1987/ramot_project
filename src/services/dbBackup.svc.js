@@ -19,6 +19,7 @@ export const initiateDbBackup = () => {
     },
     receive: {
       channel: "db-backup-initiated",
-    }
+    },
+    withCatch: false
   });
 }

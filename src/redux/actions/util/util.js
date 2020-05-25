@@ -8,9 +8,10 @@ export const ipcSendReceive = (details) => {
       receive,
       onSuccess,
       onError,
-      withError = true
+      withErrorNotification = true,
+      withCatch = true
     } = details;
-  return new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     //request request to backend to get the data
     ipcRenderer.send(send.channel, send.params);
     //listen when the data comes back
@@ -32,7 +33,12 @@ export const ipcSendReceive = (details) => {
 
     });
   }).catch(result => {
-    if (withError)
+    if (withErrorNotification)
       myToaster.error(result.error);
+
+    if (!withCatch)
+      throw new Error(result.error);
   });
+
+  return promise;
 }

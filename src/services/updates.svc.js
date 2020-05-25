@@ -11,7 +11,7 @@ export const checkForUpdates = () => {
       receive: {
         channel: "checked_update",
       },
-      withError: false,
+      withErrorNotification: false,
       onSuccess: ({ data }) => {
         const appUpdatesSettings = getState().settings.data["appUpdates"];
 
@@ -37,6 +37,18 @@ export const downloadUpdate = () => {
   }
 }
 
+export const abortDownload = (silent) => {
+  return ipcSendReceive({
+    send: {
+      channel: "abort-download"
+    },
+    receive: {
+      channel: "download_aborted",
+    },
+    withErrorNotification: silent
+  });
+}
+
 export const installUpdate = () => {
 
 }
@@ -45,12 +57,14 @@ const handleUpdate = async (dispatch, data, settings) => {
   if (data) {
     const { version, releaseDate } = data;
 
-    dispatch(updateSettings("appUpdates", { availableUpdate: true, updateVersion: version, releaseDate }));
+    if (version !== settings.updateVersion) {
+      dispatch(updateSettings("appUpdates", { availableUpdate: true, updateVersion: version, releaseDate, updateDownloaded: false }));
+    }
 
     const promise = await dispatch(saveSettings(false));
 
     if (promise === undefined)
-      dispatch(updateSettings("appUpdates", { availableUpdate: false, updateVersion: "", releaseDate: "" }));
+      dispatch(updateSettings("appUpdates", { availableUpdate: false, updateVersion: "", releaseDate: "", updateDownloaded: false }));
 
   }
 }

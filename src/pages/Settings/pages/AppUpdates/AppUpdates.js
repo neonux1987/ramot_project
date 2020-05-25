@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, memo, useEffect, Fragment } from 'react';
+import React, { useState, memo, useEffect, Fragment, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SystemUpdateAlt } from '@material-ui/icons';
 
@@ -9,9 +9,10 @@ import NewUpdate from './NewUpdate/NewUpdate';
 import NoUpdate from './NoUpdate/NoUpdate';
 
 // SERVICES
-import { checkForUpdates, downloadUpdate } from '../../../../services/updates.svc';
+import { checkForUpdates, downloadUpdate, abortDownload } from '../../../../services/updates.svc';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
+import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 
 // ELECTRON
 const { ipcRenderer } = require('electron');
@@ -20,18 +21,15 @@ const SETTINGS_NAME = "appUpdates";
 
 const AppUpdates = () => {
 
+  const isCancelled = useRef(false);
+
   const dispatch = useDispatch();
 
   const [isChecking, setIsChecking] = useState(true);
 
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const [progress, setProgress] = useState({
-    percent: 0,
-    total: 0,
-    transferred: 0,
-    bytesPerSecond: 0
-  });
+  const [progress, setProgress] = useState(progressState());
 
   const appUpdatesSettings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
@@ -43,27 +41,26 @@ const AppUpdates = () => {
   } = appUpdatesSettings;
 
   useEffect(() => {
-    let isCancelled = false;
 
     // wrap with an if statement to check if
     // still downloading, is is then don't call to check again
 
     dispatch(checkForUpdates()).then(() => {
-      if (!isCancelled)
+      if (!isCancelled.current)
         setIsChecking(false)
     });
 
     ipcRenderer.on("download_progress", (event, progress) => {
-      setIsDownloading(true);
+      if (!isCancelled.current) setIsDownloading(true);
 
       let percent = Number.parseInt(progress.percent);
 
-      if (!isCancelled) {
-        setProgress(progress);
-      }
+      if (!isCancelled.current) setProgress(progress);
 
       if (percent === 100) {
-        setIsDownloading(false);
+
+        if (!isCancelled.current) setIsDownloading(false);
+
         ipcRenderer.removeAllListeners("download_progress");
         dispatch(updateSettings(SETTINGS_NAME, { updateDownloaded: true }));
         dispatch(saveSettings(false));
@@ -71,33 +68,69 @@ const AppUpdates = () => {
 
     });
 
-    return () => isCancelled = true;
+    ipcRenderer.on("update_downloaded", (event) => {
+      if (!isCancelled.current) {
+        setIsDownloading(false);
+        dispatch(updateSettings({ updateDownloaded: true }));
+        ipcRenderer.removeAllListeners("update_downloaded");
+        console.log("already downloaded");
+      }
+    });
+
   }, [dispatch, isDownloading]);
 
-  const downloadHandler = async () => {
-    setIsDownloading(true);
-    /* let percent = 0;
-    const myTimer = () => {
-      percent += 1;
-      setProgress({ percent });
-    }
-    console.log(percent);
-    const interval = setInterval(myTimer, 1000);
+  useEffect(() => {
+    return () => isCancelled.current = true;
+  }, []);
 
-    if (percent === 50) {
-      console.log("yes");
-      clearInterval(interval, 1000)
-    } */
+  const downloadHandler = async () => {
+    if (!isCancelled.current) setIsDownloading(true);
 
     const promise = await dispatch(downloadUpdate());
 
     if (promise === undefined)
-      setIsDownloading(false);
+      if (!isCancelled.current) setIsDownloading(false);
   }
 
   const installHandler = () => {
     console.log("installing");
   }
+
+  // abort download handler
+  const abortDownloadHandler = async (silent) => {
+    if (!isCancelled.current) setIsDownloading(false);
+    if (!isCancelled.current) setProgress(progressState());
+    await abortDownload(silent);
+  };
+
+  // refresh handler
+  const refreshHandler = async (event) => {
+    event.stopPropagation();
+
+    if (!isCancelled.current) setIsChecking(true);
+    if (!isCancelled.current) setIsDownloading(false);
+    if (!isCancelled.current) setProgress(progressState());
+
+    await abortDownloadHandler(false);
+
+    const promise = await dispatch(checkForUpdates());
+
+    if (promise)
+      if (!isCancelled.current) setIsChecking(false);
+  };
+
+  // delete update handler
+  const deleteUpdateHandler = async (event) => {
+    event.stopPropagation();
+
+    await dispatch(updateSettings(SETTINGS_NAME, { updateDownloaded: false }));
+    await dispatch(saveSettings(false));
+
+    const promise = await dispatch(checkForUpdates());
+
+    if (promise)
+      if (!isCancelled.current) setIsChecking(false);
+  };
 
   const renderNewUpdate = () => {
     return (
@@ -110,6 +143,8 @@ const AppUpdates = () => {
           isDownloading={isDownloading}
           downloadHandler={downloadHandler}
           installHandler={installHandler}
+          abortDownloadHandler={abortDownloadHandler}
+          deleteUpdateHandler={deleteUpdateHandler}
         /> :
         <NoUpdate />
     )
@@ -126,6 +161,7 @@ const AppUpdates = () => {
         TitleIcon={SystemUpdateAlt}
         padding={"30px 20px"}
         iconColor={"#0365a2"}
+        extraDetails={() => <PrimaryButton onClick={refreshHandler}>רענן</PrimaryButton>}
       >
 
         {content}
@@ -136,3 +172,12 @@ const AppUpdates = () => {
 }
 
 export default memo(AppUpdates);
+
+function progressState() {
+  return {
+    percent: 0,
+    total: 0,
+    transferred: 0,
+    bytesPerSecond: 0
+  };
+}

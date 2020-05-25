@@ -1,12 +1,15 @@
 const { ipcMain, BrowserWindow } = require('electron');
-const { autoUpdater, cancellationToken } = require('electron-updater');
-const logManager = require('../../backend/logger/LogManager')
+const { autoUpdater, CancellationToken } = require('electron-updater');
+const logManager = require('../../backend/logger/LogManager');
+
 const updatesIpc = () => {
   const currentWindow = BrowserWindow.getFocusedWindow();
 
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = false;
   autoUpdater.logger = logManager.getLogger();
+
+  let cancellationToken = undefined;
 
   ipcMain.on('check-for-updates', (event) => {
     const currentVersion = autoUpdater.currentVersion.version;
@@ -17,9 +20,24 @@ const updatesIpc = () => {
       if (version !== currentVersion)
         event.sender.send('checked_update', { data: { version, releaseDate } });
       else
-        event.sender.send('checked_update', { data: null })
+        event.sender.send('checked_update', { data: null });
+    }).catch(() => {
+      event.sender.send('checked_update', { error: "בדיקת עידכונים חדשים נכשלה" });
     });
-  })
+  });
+
+  ipcMain.on('abort-download', (event) => {
+    console.log("abort download");
+
+    if (cancellationToken) {
+      cancellationToken.cancel();
+    }
+
+    if (cancellationToken && cancellationToken._cancelled)
+      currentWindow.webContents.send('download_aborted', { data: {} });
+    else
+      currentWindow.webContents.send('download_aborted', { error: "המערכת לא הצליחה לבטל את ההורדה" });
+  });
 
   autoUpdater.on('checking-for-update', () => {
     console.log('Checking for update');
@@ -34,8 +52,8 @@ const updatesIpc = () => {
   });
 
   autoUpdater.on('update-downloaded', () => {
-    //currentWindow.webContents.send('update_downloaded');
-    console.log("downloaded");
+    console.log("downloaded already");
+    currentWindow.webContents.send('update_downloaded');
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
@@ -51,13 +69,20 @@ const updatesIpc = () => {
 
   ipcMain.on('download-update', () => {
     console.log("download update");
+
+    cancellationToken = new CancellationToken();
+
     autoUpdater.downloadUpdate(cancellationToken)
-      .then(() => {
+      .then((result) => {
+        console.log(result);
         currentWindow.webContents.send('downloading_update', { data: {} });
       })
       .catch(() => {
-        cancellationToken.cancel();
-        currentWindow.webContents.send('downloading_update', { error: "כשל בהורדת העידכון" });
+
+        if (cancellationToken._cancelled === false) {
+          cancellationToken.cancel();
+          currentWindow.webContents.send('downloading_update', { error: "כשל בהורדת העידכון" });
+        }
       });
   });
 

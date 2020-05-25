@@ -169,12 +169,12 @@ const App = () => {
 
     const promise = await initiateDbBackup().catch((result) => {
       myToaster.update(id, {
-        render: <ToastRender message={"המערכת לא הצליחה לבצע גיבוי לבסיס נתונים, מבצעת יציאה..."} />,
+        render: <ToastRender message={result.error} />,
         type: myToaster.TYPE.ERROR,
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
-          quitApp();
+          //quitApp();
         }
       });
     });
