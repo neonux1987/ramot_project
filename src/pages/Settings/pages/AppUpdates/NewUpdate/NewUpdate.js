@@ -41,10 +41,6 @@ const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded, downloadHandl
 
   const renderDownloading = updateDownloaded === false && isDownloading ? <DownloadProgress progress={progress} updateVersion={updateVersion} abortDownloadHandler={abortDownloadHandler} /> : null;
 
-  const renderAlreadyDownloadedMsg = updateDownloaded && ~isDownloading ? <SubtitleBoldTypography className={subtitle}>
-    העידכון כבר ירד
-    </SubtitleBoldTypography> : null;
-
   return (
     <div className={container}>
 
@@ -54,7 +50,7 @@ const NewUpdate = ({ updateVersion, releaseDate, updateDownloaded, downloadHandl
 
       {renderInstall}
 
-      {renderDownloading || renderAlreadyDownloadedMsg}
+      {renderDownloading}
 
     </div>
   );
@@ -102,11 +98,8 @@ const Install = ({ installHandler, deleteUpdateHandler, updateVersion, date }) =
         <span>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</span>
       </div>
 
-      <span>להתקנה לחץ</span>
-      <span></span>
-      <PrimaryButton className={installButton} onClick={installHandler}>התקן</PrimaryButton>
-
-      <PrimaryButton onClick={(event) => deleteUpdateHandler(event)}>מחק עידכון</PrimaryButton>
+      <PrimaryButton style={{ backgroundColor: "rgb(210, 49, 71)" }} onClick={(event) => deleteUpdateHandler(event)}>מחק עידכון</PrimaryButton>
+      <PrimaryButton className={installButton} onClick={installHandler}>התקן עידכון</PrimaryButton>
     </div>
   );
 }

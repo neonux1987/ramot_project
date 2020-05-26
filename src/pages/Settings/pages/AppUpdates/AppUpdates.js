@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, memo, useEffect, Fragment, useCallback, useRef } from 'react';
+import React, { useState, memo, useEffect, Fragment, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SystemUpdateAlt } from '@material-ui/icons';
 
@@ -9,10 +9,11 @@ import NewUpdate from './NewUpdate/NewUpdate';
 import NoUpdate from './NoUpdate/NoUpdate';
 
 // SERVICES
-import { checkForUpdates, downloadUpdate, abortDownload } from '../../../../services/updates.svc';
+import { checkForUpdates, downloadUpdate, abortDownload, deleteUpdate } from '../../../../services/updates.svc';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
+import { myToaster } from '../../../../Toasts/toastManager';
 
 // ELECTRON
 const { ipcRenderer } = require('electron');
@@ -37,59 +38,108 @@ const AppUpdates = () => {
     availableUpdate,
     updateVersion,
     releaseDate,
-    updateDownloaded
+    updateDownloaded,
+    updateFilePath
   } = appUpdatesSettings;
+  console.log("appUpdatesSettings", appUpdatesSettings);
+  console.log("isDownloading", isDownloading);
+  useEffect(() => {
+    dispatch(checkForUpdates());
+    console.log("checking effect");
+  }, [dispatch]);
 
   useEffect(() => {
 
-    // wrap with an if statement to check if
-    // still downloading, is is then don't call to check again
-
-    dispatch(checkForUpdates()).then(() => {
-      if (!isCancelled.current)
-        setIsChecking(false)
-    });
-
-    ipcRenderer.on("download_progress", (event, progress) => {
-      if (!isCancelled.current) setIsDownloading(true);
-
-      let percent = Number.parseInt(progress.percent);
-
-      if (!isCancelled.current) setProgress(progress);
-
-      if (percent === 100) {
-
-        if (!isCancelled.current) setIsDownloading(false);
-
-        ipcRenderer.removeAllListeners("download_progress");
-        dispatch(updateSettings(SETTINGS_NAME, { updateDownloaded: true }));
-        dispatch(saveSettings(false));
-      }
-
-    });
-
-    ipcRenderer.on("update_downloaded", (event) => {
+    // download progress
+    ipcRenderer.on("download_progress", async (event, progress) => {
       if (!isCancelled.current) {
-        setIsDownloading(false);
-        dispatch(updateSettings({ updateDownloaded: true }));
-        ipcRenderer.removeAllListeners("update_downloaded");
-        console.log("already downloaded");
+        //setIsDownloading(true);
+        setProgress(progress);
       }
     });
 
-  }, [dispatch, isDownloading]);
+    ipcRenderer.on("update_available", async (event, result) => {
+      const { version, releaseDate } = result.data;
 
+      if (!isCancelled.current) setIsChecking(false);
+
+      if (!updateDownloaded || version !== updateVersion) {
+        await dispatch(updateSettings(SETTINGS_NAME, {
+          availableUpdate: true,
+          updateVersion: version,
+          releaseDate,
+          updateDownloaded: false,
+          userNotified: true
+        }));
+        await dispatch(saveSettings(false));
+      }
+
+      ipcRenderer.removeAllListeners('update_available');
+    });
+
+    ipcRenderer.on("update_not_available", async (event) => {
+      if (!isCancelled.current) setIsChecking(false);
+      console.log("not available")
+      await dispatch(updateSettings(SETTINGS_NAME, {
+        availableUpdate: false,
+        updateVersion: "",
+        releaseDate: "",
+        updateDownloaded: false,
+        userNotified: false
+      }));
+      await dispatch(saveSettings(false));
+
+      ipcRenderer.removeAllListeners('update_not_available');
+    });
+
+    ipcRenderer.on("downloading_update", (event, result) => {
+      const { error } = result;
+
+      if (error)
+        myToaster.error(error.message)
+      else {
+        if (!isCancelled.current) setIsDownloading(true);
+      }
+
+      ipcRenderer.removeAllListeners('downloading_update');
+    });
+
+    ipcRenderer.on("update_downloaded", async (event, result) => {
+      setIsDownloading(false);
+      await dispatch(updateSettings({ updateDownloaded: true, updateFilePath: result.downloadedFile }));
+      await dispatch(saveSettings(false));
+      ipcRenderer.removeAllListeners('update_downloaded');
+    });
+
+    ipcRenderer.on("updater_error", async (event, result) => {
+      ipcRenderer.removeAllListeners('updater_error');
+      myToaster.error(result.error);
+    });
+
+  }, [dispatch, updateDownloaded, updateVersion]);
+
+  // cleanup
   useEffect(() => {
-    return () => isCancelled.current = true;
+    return () => {
+      isCancelled.current = true;
+      ipcRenderer.removeAllListeners("download_progress");
+      ipcRenderer.removeAllListeners("update_available");
+      ipcRenderer.removeAllListeners("update_not_available");
+      ipcRenderer.removeAllListeners("downloading_update");
+      ipcRenderer.removeAllListeners("update_downloaded");
+      ipcRenderer.removeAllListeners("updater_error");
+    }
   }, []);
 
   const downloadHandler = async () => {
-    if (!isCancelled.current) setIsDownloading(true);
+    if (!isDownloading && !updateDownloaded) {
+      if (!isCancelled.current) setIsDownloading(true);
 
-    const promise = await dispatch(downloadUpdate());
+      const promise = await dispatch(downloadUpdate());
 
-    if (promise === undefined)
-      if (!isCancelled.current) setIsDownloading(false);
+      if (promise === undefined)
+        if (!isCancelled.current) setIsDownloading(false);
+    }
   }
 
   const installHandler = () => {
@@ -112,24 +162,31 @@ const AppUpdates = () => {
     if (!isCancelled.current) setProgress(progressState());
 
     await abortDownloadHandler(false);
-
-    const promise = await dispatch(checkForUpdates());
-
-    if (promise)
-      if (!isCancelled.current) setIsChecking(false);
+    await dispatch(checkForUpdates());
   };
 
   // delete update handler
   const deleteUpdateHandler = async (event) => {
     event.stopPropagation();
 
-    await dispatch(updateSettings(SETTINGS_NAME, { updateDownloaded: false }));
-    await dispatch(saveSettings(false));
+    var index = updateFilePath.indexOf("\\update.exe");
 
-    const promise = await dispatch(checkForUpdates());
+    var newPath = updateFilePath.substr(0, index);
 
-    if (promise)
-      if (!isCancelled.current) setIsChecking(false);
+    const promise = await deleteUpdate(newPath);
+
+    if (promise) {
+      console.log("promise");
+      await dispatch(updateSettings(SETTINGS_NAME, {
+        availableUpdate: false,
+        updateVersion: "",
+        releaseDate: "",
+        userNotified: false,
+        updateDownloaded: false,
+        updateFilePath: ""
+      }));
+      await dispatch(saveSettings(false));
+    }
   };
 
   const renderNewUpdate = () => {

@@ -5,7 +5,7 @@
   margin: 0;
   color: #0365a2;
   font-style: normal;
-  font-size: 25px;
+  font-size: 26px;
 }
 
 .subtitle {
@@ -16,7 +16,7 @@
   color: #ccd5da;
   margin: 0;
   font-style: normal;
-  letter-spacing: 0.010em;
+  letter-spacing: 0.028em;
   line-height: 10px;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .LogotextWrapper{
-  padding-top: 4px;
+  padding-top: 2px;
 }
 
 .appVersionWrapper{

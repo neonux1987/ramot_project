@@ -33,7 +33,7 @@ import { playSound, soundTypes } from './audioPlayer/audioPlayer';
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
-import { fetchSettings } from './redux/actions/settingsActions';
+import { fetchSettings, updateSettings, saveSettings } from './redux/actions/settingsActions';
 import { quitApp } from './services/mainProcess.svc';
 import { fetchSidebar } from './redux/actions/sidebarActions';
 
@@ -73,18 +73,22 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchSettings()).then(({ data }) => {
+    dispatch(fetchSettings()).then(async ({ data }) => {
       //play welcome sound when settings loaded
       playSound(soundTypes.welcome);
 
       const { appUpdates } = data;
 
-      dispatch(checkForUpdates()).then(({ data }) => {
+      dispatch(checkForUpdates()).then(async ({ data }) => {
         if (data !== null) {
           const { version } = data;
 
-          if (appUpdates.availableUpdate === false || appUpdates.updateVersion !== version)
+          if (appUpdates.userNotified === false && appUpdates.updateVersion !== version) {
+            await dispatch(updateSettings("appUpdates", { userNotified: true }));
+            await dispatch(saveSettings(false));
             myToaster.AppUpdateNewVersion(data.version);
+          }
+
         }
       });
 

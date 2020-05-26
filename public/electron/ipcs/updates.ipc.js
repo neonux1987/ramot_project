@@ -1,5 +1,6 @@
 const { ipcMain, BrowserWindow } = require('electron');
 const { autoUpdater, CancellationToken } = require('electron-updater');
+const fse = require('fs-extra');
 const logManager = require('../../backend/logger/LogManager');
 
 const updatesIpc = () => {
@@ -16,19 +17,16 @@ const updatesIpc = () => {
 
     autoUpdater.checkForUpdates().then((info) => {
       const { version, releaseDate } = info.versionInfo;
-
       if (version !== currentVersion)
-        event.sender.send('checked_update', { data: { version, releaseDate } });
+        event.sender.send('checked_for_updates', { data: { version, releaseDate } });
       else
-        event.sender.send('checked_update', { data: null });
+        event.sender.send('checked_for_updates', { data: null });
     }).catch(() => {
-      event.sender.send('checked_update', { error: "בדיקת עידכונים חדשים נכשלה" });
+      event.sender.send('checked_for_updates', { error: "בדיקת עידכונים חדשים נכשלה" });
     });
   });
 
   ipcMain.on('abort-download', (event) => {
-    console.log("abort download");
-
     if (cancellationToken) {
       cancellationToken.cancel();
     }
@@ -40,20 +38,20 @@ const updatesIpc = () => {
   });
 
   autoUpdater.on('checking-for-update', () => {
-    console.log('Checking for update');
+    //console.log('Checking for update');
   })
 
-  autoUpdater.on('update-not-available', (info) => {
-    console.log('Update not available');
+  autoUpdater.on('update-not-available', () => {
+    currentWindow.webContents.send('update_not_available', { data: {} });
   })
 
-  autoUpdater.on('update-available', (event) => {
-    currentWindow.webContents.send('update_available', event);
+  autoUpdater.on('update-available', (updateInfo) => {
+    currentWindow.webContents.send('update_available', { data: updateInfo });
   });
 
-  autoUpdater.on('update-downloaded', () => {
-    console.log("downloaded already");
-    currentWindow.webContents.send('update_downloaded');
+  autoUpdater.on('update-downloaded', (info) => {
+    console.log(info);
+    currentWindow.webContents.send('update_downloaded', { data: info });
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
@@ -63,18 +61,16 @@ const updatesIpc = () => {
     currentWindow.webContents.send('download_progress', progressObj);
   })
 
-  autoUpdater.on('error', (err) => {
-    console.log(err);
-  })
+  autoUpdater.on('error', (error) => {
+    console.log(error);
+    currentWindow.webContents.send('updater_error', { error: error.message });
+  });
 
   ipcMain.on('download-update', () => {
-    console.log("download update");
-
     cancellationToken = new CancellationToken();
 
     autoUpdater.downloadUpdate(cancellationToken)
-      .then((result) => {
-        console.log(result);
+      .then(() => {
         currentWindow.webContents.send('downloading_update', { data: {} });
       })
       .catch(() => {
@@ -86,7 +82,16 @@ const updatesIpc = () => {
       });
   });
 
-  ipcMain.on('update-app', () => {
+  ipcMain.on('delete-update', (event, path) => {
+    fse.remove(path).then(() => {
+      currentWindow.webContents.send('update_deleted', { data: {} });
+    }).catch((error) => {
+      console.log(error);
+      currentWindow.webContents.send('update_deleted', { error: "המערכת לא הצליחה למחוק את העידכון" });
+    });
+  });
+
+  ipcMain.on('update-deleted', () => {
     autoUpdater.quitAndInstall();
   });
 

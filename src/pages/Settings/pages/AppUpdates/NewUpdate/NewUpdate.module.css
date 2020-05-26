@@ -16,7 +16,11 @@
   margin-bottom: 20px;
 }
 
-.installButton, .downloadButton{
+.downloadButton{
+  margin-right: 5px;
+}
+
+.installButton{
   margin-right: 5px;
 }
 
