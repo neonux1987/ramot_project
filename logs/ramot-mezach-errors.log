@@ -76,3 +76,9 @@
     at ClientRequest.emit (events.js:210:5)
     at SimpleURLLoaderWrapper.<anonymous> (electron/js2c/browser_init.js:2510:12)
     at SimpleURLLoaderWrapper.emit (events.js:210:5)
+[2020-05-26T16:53:25.211] [ERROR] Application - Cannot download differentially, fallback to full download: Error: Maximum allowed size is 50 MB
+    at Object.responseHandler (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:241:26)
+    at ClientRequest.<anonymous> (E:\developer\electron-react-projects\electron-cra\financial_reports_management_system\node_modules\builder-util-runtime\out\httpExecutor.js:303:17)
+    at ClientRequest.emit (events.js:210:5)
+    at SimpleURLLoaderWrapper.<anonymous> (electron/js2c/browser_init.js:2510:12)
+    at SimpleURLLoaderWrapper.emit (events.js:210:5)
