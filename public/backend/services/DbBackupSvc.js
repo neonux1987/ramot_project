@@ -219,6 +219,8 @@ class DbBackupSvc {
 
   async independentBackup(fullPath) {
 
+    await this.checkDbHealth();
+
     if (!fullPath) {
       const newError = new ServiceError("המיקום של התיקייה לא תקין", FILENAME, error);
       this.logger.error(newError.toString())

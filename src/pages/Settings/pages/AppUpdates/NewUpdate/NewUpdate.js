@@ -22,7 +22,8 @@ import {
   ltr,
   downloadedDetail,
   transferredDetail,
-  abortButtonWrapper
+  abortButtonWrapper,
+  abortDownloadButton
 } from './NewUpdate.module.css';
 
 // COMPONENTS
@@ -143,7 +144,7 @@ const DownloadProgress = ({ progress, updateVersion, abortDownloadHandler }) => 
       </div>
 
       <div className={abortButtonWrapper}>
-        <PrimaryButton onClick={abortDownloadHandler}>בטל הורדה</PrimaryButton>
+        <PrimaryButton className={abortDownloadButton} onClick={abortDownloadHandler}>בטל הורדה</PrimaryButton>
       </div>
 
 

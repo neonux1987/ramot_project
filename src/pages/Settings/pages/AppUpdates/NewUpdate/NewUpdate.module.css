@@ -88,3 +88,7 @@
 .abortButtonWrapper{
   margin-top: 20px;
 }
+
+.abortDownloadButton{
+  background-color: rgb(210, 49, 71);
+}
