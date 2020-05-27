@@ -7,7 +7,7 @@ const fse = require('fs-extra');
 const usersAppDataFolder = getDataHome();
 
 // configuration files paths
-const NDTS_FOLDER_PATH = path.join(usersAppDataFolder, "ndts");
+const NDTS_FOLDER_PATH = path.join(usersAppDataFolder, "ramot group data");
 
 const CONFIG_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "config");
 const CONFIG_PATH = path.join(CONFIG_FOLDER_PATH, "config.json");
@@ -21,8 +21,10 @@ const DB_BACKUPS_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db backups");
 // user documents
 const userDocuments = getDocumentsFolder();
 // user main folder
-USER_MAIN_FOLDER = path.join(userDocuments, `רמות מזח`);
+USER_MAIN_FOLDER = path.join(userDocuments, `קבוצת רמות`);
 USER_REPORTS_FOLDER = path.join(USER_MAIN_FOLDER, `דוחות`);
+LOGS_FOLDER = path.join(USER_MAIN_FOLDER, `logs`);
+LOG_FILE = path.join(LOGS_FOLDER, `ramot-group-app-errors.log`);
 
 // ndts setup files path
 const APP_ROOT_PATH = app.getAppPath();
@@ -43,7 +45,9 @@ class ConfigurationLogic {
     db_file_path: DB_PATH,
     db_backup_folder_path: DB_BACKUPS_FOLDER_PATH,
     setup_ndts_folder_path: SETUP_NDTS_FOLDER_PATH,
-    app_root_path: APP_ROOT_PATH
+    app_root_path: APP_ROOT_PATH,
+    logs_folder: LOGS_FOLDER,
+    log_file: LOG_FILE
   }
 
   constructor() {
@@ -98,6 +102,9 @@ class ConfigurationLogic {
     config.locations.config_file_path = CONFIG_PATH;
     config.locations.services_file_path = SERVICES_PATH;
     config.locations.backups_names_file_path = BACKUPS_NAMES_PATH;
+
+    config.location.logs_folder = LOGS_FOLDER;
+    config.location.log_file = LOG_FILE;
 
     await fse.writeJSON(CONFIG_PATH, config);
   }

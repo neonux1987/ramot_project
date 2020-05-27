@@ -1,4 +1,6 @@
 const log4js = require('log4js');
+const path = require('path');
+const ConfigurationLogic = require("../logic/ConfigurationLogic");
 
 class LogManager {
 
@@ -12,7 +14,7 @@ class LogManager {
       appenders: {
         Application: {
           type: 'file',
-          filename: './logs/ramot-mezach-errors.log',
+          filename: ConfigurationLogic.paths.log_file,
           //layout: { type: 'json', separator: ',' },
           maxLogSize: 1048576
         }

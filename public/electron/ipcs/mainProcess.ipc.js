@@ -1,5 +1,6 @@
 const { ipcMain, dialog } = require('electron');
 const MainProcessLogic = require('../../backend/logic/MainProcessLogic');
+const ConfigurationLogic = require('../../backend/logic/ConfigurationLogic');
 const LoggerError = require('../../backend/customErrors/LoggerError');
 const { openLogFile } = require('../../helpers/utils');
 const fs = require('fs');
@@ -34,8 +35,8 @@ const mainProcessIpc = () => {
     const message = `
       קרתה תקלה לא ידועה: 
       ${error.message}
-      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקיית logs
-      אשר נמצא בתיקיית התוכנה.
+      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
+      ${ConfigurationLogic.paths.logs_folder}
       `;
 
     const dialogOption = dialog.showMessageBoxSync({
@@ -55,6 +56,11 @@ const mainProcessIpc = () => {
       `Exception origin: ${origin}`
     );
 
+  });
+
+  process.on('unhandledRejection', (reason, promise) => {
+    console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Application specific logging, throwing an error, or other logic here
   });
 
 }

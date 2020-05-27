@@ -150,8 +150,8 @@ class MainSystem {
       const title = "שגיאת הפעלה";
       const message = `
       המערכת נכשלה בעת ההפעלה עקב תקלה.\n
-      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקיית logs
-      אשר נמצא בתיקיית התוכנה.
+      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
+      ${ConfigurationLogic.paths.logs_folder}
       `;
 
       const dialogData = await dialog.showMessageBox({

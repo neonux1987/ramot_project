@@ -1,5 +1,6 @@
 const { shell, app } = require('electron');
 const path = require('path');
+const ConfigurationLogic = require('../backend/logic/ConfigurationLogic');
 
 exports.asyncForEach = async function (array, callback) {
   for (let index = 0; index < array.length; index++) {
@@ -8,6 +9,5 @@ exports.asyncForEach = async function (array, callback) {
 }
 
 exports.openLogFile = () => {
-  console.log(path.join(app.getAppPath(), "logs", "ramot-mezach-errors.log"));
-  shell.showItemInFolder(path.join(app.getAppPath(), "logs", "ramot-mezach-errors.log"));
+  shell.showItemInFolder(ConfigurationLogic.paths.log_file);
 }
