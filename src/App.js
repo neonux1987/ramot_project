@@ -13,7 +13,7 @@ import ToastRender from './components/ToastRender/ToastRender';
 import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { AlignCenterMiddle } from './components/AlignCenterMiddle/AlignCenterMiddle';
-import PacmanLoader from './components/AnimatedLoaders/PacmanLoader';
+import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
 
 // CONTEXT
 import SettingsContext from './context/SettingsContext';
@@ -214,7 +214,7 @@ const App = () => {
 
   if (settings.isFetching || sidebar.isFetching) {
     return <AlignCenterMiddle>
-      <PacmanLoader size={40} margin={10} loaderColor={"#0365a2"} loading={settings.isFetching} title="" />
+      <LogoLoader />
     </AlignCenterMiddle>;
   }
 
@@ -251,6 +251,7 @@ const App = () => {
             </div>
 
             <ToastContainer
+              style={{ width: "360px" }}
               position="bottom-right"
               autoClose={TOAST_AUTO_CLOSE}
               hideProgressBar={true}

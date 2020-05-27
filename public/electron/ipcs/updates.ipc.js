@@ -17,6 +17,7 @@ const updatesIpc = () => {
 
     autoUpdater.checkForUpdates().then((info) => {
       const { version, releaseDate } = info.versionInfo;
+
       if (version !== currentVersion)
         event.sender.send('checked_for_updates', { data: { version, releaseDate } });
       else
@@ -33,8 +34,8 @@ const updatesIpc = () => {
 
     if (cancellationToken && cancellationToken._cancelled)
       currentWindow.webContents.send('download_aborted', { data: {} });
-    else
-      currentWindow.webContents.send('download_aborted', { error: "המערכת לא הצליחה לבטל את ההורדה" });
+    /* else
+      currentWindow.webContents.send('download_aborted', { error: "המערכת לא הצליחה לבטל את ההורדה" }); */
   });
 
   autoUpdater.on('checking-for-update', () => {
@@ -50,7 +51,6 @@ const updatesIpc = () => {
   });
 
   autoUpdater.on('update-downloaded', (info) => {
-    console.log(info);
     currentWindow.webContents.send('update_downloaded', { data: info });
   });
 
@@ -62,24 +62,18 @@ const updatesIpc = () => {
   })
 
   autoUpdater.on('error', (error) => {
-    console.log(error);
+    if (!cancellationToken._cancelled) cancellationToken.cancel();
     currentWindow.webContents.send('updater_error', { error: error.message });
   });
 
   ipcMain.on('download-update', () => {
     cancellationToken = new CancellationToken();
-
-    autoUpdater.downloadUpdate(cancellationToken)
-      .then(() => {
-        currentWindow.webContents.send('downloading_update', { data: {} });
-      })
-      .catch(() => {
-
-        if (cancellationToken._cancelled === false) {
-          cancellationToken.cancel();
-          currentWindow.webContents.send('downloading_update', { error: "כשל בהורדת העידכון" });
-        }
-      });
+    autoUpdater.downloadUpdate(cancellationToken).catch((error) => {
+      // do nothing because most likely it was cancelled by user
+      // plus need ti fix the problem 
+      // "Cannot download differentially, fallback to full download: Error"
+      //currentWindow.webContents.send('updater_error', { error: error.message });
+    });
   });
 
   ipcMain.on('delete-update', (event, path) => {
@@ -87,12 +81,13 @@ const updatesIpc = () => {
       currentWindow.webContents.send('update_deleted', { data: {} });
     }).catch((error) => {
       console.log(error);
-      currentWindow.webContents.send('update_deleted', { error: "המערכת לא הצליחה למחוק את העידכון" });
+      currentWindow.webContents.send('update_deleted', { error: "המערכת לא הצליחה למחוק את העידכון. אתחל את האפליקציה ולאחר מכן נסה שנית." });
     });
   });
 
-  ipcMain.on('update-deleted', () => {
-    autoUpdater.quitAndInstall();
+  ipcMain.on('install-update', () => {
+    //autoUpdater.quitAndInstall();
+    console.log("installing update");
   });
 
 

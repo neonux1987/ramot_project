@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, memo, useEffect, Fragment, useRef } from 'react';
+import React, { useState, memo, useEffect, Fragment, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SystemUpdateAlt } from '@material-ui/icons';
 
@@ -7,13 +7,19 @@ import { SystemUpdateAlt } from '@material-ui/icons';
 import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
 import NewUpdate from './NewUpdate/NewUpdate';
 import NoUpdate from './NoUpdate/NoUpdate';
+import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
+import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 
 // SERVICES
-import { checkForUpdates, downloadUpdate, abortDownload, deleteUpdate } from '../../../../services/updates.svc';
-import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
+import { checkForUpdates, downloadUpdate, abortDownload, deleteUpdate, installUpdate } from '../../../../services/updates.svc';
+import { initiateDbBackup } from '../../../../services/dbBackup.svc';
+
+// ACTIONS
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
-import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
+
+// TOASTS
 import { myToaster } from '../../../../Toasts/toastManager';
+import ToastRender from '../../../../components/ToastRender/ToastRender';
 
 // ELECTRON
 const { ipcRenderer } = require('electron');
@@ -41,95 +47,6 @@ const AppUpdates = () => {
     updateDownloaded,
     updateFilePath
   } = appUpdatesSettings;
-  console.log("appUpdatesSettings", appUpdatesSettings);
-  console.log("isDownloading", isDownloading);
-  useEffect(() => {
-    dispatch(checkForUpdates());
-    console.log("checking effect");
-  }, [dispatch]);
-
-  useEffect(() => {
-
-    // download progress
-    ipcRenderer.on("download_progress", async (event, progress) => {
-      if (!isCancelled.current) {
-        //setIsDownloading(true);
-        setProgress(progress);
-      }
-    });
-
-    ipcRenderer.on("update_available", async (event, result) => {
-      const { version, releaseDate } = result.data;
-
-      if (!isCancelled.current) setIsChecking(false);
-
-      if (!updateDownloaded || version !== updateVersion) {
-        await dispatch(updateSettings(SETTINGS_NAME, {
-          availableUpdate: true,
-          updateVersion: version,
-          releaseDate,
-          updateDownloaded: false,
-          userNotified: true
-        }));
-        await dispatch(saveSettings(false));
-      }
-
-      ipcRenderer.removeAllListeners('update_available');
-    });
-
-    ipcRenderer.on("update_not_available", async (event) => {
-      if (!isCancelled.current) setIsChecking(false);
-      console.log("not available")
-      await dispatch(updateSettings(SETTINGS_NAME, {
-        availableUpdate: false,
-        updateVersion: "",
-        releaseDate: "",
-        updateDownloaded: false,
-        userNotified: false
-      }));
-      await dispatch(saveSettings(false));
-
-      ipcRenderer.removeAllListeners('update_not_available');
-    });
-
-    ipcRenderer.on("downloading_update", (event, result) => {
-      const { error } = result;
-
-      if (error)
-        myToaster.error(error.message)
-      else {
-        if (!isCancelled.current) setIsDownloading(true);
-      }
-
-      ipcRenderer.removeAllListeners('downloading_update');
-    });
-
-    ipcRenderer.on("update_downloaded", async (event, result) => {
-      setIsDownloading(false);
-      await dispatch(updateSettings({ updateDownloaded: true, updateFilePath: result.downloadedFile }));
-      await dispatch(saveSettings(false));
-      ipcRenderer.removeAllListeners('update_downloaded');
-    });
-
-    ipcRenderer.on("updater_error", async (event, result) => {
-      ipcRenderer.removeAllListeners('updater_error');
-      myToaster.error(result.error);
-    });
-
-  }, [dispatch, updateDownloaded, updateVersion]);
-
-  // cleanup
-  useEffect(() => {
-    return () => {
-      isCancelled.current = true;
-      ipcRenderer.removeAllListeners("download_progress");
-      ipcRenderer.removeAllListeners("update_available");
-      ipcRenderer.removeAllListeners("update_not_available");
-      ipcRenderer.removeAllListeners("downloading_update");
-      ipcRenderer.removeAllListeners("update_downloaded");
-      ipcRenderer.removeAllListeners("updater_error");
-    }
-  }, []);
 
   const downloadHandler = async () => {
     if (!isDownloading && !updateDownloaded) {
@@ -142,16 +59,40 @@ const AppUpdates = () => {
     }
   }
 
-  const installHandler = () => {
-    console.log("installing");
+  const installHandler = async () => {
+    const id = myToaster.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני התקנה..."} />, {
+      autoClose: false
+    });
+
+    const promise = await initiateDbBackup().catch((result) => {
+      myToaster.update(id, {
+        render: <ToastRender message={result.error} />,
+        type: myToaster.TYPE.ERROR,
+        delay: 2500,
+        autoClose: 2500
+      });
+    });
+
+    // success
+    if (promise)
+      myToaster.update(id, {
+        render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים. המערכת מבצעת יציאה לצורך התקנת העידכון."} />,
+        type: myToaster.TYPE.SUCCESS,
+        delay: 3000,
+        autoClose: 2500,
+        onClose: () => {
+          installUpdate();
+        }
+      });
+
   }
 
   // abort download handler
-  const abortDownloadHandler = async (silent) => {
+  const abortDownloadHandler = useCallback(async (silent) => {
     if (!isCancelled.current) setIsDownloading(false);
     if (!isCancelled.current) setProgress(progressState());
     await abortDownload(silent);
-  };
+  }, []);
 
   // refresh handler
   const refreshHandler = async (event) => {
@@ -169,14 +110,14 @@ const AppUpdates = () => {
   const deleteUpdateHandler = async (event) => {
     event.stopPropagation();
 
+    // get rid of the file name to get the folder for deletion
     var index = updateFilePath.indexOf("\\update.exe");
-
     var newPath = updateFilePath.substr(0, index);
 
     const promise = await deleteUpdate(newPath);
 
+    // reset settings
     if (promise) {
-      console.log("promise");
       await dispatch(updateSettings(SETTINGS_NAME, {
         availableUpdate: false,
         updateVersion: "",
@@ -186,8 +127,84 @@ const AppUpdates = () => {
         updateFilePath: ""
       }));
       await dispatch(saveSettings(false));
+      await dispatch(checkForUpdates());
     }
   };
+
+  useEffect(() => {
+    dispatch(checkForUpdates());
+  }, [dispatch]);
+
+  useEffect(() => {
+
+    // download progress
+    ipcRenderer.on("download_progress", async (event, progress) => {
+      if (!isCancelled.current) setProgress(progress);
+    });
+
+    ipcRenderer.on("update_available", async (event, result) => {
+      const { version, releaseDate } = result.data;
+
+      if (!isCancelled.current) setIsChecking(false);
+
+      if (!updateDownloaded || version !== updateVersion) {
+        await dispatch(updateSettings(SETTINGS_NAME, {
+          availableUpdate: true,
+          updateVersion: version,
+          releaseDate,
+          updateDownloaded: false,
+          userNotified: true
+        }));
+        await dispatch(saveSettings(false));
+      }
+    });
+
+    ipcRenderer.on("update_not_available", async (event) => {
+      if (!isCancelled.current) setIsChecking(false);
+
+      await dispatch(updateSettings(SETTINGS_NAME, {
+        availableUpdate: false,
+        updateVersion: "",
+        releaseDate: "",
+        updateDownloaded: false,
+        userNotified: false,
+        updateFilePath: ""
+      }));
+      await dispatch(saveSettings(false));
+    });
+
+    ipcRenderer.on("downloading_update", (event, result) => {
+      if (result.data)
+        if (!isCancelled.current) setIsDownloading(true);
+    });
+
+    ipcRenderer.on("update_downloaded", async (event, result) => {
+      if (!isCancelled.current) setIsDownloading(false);
+
+      await dispatch(updateSettings(SETTINGS_NAME, { updateDownloaded: true, updateFilePath: result.data.downloadedFile }));
+      await dispatch(saveSettings(false));
+    });
+
+    ipcRenderer.on("updater_error", async (event, result) => {
+      myToaster.error(result.error);
+      if (!isCancelled.current) setIsDownloading(false);
+    });
+
+  }, [dispatch, updateDownloaded, updateVersion]);
+
+  // cleanup
+  useEffect(() => {
+    return () => {
+      isCancelled.current = true;
+      ipcRenderer.removeAllListeners("download_progress");
+      ipcRenderer.removeAllListeners("update_available");
+      ipcRenderer.removeAllListeners("update_not_available");
+      ipcRenderer.removeAllListeners("downloading_update");
+      ipcRenderer.removeAllListeners("update_downloaded");
+      ipcRenderer.removeAllListeners("updater_error");
+      abortDownloadHandler();
+    }
+  }, [abortDownloadHandler]);
 
   const renderNewUpdate = () => {
     return (

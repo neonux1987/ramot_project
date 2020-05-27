@@ -1,23 +1,30 @@
 import React from 'react';
 import { container, button } from './AppUpdateNewVersionToast.module.css';
 import { downloadUpdate } from '../../../services/updates.svc';
+import PrimaryButton from '../../../components/Buttons/PrimaryButton';
+import { NavLink } from 'react-router-dom';
 
 export default ({ version, closeToast }) => {
   return (
     <div className={container}>
 
-      <span>{`גירסה חדשה ${version} זמינה עכשיו להורדה`}</span>
-      <br />
-      <span>להורדת העידכון לחץ</span>
+      <span>{`גירסה חדשה יותר ${version} זמינה עכשיו להורדה בעמוד עדכוני תוכנה. למעבר לחץ`}</span>
 
-      <button
+      <PrimaryButton
         className={button}
+        component={NavLink}
+        to={{
+          pathname: `/הגדרות/עדכוני תוכנה`,
+          state: {
+            page: "עדכוני תוכנה",
+            buildingName: "הגדרות",
+            buildingNameEng: "settings"
+          }
+        }}
         onClick={() => {
-          console.log("downloading");
-          downloadUpdate();
           closeToast();
         }}
-      >הורד</button>
+      >עבור</PrimaryButton>
 
     </div>
   );

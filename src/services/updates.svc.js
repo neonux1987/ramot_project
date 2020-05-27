@@ -39,7 +39,14 @@ export const abortDownload = (silent) => {
 }
 
 export const installUpdate = () => {
-
+  return ipcSendReceive({
+    send: {
+      channel: "install-update",
+    },
+    receive: {
+      channel: "update_installed",
+    }
+  });
 }
 
 export const deleteUpdate = (filePath) => {
