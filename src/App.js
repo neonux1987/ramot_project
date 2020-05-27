@@ -251,7 +251,7 @@ const App = () => {
             </div>
 
             <ToastContainer
-              style={{ width: "360px" }}
+              style={{ width: "340px" }}
               position="bottom-right"
               autoClose={TOAST_AUTO_CLOSE}
               hideProgressBar={true}

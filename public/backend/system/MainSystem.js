@@ -1,5 +1,5 @@
 // LIBRARIES
-const { dialog, shell, app, BrowserWindow } = require('electron');
+const { dialog, app, BrowserWindow } = require('electron');
 const path = require('path');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
@@ -32,6 +32,8 @@ const servicesIpc = require('../../electron/ipcs/services.ipc');
 const mainProcessIpc = require('../../electron/ipcs/mainProcess.ipc');
 const restoreDbIpc = require('../../electron/ipcs/restoreDb.ipc');
 const updatesIpc = require('../../electron/ipcs/updates.ipc');
+
+const { openLogFile } = require('../../helpers/utils');
 
 const ServicesLogic = require('../logic/ServicesLogic');
 
@@ -152,7 +154,7 @@ class MainSystem {
       אשר נמצא בתיקיית התוכנה.
       `;
 
-      const dialogData = await dialog.showMessageBox(newWindow, {
+      const dialogData = await dialog.showMessageBox({
         title,
         message,
         type: "error",
@@ -160,18 +162,13 @@ class MainSystem {
       });
 
       if (dialogData.response === 1) {
-        this.openEventsLog();
+        openLogFile();
         app.quit(0);
       }
       else app.quit(0);
 
     }
 
-  }
-
-  openEventsLog() {
-    console.log(path.join(app.getAppPath(), "logs", "ramot-mezach-errors.log"));
-    shell.showItemInFolder(path.join(app.getAppPath(), "logs", "ramot-mezach-errors.log"));
   }
 
   async stopSystem() {
