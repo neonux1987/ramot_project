@@ -102,7 +102,7 @@ const AppUpdates = () => {
     if (!isCancelled.current) setIsDownloading(false);
     if (!isCancelled.current) setProgress(progressState());
 
-    await abortDownloadHandler(false);
+    await abortDownloadHandler();
     await dispatch(checkForUpdates());
   };
 

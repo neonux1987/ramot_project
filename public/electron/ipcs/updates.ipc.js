@@ -32,10 +32,10 @@ const updatesIpc = () => {
       cancellationToken.cancel();
     }
 
-    if (cancellationToken && cancellationToken._cancelled)
+    if (cancellationToken === undefined || cancellationToken._cancelled)
       currentWindow.webContents.send('download_aborted', { data: {} });
-    /* else
-      currentWindow.webContents.send('download_aborted', { error: "המערכת לא הצליחה לבטל את ההורדה" }); */
+    else
+      currentWindow.webContents.send('download_aborted', { error: "המערכת לא הצליחה לבטל את ההורדה" });
   });
 
   autoUpdater.on('checking-for-update', () => {
@@ -47,6 +47,7 @@ const updatesIpc = () => {
   })
 
   autoUpdater.on('update-available', (updateInfo) => {
+    console.log('update-available');
     currentWindow.webContents.send('update_available', { data: updateInfo });
   });
 
