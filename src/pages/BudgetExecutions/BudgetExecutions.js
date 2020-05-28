@@ -40,10 +40,6 @@ const BudgetExecutions = props => {
 
   return <Fragment>
 
-    {/* <Header bgColor="rgb(44, 183, 197)">
-      {PAGE_TITLE}
-    </Header> */}
-
     <DateProvider
       pageName={PAGE_NAME}
       buildingName={buildingNameEng}

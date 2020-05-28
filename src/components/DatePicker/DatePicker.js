@@ -30,22 +30,46 @@ const DatePicker = ({
   const years = useSelector(store => store.registeredYears);
 
   useEffect(() => {
-    dispatch((registeredYearsActions.fetchRegisteredYears({ buildingName }))).then(() => {
+    dispatch((registeredYearsActions.fetchRegisteredYears({ buildingName }))).then(({ data }) => {
+      const { year } = data[0];
+
       if (month)
-        dispatch((registeredMonthsActions.fetchRegisteredMonths({
+        dispatch(registeredMonthsActions.fetchRegisteredMonths({
           buildingName,
           date: {
             year: date.year
           }
-        })));
+        })).then(({ data }) => {
+          // check if the current month exist
+          // in the registered months
+          const exist = data.find((element) => {
+            return element.month === date.month;
+          });
+
+          // if the current month doesn't exist in te registered
+          // months list then set the date to the first month in the list
+          if (exist === undefined) {
+            const newDate = Helper.generateAllDateByMonthName(data[0].month);
+
+            setDate((prevState) => ({
+              ...prevState,
+              year,
+              ...newDate
+            }));
+
+          }
+        });
 
       if (quarter)
-        dispatch((registeredQuartersActions.fetchRegisteredQuarters({
+        dispatch(registeredQuartersActions.fetchRegisteredQuarters({
           buildingName,
           date: {
             year: date.year
           }
-        })));
+        })).then(({ data }) => {
+
+
+        });
     });
 
     // cleanup
@@ -62,7 +86,7 @@ const DatePicker = ({
     }
 
     return cleanup;
-  }, [month, quarter, dispatch, buildingName, date.year]);
+  }, [month, quarter, dispatch, buildingName, date]);
 
   useEffect(() => {
     dispatch(updateDate(pageName, buildingName, selectDate));
@@ -152,8 +176,7 @@ const DatePicker = ({
   const yearExist = () => {
     let exist = false;
     years.data.forEach((item) => {
-      const parsedYear = Number.parseInt(item.year);
-      if (selectDate.year === parsedYear)
+      if (selectDate.year === item.year)
         exist = true;
     });
     return exist;
