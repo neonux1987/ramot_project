@@ -16,7 +16,7 @@ const DatePicker = ({
   buildingName,
   pageName
 }) => {
-
+  console.log(date);
   const [selectDate, setDate] = useState({
     year: date.year,
     quarter: date.quarter,
@@ -30,54 +30,79 @@ const DatePicker = ({
   const years = useSelector(store => store.registeredYears);
 
   useEffect(() => {
-    dispatch((registeredYearsActions.fetchRegisteredYears({ buildingName }))).then(({ data }) => {
-      const { year } = data[0];
+    dispatch(registeredYearsActions.fetchRegisteredYears({ buildingName })).then((result) => {
+
+      const yearsData = result.data;
+      const lastYear = yearsData[yearsData.length - 1].year;
+      const currentDate = Helper.getCurrentDate();
 
       if (month)
         dispatch(registeredMonthsActions.fetchRegisteredMonths({
           buildingName,
           date: {
-            year: date.year
+            year: lastYear
           }
-        })).then(({ data }) => {
-          // check if the current month exist
-          // in the registered months
-          const exist = data.find((element) => {
-            return element.month === date.month;
-          });
+        }))
+          .then((result) => {
+            const monthsData = result.data;
+            const lastMonth = monthsData[monthsData.length - 1].month;
 
-          // if the current month doesn't exist in te registered
-          // months list then set the date to the first month in the list
-          if (exist === undefined) {
-            const newDate = Helper.generateAllDateByMonthName(data[0].month);
+            const exist = monthsData.find((element) => {
+              return element.month === currentDate.month;
+            });
 
-            setDate((prevState) => ({
+            setDate(prevState => ({
               ...prevState,
-              year,
-              ...newDate
+              month: exist ? exist.month : lastMonth,
+              year: lastYear
             }));
 
-          }
-        });
+            const newDate = Helper.generateAllDateByMonthName(exist ? exist.month : lastMonth);
+
+            newDate.year = lastYear;
+            dispatch(updateDate(pageName, buildingName, newDate));
+
+          });
 
       if (quarter)
         dispatch(registeredQuartersActions.fetchRegisteredQuarters({
           buildingName,
           date: {
-            year: date.year
+            year: lastYear
           }
-        })).then(({ data }) => {
+        }))
+          .then((result) => {
+            const quartersData = result.data;
+            const lastQuarter = quartersData[quartersData.length - 1].quarter;
 
+            const exist = quartersData.find((element) => {
+              return element.quarter === currentDate.quarter;
+            });
 
-        });
+            setDate(prevState => ({
+              ...prevState,
+              quarter: exist ? exist.quarter : lastQuarter,
+              year: lastYear
+            }));
+
+            const newDate = {
+              quarter: lastQuarter,
+              quarterEng: Helper.convertQuarterToEng(exist ? exist.quarter : lastQuarter),
+              quarterHeb: Helper.getQuarterHeb(lastQuarter),
+              year: lastYear
+            }
+            dispatch(updateDate(pageName, buildingName, newDate));
+
+          });
+
+      if (!month && !quarter)
+        dispatch(updateDate(pageName, buildingName, {
+          year: date.year
+        }));
     });
 
     // cleanup
     const cleanup = () => {
-      // because we're doing page effect transition which shows 2 
-      // pages at the same time for 300ms, when dispatching the cleanup for years,
-      // it overwrites the reducer state of the new mounted page that also
-      // fetching the registered years
       dispatch((registeredYearsActions.cleanupYears(buildingName)))
       if (quarter)
         dispatch((registeredQuartersActions.cleanupQuarters(buildingName)))
@@ -86,34 +111,43 @@ const DatePicker = ({
     }
 
     return cleanup;
-  }, [month, quarter, dispatch, buildingName, date]);
+  }, [month, quarter, dispatch, buildingName, pageName]);
 
-  useEffect(() => {
-    dispatch(updateDate(pageName, buildingName, selectDate));
-  }, [selectDate, pageName, buildingName, dispatch]);
+  /*   useEffect(() => {
+      dispatch(updateDate(pageName, buildingName, selectDate));
+    }, [selectDate, pageName, buildingName, dispatch]); */
 
 
   const onMonthChange = (event) => {
     const { value } = event.target;
 
-    const newDate = Helper.generateAllDateByMonthName(value);
-
     setDate({
       ...selectDate,
-      ...newDate
+      month: value
     });
+
+    const newDate = Helper.generateAllDateByMonthName(value);
+    newDate.year = selectDate.year;
+    dispatch(updateDate(pageName, buildingName, newDate));
   }
 
   // default on change handler
   // for months and quarters
-  const onChangeHandler = (event) => {
-    const { name, value } = event.target;
-    const newValue = name === "year" || name === "quarter" ? Number.parseInt(value) : value;
+  const onQuarterChangeHandler = (event) => {
+    const { value } = event.target;
 
     setDate({
       ...selectDate,
-      [name]: newValue
+      quarter: value
     });
+
+    const newDate = {
+      quarter: value,
+      quarterEng: Helper.convertQuarterToEng(value),
+      quarterHeb: Helper.getQuarterHeb(value),
+      year: selectDate.year
+    }
+    dispatch(updateDate(pageName, buildingName, newDate));
   }
 
   const onYearChangeHandler = (event) => {
@@ -125,13 +159,16 @@ const DatePicker = ({
         // get the earliest month in the list 
         const month = result.data[0].month;
 
-        const newDate = Helper.generateAllDateByMonthName(month);
-
         setDate({
           ...selectDate,
-          year,
-          ...newDate
+          month,
+          year
         });
+
+        const newDate = Helper.generateAllDateByMonthName(month);
+        newDate.year = year;
+        dispatch(updateDate(pageName, buildingName, newDate));
+
       });
     }
 
@@ -144,19 +181,21 @@ const DatePicker = ({
       }))).then((result) => {
         // get the earliest quarter in the list
         const quarter = result.data[0].quarter;
-        const parsedQuarter = Number.parseInt(quarter);
-
-        const newDate = {
-          quarter: parsedQuarter,
-          quarterEng: Helper.convertQuarterToEng(parsedQuarter),
-          quarterHeb: Helper.getQuarterHeb(parsedQuarter)
-        }
 
         setDate({
           ...selectDate,
           year,
-          ...newDate
+          quarter
         });
+
+        const newDate = {
+          quarter: quarter,
+          quarterEng: Helper.convertQuarterToEng(quarter),
+          quarterHeb: Helper.getQuarterHeb(quarter),
+          year
+        }
+        dispatch(updateDate(pageName, buildingName, newDate));
+
       });
     }
 
@@ -182,8 +221,26 @@ const DatePicker = ({
     return exist;
   }
 
+  const monthExist = () => {
+    let exist = false;
+    months.data.forEach((item) => {
+      if (selectDate.month === item.month)
+        exist = true;
+    });
+    return exist;
+  }
+
+  const quarterExist = () => {
+    let exist = false;
+    quarters.data.forEach((item) => {
+      if (selectDate.quarter === item.quarter)
+        exist = true;
+    });
+    return exist;
+  }
+
   //if months data exist, render it
-  const renderMonths = !months.isFetching && months.data.length > 0 ?
+  const renderMonths = !months.isFetching && months.data.length > 0 && monthExist() ?
     <div className={pickerWrapper}>
       <InputLabel className={pickerLabel} id="label">חודש:</InputLabel>
       <Select
@@ -200,14 +257,14 @@ const DatePicker = ({
     : <FormSelectDummy />;
 
   //if quarters data exist, render it
-  const renderQuarters = !quarters.isFetching && quarters.data.length > 0 ?
+  const renderQuarters = !quarters.isFetching && quarters.data.length > 0 && quarterExist() ?
     <div className={pickerWrapper}>
       <InputLabel className={pickerLabel} id="label">רבעון:</InputLabel>
       <Select
         name="quarter"
         className={formSelect}
         value={selectDate.quarter || ""}
-        onChange={onChangeHandler}
+        onChange={onQuarterChangeHandler}
       >
         {quarters.data.map((quarter) => {
           return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
@@ -216,7 +273,7 @@ const DatePicker = ({
     </div>
     : <FormSelectDummy />;
 
-  //if quarters data exist, render it
+  //if years data exist, render it
   const renderYears = !years.isFetching && years.data.length > 0 && yearExist() ?
     <div className={pickerWrapper}>
       <InputLabel className={pickerLabel} id="label">שנה:</InputLabel>
@@ -253,15 +310,13 @@ const FormSelectDummy = () => {
 }
 
 export default React.memo(DatePicker, (prevProps, nextProps) => {
-  if (prevProps.year === nextProps.year)
+  if (
+    prevProps.year === nextProps.year &&
+    prevProps.quarter === nextProps.quarter &&
+    prevProps.month === nextProps.month &&
+    prevProps.buildingName === nextProps.buildingName &&
+    prevProps.pageName === nextProps.pageName &&
+    prevProps.date === nextProps.date
+  )
     return true;
-  else if (prevProps.quarter === nextProps.quarter)
-    return true;
-  else if (prevProps.month === nextProps.month)
-    return true;
-  else if (prevProps.buildingName === nextProps.buildingName)
-    return true;
-  else if (prevProps.date === nextProps.date)
-    return true;
-  else return false;
-})
+});

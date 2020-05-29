@@ -1,21 +1,28 @@
 // LIBRARIES
-import React, { Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router';
 import { TableChart } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 
-// COMMON COMPONENTS
+// COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-
-// DATA FETHCER
-import DateProvider from '../../renderProps/providers/DateProvider';
+import DateDetails from '../../components/DateDetails/DateDetails';
+import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
 
 // CONTAINERS
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
 
-// HOC
-import withPageLogic from '../../HOC/withPageLogic';
-import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
+// HOOKS
+import useDate from '../../customHooks/useDate';
+
+// UTILS
+import Helper from '../../helpers/Helper';
+
+// ACTIONS
+import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
+import { fetchRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
+import { updateDate, dateCleanup, initDateState } from '../../redux/actions/dateActions';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -26,50 +33,34 @@ const MonthExpanses = props => {
   //building name
   const { buildingNameEng } = props.location.state;
 
+  const [date] = useDate(PAGE_NAME, buildingNameEng);
+
+  if (date === undefined)
+    return <AlignCenterMiddle style={{ paddingTop: "200px" }}><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
+
   return (
     <div className={"page"}>
+      <StyledExpandableSection
+        title={TABLE_TITLE}
+        TitleIcon={TableChart}
+        extraDetails={() => <DateDetails
+          month={date.monthHeb}
+          quarter={date.quarter}
+          year={date.year}
+        />}
+      >
 
-      {/* <Header bgColor="rgb(129, 86, 234)">
-        {PAGE_TITLE}
-      </Header> */}
+        <MonthExpansesTableContainer
+          location={props.location}
+          date={date}
+          pageName={PAGE_NAME}
+          pageTitle={PAGE_TITLE}
+        />
 
-      <DateProvider pageName={PAGE_NAME} buildingName={buildingNameEng}>
-        {({ date, actions }) => {
-
-          if (date === undefined || date[buildingNameEng] === undefined)
-            return <AlignCenterMiddle><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
-          else {
-            const onlyDate = date[buildingNameEng];
-
-            return (
-              <Fragment>
-
-                <StyledExpandableSection
-                  title={TABLE_TITLE}
-                  TitleIcon={TableChart}
-                  extraDetails={props.dateDetails(onlyDate)}
-                >
-
-                  <MonthExpansesTableContainer
-                    location={props.location}
-                    date={onlyDate}
-                    dateActions={actions}
-                    pageName={PAGE_NAME}
-                    pageTitle={PAGE_TITLE}
-                  />
-
-                </StyledExpandableSection>
-
-              </Fragment>
-            );
-          }
-        }}
-      </DateProvider>
+      </StyledExpandableSection>
 
     </div>
   );
 }
 
-export default withRouter(
-  withPageLogic(MonthExpanses)
-)
+export default withRouter(MonthExpanses)

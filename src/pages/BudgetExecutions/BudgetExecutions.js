@@ -1,23 +1,29 @@
 // LIBRARIES
-import React, { Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Equalizer, TableChart } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 
 // COMMON COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
+import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
+import DateDetails from '../../components/DateDetails/DateDetails';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
 import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 
-// DATA PROVIDERS
-import DateProvider from '../../renderProps/providers/DateProvider';
+// UTILS
 import Helper from '../../helpers/Helper';
 
-// HOC
-import withPageLogic from '../../HOC/withPageLogic';
-import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
+// HOOKS
+import useDate from '../../customHooks/useDate';
+
+// ACTIONS
+import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
+import { fetchRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
+import { updateDate } from '../../redux/actions/dateActions';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "לב תל אביב - מעקב ביצוע מול תקציב";
@@ -29,70 +35,46 @@ const BudgetExecutions = props => {
   //building name
   const { buildingNameEng } = props.location.state;
 
-  const quarter = Helper.getCurrentQuarter();
+  const [date] = useDate(PAGE_NAME, buildingNameEng);
 
-  const initState = {
-    quarter,
-    quarterHeb: Helper.getQuarterHeb(quarter),
-    quarterEng: Helper.getCurrentQuarterEng(quarter),
-    year: Helper.getCurrentYear()
-  };
+  if (date === undefined)
+    return <AlignCenterMiddle style={{ paddingTop: "200px" }}><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
 
-  return <Fragment>
+  return <div className={"page"}>
 
-    <DateProvider
-      pageName={PAGE_NAME}
-      buildingName={buildingNameEng}
-      initState={initState}
+    <StyledExpandableSection
+      title={STATS_TITLE}
+      TitleIcon={Equalizer}
+      iconBoxBg={"rgb(3, 162, 151)"}
     >
-      {({ date, actions }) => {
+      <QuarterStatsContainer
+        buildingName={buildingNameEng}
+        date={date}
+        pageName={PAGE_NAME}
+      />
+    </StyledExpandableSection>
 
-        if (date === undefined || date[buildingNameEng] === undefined)
-          return <AlignCenterMiddle><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
-        else {
-          const onlyDate = date[buildingNameEng];
+    <StyledExpandableSection
+      marginBottom={"100px"}
+      title={TABLE_TITLE}
+      TitleIcon={TableChart}
+      extraDetails={() => <DateDetails
+        month={date.monthHeb}
+        quarter={date.quarter}
+        year={date.year}
+      />}
+    >
+      <BudgetExecutionsTableContainer
+        location={props.location}
+        date={date}
+        pageName={PAGE_NAME}
+        pageTitle={PAGE_TITLE}
+      />
+    </StyledExpandableSection>
 
-          return (
-            <div className={"page"}>
-
-              <StyledExpandableSection
-                title={STATS_TITLE}
-                TitleIcon={Equalizer}
-                iconBoxBg={"rgb(3, 162, 151)"}
-              >
-                <QuarterStatsContainer
-                  buildingName={buildingNameEng}
-                  date={date[buildingNameEng]}
-                  pageName={PAGE_NAME}
-                />
-              </StyledExpandableSection>
-
-              <StyledExpandableSection
-                marginBottom={"100px"}
-                title={TABLE_TITLE}
-                TitleIcon={TableChart}
-                extraDetails={props.dateDetails(onlyDate)}
-              >
-                <BudgetExecutionsTableContainer
-                  location={props.location}
-                  date={date[buildingNameEng]}
-                  dateActions={actions}
-                  pageName={PAGE_NAME}
-                  pageTitle={PAGE_TITLE}
-                />
-              </StyledExpandableSection>
-
-            </div>
-          );
-        }
-      }}
-    </DateProvider>
-
-  </Fragment>;
+  </div>
 
 
 }
 
-export default withRouter(
-  withPageLogic(BudgetExecutions)
-);
+export default withRouter(BudgetExecutions);
