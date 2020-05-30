@@ -48,6 +48,7 @@ const DatePicker = ({
               }
             }))
               .then((result) => {
+                console.log("months length", result.data.length);
                 const monthsData = result.data;
                 const lastMonth = monthsData[monthsData.length - 1].month;
 
