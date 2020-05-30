@@ -13,6 +13,7 @@ import SystemLocations from './SystemLocations/SystemLocations';
 
 // SERVICES
 import { selectFolderDialog } from '../../../../services/electronDialogs.svc';
+import { showItemInFolder } from '../../../../services/mainProcess.svc';
 
 
 const SETTINGS_NAME = "locations";
@@ -44,10 +45,6 @@ export const General = () => {
     }); //end selectFolderDialog
   }
 
-  const openFileInFolder = (path) => {
-    shell.showItemInFolder(path);
-  }
-
   return (
     <Fragment>
 
@@ -62,7 +59,7 @@ export const General = () => {
         data={data}
         settingsName={SETTINGS_NAME}
         saveHandler={save}
-        openFileInFolder={openFileInFolder}
+        openFileInFolder={showItemInFolder}
         selectHandler={dbSelectFolderHandler}
       />
 

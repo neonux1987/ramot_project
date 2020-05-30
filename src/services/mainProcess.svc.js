@@ -1,4 +1,5 @@
 import { ipcSendReceive } from '../redux/actions/util/util';
+import { ipcRenderer } from 'electron';
 
 export const quitApp = () => {
 
@@ -24,4 +25,8 @@ export const restartApp = () => {
     }
   });
 
+};
+
+export const showItemInFolder = (path) => {
+  ipcRenderer.send('show-item-in-folder', path);
 };

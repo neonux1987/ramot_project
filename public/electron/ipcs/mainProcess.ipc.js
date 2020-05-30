@@ -1,4 +1,4 @@
-const { ipcMain, dialog } = require('electron');
+const { ipcMain, dialog, shell } = require('electron');
 const MainProcessLogic = require('../../backend/logic/MainProcessLogic');
 const ConfigurationLogic = require('../../backend/logic/ConfigurationLogic');
 const LoggerError = require('../../backend/customErrors/LoggerError');
@@ -62,6 +62,10 @@ const mainProcessIpc = () => {
     console.log('Unhandled Rejection at:', promise, 'reason:', reason);
     // Application specific logging, throwing an error, or other logic here
   });
+
+  ipcMain.on('show-item-in-folder', (event, path) => {
+    shell.showItemInFolder(path);
+  })
 
 }
 
