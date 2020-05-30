@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { shell } from 'electron';
 
 // ACTIONS
 import {

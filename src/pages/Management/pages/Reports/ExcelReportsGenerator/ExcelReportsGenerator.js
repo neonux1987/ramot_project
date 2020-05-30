@@ -35,32 +35,53 @@ export default () => {
   const [year, setYear] = useState(date.getFullYear());
   const [quarter, setQuarter] = useState(Helper.getCurrentQuarter(date.getMonth()));
 
-  const [quarters, setQuarters] = useState([]);
-
   const dispatch = useDispatch();
 
+  const [quarters, setQuarters] = useState([]);
+  const registeredReports = useSelector(store => store.registeredReports);
+  console.log(year);
   useEffect(() => {
-    dispatch(fetchRegisteredReportsGroupedByYear());
+    dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
+      const yearsData = result.data;
 
-    dispatch(fetchRegisteredReportsByYear(year)).then(({ data }) => {
+      if (yearsData !== undefined) {
+        const lastYear = yearsData[0].year;
+        setYear(() => lastYear);
+
+        dispatch(fetchRegisteredReportsByYear(lastYear)).then(({ data }) => {
+          if (data.length > 0)
+            setQuarters(() => {
+              setQuarter(() => data[0].quarter);
+              return data;
+            });
+        }); // end dispatch
+
+      } // end if
+
+
+    }); // end dispatch
+
+
+  }, [dispatch]);
+
+
+
+  const onYearChangeHandler = (event) => {
+    const { value } = event.target;
+    setYear(value);
+
+    dispatch(fetchRegisteredReportsByYear(value)).then(({ data }) => {
       if (data.length > 0)
         setQuarters(() => {
           setQuarter(() => data[0].quarter);
           return data;
         });
-    });
-  }, [dispatch, year]);
-
-  const registeredReports = useSelector(store => store.registeredReports);
-
-  const onYearChangeHandler = (event) => {
-    const { value } = event.target;
-    setYear(Number.parseInt(value));
+    }); // end dispatch
   }
 
   const onQuarterChangeHandler = (event) => {
     const { value } = event.target;
-    setQuarter(Number.parseInt(value));
+    setQuarter(value);
   }
 
   const onClickHandler = () => {
