@@ -14,16 +14,12 @@ import DateDetails from '../../components/DateDetails/DateDetails';
 import QuarterStatsContainer from './QuarterStatsContainer';
 import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 
-// UTILS
-import Helper from '../../helpers/Helper';
-
 // HOOKS
 import useDate from '../../customHooks/useDate';
 
 // ACTIONS
-import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
-import { fetchRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-import { updateDate } from '../../redux/actions/dateActions';
+import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
+import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "לב תל אביב - מעקב ביצוע מול תקציב";
@@ -35,7 +31,14 @@ const BudgetExecutions = props => {
   //building name
   const { buildingNameEng } = props.location.state;
 
+  const dispatch = useDispatch();
+
   const [date] = useDate(PAGE_NAME, buildingNameEng);
+
+  useEffect(() => {
+    dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
+    dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
+  }, [dispatch, buildingNameEng]);
 
   if (date === undefined)
     return <AlignCenterMiddle style={{ paddingTop: "200px" }}><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
@@ -59,7 +62,6 @@ const BudgetExecutions = props => {
       title={TABLE_TITLE}
       TitleIcon={TableChart}
       extraDetails={() => <DateDetails
-        month={date.monthHeb}
         quarter={date.quarter}
         year={date.year}
       />}

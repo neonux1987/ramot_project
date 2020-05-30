@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { TableChart } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
@@ -16,13 +16,9 @@ import MonthExpansesTableContainer from './MonthExpansesTableContainer';
 // HOOKS
 import useDate from '../../customHooks/useDate';
 
-// UTILS
-import Helper from '../../helpers/Helper';
-
 // ACTIONS
-import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
-import { fetchRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
-import { updateDate, dateCleanup, initDateState } from '../../redux/actions/dateActions';
+import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
+import { initRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -33,7 +29,14 @@ const MonthExpanses = props => {
   //building name
   const { buildingNameEng } = props.location.state;
 
+  const dispatch = useDispatch();
+
   const [date] = useDate(PAGE_NAME, buildingNameEng);
+
+  useEffect(() => {
+    dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
+    dispatch(initRegisteredMonths(PAGE_NAME, buildingNameEng));
+  }, [dispatch, buildingNameEng]);
 
   if (date === undefined)
     return <AlignCenterMiddle style={{ paddingTop: "200px" }}><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;

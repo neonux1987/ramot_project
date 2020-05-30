@@ -11,6 +11,22 @@ export const setPageState = (state, buildingName, target) => {
   }
 }
 
+export const setState = (state, pageName, buildingName, target) => {
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [pageName]: {
+        ...state.pages[pageName],
+        [buildingName]: {
+          ...state.pages[pageName][buildingName],
+          ...target
+        }
+      }
+    }
+  }
+}
+
 export const createPageReducer = (pageName, initialState) => {
   return (state = initialState, action) => {
     switch (action.type) {

@@ -16,7 +16,7 @@ const DatePicker = ({
   buildingName,
   pageName
 }) => {
-  console.log(date);
+
   const [selectDate, setDate] = useState({
     year: date.year,
     quarter: date.quarter,
@@ -25,93 +25,90 @@ const DatePicker = ({
 
   const dispatch = useDispatch();
 
-  const months = useSelector(store => store.registeredMonths);
-  const quarters = useSelector(store => store.registeredQuarters);
-  const years = useSelector(store => store.registeredYears);
+  const months = useSelector(store => month ? store.registeredMonths.pages[pageName][buildingName] : undefined);
+  const quarters = useSelector(store => quarter ? store.registeredQuarters.pages[pageName][buildingName] : undefined);
+  const years = useSelector(store => store.registeredYears.pages[pageName][buildingName]);
 
   useEffect(() => {
-    dispatch(registeredYearsActions.fetchRegisteredYears({ buildingName })).then((result) => {
+    if (years.data.length === 0)
+      dispatch(registeredYearsActions.fetchRegisteredYears({ pageName, buildingName })).then((result) => {
 
-      const yearsData = result.data;
-      const lastYear = yearsData[yearsData.length - 1].year;
-      const currentDate = Helper.getCurrentDate();
+        const yearsData = result.data;
 
-      if (month)
-        dispatch(registeredMonthsActions.fetchRegisteredMonths({
-          buildingName,
-          date: {
-            year: lastYear
-          }
-        }))
-          .then((result) => {
-            const monthsData = result.data;
-            const lastMonth = monthsData[monthsData.length - 1].month;
+        if (yearsData.length !== 0) {
+          const lastYear = yearsData[yearsData.length - 1].year;
+          const currentDate = Helper.getCurrentDate();
 
-            const exist = monthsData.find((element) => {
-              return element.month === currentDate.month;
-            });
+          if (month)
+            dispatch(registeredMonthsActions.fetchRegisteredMonths({
+              pageName,
+              buildingName,
+              date: {
+                year: lastYear
+              }
+            }))
+              .then((result) => {
+                const monthsData = result.data;
+                const lastMonth = monthsData[monthsData.length - 1].month;
 
-            setDate(prevState => ({
-              ...prevState,
-              month: exist ? exist.month : lastMonth,
-              year: lastYear
+                const exist = monthsData.find((element) => {
+                  return element.month === currentDate.month;
+                });
+
+                setDate(prevState => ({
+                  ...prevState,
+                  month: exist ? exist.month : lastMonth,
+                  year: lastYear
+                }));
+
+                const newDate = Helper.generateAllDateByMonthName(exist ? exist.month : lastMonth);
+
+                newDate.year = lastYear;
+                dispatch(updateDate(pageName, buildingName, newDate));
+
+              });
+
+          if (quarter)
+            dispatch(registeredQuartersActions.fetchRegisteredQuarters({
+              pageName,
+              buildingName,
+              date: {
+                year: lastYear
+              }
+            }))
+              .then((result) => {
+                const quartersData = result.data;
+                const lastQuarter = quartersData[quartersData.length - 1].quarter;
+
+                const exist = quartersData.find((element) => {
+                  return element.quarter === currentDate.quarter;
+                });
+
+                setDate(prevState => ({
+                  ...prevState,
+                  quarter: exist ? exist.quarter : lastQuarter,
+                  year: lastYear
+                }));
+
+                const newDate = {
+                  quarter: lastQuarter,
+                  quarterEng: Helper.convertQuarterToEng(exist ? exist.quarter : lastQuarter),
+                  quarterHeb: Helper.getQuarterHeb(lastQuarter),
+                  year: lastYear
+                }
+                dispatch(updateDate(pageName, buildingName, newDate));
+
+              });
+
+          if (!month && !quarter)
+            dispatch(updateDate(pageName, buildingName, {
+              year: date.year
             }));
+        }
 
-            const newDate = Helper.generateAllDateByMonthName(exist ? exist.month : lastMonth);
+      });
 
-            newDate.year = lastYear;
-            dispatch(updateDate(pageName, buildingName, newDate));
-
-          });
-
-      if (quarter)
-        dispatch(registeredQuartersActions.fetchRegisteredQuarters({
-          buildingName,
-          date: {
-            year: lastYear
-          }
-        }))
-          .then((result) => {
-            const quartersData = result.data;
-            const lastQuarter = quartersData[quartersData.length - 1].quarter;
-
-            const exist = quartersData.find((element) => {
-              return element.quarter === currentDate.quarter;
-            });
-
-            setDate(prevState => ({
-              ...prevState,
-              quarter: exist ? exist.quarter : lastQuarter,
-              year: lastYear
-            }));
-
-            const newDate = {
-              quarter: lastQuarter,
-              quarterEng: Helper.convertQuarterToEng(exist ? exist.quarter : lastQuarter),
-              quarterHeb: Helper.getQuarterHeb(lastQuarter),
-              year: lastYear
-            }
-            dispatch(updateDate(pageName, buildingName, newDate));
-
-          });
-
-      if (!month && !quarter)
-        dispatch(updateDate(pageName, buildingName, {
-          year: date.year
-        }));
-    });
-
-    // cleanup
-    const cleanup = () => {
-      dispatch((registeredYearsActions.cleanupYears(buildingName)))
-      if (quarter)
-        dispatch((registeredQuartersActions.cleanupQuarters(buildingName)))
-      if (month)
-        dispatch((registeredMonthsActions.cleanupMonths(buildingName)))
-    }
-
-    return cleanup;
-  }, [month, quarter, dispatch, buildingName, pageName]);
+  }, [month, quarter, dispatch, buildingName, pageName, years.data.length, date.year]);
 
   /*   useEffect(() => {
       dispatch(updateDate(pageName, buildingName, selectDate));
@@ -155,7 +152,7 @@ const DatePicker = ({
     const year = Number.parseInt(value);
 
     if (month) {
-      dispatch((registeredMonthsActions.fetchRegisteredMonths({ buildingName, date: { year } }))).then((result) => {
+      dispatch((registeredMonthsActions.fetchRegisteredMonths({ pageName, buildingName, date: { year } }))).then((result) => {
         // get the earliest month in the list 
         const month = result.data[0].month;
 
@@ -174,6 +171,7 @@ const DatePicker = ({
 
     if (quarter) {
       dispatch((registeredQuartersActions.fetchRegisteredQuarters({
+        pageName,
         buildingName,
         date: {
           year
@@ -240,7 +238,7 @@ const DatePicker = ({
   }
 
   //if months data exist, render it
-  const renderMonths = !months.isFetching && months.data.length > 0 && monthExist() ?
+  const renderMonths = months && !months.isFetching && months.data.length > 0 && monthExist() ?
     <div className={pickerWrapper}>
       <InputLabel className={pickerLabel} id="label">חודש:</InputLabel>
       <Select
@@ -257,7 +255,7 @@ const DatePicker = ({
     : <FormSelectDummy />;
 
   //if quarters data exist, render it
-  const renderQuarters = !quarters.isFetching && quarters.data.length > 0 && quarterExist() ?
+  const renderQuarters = quarters && !quarters.isFetching && quarters.data.length > 0 && quarterExist() ?
     <div className={pickerWrapper}>
       <InputLabel className={pickerLabel} id="label">רבעון:</InputLabel>
       <Select

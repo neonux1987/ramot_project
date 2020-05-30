@@ -1,25 +1,25 @@
 // LIBRARIES
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Equalizer, TableChart } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 
 // COMMON COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
+import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
+import DateDetails from '../../components/DateDetails/DateDetails';
 
 // CONTAINERS
-//import SummarizedBudgetTableContainer from './SummarizedBudgetTableContainer';
 import YearStatsContainer from './YearStatsContainer';
-
-
 import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
 
-
-// UTILS
-import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
+// HOOKS
 import useDate from '../../customHooks/useDate';
 
-import DateDetails from '../../components/DateDetails/DateDetails';
+// ACTIONS
+import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
+import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -30,8 +30,14 @@ const SummarizedBudgets = props => {
   //building name
   const { buildingNameEng } = props.location.state;
 
+  const dispatch = useDispatch();
+
   const [date] = useDate(PAGE_NAME, buildingNameEng);
 
+  useEffect(() => {
+    dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
+    dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
+  }, [dispatch, buildingNameEng]);
 
   if (date === undefined)
     return <AlignCenterMiddle style={{ paddingTop: "200px" }}><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
