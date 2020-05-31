@@ -44,7 +44,7 @@ export default () => {
     dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
       const yearsData = result.data;
 
-      if (yearsData !== undefined) {
+      if (yearsData.length > 0) {
         const lastYear = yearsData[0].year;
         setYear(() => lastYear);
 

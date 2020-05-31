@@ -344,7 +344,7 @@ const MonthExpansesTableContainer = props => {
       <Table
         Row={TableRow}
         HeaderComponent={HeadersRow}
-        isFetching={isFetching || data.length === 0}
+        isFetching={isFetching}
         itemCount={data.length}
       />
 
