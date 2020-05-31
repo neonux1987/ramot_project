@@ -39,7 +39,7 @@ export default () => {
 
   const [quarters, setQuarters] = useState([]);
   const registeredReports = useSelector(store => store.registeredReports);
-  console.log(year);
+
   useEffect(() => {
     dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
       const yearsData = result.data;

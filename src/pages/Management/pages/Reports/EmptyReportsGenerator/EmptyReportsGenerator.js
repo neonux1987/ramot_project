@@ -1,7 +1,11 @@
 // LIBRARIES
 import React, { useState } from 'react';
 import { Select, Button, MenuItem } from '@material-ui/core';
+import { Description } from '@material-ui/icons';
 
+// COMPONENTS
+import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
+import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 
 // UTILS
 import Helper from '../../../../../helpers/Helper';
@@ -17,16 +21,12 @@ import {
   select,
   createBtn
 } from './EmptyReportsGenerator.module.css';
-
-// ACTIONS
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import { Description } from '@material-ui/icons';
-import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
+import { withRouter } from 'react-router';
 
 const years = generateYears(new Date().getFullYear());
 const quarters = Helper.getYearQuarters();
 
-export default () => {
+const EmptyReportsGenerator = (props) => {
   const date = new Date();//current date
 
   const [selectDate, setSelectDate] = useState({
@@ -46,7 +46,7 @@ export default () => {
     });
   }
 
-  const onClickHandler = () => {
+  const onClickHandler = async () => {
     const newDate = {
       year: selectDate.year,
       quarter: selectDate.quarter,
@@ -111,3 +111,5 @@ function generateYears(currentYear) {
 
   return arr;
 }
+
+export default withRouter(EmptyReportsGenerator);
