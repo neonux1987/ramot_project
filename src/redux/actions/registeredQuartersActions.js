@@ -4,6 +4,7 @@ export const TYPES = {
   REGISTERED_QUARTERS_REQUEST: "REGISTERED_QUARTERS_REQUEST",
   REGISTERED_QUARTERS_RECEIVE: "REGISTERED_QUARTERS_RECEIVE",
   REGISTERED_QUARTERS_FETCHING_FAILED: "REGISTERED_QUARTERS_FETCHING_FAILED",
+  REGISTERED_QUARTERS_UPDATE_DATA_COUNT: "REGISTERED_QUARTERS_UPDATE_DATA_COUNT",
   REGISTERED_QUARTERS_CLEANUP: "REGISTERED_QUARTERS_CLEANUP",
   REGISTERED_QUARTERS_INIT_PAGE: "REGISTERED_QUARTERS_INIT_PAGE",
   REGISTERED_QUARTERS_INIT_BUILDING: "REGISTERED_QUARTERS_INIT_BUILDING"
@@ -54,6 +55,15 @@ const fetchingFailed = function (error, pageName, buildingName) {
     pageName, buildingName
   }
 };
+
+export const registeredQuartersUpdateDataCount = (dataCount) => {
+  return dispatch => {
+    dispatch({
+      type: TYPES.REGISTERED_QUARTERS_UPDATE_DATA_COUNT,
+      dataCount
+    })
+  }
+}
 
 export const cleanupQuarters = (pageName, buildingName) => {
   return {

@@ -5,6 +5,7 @@ export const TYPES = {
   REGISTERED_YEARS_REQUEST: "REGISTERED_YEARS_REQUEST",
   REGISTERED_YEARS_RECEIVE: "REGISTERED_YEARS_RECEIVE",
   REGISTERED_YEARS_FETCHING_FAILED: "REGISTERED_YEARS_FETCHING_FAILED",
+  REGISTERED_YEARS_UPDATE_DATA_COUNT: "REGISTERED_YEARS_UPDATE_DATA_COUNT",
   REGISTERED_YEARS_CLEANUP: "REGISTERED_YEARS_CLEANUP",
   REGISTERED_YEARS_INIT_PAGE: "REGISTERED_YEARS_INIT_PAGE",
   REGISTERED_YEARS_INIT_BUILDING: "REGISTERED_YEARS_INIT_BUILDING"
@@ -56,6 +57,15 @@ const fetchingFailed = function (error, pageName, buildingName) {
     buildingName
   }
 };
+
+export const registeredYearsUpdateDataCount = (dataCount) => {
+  return dispatch => {
+    dispatch({
+      type: TYPES.REGISTERED_YEARS_UPDATE_DATA_COUNT,
+      dataCount
+    })
+  }
+}
 
 export const cleanupYears = (pageName, buildingName) => {
   return {

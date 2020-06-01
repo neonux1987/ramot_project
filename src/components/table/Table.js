@@ -27,7 +27,7 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount })
       {HeaderComponent()}
       {/* END HEADERS */}
 
-      {Loading}
+      {!isFetching && itemCount === 0 ? <div className="spinnerWrapper noDataText">או שלא קיימים דוחות או שלא בחרת תאריך</div> : Loading}
 
     </div>
 

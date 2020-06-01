@@ -4,6 +4,7 @@ export const TYPES = {
   REGISTERED_MONTHS_REQUEST: "REGISTERED_MONTHS_REQUEST",
   REGISTERED_MONTHS_RECEIVE: "REGISTERED_MONTHS_RECEIVE",
   REGISTERED_MONTHS_FETCHING_FAILED: "REGISTERED_MONTHS_FETCHING_FAILED",
+  REGISTERED_MONTHS_UPDATE_DATA_COUNT: "REGISTERED_MONTHS_UPDATE_DATA_COUNT",
   REGISTERED_MONTHS_CLEANUP: "REGISTERED_MONTHS_CLEANUP",
   REGISTERED_MONTHS_INIT_PAGE: "REGISTERED_MONTHS_INIT_PAGE",
   REGISTERED_MONTHS_INIT_BUILDING: "REGISTERED_MONTHS_INIT_BUILDING"
@@ -55,6 +56,15 @@ const fetchingFailed = function (error, pageName, buildingName) {
     buildingName
   }
 };
+
+export const registeredMonthsUpdateDataCount = (dataCount) => {
+  return dispatch => {
+    dispatch({
+      type: TYPES.REGISTERED_MONTHS_UPDATE_DATA_COUNT,
+      dataCount
+    })
+  }
+}
 
 export const cleanupMonths = (pageName, buildingName) => {
   return {

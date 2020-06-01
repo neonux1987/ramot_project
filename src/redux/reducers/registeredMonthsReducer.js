@@ -7,6 +7,12 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
+    case TYPES.REGISTERED_MONTHS_UPDATE_DATA_COUNT: {
+      const { pageName, buildingName, dataCount } = action;
+      return setState(state, pageName, buildingName, {
+        dataCount
+      });
+    }
     case TYPES.REGISTERED_MONTHS_RECEIVE: {
       const { pageName, buildingName, data } = action;
       return setState(state, pageName, buildingName, {
@@ -68,7 +74,8 @@ export default (state = initState, action) => {
               isFetching: false,
               status: "",
               error: "",
-              data: []
+              data: [],
+              dataCount: 0
             }
           }
         }
