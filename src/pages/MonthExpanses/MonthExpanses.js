@@ -19,8 +19,6 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
-import { initPageState } from '../../redux/actions/PagesStateActions';
-import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -37,9 +35,7 @@ const MonthExpanses = props => {
 
   useEffect(() => {
     dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
-    dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
     dispatch(initRegisteredMonths(PAGE_NAME, buildingNameEng));
-    dispatch(initPageState(PAGE_NAME, buildingNameEng));
   }, [dispatch, buildingNameEng]);
 
   if (date === undefined)

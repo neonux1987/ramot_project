@@ -13,7 +13,6 @@ import Stats from '../../components/Stats/Stats';
 
 import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../components/Spinner/Spinner';
 
 class YearStatsContainer extends React.PureComponent {
 

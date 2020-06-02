@@ -17,7 +17,6 @@ import registeredReports from './registeredReportsReducer';
 import routes from './routesReducer';
 import date from './dateReducer';
 import modal from './modalReducer';
-import pageState from './PageStateReducer';
 import { createPageReducer } from './util/util';
 
 // init month expanses reducer
@@ -62,6 +61,5 @@ export default combineReducers({
   date,
   modal,
   registeredReports,
-  routes,
-  pageState
+  routes
 });
