@@ -112,14 +112,16 @@ const DatePicker = ({
         // get the earliest month in the list 
         const month = result.data[0].month;
 
+        const newDate = Helper.generateAllDateByMonthName(month);
+        newDate.year = year;
+
         setDate({
           ...selectDate,
           month,
+          quarter: newDate.quarter,
           year
         });
 
-        const newDate = Helper.generateAllDateByMonthName(month);
-        newDate.year = year;
         dispatch(updateDate(pageName, buildingName, newDate));
 
       });
@@ -196,14 +198,15 @@ const DatePicker = ({
   //if months data exist, render it
   const renderMonths = month ?
     <div className={pickerWrapper}>
-      <InputLabel className={pickerLabel} id="label">חודש:</InputLabel>
+      <InputLabel className={pickerLabel} id="label" disabled={months.data.length === 0 ? true : false}>חודש:</InputLabel>
       <Select
         name="month"
         className={formSelect}
         value={selectDate.month || ""}
         onChange={onMonthChange}
+        disabled={months.data.length === 0 ? true : false}
       >
-        {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}>בחר שנה</MenuItem> : null}
+        {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}></MenuItem> : null}
         {months.data.map((month) => {
           return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
         })}
@@ -214,14 +217,15 @@ const DatePicker = ({
   //if quarters data exist, render it
   const renderQuarters = quarter ?
     <div className={pickerWrapper}>
-      <InputLabel className={pickerLabel} id="label">רבעון:</InputLabel>
+      <InputLabel className={pickerLabel} id="label" disabled={quarters.data.length === 0 ? true : false}>רבעון:</InputLabel>
       <Select
         name="quarter"
         className={formSelect}
         value={selectDate.quarter || ""}
         onChange={onQuarterChangeHandler}
+        disabled={quarters.data.length === 0 ? true : false}
       >
-        {quarters.data.length === 0 || quarterExist() === false ? <MenuItem value={selectDate.quarter}>בחר שנה</MenuItem> : null}
+        {quarters.data.length === 0 || quarterExist() === false ? <MenuItem value={selectDate.quarter}></MenuItem> : null}
         {quarters.data.map((quarter) => {
           return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
         })}

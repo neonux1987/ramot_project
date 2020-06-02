@@ -16,14 +16,16 @@ const SERVICES_PATH = path.join(CONFIG_FOLDER_PATH, "services.json");
 
 const DB_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db");
 const DB_PATH = path.join(DB_FOLDER_PATH, "mezach-db.sqlite");
-const DB_BACKUPS_FOLDER_PATH = path.join(NDTS_FOLDER_PATH, "db backups");
+
+// db backups
+const DB_BACKUPS_FOLDER_PATH = path.join(usersAppDataFolder, "ramot group backups");
 
 // user documents
 const userDocuments = getDocumentsFolder();
 // user main folder
 USER_MAIN_FOLDER = path.join(userDocuments, `קבוצת רמות`);
 USER_REPORTS_FOLDER = path.join(USER_MAIN_FOLDER, `דוחות`);
-LOGS_FOLDER = path.join(USER_MAIN_FOLDER, `logs`);
+LOGS_FOLDER = path.join(USER_MAIN_FOLDER, `יומן אירועים`);
 LOG_FILE = path.join(LOGS_FOLDER, `ramot-group-app-errors.log`);
 
 // ndts setup files path
