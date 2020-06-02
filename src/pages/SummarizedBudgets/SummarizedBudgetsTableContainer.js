@@ -296,7 +296,7 @@ const SummarizedBudgetsTableContainer = props => {
         Row={TableRow}
         GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
-        isFetching={isFetching || data.length === 0}
+        isFetching={isFetching}
         itemCount={data.length}
       />
 

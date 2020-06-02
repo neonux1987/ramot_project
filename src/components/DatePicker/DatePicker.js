@@ -5,9 +5,9 @@ import Spinner from '../Spinner/Spinner';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateDate } from '../../redux/actions/dateActions';
 import Helper from '../../helpers/Helper';
-import { fetchRegisteredMonths, registeredMonthsUpdateDataCount } from '../../redux/actions/registeredMonthsActions';
-import { fetchRegisteredYears, registeredYearsUpdateDataCount } from '../../redux/actions/registeredYearsActions';
-import { fetchRegisteredQuarters, registeredQuartersUpdateDataCount } from '../../redux/actions/registeredQuartersActions';
+import { fetchRegisteredMonths, cleanupMonths } from '../../redux/actions/registeredMonthsActions';
+import { fetchRegisteredYears, cleanupYears } from '../../redux/actions/registeredYearsActions';
+import { fetchRegisteredQuarters, cleanupQuarters } from '../../redux/actions/registeredQuartersActions';
 
 const DatePicker = ({
   quarter = false,
@@ -24,108 +24,51 @@ const DatePicker = ({
   const years = useSelector(store => store.registeredYears.pages[pageName][buildingName]);
 
   const [selectDate, setDate] = useState({
-    year: "",
-    quarter: "",
-    month: ""
+    year: date.year,
+    quarter: date.quarter,
+    month: date.month
   });
 
   useEffect(() => {
-
-    dispatch(fetchRegisteredYears({ pageName, buildingName })).then((result) => {
-
-      const yearsData = result.data;
-
-      if (yearsData.length !== 0) {
-        const lastYear = yearsData[yearsData.length - 1].year;
-        const currentDate = Helper.getCurrentDate();
-
-        if (month)
-          dispatch(fetchRegisteredMonths({
-            pageName,
-            buildingName,
-            date: {
-              year: lastYear
-            }
-          }))
-            .then((result) => {
-              const monthsData = result.data;
-
-              if (months.dataCount !== monthsData.length) {
-                const lastMonth = monthsData[monthsData.length - 1].month;
-
-                const exist = monthsData.find((element) => {
-                  return element.month === currentDate.month;
-                });
-
-                setDate(prevState => ({
-                  ...prevState,
-                  month: exist ? exist.month : lastMonth,
-                  year: lastYear
-                }));
-
-                const newDate = Helper.generateAllDateByMonthName(exist ? exist.month : lastMonth);
-
-                newDate.year = lastYear;
-                dispatch(updateDate(pageName, buildingName, newDate));
-                dispatch(registeredMonthsUpdateDataCount(pageName, buildingName, monthsData.length));
-              }
-
-            });
-
-        if (quarter)
-          dispatch(fetchRegisteredQuarters({
-            pageName,
-            buildingName,
-            date: {
-              year: lastYear
-            }
-          }))
-            .then((result) => {
-              const quartersData = result.data;
-
-              if (quarters.dataCount !== quartersData.length) {
-                const lastQuarter = quartersData[quartersData.length - 1].quarter;
-
-                const exist = quartersData.find((element) => {
-                  return element.quarter === currentDate.quarter;
-                });
-
-                setDate(prevState => ({
-                  ...prevState,
-                  quarter: exist ? exist.quarter : lastQuarter,
-                  year: lastYear
-                }));
-
-                const newDate = {
-                  quarter: lastQuarter,
-                  quarterEng: Helper.convertQuarterToEng(exist ? exist.quarter : lastQuarter),
-                  quarterHeb: Helper.getQuarterHeb(lastQuarter),
-                  year: lastYear
-                }
-                dispatch(updateDate(pageName, buildingName, newDate));
-                dispatch(registeredQuartersUpdateDataCount(pageName, buildingName, quartersData.length));
-              }
-
-            });
-
-        if (!month && !quarter) {
-          if (yearsData.length !== years.dataCount) {
-            dispatch(updateDate(pageName, buildingName, {
-              year: lastYear
-            }));
-            dispatch(registeredYearsUpdateDataCount(pageName, buildingName, yearsData.length));
+    dispatch(fetchRegisteredYears({ pageName, buildingName })).then(() => {
+      if (month)
+        dispatch(fetchRegisteredMonths({
+          pageName,
+          buildingName,
+          date: {
+            year: date.year
           }
-        }
+        }));
 
-      }
-
+      if (quarter)
+        dispatch(fetchRegisteredQuarters({
+          pageName,
+          buildingName,
+          date: {
+            year: date.year
+          }
+        }));
     });
 
-  }, [month, quarter, dispatch, buildingName, pageName, years.dataCount, quarters.dataCount, months.dataCount]);
+    // cleanup
+    const cleanup = () => {
+      // because we're doing page effect transition which shows 2 
+      // pages at the same time for 300ms, when dispatching the cleanup for years,
+      // it overwrites the reducer state of the new mounted page that also
+      // fetching the registered years
+      dispatch(cleanupYears(pageName, buildingName))
+      if (quarter)
+        dispatch(cleanupQuarters(pageName, buildingName))
+      if (month)
+        dispatch(cleanupMonths(pageName, buildingName))
+    }
 
-  /*   useEffect(() => {
-      dispatch(updateDate(pageName, buildingName, selectDate));
-    }, [selectDate, pageName, buildingName, dispatch]); */
+    return cleanup;
+  }, [month, quarter, dispatch, pageName, buildingName, date.year]);
+
+  useEffect(() => {
+    dispatch(updateDate(pageName, buildingName, selectDate));
+  }, [selectDate, pageName, buildingName, dispatch]);
 
 
   const onMonthChange = (event) => {
@@ -257,9 +200,10 @@ const DatePicker = ({
       <Select
         name="month"
         className={formSelect}
-        value={selectDate.month}
+        value={selectDate.month || ""}
         onChange={onMonthChange}
       >
+        {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}>בחר שנה</MenuItem> : null}
         {months.data.map((month) => {
           return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
         })}
@@ -277,6 +221,7 @@ const DatePicker = ({
         value={selectDate.quarter || ""}
         onChange={onQuarterChangeHandler}
       >
+        {quarters.data.length === 0 || quarterExist() === false ? <MenuItem value={selectDate.quarter}>בחר שנה</MenuItem> : null}
         {quarters.data.map((quarter) => {
           return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
         })}
@@ -290,10 +235,11 @@ const DatePicker = ({
     <Select
       name="year"
       className={formSelect}
-      value={selectDate.year}
+      value={selectDate.year || ""}
       onChange={onYearChangeHandler}
       classes={{ select }}
     >
+      {years.data.length === 0 || yearExist() === false ? <MenuItem value={selectDate.year}>בחר שנה</MenuItem> : null}
       {years.data.map((year) => {
         return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
       })}

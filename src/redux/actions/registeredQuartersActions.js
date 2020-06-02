@@ -11,7 +11,7 @@ export const TYPES = {
 }
 
 export const fetchRegisteredQuarters = (params = Object) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     const { pageName, buildingName } = params;
 
     //let react know that the fetching is started

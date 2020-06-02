@@ -93,7 +93,7 @@ class QuarterStatsContainer extends React.PureComponent {
     } = this.props;
 
     if (monthlyStats.data.length === 0 || quarterlyStats.data.length === 0)
-      return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות סיכום רבעון..."} /></AlignCenterMiddle>;
+      return <AlignCenterMiddle style={{ height: "202px", fontSize: "18px" }}>או שלא קיימים דוחות או שלא בחרת תאריך</AlignCenterMiddle>;
     else {
 
       //generate quarter months stats

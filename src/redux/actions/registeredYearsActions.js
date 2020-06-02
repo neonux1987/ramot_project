@@ -12,7 +12,7 @@ export const TYPES = {
 }
 
 export const fetchRegisteredYears = (params = Object) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     const { pageName, buildingName } = params;
     //let react know that the fetching is started
     dispatch(requestRegisteredYears(pageName, buildingName));

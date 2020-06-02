@@ -7,18 +7,12 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case TYPES.REGISTERED_YEARS_UPDATE_DATA_COUNT: {
-      const { pageName, buildingName, dataCount } = action;
-      return setState(state, pageName, buildingName, {
-        dataCount
-      });
-    }
     case TYPES.REGISTERED_YEARS_RECEIVE: {
       const { pageName, buildingName, data } = action;
       return setState(state, pageName, buildingName, {
         isFetching: false,
         status: "success",
-        data: data
+        data
       });
     }
     case TYPES.REGISTERED_YEARS_REQUEST: {
@@ -74,8 +68,7 @@ export default (state = initState, action) => {
               isFetching: false,
               status: "",
               error: "",
-              data: [],
-              dataCount: 0
+              data: []
             }
           }
         }
