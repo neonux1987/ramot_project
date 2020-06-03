@@ -10,9 +10,9 @@ export const TYPES = {
 
 export const fetchQuarterStats = (params = Object) => {
   return dispatch => {
-
+    const { buildingName, pageName } = params;
     //let react know that the fetching is started
-    dispatch(requestQuarterlyStats());
+    dispatch(requestQuarterlyStats(buildingName, pageName));
 
     return ipcSendReceive({
       send: {
@@ -22,8 +22,8 @@ export const fetchQuarterStats = (params = Object) => {
       receive: {
         channel: "quarter-stats"
       },
-      onSuccess: result => dispatch(receiveQuarterlyStats(result.data)),
-      onError: result => dispatch(fetchingFailed(result.error))
+      onSuccess: result => dispatch(receiveQuarterlyStats(buildingName, pageName, result.data)),
+      onError: result => dispatch(fetchingFailed(buildingName, pageName, result.error))
     });
 
   }
@@ -31,8 +31,10 @@ export const fetchQuarterStats = (params = Object) => {
 
 export const fetchAllQuartersStatsByYear = (params = Object) => {
   return dispatch => {
+    const { buildingName, pageName } = params;
+
     //let react know that the fetching is started
-    dispatch(requestQuarterlyStats());
+    dispatch(requestQuarterlyStats(buildingName, pageName));
 
     return ipcSendReceive({
       send: {
@@ -42,45 +44,53 @@ export const fetchAllQuartersStatsByYear = (params = Object) => {
       receive: {
         channel: "all-quarters-stats-by-year"
       },
-      onSuccess: result => dispatch(receiveQuarterlyStats(result.data)),
-      onError: result => dispatch(fetchingFailed(result.error))
+      onSuccess: result => dispatch(receiveQuarterlyStats(buildingName, pageName, result.data)),
+      onError: result => dispatch(fetchingFailed(buildingName, pageName, result.error))
     });
 
   }
 };
 
-const requestQuarterlyStats = function (page) {
+const requestQuarterlyStats = function (buildingName, pageName) {
   return {
     type: TYPES.REQUEST_QUARTERLY_STATS,
-    page
+    buildingName,
+    pageName
   }
 };
 
-const receiveQuarterlyStats = function (data) {
+const receiveQuarterlyStats = function (buildingName, pageName, data) {
   return {
     type: TYPES.RECEIVE_QUARTERLY_STATS,
-    data
+    data,
+    buildingName, pageName
   }
 }
 
-export const updateQuarterStatsStoreOnly = (quarterStatsObj) => {
+export const updateQuarterStatsStoreOnly = (buildingName, pageName, quarterStatsObj) => {
   return dispatch => {
     dispatch({
       type: TYPES.UPDATE_QUARTER_STATS_STORE_ONLY,
-      quarterStatsObj
+      quarterStatsObj,
+      buildingName,
+      pageName
     });
   }
 }
 
-const fetchingFailed = function (error) {
+const fetchingFailed = function (buildingName, pageName, error) {
   return {
     type: TYPES.QUARTERLY_STATS_FETCHING_FAILED,
-    payload: error
+    payload: error,
+    buildingName,
+    pageName
   }
 };
 
-export const cleanupQuarterlyStats = () => {
+export const cleanupQuarterlyStats = (buildingName, pageName) => {
   return {
-    type: TYPES.CLEANUP_QUARTERLY_STATS
+    type: TYPES.CLEANUP_QUARTERLY_STATS,
+    buildingName,
+    pageName
   }
 }

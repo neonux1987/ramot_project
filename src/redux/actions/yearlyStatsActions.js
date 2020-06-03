@@ -9,9 +9,10 @@ export const TYPES = {
 
 export const fetchYearStats = (params = Object) => {
   return dispatch => {
+    const { buildingName, pageName } = params;
 
     //let react know that the fetching is started
-    dispatch(requestYearlyStats());
+    dispatch(requestYearlyStats(buildingName, pageName));
 
     return ipcSendReceive({
       send: {
@@ -21,35 +22,43 @@ export const fetchYearStats = (params = Object) => {
       receive: {
         channel: "year-stats"
       },
-      onSuccess: result => dispatch(receiveYearlyStats(result.data)),
-      onError: result => dispatch(fetchingFailed(result.error))
+      onSuccess: result => dispatch(receiveYearlyStats(buildingName, pageName, result.data)),
+      onError: result => dispatch(fetchingFailed(buildingName, pageName, result.error))
     });
 
   }
 };
 
-const requestYearlyStats = function (page) {
+const requestYearlyStats = function (buildingName, pageName) {
   return {
-    type: TYPES.YEARLY_STATS_REQUEST
+    type: TYPES.YEARLY_STATS_REQUEST,
+    buildingName,
+    pageName
   }
 };
 
-const receiveYearlyStats = function (data) {
+const receiveYearlyStats = function (buildingName, pageName, data) {
   return {
     type: TYPES.YEARLY_STATS_RECEIVE,
-    data
+    data,
+    buildingName,
+    pageName
   }
 }
 
-const fetchingFailed = function (error) {
+const fetchingFailed = function (buildingName, pageName, error) {
   return {
     type: TYPES.YEARLY_STATS_FETCHING_FAILED,
-    payload: error
+    payload: error,
+    buildingName,
+    pageName
   }
 };
 
-export const cleanupYearlyStats = () => {
+export const cleanupYearlyStats = (buildingName, pageName) => {
   return {
-    type: TYPES.YEARLY_STATS_CLEANUP
+    type: TYPES.YEARLY_STATS_CLEANUP,
+    buildingName,
+    pageName
   }
 }

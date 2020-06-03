@@ -12,7 +12,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} page`}>
 
         <div style={{
           display: "flex",

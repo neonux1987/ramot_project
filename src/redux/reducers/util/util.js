@@ -1,3 +1,5 @@
+const { buildings, pages } = require('electron').remote.getGlobal('sharedObject');
+
 export const setPageState = (state, buildingName, target) => {
   return {
     ...state,
@@ -20,6 +22,22 @@ export const setState = (state, pageName, buildingName, target) => {
         ...state.pages[pageName],
         [buildingName]: {
           ...state.pages[pageName][buildingName],
+          ...target
+        }
+      }
+    }
+  }
+}
+
+export const setBuildingState = (buildingName, pageName, state, target) => {
+  return {
+    ...state,
+    [buildingName]: {
+      ...state[buildingName],
+      pages: {
+        ...state[buildingName].pages,
+        [pageName]: {
+          ...state[buildingName].pages[pageName],
           ...target
         }
       }
@@ -146,4 +164,23 @@ export const createPageReducer = (pageName, initialState) => {
       default: return state;
     }
   }
+}
+
+export const initBuildingState = (initState) => {
+  const buildingsState = {};
+
+  buildings.forEach((building) => {
+    const singleBuildingState = buildingsState[building.engLabel] = {};
+    const pagesState = singleBuildingState.pages = {};
+
+    pages.forEach((page) => {
+
+      pagesState[page] = {
+        ...initState
+      }
+    });
+
+  });
+
+  return buildingsState;
 }

@@ -1,5 +1,3 @@
-import Helper from "../../helpers/Helper";
-
 // TYPES
 export const TYPES = {
   DATE_UPDATE: "DATE_UPDATE",

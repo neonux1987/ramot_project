@@ -32,6 +32,7 @@ class YearStatsContainer extends React.PureComponent {
   fetchData = () => {
     const params = {
       buildingName: this.props.buildingName,
+      pageName: this.props.pageName,
       date: this.props.date
     }
 
@@ -43,9 +44,10 @@ class YearStatsContainer extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    const { buildingName, pageName } = this.props;
     //cleanup
-    this.props.cleanupQuarterlyStats();
-    this.props.cleanupYearlyStats();
+    //this.props.cleanupQuarterlyStats(buildingName, pageName);
+    //this.props.cleanupYearlyStats(buildingName, pageName);
   }
 
   generateQuarterlyStats(quarterlyStats, isFetching) {
@@ -87,17 +89,22 @@ class YearStatsContainer extends React.PureComponent {
 
     const {
       quarterlyStats,
-      yearlyStats
+      yearlyStats,
+      buildingName,
+      pageName
     } = this.props;
 
-    if (quarterlyStats.data.length === 0 || yearlyStats.data.length === 0)
-      return <AlignCenterMiddle style={{ height: "202px", fontSize: "18px" }}>או שלא קיימים דוחות או שלא בחרת תאריך</AlignCenterMiddle>;
+    const quarterlyStatsState = quarterlyStats[buildingName].pages[pageName];
+    const yearlyStatsState = yearlyStats[buildingName].pages[pageName];
+
+    if (quarterlyStatsState.data.length === 0 || yearlyStatsState.data.length === 0)
+      return <AlignCenterMiddle style={{ height: "202px", fontSize: "18px" }}>אין נתונים</AlignCenterMiddle>;
     else {
 
       //generate quarter months stats
-      const stats = this.generateQuarterlyStats(quarterlyStats.data, quarterlyStats.isFetching);
+      const stats = this.generateQuarterlyStats(quarterlyStatsState.data, quarterlyStatsState.isFetching);
       //generate quarter total stats
-      stats.push(this.generateYearStats(yearlyStats.data[0], yearlyStats.isFetching))
+      stats.push(this.generateYearStats(yearlyStatsState.data[0], yearlyStatsState.isFetching))
 
       return (<Stats stats={stats} columns={5} />);
 
@@ -107,8 +114,8 @@ class YearStatsContainer extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  quarterlyStats: state.quarterlyStats.quarterlyStats,
-  yearlyStats: state.yearlyStats.yearlyStats
+  quarterlyStats: state.quarterlyStats,
+  yearlyStats: state.yearlyStats
 });
 
 const mapDispatchToProps = dispatch => ({

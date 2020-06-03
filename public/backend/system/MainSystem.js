@@ -129,13 +129,14 @@ class MainSystem {
       this.servicesLogic = new ServicesLogic();
 
       //fetch menu data
-      /* const menuDao = new MenuDao();
-      const menu = await menuDao.getMenu(); */
+      const menuDao = new MenuDao();
+      const menu = await menuDao.getMenu();
 
       // In the main process.
-      /* global.sharedObject = {
-        menuData: menu
-      } */
+      global.sharedObject = {
+        buildings: menu,
+        pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets"]
+      }
 
       /* const schemaBuilder = new SchemaBuilder();
       //modify table

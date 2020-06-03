@@ -28,13 +28,12 @@ const PageControls = props => {
     excel,
     print,
     pageName,
-    style,
-    date
+    style
   } = props;
 
   const exportToExcelHandler = () => {
     if (excel.date.year === undefined)
-      myToaster.info("נדרש לטעון דוח לפני ייצוא")
+      myToaster.info("לא נבחר דוח לייצוא")
     else
       saveToFileDialog(excel.fileName, options).then(({ canceled, filePath }) => {
         if (!canceled) {

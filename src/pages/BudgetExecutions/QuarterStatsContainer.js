@@ -33,6 +33,7 @@ class QuarterStatsContainer extends React.PureComponent {
   fetchData = () => {
     const params = {
       buildingName: this.props.buildingName,
+      pageName: this.props.pageName,
       date: this.props.date
     }
 
@@ -44,9 +45,11 @@ class QuarterStatsContainer extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    const { buildingName, pageName } = this.props;
+
     //cleanup
-    this.props.cleanupMonthlyStats();
-    this.props.cleanupQuarterlyStats();
+    //this.props.cleanupMonthlyStats(buildingName, pageName);
+    //this.props.cleanupQuarterlyStats(buildingName, pageName);
   }
 
   generateMonthlyStats = (monthStats, quarter, isFetching) => {
@@ -90,17 +93,22 @@ class QuarterStatsContainer extends React.PureComponent {
     const {
       date,
       monthlyStats,
-      quarterlyStats
+      quarterlyStats,
+      buildingName,
+      pageName
     } = this.props;
 
-    if (monthlyStats.data.length === 0 || quarterlyStats.data.length === 0)
-      return <AlignCenterMiddle style={{ height: "202px", fontSize: "18px" }}>או שלא קיימים דוחות או שלא בחרת תאריך</AlignCenterMiddle>;
+    const monthlyStatsState = monthlyStats[buildingName].pages[pageName];
+    const quarterlyStatsState = quarterlyStats[buildingName].pages[pageName];
+
+    if ((monthlyStatsState.data.length === 0) || quarterlyStatsState.data.length === 0)
+      return <AlignCenterMiddle style={{ height: "202px", fontSize: "18px" }}>אין נתונים.</AlignCenterMiddle>;
     else {
 
       //generate quarter months stats
-      const stats = this.generateMonthlyStats(monthlyStats.data, date.quarter, monthlyStats.isFetching);
+      const stats = this.generateMonthlyStats(monthlyStatsState.data, date.quarter, monthlyStatsState.isFetching);
       //generate quarter total stats
-      stats.push(this.generateQuarterStats(quarterlyStats.data[0], quarterlyStats.isFetching))
+      stats.push(this.generateQuarterStats(quarterlyStatsState.data[0], quarterlyStatsState.isFetching))
 
       return (<Stats stats={stats} columns={4} />);
 
@@ -111,8 +119,8 @@ class QuarterStatsContainer extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return ({
-    monthlyStats: state.monthlyStats.monthlyStats,
-    quarterlyStats: state.quarterlyStats.quarterlyStats
+    monthlyStats: state.monthlyStats,
+    quarterlyStats: state.quarterlyStats
   });
 }
 

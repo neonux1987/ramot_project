@@ -47,7 +47,7 @@ const Settings = ({ classes, match }, props) => {
   const pageState = currentActive.state;
 
   return (
-    <div>
+    <div className="page">
       <AppBar classes={{ root: classes.appBar }} position="static" style={{ margin: "20px 20px 30px 20px" }}>
         <Tabs
           classes={{ root: classes.tabs, indicator: classes.indicator }}

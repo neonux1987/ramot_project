@@ -80,6 +80,10 @@ const MonthExpansesTableContainer = props => {
     const dispatchActions = async () => {
       await dispatch(initMonthExpansesState(params.buildingName));
 
+      // the init state of date has 0
+      // properties. when a date is chosen in date picker
+      // then the date is available so dont fetch when date
+      // doesn't have properties
       if (date.year !== undefined)
         dispatch(fetchMonthExpanses(params)).catch((result) => {
           myToaster.info(result.error)
