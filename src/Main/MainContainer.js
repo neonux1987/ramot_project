@@ -132,8 +132,8 @@ class MainContainer extends Component {
             <TransitionGroup>
               <CSSTransition
                 style={{ height: "100%", paddingBottom: "80px" }}
-                key={location.key}
-                timeout={300}
+                //key={location.key}
+                timeout={timeout}
                 classNames="fade"
                 mountOnEnter={false}
                 unmountOnExit={true}
