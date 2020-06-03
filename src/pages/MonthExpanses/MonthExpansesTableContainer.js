@@ -80,9 +80,10 @@ const MonthExpansesTableContainer = props => {
     const dispatchActions = async () => {
       await dispatch(initMonthExpansesState(params.buildingName));
 
-      dispatch(fetchMonthExpanses(params)).catch((result) => {
-        myToaster.info(result.error)
-      });
+      if (date.year !== undefined)
+        dispatch(fetchMonthExpanses(params)).catch((result) => {
+          myToaster.info(result.error)
+        });
 
       dispatch(fetchExpansesCodesByStatus("active"));
     }
@@ -96,6 +97,12 @@ const MonthExpansesTableContainer = props => {
     if (!valid) {
       // send the error to the notification center
       myToaster.error("קוד או שם חשבון לא יכולים להיות ריקים");
+      return;
+    }
+
+    if (date.year === undefined) {
+      // send the error to the notification center
+      myToaster.error("לא ניתן להוסיף שורה לדוח ריק");
       return;
     }
 

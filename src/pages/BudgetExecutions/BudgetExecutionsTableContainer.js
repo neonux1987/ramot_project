@@ -90,7 +90,8 @@ const BudgetExecutionsTable = props => {
     const returnedPromise = dispatch(initBudgetExecutionsState(buildingNameEng));
 
     returnedPromise.then(() => {
-      dispatch(fetchBudgetExecutions(buildingInfo, date, range));
+      if (date.year !== undefined || date.quarter !== undefined)
+        dispatch(fetchBudgetExecutions(buildingInfo, date, range));
     })
 
     return cleanup;

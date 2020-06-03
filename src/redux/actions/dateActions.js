@@ -9,7 +9,7 @@ export const TYPES = {
   DATE_INIT_BUILDING: "DATE_INIT_BUILDING"
 }
 
-export const initDateState = function (pageName, buildingName, initState = Helper.getCurrentDate()) {
+export const initDateState = function (pageName, buildingName, initState) {
   return dispatch => {
     dispatch({
       type: TYPES.DATE_INIT_PAGE,

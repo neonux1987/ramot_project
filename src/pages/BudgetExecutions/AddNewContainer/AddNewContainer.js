@@ -58,6 +58,11 @@ const AddNewContainer = (props) => {
 
     if (formInputs === "")
       myToaster.error("נא לבחור סעיף מסכם")
+    else if (date.year === undefined) {
+      // send the error to the notification center
+      myToaster.error("לא ניתן להוסיף שורה לדוח ריק");
+      return;
+    }
     else
       dispatch(addBudgetExecution(params));
   }

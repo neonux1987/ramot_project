@@ -80,7 +80,9 @@ const SummarizedBudgetsTableContainer = props => {
     const returnedPromise = dispatch(initSummarizedBudgetsState(params.buildingName));
 
     returnedPromise.then(() => {
-      dispatch(fetchSummarizedBudgets(params));
+      // dont fetch if date picker hasn't selected a date yet
+      if (date.year !== undefined)
+        dispatch(fetchSummarizedBudgets(params));
     })
 
     return cleanup;

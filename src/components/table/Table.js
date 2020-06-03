@@ -20,11 +20,11 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount })
     <div className="_table">
 
       {/* HEADERS GROUPS */}
-      {GroupComponent && GroupComponent()}
+      {!isFetching && itemCount === 0 ? null : GroupComponent && GroupComponent()}
       {/* END HEADERS GROUPS */}
 
       {/* HEADERS */}
-      {HeaderComponent()}
+      {!isFetching && itemCount === 0 ? null : HeaderComponent()}
       {/* END HEADERS */}
 
       {!isFetching && itemCount === 0 ? <div className="spinnerWrapper noDataText">או שלא קיימים דוחות או שלא בחרת תאריך</div> : Loading}

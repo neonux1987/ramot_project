@@ -14,6 +14,7 @@ import {
   pageControls,
   pageControlsButton
 } from './PageControls.module.css';
+import { myToaster } from '../../Toasts/toastManager';
 
 let options = {
   //Placeholder 3
@@ -27,17 +28,21 @@ const PageControls = props => {
     excel,
     print,
     pageName,
-    style
+    style,
+    date
   } = props;
 
   const exportToExcelHandler = () => {
-    saveToFileDialog(excel.fileName, options).then(({ canceled, filePath }) => {
-      if (!canceled) {
-        excel.fileName = filePath;
-        excel.pageName = pageName;
-        exportToExcel(excel);
-      }
-    });
+    if (excel.date.year === undefined)
+      myToaster.info("נדרש לטעון דוח לפני ייצוא")
+    else
+      saveToFileDialog(excel.fileName, options).then(({ canceled, filePath }) => {
+        if (!canceled) {
+          excel.fileName = filePath;
+          excel.pageName = pageName;
+          exportToExcel(excel);
+        }
+      });
   }
 
   return (

@@ -31,7 +31,7 @@ const DatePicker = ({
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ pageName, buildingName })).then(() => {
-      if (month)
+      if (month && date.year !== undefined)
         dispatch(fetchRegisteredMonths({
           pageName,
           buildingName,
@@ -40,7 +40,7 @@ const DatePicker = ({
           }
         }));
 
-      if (quarter)
+      if (quarter && date.year !== undefined)
         dispatch(fetchRegisteredQuarters({
           pageName,
           buildingName,
@@ -74,13 +74,15 @@ const DatePicker = ({
   const onMonthChange = (event) => {
     const { value } = event.target;
 
-    setDate({
-      ...selectDate,
-      month: value
-    });
-
     const newDate = Helper.generateAllDateByMonthName(value);
     newDate.year = selectDate.year;
+
+    setDate({
+      ...selectDate,
+      month: value,
+      quarter: newDate.quarter
+    });
+
     dispatch(updateDate(pageName, buildingName, newDate));
   }
 
@@ -206,7 +208,7 @@ const DatePicker = ({
         onChange={onMonthChange}
         disabled={months.data.length === 0 ? true : false}
       >
-        {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}></MenuItem> : null}
+        {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}>בחר חודש</MenuItem> : null}
         {months.data.map((month) => {
           return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
         })}
@@ -225,7 +227,7 @@ const DatePicker = ({
         onChange={onQuarterChangeHandler}
         disabled={quarters.data.length === 0 ? true : false}
       >
-        {quarters.data.length === 0 || quarterExist() === false ? <MenuItem value={selectDate.quarter}></MenuItem> : null}
+        {quarters.data.length === 0 || quarterExist() === false ? <MenuItem value={selectDate.quarter}>בחר רבעון</MenuItem> : null}
         {quarters.data.map((quarter) => {
           return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
         })}
@@ -239,11 +241,12 @@ const DatePicker = ({
     <Select
       name="year"
       className={formSelect}
-      value={selectDate.year || ""}
+      value={selectDate.year || "choose year"}
       onChange={onYearChangeHandler}
       classes={{ select }}
     >
-      {years.data.length === 0 || yearExist() === false ? <MenuItem value={selectDate.year}>בחר שנה</MenuItem> : null}
+      {years.data.length === 0 || yearExist() === false || date.year === undefined
+        ? <MenuItem value={selectDate.year || "choose year"}>בחר שנה</MenuItem> : null}
       {years.data.map((year) => {
         return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
       })}

@@ -17,13 +17,15 @@ import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCente
 class QuarterStatsContainer extends React.PureComponent {
 
   componentDidMount() {
-    this.fetchData();
+    if (this.props.date.year !== undefined)
+      this.fetchData();
   }
 
   componentDidUpdate(prevProps) {
     if (
-      this.props.date.year !== prevProps.date.year ||
-      this.props.date.quarter !== prevProps.date.quarter
+      (this.props.date.year !== prevProps.date.year ||
+        this.props.date.quarter !== prevProps.date.quarter)
+      && (this.props.date.year !== undefined)
     )
       this.fetchData();
   }
