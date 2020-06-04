@@ -158,9 +158,8 @@ const App = () => {
   }, [state.toastId]);
 
   const closeButtonHandler = async () => {
-    //const window = remote.getCurrentWindow();
-    //window.close();
-
+    // in case the backend stopped working
+    // allow to close the app without backing up
     if (settings.isFetching && settings.data.length === 0) {
       quitApp();
       return;
@@ -170,7 +169,6 @@ const App = () => {
       autoClose: false
     });
 
-
     const promise = await initiateDbBackup().catch((result) => {
       myToaster.update(id, {
         render: <ToastRender message={result.error} />,
@@ -178,7 +176,7 @@ const App = () => {
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
-          //quitApp();
+          quitApp();
         }
       });
     });
@@ -191,7 +189,7 @@ const App = () => {
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
-          //quitApp();
+          quitApp();
         }
       });
 
