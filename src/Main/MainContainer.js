@@ -129,7 +129,7 @@ class MainContainer extends Component {
             <TransitionGroup style={{ position: "relative" }}>
               <CSSTransition
                 style={{ height: "100%", paddingBottom: "80px" }}
-                key={location.key}
+                //key={location.key}
                 timeout={timeout}
                 classNames="fade"
                 mountOnEnter={false}
@@ -138,6 +138,11 @@ class MainContainer extends Component {
                 <Switch location={location}>
                   {this.generateRoutes(this.props.sidebar.menu.data)}
                   <Route path="/דף-הבית" component={Home} />
+                  <Route path="/הגדרות"
+                    render={routeProps => (
+                      <Settings {...routeProps} />
+                    )}
+                  />
                   <Route path="/ניהול" component={Management} />
                   <Route exact path="/" component={Home} history={{
                     page: "דף-הבית",
@@ -148,14 +153,6 @@ class MainContainer extends Component {
               </CSSTransition>
             </TransitionGroup>
           )} />
-
-          <Switch>
-            <Route path="/הגדרות"
-              render={routeProps => (
-                <Settings {...routeProps} />
-              )}
-            />
-          </Switch>
 
         </main>
       </Element>

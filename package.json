@@ -62,14 +62,14 @@
     "files": [
       "build/**/*",
       "node_modules/**/*",
-      "package.json"
+      "package.json",
+      "!dev-app-update.yml"
     ],
     "extraResources": [
       "./extraResources/**"
     ],
     "win": {
       "target": [
-        "zip",
         "nsis"
       ],
       "icon": "./Icon/ramot-group-icon.ico",
