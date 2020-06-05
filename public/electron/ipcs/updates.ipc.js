@@ -1,10 +1,22 @@
 const { ipcMain, BrowserWindow } = require('electron');
 const { autoUpdater, CancellationToken } = require('electron-updater');
+const isDev = require('electron-is-dev');
 const fse = require('fs-extra');
 const logManager = require('../../backend/logger/LogManager');
 
 const updatesIpc = () => {
   const currentWindow = BrowserWindow.getFocusedWindow();
+
+  if (!isDev) {
+    const feedInfo = {
+      'provider': 'github',
+      'owner': 'neonux1987',
+      'repo': 'financial_reports_management_system',
+      'token': 'f55ef78253864c051c9520dca400f7a8313ff8fa'
+    };
+
+    autoUpdater.setFeedURL(feedInfo);
+  }
 
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = false;
@@ -47,7 +59,6 @@ const updatesIpc = () => {
   })
 
   autoUpdater.on('update-available', (updateInfo) => {
-    console.log('update-available');
     currentWindow.webContents.send('update_available', { data: updateInfo });
   });
 
@@ -87,7 +98,7 @@ const updatesIpc = () => {
   });
 
   ipcMain.on('install-update', () => {
-    //autoUpdater.quitAndInstall();
+    autoUpdater.quitAndInstall();
     console.log("installing update");
   });
 

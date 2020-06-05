@@ -84,6 +84,7 @@ const App = () => {
           const { version } = data;
 
           if (appUpdates.userNotified === false && appUpdates.updateVersion !== version) {
+
             await dispatch(updateSettings("appUpdates", { userNotified: true }));
             await dispatch(saveSettings(false));
             myToaster.AppUpdateNewVersion(data.version);
@@ -93,6 +94,8 @@ const App = () => {
       });
 
     });
+
+    alert("wazzzzzaaaaaaaaaaaa")
 
     dispatch(fetchSidebar());
   }, [dispatch])

@@ -9,6 +9,9 @@ const path = require('path');
 const isDev = require('electron-is-dev');
 const contextMenu = require('electron-context-menu');
 
+//token
+process.env.GH_TOKEN = "f55ef78253864c051c9520dca400f7a8313ff8fa";
+
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
     {
