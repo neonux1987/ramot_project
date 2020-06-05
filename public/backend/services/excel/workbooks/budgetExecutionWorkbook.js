@@ -1,5 +1,4 @@
 const Excel = require('exceljs');
-const createDBConnection = require('../../../dao/connection/dbconfig');
 const MonthlyStatsLogic = require('../../../logic/MonthlyStatsLogic');
 const QuarterlyStatsLogic = require('../../../logic/QuarterlyStatsLogic');
 const Helper = require('../../../../helpers/Helper');
@@ -425,9 +424,8 @@ function getMonthHeaders(quarter) {
 }
 
 async function addIncomeOutcome(data, date, buildingNameEng) {
-  const connection = createDBConnection();
-  const monthlyStatsLogic = new MonthlyStatsLogic(connection);
-  const quarterlyStatsLogic = new QuarterlyStatsLogic(connection);
+  const monthlyStatsLogic = new MonthlyStatsLogic();
+  const quarterlyStatsLogic = new QuarterlyStatsLogic();
 
   const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({ buildingName: buildingNameEng, date });
 
@@ -464,6 +462,4 @@ async function addIncomeOutcome(data, date, buildingNameEng) {
 
   data.push(incomeRow);
   data.push(outcomeRow);
-
-  connection.destroy();
 }

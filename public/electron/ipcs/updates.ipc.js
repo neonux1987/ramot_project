@@ -7,6 +7,10 @@ const logManager = require('../../backend/logger/LogManager');
 const updatesIpc = () => {
   const currentWindow = BrowserWindow.getFocusedWindow();
 
+  // in production if we won't set the token
+  // with the setFeedUrl programatically it won't
+  // find the token even if it's in the electron-builder.yml
+  // this method fixes it in production
   if (!isDev) {
     const feedInfo = {
       'provider': 'github',
