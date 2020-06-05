@@ -95,8 +95,6 @@ const App = () => {
 
     });
 
-    alert("wazzzzzaaaaaaaaaaaa")
-
     dispatch(fetchSidebar());
   }, [dispatch])
 
