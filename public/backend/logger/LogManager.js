@@ -1,6 +1,6 @@
 const log4js = require('log4js');
 const path = require('path');
-const ConfigurationLogic = require("../logic/ConfigurationLogic");
+const SystemPaths = require("../system/SystemPaths");
 
 class LogManager {
 
@@ -14,7 +14,7 @@ class LogManager {
       appenders: {
         Application: {
           type: 'file',
-          filename: ConfigurationLogic.paths.log_file,
+          filename: SystemPaths.paths.log_file,
           //layout: { type: 'json', separator: ',' },
           maxLogSize: 1048576
         }

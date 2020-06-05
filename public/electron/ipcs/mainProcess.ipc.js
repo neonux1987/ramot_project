@@ -1,6 +1,6 @@
 const { ipcMain, dialog, shell } = require('electron');
 const MainProcessLogic = require('../../backend/logic/MainProcessLogic');
-const ConfigurationLogic = require('../../backend/logic/ConfigurationLogic');
+const SystemPaths = require('../../backend/system/SystemPaths');
 const LoggerError = require('../../backend/customErrors/LoggerError');
 const { openLogFile } = require('../../helpers/utils');
 const fs = require('fs');
@@ -36,7 +36,7 @@ const mainProcessIpc = () => {
       קרתה תקלה לא ידועה: 
       ${error.message}
       לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
-      ${ConfigurationLogic.paths.logs_folder}
+      ${SystemPaths.paths.logs_folder}
       `;
 
     const dialogOption = dialog.showMessageBoxSync({

@@ -1,4 +1,4 @@
-const ConfigurationLogic = require('../logic/ConfigurationLogic');
+const SystemPaths = require('../system/SystemPaths');
 const knex = require('knex');
 const logManager = require('../logger/LogManager');
 const DbError = require('../customErrors/DbError');
@@ -15,7 +15,7 @@ class ConnectionPool {
       this.knex = knex({
         client: 'sqlite3',
         connection: {
-          filename: ConfigurationLogic.paths.db_file_path,
+          filename: SystemPaths.paths.db_file_path,
         },
         useNullAsDefault: true,
         log: {

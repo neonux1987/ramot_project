@@ -35,9 +35,11 @@ const updatesIpc = require('../../electron/ipcs/updates.ipc');
 
 const { openLogFile } = require('../../helpers/utils');
 
+const SystemPaths = require('./SystemPaths');
+
 const ServicesLogic = require('../logic/ServicesLogic');
 
-const ConfigurationLogic = require('../logic/ConfigurationLogic');
+const SetupLogic = require('../logic/SetupLogic');
 
 const connectionPool = require('../connection/ConnectionPool');
 
@@ -45,7 +47,7 @@ class MainSystem {
 
   constructor() {
     this.servicesLogic = undefined;
-    this.configurationLogic = new ConfigurationLogic();
+    this.setupLogic = new SetupLogic();
     this.logger = logManager.getLogger();
   }
 
@@ -121,7 +123,7 @@ class MainSystem {
   async startSystem() {
     try {
       // if the app runs for the first time
-      await this.configurationLogic.firstTimeSetup();
+      await this.setupLogic.firstTimeSetup();
 
       // set up the db connection
       await connectionPool.createConnection();
@@ -152,7 +154,7 @@ class MainSystem {
       const message = `
       המערכת נכשלה בעת ההפעלה עקב תקלה.\n
       לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
-      ${ConfigurationLogic.paths.logs_folder}
+      ${SystemPaths.paths.logs_folder}
       `;
 
       const dialogData = await dialog.showMessageBox({

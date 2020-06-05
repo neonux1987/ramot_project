@@ -1,11 +1,11 @@
 const fse = require('fs-extra');
 const SettingsLogic = require("../logic/SettingsLogic");
-const ConfigurationLogic = require("../logic/ConfigurationLogic");
+const SystemPaths = require("../system/SystemPaths");
 const servicesObjects = require("../services/index");
 const LogicError = require('../customErrors/LogicError');
 const { asyncForEach } = require('../../helpers/utils');
 
-const SERVICES_LOCATION = ConfigurationLogic.paths.services_path;
+const SERVICES_LOCATION = SystemPaths.paths.services_file_path;
 
 class ServicesLogic {
 

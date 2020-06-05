@@ -1,7 +1,7 @@
 const fse = require('fs-extra');
-const ConfigurationLogic = require('./ConfigurationLogic');
+const SystemPaths = require('../system/SystemPaths');
 
-const CONFIG_BACKUPS_NAMES = ConfigurationLogic.paths.backups_names_path;
+const CONFIG_BACKUPS_NAMES = SystemPaths.paths.backups_names_file_path;
 
 class RegisteredBackupsLogic {
 

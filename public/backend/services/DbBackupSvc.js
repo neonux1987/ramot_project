@@ -7,10 +7,11 @@ const connectionPool = require('../connection/ConnectionPool');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('./RendererNotificationSvc');
 const DbError = require('../customErrors/DbError');
+const SystemPaths = require('../system/SystemPaths');
 
 const FILENAME = "DbBackupSvc.js";
 
-const DB_BACKUP_FILENAME = "mezach-db-backup";
+const DB_BACKUP_FILENAME = SystemPaths.info.db_file_name;
 
 class DbBackupSvc {
 

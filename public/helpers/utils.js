@@ -1,6 +1,6 @@
 const { shell, app } = require('electron');
 const path = require('path');
-const ConfigurationLogic = require('../backend/logic/ConfigurationLogic');
+const SystemPaths = require('../backend/system/SystemPaths');
 
 exports.asyncForEach = async function (array, callback) {
   for (let index = 0; index < array.length; index++) {
@@ -9,5 +9,5 @@ exports.asyncForEach = async function (array, callback) {
 }
 
 exports.openLogFile = () => {
-  shell.showItemInFolder(ConfigurationLogic.paths.log_file);
+  shell.showItemInFolder(SystemPaths.paths.log_file);
 }
