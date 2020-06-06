@@ -1,5 +1,6 @@
 
 import { TYPES } from '../actions/settingsActions';
+import localStore from '../../customHooks/localStore';
 
 const initState = {
   isFetching: true,
@@ -9,13 +10,17 @@ const initState = {
 };
 
 export default (state = initState, action) => {
+  const { setItem, removeItem } = localStore();
+
   switch (action.type) {
     case TYPES.SETTINGS_RECEIVE:
+      const { data } = action;
+      setItem("settings", data);
       return {
         ...state,
         isFetching: false,
         status: "success",
-        data: action.data
+        data
       }
     case TYPES.SETTINGS_REQUEST:
       return {
@@ -30,7 +35,7 @@ export default (state = initState, action) => {
       }
     case TYPES.SETTINGS_UPDATE:
       {
-        return {
+        const newState = {
           ...state,
           data: {
             ...state.data,
@@ -39,9 +44,13 @@ export default (state = initState, action) => {
               ...action.payload
             }
           }
-        }
+        };
+
+        setItem("settings", newState.data);
+        return newState;
       }
     case TYPES.SETTINGS_CLEANUP:
+      removeItem("settings");
       return {
         isFetching: true,
         saved: true,

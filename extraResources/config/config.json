@@ -1,6 +1,6 @@
 {
   "notifications": {
-    "soundEnaled": true,
+    "soundEnabled": true,
     "notificationsEnabled": true
   },
   "db_backup": {

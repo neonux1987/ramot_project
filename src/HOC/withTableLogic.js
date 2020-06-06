@@ -1,14 +1,15 @@
 import React from 'react';
-import { playSound, soundTypes } from '../audioPlayer/audioPlayer';
+import { soundManager, playSound, soundTypes } from '../audioPlayer/audioPlayer';
 import EditableColumn from '../components/table/TableCell/EditableColumn';
 
-export default (OriginalComponent) => {
 
+export default (OriginalComponent) => {
+  const { play, types } = soundManager;
   return class WithTableLogic extends React.Component {
 
     state = {
       editMode: false,
-      addNewMode: false
+      addNewMode: false,
     };
 
     toggleEditMode = () => {
@@ -16,7 +17,7 @@ export default (OriginalComponent) => {
         editMode: !this.state.editMode
       });
 
-      playSound(soundTypes.message);
+      play(types.message);
     };
 
     toggleAddNewMode = () => {
@@ -24,7 +25,7 @@ export default (OriginalComponent) => {
         addNewMode: !this.state.addNewMode
       });
 
-      playSound(soundTypes.message);
+      play(types.message);
     };
 
     inputOnFocusHandler = (e) => {

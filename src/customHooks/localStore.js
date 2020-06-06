@@ -9,5 +9,13 @@ export default function localStore() {
     return JSON.parse(localStorage.getItem(key));
   }
 
-  return { getItem, setItem };
+  const removeItem = (key) => {
+    localStorage.removeItem(key)
+  }
+
+  const clearAll = () => {
+    localStorage.clear()
+  }
+
+  return { getItem, setItem, removeItem, clearAll };
 }

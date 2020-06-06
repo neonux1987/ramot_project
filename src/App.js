@@ -29,7 +29,7 @@ import { myToaster } from './Toasts/toastManager';
 import CustomCloseButton from './components/CustomCloseButton/CustomCloseButton';
 
 // SOUND
-import { playSound, soundTypes } from './audioPlayer/audioPlayer';
+import { soundManager } from './audioPlayer/audioPlayer';
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
@@ -66,6 +66,8 @@ const App = () => {
     toastId: null
   });
 
+  const { play, types } = soundManager();
+
   const settings = useSelector(store => store.settings);
 
   const sidebar = useSelector(store => store.sidebar);
@@ -74,9 +76,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchSettings()).then(async ({ data }) => {
-      //play welcome sound when settings loaded
-      playSound(soundTypes.welcome);
-
       const { appUpdates } = data;
 
       dispatch(checkForUpdates()).then(async ({ data }) => {
@@ -96,7 +95,7 @@ const App = () => {
     });
 
     dispatch(fetchSidebar());
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
 
@@ -188,7 +187,7 @@ const App = () => {
         render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
         type: myToaster.TYPE.SUCCESS,
         delay: 2000,
-        autoClose: 2500,
+        autoClose: 1500,
         onClose: () => {
           quitApp();
         }
@@ -216,6 +215,8 @@ const App = () => {
       <LogoLoader />
     </AlignCenterMiddle>;
   }
+
+  play(types.welcome);
 
   return (
     <RTL>
