@@ -23,7 +23,7 @@ export default (state = initState, action) => {
       });
     case TYPES.UPDATE_MONTH_STATS_STORE_ONLY: {
       //copy the array
-      const monthlyStatsArr = [...state.monthlyStats.data];
+      const monthlyStatsArr = [...state[buildingName].pages[pageName].data];
       //set the new object
       monthlyStatsArr[action.index] = action.monthStatsObj;
 

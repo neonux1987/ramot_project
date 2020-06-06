@@ -37,6 +37,7 @@ import withTableLogic from '../../HOC/withTableLogic';
 
 // AUDIO
 import { myToaster } from '../../Toasts/toastManager';
+import HeaderColumn from '../../components/table/HeaderColumn';
 
 const MonthExpansesTableContainer = props => {
 
@@ -248,15 +249,14 @@ const MonthExpansesTableContainer = props => {
 
     return <HeaderRow gridTemplateColumns={gridTemplateColumns} style={{ backgroundColor: "#f5f6f9" }}>
 
-      {editMode ? <Column style={headerStyle}>{"פעולות"}</Column> : null}
-      {headers.map((header, index) => {
-        return (
-          <Column
-            key={index} style={{
-              display: header.title === "פעולות" && !editMode ? "none" : "flex",
-              ...header.headerStyle
-            }}>{header.title}</Column>);
-      })}
+      {editMode ? <HeaderColumn style={headerStyle}>{"פעולות"}</HeaderColumn> : null}
+      <HeaderColumn style={headerStyle}>{"שורה"}</HeaderColumn>
+      <HeaderColumn style={headerStyle}>{`קוד הנהח"ש`}</HeaderColumn>
+      <HeaderColumn style={headerStyle}>{"שם חשבון"}</HeaderColumn>
+      <HeaderColumn style={headerStyle}>{"מקושר לסעיף מסכם..."}</HeaderColumn>
+      <HeaderColumn editMode={editMode} style={headerStyle}>{"ספק"}</HeaderColumn>
+      <HeaderColumn editMode={editMode} style={headerStyle}>{"סכום"}</HeaderColumn>
+      <HeaderColumn editMode={editMode} style={headerStyle}>{"הערות"}</HeaderColumn>
     </HeaderRow>
   }
 
@@ -375,35 +375,3 @@ const headerStyle = {
   height: "34px",
   alignItems: "center"
 };
-
-// table headers
-const headers = [
-  {
-    title: "שורה",
-    headerStyle
-  },
-  {
-    title: "קוד הנהח\"ש",
-    headerStyle
-  },
-  {
-    title: "שם חשבון",
-    headerStyle
-  },
-  {
-    title: "מקושר לסעיף מסכם...",
-    headerStyle
-  },
-  {
-    title: "ספק",
-    headerStyle
-  },
-  {
-    title: "סכום",
-    headerStyle
-  },
-  {
-    title: "הערות",
-    headerStyle
-  }
-];

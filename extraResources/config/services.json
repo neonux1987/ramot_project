@@ -5,7 +5,7 @@
     "serviceNameHeb": "גיבוי בסיס נתונים"
   },
   "empty_reports_generator": {
-    "enabled": true,
+    "enabled": false,
     "serviceName": "empty_reports_generator",
     "serviceNameHeb": "מחולל דוחות ריקים"
   }

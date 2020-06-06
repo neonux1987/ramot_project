@@ -221,7 +221,7 @@ const BackupContainer = () => {
 
     const currentDate = new Date();
 
-    const fileName = `mezach-db-backup-${currentDate.getDay()}-${currentDate.getDate()}-${currentDate.getFullYear()}.sqlite`;
+    const fileName = `ramot-group-db-backup-${currentDate.getDay()}-${currentDate.getDate()}-${currentDate.getFullYear()}.sqlite`;
 
     saveToFileDialog(fileName, undefined).then(({ canceled, filePath }) => {
       if (!canceled) {

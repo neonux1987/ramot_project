@@ -4,10 +4,8 @@ import logo from '../../../assets/images/ramot group.png';
 import { css, keyframes } from 'emotion';
 
 const spin = keyframes`
-  @keyframes spin {
-    0% { -webkit-transform: rotateY(0deg); }
-    100% { -webkit-transform: rotateY(360deg); }
-  }
+  0% { -webkit-transform: rotateY(0deg); }
+  100% { -webkit-transform: rotateY(360deg); }
 `;
 
 const override = css`
@@ -19,7 +17,7 @@ export default (props) => {
     <div>
       <img
         className={css`
-        animation: ${spin} 5s linear infinite;
+        animation: ${spin} 3s linear infinite;
       `}
         src={logo}
         width="100px"

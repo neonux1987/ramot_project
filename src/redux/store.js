@@ -29,7 +29,7 @@ const persistConfig = {
     "modal",
     "registeredReports",
     "routes",
-    "date"
+    //"date"
   ]
 
 }

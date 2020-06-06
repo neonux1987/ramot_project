@@ -165,17 +165,20 @@ export const updateBudgetExecutionStoreOnly = (payload, index, buildingName) => 
 
 export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, newBudgetExec = Object, index = Number) => {
   return (dispatch, getState) => {
-
+    const {
+      pageName,
+      buildingName
+    } = params;
     //get te state
     const state = getState();
 
     //stats of all months
-    const monthlyStatsArr = [...state.monthlyStats.monthlyStats.data];
+    const monthlyStatsArr = [...state.monthlyStats[buildingName].pages[pageName].data];
 
     let monthStatsIndex = null;
 
     //quarter total stats
-    const quarterlyStatsData = { ...state.quarterlyStats.quarterlyStats.data[0] };
+    const quarterlyStatsData = { ...state.quarterlyStats[buildingName].pages[pageName].data[0] };
 
     //copy for rollback
     const quarterStatsOld = { ...quarterlyStatsData };
@@ -200,10 +203,10 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
       quarterlyStatsData.income = quarterlyStatsData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
 
       //update month total
-      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(monthStatsObject, monthStatsIndex));
+      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(buildingName, pageName, monthStatsObject, monthStatsIndex));
 
       //update quarter total
-      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(quarterlyStatsData));
+      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(buildingName, pageName, quarterlyStatsData));
     }
 
     //copy of the un-modified month total object for rollback

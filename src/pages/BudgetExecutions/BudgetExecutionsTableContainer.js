@@ -43,6 +43,7 @@ import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteB
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
 import AddNewContainer from './AddNewContainer/AddNewContainer';
+import HeaderColumn from '../../components/table/HeaderColumn';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -154,6 +155,7 @@ const BudgetExecutionsTable = props => {
     //prepare the params object
     let params = {
       buildingName: buildingNameEng,
+      pageName,
       date,
       budgetExec: newBudgetExecutionObj,
       summarized_section_id: budgetExecutionObj.summarized_section_id
@@ -262,8 +264,8 @@ const BudgetExecutionsTable = props => {
     const monthColumns = [];
 
     for (let i = 0; i < 3; i++) {
-      monthColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</Column>);
-      monthColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</Column>);
+      monthColumns.push(<HeaderColumn editMode={editMode} style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderColumn>);
+      monthColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderColumn>);
     }
 
     const quarterStyle = {
@@ -273,18 +275,18 @@ const BudgetExecutionsTable = props => {
 
     return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
 
-      {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
-      <Column style={defaultheaderStyle}>{"שורה"}</Column>
-      <Column style={defaultheaderStyle}>{"סעיף"}</Column>
+      {editMode ? <HeaderColumn style={defaultheaderStyle}>{"פעולות"}</HeaderColumn> : null}
+      <HeaderColumn style={defaultheaderStyle}>{"שורה"}</HeaderColumn>
+      <HeaderColumn style={defaultheaderStyle}>{"סעיף"}</HeaderColumn>
 
       {monthColumns}
 
-      <Column style={quarterStyle}>{"הערכה"}</Column>
-      <Column style={quarterStyle}>{"תקציב"}</Column>
-      <Column style={quarterStyle}>{"ביצוע"}</Column>
+      <HeaderColumn editMode={editMode} style={quarterStyle}>{"הערכה"}</HeaderColumn>
+      <HeaderColumn style={quarterStyle}>{"תקציב"}</HeaderColumn>
+      <HeaderColumn style={quarterStyle}>{"ביצוע"}</HeaderColumn>
 
-      <Column style={defaultheaderStyle}>{"הפרש"}</Column>
-      <Column style={defaultheaderStyle}>{"הערות"}</Column>
+      <HeaderColumn style={defaultheaderStyle}>{"הפרש"}</HeaderColumn>
+      <HeaderColumn editMode={editMode} style={defaultheaderStyle}>{"הערות"}</HeaderColumn>
     </HeaderRow>
   }
 

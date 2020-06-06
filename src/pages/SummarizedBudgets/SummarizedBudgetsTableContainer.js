@@ -36,6 +36,7 @@ import GroupRow from '../../components/table/GroupRow';
 
 // HOC 
 import withTableLogic from '../../HOC/withTableLogic';
+import HeaderColumn from '../../components/table/HeaderColumn';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -191,8 +192,8 @@ const SummarizedBudgetsTableContainer = props => {
     const quarterColumns = [];
 
     for (let i = 0; i < 4; i++) {
-      quarterColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</Column>);
-      quarterColumns.push(<Column style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</Column>);
+      quarterColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderColumn>);
+      quarterColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderColumn>);
     }
 
     const yearStyle = {
@@ -202,17 +203,17 @@ const SummarizedBudgetsTableContainer = props => {
 
     return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
 
-      {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
-      <Column style={defaultheaderStyle}>{"שורה"}</Column>
-      <Column style={defaultheaderStyle}>{"סעיף"}</Column>
+      {editMode ? <HeaderColumn style={defaultheaderStyle}>{"פעולות"}</HeaderColumn> : null}
+      <HeaderColumn style={defaultheaderStyle}>{"שורה"}</HeaderColumn>
+      <HeaderColumn style={defaultheaderStyle}>{"סעיף"}</HeaderColumn>
 
       {quarterColumns}
 
-      <Column style={yearStyle}>{"הערכה"}</Column>
-      <Column style={yearStyle}>{"תקציב"}</Column>
-      <Column style={yearStyle}>{"ביצוע"}</Column>
+      <HeaderColumn editMode={editMode} style={yearStyle}>{"הערכה"}</HeaderColumn>
+      <HeaderColumn style={yearStyle}>{"תקציב"}</HeaderColumn>
+      <HeaderColumn style={yearStyle}>{"ביצוע"}</HeaderColumn>
 
-      <Column style={defaultheaderStyle}>{"הערות"}</Column>
+      <HeaderColumn editMode={editMode} style={defaultheaderStyle}>{"הערות"}</HeaderColumn>
     </HeaderRow>
   }
 

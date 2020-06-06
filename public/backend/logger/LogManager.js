@@ -14,7 +14,7 @@ class LogManager {
       appenders: {
         Application: {
           type: 'file',
-          filename: SystemPaths.paths.log_file,
+          filename: SystemPaths.paths.log_file_path,
           //layout: { type: 'json', separator: ',' },
           maxLogSize: 1048576
         }

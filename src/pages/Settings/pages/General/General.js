@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
-import Theme from './Theme/Theme';
+import NotificationsContainer from './Notifications/NotificationsContainer';
 
 export const General = () => {
 
   return (
     <Fragment>
 
-      <Theme />
+      <NotificationsContainer />
 
 
     </Fragment>

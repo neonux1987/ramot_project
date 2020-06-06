@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styles from './EditableColumn.module.css';
+import { css } from 'emotion';
+import { Edit } from '@material-ui/icons';
 
-export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFocusHandler, styleClass, style, dataKey, dataIndex }) => {
+const iconWrapper = css`
+  position: absolute;
+  top: 5px;
+  right: 2px;
+`;
+
+const icon = css`
+  color: #5a5c65;
+`;
+
+export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFocusHandler, styleClass, style, dataKey, dataIndex, showIcon = false }) => {
 
   const [newValue, setValue] = useState(value);
 
@@ -51,17 +63,11 @@ export default React.memo(({ value, type, onBlurHandler, onKeyPressHandler, onFo
       data-index={dataIndex}
     />;
 
-  return <div className={styles.wrapper}>{renderer}</div>;
+  return <div className={styles.wrapper}>
+    {showIcon ? <div className={iconWrapper}>
+      <Edit className={icon} />
+    </div> : null}
+    {renderer}
+  </div>;
 
 });
-
-/* function areEqual(prevProps, nextProps) {
-  if (
-    prevProps.value === nextProps.value ||
-    prevProps.type === nextProps.type ||
-    prevProps.dataIndex === nextProps.dataIndex ||
-    prevProps.dataKey === nextProps.dataKey
-  )
-    return true;
-  else return false;
-} */

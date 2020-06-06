@@ -1,4 +1,8 @@
 {
+  "notifications": {
+    "soundEnaled": true,
+    "notificationsEnabled": true
+  },
   "db_backup": {
     "backups_to_save": 2,
     "days_of_week": {
@@ -11,7 +15,7 @@
       "6": true,
       "everything": true
     },
-    "enabled": false,
+    "enabled": true,
     "last_update": "Wed May 27 2020 05:26:53 GMT+0300 (Israel Daylight Time)",
     "max_num_of_history_backups": 7,
     "path": "C:\\Users\\ag1987\\AppData\\Roaming\\ndts\\db backups",
@@ -22,7 +26,7 @@
     "every_x_hours": 1
   },
   "empty_reports_generator": {
-    "enabled": true,
+    "enabled": false,
     "restartRequired": false
   },
   "appUpdates": {
@@ -37,15 +41,15 @@
     "last_update": "8.10.2019, 23:37:00"
   },
   "locations": {
-    "backups_names_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config\\backupsNames.json",
-    "config_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config\\config.json",
-    "config_folder_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config",
-    "db_backups_folder_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\db backups",
-    "db_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\db\\mezach-db.sqlite",
-    "db_folder_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\db",
-    "db_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\db\\mezach-db.sqlite",
-    "reports_folder_path": "C:\\Users\\ag1987\\Documents\\קבוצת רמות\\דוחות",
-    "services_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config\\services.json",
-    "log_file_path": "C:\\Users\\ag1987\\Documents\\קבוצת רמות\\logs"
+    "backups_names_file_path": "",
+    "config_file_path": "",
+    "config_folder_path": "",
+    "db_backups_folder_path": "",
+    "db_file_path": "",
+    "db_folder_path": "",
+    "reports_folder_path": "",
+    "services_file_path": "",
+    "logs_folder": "",
+    "log_file_path": ""
   }
 }
