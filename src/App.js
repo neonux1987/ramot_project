@@ -14,6 +14,8 @@ import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { AlignCenterMiddle } from './components/AlignCenterMiddle/AlignCenterMiddle';
 import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
+import CustomCloseButton from './components/CustomCloseButton/CustomCloseButton';
+import ModalRoot from './components/modals/ModalRoot';
 
 // CONTEXT
 import SettingsContext from './context/SettingsContext';
@@ -24,12 +26,10 @@ import './assets/css/style.css';
 
 // CONTAINERS
 import MainContainer from './Main/MainContainer';
-import ModalRoot from './components/modals/ModalRoot';
-import { myToaster } from './Toasts/toastManager';
-import CustomCloseButton from './components/CustomCloseButton/CustomCloseButton';
 
-// SOUND
-import { soundManager } from './audioPlayer/audioPlayer';
+// TOASTS
+import { myToaster } from './Toasts/toastManager';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
@@ -65,8 +65,6 @@ const App = () => {
   const [state, setState] = useState({
     toastId: null
   });
-
-  const { play, types } = soundManager();
 
   const settings = useSelector(store => store.settings);
 
@@ -215,8 +213,6 @@ const App = () => {
       <LogoLoader />
     </AlignCenterMiddle>;
   }
-
-  play(types.welcome);
 
   return (
     <RTL>

@@ -1,10 +1,10 @@
 import React from 'react';
-import { soundManager, playSound, soundTypes } from '../audioPlayer/audioPlayer';
+import { soundManager } from '../audioPlayer/audioPlayer';
 import EditableColumn from '../components/table/TableCell/EditableColumn';
 
 
 export default (OriginalComponent) => {
-  const { play, types } = soundManager;
+  const { play, types } = soundManager();
   return class WithTableLogic extends React.Component {
 
     state = {

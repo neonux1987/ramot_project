@@ -14,7 +14,6 @@ export const soundTypes = {
 export const soundManager = () => {
 
   const { getItem } = localStore();
-  const settings = getItem("settings").notifications;
 
   var audio = new Audio();
   audio.currentTime = 0;
@@ -27,8 +26,9 @@ export const soundManager = () => {
   }
 
   const play = (type = types.message) => {
-    console.log(settings.soundEnabled);
-    if (settings.soundEnabled)
+    const soundEnabled = getItem("settings").notifications.soundEnabled;
+
+    if (soundEnabled)
       playSound(type);
   };
 
