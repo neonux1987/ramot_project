@@ -79,7 +79,7 @@ export const myToaster = (() => {
     })
   )
   const dismiss = (id) => toast.dismiss(id)
-  const toastTypes = toast.TYPE;
+  const TYPE = toast.TYPE;
 
   const toastManager = {
     AppUpdateNewVersion,
@@ -90,7 +90,7 @@ export const myToaster = (() => {
     error,
     update,
     dismiss,
-    toastTypes
+    TYPE
   }
 
   return toastManager;
