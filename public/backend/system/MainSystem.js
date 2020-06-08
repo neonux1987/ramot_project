@@ -43,11 +43,14 @@ const SetupLogic = require('../logic/SetupLogic');
 
 const connectionPool = require('../connection/ConnectionPool');
 
+const SettingsLogic = require('../logic/SettingsLogic');
+
 class MainSystem {
 
   constructor() {
     this.servicesLogic = undefined;
     this.setupLogic = new SetupLogic();
+    this.settingsLogic = new SettingsLogic();
     this.logger = logManager.getLogger();
   }
 
@@ -130,6 +133,8 @@ class MainSystem {
 
       this.servicesLogic = new ServicesLogic();
 
+      const settings = await this.settingsLogic.getSettings();
+
       //fetch menu data
       const menuDao = new MenuDao();
       const menu = await menuDao.getMenu();
@@ -137,7 +142,8 @@ class MainSystem {
       // In the main process.
       global.sharedObject = {
         buildings: menu,
-        pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets"]
+        pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets"],
+        settings
       }
 
       /* const schemaBuilder = new SchemaBuilder();

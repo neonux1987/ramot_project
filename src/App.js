@@ -33,13 +33,16 @@ import { myToaster } from './Toasts/toastManager';
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
-import { fetchSettings, updateSettings, saveSettings } from './redux/actions/settingsActions';
+import { updateSettings, saveSettings } from './redux/actions/settingsActions';
 import { quitApp } from './services/mainProcess.svc';
 import { fetchSidebar } from './redux/actions/sidebarActions';
 
 // SERVICES
 import { initiateDbBackup } from './services/dbBackup.svc';
 import { checkForUpdates } from './services/updates.svc';
+
+// SOUND
+import soundManager from './soundManager/SoundManager';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -54,6 +57,8 @@ const theme = createMuiTheme({
     ].join(',')
   }
 });
+
+const { play, types } = soundManager;
 
 const TOAST_AUTO_CLOSE = 3000;
 
@@ -73,26 +78,28 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchSettings()).then(async ({ data }) => {
-      const { appUpdates } = data;
+    const { appUpdates } = settings.data;
 
-      dispatch(checkForUpdates()).then(async ({ data }) => {
-        if (data !== null) {
-          const { version } = data;
+    dispatch(checkForUpdates()).then(async ({ data }) => {
+      if (data !== null) {
+        const { version } = data;
 
-          if (appUpdates.userNotified === false && appUpdates.updateVersion !== version) {
+        if (appUpdates.userNotified === false && appUpdates.updateVersion !== version) {
 
-            await dispatch(updateSettings("appUpdates", { userNotified: true }));
-            await dispatch(saveSettings(false));
-            myToaster.AppUpdateNewVersion(data.version);
-          }
-
+          await dispatch(updateSettings("appUpdates", { userNotified: true }));
+          await dispatch(saveSettings(false));
+          myToaster.AppUpdateNewVersion(data.version);
         }
-      });
 
+      }
     });
+  }, [dispatch, settings.data]);
 
+  useEffect(() => {
     dispatch(fetchSidebar());
+
+    // play welcome melody on app start
+    play(types.welcome);
   }, [dispatch]);
 
   useEffect(() => {
@@ -208,7 +215,7 @@ const App = () => {
     }
   }
 
-  if (settings.isFetching || sidebar.isFetching) {
+  if (sidebar.isFetching) {
     return <AlignCenterMiddle>
       <LogoLoader />
     </AlignCenterMiddle>;

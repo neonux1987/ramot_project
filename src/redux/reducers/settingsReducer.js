@@ -1,21 +1,19 @@
 
 import { TYPES } from '../actions/settingsActions';
-import localStore from '../../customHooks/localStore';
+
+const settings = require('electron').remote.getGlobal("sharedObject").settings;
 
 const initState = {
   isFetching: true,
   status: "",
   error: "",
-  data: {}
+  data: settings ? settings : {}
 };
 
 export default (state = initState, action) => {
-  const { setItem, removeItem } = localStore();
-
   switch (action.type) {
     case TYPES.SETTINGS_RECEIVE:
       const { data } = action;
-      setItem("settings", data);
       return {
         ...state,
         isFetching: false,
@@ -35,22 +33,23 @@ export default (state = initState, action) => {
       }
     case TYPES.SETTINGS_UPDATE:
       {
+        const { settingName, payload } = action;
         const newState = {
           ...state,
           data: {
             ...state.data,
-            [action.settingName]: {
-              ...state.data[action.settingName],
-              ...action.payload
+            [settingName]: {
+              ...state.data[settingName],
+              ...payload
             }
           }
         };
+        //update settings in the shared object
+        settings[settingName] = payload;
 
-        setItem("settings", newState.data);
         return newState;
       }
     case TYPES.SETTINGS_CLEANUP:
-      removeItem("settings");
       return {
         isFetching: true,
         saved: true,

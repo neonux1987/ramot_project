@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextField } from '@material-ui/core';
-import { playSound, soundTypes } from '../../../audioPlayer/audioPlayer';
+import soundManager from '../../../soundManager/SoundManager';
 import { toast } from 'react-toastify';
 
 import Section from '../../Section/Section';
@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // ACTIONS
 import generalSettingsActions from '../../../redux/actions/generalSettingsActions';
+
+const { play, types } = soundManager;
 
 export default props => {
 
@@ -27,7 +29,7 @@ export default props => {
     if (vat > 100 || vat < 1) {
       //send the error to the notification center
       toast.error('מע"מ יכול להיות בין 1 ל- 100 בלבד.', {
-        onOpen: () => playSound(soundTypes.error)
+        onOpen: () => play(types.error)
       });
 
       setValid(false);
