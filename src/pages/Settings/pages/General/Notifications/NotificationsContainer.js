@@ -14,6 +14,8 @@ import LeaveWithoutSavingModal from '../../../../../components/modals/LeaveWitho
 // ACTIONS
 import { updateSettings, saveSettings } from '../../../../../redux/actions/settingsActions';
 
+import soundManager from '../../../../../soundManager/SoundManager';
+
 const SETTINGS_NAME = "notifications";
 
 export default () => {
@@ -53,9 +55,10 @@ export default () => {
 
     const dataCopy = { ...data };
 
-    dispatch(updateSettings(SETTINGS_NAME, dataCopy))
+    dispatch(updateSettings(SETTINGS_NAME, dataCopy));
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
       setDirty(false);
+      soundManager.reload();
     });
   }
 

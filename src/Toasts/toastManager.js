@@ -1,12 +1,12 @@
 import React from 'react';
 import { toast } from "react-toastify";
 import styles from './toastManager.module.css'
-import { playSound, soundTypes } from "../audioPlayer/audioPlayer";
+import soundManager from "../soundManager/SoundManager";
 import AppUpdateNewVersionToast from "./CustomToasts/AppUpdateNewVersionToast/AppUpdateNewVersionToast";
 import AppUpdateInstallToast from "./CustomToasts/AppUpdateInstallToast/AppUpdateInstallToast";
 
 export const myToaster = (() => {
-
+  const { play, types } = soundManager;
 
   const AppUpdateNewVersion = (version, properties = {}) => (
     toast(<AppUpdateNewVersionToast version={version} />, {
@@ -14,7 +14,7 @@ export const myToaster = (() => {
       ...properties,
       onOpen: () => {
         properties && properties.onOpen && properties.onOpen();
-        playSound(soundTypes.update);
+        play(types.update);
       },
       autoClose: false,
       closeOnClick: false
@@ -26,7 +26,7 @@ export const myToaster = (() => {
       ...properties,
       onOpen: () => {
         properties && properties.onOpen && properties.onOpen();
-        playSound(soundTypes.update);
+        play(types.update);
       },
       autoClose: false,
       closeOnClick: false
@@ -38,7 +38,7 @@ export const myToaster = (() => {
       ...properties,
       onOpen: () => {
         properties && properties.onOpen && properties.onOpen();
-        playSound(soundTypes.message);
+        play(types.message);
       }
     })
   )
@@ -48,7 +48,7 @@ export const myToaster = (() => {
       ...properties,
       onOpen: () => {
         properties && properties.onOpen && properties.onOpen();
-        playSound(soundTypes.message);
+        play(types.message);
       }
     })
   )
@@ -58,7 +58,7 @@ export const myToaster = (() => {
       ...properties,
       onOpen: () => {
         properties && properties.onOpen && properties.onOpen();
-        playSound(soundTypes.message);
+        play(types.message);
       }
     })
   )
@@ -68,7 +68,7 @@ export const myToaster = (() => {
       ...properties,
       onOpen: () => {
         properties && properties.onOpen && properties.onOpen();
-        playSound(soundTypes.error);
+        play(types.error);
       }
     })
   )

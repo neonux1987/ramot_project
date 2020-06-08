@@ -2,62 +2,55 @@ import error from '../assets/audio/error.wav';
 import message from '../assets/audio/message.wav';
 import welcome from '../assets/audio/welcome.wav';
 import update from '../assets/audio/update.mp3';
-import localStore from '../customHooks/localStore';
 
-export const soundTypes = {
+const remote = require('electron').remote;
+
+const TYPES = {
   error: "error",
   message: "message",
   welcome: "welcome",
   update: "update"
 }
 
-export const soundManager = () => {
+class SoundManager {
 
-  const { getItem } = localStore();
+  settings = remote.getGlobal("sharedObject").settings.notifications;
+  types = TYPES;
 
-  var audio = new Audio();
-  audio.currentTime = 0;
-
-  const types = {
-    error: "error",
-    message: "message",
-    welcome: "welcome",
-    update: "update"
-  }
-
-  const play = (type = types.message) => {
-    const soundEnabled = getItem("settings").notifications.soundEnabled;
-
-    if (soundEnabled)
+  play = (type) => {
+    if (this.settings.soundEnabled)
       playSound(type);
-  };
-
-  return {
-    play,
-    types
   }
 
-};
+  reload = () => {
+    this.settings = remote.getGlobal("sharedObject").settings.notifications;
+  }
 
-export const playSound = (type) => {
+
+
+}
+
+export default new SoundManager();
+
+const playSound = (type) => {
 
   var audio = new Audio();
   audio.currentTime = 0;
 
   switch (type) {
-    case "error":
+    case TYPES.error:
       audio.src = error;
       audio.volume = 0.1;
       break;
-    case "message":
+    case TYPES.message:
       audio.src = message;
       audio.volume = 0.15;
       break;
-    case "welcome":
+    case TYPES.welcome:
       audio.src = welcome;
       audio.volume = 0.15;
       break;
-    case "update":
+    case TYPES.update:
       audio.src = update;
       audio.volume = 0.15;
       break;
