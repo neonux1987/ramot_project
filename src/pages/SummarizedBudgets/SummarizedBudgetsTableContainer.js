@@ -288,7 +288,12 @@ const SummarizedBudgetsTableContainer = props => {
           }}
           print={{
             title: pageTitle,
-            pageTitle: pageTitle + " - " + buildingName
+            pageTitle: pageTitle + " - " + buildingName,
+            date: `שנה ${date.year}`,
+            Row: TableRow,
+            GroupComponent: HeaderGroups,
+            HeaderComponent: HeadersRow,
+            itemCount: data.length
           }}
           pageName={pageName}
         />} // end leftPane

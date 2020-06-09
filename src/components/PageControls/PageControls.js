@@ -15,6 +15,9 @@ import {
   pageControlsButton
 } from './PageControls.module.css';
 import { myToaster } from '../../Toasts/toastManager';
+import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
+import useModalLogic from '../../customHooks/useModalLogic';
+import PrintModal from '../modals/PrintModal/PrintModal';
 
 let options = {
   //Placeholder 3
@@ -30,6 +33,8 @@ const PageControls = props => {
     pageName,
     style
   } = props;
+
+  const { showModal, hideModal } = useModalLogic();
 
   const exportToExcelHandler = () => {
     if (excel.date.year === undefined)
@@ -50,7 +55,13 @@ const PageControls = props => {
 
       <PrintButton
         onClick={
-          () => printProcess({
+          () => {
+            showModal(PrintModal, {
+              ...print,
+              onClose: () => hideModal()
+            });
+          }
+          /* printProcess({
             documentTitle: print.title,
             printable: pageName,
             type: 'html',
@@ -71,7 +82,7 @@ const PageControls = props => {
             font_size: '14px',
             scanStyles: false,
             repeatTableHeader: true
-          })
+          }) */
         }
       />
 
@@ -95,26 +106,26 @@ PageControls.propTypes = {
 
 export default PageControls;
 
-const ExcelButton = ({ onClick }) => <button
+const ExcelButton = ({ onClick }) => <ButtonWithSound
   className={pageControlsButton}
   onClick={onClick}
 >
   <RiFileExcel2Line style={{ color: "rgb(3, 162, 151)", fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
-</button>;
+</ButtonWithSound>;
 
-const PrintButton = ({ onClick }) => <button style={{
+const PrintButton = ({ onClick }) => <ButtonWithSound style={{
   margin: "0 6px 0 0"
 }}
   className={pageControlsButton}
   onClick={onClick}>
   <Print style={{ color: "#087dc5", fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
-</button>;
+</ButtonWithSound>;
 
 const MoreButton = ({ onClick }) =>
-  <button
+  <ButtonWithSound
     className={pageControlsButton}
     style={{ marginLeft: "0" }}
     onClick={onClick}
   >
     <MoreVert style={{ fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
-  </button>;
+  </ButtonWithSound>;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default React.memo(({ children, style, innerStyle, show = true, onDoubleClick }) => {
+export default React.memo(({ children, style, innerStyle, show = true, onDoubleClick, className }) => {
   return (
-    <div className="_tableColumn"
+    <div className={`_tableColumn ${className}`}
       style={{
         display: show ? "flex" : "none",
         justifyContent: "center",

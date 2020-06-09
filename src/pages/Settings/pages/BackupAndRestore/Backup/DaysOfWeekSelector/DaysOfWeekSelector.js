@@ -1,7 +1,8 @@
 import React from 'react';
-import { FormControlLabel, Checkbox } from "@material-ui/core";
+import { FormControlLabel } from "@material-ui/core";
 import SubtitleBoldTypography from "../../../../../../components/Typographies/SubtitleBoldTypography";
 import styles from './DaysOfWeekSelector.module.css';
+import CheckBoxWithSound from '../../../../../../componentsWithSound/CheckBoxWithSound/CheckBoxWithSound';
 
 export default (props) => {
 
@@ -21,7 +22,7 @@ export default (props) => {
         label="הכל"
         className={styles.formControlLabel}
         control={
-          <Checkbox
+          <CheckBoxWithSound
             name="everything"
             checked={daysOfWeek["everything"]}
             onChange={onChange}
@@ -35,7 +36,7 @@ export default (props) => {
         labelPlacement="top"
         label="יום א'"
         control={
-          <Checkbox
+          <CheckBoxWithSound
             name="0"
             checked={daysOfWeek["0"]}
             onChange={onChange}
@@ -49,7 +50,7 @@ export default (props) => {
         labelPlacement="top"
         label="יום ב'"
         control={
-          <Checkbox
+          <CheckBoxWithSound
             name="1"
             checked={daysOfWeek["1"]}
             onChange={onChange}
@@ -63,7 +64,7 @@ export default (props) => {
         labelPlacement="top"
         label="יום ג'"
         control={
-          <Checkbox
+          <CheckBoxWithSound
             name="2"
             checked={daysOfWeek["2"]}
             onChange={onChange}
@@ -77,7 +78,7 @@ export default (props) => {
         labelPlacement="top"
         label="יום ד'"
         control={
-          <Checkbox
+          <CheckBoxWithSound
             name="3"
             checked={daysOfWeek["3"]}
             onChange={onChange}
@@ -91,7 +92,7 @@ export default (props) => {
         labelPlacement="top"
         label="יום ה'"
         control={
-          <Checkbox
+          <CheckBoxWithSound
             name="4"
             checked={daysOfWeek["4"]}
             onChange={onChange}
@@ -105,7 +106,7 @@ export default (props) => {
         labelPlacement="top"
         label="יום ו'"
         control={
-          <Checkbox
+          <CheckBoxWithSound
             name="5"
             checked={daysOfWeek["5"]}
             onChange={onChange}
@@ -119,7 +120,7 @@ export default (props) => {
         labelPlacement="top"
         label="יום ש'"
         control={
-          <Checkbox
+          <CheckBoxWithSound
             name="6"
             checked={daysOfWeek["6"]}
             onChange={onChange}

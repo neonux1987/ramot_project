@@ -8,12 +8,12 @@ import { container } from './NotificationsAlerts.module.css';
 import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
 
 // COMPONENTS WITH SOUND
-import CheckBoxWithSound from '../../../../../../componentsWithSound/CheckBoxWithSound/CheckBoxWithSound';
+import SwitchWithSound from '../../../../../../componentsWithSound/SwitchWithSound/SwitchWithSound';
 
 export default ({ enabled, onNotificationsCheck }) => {
   return (
     <div className={container}>
-      <CheckBoxWithSound
+      <SwitchWithSound
         checked={enabled}
         onChange={onNotificationsCheck}
         name="notificationsCheck"

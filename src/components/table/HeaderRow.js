@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from './Row';
 
-export default ({ gridTemplateColumns, style = {}, children }) => {
+export default ({ gridTemplateColumns, style = {}, children, className }) => {
   return (
     <Row
       style={{
@@ -14,6 +14,7 @@ export default ({ gridTemplateColumns, style = {}, children }) => {
         ...style,
       }}
       gridTemplateColumns={gridTemplateColumns}
+      className={className}
     >
       {children}
     </Row>

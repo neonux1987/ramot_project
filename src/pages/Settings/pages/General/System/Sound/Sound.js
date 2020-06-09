@@ -15,8 +15,8 @@ import {
 import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
 
 // COMPONENTS WITH SOUND
-import CheckBoxWithSound from '../../../../../../componentsWithSound/CheckBoxWithSound/CheckBoxWithSound';
 import SliderWithSound from '../../../../../../componentsWithSound/SliderWithSound/SliderWithSound';
+import SwitchWithSound from '../../../../../../componentsWithSound/SwitchWithSound/SwitchWithSound';
 
 export default ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur, soundManager }) => {
 
@@ -37,7 +37,7 @@ export default ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur, soundMa
       </SubtitleBoldTypography>
 
       <div className={soundEnabledContainer}>
-        <CheckBoxWithSound
+        <SwitchWithSound
           checked={soundEnabled}
           onChange={onSoundCheck}
           name="soundCheck"

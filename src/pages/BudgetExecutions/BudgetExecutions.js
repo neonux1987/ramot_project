@@ -22,14 +22,14 @@ import { initRegisteredYears } from '../../redux/actions/registeredYearsActions'
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 
 const PAGE_NAME = "budgetExecutions";
-const PAGE_TITLE = "לב תל אביב - מעקב ביצוע מול תקציב";
+const PAGE_TITLE = "מעקב ביצוע מול תקציב";
 const STATS_TITLE = "סיכום הוצאות והכנסות רבעוני";
 const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 
 const BudgetExecutions = props => {
 
   //building name
-  const { buildingNameEng } = props.location.state;
+  const { buildingNameEng, buildingName } = props.location.state;
 
   const dispatch = useDispatch();
 

@@ -1,8 +1,5 @@
 import React from 'react';
 import EditableColumn from '../components/table/TableCell/EditableColumn';
-import { soundManager } from '../soundManager/SoundManager';
-
-const { play, types } = soundManager;
 
 export default (OriginalComponent) => {
 
@@ -13,16 +10,14 @@ export default (OriginalComponent) => {
       addNewMode: false,
     };
 
-    toggleEditMode = () => {
-      play(types.action);
+    toggleEditMode = (status) => {
 
       this.setState({
-        editMode: !this.state.editMode
+        editMode: status ? status : !this.state.editMode
       });
     };
 
     toggleAddNewMode = () => {
-      play(types.action);
 
       this.setState({
         addNewMode: !this.state.addNewMode

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import styles from './AddSummarizedSectionContainer.module.css'
+import ButtonWithSound from '../../../../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 
 const AddSummarizedSectionContainer = (props) => {
 
@@ -21,13 +22,13 @@ const AddSummarizedSectionContainer = (props) => {
         InputLabelProps={{ classes: { root: styles.inputLabel } }}
       />
 
-      <Button style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => props.reset({ section: "" }, setFormInput)} variant="contained" color="primary" className={styles.button}>
+      <ButtonWithSound style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => props.reset({ section: "" }, setFormInput)} variant="contained" color="primary" className={styles.button}>
         אפס
-        </Button>
+        </ButtonWithSound>
 
-      <Button style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => props.submitHandler(formInputs)} className={styles.button}>
+      <ButtonWithSound style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => props.submitHandler(formInputs)} className={styles.button}>
         הוסף
-        </Button>
+        </ButtonWithSound>
     </div>
 
   );

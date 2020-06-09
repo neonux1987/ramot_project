@@ -1,11 +1,18 @@
+// LIBRARIES
 import React, { Component } from 'react';
-import { TextField, withStyles, Button } from '@material-ui/core';
+import { TextField, withStyles } from '@material-ui/core';
 import ReactSelect from '../../components/ReactSelect/ReactSelect';
 import { connect } from 'react-redux';
 
+// ACTIONS
 import * as summarizedSectionsActions from '../../redux/actions/summarizedSectionsActions';
 import * as expansesCodesActions from '../../redux/actions/expansesCodesActions';
+
+// TOASTS
 import { myToaster } from '../../Toasts/toastManager';
+
+// COMPONENTS WITH SOUND
+import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 
 const styles = theme => ({
   container: {
@@ -344,7 +351,7 @@ class InputExpansesField extends Component {
       />
 
       <div className={classes.buttonWrapper}>
-        <Button
+        <ButtonWithSound
           name="reset"
           type="reset"
           onClick={this.reset}
@@ -354,11 +361,11 @@ class InputExpansesField extends Component {
           disabled={combinedFetching}
         >
           אפס
-      </Button>
+      </ButtonWithSound>
       </div>
 
       <div className={classes.buttonWrapper}>
-        <Button
+        <ButtonWithSound
           data-order="7"
           name="submit"
           variant="contained"
@@ -368,7 +375,7 @@ class InputExpansesField extends Component {
           disabled={combinedFetching}
         >
           שמור
-        </Button>
+        </ButtonWithSound>
       </div>
 
 

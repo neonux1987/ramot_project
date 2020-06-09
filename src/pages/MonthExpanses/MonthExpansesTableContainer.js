@@ -273,7 +273,7 @@ const MonthExpansesTableContainer = props => {
 
     const odd = index % 2 === 0 ? "" : "";
 
-    return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={gridTemplateColumns}>
+    return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={gridTemplateColumns}>
       {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}
 
       <Column>{index + 1}</Column>
@@ -309,7 +309,7 @@ const MonthExpansesTableContainer = props => {
     : null;
 
   return (
-    <TableWrapper>
+    <TableWrapper id={pageName}>
 
       <TableControls
         rightPane={
@@ -342,7 +342,11 @@ const MonthExpansesTableContainer = props => {
             }}
             print={{
               title: pageTitle,
-              pageTitle: pageTitle + " - " + buildingName
+              pageTitle: pageTitle + " - " + buildingName,
+              date: `שנה ${date.year}\\רבעון ${date.quarter}\\חודש ${date.monthHeb}`,
+              Row: TableRow,
+              HeaderComponent: HeadersRow,
+              itemCount: data.length
             }}
             pageName={pageName}
           />

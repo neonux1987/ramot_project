@@ -1,8 +1,8 @@
 // LIBRARIES
 import React, { useState } from 'react';
-import { TextField, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import { TextField, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import styles from './AddExpanseCode.module.css'
-
+import ButtonWithSound from '../../../../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 
 const keys = ["code", "codeName", "summarized_section_id", "submit"];
 
@@ -81,13 +81,13 @@ const AddExpanseCode = (props) => {
         </Select>
       </FormControl>
 
-      <Button style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => props.reset({ code: "", codeName: "", summarized_section_id: "", with_vat: 0 }, setFormInput)} variant="contained" color="primary" className={styles.button}>
+      <ButtonWithSound style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => props.reset({ code: "", codeName: "", summarized_section_id: "", with_vat: 0 }, setFormInput)} variant="contained" color="primary" className={styles.button}>
         אפס
-        </Button>
+        </ButtonWithSound>
 
-      <Button style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={() => props.submitHandler(formInputs)} className={styles.button}>
+      <ButtonWithSound style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={() => props.submitHandler(formInputs)} className={styles.button}>
         הוסף
-        </Button>
+        </ButtonWithSound>
 
     </form>
 

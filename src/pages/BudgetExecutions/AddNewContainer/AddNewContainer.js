@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@material-ui/core";
 
 // CSS
 import {
@@ -17,7 +16,13 @@ import { addBudgetExecution } from "../../../redux/actions/budgetExecutionsActio
 
 // COMPONENTS
 import ReactSelect from "../../../components/ReactSelect/ReactSelect";
+
+// COMPONENTS WITH SOUND
+import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
+
+// TOASTS
 import { myToaster } from "../../../Toasts/toastManager";
+
 
 const AddNewContainer = (props) => {
 
@@ -84,7 +89,7 @@ const AddNewContainer = (props) => {
       />
 
       <div className={buttonWrapper}>
-        <Button
+        <ButtonWithSound
           name="submit"
           variant="contained"
           color="primary"
@@ -93,7 +98,7 @@ const AddNewContainer = (props) => {
           disabled={isFetching}
         >
           הוסף
-        </Button>
+        </ButtonWithSound>
       </div>
 
     </form>

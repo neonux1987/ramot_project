@@ -116,7 +116,7 @@ class MainContainer extends Component {
 
     return (
       <Element id="mainContainer" className={this.props.classes.main + this.props.toggleMain}>
-        <main ref={this.props.mainContainer}>
+        <main ref={this.props.mainContainer} style={{ height: "100%" }}>
           <Toolbar
             buildingName={locationState.buildingName}
             page={locationState.page}

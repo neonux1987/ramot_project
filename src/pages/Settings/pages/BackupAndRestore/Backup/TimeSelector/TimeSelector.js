@@ -10,7 +10,9 @@ import {
   hoursSelector,
 } from './TimeSelector.module.css';
 import { TimePicker } from '@material-ui/pickers';
-import { Checkbox, MenuItem, Select } from '@material-ui/core';
+import { MenuItem, Select } from '@material-ui/core';
+
+import CheckBoxWithSound from '../../../../../../componentsWithSound/CheckBoxWithSound/CheckBoxWithSound';
 
 const HOURS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -35,7 +37,7 @@ export default (props) => {
 
       <div className={byTimeWrapper}>
 
-        <Checkbox
+        <CheckBoxWithSound
           checked={byTime}
           onChange={onCheckBoxChange}
           name="byTime"
@@ -59,7 +61,7 @@ export default (props) => {
 
       <div className={byHourWrapper}>
 
-        <Checkbox
+        <CheckBoxWithSound
           checked={byHour}
           onChange={onCheckBoxChange}
           name="byHour"

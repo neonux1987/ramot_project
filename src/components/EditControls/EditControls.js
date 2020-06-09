@@ -1,6 +1,5 @@
 // LIBRARIES
 import React from 'react';
-import { Button } from '@material-ui/core';
 import { Remove, Edit } from '@material-ui/icons';
 import { RiFileAddLine } from 'react-icons/ri';
 import classnames from 'classnames';
@@ -8,6 +7,9 @@ import { scroller } from 'react-scroll';
 
 // CSS
 import styles from './EditControls.module.css';
+
+// COMPONENTS WITH SOUND
+import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 
 
 export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style }) => {
@@ -36,13 +38,13 @@ export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style 
 
   return (
     <div className={styles.wrapper} style={style}>
-      <Button className={styles.editBtn} onClick={clickWithScroll} variant="contained" >
+      <ButtonWithSound className={styles.editBtn} onClick={clickWithScroll} variant="contained" >
         {editBtnTitle} {editIcon}
-      </Button>
+      </ButtonWithSound>
       {
-        toggleAddNewMode && <Button className={classnames(styles.addNewBtn, addNewBtnStyle)} onClick={toggleAddNewMode} variant="contained" >
+        toggleAddNewMode && <ButtonWithSound className={classnames(styles.addNewBtn, addNewBtnStyle)} onClick={toggleAddNewMode} variant="contained" >
           {addNewBtnTitle} {addIcon}
-        </Button>
+        </ButtonWithSound>
       }
     </div>
   )
