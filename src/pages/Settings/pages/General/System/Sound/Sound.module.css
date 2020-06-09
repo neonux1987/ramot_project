@@ -1,0 +1,19 @@
+.container{
+  margin-bottom: 20px;
+}
+
+.soundEnabledContainer{
+display: flex;
+margin-bottom: 10px;
+align-items: center;
+margin-right: -11px;
+}
+
+.soundVolumeContainer{
+  width: 300px;
+  display: flex;
+  }
+
+.volumeSlider{
+  margin-right: 0px;
+}

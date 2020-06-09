@@ -1,64 +1,120 @@
+import action from '../assets/audio/action.wav';
 import error from '../assets/audio/error.wav';
 import message from '../assets/audio/message.wav';
 import welcome from '../assets/audio/welcome.wav';
-import update from '../assets/audio/update.mp3';
+import update from '../assets/audio/update.wav';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const remote = require('electron').remote;
 
 const TYPES = {
+  action: "action",
   error: "error",
   message: "message",
   welcome: "welcome",
-  update: "update"
+  update: "update",
 }
 
 class SoundManager {
 
-  settings = remote.getGlobal("sharedObject").settings.notifications;
+  constructor() {
+    this.systemSettings = remote.getGlobal("sharedObject").settings.system;
+    this.systemSound = null;
+  }
+
   types = TYPES;
 
-  play = (type) => {
-    if (this.settings.soundEnabled)
-      playSound(type);
-  }
-
   reload = () => {
-    this.settings = remote.getGlobal("sharedObject").settings.notifications;
+    this.systemSettings = remote.getGlobal("sharedObject").settings.system;
   }
 
+  play = (type) => {
+    const { soundEnabled, soundVolume } = this.systemSettings;
+    if (soundEnabled === false)
+      return;
 
+    // init for the next sound
+    this.systemSound = new Audio();
+    this.systemSound.volume = soundVolume;
+    this.systemSound.preload = "auto";
+
+    switch (type) {
+      case TYPES.action:
+        this.systemSound.src = action;
+        break;
+      case TYPES.error:
+        this.systemSound.src = error;
+        break;
+      case TYPES.message:
+        this.systemSound.src = message;
+        break;
+      case TYPES.welcome:
+        this.systemSound.src = welcome;
+        break;
+      case TYPES.update:
+        this.systemSound.src = update;
+        break;
+      default:
+        this.systemSound.src = message;
+    }
+
+    this.systemSound.play()
+      .catch(() => {
+        // Auto-play was prevented
+      });
+
+  }
 
 }
 
-export default new SoundManager();
+export const soundManager = new SoundManager();
 
-const playSound = (type) => {
+export const useSound = (url, options) => {
+  const { soundEnabled, soundVolume } = remote.getGlobal("sharedObject").settings.system;
 
-  var audio = new Audio();
-  audio.currentTime = 0;
+  let audio = null;
 
-  switch (type) {
-    case TYPES.error:
-      audio.src = error;
-      audio.volume = 0.1;
-      break;
-    case TYPES.message:
-      audio.src = message;
-      audio.volume = 0.15;
-      break;
-    case TYPES.welcome:
-      audio.src = welcome;
-      audio.volume = 0.15;
-      break;
-    case TYPES.update:
-      audio.src = update;
-      audio.volume = 0.15;
-      break;
-    default:
-      audio.src = message;
-      audio.volume = 0.15;
+  const [localOptions, setLocalOptions] = useState({
+    soundEnabled,
+    soundVolume,
+    src: url,
+    currentTime: 0
+  });
+
+  useEffect(() => {
+    setLocalOptions(prevOptions => ({
+      ...prevOptions,
+      soundEnabled,
+      soundVolume
+    }));
+  }, [soundEnabled, soundVolume]);
+
+  const setOptions = (options) => {
+    setLocalOptions(prevOptions => ({
+      ...prevOptions,
+      ...options
+    }));
   }
 
-  audio.play();
+  const play = () => {
+    if (localOptions.soundEnabled) {
+      audio = new Audio();
+      audio.src = localOptions.src;
+      audio.volume = localOptions.soundVolume;
+      audio.currentTime = localOptions.currentTime;
+      audio.play();
+    }
+  }
 
+  const pause = () => {
+    if (audio !== null)
+      audio.pause();
+  }
+
+  return [
+    play,
+    setOptions,
+    pause
+  ]
 }

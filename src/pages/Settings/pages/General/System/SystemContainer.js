@@ -1,19 +1,21 @@
 // LIBRARIES
 import React, { useState } from 'react';
-import { Notifications } from '@material-ui/icons';
+import { Android } from '@material-ui/icons';
 import GoodBye from 'react-goodbye';
 import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import NotificationsAlerts from './NotificationsAlerts/NotificationsAlerts';
+import Sound from './Sound/Sound';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
 import LeaveWithoutSavingModal from '../../../../../components/modals/LeaveWithoutSavingModal/LeaveWithoutSavingModal';
 
 // ACTIONS
 import { updateSettings, saveSettings } from '../../../../../redux/actions/settingsActions';
 
-const SETTINGS_NAME = "notifications";
+import { soundManager } from '../../../../../soundManager/SoundManager';
+
+const SETTINGS_NAME = "system";
 
 export default () => {
   const dispatch = useDispatch();
@@ -25,14 +27,25 @@ export default () => {
   const [dirty, setDirty] = useState(false);
 
   const {
-    enabled
+    soundEnabled,
+    soundVolume
   } = data;
 
-  const onNotificationsCheck = (event) => {
+  const onSoundCheck = (event) => {
     const { checked } = event.target;
     setData({
       ...data,
-      enabled: checked
+      soundEnabled: checked
+    });
+    setDirty(true);
+  }
+
+  const onSliderBlur = (value) => {
+    const calculatedValue = value / 100;
+    setData({
+      ...data,
+      soundEnabled: calculatedValue < 0.01 ? false : true,
+      soundVolume: calculatedValue
     });
     setDirty(true);
   }
@@ -43,6 +56,9 @@ export default () => {
     const dataCopy = { ...data };
 
     dispatch(updateSettings(SETTINGS_NAME, dataCopy));
+
+    soundManager.reload();
+
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
       setDirty(false);
     });
@@ -50,14 +66,20 @@ export default () => {
 
   return (
     <StyledExpandableSection
-      title={"התראות"}
-      TitleIcon={Notifications}
+      title={"מערכת"}
+      TitleIcon={Android}
       iconColor={"#0365a2"}
       extraDetails={() => <SaveButton onClick={save}>שמור</SaveButton>}
       padding={"30px 20px"}
     >
 
-      <NotificationsAlerts enabled={enabled} onNotificationsCheck={onNotificationsCheck} />
+      <Sound
+        soundEnabled={soundEnabled}
+        soundVolume={soundVolume * 100}
+        onSoundCheck={onSoundCheck}
+        onSliderBlur={onSliderBlur}
+        soundManager={soundManager}
+      />
 
       <GoodBye when={dirty}>
         {({ isShow, handleOk, handleCancel }) =>

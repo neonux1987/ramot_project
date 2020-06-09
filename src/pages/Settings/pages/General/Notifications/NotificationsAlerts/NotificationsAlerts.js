@@ -1,6 +1,5 @@
 // LIBRARIES
 import React from 'react';
-import { Checkbox } from '@material-ui/core';
 
 // CSS
 import { container } from './NotificationsAlerts.module.css';
@@ -8,11 +7,14 @@ import { container } from './NotificationsAlerts.module.css';
 // COMPONENTS
 import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
 
-export default ({ notificationsEnabled, onNotificationsCheck }) => {
+// COMPONENTS WITH SOUND
+import CheckBoxWithSound from '../../../../../../componentsWithSound/CheckBoxWithSound/CheckBoxWithSound';
+
+export default ({ enabled, onNotificationsCheck }) => {
   return (
     <div className={container}>
-      <Checkbox
-        checked={notificationsEnabled}
+      <CheckBoxWithSound
+        checked={enabled}
         onChange={onNotificationsCheck}
         name="notificationsCheck"
         color="primary"

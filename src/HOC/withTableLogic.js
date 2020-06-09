@@ -1,6 +1,6 @@
 import React from 'react';
 import EditableColumn from '../components/table/TableCell/EditableColumn';
-import soundManager from '../soundManager/SoundManager';
+import { soundManager } from '../soundManager/SoundManager';
 
 const { play, types } = soundManager;
 
@@ -14,19 +14,19 @@ export default (OriginalComponent) => {
     };
 
     toggleEditMode = () => {
+      play(types.action);
+
       this.setState({
         editMode: !this.state.editMode
       });
-
-      play(types.message);
     };
 
     toggleAddNewMode = () => {
+      play(types.action);
+
       this.setState({
         addNewMode: !this.state.addNewMode
       });
-
-      play(types.message);
     };
 
     inputOnFocusHandler = (e) => {

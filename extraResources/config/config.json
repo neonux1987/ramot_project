@@ -1,7 +1,10 @@
 {
-  "notifications": {
+  "system": {
     "soundEnabled": true,
-    "notificationsEnabled": true
+    "soundVolume": 0.4
+  },
+  "notifications": {
+    "enabled": true
   },
   "db_backup": {
     "backups_to_save": 2,

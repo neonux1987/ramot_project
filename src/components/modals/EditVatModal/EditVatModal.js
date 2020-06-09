@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextField } from '@material-ui/core';
-import soundManager from '../../../soundManager/SoundManager';
+import { soundManager } from '../../../soundManager/SoundManager';
 import { toast } from 'react-toastify';
 
 import Section from '../../Section/Section';

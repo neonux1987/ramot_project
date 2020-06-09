@@ -42,7 +42,7 @@ import { initiateDbBackup } from './services/dbBackup.svc';
 import { checkForUpdates } from './services/updates.svc';
 
 // SOUND
-import soundManager from './soundManager/SoundManager';
+import { soundManager } from './soundManager/SoundManager';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -55,7 +55,15 @@ const theme = createMuiTheme({
       'Rubik',
       'sans-serif'
     ].join(',')
-  }
+  },
+  palette: {
+    primary: {
+      // light: will be calculated from palette.primary.main,
+      main: "rgb(3, 101, 162)",
+      // dark: will be calculated from palette.primary.main,
+      // contrastText: will be calculated to contrast with palette.primary.main
+    },
+  },
 });
 
 const { play, types } = soundManager;
