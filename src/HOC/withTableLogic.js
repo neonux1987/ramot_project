@@ -10,10 +10,10 @@ export default (OriginalComponent) => {
       addNewMode: false,
     };
 
-    toggleEditMode = (status) => {
+    toggleEditMode = () => {
 
       this.setState({
-        editMode: status ? status : !this.state.editMode
+        editMode: !this.state.editMode
       });
     };
 

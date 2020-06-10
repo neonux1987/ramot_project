@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles, Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import { Route, Switch, NavLink, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
 import Services from './pages/Services/Services';
 import General from './pages/General/General';
@@ -9,6 +9,7 @@ import Locations from './pages/Locations/Locations';
 import AppUpdates from './pages/AppUpdates/AppUpdates';
 import About from './pages/About/About';
 import { useSelector } from 'react-redux';
+import CustomNavLink from '../../components/CustomNavLink/CustomNavLink';
 
 const styles = (theme) => ({
   tabs: {
@@ -58,7 +59,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="כללי"
-            component={NavLink}
+            component={CustomNavLink}
             to={{
               pathname: `${match.path}/כללי`,
               state: {
@@ -71,7 +72,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="גיבוי ושחזור"
-            component={NavLink}
+            component={CustomNavLink}
             to={{
               pathname: `${match.path}/גיבוי ושחזור`,
               state: {
@@ -84,7 +85,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="מיקום קבצים"
-            component={NavLink}
+            component={CustomNavLink}
             to={{
               pathname: `${match.path}/מיקום קבצים`,
               state: {
@@ -97,7 +98,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="שירותי מערכת"
-            component={NavLink}
+            component={CustomNavLink}
             to={{
               pathname: `${match.path}/שירותי מערכת`,
               state: {
@@ -110,7 +111,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="עדכוני תוכנה"
-            component={NavLink}
+            component={CustomNavLink}
             to={{
               pathname: `${match.path}/עדכוני תוכנה`,
               state: {
@@ -123,7 +124,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="אודות"
-            component={NavLink}
+            component={CustomNavLink}
             to={{
               pathname: `${match.path}/אודות`,
               state: {

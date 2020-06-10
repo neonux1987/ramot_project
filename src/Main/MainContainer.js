@@ -62,19 +62,6 @@ class MainContainer extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      const { pathname, state } = this.props.location;
-
-      const active = {
-        pathname,
-        state
-      };
-
-      this.props.updateRoute(active)
-    }
-  }
-
   componentWillUnmount() {
     Events.scrollEvent.remove('begin');
     Events.scrollEvent.remove('end');

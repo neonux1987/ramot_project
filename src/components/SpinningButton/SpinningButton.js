@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import { spinner, icon, navLink } from './SpinnerButton.module.css';
+import CustomNavLink from '../CustomNavLink/CustomNavLink';
 
 export default props => {
   const {
@@ -10,11 +10,11 @@ export default props => {
     active = false
   } = props;
   return (
-    <NavLink
+    <CustomNavLink
       className={classnames(navLink, active ? "activeExpandItem" : "")}
       to={to}
     >
       <Icon className={classnames(icon, spinner)} />
-    </NavLink>
+    </CustomNavLink>
   )
 }

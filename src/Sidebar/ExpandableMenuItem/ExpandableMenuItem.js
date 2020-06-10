@@ -32,7 +32,6 @@ export default props => {
     <Fragment>
 
       <ListItem
-        //button
         onClick={onClick}
         className={classnames(listItem, active ? "activeExpandItem" : "")}
       >

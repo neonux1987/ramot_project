@@ -53,9 +53,9 @@ const Sidebar = () => {
           to={{
             pathname: `/הגדרות`,
             state: {
-              page: "הגדרות",
-              buildingName: "",
-              buildingNameEng: ""
+              page: "כללי",
+              buildingName: "הגדרות",
+              buildingNameEng: "settings"
             }
           }}
           active={routeState.buildingName === "הגדרות"}

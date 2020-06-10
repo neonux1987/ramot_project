@@ -12,6 +12,8 @@ import Menuitem from '../MenuItem/Menuitem';
 import {
   list
 } from './Menu.module.css';
+import { updateRoute } from '../../redux/actions/routesActions';
+import { useDispatch } from 'react-redux';
 
 const DEFAULT_PAGE = "הוצאות חודשי";
 const HOME_BUTTON_LABEL = "דף הבית";
@@ -20,6 +22,8 @@ const HOME_BUTTON_PATH = "/דף-הבית";
 const Menu = (props) => {
 
   const { data, routeState } = props;
+
+  const dispatch = useDispatch();
 
   const [state, setState] = React.useState(() => {
     let newState = {};
@@ -53,7 +57,11 @@ const Menu = (props) => {
         buildingNameEng: engLabel
       }
 
-      props.history.replace(`/${path}/הוצאות-חודשי`, newState);
+      const pathname = `/${path}/הוצאות-חודשי`;
+
+      dispatch(updateRoute({ pathname, state: newState }));
+
+      props.history.replace(pathname, newState);
     }
 
     setState({

@@ -1,7 +1,6 @@
 // LIBRARIES
 import React from 'react';
 import { ListItemIcon, ListItemText, ListItem } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
 
 // CSS
 import {
@@ -9,6 +8,7 @@ import {
   listItemIcon
 } from './MenuItem.module.css';
 import classnames from 'classnames';
+import CustomNavLink from '../../components/CustomNavLink/CustomNavLink';
 
 const Menuitem = (props) => {
 
@@ -23,7 +23,7 @@ const Menuitem = (props) => {
 
   return (
     <ListItem
-      component={NavLink}
+      component={CustomNavLink}
       //button
       className={classnames(listItem, className, active ? "activeButton" : "")}
       style={style}
