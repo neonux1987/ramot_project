@@ -102,8 +102,12 @@ class MainContainer extends Component {
     const timeout = { enter: 800, exit: 400 };
 
     return (
-      <Element id="mainContainer" className={this.props.classes.main + this.props.toggleMain}>
-        <main ref={this.props.mainContainer} style={{ height: "100%" }}>
+      <Element
+        id="mainContainer"
+        className={this.props.classes.main + this.props.toggleMain}
+      >
+        <main
+          ref={this.props.mainContainer} style={{ height: "100%" }}>
           <Toolbar
             buildingName={locationState.buildingName}
             page={locationState.page}

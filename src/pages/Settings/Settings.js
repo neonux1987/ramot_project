@@ -15,7 +15,6 @@ const styles = (theme) => ({
   tabs: {
     flexGrow: 1,
     backgroundColor: "rgb(46, 55, 62)"
-    //backgroundColor: theme.palette.background.paper
   },
   tab: {
     fontSize: "16px"
@@ -30,7 +29,8 @@ const styles = (theme) => ({
     marginBottom: "10px"
   },
   appBar: {
-    width: "initial"
+    width: "initial",
+    boxShadow: "none"
   }
 });
 

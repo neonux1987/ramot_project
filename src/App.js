@@ -43,6 +43,7 @@ import { checkForUpdates } from './services/updates.svc';
 
 // SOUND
 import { soundManager } from './soundManager/SoundManager';
+import CustomToastContainer from './Toasts/CustomToastContainer/CustomToastContainer';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -261,18 +262,7 @@ const App = () => {
 
             </div>
 
-            <ToastContainer
-              style={{ width: "340px" }}
-              position="bottom-right"
-              autoClose={TOAST_AUTO_CLOSE}
-              hideProgressBar={true}
-              newestOnTop={false}
-              rtl
-              pauseOnVisibilityChange
-              draggable={false}
-              pauseOnHover
-              closeButton={<CustomCloseButton />}
-            />
+            <CustomToastContainer />
           </SettingsContext.Provider>
 
           <ModalRoot />

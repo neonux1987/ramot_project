@@ -4,7 +4,18 @@
     "soundVolume": 0.4
   },
   "notifications": {
-    "enabled": true
+    "enabled": true,
+    "toastContainerProps": {
+      "width": "340px",
+      "position": "bottom-right",
+      "autoClose": 3000,
+      "hideProgressBar": true,
+      "newestOnTop": false,
+      "rtl": true,
+      "pauseOnVisibilityChange": true,
+      "draggable": false,
+      "pauseOnHover": true
+    }
   },
   "db_backup": {
     "backups_to_save": 2,
