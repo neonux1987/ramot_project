@@ -14,7 +14,7 @@ export default (props) => {
   return (
     <div className={styles.container}>
       <SubtitleBoldTypography className={styles.subtitle}>
-        המיקום שבו נשמרים הגיבויים:
+        מיקום תיקיית הגיבויים:
         </SubtitleBoldTypography>
 
       <PrimaryButton onClick={onClick}>שנה מיקום</PrimaryButton>

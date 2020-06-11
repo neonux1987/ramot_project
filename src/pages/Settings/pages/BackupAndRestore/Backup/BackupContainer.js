@@ -16,7 +16,7 @@ import LeaveWithoutSavingModal from '../../../../../components/modals/LeaveWitho
 import BackupFolderSelector from './BackupFolderSelector/BackupFolderSelector';
 import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';
-import BackupOnExit from '../../../../../components/CheckboxWithLabel/BackupOnExit';
+import CheckboxWithLabel from '../../../../../components/CheckboxWithLabel/CheckboxWithLabel';
 
 // SERVICES
 import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogs.svc';
@@ -30,6 +30,7 @@ import { showModal } from '../../../../../redux/actions/modalActions';
 // TOASTS
 import { myToaster } from '../../../../../Toasts/toastManager';
 import ToastRender from '../../../../../components/ToastRender/ToastRender';
+import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
 
 const SETTINGS_NAME = "db_backup";
 
@@ -68,11 +69,38 @@ const BackupContainer = () => {
     setDirty(true);
   }
 
+  const onByTimeChange = (event) => {
+    const { checked } = event.target;
+    setData({
+      ...data,
+      byTime: {
+        ...data.byTime,
+        enabled: checked
+      }
+    });
+    setDirty(true);
+  }
+
   const onHourChange = (event) => {
     const { value } = event.target;
     setData({
       ...data,
-      every_x_hours: Number.parseInt(value)
+      byTime: {
+        ...data.byTime,
+        every_x_hours: Number.parseInt(value)
+      }
+    });
+    setDirty(true);
+  }
+
+  const onDayMaxAllowedBackups = (event) => {
+    const { value } = event.target;
+    setData({
+      ...data,
+      byTime: {
+        ...data.byTime,
+        day_max_allowed_backups: value
+      }
     });
     setDirty(true);
   }
@@ -176,20 +204,38 @@ const BackupContainer = () => {
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
       </Typography>}
 
-      <BackupOnExit value={data.backup_on_exit} onChange={onBackupOnExitChange} />
+      <CheckboxWithLabel label="גיבוי ביציאה" value={data.backup_on_exit} onChange={onBackupOnExitChange} />
+
+      <SubtitleBoldTypography gutterBottom>
+        הגדרות תהליך הגיבוי:
+      </SubtitleBoldTypography>
+
+      <CheckboxWithLabel label="גיבוי לפי זמן" value={data.byTime.enabled} onChange={onByTimeChange} />
 
       <SelectWithLabel
         label="כל כמה שעות לבצע בדיקה:"
-        value={data.every_x_hours}
+        value={data.byTime.every_x_hours}
         onChange={onHourChange}
+        disabled={!data.byTime.enabled}
       >
         {renderHourItems}
       </SelectWithLabel>
 
       <SelectWithLabel
-        label="בחר כמה גיבויים לשמור לאחור:"
+        label="כמות גיבויים ליום:"
+        value={data.byTime.day_max_allowed_backups}
+        onChange={onDayMaxAllowedBackups}
+        disabled={!data.byTime.enabled}
+      >
+        {/* use the same list*/}
+        {renderHourItems}
+      </SelectWithLabel>
+
+      <SelectWithLabel
+        label="כמות גיבויים לשמירה:"
         onChange={backupsToSaveChangeHandler}
         value={data.backups_to_save}
+        disabled={!data.byTime.enabled}
       >
         {backups_to_save}
       </SelectWithLabel>

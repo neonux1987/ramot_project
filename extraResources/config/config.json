@@ -19,17 +19,18 @@
   },
   "db_backup": {
     "backups_to_save": 2,
-    "backups_executed": {
-      "currentDate": "",
-      "count": 0,
-      "maxCount": 1
+    "byTime": {
+      "currentDate": "2020-06-10T21:00:00.000Z",
+      "executed_backups": 0,
+      "day_max_allowed_backups": 1,
+      "every_x_hours": 1,
+      "enabled": true
     },
     "enabled": false,
     "last_update": "",
     "max_num_of_history_backups": 7,
     "path": "",
     "restart_required": true,
-    "every_x_hours": 1,
     "backup_on_exit": true
   },
   "empty_reports_generator": {

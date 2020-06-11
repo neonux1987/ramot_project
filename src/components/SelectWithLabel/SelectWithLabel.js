@@ -1,7 +1,18 @@
 import React from 'react';
+import { css } from 'emotion';
 import { Select } from '@material-ui/core';
 import SubtitleBoldTypography from "../Typographies/SubtitleBoldTypography";
-import { container, selector } from './SelectWithLabel.module.css';
+
+const container = css`
+display: flex;
+margin-bottom: 30px;
+align-items: center;
+`;
+
+const selector = css`
+margin-right: 20px;
+  width: 40px;
+`;
 
 export default (props) => {
 
@@ -9,13 +20,14 @@ export default (props) => {
     label = "",
     value = "",
     onChange,
-    children
+    children,
+    disabled = false
   } = props;
 
   return (
     <div className={container}>
 
-      <SubtitleBoldTypography>
+      <SubtitleBoldTypography className={css`color: ${disabled ? "rgba(0, 0, 0, 0.38)" : "initial"}`}>
         {label}
       </SubtitleBoldTypography>
 
@@ -23,11 +35,12 @@ export default (props) => {
         className={selector}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       >
         {children}
       </Select>
 
-    </div>
+    </div >
   );
 }
 

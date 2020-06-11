@@ -13,6 +13,7 @@ const container = css`
 export default (props) => {
 
   const {
+    label = "",
     value = false,
     onChange,
   } = props;
@@ -28,8 +29,8 @@ export default (props) => {
       />
 
       <SubtitleBoldTypography>
-        גיבוי ביציאה
-          </SubtitleBoldTypography>
+        {label}
+      </SubtitleBoldTypography>
 
     </div>
   );

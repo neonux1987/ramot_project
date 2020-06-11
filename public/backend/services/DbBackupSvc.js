@@ -36,19 +36,20 @@ class DbBackupSvc {
 
     const {
       every_x_hours,
-      backups_executed
-    } = settings.db_backup;
+      currentDate,
+      count
+    } = settings.db_backup.byTime;
 
     // get rid of the time portion
     const newCurrentDate = new Date(new Date().toDateString());
 
     // get rid of the time portion
-    const oldDate = new Date(new Date(backups_executed.currentDate).toDateString());
+    const oldDate = new Date(new Date(currentDate).toDateString());
 
     // we want the backup to run maxCount times a day
-    if (backups_executed.currentDate === "" || newCurrentDate.getTime() !== oldDate.getTime()) {
-      backups_executed.currentDate = newCurrentDate.toJSON();
-      backups_executed.count = 0;
+    if (currentDate === "" || newCurrentDate.getTime() !== oldDate.getTime()) {
+      currentDate = newCurrentDate.toJSON();
+      count = 0;
     }
 
     this.rule = new schedule.RecurrenceRule();
@@ -104,9 +105,9 @@ class DbBackupSvc {
     //fetch db backup settings
     let settings = await this.settingsLogic.getSettings();
 
-    const { count, maxCount } = settings.db_backup.backups_executed;
+    const { count, day_max_allowed_backups, enabled } = settings.db_backup.byTime;
 
-    if (count < maxCount) {
+    if (count < day_max_allowed_backups && enabled) {
       //notify that the backup process started
       rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
 
@@ -189,7 +190,7 @@ class DbBackupSvc {
     //save it to the settings obj
     settings.db_backup.last_update = date.toJSON();
 
-    settings.db_backup.backups_executed.count++;
+    settings.db_backup.byTime.count++;
 
     //write the new settings
     await this.settingsLogic.updateSettings(settings);
@@ -218,17 +219,6 @@ class DbBackupSvc {
     //write the file physically to the drive
     await fse.writeFile(fullPath, fileToBackup);
 
-  }
-
-  validateDaysOfWeek(daysOfWeek) {
-    const keys = Object.keys(daysOfWeek);
-    let valid = false;
-    for (let i = 0; i < keys.length; i++) {
-      if (daysOfWeek[keys[i]]) {
-        valid = true;
-      }
-    }
-    return valid;
   }
 
 }
