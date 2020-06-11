@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import { MemoryRouter } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import { withGoodBye } from 'react-goodbye';
 
 // COMPONENTS
@@ -14,7 +13,6 @@ import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { AlignCenterMiddle } from './components/AlignCenterMiddle/AlignCenterMiddle';
 import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
-import CustomCloseButton from './components/CustomCloseButton/CustomCloseButton';
 import ModalRoot from './components/modals/ModalRoot';
 
 // CONTEXT

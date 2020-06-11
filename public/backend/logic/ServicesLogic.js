@@ -34,9 +34,9 @@ class ServicesLogic {
     const selectedService = servicesObjects[serviceName];
 
     switch (serviceName) {
-      case 'db_backup': selectedService.start();
+      case 'db_backup': await selectedService.start();
         break;
-      case 'db_backup': selectedService.start();
+      case 'db_backup': await selectedService.start();
         break;
       default: null;
     }
@@ -64,9 +64,9 @@ class ServicesLogic {
     const selectedService = servicesObjects[serviceName];
 
     switch (serviceName) {
-      case 'db_backup': selectedService.restart();
+      case 'db_backup': await selectedService.restart();
         break;
-      case 'db_backup2': selectedService.restart();
+      case 'db_backup2': await selectedService.restart();
         break;
       default: null;
     }
@@ -94,9 +94,9 @@ class ServicesLogic {
 
     const selectedService = servicesObjects[serviceName];
     switch (serviceName) {
-      case 'db_backup': selectedService.stop();
+      case 'db_backup': await selectedService.stop();
         break;
-      case 'db_backup': selectedService.stop();
+      case 'db_backup': await selectedService.stop();
         break;
       default: null;
     }

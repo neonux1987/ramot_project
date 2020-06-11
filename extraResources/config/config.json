@@ -29,6 +29,11 @@
       "6": true,
       "everything": true
     },
+    "backupExecuted": {
+      "currentDate": "2020-06-10T21:00:00.000Z",
+      "count": 0,
+      "maxCount": 1
+    },
     "enabled": true,
     "last_update": "Wed May 27 2020 05:26:53 GMT+0300 (Israel Daylight Time)",
     "max_num_of_history_backups": 7,

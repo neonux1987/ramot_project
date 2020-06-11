@@ -1,0 +1,12 @@
+.menuItem{
+  padding: 0;
+}
+
+.menuItemLink{
+  padding: 6px 16px;
+  width: 100%;
+}
+
+.menuItemLink:active,.menuItemLink:visited,.menuItemLink:link{
+  color: #000000;
+}

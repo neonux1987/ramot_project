@@ -274,7 +274,7 @@ const BackupContainer = () => {
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
       </Typography>}
 
-      <TimeSelector
+      {/* <TimeSelector
         time={data.time}
         every_x_hours={data.every_x_hours}
         byHour={data.byHour}
@@ -282,13 +282,13 @@ const BackupContainer = () => {
         onTimeChange={onDbTimeChange}
         onCheckBoxChange={onCheckBoxChange}
         onHourChange={onHourChange}
-      />
+      /> */}
 
       <NumOfBackupsSelector onChange={backupsToSaveChangeHandler} numOfBackups={data.backups_to_save}>
         {backups_to_save}
       </NumOfBackupsSelector>
 
-      <DaysOfWeekSelector onChange={onDbDayChange} daysOfWeek={data.days_of_week} />
+      {/* <DaysOfWeekSelector onChange={onDbDayChange} daysOfWeek={data.days_of_week} /> */}
 
       <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} />
 

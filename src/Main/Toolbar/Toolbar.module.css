@@ -3,7 +3,7 @@
   margin: 0 20px;
   /* box-shadow: 0 5px 4px -5px #000000a1; */
   font-size: 14px;
-  color: #3f414d;
+  color: #ffffff;
   font-weight: 600;
   position: sticky;
   z-index: 998;
@@ -11,10 +11,13 @@
   top: 0;
   display: flex;
   justify-content: stretch;
-  background: #f3f4f8;
-  /* background: rgb(46, 55, 62); */
-  /* border-bottom-left-radius: 4px; */
-  /* border-bottom-right-radius: 4px; */
+  /* background: #f3f4f8; */
+  border-left: 1px solid #dde1e2;
+  border-right: 1px solid #dde1e2;
+  border-bottom: 1px solid #dde1e2;
+  background: rgb(46, 55, 62);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   /* background: linear-gradient(180deg, rgb(60, 71, 80) 0%, rgb(46, 55, 62) 100%); */
   
 }
@@ -51,7 +54,7 @@
   justify-content: flex-end;
 }
 
-.notificationBtn{
+.volumeBtn{
   width: 70px;
     display: flex;
     align-items: center;
@@ -62,16 +65,15 @@
     outline: none;
     cursor: pointer;
     background: none;
-    color: #3f414d;
+    color: #ffffff;
 }
 
 .moreBtn{
-  width: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: none;
-    color: #3f414d;
+    color: #ffffff;
     border: none;
     outline: none;
     cursor: pointer;
@@ -104,17 +106,4 @@
 
 .toggleBtn:hover{
   background: #0675bb;
-}
-
-.menuItem{
-  padding: 0;
-}
-
-.menuItemLink{
-  padding: 6px 16px;
-  width: 100%;
-}
-
-.menuItemLink:active,.menuItemLink:visited,.menuItemLink:link{
-  color: #000000;
 }

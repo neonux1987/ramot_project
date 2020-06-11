@@ -97,12 +97,18 @@ export const useSound = (url, options) => {
     }));
   }
 
-  const play = () => {
-    if (localOptions.soundEnabled) {
-      audio = new Audio();
-      audio.src = localOptions.src;
-      audio.volume = localOptions.soundVolume;
-      audio.currentTime = localOptions.currentTime;
+  const play = (reverse = 0) => {
+
+    audio = new Audio();
+    audio.src = localOptions.src;
+    audio.volume = localOptions.soundVolume;
+    audio.currentTime = localOptions.currentTime;
+
+    if (localOptions.soundEnabled && reverse === 0) {
+      audio.play();
+    }
+
+    if (reverse === 1 && localOptions.soundEnabled === false) {
       audio.play();
     }
   }

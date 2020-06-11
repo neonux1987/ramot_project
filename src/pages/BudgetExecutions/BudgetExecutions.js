@@ -29,7 +29,7 @@ const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 const BudgetExecutions = props => {
 
   //building name
-  const { buildingNameEng, buildingName } = props.location.state;
+  const { buildingNameEng } = props.location.state;
 
   const dispatch = useDispatch();
 

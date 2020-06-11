@@ -80,7 +80,7 @@ const tableHeaderDate = css`
 
 export default props => {
   const {
-    title,
+    //title,
     pageTitle,
     onClose,
     GroupComponent,

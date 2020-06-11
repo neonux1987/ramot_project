@@ -6,7 +6,7 @@ import action from '../../assets/audio/action.wav';
 export default props => {
   const [play] = useSound(action);
   return <Button {...props} onClick={(event) => {
-    play();
+    play(props.reverse);
     props.onClick && props.onClick(event);
   }}>{props.children}</Button>
 }

@@ -2,6 +2,7 @@
     margin: 0 0 0 15px;
     background: #f3f4f8;
     /* border: 1px solid #ece9e9; */
+    border-radius: 5px;
 }
 
 .infoBox{

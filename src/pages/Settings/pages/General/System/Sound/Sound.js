@@ -42,6 +42,7 @@ export default ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur, soundMa
           onChange={onSoundCheck}
           name="soundCheck"
           color="primary"
+          reverse={1}
         />
 
         <Typography>

@@ -45,7 +45,10 @@ export default (state = initState, action) => {
           }
         };
         //update settings in the shared object
-        settings[settingName] = payload;
+        settings[settingName] = {
+          ...settings[settingName],
+          ...payload
+        };
 
         return newState;
       }

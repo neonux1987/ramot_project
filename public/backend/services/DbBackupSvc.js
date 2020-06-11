@@ -29,7 +29,7 @@ class DbBackupSvc {
       //fetch db backup settings
       settings = await this.settingsLogic.getSettings();
     } catch (error) {
-      const newError = new ServiceError(e.message, FILENAME, error);
+      const newError = new ServiceError(error.message, FILENAME, error);
       this.logger.error(newError.toString())
       throw newError;
     }
@@ -39,8 +39,22 @@ class DbBackupSvc {
       time,
       byHour,
       byTime,
-      every_x_hours
+      every_x_hours,
+      backupExecuted
     } = settings.db_backup;
+
+    // get rid of the time portion
+    const newCurrentDate = new Date(new Date().toDateString());
+
+    // get rid of the time portion
+    const oldDate = new Date(new Date(backupExecuted.currentDate).toDateString());
+
+    // we want the backup to run maxCount times a day
+    if (backupExecuted.currentDate === "" || newCurrentDate.getTime() !== oldDate.getTime()) {
+      backupExecuted.currentDate = newCurrentDate;
+      backupExecuted.count = 0;
+    }
+
 
     //check if none of the days are selected, if none
     //selected, don't allow to start the backup service
@@ -83,7 +97,8 @@ class DbBackupSvc {
     if (this.backupSchedule.nextInvocation() === null) {
       return Promise.reject();
     }
-    //return this.settingsLogic.updateSettings(settings);
+
+    await this.settingsLogic.updateSpecificSetting(SettingsLogic.SETTINGS_NAMES.DB_BACKUP, settings.db_backup);
   }
 
   async stop() {
@@ -130,20 +145,27 @@ class DbBackupSvc {
   }
 
   schedulerCallback = async () => {
-    //notify that the backup process started
-    rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
+    //fetch db backup settings
+    let settings = await this.settingsLogic.getSettings();
 
-    await this.initiateBackup()
-      .then(() => {
-        //notify that the backup process ended
-        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
-      })
-      .catch((error) => {
-        rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", error.message);
-        const newError = new ServiceError("המערכת נכשלה בגיבוי בסיס הנתונים.", FILENAME, error);
-        this.logger.error(newError.toString())
-        throw newError;
-      });
+    const { count, maxCount } = settings.db_backup.backupExecuted;
+
+    if (count < maxCount) {
+      //notify that the backup process started
+      rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
+
+      await this.initiateBackup(settings)
+        .then(() => {
+          //notify that the backup process ended
+          rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupFinished", "גיבוי בסיס הנתונים הסתיים בהצלחה.");
+        })
+        .catch((error) => {
+          rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupError", error.message);
+          const newError = new ServiceError("המערכת נכשלה בגיבוי בסיס הנתונים.", FILENAME, error);
+          this.logger.error(newError.toString())
+          throw newError;
+        });
+    }
 
   }
 
@@ -165,11 +187,11 @@ class DbBackupSvc {
       });
   }
 
-  async initiateBackup() {
+  async initiateBackup(settings) {
     await this.checkDbHealth();
 
-    //fetch db backup settings
-    let settings = await this.settingsLogic.getSettings();
+    /*     //fetch db backup settings
+        let settings = await this.settingsLogic.getSettings(); */
 
     const { db_backup, locations } = settings;
 
@@ -209,6 +231,8 @@ class DbBackupSvc {
 
     //save it to the settings obj
     settings.db_backup.last_update = date.toString();
+
+    settings.db_backup.backupExecuted.count++;
 
     //write the new settings
     await this.settingsLogic.updateSettings(settings);
