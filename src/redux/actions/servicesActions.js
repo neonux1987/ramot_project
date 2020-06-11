@@ -80,9 +80,9 @@ export const startService = (serviceName) => {
         // on success service was enabled
         // update settings set the service to enabled
         settingsData.enabled = true;
-        settingsData.restartRequired = false;
+        settingsData.restart_required = false;
         servicesDataCopy[serviceName].enabled = true;
-        servicesDataCopy[serviceName].restartRequired = false;
+        servicesDataCopy[serviceName].restart_required = false;
 
         dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
@@ -96,9 +96,9 @@ export const startService = (serviceName) => {
         dispatch(stopServiceStore(serviceName));
 
         settingsData.enabled = false;
-        settingsData.restartRequired = false;
+        settingsData.restart_required = false;
         servicesDataCopy[serviceName].enabled = false;
-        servicesDataCopy[serviceName].restartRequired = true;
+        servicesDataCopy[serviceName].restart_required = true;
 
         dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
@@ -132,9 +132,9 @@ export const stopService = (serviceName) => {
         // on success service was enabled
         // update settings set the service to enabled
         settingsData.enabled = false;
-        settingsData.restartRequired = false;
+        settingsData.restart_required = false;
         servicesDataCopy[serviceName].enabled = false;
-        servicesDataCopy[serviceName].restartRequired = false;
+        servicesDataCopy[serviceName].restart_required = false;
 
         dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
@@ -148,9 +148,9 @@ export const stopService = (serviceName) => {
         dispatch(startServiceStore(serviceName));
 
         settingsData.enabled = true;
-        settingsData.restartRequired = true;
+        settingsData.restart_required = true;
         servicesDataCopy[serviceName].enabled = true;
-        servicesDataCopy[serviceName].restartRequired = false;
+        servicesDataCopy[serviceName].restart_required = false;
 
         dispatch(saveSettings(false));
         dispatch(updateServices(servicesDataCopy));
@@ -176,12 +176,12 @@ export const restartService = (serviceName) => {
         channel: "service-restarted"
       },
       onSuccess: () => {
-        settingsData.restartRequired = false;
+        settingsData.restart_required = false;
         updateSettings(serviceName, settingsData);
         myToaster.success("השירות אותחל בהצלחה.");
       },
       onError: () => {
-        settingsData.restartRequired = true;
+        settingsData.restart_required = true;
         updateSettings(serviceName, settingsData);
       }
     });

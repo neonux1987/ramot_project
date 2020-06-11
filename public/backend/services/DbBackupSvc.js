@@ -35,24 +35,20 @@ class DbBackupSvc {
     }
 
     const {
-      days_of_week,
-      time,
-      byHour,
-      byTime,
       every_x_hours,
-      backupExecuted
+      backups_executed
     } = settings.db_backup;
 
     // get rid of the time portion
     const newCurrentDate = new Date(new Date().toDateString());
 
     // get rid of the time portion
-    const oldDate = new Date(new Date(backupExecuted.currentDate).toDateString());
+    const oldDate = new Date(new Date(backups_executed.currentDate).toDateString());
 
     // we want the backup to run maxCount times a day
-    if (backupExecuted.currentDate === "" || newCurrentDate.getTime() !== oldDate.getTime()) {
-      backupExecuted.currentDate = newCurrentDate;
-      backupExecuted.count = 0;
+    if (backups_executed.currentDate === "" || newCurrentDate.getTime() !== oldDate.getTime()) {
+      backups_executed.currentDate = newCurrentDate.toJSON();
+      backups_executed.count = 0;
     }
 
     this.rule = new schedule.RecurrenceRule();
@@ -71,14 +67,6 @@ class DbBackupSvc {
   }
 
   async stop() {
-    let settings = null;
-    try {
-      //fetch db backup settings
-      settings = await this.settingsLogic.getSettings();
-    } catch (e) {
-      return Promise.reject(e);
-    }
-
     //make sure that the scheduler object in not null
     if (this.backupSchedule === null) {
       return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעת שמירה."));
@@ -93,8 +81,7 @@ class DbBackupSvc {
       //init scheduler
       this.backupSchedule = null;
       this.rule = null;
-      //save settings
-      this.settingsLogic.updateSettings(settings);
+
       return Promise.resolve("the job is cancelled.");
     } else {
       return Promise.reject("unable to cancel scheduled job.");
@@ -117,7 +104,7 @@ class DbBackupSvc {
     //fetch db backup settings
     let settings = await this.settingsLogic.getSettings();
 
-    const { count, maxCount } = settings.db_backup.backupExecuted;
+    const { count, maxCount } = settings.db_backup.backups_executed;
 
     if (count < maxCount) {
       //notify that the backup process started
@@ -200,9 +187,9 @@ class DbBackupSvc {
     registeredBackups.push({ backupDateTime: date, fileName: fileName });
 
     //save it to the settings obj
-    settings.db_backup.last_update = date.toString();
+    settings.db_backup.last_update = date.toJSON();
 
-    settings.db_backup.backupExecuted.count++;
+    settings.db_backup.backups_executed.count++;
 
     //write the new settings
     await this.settingsLogic.updateSettings(settings);

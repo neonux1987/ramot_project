@@ -41,14 +41,14 @@ class ServicesLogic {
       default: null;
     }
 
-    // set the restartRequired to false
+    // set the restart_required to false
     const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
 
-    serviceSettings.restartRequired = false;
+    serviceSettings.restart_required = false;
     await this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
 
     // update services
-    service.restartRequired = false;
+    service.restart_required = false;
     await this.updateServices(AllServices);
   }
 
@@ -71,13 +71,13 @@ class ServicesLogic {
       default: null;
     }
 
-    // set the restartRequired to false
+    // set the restart_required to false
     const serviceSettings = await this.settingsLogic.getSpecificSetting(serviceName);
-    serviceSettings.restartRequired = false;
+    serviceSettings.restart_required = false;
     await this.settingsLogic.updateSpecificSetting(serviceName, serviceSettings);
 
     // update services
-    service.restartRequired = false;
+    service.restart_required = false;
     await this.updateServices(AllServices);
   }
 

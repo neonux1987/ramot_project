@@ -50,7 +50,7 @@ const BackupContainer = () => {
     event.stopPropagation();
 
     const dataCopy = { ...data };
-    dataCopy.restartRequired = true;
+    dataCopy.restart_required = true;
 
     dispatch(updateSettings(SETTINGS_NAME, dataCopy))
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
@@ -172,7 +172,7 @@ const BackupContainer = () => {
 
       {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}
 
-      {settings.enabled && settings.restartRequired && <Typography className={styles.restartRequired} variant="subtitle1">
+      {settings.enabled && settings.restart_required && <Typography className={styles.restartRequired} variant="subtitle1">
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
       </Typography>}
 

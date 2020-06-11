@@ -19,7 +19,7 @@
   },
   "db_backup": {
     "backups_to_save": 2,
-    "backupExecuted": {
+    "backups_executed": {
       "currentDate": "",
       "count": 0,
       "maxCount": 1
@@ -28,13 +28,13 @@
     "last_update": "",
     "max_num_of_history_backups": 7,
     "path": "",
-    "restartRequired": true,
+    "restart_required": true,
     "every_x_hours": 1,
     "backup_on_exit": true
   },
   "empty_reports_generator": {
     "enabled": false,
-    "restartRequired": false
+    "restart_required": false
   },
   "appUpdates": {
     "availableUpdate": false,
@@ -45,7 +45,7 @@
     "userNotified": false
   },
   "db_restore": {
-    "last_update": "8.10.2019, 23:37:00"
+    "last_update": ""
   },
   "locations": {
     "backups_names_file_path": "",
