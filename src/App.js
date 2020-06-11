@@ -170,11 +170,12 @@ const App = () => {
   }, [state.toastId]);
 
   const closeButtonHandler = async () => {
-    console.log(settings.data.db_backup.backup_on_exit);
+    const { isFetching, data } = settings;
+    const { backup_on_exit, enabled } = data.db_backup;
 
     // in case the backend stopped working
     // allow to close the app without backing up
-    if ((settings.isFetching && settings.data.length === 0) || settings.data.db_backup.backup_on_exit === false) {
+    if ((isFetching && data.length === 0) || backup_on_exit === false || enabled === false) {
       quitApp();
       return Promise.resolve();
     }
