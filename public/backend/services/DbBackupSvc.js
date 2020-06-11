@@ -55,41 +55,10 @@ class DbBackupSvc {
       backupExecuted.count = 0;
     }
 
-
-    //check if none of the days are selected, if none
-    //selected, don't allow to start the backup service
-    const valid = this.validateDaysOfWeek(days_of_week);
-    if (!valid) {
-      return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעת שמירה."));
-    }
-
     this.rule = new schedule.RecurrenceRule();
 
-    this.rule.dayOfWeek = [];
-    if (byTime) {
-      const backupTime = new Date(time);
-      // apply the settings to the scheduler
-      this.rule.hour = backupTime.getHours();
-      this.rule.minute = backupTime.getMinutes();
-    } else if (byHour) {
-      this.rule.hour = every_x_hours;
-      this.rule.minute = 0;
-    }
-
-    // convert the enabled days of week from object to array
-    // for the scheduler
-    for (let i = 0; i < 7; i++) {
-      if (days_of_week[i]) {
-        this.rule.dayOfWeek.push(i)
-      }
-    }
-
-    // if non of the days selected, we must
-    // set the dayOfWeek to null otherwise
-    // the node-schedule module will crash for some reason
-    if (this.rule.dayOfWeek.length === 0) {
-      this.rule.dayOfWeek = null;
-    }
+    this.rule.hour = every_x_hours;
+    this.rule.minute = 0;
 
     // execute scheduler
     this.backupSchedule = schedule.scheduleJob(this.rule, this.schedulerCallback);
@@ -190,8 +159,9 @@ class DbBackupSvc {
   async initiateBackup(settings) {
     await this.checkDbHealth();
 
-    /*     //fetch db backup settings
-        let settings = await this.settingsLogic.getSettings(); */
+    if (settings === undefined)
+      //fetch db backup settings
+      settings = await this.settingsLogic.getSettings();
 
     const { db_backup, locations } = settings;
 

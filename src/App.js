@@ -170,11 +170,13 @@ const App = () => {
   }, [state.toastId]);
 
   const closeButtonHandler = async () => {
+    console.log(settings.data.db_backup.backup_on_exit);
+
     // in case the backend stopped working
     // allow to close the app without backing up
-    if (settings.isFetching && settings.data.length === 0) {
+    if ((settings.isFetching && settings.data.length === 0) || settings.data.db_backup.backup_on_exit === false) {
       quitApp();
-      return;
+      return Promise.resolve();
     }
 
     const id = myToaster.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס הנתונים לפני יציאה..."} />, {

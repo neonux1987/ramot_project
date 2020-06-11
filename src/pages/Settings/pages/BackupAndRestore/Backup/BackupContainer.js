@@ -13,33 +13,27 @@ import StyledExpandableSection from '../../../../../components/Section/StyledExp
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
 import LeaveWithoutSavingModal from '../../../../../components/modals/LeaveWithoutSavingModal/LeaveWithoutSavingModal';
+import BackupFolderSelector from './BackupFolderSelector/BackupFolderSelector';
+import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
+import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';
+import BackupOnExit from '../../../../../components/CheckboxWithLabel/BackupOnExit';
+
 // SERVICES
 import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogs.svc';
+import { dbIndependentBackup } from '../../../../../services/dbBackup.svc';
 
 // ACTIONS
-import {
-  saveSettings,
-  updateSettings
-} from '../../../../../redux/actions/settingsActions';
-import {
-  initializeRegisteredBackups
-} from '../../../../../redux/actions/registeredBackupsActions';
+import { saveSettings, updateSettings } from '../../../../../redux/actions/settingsActions';
+import { initializeRegisteredBackups } from '../../../../../redux/actions/registeredBackupsActions';
 import { showModal } from '../../../../../redux/actions/modalActions';
-
-// SERVICES
-import { dbIndependentBackup } from '../../../../../services/dbBackup.svc';
 
 // TOASTS
 import { myToaster } from '../../../../../Toasts/toastManager';
 import ToastRender from '../../../../../components/ToastRender/ToastRender';
-import DaysOfWeekSelector from './DaysOfWeekSelector/DaysOfWeekSelector';
-import NumOfBackupsSelector from './NumOfBackupsSelector/NumOfBackupsSelector';
-import BackupFolderSelector from './BackupFolderSelector/BackupFolderSelector';
-import TimeSelector from './TimeSelector/TimeSelector';
-import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
-
 
 const SETTINGS_NAME = "db_backup";
+
+const HOURS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const BackupContainer = () => {
 
@@ -55,118 +49,22 @@ const BackupContainer = () => {
   const save = async (event) => {
     event.stopPropagation();
 
-    //the init that it's not valid
-    let valid = isDaysOfWeekValid(data.days_of_week);
-    //if the backup is active and noValid is true
-    //based on the no days were selected
-    if (!valid && data.active) {
-      //send the error to the notification center
-      myToaster.error("חייב לבחור לפחות יום אחד.");
-    } else {
-      const dataCopy = { ...data };
-      dataCopy.restartRequired = true;
+    const dataCopy = { ...data };
+    dataCopy.restartRequired = true;
 
-      dispatch(updateSettings(SETTINGS_NAME, dataCopy))
-      dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
-        setDirty(false);
-      });
-    }
+    dispatch(updateSettings(SETTINGS_NAME, dataCopy))
+    dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
+      setDirty(false);
+    });
   }
 
-  // validation
-  const isDaysOfWeekValid = (days_of_week) => {
-    //get the keys of the object
-    const keys = Object.keys(days_of_week);
-    //the init that it's not valid
-    let notValid = true;
-    //if at least on of the days
-    //is checked, then it's valid and notValid should be false
-    for (let i = 0; i < keys.length; i++) {
-      if (days_of_week[keys[i]]) {
-        notValid = false;
-      }
-    }
-    //if the backup is active and noValid is true
-    //based on the no days were selected
-    if (notValid) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  const onDbTimeChange = (value) => {
-    //must convert it to string to ensure electron won't change it to different time zone
-    let date = new Date(value);
-    const localeString = date.toLocaleString();
-    date = new Date(localeString);
-
-    const time = date.toString();
+  const onBackupOnExitChange = (event) => {
+    const { checked } = event.target;
 
     setData({
       ...data,
-      time
+      backup_on_exit: checked
     });
-    setDirty(true);
-  }
-
-  const onDbDayChange = (event) => {
-    const { name, checked } = event.target;
-    const keys = Object.keys(data.days_of_week);
-
-    const dataCopy = { ...data };
-
-    if (name === "everything" && checked === true) {
-      for (let i = 0; i < keys.length; i++) {
-        dataCopy.days_of_week[keys[i]] = true;
-      }
-    } else if (name === "everything" && checked === false) {
-      const keys = Object.keys(dataCopy.days_of_week);
-      for (let i = 0; i < keys.length; i++) {
-        dataCopy.days_of_week[keys[i]] = false;
-      }
-    }
-    else {
-      dataCopy.days_of_week = {
-        ...dataCopy.days_of_week,
-        [name]: checked,//set the selected day
-        everything: checked ? dataCopy.days_of_week["everything"] : false
-      };
-
-      let fullDays = true;
-      //iterate and find if all days are selected
-      for (let i = 0; i < keys.length; i++) {
-        if (!dataCopy.days_of_week[keys[i]] && keys[i] !== "everything") {
-          fullDays = false;
-        }
-      }
-      //if all the days selected then select everything checkbox
-      if (fullDays) {
-        dataCopy.days_of_week["everything"] = true
-      }
-
-    }
-
-    setData(dataCopy);
-    setDirty(true);
-  }
-
-  const onCheckBoxChange = (event) => {
-
-    const { name, checked } = event.target;
-
-    if (checked && name === "byTime")
-      setData({
-        ...data,
-        byHour: false,
-        byTime: true
-      });
-    else if (checked && name === "byHour")
-      setData({
-        ...data,
-        byHour: true,
-        byTime: false
-      });
     setDirty(true);
   }
 
@@ -257,6 +155,10 @@ const BackupContainer = () => {
     backups_to_save.push(<MenuItem value={i} key={i}>{i}</MenuItem>)
   }
 
+  const renderHourItems = HOURS.map((value, index) => {
+    return <MenuItem value={value} key={index}>{value}</MenuItem>
+  });
+
   return (
     <StyledExpandableSection
       title={"גיבוי בסיס נתונים"}
@@ -274,21 +176,23 @@ const BackupContainer = () => {
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
       </Typography>}
 
-      {/* <TimeSelector
-        time={data.time}
-        every_x_hours={data.every_x_hours}
-        byHour={data.byHour}
-        byTime={data.byTime}
-        onTimeChange={onDbTimeChange}
-        onCheckBoxChange={onCheckBoxChange}
-        onHourChange={onHourChange}
-      /> */}
+      <BackupOnExit value={data.backup_on_exit} onChange={onBackupOnExitChange} />
 
-      <NumOfBackupsSelector onChange={backupsToSaveChangeHandler} numOfBackups={data.backups_to_save}>
+      <SelectWithLabel
+        label="כל כמה שעות לבצע בדיקה:"
+        value={data.every_x_hours}
+        onChange={onHourChange}
+      >
+        {renderHourItems}
+      </SelectWithLabel>
+
+      <SelectWithLabel
+        label="בחר כמה גיבויים לשמור לאחור:"
+        onChange={backupsToSaveChangeHandler}
+        value={data.backups_to_save}
+      >
         {backups_to_save}
-      </NumOfBackupsSelector>
-
-      {/* <DaysOfWeekSelector onChange={onDbDayChange} daysOfWeek={data.days_of_week} /> */}
+      </SelectWithLabel>
 
       <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} />
 
