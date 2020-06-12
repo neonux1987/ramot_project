@@ -203,13 +203,13 @@ module.exports = async (
   month1.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: 'f04e4d' }
+    fgColor: { argb: '7051b9' }
   };
   month1.font = headerCellsStyles.font;
   month1.alignment = headerCellsStyles.alignment;
   month1.border = headerCellsStyles.border;
 
-  //merge cells for month 1 header
+  //merge cells for month 2 header
   sheet.mergeCells('D3', 'E3');
   const month2 = sheet.getCell('D3');
   //set title
@@ -218,13 +218,13 @@ module.exports = async (
   month2.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: '1b75bc' }
+    fgColor: { argb: '386db1' }
   };
   month2.font = headerCellsStyles.font;
   month2.alignment = headerCellsStyles.alignment;
   month2.border = headerCellsStyles.border;
 
-  //merge cells for month 1 header
+  //merge cells for month 3 header
   sheet.mergeCells('F3', 'G3');
   const month3 = sheet.getCell('F3');
   //set title
@@ -233,7 +233,7 @@ module.exports = async (
   month3.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: '00b274' }
+    fgColor: { argb: '31926c' }
   };
   month3.font = headerCellsStyles.font;
   month3.alignment = headerCellsStyles.alignment;
@@ -248,7 +248,7 @@ module.exports = async (
   quarterEnd.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: 'aa55a1' }
+    fgColor: { argb: 'dc3c60' }
   };
   quarterEnd.font = headerCellsStyles.font;
   quarterEnd.alignment = headerCellsStyles.alignment;
@@ -271,25 +271,25 @@ module.exports = async (
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'f04e4d' }
+        fgColor: { argb: '7051b9' }
       };
     } else if (colNumber === 4 || colNumber === 5) {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: '1b75bc' }
+        fgColor: { argb: '386db1' }
       };
     } else if (colNumber === 6 || colNumber === 7) {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: '00b274' }
+        fgColor: { argb: '31926c' }
       };
     } else if (colNumber === 9 || colNumber === 10) {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'aa55a1' }
+        fgColor: { argb: 'dc3c60' }
       };
     } else {
       cell.style = headerStyle;

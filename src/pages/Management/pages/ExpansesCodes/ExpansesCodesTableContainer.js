@@ -229,27 +229,27 @@ const ExpansesCodes = props => {
       {editMode ? textInput("codeName", rowData["codeName"], index, onBlurHandler) : <Column>{rowData["codeName"]}</Column>}
       {editMode ?
         <SelectDropDown
-          targetValue={rowData["summarized_section_id"]}
+          value={rowData["summarized_section_id"]}
+          valueName={section.section}
           index={index}
-          itemsArr={selectItems}
           selectChangeHandler={onBlurSelectHandler}
           name={"summarized_section_id"}
-        /> :
+        >{selectItems}</SelectDropDown> :
         <Column style={{ color: section.status === "deleted" ? "red" : "initial" }}>
           {section.section}
         </Column>}
 
       {editMode ?
         <SelectDropDown
-          targetValue={rowData.with_vat}
+          value={rowData.with_vat}
+          valueName={rowData.with_vat === 0 ? "לא" : "כן"}
           index={index}
-          itemsArr={[
-            <MenuItem value={0} key={0}>לא</MenuItem>,
-            <MenuItem value={1} key={1}>כן</MenuItem>
-          ]}
           selectChangeHandler={onBlurSelectHandler}
           name={"with_vat"}
-        /> :
+        >{[
+          <MenuItem value={0} key={0}>לא</MenuItem>,
+          <MenuItem value={1} key={1}>כן</MenuItem>
+        ]}</SelectDropDown> :
         <Column>{with_vat}</Column>}
 
     </Row>

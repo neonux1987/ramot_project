@@ -148,7 +148,7 @@ module.exports = async (
   //set alignment
   headerCell.alignment = headerCellsStyles.alignment;
 
-  //merge cells for month 1 header
+  //merge cells for quarter 1 header
   sheet.mergeCells('B3', 'C3');
   const quarter1 = sheet.getCell('B3');
   //set title
@@ -157,13 +157,13 @@ module.exports = async (
   quarter1.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: 'f04e4d' }
+    fgColor: { argb: '7051b9' }
   };
   quarter1.font = headerCellsStyles.font;
   quarter1.alignment = headerCellsStyles.alignment;
   quarter1.border = headerCellsStyles.border;
 
-  //merge cells for month 1 header
+  //merge cells for quarter 2 header
   sheet.mergeCells('D3', 'E3');
   const quarter2 = sheet.getCell('D3');
   //set title
@@ -172,13 +172,13 @@ module.exports = async (
   quarter2.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: '1b75bc' }
+    fgColor: { argb: '386db1' }
   };
   quarter2.font = headerCellsStyles.font;
   quarter2.alignment = headerCellsStyles.alignment;
   quarter2.border = headerCellsStyles.border;
 
-  //merge cells for month 1 header
+  //merge cells for quarter 3 header
   sheet.mergeCells('F3', 'G3');
   const quarter3 = sheet.getCell('F3');
   //set title
@@ -187,13 +187,13 @@ module.exports = async (
   quarter3.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: '00b274' }
+    fgColor: { argb: '31926c' }
   };
   quarter3.font = headerCellsStyles.font;
   quarter3.alignment = headerCellsStyles.alignment;
   quarter3.border = headerCellsStyles.border;
 
-  //merge cells for month 1 header
+  //merge cells for quarter 4 header
   sheet.mergeCells('H3', 'I3');
   const quarter4 = sheet.getCell('H3');
   //set title
@@ -202,7 +202,7 @@ module.exports = async (
   quarter4.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: 'f79448' }
+    fgColor: { argb: 'dc3c60' }
   };
   quarter4.font = headerCellsStyles.font;
   quarter4.alignment = headerCellsStyles.alignment;
@@ -217,7 +217,7 @@ module.exports = async (
   yearEnd.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: 'aa55a1' }
+    fgColor: { argb: 'F84D1E' }
   };
   yearEnd.font = headerCellsStyles.font;
   yearEnd.alignment = headerCellsStyles.alignment;
@@ -241,31 +241,31 @@ module.exports = async (
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'f04e4d' }
+        fgColor: { argb: '7051b9' }
       };
     } else if (colNumber === 4 || colNumber === 5) {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: '1b75bc' }
+        fgColor: { argb: '386db1' }
       };
     } else if (colNumber === 6 || colNumber === 7) {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: '00b274' }
+        fgColor: { argb: '31926c' }
       };
     } else if (colNumber === 8 || colNumber === 9) {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'f79448' }
+        fgColor: { argb: 'dc3c60' }
       };
     } else if (colNumber === 11 || colNumber === 12) {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'aa55a1' }
+        fgColor: { argb: 'F84D1E' }
       };
     } else {
       cell.style = headerStyle;

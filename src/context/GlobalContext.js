@@ -6,7 +6,7 @@ const GlobalContext = React.createContext({
     1: "rgb(56, 109, 177)",
     2: "rgb(49, 146, 108)",
     3: "rgb(220, 60, 96)",
-    4: "rgb(222, 128, 20)",
+    4: "#F84D1E",
   }
 });
 
