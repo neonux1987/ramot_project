@@ -10,6 +10,7 @@ import styles from './BackupAndRestore.module.css';
 // CONTAINERS
 import BackupContainer from './Backup/BackupContainer';
 import Restore from './Restore/Restore';
+import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 
 const localeMap = {
   he: heLocale
@@ -26,6 +27,7 @@ const BackupAndRestore = () => {
 
         <Restore />
 
+        <GoodByeWrapper />
       </div>
 
     </MuiPickersUtilsProvider>

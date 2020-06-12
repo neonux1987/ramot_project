@@ -29,6 +29,7 @@ const Menuitem = (props) => {
       style={style}
       to={to}
       selected={false}
+      draggable={false}
     >
       <ListItemIcon className={listItemIcon}>
         {Icon && <Icon />}

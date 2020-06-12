@@ -30,7 +30,8 @@ const persistConfig = {
     "registeredReports",
     "routes",
     //"date",
-    "savedNotification"
+    "savedNotification",
+    "goodBye"
   ]
 
 }

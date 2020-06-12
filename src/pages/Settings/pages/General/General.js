@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import NotificationsContainer from './Notifications/NotificationsContainer';
 import SystemContainer from './System/SystemContainer';
+import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 
 export const General = () => {
 
@@ -10,6 +11,8 @@ export const General = () => {
       <SystemContainer />
 
       <NotificationsContainer />
+
+      <GoodByeWrapper />
 
     </Fragment>
   );

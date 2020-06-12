@@ -158,6 +158,7 @@ const Settings = ({ classes, match }, props) => {
           />
         </Switch>
       </div>
+
     </div>
   );
 

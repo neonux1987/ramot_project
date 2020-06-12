@@ -1,7 +1,12 @@
 {
   "system": {
-    "soundEnabled": true,
-    "soundVolume": 0.4
+    "sound": {
+      "soundEnabled": true,
+      "soundVolume": 0.4
+    },
+    "systemLocation": {
+      "path": ""
+    }
   },
   "notifications": {
     "enabled": true,

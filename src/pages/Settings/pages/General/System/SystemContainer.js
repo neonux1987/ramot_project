@@ -1,19 +1,22 @@
 // LIBRARIES
 import React, { useState } from 'react';
 import { Android } from '@material-ui/icons';
-import GoodBye from 'react-goodbye';
 import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import Sound from './Sound/Sound';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
-import LeaveWithoutSavingModal from '../../../../../components/modals/LeaveWithoutSavingModal/LeaveWithoutSavingModal';
+import FileSelector from '../../../../../components/FileSelector/FileSelector';
+import TitleTypography from '../../../../../components/Typographies/TitleTypography';
 
 // ACTIONS
 import { updateSettings, saveSettings } from '../../../../../redux/actions/settingsActions';
 
+// SOUND
 import { soundManager } from '../../../../../soundManager/SoundManager';
+import Divider from '../../../../../components/Divider/Divider';
+import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
 const SETTINGS_NAME = "system";
 
@@ -23,8 +26,6 @@ export default () => {
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
   const [data, setData] = useState(settings);
-
-  const [dirty, setDirty] = useState(false);
 
   const {
     soundEnabled,
@@ -37,7 +38,7 @@ export default () => {
       ...data,
       soundEnabled: checked
     });
-    setDirty(true);
+    dispatch(setDirty());
   }
 
   const onSliderBlur = (value) => {
@@ -47,7 +48,7 @@ export default () => {
       soundEnabled: calculatedValue < 0.01 ? false : true,
       soundVolume: calculatedValue
     });
-    setDirty(true);
+    dispatch(setDirty());
   }
 
   const save = async (event) => {
@@ -60,7 +61,7 @@ export default () => {
     soundManager.reload();
 
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
-      setDirty(false);
+      dispatch(setDirty(false));
     });
   }
 
@@ -73,6 +74,10 @@ export default () => {
       padding={"30px 20px"}
     >
 
+      <TitleTypography gutterBottom>
+        הגדרות צלילי מערכת:
+      </TitleTypography>
+
       <Sound
         soundEnabled={soundEnabled}
         soundVolume={soundVolume * 100}
@@ -81,13 +86,13 @@ export default () => {
         soundManager={soundManager}
       />
 
-      <GoodBye when={dirty}>
-        {({ isShow, handleOk, handleCancel }) =>
-          isShow && (
-            <LeaveWithoutSavingModal onAgreeHandler={handleOk} onCancelHandler={handleCancel} />
-          )
-        }
-      </GoodBye>
+      <Divider />
+
+      <TitleTypography>
+        מיקום תיקיית הגדרות מערכת:
+      </TitleTypography>
+
+      <FileSelector onClick={() => console.log("hello")} value="whyyyy" />
 
     </StyledExpandableSection >
   );

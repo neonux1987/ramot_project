@@ -10,21 +10,20 @@ import styles from './SystemLocations.module.css';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
 import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
+import FileSelector from '../../../../../components/FileSelector/FileSelector';
 
 export default (props) => {
 
   const {
     data,
     openFileInFolder,
-    selectHandler,
     saveHandler
   } = props;
 
   const {
     db_file_path,
     config_folder_path,
-    config_file_path,
-    db_backups_folder_path
+    config_file_path
   } = data;
 
   return (
@@ -50,16 +49,8 @@ export default (props) => {
           מיקום התיקיה שבה נמצא בסיס הנתונים שבשימוש המערכת. (לא ניתן לשנות את המיקום שלו)
         </Typography>
 
-        <PrimaryButton onClick={() => openFileInFolder(db_file_path)}>פתח מיקום</PrimaryButton>
-        <TextField
-          id="outlined-bare"
-          disabled
-          classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-          value={db_file_path}
-          onChange={() => { }}
-          variant="outlined"
-          inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
-        />
+
+        <FileSelector onClick={() => openFileInFolder(db_file_path)} value={db_file_path} />
 
         <Divider className={styles.divider} />
 
@@ -69,39 +60,7 @@ export default (props) => {
           </Box>
         </Typography>
 
-        <PrimaryButton onClick={() => openFileInFolder(config_file_path)}>פתח מיקום</PrimaryButton>
-        <TextField
-          id="outlined-bare"
-          disabled
-          classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-          value={config_folder_path}
-          onChange={() => { }}
-          variant="outlined"
-          inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
-        />
-
-        <Divider className={styles.divider} />
-
-        <Typography variant="subtitle1">
-          <Box fontWeight="600">
-            מיקום גיבויים
-        </Box>
-        </Typography>
-
-        <Typography variant="subtitle2" className={styles.headerTitle}>
-          מיקום התיקייה שבה יישמרו הגיבויים של בסיס הנתונים.
-        </Typography>
-
-        <PrimaryButton onClick={() => selectHandler("db_backups_folder_path", db_backups_folder_path)}>שנה מיקום</PrimaryButton>
-        <TextField
-          id="outlined-bare"
-          disabled
-          classes={{ root: styles.dbFileTextFieldLocationWrapper }}
-          value={db_backups_folder_path}
-          onChange={() => { }}
-          variant="outlined"
-          inputProps={{ 'aria-label': 'bare', className: styles.dbFileTextFieldLocationInput }}
-        />
+        <FileSelector onClick={() => openFileInFolder(config_file_path)} value={config_folder_path} />
 
       </form>
 

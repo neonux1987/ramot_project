@@ -1,9 +1,8 @@
 // LIBRARIES
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography, MenuItem } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
-import GoodBye from 'react-goodbye';
 
 // CSS
 import styles from './BackupContainer.module.css';
@@ -12,11 +11,11 @@ import styles from './BackupContainer.module.css';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
-import LeaveWithoutSavingModal from '../../../../../components/modals/LeaveWithoutSavingModal/LeaveWithoutSavingModal';
 import BackupFolderSelector from './BackupFolderSelector/BackupFolderSelector';
 import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';
 import CheckboxWithLabel from '../../../../../components/CheckboxWithLabel/CheckboxWithLabel';
+import Divider from '../../../../../components/Divider/Divider';
 
 // SERVICES
 import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogs.svc';
@@ -26,11 +25,11 @@ import { dbIndependentBackup } from '../../../../../services/dbBackup.svc';
 import { saveSettings, updateSettings } from '../../../../../redux/actions/settingsActions';
 import { initializeRegisteredBackups } from '../../../../../redux/actions/registeredBackupsActions';
 import { showModal } from '../../../../../redux/actions/modalActions';
+import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
 // TOASTS
 import { myToaster } from '../../../../../Toasts/toastManager';
 import ToastRender from '../../../../../components/ToastRender/ToastRender';
-import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
 
 const SETTINGS_NAME = "db_backup";
 
@@ -45,8 +44,6 @@ const BackupContainer = () => {
 
   const [data, setData] = useState(settings);
 
-  const [dirty, setDirty] = useState(false);
-
   const save = async (event) => {
     event.stopPropagation();
 
@@ -55,7 +52,7 @@ const BackupContainer = () => {
 
     dispatch(updateSettings(SETTINGS_NAME, dataCopy))
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
-      setDirty(false);
+      dispatch(setDirty(false));
     });
   }
 
@@ -66,7 +63,7 @@ const BackupContainer = () => {
       ...data,
       backup_on_exit: checked
     });
-    setDirty(true);
+    dispatch(setDirty());
   }
 
   const onByTimeChange = (event) => {
@@ -78,7 +75,7 @@ const BackupContainer = () => {
         enabled: checked
       }
     });
-    setDirty(true);
+    dispatch(setDirty());
   }
 
   const onHourChange = (event) => {
@@ -90,7 +87,7 @@ const BackupContainer = () => {
         every_x_hours: Number.parseInt(value)
       }
     });
-    setDirty(true);
+    dispatch(setDirty());
   }
 
   const onDayMaxAllowedBackups = (event) => {
@@ -102,7 +99,7 @@ const BackupContainer = () => {
         day_max_allowed_backups: value
       }
     });
-    setDirty(true);
+    dispatch(setDirty());
   }
 
   const backupsToSaveChangeHandler = (event) => {
@@ -113,7 +110,7 @@ const BackupContainer = () => {
       ...data,
       backups_to_save
     });
-    setDirty(true);
+    dispatch(setDirty());
   }
 
   const dbSelectFolderHandler = () => {
@@ -131,7 +128,7 @@ const BackupContainer = () => {
                   ...data,
                   path: newPath
                 });
-                setDirty(true);
+                dispatch(setDirty());
                 dispatch(initializeRegisteredBackups()).catch((result) => {
                   myToaster.error(result.error);
                 });
@@ -206,9 +203,7 @@ const BackupContainer = () => {
 
       <CheckboxWithLabel label="גיבוי ביציאה" value={data.backup_on_exit} onChange={onBackupOnExitChange} />
 
-      <SubtitleBoldTypography gutterBottom>
-        הגדרות תהליך הגיבוי:
-      </SubtitleBoldTypography>
+      <Divider />
 
       <CheckboxWithLabel label="גיבוי לפי זמן" value={data.byTime.enabled} onChange={onByTimeChange} />
 
@@ -240,17 +235,13 @@ const BackupContainer = () => {
         {backups_to_save}
       </SelectWithLabel>
 
+      <Divider />
+
       <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} />
 
-      <ManualBackupSelector onClick={dbIndependentBackupHandler} />
+      <Divider />
 
-      <GoodBye when={dirty}>
-        {({ isShow, handleOk, handleCancel }) =>
-          isShow && (
-            <LeaveWithoutSavingModal onAgreeHandler={handleOk} onCancelHandler={handleCancel} />
-          )
-        }
-      </GoodBye>
+      <ManualBackupSelector onClick={dbIndependentBackupHandler} />
 
     </StyledExpandableSection >
   );

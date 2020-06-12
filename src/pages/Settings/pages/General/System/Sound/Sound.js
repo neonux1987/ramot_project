@@ -32,9 +32,6 @@ export default ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur, soundMa
 
   return (
     <div className={container}>
-      <SubtitleBoldTypography gutterBottom>
-        הגדרות צלילי מערכת:
-      </SubtitleBoldTypography>
 
       <div className={soundEnabledContainer}>
         <SwitchWithSound

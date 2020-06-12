@@ -8,10 +8,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import NotificationsAlerts from './NotificationsAlerts/NotificationsAlerts';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
-import LeaveWithoutSavingModal from '../../../../../components/modals/LeaveWithoutSavingModal/LeaveWithoutSavingModal';
 
 // ACTIONS
 import { updateSettings, saveSettings } from '../../../../../redux/actions/settingsActions';
+import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
 const SETTINGS_NAME = "notifications";
 
@@ -21,8 +21,6 @@ export default () => {
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
   const [data, setData] = useState(settings);
-
-  const [dirty, setDirty] = useState(false);
 
   const {
     enabled
@@ -34,7 +32,7 @@ export default () => {
       ...data,
       enabled: checked
     });
-    setDirty(true);
+    dispatch(setDirty());
   }
 
   const save = async (event) => {
@@ -44,7 +42,7 @@ export default () => {
 
     dispatch(updateSettings(SETTINGS_NAME, dataCopy));
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
-      setDirty(false);
+      dispatch(setDirty(false));
     });
   }
 
@@ -58,14 +56,6 @@ export default () => {
     >
 
       <NotificationsAlerts enabled={enabled} onNotificationsCheck={onNotificationsCheck} />
-
-      <GoodBye when={dirty}>
-        {({ isShow, handleOk, handleCancel }) =>
-          isShow && (
-            <LeaveWithoutSavingModal onAgreeHandler={handleOk} onCancelHandler={handleCancel} />
-          )
-        }
-      </GoodBye>
 
     </StyledExpandableSection >
   );

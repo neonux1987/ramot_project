@@ -18,6 +18,7 @@ import routes from './routesReducer';
 import date from './dateReducer';
 import modal from './modalReducer';
 import savedNotification from './savedNotificationReducer';
+import goodBye from './goodByeReducer';
 import { createPageReducer } from './util/util';
 
 // init month expanses reducer
@@ -63,5 +64,6 @@ export default combineReducers({
   modal,
   registeredReports,
   routes,
-  savedNotification
+  savedNotification,
+  goodBye
 });
