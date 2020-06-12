@@ -8,6 +8,7 @@ import classnames from 'classnames';
 
 // CSS
 import styles from './Sidebar.module.css';
+import '../cssTransitions/scale.css';
 
 // COMPONENTS
 import Menu from './Menu/Menu';
@@ -16,8 +17,9 @@ import LoadingCircle from '../components/LoadingCircle';
 //import Menuitem from './Menuitem';
 
 // ACTIONS
-import { fetchSidebar } from '../redux/actions/sidebarActions';
+import { fetchSidebar, toggleSidebar } from '../redux/actions/sidebarActions';
 import SpinningButton from '../components/SpinningButton/SpinningButton';
+import { CSSTransition } from 'react-transition-group';
 
 const Sidebar = () => {
   let toggleSidebarAnimation = "";
@@ -39,35 +41,42 @@ const Sidebar = () => {
   toggleSidebarAnimation = !showSidebar ? "hideAnimation" : "showAnimation";
 
   return (
-    <Drawer id="sidebar" variant="permanent" classes={{ paper: styles.drawerPaper }} anchor="left" className={classnames(styles.drawer, toggleSidebarAnimation)}>
+    <CSSTransition
+      in={showSidebar}
+      timeout={600}
+      classNames="scale"
+    //onEnter={() => dispatch(toggleSidebar())}
+    //onExited={() => dispatch(toggleSidebar())}
+    >
+      <Drawer id="sidebar" variant="permanent" classes={{ paper: styles.drawerPaper }} anchor="left" className={classnames(styles.drawer, toggleSidebarAnimation)}>
 
-      <Logo />
+        <Logo />
 
+        <Menu data={menu.data} routeState={routeState} />
 
-      <Menu data={menu.data} routeState={routeState} />
+        <div className={styles.settingsWrapper}>
 
-      <div className={styles.settingsWrapper}>
+          <SpinningButton
+            Icon={Settings}
+            to={{
+              pathname: `/הגדרות`,
+              state: {
+                page: "כללי",
+                buildingName: "הגדרות",
+                buildingNameEng: "settings"
+              }
+            }}
+            active={routeState.buildingName === "הגדרות"}
+          />
+        </div>
 
-        <SpinningButton
-          Icon={Settings}
-          to={{
-            pathname: `/הגדרות`,
-            state: {
-              page: "כללי",
-              buildingName: "הגדרות",
-              buildingNameEng: "settings"
-            }
-          }}
-          active={routeState.buildingName === "הגדרות"}
-        />
-      </div>
+        <div className={styles.developedByWrapper}>
+          <span className={styles.ndtsText}>NDTS</span>
+          <span className={styles.developedByText}>developed by</span>
+        </div>
 
-      <div className={styles.developedByWrapper}>
-        <span className={styles.ndtsText}>NDTS</span>
-        <span className={styles.developedByText}>developed by</span>
-      </div>
-
-    </Drawer>
+      </Drawer>
+    </CSSTransition>
   );
 
 }

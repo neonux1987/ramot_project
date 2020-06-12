@@ -1,0 +1,26 @@
+
+.slide-enter {
+  opacity: 0;
+}
+.slide-enter-active {
+  opacity: 1;
+  animation:animateright 0.4s;
+}
+.slide-exit {
+  opacity: 1;
+}
+.slide-exit-active {
+  opacity: 0;
+  animation: animateright 0.4s;
+}
+
+@keyframes animateright{
+  from{
+    margin-right: -240px;
+    opacity:0
+  } 
+  to{
+    margin-right: 0px;
+    opacity:1
+  }
+}

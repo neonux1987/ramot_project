@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import DateDetails from '../../components/DateDetails/DateDetails';
-import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
 
 // CONTAINERS
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
@@ -19,6 +18,7 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
+import TableExpandableSection from '../../components/Section/TableExpandableSection';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -43,7 +43,7 @@ const MonthExpanses = props => {
 
   return (
     <div className={"page"}>
-      <StyledExpandableSection
+      <TableExpandableSection
         title={TABLE_TITLE}
         TitleIcon={TableChart}
         extraDetails={() => <DateDetails
@@ -60,7 +60,7 @@ const MonthExpanses = props => {
           pageTitle={PAGE_TITLE}
         />
 
-      </StyledExpandableSection>
+      </TableExpandableSection>
 
     </div>
   );

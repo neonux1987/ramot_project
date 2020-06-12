@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
+import TableExpandableSection from '../../components/Section/TableExpandableSection';
 import DateDetails from '../../components/DateDetails/DateDetails';
 
 // CONTAINERS
@@ -57,7 +58,7 @@ const BudgetExecutions = props => {
       />
     </StyledExpandableSection>
 
-    <StyledExpandableSection
+    <TableExpandableSection
       marginBottom={"100px"}
       title={TABLE_TITLE}
       TitleIcon={TableChart}
@@ -72,7 +73,7 @@ const BudgetExecutions = props => {
         pageName={PAGE_NAME}
         pageTitle={PAGE_TITLE}
       />
-    </StyledExpandableSection>
+    </TableExpandableSection>
 
   </div>
 

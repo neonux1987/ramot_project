@@ -79,7 +79,9 @@ export const useSound = (url, options) => {
     soundEnabled,
     soundVolume,
     src: url,
-    currentTime: 0
+    currentTime: 0,
+    reverse: 0,
+    ...options
   });
 
   useEffect(() => {
@@ -97,18 +99,26 @@ export const useSound = (url, options) => {
     }));
   }
 
-  const play = (reverse = 0) => {
+  const play = (type) => {
+    // let the user pass a type of chosen
+    // sounds instead of passing own url
+    if ((url === undefined || url === null) && type) {
+      soundManager.play(type);
+      return;
+    }
 
     audio = new Audio();
     audio.src = localOptions.src;
     audio.volume = localOptions.soundVolume;
     audio.currentTime = localOptions.currentTime;
 
-    if (localOptions.soundEnabled && reverse === 0) {
+    // regular sound play
+    if (localOptions.soundEnabled && localOptions.reverse === 0) {
       audio.play();
     }
 
-    if (reverse === 1 && localOptions.soundEnabled === false) {
+    // play sound on reverse logic
+    if (localOptions.reverse === 1 && localOptions.soundEnabled === false) {
       audio.play();
     }
   }
@@ -118,9 +128,10 @@ export const useSound = (url, options) => {
       audio.pause();
   }
 
-  return [
+  return {
     play,
     setOptions,
-    pause
-  ]
+    pause,
+    types: soundManager.types
+  }
 }

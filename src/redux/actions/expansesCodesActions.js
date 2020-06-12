@@ -1,5 +1,6 @@
 import { ipcSendReceive } from './util/util';
 import { myToaster } from '../../Toasts/toastManager';
+import { showSavedNotification } from './savedNotificationActions';
 
 // TYPES
 export const TYPES = {
@@ -142,10 +143,7 @@ export const updateExpanseCode = (newCopy, oldCopy, index) => {
       receive: {
         channel: "expanse-code-updated"
       },
-      onSuccess: () => {
-        //send success notification
-        myToaster.success("הקוד עודכן בהצלחה.");
-      },
+      onSuccess: () => dispatch(showSavedNotification()),
       onError: () => {
         // rollback
         dispatch(updateStoreOnly(oldCopy, index));

@@ -6,7 +6,6 @@ import Column from './Column';
 const icon = css`
   width: 18px;
   height: 18px;
-  color: #000000;
   margin-left: 5px;
   margin-top: -2px;
 `;

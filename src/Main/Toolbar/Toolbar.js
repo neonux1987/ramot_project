@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useEffect } from "react";
 import classnames from 'classnames';
-import { Menu as MenuIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 // CSS
@@ -13,6 +12,10 @@ import EditVatModal from "../../components/modals/EditVatModal/EditVatModal";
 import VolumeButton from "./VolumeButton/VolumeButton";
 import MoreButton from "./MoreButton/MoreButton";
 import MoreMenu from "./MoreMenu/MoreMenu";
+import VatInfo from "./VatInfo/VatInfo";
+import ToggleButton from "./ToggleButton/ToggleButton";
+import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
+import SavedNotification from "./SavedNotification/SavedNotification";
 
 // ACTIONS
 import { toggleSidebar } from '../../redux/actions/sidebarActions';
@@ -23,7 +26,6 @@ import useModalLogic from "../../customHooks/useModalLogic";
 
 // SERVICES
 import { restartApp } from "../../services/mainProcess.svc";
-
 
 const Toolbar = ({ buildingName, page }) => {
 
@@ -66,27 +68,13 @@ const Toolbar = ({ buildingName, page }) => {
     <div className={styles.wrapper}>
 
       <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
-
-        <button
-          className={styles.toggleBtn}
-          onClick={() => dispatch(toggleSidebar())}
-        >
-          <MenuIcon style={{ display: "flex" }} />
-        </button>
-        <div style={{ marginRight: "10px", fontWeight: "600", fontSize: "15px" }}>
-          {`${navigationPath}`}
-        </div>
+        <ToggleButton className={styles.toggleBtn} onClick={() => dispatch(toggleSidebar())} />
+        <Breadcrumbs className={styles.breadcrumbs} navigationPath={navigationPath} />
       </div>
-
-      {/* <div className={classnames(styles.section, styles.alignCenter)}>
-        {`שנה ${props.year} / ${props.quarter} / חודש ${props.month}`}
-      </div> */}
 
       <div className={classnames(styles.section, styles.flexAlignLeft)}>
 
-        <div className={styles.vatWrapper}>
-          <span>מע"מ נוכחי: </span>{tax}
-        </div>
+        <VatInfo className={styles.vatWrapper} tax={tax} />
 
         <VolumeButton className={styles.volumeBtn} />
 

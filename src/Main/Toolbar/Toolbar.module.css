@@ -100,10 +100,24 @@
   margin-right: 15px;
   background-color: #0365a2;
   border: none;
+  min-width: unset;
   /* box-shadow: inset 0 4px 20px 0 rgba(0, 0, 0,.14), inset 0 7px 10px -5px rgba(175, 175, 175, 0.4); */
   color: #fff;
 }
 
 .toggleBtn:hover{
   background: #0675bb;
+}
+
+.breadcrumbs{
+  margin-right: 10px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.middleSection{
+  flex-grow: 0.4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

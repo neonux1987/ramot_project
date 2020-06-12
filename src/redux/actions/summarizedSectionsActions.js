@@ -1,5 +1,6 @@
 import { myToaster } from '../../Toasts/toastManager';
 import { ipcSendReceive } from './util/util';
+import { showSavedNotification } from './savedNotificationActions';
 
 // TYPES
 export const TYPES = {
@@ -115,7 +116,7 @@ export const updateSummarizedSection = (newCopy, oldCopy, index) => {
       receive: {
         channel: "summarized-section-updated"
       },
-      onSuccess: () => myToaster.success("הסעיף עודכן בהצלחה."),
+      onSuccess: () => dispatch(showSavedNotification()),
       onError: () => dispatch(updateSummarizedSectionStoreOnly(oldCopy, index)) // rollback
 
     });

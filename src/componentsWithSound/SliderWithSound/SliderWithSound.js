@@ -4,7 +4,7 @@ import { Slider } from '@material-ui/core';
 import slide from '../../assets/audio/slide.wav';
 
 export default props => {
-  const [play, setOptions] = useSound(slide);
+  const { play, setOptions } = useSound(slide);
 
   return <Slider
     {...props}

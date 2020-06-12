@@ -43,7 +43,7 @@ export default ({
 
   const headerWrapper = () => {
 
-    return (<div className={styles.wrapper} onClick={expandClick}>
+    return (<div className={styles.wrapper}>
 
       <div className={styles.titleWrapper}>
         <div className={styles.iconBox} style={{ backgroundColor: iconBoxBg }}>
@@ -58,7 +58,7 @@ export default ({
         {extraDetails && extraDetails()}
       </div>
 
-      {collapsable && <div className={styles.expandIconWrapper}>
+      {collapsable && <div className={styles.expandIconWrapper} onClick={expandClick}>
         {expandIcon}
       </div>}
 

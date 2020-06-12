@@ -87,15 +87,15 @@ const App = () => {
   useEffect(() => {
     const { appUpdates } = settings.data;
 
-    dispatch(checkForUpdates()).then(async ({ data }) => {
-      if (data !== null) {
-        const { version } = data;
+    dispatch(checkForUpdates()).then(async (result) => {
+      if (result.data !== undefined && result.data !== null) {
+        const { version } = result.data;
 
         if (appUpdates.userNotified === false && appUpdates.updateVersion !== version) {
 
           await dispatch(updateSettings("appUpdates", { userNotified: true }));
           await dispatch(saveSettings(false));
-          myToaster.AppUpdateNewVersion(data.version);
+          myToaster.AppUpdateNewVersion(version);
         }
 
       }

@@ -34,7 +34,7 @@ class DbBackupSvc {
       throw newError;
     }
 
-    const {
+    let {
       every_x_hours,
       currentDate,
       count
