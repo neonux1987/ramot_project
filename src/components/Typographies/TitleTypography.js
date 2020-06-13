@@ -2,11 +2,6 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import { css } from 'emotion';
 
-const style = css`
-  fontWeight: "bold",
-  textDecoration: underline ? "underline" : "",
-`;
-
 export default ({
   fontWeight = "600",
   textDecoration = "",

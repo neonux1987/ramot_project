@@ -1,7 +1,6 @@
 // LIBRARIES
 import React from 'react';
 import { css } from 'emotion';
-import classnames from 'classnames';
 import { TextField } from '@material-ui/core';
 
 // COMPONENTS
@@ -19,7 +18,7 @@ direction: ltr;
 `;
 
 
-export default ({ className = "", onClick, value = "", buttonLabel = "פתח מיקום" }) => {
+export default ({ className = "", onClick, value = "", buttonLabel = "שנה מיקום" }) => {
 
   return (
     <div className={className}>

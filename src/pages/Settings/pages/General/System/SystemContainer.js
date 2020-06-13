@@ -17,6 +17,7 @@ import { updateSettings, saveSettings } from '../../../../../redux/actions/setti
 import { soundManager } from '../../../../../soundManager/SoundManager';
 import Divider from '../../../../../components/Divider/Divider';
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
+import { showItemInFolder } from '../../../../../services/mainProcess.svc';
 
 const SETTINGS_NAME = "system";
 
@@ -29,7 +30,8 @@ export default () => {
 
   const {
     soundEnabled,
-    soundVolume
+    soundVolume,
+    config_file_path
   } = data;
 
   const onSoundCheck = (event) => {
@@ -92,7 +94,7 @@ export default () => {
         מיקום תיקיית הגדרות מערכת:
       </TitleTypography>
 
-      <FileSelector onClick={() => console.log("hello")} value="whyyyy" />
+      <FileSelector buttonLabel="פתח תיקייה" onClick={() => showItemInFolder(config_file_path)} value={config_file_path} />
 
     </StyledExpandableSection >
   );

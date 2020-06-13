@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useState } from 'react';
 import { Notifications } from '@material-ui/icons';
-import GoodBye from 'react-goodbye';
 import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS

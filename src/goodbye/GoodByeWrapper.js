@@ -12,10 +12,6 @@ const GoodByeWrapper = () => {
 
   const { dirty } = useSelector(store => store.goodBye)
 
-  const ok = () => {
-
-  }
-
   return <GoodBye when={dirty}>
     {({ isShow, handleOk, handleCancel }) =>
       isShow && (

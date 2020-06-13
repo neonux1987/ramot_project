@@ -5,7 +5,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
 import Services from './pages/Services/Services';
 import General from './pages/General/General';
-import Locations from './pages/Locations/Locations';
 import AppUpdates from './pages/AppUpdates/AppUpdates';
 import About from './pages/About/About';
 import { useSelector } from 'react-redux';
@@ -84,19 +83,6 @@ const Settings = ({ classes, match }, props) => {
           />
           <Tab
             classes={{ root: classes.tab }}
-            label="מיקום קבצים"
-            component={CustomNavLink}
-            to={{
-              pathname: `${match.path}/מיקום קבצים`,
-              state: {
-                page: "מיקום קבצים",
-                buildingName: "הגדרות"
-              }
-            }}
-            className={pageState.page === "מיקום קבצים" ? "activeButton2" : ""}
-          />
-          <Tab
-            classes={{ root: classes.tab }}
             label="שירותי מערכת"
             component={CustomNavLink}
             to={{
@@ -140,7 +126,6 @@ const Settings = ({ classes, match }, props) => {
         <Switch>
           <Route path={`${match.path}/כללי`} component={General} />
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
-          <Route path={`${match.path}/מיקום קבצים`} component={Locations} />
           <Route path={`${match.path}/שירותי מערכת`} component={Services} />
           <Route path={`${match.path}/עדכוני תוכנה`} component={AppUpdates} />
           <Route path={`${match.path}/אודות`} component={About} />

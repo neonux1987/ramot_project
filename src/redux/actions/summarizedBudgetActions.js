@@ -1,4 +1,3 @@
-import { myToaster } from '../../Toasts/toastManager';
 import { ipcSendReceive } from './util/util';
 import { showSavedNotification } from './savedNotificationActions';
 

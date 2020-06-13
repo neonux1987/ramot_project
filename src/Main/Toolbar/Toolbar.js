@@ -15,7 +15,6 @@ import MoreMenu from "./MoreMenu/MoreMenu";
 import VatInfo from "./VatInfo/VatInfo";
 import ToggleButton from "./ToggleButton/ToggleButton";
 import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
-import SavedNotification from "./SavedNotification/SavedNotification";
 
 // ACTIONS
 import { toggleSidebar } from '../../redux/actions/sidebarActions';

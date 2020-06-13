@@ -11,9 +11,6 @@ import {
   volumeSlider
 } from './Sound.module.css';
 
-// COMPONENTS
-import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
-
 // COMPONENTS WITH SOUND
 import SliderWithSound from '../../../../../../componentsWithSound/SliderWithSound/SliderWithSound';
 import SwitchWithSound from '../../../../../../componentsWithSound/SwitchWithSound/SwitchWithSound';

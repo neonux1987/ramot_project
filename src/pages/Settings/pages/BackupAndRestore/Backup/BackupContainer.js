@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography, MenuItem } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
@@ -40,7 +40,9 @@ const BackupContainer = () => {
   const dispatch = useDispatch();
 
   // state
-  const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
+  const { db_backup, locations } = useSelector(store => store.settings.data);
+
+  const settings = db_backup;
 
   const [data, setData] = useState(settings);
 
@@ -128,6 +130,12 @@ const BackupContainer = () => {
                   ...data,
                   path: newPath
                 });
+
+                dispatch(updateSettings("locations", {
+                  ...locations,
+                  db_backups_folder_path: newPath
+                }));
+
                 dispatch(setDirty());
                 dispatch(initializeRegisteredBackups()).catch((result) => {
                   myToaster.error(result.error);

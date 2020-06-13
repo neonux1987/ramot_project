@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './Button.module.css';
-import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
+import { Button } from '@material-ui/core';
 
 export default (props) => {
-  return <ButtonWithSound className={props.className || styles.btn} onClick={props.onClick} {...props}>
+  return <Button className={props.className || styles.btn} onClick={props.onClick} {...props}>
     {props.children}
-  </ButtonWithSound>
+  </Button>
 }

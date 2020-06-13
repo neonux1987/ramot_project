@@ -1,12 +1,11 @@
 {
+  "user": {
+    "reports_folder_path": "C:\\Users\\ag1987\\Documents\\קבוצת רמות\\דוחות"
+  },
   "system": {
-    "sound": {
-      "soundEnabled": true,
-      "soundVolume": 0.4
-    },
-    "systemLocation": {
-      "path": ""
-    }
+    "soundEnabled": true,
+    "soundVolume": 0.24,
+    "config_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config\\config.json"
   },
   "notifications": {
     "enabled": true,
@@ -31,38 +30,38 @@
       "every_x_hours": 1,
       "enabled": true
     },
-    "enabled": false,
+    "enabled": true,
     "last_update": "",
     "max_num_of_history_backups": 7,
-    "path": "",
-    "restart_required": true,
+    "path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group backups",
+    "restart_required": false,
     "backup_on_exit": true
   },
   "empty_reports_generator": {
     "enabled": false,
-    "restart_required": false
+    "restartRequired": false
   },
   "appUpdates": {
     "availableUpdate": false,
     "updateVersion": "",
     "releaseDate": "",
     "updateDownloaded": false,
-    "updateFilePath": "",
-    "userNotified": false
+    "userNotified": false,
+    "updateFilePath": ""
   },
   "db_restore": {
-    "last_update": ""
+    "last_update": "8.10.2019, 23:37:00"
   },
   "locations": {
-    "backups_names_file_path": "",
-    "config_file_path": "",
-    "config_folder_path": "",
-    "db_backups_folder_path": "",
-    "db_file_path": "",
-    "db_folder_path": "",
-    "reports_folder_path": "",
-    "services_file_path": "",
-    "logs_folder": "",
-    "log_file_path": ""
+    "db_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\db\\ramot-group-db.sqlite",
+    "db_folder_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\db",
+    "db_backups_folder_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group backups",
+    "reports_folder_path": "C:\\Users\\ag1987\\Documents\\קבוצת רמות\\דוחות",
+    "config_folder_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config",
+    "config_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config\\config.json",
+    "backups_names_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config\\backupsNames.json",
+    "logs_folder_path": "C:\\Users\\ag1987\\Documents\\קבוצת רמות\\יומן אירועים",
+    "log_file_path": "C:\\Users\\ag1987\\Documents\\קבוצת רמות\\יומן אירועים\\ramot-group-errors.log",
+    "services_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config\\services.json"
   }
 }
