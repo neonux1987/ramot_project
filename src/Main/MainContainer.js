@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import { Element, Events } from 'react-scroll'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { css } from 'emotion';
 
 // PAGES
 import MonthExpanses from '../pages/MonthExpanses/MonthExpanses';
@@ -25,6 +26,13 @@ import Helper from '../helpers/Helper';
 // ACTIONS
 import * as sidebarActions from '../redux/actions/sidebarActions';
 import * as routesActions from '../redux/actions/routesActions';
+
+const mainStyle = css`
+height: 100%;
+  height: 450px;
+  background: #e0e3e6;
+  padding-top: 10px;
+`;
 
 const styles = theme => ({
   main: {
@@ -107,7 +115,9 @@ class MainContainer extends Component {
         className={this.props.classes.main + this.props.toggleMain}
       >
         <main
-          ref={this.props.mainContainer} style={{ height: "100%" }}>
+          ref={this.props.mainContainer}
+          className={mainStyle}
+        >
           <Toolbar
             buildingName={locationState.buildingName}
             page={locationState.page}

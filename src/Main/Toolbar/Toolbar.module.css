@@ -102,13 +102,13 @@
   outline: none;
   cursor: pointer;
   margin-right: 15px;
-  background-color: #0365a2;
-  background: linear-gradient(60deg, rgb(13, 132, 206), rgb(3, 101, 162));
+  /* background-color: #0365a2; */
+  /* background: linear-gradient(60deg, rgb(13, 132, 206), rgb(3, 101, 162)); */
   border: none;
   min-width: unset;
   /* box-shadow: inset 0 4px 20px 0 rgba(0, 0, 0,.14), inset 0 7px 10px -5px rgba(175, 175, 175, 0.4); */
   /* box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12); */
-  color: #fff;
+  color: #fafafa;
 }
 
 .toggleBtn:hover{
