@@ -7,6 +7,7 @@ import Services from './pages/Services/Services';
 import General from './pages/General/General';
 import AppUpdates from './pages/AppUpdates/AppUpdates';
 import About from './pages/About/About';
+import Theme from './pages/Theme/Theme';
 import { useSelector } from 'react-redux';
 import CustomNavLink from '../../components/CustomNavLink/CustomNavLink';
 
@@ -71,6 +72,19 @@ const Settings = ({ classes, match }, props) => {
           />
           <Tab
             classes={{ root: classes.tab }}
+            label="עיצוב"
+            component={CustomNavLink}
+            to={{
+              pathname: `${match.path}/עיצוב`,
+              state: {
+                page: "עיצוב",
+                buildingName: "הגדרות"
+              }
+            }}
+            className={pageState.page === "עיצוב" ? "activeButton2" : ""}
+          />
+          <Tab
+            classes={{ root: classes.tab }}
             label="גיבוי ושחזור"
             component={CustomNavLink}
             to={{
@@ -126,6 +140,7 @@ const Settings = ({ classes, match }, props) => {
       <div>
         <Switch>
           <Route path={`${match.path}/כללי`} component={General} />
+          <Route path={`${match.path}/עיצוב`} component={Theme} />
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
           <Route path={`${match.path}/שירותי מערכת`} component={Services} />
           <Route path={`${match.path}/עדכוני תוכנה`} component={AppUpdates} />

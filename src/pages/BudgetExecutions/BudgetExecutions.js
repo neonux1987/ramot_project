@@ -1,13 +1,12 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
-import { Equalizer, TableChart } from '@material-ui/icons';
+import { TableChart } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 
 // COMMON COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import StyledExpandableSection from '../../components/Section/StyledExpandableSection';
 import TableExpandableSection from '../../components/Section/TableExpandableSection';
 import DateDetails from '../../components/DateDetails/DateDetails';
 
@@ -21,6 +20,7 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
+import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -46,23 +46,13 @@ const BudgetExecutions = props => {
 
   return <div className={"page"}>
 
-    {/* <StyledExpandableSection
-      title={STATS_TITLE}
-      TitleIcon={Equalizer}
-      iconBoxBg={"rgb(3, 162, 151)"}
-    >
+    <StrippedExpandableSection title={STATS_TITLE}>
       <QuarterStatsContainer
         buildingName={buildingNameEng}
         date={date}
         pageName={PAGE_NAME}
       />
-    </StyledExpandableSection> */}
-
-    <QuarterStatsContainer
-      buildingName={buildingNameEng}
-      date={date}
-      pageName={PAGE_NAME}
-    />
+    </StrippedExpandableSection>
 
     <TableExpandableSection
       marginBottom={"100px"}

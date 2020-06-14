@@ -16,7 +16,7 @@ import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
 import ModalRoot from './components/modals/ModalRoot';
 
 // CONTEXT
-import SettingsContext from './context/SettingsContext';
+import ThemeContext from './context/ThemeContext';
 
 // CSS
 import 'react-toastify/dist/ReactToastify.css';
@@ -240,13 +240,15 @@ const App = () => {
 
           <ScrollToTop mainContainer={mainContainer} />
 
-          <SettingsContext.Provider value={settings.data}>
 
-            <AppFrame handlers={{
-              close: closeButtonHandler,
-              minimize: minimizeButtonHandler,
-              maximize: maximizeButtonHandler
-            }} />
+
+          <AppFrame handlers={{
+            close: closeButtonHandler,
+            minimize: minimizeButtonHandler,
+            maximize: maximizeButtonHandler
+          }} />
+
+          <ThemeContext.Provider value={settings.data.theme}>
 
             <div style={{
               display: "flex",
@@ -264,7 +266,7 @@ const App = () => {
             </div>
 
             <CustomToastContainer />
-          </SettingsContext.Provider>
+          </ThemeContext.Provider>
 
           <ModalRoot />
 

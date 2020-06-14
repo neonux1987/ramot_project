@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useState } from 'react';
-import { Android } from '@material-ui/icons';
+import { AccessibilityNew } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
@@ -75,7 +75,7 @@ export default () => {
   return (
     <StyledExpandableSection
       title={"משתמש"}
-      TitleIcon={Android}
+      TitleIcon={AccessibilityNew}
       iconColor={"#0365a2"}
       extraDetails={() => <SaveButton onClick={save}>שמור</SaveButton>}
       padding={"30px 20px"}

@@ -21,6 +21,19 @@
       "pauseOnHover": true
     }
   },
+  "theme": {
+    "mainColors": {
+      "primary": "#0365a2",
+      "darkBlue": "#2b3a4a"
+    },
+    "colorSet": {
+      "0": "rgb(112, 81, 185)",
+      "1": "rgb(56, 109, 177)",
+      "2": "rgb(49, 146, 108)",
+      "3": "rgb(220, 60, 96)",
+      "4": "rgb(248, 77, 30)"
+    }
+  },
   "db_backup": {
     "backups_to_save": 2,
     "byTime": {

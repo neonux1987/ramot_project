@@ -14,8 +14,10 @@ import Stats from '../../components/Stats/Stats';
 import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 
-class YearStatsContainer extends React.PureComponent {
+import ThemeContext from '../../context/ThemeContext';
 
+class YearStatsContainer extends React.PureComponent {
+  static contextType = ThemeContext;
   componentDidMount() {
     if (this.props.date.year !== undefined)
       this.fetchData();
@@ -51,6 +53,8 @@ class YearStatsContainer extends React.PureComponent {
   }
 
   generateQuarterlyStats(quarterlyStats, isFetching) {
+    const colors = this.context.colorSet;
+
     // list of strings of qurter months
     const quarters = Helper.getYearQuarters();
 
@@ -65,7 +69,7 @@ class YearStatsContainer extends React.PureComponent {
         outcome={quarterlyStats[i].outcome}
         income={quarterlyStats[i].income}
         unicodeSymbol={Helper.shekelUnicode}
-        titleColor={Helper.quartersColors[i]}
+        titleColor={colors[i]}
         loading={isFetching}
       />;
 
@@ -82,7 +86,7 @@ class YearStatsContainer extends React.PureComponent {
       outcome={yearStats.outcome}
       income={yearStats.income}
       unicodeSymbol={Helper.shekelUnicode}
-      titleColor={Helper.endYearColor}
+      titleColor={this.context.colorSet[4]}
       loading={isFetching}
     />;
   }

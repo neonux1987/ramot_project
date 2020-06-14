@@ -7,7 +7,7 @@ export default (OriginalComponent, value = Number, logicalStyle = {
   },
   positive: {
     color: "#ffffff",
-    backgroundColor: "rgb(69, 189, 90)"
+    backgroundColor: "rgb(25, 189, 121)"
   },
   neutral: {
     color: "#000000",

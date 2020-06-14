@@ -15,7 +15,7 @@ import Helper from '../../helpers/Helper';
 import { areEqual } from '../util';
 
 // CONTEXT
-import GlobalContext from '../../context/GlobalContext';
+import ThemeContext from '../../context/ThemeContext';
 
 // COMPONENTS
 import TableControls from '../../components/table/TableControls/TableControls';
@@ -55,7 +55,7 @@ const SummarizedBudgetsTableContainer = props => {
     toggleEditMode
   } = props;
 
-  const globalContext = useContext(GlobalContext);
+  const themeContext = useContext(ThemeContext);
 
   const dispatch = useDispatch();
 
@@ -155,7 +155,7 @@ const SummarizedBudgetsTableContainer = props => {
 
   const HeaderGroups = () => {
 
-    const { groupColors } = globalContext;
+    const { colorSet } = themeContext;
     const { quarter, year } = date;
 
     const quarters = Helper.getYearQuarters(quarter);
@@ -167,7 +167,7 @@ const SummarizedBudgetsTableContainer = props => {
     const quarterColumns = quarters.map((quarter, i) => {
       return <GroupColumn
         span={2}
-        color={groupColors[i]}
+        color={colorSet[i]}
         key={i}
       >{quarter}</GroupColumn>;
     });
@@ -180,28 +180,28 @@ const SummarizedBudgetsTableContainer = props => {
       {quarterColumns}
       <GroupColumn
         span={3}
-        color={groupColors[4]}
+        color={colorSet[4]}
       >{`סוף שנת ${year}`}</GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
     </GroupRow>
   }
 
   const HeadersRow = () => {
-    const { groupColors } = globalContext;
+    const { colorSet } = themeContext;
 
     const quarterColumns = [];
 
     for (let i = 0; i < 4; i++) {
-      quarterColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderColumn>);
-      quarterColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderColumn>);
+      quarterColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: colorSet[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderColumn>);
+      quarterColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: colorSet[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderColumn>);
     }
 
     const yearStyle = {
       ...defaultheaderStyle,
-      color: groupColors[4]
+      color: colorSet[4]
     }
 
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} /* style={{ backgroundColor: "#f5f6f9" }} */>
 
       {editMode ? <HeaderColumn style={defaultheaderStyle}>{"פעולות"}</HeaderColumn> : null}
       <HeaderColumn style={defaultheaderStyle}>{"שורה"}</HeaderColumn>

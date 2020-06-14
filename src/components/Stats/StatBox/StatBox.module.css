@@ -1,11 +1,11 @@
 .container{
-    margin: 0 0 0 15px;
-    /* background: #f3f4f8; */
-    background-color: #ffffff;
-    border: 1px solid #ece9e9;
-    border-radius: 5px;
-    min-height: 200px;
-    padding: 20px;
+  margin: 0 0 0 15px;
+  /* background: #f3f4f8; */
+  background-color: #ffffff;
+  border: 1px solid #ece9e9;
+  border-radius: 5px;
+  height: 200px;
+  padding: 20px;
 }
 
 .upper{
@@ -23,7 +23,7 @@
 
 .titleText{
   color: #000000;
-  font-size: 24px;
+  font-size: 26px;
 }
 
 .chartWrapper{
@@ -39,68 +39,40 @@
 }
 
 .bottom{
-  display: flex;
-  padding: 10px 0;
-}
-
-.right{
-  flex-grow: 1;
+  padding: 15px 0;
 }
 
 .incomeWrapper{
   display: flex;
   align-items: baseline;
+  line-height: 31px;
 }
 
 .incomeText,.outcomeText,.differenceText{
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .outcomeWrapper{
   display: flex;
   align-items: baseline;
+  line-height: 31px;
 }
 
 .incomeDescription,.outcomeDescription,.differenceDescritpion{
-  color: #999999;
+  color: #3a3535;
   margin-right: 5px;
-}
-
-.left{
-  flex-grow: 1;
-}
-
-.infoBox .body{
-  background-color: initial;
-    box-shadow: initial;
-    border-radius: initial;
-    display: flex;
-}
-
-.body .expansesTitle{
-  color: #323a3c;
   font-size: 16px;
-  text-align: center;
-  margin-bottom: 0;
+  font-weight: 600;
 }
 
-.body{
-  display: flex;
-    justify-content: center;
-}
+@media only screen and (max-width: 1400px) {
+  .container {
+    padding: 10px;
+    margin: 0 0 0 10px;
+  }
 
-.content{
-  width: 50%;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.alignCenter{
-  text-align: center;
-}
-
-.fontSize20{
-  font-size: 20px;
+  .titleText{
+    color: #000000;
+    font-size: 24px;
+  }
 }

@@ -16,7 +16,7 @@ import Helper from '../../helpers/Helper';
 import { areEqual } from '../util';
 
 // CONTEXT
-import GlobalContext from '../../context/GlobalContext';
+import ThemeContext from '../../context/ThemeContext';
 
 // COMPONENTS
 import TableControls from '../../components/table/TableControls/TableControls';
@@ -63,7 +63,7 @@ const BudgetExecutionsTable = props => {
     toggleAddNewMode
   } = props;
 
-  const globalContext = useContext(GlobalContext);
+  const themeContext = useContext(ThemeContext);
   const { showModal } = useModalLogic();
   const dispatch = useDispatch();
 
@@ -221,7 +221,7 @@ const BudgetExecutionsTable = props => {
 
   const HeaderGroups = () => {
     const editMode = props.editMode;
-    const { groupColors } = globalContext;
+    const { colorSet } = themeContext;
     const { quarter } = date;
 
     const months = Helper.getQuarterMonths(quarter);
@@ -234,7 +234,7 @@ const BudgetExecutionsTable = props => {
     const monthColumns = months.map((month, i) => {
       return <GroupColumn
         span={2}
-        color={groupColors[i]}
+        color={colorSet[i]}
         key={i}
         style={defaultStyle}
       >{month}</GroupColumn>;
@@ -247,7 +247,7 @@ const BudgetExecutionsTable = props => {
       {monthColumns}
       <GroupColumn
         span={3}
-        color={groupColors[3]}
+        color={colorSet[3]}
         style={defaultStyle}
       >{`סוף רבעון ${quarter}`}</GroupColumn>
       <GroupColumn style={defaultStyle}></GroupColumn>
@@ -258,21 +258,21 @@ const BudgetExecutionsTable = props => {
   const HeadersRow = () => {
     const editMode = props.editMode;
 
-    const { groupColors } = globalContext;
+    const { colorSet } = themeContext;
 
     const monthColumns = [];
 
     for (let i = 0; i < 3; i++) {
-      monthColumns.push(<HeaderColumn editMode={editMode} style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderColumn>);
-      monthColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: groupColors[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderColumn>);
+      monthColumns.push(<HeaderColumn editMode={editMode} style={{ ...defaultheaderStyle, color: colorSet[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderColumn>);
+      monthColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: colorSet[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderColumn>);
     }
 
     const quarterStyle = {
       ...defaultheaderStyle,
-      color: groupColors[3]
+      color: colorSet[3]
     }
 
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} /* style={{ backgroundColor: "#f5f6f9" }} */>
 
       {editMode ? <HeaderColumn style={defaultheaderStyle}>{"פעולות"}</HeaderColumn> : null}
       <HeaderColumn style={defaultheaderStyle}>{"שורה"}</HeaderColumn>

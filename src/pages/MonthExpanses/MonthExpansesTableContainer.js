@@ -247,7 +247,7 @@ const MonthExpansesTableContainer = props => {
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    return <HeaderRow gridTemplateColumns={gridTemplateColumns} style={{ backgroundColor: "#f5f6f9" }}>
+    return <HeaderRow gridTemplateColumns={gridTemplateColumns} /* style={{ backgroundColor: "#f5f6f9" }} */>
 
       {editMode ? <HeaderColumn style={headerStyle}>{"פעולות"}</HeaderColumn> : null}
       <HeaderColumn style={headerStyle}>{"שורה"}</HeaderColumn>
