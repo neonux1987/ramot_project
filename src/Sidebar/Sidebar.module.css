@@ -20,7 +20,8 @@
 
 .drawerPaper {
   width: 240px;
-  background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%);
+  /* background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%); */
+  background-color: #2b3a4a;
   /* background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgba(46, 55, 62, 0.84) 100%); */
   overflow: initial;
   position: relative;

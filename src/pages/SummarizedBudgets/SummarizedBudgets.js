@@ -45,7 +45,7 @@ const SummarizedBudgets = props => {
 
   return <div className={"page"}>
 
-    <StyledExpandableSection
+    {/* <StyledExpandableSection
       title={STATS_TITLE}
       TitleIcon={Equalizer}
       iconBoxBg={"rgb(3, 162, 151)"}
@@ -55,7 +55,13 @@ const SummarizedBudgets = props => {
         date={date}
         pageName={PAGE_NAME}
       />
-    </StyledExpandableSection>
+    </StyledExpandableSection> */}
+
+    <YearStatsContainer
+      buildingName={buildingNameEng}
+      date={date}
+      pageName={PAGE_NAME}
+    />
 
     <TableExpandableSection
       title={TABLE_TITLE}

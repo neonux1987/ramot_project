@@ -13,7 +13,6 @@ import CustomNavLink from '../../components/CustomNavLink/CustomNavLink';
 const styles = (theme) => ({
   tabs: {
     flexGrow: 1,
-    backgroundColor: "rgb(46, 55, 62)"
   },
   tab: {
     fontSize: "16px"
@@ -29,7 +28,9 @@ const styles = (theme) => ({
   },
   appBar: {
     width: "initial",
-    boxShadow: "none"
+    boxShadow: "none",
+    backgroundColor: "#2b3a4a",
+    borderRadius: "5px !important"
   }
 });
 

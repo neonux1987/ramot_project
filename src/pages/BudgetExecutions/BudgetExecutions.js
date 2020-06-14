@@ -46,7 +46,7 @@ const BudgetExecutions = props => {
 
   return <div className={"page"}>
 
-    <StyledExpandableSection
+    {/* <StyledExpandableSection
       title={STATS_TITLE}
       TitleIcon={Equalizer}
       iconBoxBg={"rgb(3, 162, 151)"}
@@ -56,7 +56,13 @@ const BudgetExecutions = props => {
         date={date}
         pageName={PAGE_NAME}
       />
-    </StyledExpandableSection>
+    </StyledExpandableSection> */}
+
+    <QuarterStatsContainer
+      buildingName={buildingNameEng}
+      date={date}
+      pageName={PAGE_NAME}
+    />
 
     <TableExpandableSection
       marginBottom={"100px"}

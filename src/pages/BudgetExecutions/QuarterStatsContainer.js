@@ -1,7 +1,6 @@
 // LIBRARIES IMPORTS
 import React from 'react';
 import propTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 import * as monthlyStatsActions from '../../redux/actions/monthlyStatsActions';
 import * as quarterlyStatsActions from '../../redux/actions/quarterlyStatsActions';
@@ -65,9 +64,10 @@ class QuarterStatsContainer extends React.PureComponent {
       returnStats[i] = <StatBox
         key={i}
         title={monthStats[i].month}
-        outcome={`${monthStats[i].outcome} ${Helper.shekelUnicode}`}
-        income={`${monthStats[i].income} ${Helper.shekelUnicode}`}
-        bgColor={Helper.quarterMonthsColors[i]}
+        outcome={monthStats[i].outcome}
+        income={monthStats[i].income}
+        unicodeSymbol={Helper.shekelUnicode}
+        titleColor={Helper.quarterMonthsColors[i]}
         loading={isFetching}
       />;
 
@@ -81,9 +81,10 @@ class QuarterStatsContainer extends React.PureComponent {
     return <StatBox
       key={3}
       title={`רבעון ${quarterStat.quarter}`}
-      outcome={`${quarterStat.outcome} ${Helper.shekelUnicode}`}
-      income={`${quarterStat.income} ${Helper.shekelUnicode}`}
-      bgColor={Helper.endQuarterColor}
+      outcome={quarterStat.outcome}
+      income={quarterStat.income}
+      unicodeSymbol={Helper.shekelUnicode}
+      titleColor={Helper.endQuarterColor}
       loading={isFetching}
     />;
   }

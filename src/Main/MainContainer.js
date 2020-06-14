@@ -29,9 +29,10 @@ import * as routesActions from '../redux/actions/routesActions';
 
 const mainStyle = css`
 height: 100%;
-  height: 450px;
-  background: #e0e3e6;
-  padding-top: 10px;
+padding-top: 20px;
+  /* height: 450px;
+  background: #f5f5f5;
+  padding-top: 10px; */
 `;
 
 const styles = theme => ({
@@ -114,10 +115,7 @@ class MainContainer extends Component {
         id="mainContainer"
         className={this.props.classes.main + this.props.toggleMain}
       >
-        <main
-          ref={this.props.mainContainer}
-          className={mainStyle}
-        >
+        <main ref={this.props.mainContainer} className={mainStyle}>
           <Toolbar
             buildingName={locationState.buildingName}
             page={locationState.page}

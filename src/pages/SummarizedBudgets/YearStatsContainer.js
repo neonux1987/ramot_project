@@ -62,9 +62,10 @@ class YearStatsContainer extends React.PureComponent {
       returnStats[i] = <StatBox
         key={`quarter${i}`}
         title={quarters[i]}
-        outcome={`${quarterlyStats[i].outcome} ${Helper.shekelUnicode}`}
-        income={`${quarterlyStats[i].income} ${Helper.shekelUnicode}`}
-        bgColor={Helper.quartersColors[i]}
+        outcome={quarterlyStats[i].outcome}
+        income={quarterlyStats[i].income}
+        unicodeSymbol={Helper.shekelUnicode}
+        titleColor={Helper.quartersColors[i]}
         loading={isFetching}
       />;
 
@@ -78,9 +79,10 @@ class YearStatsContainer extends React.PureComponent {
     return <StatBox
       key={"year"}
       title={`שנת ${yearStats.year}`}
-      outcome={`${yearStats.outcome} ${Helper.shekelUnicode}`}
-      income={`${yearStats.income} ${Helper.shekelUnicode}`}
-      bgColor={Helper.endYearColor}
+      outcome={yearStats.outcome}
+      income={yearStats.income}
+      unicodeSymbol={Helper.shekelUnicode}
+      titleColor={Helper.endYearColor}
       loading={isFetching}
     />;
   }

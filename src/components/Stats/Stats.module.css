@@ -1,6 +1,7 @@
 .wrapper{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin: 40px 20px;
 }
 
 .wrapper div:first-child{

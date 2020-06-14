@@ -13,11 +13,11 @@
   display: flex;
   justify-content: stretch;
   /* background: #f3f4f8; */
-  margin-top: 10px;
   /* border-left: 1px solid #dde1e2;
   border-right: 1px solid #dde1e2;
   border-bottom: 1px solid #dde1e2; */
-  background: rgb(46, 55, 62);
+  /* background: rgb(46, 55, 62); */
+  background-color: #2b3a4a;
   /* border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px; */
   border-radius: 5px;
