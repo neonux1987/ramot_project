@@ -5,14 +5,14 @@
   "system": {
     "soundEnabled": true,
     "soundVolume": 0.24,
-    "config_file_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config\\config.json"
+    "config_folder_path": "C:\\Users\\ag1987\\AppData\\Roaming\\ramot group data\\config"
   },
   "notifications": {
     "enabled": true,
     "toastContainerProps": {
       "width": "340px",
       "position": "bottom-right",
-      "autoClose": 3000,
+      "autoClose": 4000,
       "hideProgressBar": true,
       "newestOnTop": false,
       "rtl": true,

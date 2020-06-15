@@ -123,7 +123,7 @@ const App = () => {
         case "dbBackupFinished":
           toastManager.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: toastManager.TYPES.SUCCESS,
+            type: toastManager.types.SUCCESS,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
@@ -131,7 +131,7 @@ const App = () => {
         case "dbBackupError":
           toastManager.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: toastManager.TYPES.ERROR,
+            type: toastManager.types.ERROR,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
@@ -145,7 +145,7 @@ const App = () => {
         case "reportsGenerationFinished":
           toastManager.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: toastManager.TYPES.SUCCESS,
+            type: toastManager.types.SUCCESS,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
@@ -187,7 +187,7 @@ const App = () => {
     const promise = await initiateDbBackup().catch((result) => {
       toastManager.update(id, {
         render: <ToastRender message={result.error} />,
-        type: toastManager.TYPES.ERROR,
+        type: toastManager.types.ERROR,
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
@@ -200,7 +200,7 @@ const App = () => {
     if (promise)
       toastManager.update(id, {
         render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
-        type: toastManager.TYPES.SUCCESS,
+        type: toastManager.types.SUCCESS,
         delay: 2000,
         autoClose: 1500,
         onClose: () => {

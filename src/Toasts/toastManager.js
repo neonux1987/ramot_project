@@ -21,20 +21,9 @@ const TYPES = {
 
 class ToastManager {
 
-  constructor() {
-    this.settings = remote.getGlobal("sharedObject").settings.notifications;
-  }
-
   types = TYPES;
 
-  reload = () => {
-    this.settings = remote.getGlobal("sharedObject").settings.notifications;
-  };
-
   appUpdateNewVersion = (version, properties = {}) => {
-    if (!this.settings.enabled)
-      return;
-
     play(types.update);
     return toast(<AppUpdateNewVersionToast version={version} />, {
       className: styles.basic,
@@ -45,9 +34,6 @@ class ToastManager {
   };
 
   appUpdateInstall = (version, properties = {}) => {
-    if (!this.settings.enabled)
-      return;
-
     play(types.update);
     toast(<AppUpdateInstallToast version={version} />, {
       className: styles.basic,
@@ -58,9 +44,6 @@ class ToastManager {
   };
 
   basic = (content, properties = {}) => {
-    if (!this.settings.enabled)
-      return;
-
     play(types.message);
     return toast.info(content, {
       className: styles.basic,
@@ -69,9 +52,6 @@ class ToastManager {
   };
 
   info = (content, properties = {}) => {
-    if (!this.settings.enabled)
-      return;
-
     play(types.message);
     return toast.info(content, {
       className: styles.info,
@@ -80,9 +60,6 @@ class ToastManager {
   };
 
   success = (content, properties) => {
-    if (!this.settings.enabled)
-      return;
-
     play(types.message);
     return toast.success(content, {
       className: styles.success,
@@ -91,9 +68,6 @@ class ToastManager {
   };
 
   warning = (content, properties) => {
-    if (!this.settings.enabled)
-      return;
-
     play(types.warning);
     return toast.warning(content, {
       className: styles.warning,
@@ -110,9 +84,6 @@ class ToastManager {
   };
 
   update = (id, properties) => {
-    if (!this.settings.enabled)
-      return;
-
     return toast.update(id, {
       className: styles[properties.type],
       ...properties
@@ -123,30 +94,3 @@ class ToastManager {
 }
 
 export const toastManager = new ToastManager();
-
-/* toast = (type,content,options)=>{
-  const {enabled} = this.settings;
-
-  if(!enabled)
-    return;
-
-  switch(type){
-    case types.BASIC:
-      return basic(content,options);
-      case types.INFO:
-        return info(content,options);
-      case types.SUCCESS:
-        return success(content,options);
-      case types.WARNING:
-        return warning(content,options);
-      case types.ERROR:
-        return error(content,options);
-      case types.UPDATE:
-        return update(content,options);
-      case types.DISMISS:
-        return dismiss(content,options);
-      default:
-          return null;
-  }
-
-} */

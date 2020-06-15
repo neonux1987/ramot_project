@@ -160,7 +160,7 @@ class MainSystem {
       const message = `
       המערכת נכשלה בעת ההפעלה עקב תקלה.\n
       לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
-      ${SystemPaths.paths.logs_folder}
+      ${SystemPaths.paths.logs_folder_path}
       `;
 
       const dialogData = await dialog.showMessageBox({

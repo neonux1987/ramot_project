@@ -14,6 +14,7 @@ import { updateSettings, saveSettings } from '../../../../../redux/actions/setti
 
 // SERVICES
 import { selectFolderDialog } from '../../../../../services/electronDialogs.svc';
+import { openItem } from '../../../../../services/mainProcess.svc';
 
 // ACTIONS
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
@@ -85,7 +86,7 @@ export default () => {
         מיקום תיקיית דוחות אקסל:
       </TitleTypography>
 
-      <FileSelector onClick={dbSelectFolderHandler} value={reports_folder_path} />
+      <FileSelector onChangeClick={dbSelectFolderHandler} onOpenClick={() => openItem(reports_folder_path)} value={reports_folder_path} />
 
     </StyledExpandableSection >
   );

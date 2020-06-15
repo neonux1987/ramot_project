@@ -9,5 +9,5 @@ exports.asyncForEach = async function (array, callback) {
 }
 
 exports.openLogFile = () => {
-  shell.showItemInFolder(SystemPaths.paths.log_file);
+  shell.showItemInFolder(SystemPaths.paths.log_file_path);
 }

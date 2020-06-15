@@ -30,3 +30,7 @@ export const restartApp = () => {
 export const showItemInFolder = (path) => {
   ipcRenderer.send('show-item-in-folder', path);
 };
+
+export const openItem = (path) => {
+  ipcRenderer.send('open-item', path);
+};

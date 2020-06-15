@@ -37,7 +37,7 @@ class DbBackupSvc {
     let {
       every_x_hours,
       currentDate,
-      count
+      executed_backups
     } = settings.db_backup.byTime;
 
     // get rid of the time portion
@@ -49,7 +49,7 @@ class DbBackupSvc {
     // we want the backup to run maxCount times a day
     if (currentDate === "" || newCurrentDate.getTime() !== oldDate.getTime()) {
       currentDate = newCurrentDate.toJSON();
-      count = 0;
+      executed_backups = 0;
     }
 
     this.rule = new schedule.RecurrenceRule();
@@ -58,7 +58,7 @@ class DbBackupSvc {
     this.rule.minute = 0;
 
     // execute scheduler
-    this.backupSchedule = schedule.scheduleJob(this.rule, this.schedulerCallback);
+    this.backupSchedule = schedule.scheduleJob(`*/${every_x_hours} * * * *`, this.schedulerCallback);
 
     if (this.backupSchedule.nextInvocation() === null) {
       return Promise.reject();
@@ -105,9 +105,9 @@ class DbBackupSvc {
     //fetch db backup settings
     let settings = await this.settingsLogic.getSettings();
 
-    const { count, day_max_allowed_backups, enabled } = settings.db_backup.byTime;
+    const { executed_backups, day_max_allowed_backups, enabled } = settings.db_backup.byTime;
 
-    if (count < day_max_allowed_backups && enabled) {
+    if (executed_backups < day_max_allowed_backups && enabled) {
       //notify that the backup process started
       rendererNotificationSvc.notifyRenderer("notify-renderer", "dbBackupStarted", "המערכת מבצעת גיבוי של בסיס הנתונים...");
 
@@ -190,7 +190,7 @@ class DbBackupSvc {
     //save it to the settings obj
     settings.db_backup.last_update = date.toJSON();
 
-    settings.db_backup.byTime.count++;
+    settings.db_backup.byTime.executed_backups++;
 
     //write the new settings
     await this.settingsLogic.updateSettings(settings);

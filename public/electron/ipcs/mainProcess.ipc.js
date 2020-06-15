@@ -23,7 +23,7 @@ const mainProcessIpc = () => {
     }
   });
 
-  process.on("uncaughtException", (error, origin) => {
+  process.on("uncaughtException", async (error, origin) => {
     const loggerError = new LoggerError({
       name: "MainProcess",
       message: "קרתה תקלה לא ידועה",
@@ -36,17 +36,17 @@ const mainProcessIpc = () => {
       קרתה תקלה לא ידועה: 
       ${error.message}
       לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
-      ${SystemPaths.paths.logs_folder}
+      ${SystemPaths.paths.logs_folder_path}
       `;
 
-    const dialogOption = dialog.showMessageBoxSync({
+    const dialogData = await dialog.showMessageBox({
       title,
       message,
       type: "error",
       buttons: ["סגור", "פתח יומן אירועים"]
     });
 
-    if (dialogOption === 1) {
+    if (dialogData.response === 1) {
       openLogFile();
     }
 
@@ -65,7 +65,11 @@ const mainProcessIpc = () => {
 
   ipcMain.on('show-item-in-folder', (event, path) => {
     shell.showItemInFolder(path);
-  })
+  });
+
+  ipcMain.on('open-item', (event, path) => {
+    shell.openItem(path);
+  });
 
 }
 

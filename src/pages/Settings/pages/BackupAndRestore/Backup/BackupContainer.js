@@ -11,12 +11,12 @@ import styles from './BackupContainer.module.css';
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import SaveButton from '../../../../../components/SaveButton/SaveButton';
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
-import BackupFolderSelector from './BackupFolderSelector/BackupFolderSelector';
 import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';
 import CheckboxWithLabel from '../../../../../components/CheckboxWithLabel/CheckboxWithLabel';
 import Divider from '../../../../../components/Divider/Divider';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
+import FileSelector from '../../../../../components/FileSelector/FileSelector';
 
 // SERVICES
 import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogs.svc';
@@ -116,7 +116,7 @@ const BackupContainer = () => {
     dispatch(setDirty());
   }
 
-  const dbSelectFolderHandler = () => {
+  const dbSelectFolderHandler = (name) => {
     const options = {
       defaultPath: data.path
     }
@@ -216,9 +216,10 @@ const BackupContainer = () => {
 
       <CheckboxWithLabel label="גיבוי ביציאה" value={data.backup_on_exit} onChange={onBackupOnExitChange} />
 
-      <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} />
+      {/* <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} /> */}
+      <FileSelector onChangeClick={dbSelectFolderHandler} value={data.path} />
 
-      <Divider />
+      <Divider margin="40px 0 20px" />
 
       <TitleTypography>
         הגדרות גיבוי:

@@ -17,12 +17,24 @@ padding: 9px 14px;
 direction: ltr;
 `;
 
+const buttonStyle = css`
+  margin-left:6px;
+`;
 
-export default ({ className = "", onClick, value = "", buttonLabel = "שנה מיקום" }) => {
+export default ({
+  className = "",
+  onChangeClick,
+  onOpenClick,
+  value = "",
+  onChangebuttonLabel = "שנה מיקום",
+  onOpenButtonLabel = "פתח תיקייה"
+}) => {
 
   return (
     <div className={className}>
-      <PrimaryButton onClick={onClick}>{buttonLabel}</PrimaryButton>
+      {onOpenClick ? <PrimaryButton className={buttonStyle} onClick={onOpenClick}>{onOpenButtonLabel}</PrimaryButton> : null}
+      {onChangeClick ? <PrimaryButton className={buttonStyle} onClick={onChangeClick}>{onChangebuttonLabel}</PrimaryButton> : null}
+
       <TextField
         id="outlined-bare"
         disabled
