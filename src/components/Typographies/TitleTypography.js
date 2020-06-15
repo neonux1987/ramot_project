@@ -4,15 +4,15 @@ import { css } from 'emotion';
 
 export default ({
   fontWeight = "600",
-  textDecoration = "",
-  gutterBottom = "15px",
+  underline = true,
+  gutterBottom = "20px",
   variant = "subtitle1",
   children
 }) => {
 
   const style = css`
   font-weight: ${fontWeight};
-  text-decoration: ${textDecoration};
+  text-decoration: ${underline ? "underline" : "none"};
   margin-bottom: ${gutterBottom};
 `;
   return <Typography

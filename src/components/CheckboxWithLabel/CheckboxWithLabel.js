@@ -14,6 +14,7 @@ export default (props) => {
 
   const {
     label = "",
+    name = "",
     value = false,
     onChange,
   } = props;
@@ -24,7 +25,7 @@ export default (props) => {
       <CheckBoxWithSound
         checked={value}
         onChange={onChange}
-        name="check"
+        name={name}
         color="primary"
       />
 

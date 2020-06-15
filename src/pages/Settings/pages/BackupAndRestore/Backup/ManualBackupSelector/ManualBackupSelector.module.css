@@ -1,7 +1,9 @@
 .manualBackupWrapper{
   margin-bottom: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .backupButton{
-  margin-top: 10px;
+  margin-right: 10px;
 }

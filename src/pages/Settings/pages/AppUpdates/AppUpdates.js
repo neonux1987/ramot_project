@@ -18,7 +18,7 @@ import { initiateDbBackup } from '../../../../services/dbBackup.svc';
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 
 // TOASTS
-import { myToaster } from '../../../../Toasts/toastManager';
+import { toastManager } from '../../../../toasts/ToastManager';
 import ToastRender from '../../../../components/ToastRender/ToastRender';
 
 // ELECTRON
@@ -60,14 +60,14 @@ const AppUpdates = () => {
   }
 
   const installHandler = async () => {
-    const id = myToaster.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני התקנה..."} />, {
+    const id = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני התקנה..."} />, {
       autoClose: false
     });
 
     const promise = await initiateDbBackup().catch((result) => {
-      myToaster.update(id, {
+      toastManager.update(id, {
         render: <ToastRender message={result.error} />,
-        type: myToaster.TYPE.ERROR,
+        type: toastManager.TYPES.ERROR,
         delay: 2500,
         autoClose: 2500
       });
@@ -75,9 +75,9 @@ const AppUpdates = () => {
 
     // success
     if (promise)
-      myToaster.update(id, {
+      toastManager.update(id, {
         render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים. המערכת מבצעת יציאה לצורך התקנת העידכון."} />,
-        type: myToaster.TYPE.SUCCESS,
+        type: toastManager.TYPES.SUCCESS,
         delay: 3000,
         autoClose: 2500,
         onClose: () => {
@@ -186,7 +186,7 @@ const AppUpdates = () => {
     });
 
     ipcRenderer.on("updater_error", async (event, result) => {
-      myToaster.error(result.error);
+      toastManager.error(result.error);
       if (!isCancelled.current) setIsDownloading(false);
     });
 

@@ -1,4 +1,4 @@
-import { myToaster } from '../../Toasts/toastManager';
+import { toastManager } from '../../toasts/ToastManager';
 import { ipcSendReceive } from './util/util';
 import { showSavedNotification } from './savedNotificationActions';
 
@@ -74,9 +74,9 @@ export const addSummarizedSection = (params = Object) => {
         dispatch(addSummarizedSectionStoreOnly(params.summarizedSection));
 
         //send success notification
-        myToaster.success("הסעיף נוסף בהצלחה.");
+        toastManager.success("הסעיף נוסף בהצלחה.");
       },
-      onError: result => myToaster.error(result.error)
+      onError: result => toastManager.error(result.error)
     });
 
   }
@@ -136,7 +136,7 @@ export const deleteSummarizedSection = (oldCopy, index) => {
       receive: {
         channel: "summarized-section-deleted"
       },
-      onSuccess: () => myToaster.success("הסעיף נמחק בהצלחה."),
+      onSuccess: () => toastManager.success("הסעיף נמחק בהצלחה."),
       onError: () => dispatch(addSummarizedSectionStoreOnly(oldCopy)) // rollback
 
     });

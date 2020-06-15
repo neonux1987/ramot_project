@@ -32,7 +32,8 @@
       "2": "rgb(49, 146, 108)",
       "3": "rgb(220, 60, 96)",
       "4": "rgb(248, 77, 30)"
-    }
+    },
+    "tool_bar_follow": true
   },
   "db_backup": {
     "backups_to_save": 2,

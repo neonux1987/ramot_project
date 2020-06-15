@@ -9,7 +9,7 @@ import * as summarizedSectionsActions from '../../redux/actions/summarizedSectio
 import * as expansesCodesActions from '../../redux/actions/expansesCodesActions';
 
 // TOASTS
-import { myToaster } from '../../Toasts/toastManager';
+import { toastManager } from '../../toasts/ToastManager';
 
 // COMPONENTS WITH SOUND
 import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
@@ -238,7 +238,7 @@ class InputExpansesField extends Component {
   submit = () => {
     if (this.state.formInputs.section === "סעיף מסכם לא קיים")
       // send the error to the notification center
-      myToaster.error(`הוספת שורה נכשלה. 
+      toastManager.error(`הוספת שורה נכשלה. 
       קוד הנהלת חשבונות מקושר לסעיף מסכם שלא קיים. 
       נא צור את הסעיף בטבלת ניהול סעיפים מסכמים או קשר לסעיף אחר בטבלת ניהול ומעקב קודי הנהלת חשבונות`);
     else

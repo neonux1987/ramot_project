@@ -51,6 +51,8 @@ const Toolbar = ({ buildingName, page }) => {
 
   const { isFetching, data } = useSelector(store => store.generalSettings.generalSettings);
 
+  const themeSettings = useSelector(store => store.settings.data.theme);
+
   useEffect(() => {
     dispatch(generalSettingsActions.fetchGeneralSettings());
   }, [dispatch]);
@@ -63,8 +65,10 @@ const Toolbar = ({ buildingName, page }) => {
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :
     <span style={{ marginRight: "5px" }}>{`${data[0].tax}%`}</span>;
 
+  const noFollowRule = !themeSettings.tool_bar_follow ? styles.noFollow : "";
+
   return (
-    <div className={styles.wrapper}>
+    <div className={classnames(styles.wrapper, noFollowRule)}>
 
       <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
         <ToggleButton className={styles.toggleBtn} onClick={() => dispatch(toggleSidebar())} />

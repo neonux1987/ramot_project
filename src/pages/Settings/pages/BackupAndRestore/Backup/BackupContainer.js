@@ -16,6 +16,7 @@ import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';
 import CheckboxWithLabel from '../../../../../components/CheckboxWithLabel/CheckboxWithLabel';
 import Divider from '../../../../../components/Divider/Divider';
+import TitleTypography from '../../../../../components/Typographies/TitleTypography';
 
 // SERVICES
 import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogs.svc';
@@ -28,7 +29,7 @@ import { showModal } from '../../../../../redux/actions/modalActions';
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
 // TOASTS
-import { myToaster } from '../../../../../Toasts/toastManager';
+import { toastManager } from '../../../../../toasts/ToastManager';
 import ToastRender from '../../../../../components/ToastRender/ToastRender';
 
 const SETTINGS_NAME = "db_backup";
@@ -138,7 +139,7 @@ const BackupContainer = () => {
 
                 dispatch(setDirty());
                 dispatch(initializeRegisteredBackups()).catch((result) => {
-                  myToaster.error(result.error);
+                  toastManager.error(result.error);
                 });
               }
             }) // end show modal
@@ -158,18 +159,18 @@ const BackupContainer = () => {
       if (!canceled) {
 
         //backup started message
-        const toastId = myToaster.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים..."} />, {
+        const toastId = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים..."} />, {
           autoClose: false
         });
 
         dbIndependentBackup(filePath)
           .then(() => {
             //send the error to the notification center
-            myToaster.success(<ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה."} />, {
+            toastManager.success(<ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה."} />, {
               delay: 2000,
               autoClose: 3000,
               onOpen: () => {
-                myToaster.dismiss(toastId);
+                toastManager.dismiss(toastId);
               }
             });
           });
@@ -209,9 +210,19 @@ const BackupContainer = () => {
         {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
       </Typography>}
 
+      <TitleTypography>
+        כללי:
+        </TitleTypography>
+
       <CheckboxWithLabel label="גיבוי ביציאה" value={data.backup_on_exit} onChange={onBackupOnExitChange} />
 
+      <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} />
+
       <Divider />
+
+      <TitleTypography>
+        הגדרות גיבוי:
+        </TitleTypography>
 
       <CheckboxWithLabel label="גיבוי לפי זמן" value={data.byTime.enabled} onChange={onByTimeChange} />
 
@@ -245,9 +256,9 @@ const BackupContainer = () => {
 
       <Divider />
 
-      <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} />
-
-      <Divider />
+      <TitleTypography>
+        אחר:
+        </TitleTypography>
 
       <ManualBackupSelector onClick={dbIndependentBackupHandler} />
 

@@ -1,7 +1,7 @@
 import * as monthlyStatsActions from './monthlyStatsActions';
 import * as quarterlyStatsActions from './quarterlyStatsActions';
 import { ipcSendReceive } from './util/util';
-import { myToaster } from '../../Toasts/toastManager';
+import { toastManager } from '../../toasts/ToastManager';
 import { showSavedNotification } from './savedNotificationActions';
 
 // TYPES
@@ -118,7 +118,7 @@ export const deleteBudgetExecution = (buildingName, date, index, rollbackData) =
       receive: {
         channel: "budget-execution-deleted"
       },
-      onSuccess: () => myToaster.success("השורה נמחקה בהצלחה."),
+      onSuccess: () => toastManager.success("השורה נמחקה בהצלחה."),
       onError: (result) => {
         dispatch(addBudgetExecutionInStore(buildingName, rollbackDataCopy, sortByCode));
       }
@@ -149,7 +149,7 @@ export const addBudgetExecution = (params = Object) => {
         const { buildingName } = params;
         dispatch(addBudgetExecutionInStore(buildingName, result.data, sortByCode));
 
-        myToaster.success("השורה נוספה בהצלחה.");
+        toastManager.success("השורה נוספה בהצלחה.");
       }
     });
   }

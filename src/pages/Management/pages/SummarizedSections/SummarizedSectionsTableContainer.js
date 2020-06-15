@@ -27,7 +27,7 @@ import withTableLogic from '../../../../HOC/withTableLogic';
 
 // CUSTOM HOOKS
 import AddSummarizedSectionContainer from './AddSummarizedSectionContainer/AddSummarizedSectionContainer';
-import { myToaster } from '../../../../Toasts/toastManager';
+import { toastManager } from '../../../../toasts/ToastManager';
 
 const EDITMODE_TEMPLATE = "minmax(250px,5%) minmax(250px,5%) 1fr";
 const DEFAULT_TEMPLATE = "minmax(250px,5%) 1fr";
@@ -95,7 +95,7 @@ const SummarizedSectionsTableContainer = props => {
     }
 
     if (!valid)
-      myToaster.error(message);
+      toastManager.error(message);
 
     return valid;
   }
@@ -114,13 +114,13 @@ const SummarizedSectionsTableContainer = props => {
     const valid = validateFormInputs(formInputs);
 
     if (!valid) {
-      myToaster.error("חובה לבחור סעיף!");
+      toastManager.error("חובה לבחור סעיף!");
       return;
     }
 
     const exist = dataExist(formInputs.section);
     if (exist) {
-      myToaster.error("הסעיף כבר קיים ברשימה, לא ניתן להוסיף סעיף שקיים.");
+      toastManager.error("הסעיף כבר קיים ברשימה, לא ניתן להוסיף סעיף שקיים.");
       return;
     }
 

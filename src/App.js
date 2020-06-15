@@ -25,9 +25,6 @@ import './assets/css/style.css';
 // CONTAINERS
 import MainContainer from './Main/MainContainer';
 
-// TOASTS
-import { myToaster } from './Toasts/toastManager';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 // ACTIONS
@@ -41,7 +38,10 @@ import { checkForUpdates } from './services/updates.svc';
 
 // SOUND
 import { soundManager } from './soundManager/SoundManager';
-import CustomToastContainer from './Toasts/CustomToastContainer/CustomToastContainer';
+
+// TOASTS
+import { toastManager } from './toasts/ToastManager';
+import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -95,7 +95,7 @@ const App = () => {
 
           await dispatch(updateSettings("appUpdates", { userNotified: true }));
           await dispatch(saveSettings(false));
-          myToaster.AppUpdateNewVersion(version);
+          toastManager.AppUpdateNewVersion(version);
         }
 
       }
@@ -115,43 +115,43 @@ const App = () => {
       let toastId = null;
       switch (action) {
         case "dbBackupStarted":
-          toastId = myToaster.info(<ToastRender spinner={true} message={message} />, {
+          toastId = toastManager.info(<ToastRender spinner={true} message={message} />, {
             autoClose: false
           });
           setState({ toastId });
           break;
         case "dbBackupFinished":
-          myToaster.update(state.toastId, {
+          toastManager.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: myToaster.TYPE.SUCCESS,
+            type: toastManager.TYPES.SUCCESS,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
           break;
         case "dbBackupError":
-          myToaster.update(state.toastId, {
+          toastManager.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: myToaster.TYPE.ERROR,
+            type: toastManager.TYPES.ERROR,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
           break;
         case "reportsGenerationStarted":
-          toastId = myToaster.info(<ToastRender spinner={true} message={message} />, {
+          toastId = toastManager.info(<ToastRender spinner={true} message={message} />, {
             autoClose: false
           });
           setState({ toastId: toastId });
           break;
         case "reportsGenerationFinished":
-          myToaster.update(state.toastId, {
+          toastManager.update(state.toastId, {
             render: <ToastRender done={true} message={message} />,
-            type: myToaster.TYPE.SUCCESS,
+            type: toastManager.TYPES.SUCCESS,
             delay: 2000,
             autoClose: TOAST_AUTO_CLOSE
           });
           break;
         case "systemError":
-          myToaster.error(message);
+          toastManager.error(message);
           break;
         default: return null;
       }
@@ -180,14 +180,14 @@ const App = () => {
       return Promise.resolve();
     }
 
-    const id = myToaster.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס הנתונים לפני יציאה..."} />, {
+    const id = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס הנתונים לפני יציאה..."} />, {
       autoClose: false
     });
 
     const promise = await initiateDbBackup().catch((result) => {
-      myToaster.update(id, {
+      toastManager.update(id, {
         render: <ToastRender message={result.error} />,
-        type: myToaster.TYPE.ERROR,
+        type: toastManager.TYPES.ERROR,
         delay: 2000,
         autoClose: 2500,
         onClose: () => {
@@ -198,9 +198,9 @@ const App = () => {
 
     // success
     if (promise)
-      myToaster.update(id, {
+      toastManager.update(id, {
         render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
-        type: myToaster.TYPE.SUCCESS,
+        type: toastManager.TYPES.SUCCESS,
         delay: 2000,
         autoClose: 1500,
         onClose: () => {

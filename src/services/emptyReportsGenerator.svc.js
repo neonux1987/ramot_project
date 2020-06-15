@@ -1,5 +1,5 @@
 import { ipcSendReceive } from '../redux/actions/util/util';
-import { myToaster } from '../Toasts/toastManager';
+import { toastManager } from '../toasts/ToastManager';
 
 export const generateEmptyReports = (date) => {
 
@@ -11,7 +11,7 @@ export const generateEmptyReports = (date) => {
     receive: {
       channel: "empty-reports-generated"
     },
-    onSuccess: () => myToaster.success("דוחות ריקים נוצרו בהצלחה לתאריך שבחרת.")
+    onSuccess: () => toastManager.success("דוחות ריקים נוצרו בהצלחה לתאריך שבחרת.")
   });
 
 };

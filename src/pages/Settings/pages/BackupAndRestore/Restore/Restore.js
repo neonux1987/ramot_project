@@ -26,7 +26,7 @@ import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoad
 // SERVICES
 import { selectFileDialog } from '../../../../../services/electronDialogs.svc';
 import { restore } from '../../../../../services/restoreDbService';
-import { myToaster } from '../../../../../Toasts/toastManager';
+import { toastManager } from '../../../../../toasts/ToastManager';
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
 import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
@@ -108,7 +108,7 @@ export default () => {
     const payload = byList ? selectedBackupDate : selectedFile;
 
     if (byFile && selectedFile === null)
-      myToaster.error("לא נבחר קובץ")
+      toastManager.error("לא נבחר קובץ")
     else {
       showModal(ConfirmDbRestoreModal, {
         onAgreeHandler: () => restore(payload, byList)

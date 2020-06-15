@@ -26,6 +26,10 @@
   /* border: 1px solid #dde1e2; */
 }
 
+.noFollow{
+  position: relative;
+}
+
 .spinner{
   margin: 0;
   display: flex

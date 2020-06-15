@@ -1,5 +1,5 @@
 import React from 'react';
-import { myToaster } from '../Toasts/toastManager';
+import { toastManager } from '../toasts/ToastManager';
 import { ipcSendReceive } from '../redux/actions/util/util';
 import ToastRender from '../components/ToastRender/ToastRender';
 
@@ -13,14 +13,14 @@ export const exportToExcel = (excelData) => {
     receive: {
       channel: "excel-exported"
     },
-    onSuccess: () => myToaster.success("ייצוא לקובץ אקסל בוצע בהצלחה.")
+    onSuccess: () => toastManager.success("ייצוא לקובץ אקסל בוצע בהצלחה.")
   });
 
 };
 
 export const exportToExcelBulk = (date) => {
 
-  const toastId = myToaster.info(<ToastRender spinner={true} message={"מבצע ייצוא לקבצי אקסל..."} />, {
+  const toastId = toastManager.info(<ToastRender spinner={true} message={"מבצע ייצוא לקבצי אקסל..."} />, {
     autoClose: false
   });
 
@@ -32,9 +32,9 @@ export const exportToExcelBulk = (date) => {
     receive: {
       channel: "excel-bulk-exported"
     },
-    onSuccess: () => myToaster.update(toastId, {
+    onSuccess: () => toastManager.update(toastId, {
       render: <ToastRender done={true} message={"ייצוא לקבצי אקסל בוצע בהצלחה."} />,
-      type: myToaster.TYPE.SUCCESS,
+      type: toastManager.types.SUCCESS,
       delay: 2000,
       autoClose: 3000
     })

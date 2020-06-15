@@ -1,5 +1,5 @@
 import { ipcSendReceive } from './util/util';
-import { myToaster } from '../../Toasts/toastManager';
+import { toastManager } from '../../toasts/ToastManager';
 import { showSavedNotification } from './savedNotificationActions';
 
 // TYPES
@@ -88,7 +88,7 @@ export const addExpanseCode = (expanseCode) => {
 
         dispatch(addStoreOnly(expanseCode));
         //send success notification
-        myToaster.success("הקוד נוסף בהצלחה.");
+        toastManager.success("הקוד נוסף בהצלחה.");
       },
       onError: (result) => {
         //let react know that an erro occured while trying to fetch
@@ -174,7 +174,7 @@ export const deleteExpanseCode = (id, oldCopy, index) => {
       },
       onSuccess: (result) => {
         //send success notification
-        myToaster.success("הקוד נמחקה בהצלחה.");
+        toastManager.success("הקוד נמחקה בהצלחה.");
       },
       onError: () => {
         //delete the item in store first

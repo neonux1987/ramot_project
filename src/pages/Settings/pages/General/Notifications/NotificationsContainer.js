@@ -12,6 +12,10 @@ import SaveButton from '../../../../../components/SaveButton/SaveButton';
 import { updateSettings, saveSettings } from '../../../../../redux/actions/settingsActions';
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
+// TOASTS
+import { toastManager } from '../../../../../toasts/ToastManager';
+import { Typography } from '@material-ui/core';
+
 const SETTINGS_NAME = "notifications";
 
 export default () => {
@@ -34,12 +38,15 @@ export default () => {
     dispatch(setDirty());
   }
 
-  const save = async (event) => {
+  const save = (event) => {
     event.stopPropagation();
 
     const dataCopy = { ...data };
 
     dispatch(updateSettings(SETTINGS_NAME, dataCopy));
+
+    toastManager.reload();
+
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
       dispatch(setDirty(false));
     });
@@ -54,7 +61,11 @@ export default () => {
       padding={"30px 20px"}
     >
 
-      <NotificationsAlerts enabled={enabled} onNotificationsCheck={onNotificationsCheck} />
+      <NotificationsAlerts
+        enabled={enabled}
+        onNotificationsCheck={onNotificationsCheck}
+        description="כל ההתראות הקופצות יבוטלו למעט התראות של שגיאות"
+      />
 
     </StyledExpandableSection >
   );

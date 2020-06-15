@@ -12,7 +12,7 @@ export default (props) => {
   return (
     <div className={styles.manualBackupWrapper}>
       <SubtitleBoldTypography className={styles.subtitle}>
-        ניתן לייצא את בסיס הנתונים לקובץ ולשמור אותו במחשב
+        לייצוא בסיס הנתונים לקובץ לחץ
           </SubtitleBoldTypography>
       <PrimaryButton
         className={styles.backupButton}

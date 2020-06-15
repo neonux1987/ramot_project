@@ -1,173 +1,152 @@
 import React from 'react';
 import { toast } from "react-toastify";
-import styles from './toastManager.module.css'
+import styles from './ToastManager.module.css'
 import { soundManager } from "../soundManager/SoundManager";
 import AppUpdateNewVersionToast from "./CustomToasts/AppUpdateNewVersionToast/AppUpdateNewVersionToast";
 import AppUpdateInstallToast from "./CustomToasts/AppUpdateInstallToast/AppUpdateInstallToast";
 
-export const myToaster = (() => {
-  const { play, types } = soundManager;
+const remote = require('electron').remote;
 
-  const AppUpdateNewVersion = (version, properties = {}) => {
+const { play, types } = soundManager;
+
+const TYPES = {
+  BASIC: "basic",
+  INFO: "info",
+  SUCCESS: "success",
+  WARNING: "warning",
+  ERROR: "error",
+  UPDATE: "update",
+  DISMISS: "dismiss"
+}
+
+class ToastManager {
+
+  constructor() {
+    this.settings = remote.getGlobal("sharedObject").settings.notifications;
+  }
+
+  types = TYPES;
+
+  reload = () => {
+    this.settings = remote.getGlobal("sharedObject").settings.notifications;
+  };
+
+  appUpdateNewVersion = (version, properties = {}) => {
+    if (!this.settings.enabled)
+      return;
+
     play(types.update);
     return toast(<AppUpdateNewVersionToast version={version} />, {
       className: styles.basic,
       ...properties,
-      onOpen: () => {
-        properties && properties.onOpen && properties.onOpen();
-      },
       autoClose: false,
       closeOnClick: false
     });
-  }
-  const AppUpdateInstall = (version, properties = {}) => {
+  };
+
+  appUpdateInstall = (version, properties = {}) => {
+    if (!this.settings.enabled)
+      return;
+
     play(types.update);
     toast(<AppUpdateInstallToast version={version} />, {
       className: styles.basic,
       ...properties,
-      onOpen: () => {
-        properties && properties.onOpen && properties.onOpen();
-      },
       autoClose: false,
       closeOnClick: false
     });
-  }
-  const info = (content, properties = {}) => {
+  };
+
+  basic = (content, properties = {}) => {
+    if (!this.settings.enabled)
+      return;
+
+    play(types.message);
+    return toast.info(content, {
+      className: styles.basic,
+      ...properties
+    });
+  };
+
+  info = (content, properties = {}) => {
+    if (!this.settings.enabled)
+      return;
+
     play(types.message);
     return toast.info(content, {
       className: styles.info,
-      ...properties,
-      onOpen: () => {
-        properties && properties.onOpen && properties.onOpen();
-      }
+      ...properties
     });
-  }
-  const success = (content, properties) => {
+  };
+
+  success = (content, properties) => {
+    if (!this.settings.enabled)
+      return;
+
     play(types.message);
     return toast.success(content, {
       className: styles.success,
-      ...properties,
-      onOpen: () => {
-        properties && properties.onOpen && properties.onOpen();
-      }
+      ...properties
     });
-  }
-  const warning = (content, properties) => {
+  };
+
+  warning = (content, properties) => {
+    if (!this.settings.enabled)
+      return;
+
     play(types.warning);
     return toast.warning(content, {
       className: styles.warning,
-      ...properties,
-      onOpen: () => {
-        properties && properties.onOpen && properties.onOpen();
-      }
+      ...properties
     });
-  }
-  const error = (content, properties) => {
+  };
+
+  error = (content, properties) => {
     play(types.error);
     return toast.error(content, {
       className: styles.error,
-      ...properties,
-      onOpen: () => {
-        properties && properties.onOpen && properties.onOpen();
-      }
+      ...properties
     });
-  }
-  const update = (id, properties) => (
-    toast.update(id, {
+  };
+
+  update = (id, properties) => {
+    if (!this.settings.enabled)
+      return;
+
+    return toast.update(id, {
       className: styles[properties.type],
       ...properties
-    })
-  )
-  const dismiss = (id) => toast.dismiss(id)
-  const TYPE = toast.TYPE;
-
-  const toastManager = {
-    AppUpdateNewVersion,
-    AppUpdateInstall,
-    info,
-    success,
-    warning,
-    error,
-    update,
-    dismiss,
-    TYPE
+    });
   }
 
-  return toastManager;
+  dismiss = (id) => toast.dismiss(id);
+}
 
-})();
+export const toastManager = new ToastManager();
 
-/* AppUpdateNewVersion: (version, properties = {}) => (
-  toast(<AppUpdateNewVersionToast version={version} />, {
-    className: styles.basic,
-    ...properties,
-    onOpen: () => {
-      properties && properties.onOpen && properties.onOpen();
-      playSound(soundTypes.update);
-    },
-    autoClose: false,
-    closeOnClick: false
-  })
-),
-AppUpdateInstall: (version, properties = {}) => (
-  toast(<AppUpdateInstallToast version={version} />, {
-    className: styles.basic,
-    ...properties,
-    onOpen: () => {
-      properties && properties.onOpen && properties.onOpen();
-      playSound(soundTypes.update);
-    },
-    autoClose: false,
-    closeOnClick: false
-  })
-),
-info: (content, properties = {}) => (
-  toast.info(content, {
-    className: styles.info,
-    ...properties,
-    onOpen: () => {
-      properties && properties.onOpen && properties.onOpen();
-      playSound(soundTypes.message);
-    }
-  })
-),
-success: (content, properties) => (
-  toast.success(content, {
-    className: styles.success,
-    ...properties,
-    onOpen: () => {
-      properties && properties.onOpen && properties.onOpen();
-      playSound(soundTypes.message);
-    }
-  })
-),
-warning: (content, properties) => (
-  toast.warning(content, {
-    className: styles.warning,
-    ...properties,
-    onOpen: () => {
-      properties && properties.onOpen && properties.onOpen();
-      playSound(soundTypes.message);
-    }
-  })
-),
-error: (content, properties) => (
-  toast.error(content, {
-    className: styles.error,
-    ...properties,
-    onOpen: () => {
-      properties && properties.onOpen && properties.onOpen();
-      playSound(soundTypes.error);
-    }
-  })
-),
-update: (id, properties) => (
-  toast.update(id, {
-    className: styles[properties.type],
-    ...properties
-  })
-),
-dismiss: (id) => toast.dismiss(id),
-TYPE: toast.TYPE
+/* toast = (type,content,options)=>{
+  const {enabled} = this.settings;
+
+  if(!enabled)
+    return;
+
+  switch(type){
+    case types.BASIC:
+      return basic(content,options);
+      case types.INFO:
+        return info(content,options);
+      case types.SUCCESS:
+        return success(content,options);
+      case types.WARNING:
+        return warning(content,options);
+      case types.ERROR:
+        return error(content,options);
+      case types.UPDATE:
+        return update(content,options);
+      case types.DISMISS:
+        return dismiss(content,options);
+      default:
+          return null;
+  }
 
 } */

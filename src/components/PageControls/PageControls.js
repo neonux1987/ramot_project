@@ -14,7 +14,7 @@ import {
   pageControls,
   pageControlsButton
 } from './PageControls.module.css';
-import { myToaster } from '../../Toasts/toastManager';
+import { toastManager } from '../../toasts/ToastManager';
 import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import useModalLogic from '../../customHooks/useModalLogic';
 import PrintModal from '../modals/PrintModal/PrintModal';
@@ -38,7 +38,7 @@ const PageControls = props => {
 
   const exportToExcelHandler = () => {
     if (excel.date.year === undefined)
-      myToaster.info("לא נבחר דוח לייצוא")
+      toastManager.info("לא נבחר דוח לייצוא")
     else
       saveToFileDialog(excel.fileName, options).then(({ canceled, filePath }) => {
         if (!canceled) {

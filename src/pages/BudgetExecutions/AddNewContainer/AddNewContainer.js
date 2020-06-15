@@ -21,7 +21,7 @@ import ReactSelect from "../../../components/ReactSelect/ReactSelect";
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 
 // TOASTS
-import { myToaster } from "../../../Toasts/toastManager";
+import { toastManager } from "../../../toasts/ToastManager";
 
 
 const AddNewContainer = (props) => {
@@ -62,10 +62,10 @@ const AddNewContainer = (props) => {
     }
 
     if (formInputs === "")
-      myToaster.error("נא לבחור סעיף מסכם")
+      toastManager.error("נא לבחור סעיף מסכם")
     else if (date.year === undefined) {
       // send the error to the notification center
-      myToaster.error("לא ניתן להוסיף שורה לדוח ריק");
+      toastManager.error("לא ניתן להוסיף שורה לדוח ריק");
       return;
     }
     else

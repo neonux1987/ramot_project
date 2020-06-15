@@ -36,7 +36,7 @@ import HeaderRow from '../../components/table/HeaderRow';
 import withTableLogic from '../../HOC/withTableLogic';
 
 // AUDIO
-import { myToaster } from '../../Toasts/toastManager';
+import { toastManager } from '../../toasts/ToastManager';
 import HeaderColumn from '../../components/table/HeaderColumn';
 
 const MonthExpansesTableContainer = props => {
@@ -87,7 +87,7 @@ const MonthExpansesTableContainer = props => {
       // doesn't have properties
       if (date.year !== undefined)
         dispatch(fetchMonthExpanses(params)).catch((result) => {
-          myToaster.info(result.error)
+          toastManager.info(result.error)
         });
 
       dispatch(fetchExpansesCodesByStatus("active"));
@@ -101,13 +101,13 @@ const MonthExpansesTableContainer = props => {
     const valid = validateFormInputs(formInputs);
     if (!valid) {
       // send the error to the notification center
-      myToaster.error("קוד או שם חשבון לא יכולים להיות ריקים");
+      toastManager.error("קוד או שם חשבון לא יכולים להיות ריקים");
       return;
     }
 
     if (date.year === undefined) {
       // send the error to the notification center
-      myToaster.error("לא ניתן להוסיף שורה לדוח ריק");
+      toastManager.error("לא ניתן להוסיף שורה לדוח ריק");
       return;
     }
 
