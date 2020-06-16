@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import { MemoryRouter } from 'react-router-dom';

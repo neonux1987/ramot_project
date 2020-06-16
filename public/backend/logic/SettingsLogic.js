@@ -49,7 +49,7 @@ class SettingsLogic {
 
   static SETTINGS_NAMES = {
     USER: "user",
-    SYSTEM: "user",
+    SYSTEM: "system",
     LOCATIONS: "locations",
     DB_BACKUP: "db_backup",
     DB_RESTORE: "db_restore"

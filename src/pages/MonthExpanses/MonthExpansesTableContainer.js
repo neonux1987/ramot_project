@@ -207,7 +207,7 @@ const MonthExpansesTableContainer = props => {
     if (type === "number")
       // empty string converted to 0
       // parse float to secure that the value is a number
-      expanse[key] = value === "" ? 0 : Number.parseFloat(e.target.value);
+      expanse[key] = value === "" ? 0 : Number.parseFloat(value);
     else {
       const { innerText } = e.target;
       expanse[key] = innerText;
@@ -215,6 +215,12 @@ const MonthExpansesTableContainer = props => {
 
     //update the tax to the current one
     expanse.tax = tax;
+
+    // init tax property
+    if (expanse.sum === 0)
+      expanse.tax = 0;
+
+    console.log(expanse);
 
     //prepare the params
     let params = {

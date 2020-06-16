@@ -60,7 +60,7 @@ export const Theme = () => {
           כללי:
         </TitleTypography>
 
-        <CheckboxWithLabel label="סרגל כלים עוקב" name="tool_bar_follow" value={data.tool_bar_follow} onChange={onCheckChange} />
+        <CheckboxWithLabel label="סרגל כלים דביק" name="sticky_toolbar" value={data.sticky_toolbar} onChange={onCheckChange} />
 
       </StyledExpandableSection >
 

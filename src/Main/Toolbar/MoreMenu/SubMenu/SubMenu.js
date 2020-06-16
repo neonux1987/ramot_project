@@ -8,7 +8,7 @@ const nested = css`
   font-size: 16px;
 `;
 const listIcon = css`
-  min-width: 32px;
+  min-width: 36px;
   color: #0365a2;
 `;
 

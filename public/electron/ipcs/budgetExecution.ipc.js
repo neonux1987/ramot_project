@@ -1,10 +1,10 @@
 const { ipcMain } = require('electron');
 const BudgetExecutionLogic = require('../../backend/logic/BudgetExecutionLogic');
 
-const budgetExecutionIpc = (connection) => {
+const budgetExecutionIpc = () => {
 
   //fetch month expanses data
-  const budgetExecutionLogic = new BudgetExecutionLogic(connection);
+  const budgetExecutionLogic = new BudgetExecutionLogic();
 
   ipcMain.on('get-budget-executions', (event, { buildingInfo, date, range }) => {
     budgetExecutionLogic.getBudgetExecutionsByRange(buildingInfo, date, range).then((result) => {

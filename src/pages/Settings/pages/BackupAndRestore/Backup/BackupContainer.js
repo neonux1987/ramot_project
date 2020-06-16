@@ -30,7 +30,6 @@ import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
 // TOASTS
 import { toastManager } from '../../../../../toasts/ToastManager';
-import ToastRender from '../../../../../components/ToastRender/ToastRender';
 
 const SETTINGS_NAME = "db_backup";
 
@@ -150,22 +149,9 @@ const BackupContainer = () => {
 
     saveToFileDialog(fileName, undefined).then(({ canceled, filePath }) => {
       if (!canceled) {
-
-        //backup started message
-        const toastId = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים..."} />, {
-          autoClose: false
-        });
-
         dbIndependentBackup(filePath)
           .then(() => {
-            //send the error to the notification center
-            toastManager.success(<ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה."} />, {
-              delay: 2000,
-              autoClose: 3000,
-              onOpen: () => {
-                toastManager.dismiss(toastId);
-              }
-            });
+            toastManager.success("ייצוא בסיס הנתונים הסתיים בהצלחה.");
           });
       }
     });

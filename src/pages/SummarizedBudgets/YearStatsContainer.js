@@ -82,7 +82,7 @@ class YearStatsContainer extends React.PureComponent {
   generateYearStats(yearStats, isFetching) {
     return <StatBox
       key={"year"}
-      title={`שנת ${yearStats.year}`}
+      title={`שנה ${yearStats.year}`}
       outcome={yearStats.outcome}
       income={yearStats.income}
       unicodeSymbol={Helper.shekelUnicode}

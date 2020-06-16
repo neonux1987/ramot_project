@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Typography } from '@material-ui/core';
-import styles, {
+import { Typography } from '@material-ui/core';
+import {
   container,
   upper,
   titleWrapper,

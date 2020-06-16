@@ -1,11 +1,11 @@
 // LIBRARIES
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { Menu, Divider, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import styles from './MoreMenu.module.css';
 import { ExpandLess, ExpandMore, Description, TableChart, ChangeHistory, Settings } from "@material-ui/icons";
 import SubMenu from "./SubMenu/SubMenu";
 import CustomNavLink from "../../../components/CustomNavLink/CustomNavLink";
+import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {
 
@@ -93,7 +93,11 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
         <ListItemText primary="ניהול סעיפים מסכמים" />
       </ListItem>
 
-      <ListItem button onClick={taxClickHandler} className={styles.menuItemLink}>
+      <ListItem
+        component={ButtonWithSound}
+        onClick={taxClickHandler}
+        className={styles.menuItemLink}
+      >
         <ListItemIcon className={styles.listIcon}>
           <ChangeHistory />
         </ListItemIcon>
@@ -102,7 +106,12 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
 
       <Divider style={{ margin: "8px" }} />
 
-      <ListItem button onClick={expandClick} className={styles.menuItemLink}>
+      <ListItem
+        button
+        component={ButtonWithSound}
+        onClick={expandClick}
+        className={styles.menuItemLink}
+      >
         <ListItemIcon className={styles.listIcon}>
           <Settings />
         </ListItemIcon>

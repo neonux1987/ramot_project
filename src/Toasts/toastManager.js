@@ -5,8 +5,6 @@ import { soundManager } from "../soundManager/SoundManager";
 import AppUpdateNewVersionToast from "./CustomToasts/AppUpdateNewVersionToast/AppUpdateNewVersionToast";
 import AppUpdateInstallToast from "./CustomToasts/AppUpdateInstallToast/AppUpdateInstallToast";
 
-const remote = require('electron').remote;
-
 const { play, types } = soundManager;
 
 const TYPES = {

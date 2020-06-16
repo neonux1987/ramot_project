@@ -65,7 +65,7 @@ const Toolbar = ({ buildingName, page }) => {
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :
     <span style={{ marginRight: "5px" }}>{`${data[0].tax}%`}</span>;
 
-  const noFollowRule = !themeSettings.tool_bar_follow ? styles.noFollow : "";
+  const noFollowRule = !themeSettings.sticky_toolbar ? styles.noFollow : "";
 
   return (
     <div className={classnames(styles.wrapper, noFollowRule)}>

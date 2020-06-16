@@ -1,5 +1,4 @@
 const BudgetExecutionDao = require('../dao/BudgetExecutionDao');
-const GeneralSettingsDao = require('../dao/GeneralSettingsDao');
 const MonthlyStatsLogic = require('./MonthlyStatsLogic');
 const QuarterlyStatsLogic = require('./QuarterlyStatsLogic');
 const SummarizedSectionsLogic = require('./SummarizedSectionsLogic');
@@ -17,7 +16,6 @@ class BudgetExecutionLogic {
 
   constructor() {
     this.budgetExecutionDao = new BudgetExecutionDao();
-    this.generalSettingsDao = new GeneralSettingsDao();
     this.monthlyStatsLogic = new MonthlyStatsLogic();
     this.summarizedBudgetLogic = new SummarizedBudgetLogic();
     this.quarterlyStatsLogic = new QuarterlyStatsLogic();

@@ -66,7 +66,7 @@ class QuarterStatsContainer extends React.PureComponent {
 
       returnStats[i] = <StatBox
         key={i}
-        title={monthStats[i].month}
+        title={`חודש ${monthStats[i].month}`}
         outcome={monthStats[i].outcome}
         income={monthStats[i].income}
         unicodeSymbol={Helper.shekelUnicode}

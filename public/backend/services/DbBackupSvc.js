@@ -205,7 +205,6 @@ class DbBackupSvc {
 
 
   async independentBackup(fullPath) {
-
     await this.checkDbHealth();
 
     if (!fullPath) {
@@ -222,7 +221,6 @@ class DbBackupSvc {
 
     //write the file physically to the drive
     await fse.writeFile(fullPath, fileToBackup);
-
   }
 
 }
