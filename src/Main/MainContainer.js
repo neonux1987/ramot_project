@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
@@ -7,6 +7,15 @@ import { withStyles } from '@material-ui/core';
 import { Element, Events } from 'react-scroll'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { css } from 'emotion';
+
+// PAGES
+import MonthExpanses from '../pages/MonthExpanses/MonthExpanses';
+import Home from '../pages/Home/Home';
+import BudgetExecutions from '../pages/BudgetExecutions/BudgetExecutions';
+import SummarizedBudgets from '../pages/SummarizedBudgets/SummarizedBudgets';
+import Settings from '../pages/Settings/Settings';
+import Management from '../pages/Management/Management';
+import Statistics from '../pages/Statistics/Statistics';
 
 // COMPONENTS
 import Toolbar from './Toolbar/Toolbar';
@@ -17,15 +26,6 @@ import Helper from '../helpers/Helper';
 // ACTIONS
 import * as sidebarActions from '../redux/actions/sidebarActions';
 import * as routesActions from '../redux/actions/routesActions';
-
-// LAZY LOAD PAGES
-const MonthExpanses = lazy(() => import('../pages/MonthExpanses/MonthExpanses'));
-const Home = lazy(() => import('../pages/Home/Home'));
-const BudgetExecutions = lazy(() => import('../pages/BudgetExecutions/BudgetExecutions'));
-const SummarizedBudgets = lazy(() => import('../pages/SummarizedBudgets/SummarizedBudgets'));
-const Settings = lazy(() => import('../pages/Settings/Settings'));
-const Management = lazy(() => import('../pages/Management/Management'));
-const Statistics = lazy(() => import('../pages/Statistics/Statistics'));
 
 const mainStyle = css`
 height: 100%;
@@ -135,23 +135,21 @@ class MainContainer extends Component {
                 unmountOnExit={true}
               >
 
-                <Suspense fallback={<div></div>}>
-                  <Switch location={location}>
-                    {this.generateRoutes(this.props.sidebar.menu.data)}
-                    <Route path="/דף-הבית" component={Home} />
-                    <Route path="/הגדרות"
-                      render={routeProps => (
-                        <Settings {...routeProps} />
-                      )}
-                    />
-                    <Route path="/ניהול" component={Management} />
-                    <Route exact path="/" component={Home} history={{
-                      page: "דף-הבית",
-                      buildingName: "דף הבית",
-                      buildingNameEng: "home"
-                    }} />
-                  </Switch>
-                </Suspense>
+                <Switch location={location}>
+                  {this.generateRoutes(this.props.sidebar.menu.data)}
+                  <Route path="/דף-הבית" component={Home} />
+                  <Route path="/הגדרות"
+                    render={routeProps => (
+                      <Settings {...routeProps} />
+                    )}
+                  />
+                  <Route path="/ניהול" component={Management} />
+                  <Route exact path="/" component={Home} history={{
+                    page: "דף-הבית",
+                    buildingName: "דף הבית",
+                    buildingNameEng: "home"
+                  }} />
+                </Switch>
 
               </CSSTransition>
             </TransitionGroup>

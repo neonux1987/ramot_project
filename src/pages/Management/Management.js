@@ -1,11 +1,11 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
 
-// LAZY LOAD PAGES
-const ExpansesCodes = lazy(() => import('./pages/ExpansesCodes/ExpansesCodes'));
-const SummarizedSections = lazy(() => import('./pages/SummarizedSections/SummarizedSections'));
-const Reports = lazy(() => import('./pages/Reports/Reports'));
+// PAGES
+import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
+import SummarizedSections from './pages/SummarizedSections/SummarizedSections';
+import Reports from './pages/Reports/Reports';
 
 const styles = () => ({
   tabs: {
@@ -36,14 +36,12 @@ const Management = ({ match }) => {
 
   return (
     <div style={{ paddingTop: "50px", height: "100%" }}>
-      <Suspense fallback={<div></div>}>
-        <Switch>
-          <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
-          <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />
-          <Route path={`${match.path}/הפקת דוחות`} component={Reports} />
-          <Route component={Reports} />
-        </Switch>
-      </Suspense>
+      <Switch>
+        <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
+        <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />
+        <Route path={`${match.path}/הפקת דוחות`} component={Reports} />
+        <Route component={Reports} />
+      </Switch>
     </div>
   );
 
