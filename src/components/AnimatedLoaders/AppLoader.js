@@ -2,10 +2,10 @@ import React from 'react';
 import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
 import { RotateLoader } from 'react-spinners';
 
-export default (props) => {
+export default ({ title = "טוען את האפליקציה", loading = false, style, size = 14 }) => {
 
   return (
-    <AlignCenterMiddle style={{ height: "100%", ...props.style }}>
+    <AlignCenterMiddle style={{ height: "100%", ...style }}>
       <div
         style={{
           marginLeft: "50px",
@@ -13,13 +13,14 @@ export default (props) => {
           fontWeight: "600",
           fontSize: "18px",
         }}
-      >טוען את האפליקציה
+      >
+        {title}
       </div>
       <RotateLoader
         margin={2}
-        size={15}
+        size={size}
         color={"#000000"}
-        loading={props.loading}
+        loading={loading}
       />
     </AlignCenterMiddle>
   );

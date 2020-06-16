@@ -33,10 +33,10 @@ const exportExcelBulk = async (date) => {
   const buildingsDao = new BuildingsDao();
   const registeredMonths = new RegisteredMonths();
 
-  const locations = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.LOCATIONS);
+  const userSettings = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.USER);
 
   // user reports folder
-  const { reports_folder_path } = locations;
+  const { reports_folder_path } = userSettings;
 
   // ensure the user reports folder exist, if not create it
   await fse.ensureDir(reports_folder_path);

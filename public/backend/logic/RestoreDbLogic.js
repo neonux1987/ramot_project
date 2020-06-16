@@ -18,9 +18,9 @@ class RestoreDbLogic {
   }
 
   async restoreFromList(fileName) {
-    const locations = await this.settingsLogic.getLocationsSettings();
+    const systemSettings = await this.settingsLogic.getSystemSettings();
 
-    const backupsFolder = locations.db_backups_folder_path;
+    const backupsFolder = systemSettings.db_backups_folder_path;
     const fullFilePath = path.join(backupsFolder, fileName);
 
     return await this.restore(fullFilePath);
@@ -38,10 +38,10 @@ class RestoreDbLogic {
     await this.servicesLogic.stopAllServices();
     await connectionPool.destroy();
 
-    const locations = await this.settingsLogic.getLocationsSettings();
+    const systemSettings = await this.settingsLogic.getSystemSettings();
 
     // replace the old database 
-    await fse.copy(path, locations.db_file_path);
+    await fse.copy(path, systemSettings.db_file_path);
   }
 
 }

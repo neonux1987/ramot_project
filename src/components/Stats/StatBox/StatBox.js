@@ -41,8 +41,8 @@ export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000",
           lineWidth={20}
           totalValue={income + outcome}
           data={[
-            { title: 'הוצאות', value: outcome, color: 'rgb(249, 89, 118)' },
-            { title: 'הכנסות', value: income, color: 'rgb(33, 160, 197)' },
+            { title: 'הוצאות', value: outcome, color: '#f11a5f' },
+            { title: 'הכנסות', value: income, color: '#1979cc' },
           ]}
         />
       </div>
@@ -52,7 +52,7 @@ export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000",
     <div className={bottom}>
 
       <div className={incomeWrapper}>
-        <span className={incomeText} style={{ color: "rgb(19, 133, 167)" }}>
+        <span className={incomeText} style={{ color: "rgb(19, 116, 173)" }}>
           {income} {unicodeSymbol}
         </span>
         <span className={incomeDescription}>
@@ -61,7 +61,7 @@ export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000",
       </div>
 
       <div className={outcomeWrapper}>
-        <div className={outcomeText} style={{ color: "rgb(247, 45, 82)" }}>
+        <div className={outcomeText} style={{ color: "rgb(241, 39, 76)" }}>
           {outcome} {unicodeSymbol}
         </div>
         <div className={outcomeDescription}>

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { withStyles } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
-import ExpansesCodes from './pages/ExpansesCodes/ExpansesCodes';
-import SummarizedSections from './pages/SummarizedSections/SummarizedSections';
-import Reports from './pages/Reports/Reports';
-import Settings from '../Settings/Settings';
+
+// LAZY LOAD PAGES
+const ExpansesCodes = lazy(() => import('./pages/ExpansesCodes/ExpansesCodes'));
+const SummarizedSections = lazy(() => import('./pages/SummarizedSections/SummarizedSections'));
+const Reports = lazy(() => import('./pages/Reports/Reports'));
 
 const styles = () => ({
   tabs: {
@@ -34,16 +35,15 @@ const styles = () => ({
 const Management = ({ match }) => {
 
   return (
-    <div>
-      <div style={{ marginTop: "50px" }}>
+    <div style={{ paddingTop: "50px", height: "100%" }}>
+      <Suspense fallback={<div></div>}>
         <Switch>
           <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
           <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />
           <Route path={`${match.path}/הפקת דוחות`} component={Reports} />
-          <Route path={`${match.path}/הגדרות`} component={Settings} />
           <Route component={Reports} />
         </Switch>
-      </div>
+      </Suspense>
     </div>
   );
 

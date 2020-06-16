@@ -39,7 +39,7 @@ const MonthExpanses = props => {
   }, [dispatch, buildingNameEng]);
 
   if (date === undefined)
-    return <AlignCenterMiddle style={{ paddingTop: "200px" }}><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
+    return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
   return (
     <div className={"page"}>

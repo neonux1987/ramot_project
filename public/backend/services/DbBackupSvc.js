@@ -36,9 +36,12 @@ class DbBackupSvc {
 
     let {
       every_x_hours,
-      currentDate,
-      executed_backups
+      currentDate
     } = settings.db_backup.byTime;
+
+    let cronJob = "";
+
+    const newSettings = {}
 
     // get rid of the time portion
     const newCurrentDate = new Date(new Date().toDateString());
@@ -48,29 +51,31 @@ class DbBackupSvc {
 
     // we want the backup to run maxCount times a day
     if (currentDate === "" || newCurrentDate.getTime() !== oldDate.getTime()) {
-      currentDate = newCurrentDate.toJSON();
-      executed_backups = 0;
+      newSettings.currentDate = newCurrentDate.toJSON();
+      newSettings.executed_backups = 0;
     }
 
-    this.rule = new schedule.RecurrenceRule();
-
-    this.rule.hour = every_x_hours;
-    this.rule.minute = 0;
+    // run every hours work differentally 
+    // than 2 hours and above...
+    if (every_x_hours === 1)
+      cronJob = "0 * * * *";
+    else
+      cronJob = `* */${every_x_hours} * * *`
 
     // execute scheduler
-    this.backupSchedule = schedule.scheduleJob(`*/${every_x_hours} * * * *`, this.schedulerCallback);
+    this.backupSchedule = schedule.scheduleJob(cronJob, this.schedulerCallback);
 
     if (this.backupSchedule.nextInvocation() === null) {
       return Promise.reject();
     }
 
-    await this.settingsLogic.updateSpecificSetting(SettingsLogic.SETTINGS_NAMES.DB_BACKUP, settings.db_backup);
+    await this.settingsLogic.updateSpecificSetting(SettingsLogic.SETTINGS_NAMES.DB_BACKUP, newSettings);
   }
 
   async stop() {
     //make sure that the scheduler object in not null
     if (this.backupSchedule === null) {
-      return Promise.reject(new Error("לא ניתן להפעיל את שירות הגיבוי של בסיס הנתונים אם לא בחרת לפחות יום אחד וביצעת שמירה."));
+      return Promise.reject(new Error("לא ניתן להפסיק שירות שכבר לא פעיל."));
     }
 
     //cancel the job
@@ -151,7 +156,7 @@ class DbBackupSvc {
       //fetch db backup settings
       settings = await this.settingsLogic.getSettings();
 
-    const { db_backup, locations } = settings;
+    const { db_backup, system } = settings;
 
     //fetch db backup settings
     const registeredBackups = await this.registeredBackupsLogic.getRegisteredBackups();
@@ -166,7 +171,7 @@ class DbBackupSvc {
 
     //filename of the file to save
     const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.sqlite`;
-    const path = `${db_backup.path}/${fileName}`;
+    const path = `${db_backup.db_backups_folder_path}/${fileName}`;
 
     if (registeredBackups.length >= db_backup.backups_to_save) {
 
@@ -174,7 +179,7 @@ class DbBackupSvc {
       const removedFileName = registeredBackups[0].fileName;
 
       //remove the file physically from the drive
-      await fse.remove(`${db_backup.path}/${removedFileName}`);
+      await fse.remove(`${db_backup.db_backups_folder_path}/${removedFileName}`);
 
       //remove the filename from the array
       registeredBackups.shift();
@@ -182,7 +187,7 @@ class DbBackupSvc {
     }
 
     //write the file physically to the drive
-    await fse.copy(locations.db_file_path, path);
+    await fse.copy(system.db_file_path, path);
 
     //push the new file to the array
     registeredBackups.push({ backupDateTime: date, fileName: fileName });
@@ -196,7 +201,6 @@ class DbBackupSvc {
     await this.settingsLogic.updateSettings(settings);
 
     await this.registeredBackupsLogic.updateRegisteredBackups(registeredBackups);
-
   }
 
 
@@ -211,10 +215,10 @@ class DbBackupSvc {
     }
 
     //fetch db backup settings
-    let settings = await this.settingsLogic.getSettings();
+    let systemSettings = await this.settingsLogic.getSystemSettings();
 
     //fetch db backup settings
-    let fileToBackup = await fse.readFile(settings.locations.db_file_path);
+    let fileToBackup = await fse.readFile(systemSettings.db_file_path);
 
     //write the file physically to the drive
     await fse.writeFile(fullPath, fileToBackup);

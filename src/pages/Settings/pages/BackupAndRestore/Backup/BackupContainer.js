@@ -41,9 +41,7 @@ const BackupContainer = () => {
   const dispatch = useDispatch();
 
   // state
-  const { db_backup, locations } = useSelector(store => store.settings.data);
-
-  const settings = db_backup;
+  const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
   const [data, setData] = useState(settings);
 
@@ -132,11 +130,6 @@ const BackupContainer = () => {
                   path: newPath
                 });
 
-                dispatch(updateSettings("locations", {
-                  ...locations,
-                  db_backups_folder_path: newPath
-                }));
-
                 dispatch(setDirty());
                 dispatch(initializeRegisteredBackups()).catch((result) => {
                   toastManager.error(result.error);
@@ -217,7 +210,7 @@ const BackupContainer = () => {
       <CheckboxWithLabel label="גיבוי ביציאה" value={data.backup_on_exit} onChange={onBackupOnExitChange} />
 
       {/* <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} /> */}
-      <FileSelector onChangeClick={dbSelectFolderHandler} value={data.path} />
+      <FileSelector onChangeClick={dbSelectFolderHandler} value={data.db_backups_folder_path} />
 
       <Divider margin="40px 0 20px" />
 

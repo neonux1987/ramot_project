@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { withRouter } from 'react-router';
 import { TableChart } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ import DateDetails from '../../components/DateDetails/DateDetails';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
-import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
+//import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 
 // HOOKS
 import useDate from '../../customHooks/useDate';
@@ -21,6 +21,8 @@ import useDate from '../../customHooks/useDate';
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
+
+const BudgetExecutionsTableContainer = lazy(() => import('./BudgetExecutionsTableContainer'));
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -42,7 +44,7 @@ const BudgetExecutions = props => {
   }, [dispatch, buildingNameEng]);
 
   if (date === undefined)
-    return <AlignCenterMiddle style={{ paddingTop: "200px" }}><Spinner loadingText={"טוען נתוני עמוד..."} /></AlignCenterMiddle>;
+    return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
   return <div className={"page"}>
 
@@ -63,12 +65,14 @@ const BudgetExecutions = props => {
         year={date.year}
       />}
     >
-      <BudgetExecutionsTableContainer
-        location={props.location}
-        date={date}
-        pageName={PAGE_NAME}
-        pageTitle={PAGE_TITLE}
-      />
+      <Suspense fallback={<div>loading...</div>}>
+        <BudgetExecutionsTableContainer
+          location={props.location}
+          date={date}
+          pageName={PAGE_NAME}
+          pageTitle={PAGE_TITLE}
+        />
+      </Suspense>
     </TableExpandableSection>
 
   </div>

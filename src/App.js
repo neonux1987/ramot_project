@@ -68,15 +68,13 @@ const theme = createMuiTheme({
 const { play, types } = soundManager;
 
 const TOAST_AUTO_CLOSE = 3000;
+const TOAST_BACKUP_ID = "dbBackupSvc";
+const TOAST_REPORTS_ID = "reportsGeneratorId";
 
 const App = () => {
 
   const toggleSidebarAnimation = "";
   const mainContainer = useRef(null);
-
-  const [state, setState] = useState({
-    toastId: null
-  });
 
   const settings = useSelector(store => store.settings);
 
@@ -112,16 +110,15 @@ const App = () => {
   useEffect(() => {
 
     const listenerCallback = (event, action, message) => {
-      let toastId = null;
       switch (action) {
         case "dbBackupStarted":
-          toastId = toastManager.info(<ToastRender spinner={true} message={message} />, {
-            autoClose: false
+          toastManager.info(<ToastRender spinner={true} message={message} />, {
+            autoClose: false,
+            toastId: TOAST_BACKUP_ID
           });
-          setState({ toastId });
           break;
         case "dbBackupFinished":
-          toastManager.update(state.toastId, {
+          toastManager.update(TOAST_BACKUP_ID, {
             render: <ToastRender done={true} message={message} />,
             type: toastManager.types.SUCCESS,
             delay: 2000,
@@ -129,7 +126,7 @@ const App = () => {
           });
           break;
         case "dbBackupError":
-          toastManager.update(state.toastId, {
+          toastManager.update(TOAST_BACKUP_ID, {
             render: <ToastRender done={true} message={message} />,
             type: toastManager.types.ERROR,
             delay: 2000,
@@ -137,13 +134,13 @@ const App = () => {
           });
           break;
         case "reportsGenerationStarted":
-          toastId = toastManager.info(<ToastRender spinner={true} message={message} />, {
-            autoClose: false
+          toastManager.info(<ToastRender spinner={true} message={message} />, {
+            autoClose: false,
+            toastId: TOAST_REPORTS_ID
           });
-          setState({ toastId: toastId });
           break;
         case "reportsGenerationFinished":
-          toastManager.update(state.toastId, {
+          toastManager.update(TOAST_REPORTS_ID, {
             render: <ToastRender done={true} message={message} />,
             type: toastManager.types.SUCCESS,
             delay: 2000,
@@ -167,7 +164,7 @@ const App = () => {
 
     //start services
     ipcRenderer.send("system-start-services");
-  }, [state.toastId]);
+  }, []);
 
   const closeButtonHandler = async () => {
     const { isFetching, data } = settings;

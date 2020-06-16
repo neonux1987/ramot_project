@@ -15,6 +15,10 @@ class SettingsLogic {
     });
   }
 
+  getSystemSettings() {
+    return this.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.SYSTEM);
+  }
+
   getLocationsSettings() {
     return this.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.LOCATIONS);
   }
@@ -29,7 +33,10 @@ class SettingsLogic {
 
   async updateSpecificSetting(name, payload) {
     const settings = await this.getSettings(name);
-    settings[name] = { ...payload };
+    settings[name] = {
+      ...settings[name],
+      ...payload
+    };
 
     return this.updateSettings(settings);
   }
@@ -41,6 +48,8 @@ class SettingsLogic {
   }
 
   static SETTINGS_NAMES = {
+    USER: "user",
+    SYSTEM: "user",
     LOCATIONS: "locations",
     DB_BACKUP: "db_backup",
     DB_RESTORE: "db_restore"

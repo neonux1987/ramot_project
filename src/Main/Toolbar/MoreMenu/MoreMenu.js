@@ -1,102 +1,115 @@
 // LIBRARIES
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { MenuItem, Menu, Divider } from "@material-ui/core";
+import { Menu, Divider, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import styles from './MoreMenu.module.css';
+import { ExpandLess, ExpandMore, Description, TableChart, ChangeHistory, Settings } from "@material-ui/icons";
+import SubMenu from "./SubMenu/SubMenu";
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {
+
+  const [open, setOpen] = React.useState(false);
+
+  const expandClick = () => {
+    setOpen(!open);
+  };
+
+  const upgradedHandleClose = () => {
+    handleClose();
+    setOpen(false)
+  }
+
   return (
     <Menu
       id="simple-menu"
       anchorEl={anchorEl}
       keepMounted
       open={Boolean(anchorEl)}
-      onClose={handleClose}
+      onClose={upgradedHandleClose}
     >
-      <MenuItem className={styles.menuItem} onClick={handleClose}>
-        <NavLink
-          className={styles.menuItemLink}
-          to={{
-            pathname: "/ניהול/הפקת דוחות",
-            state: {
-              page: "הפקת דוחות",
-              buildingName: "ניהול",
-              buildingNameEng: "management"
-            }
-          }}
-          exact
-        >
-          הפקת דוחות
-            </NavLink>
-      </MenuItem>
 
-      <MenuItem className={styles.menuItem} onClick={handleClose}>
-        <NavLink
-          className={styles.menuItemLink}
-          to={{
-            pathname: "/ניהול/קודי הנהלת חשבונות",
-            state: {
-              page: "קודי הנהלת חשבונות",
-              buildingName: "ניהול",
-              buildingNameEng: "management"
-            }
-          }}
-          exact
-        >
-          ניהול קודי הנהלת חשבונות
-            </NavLink>
-      </MenuItem>
+      <ListItem
+        button
+        component={NavLink}
+        onClick={upgradedHandleClose}
+        className={styles.menuItemLink}
+        to={{
+          pathname: "/ניהול/הפקת דוחות",
+          state: {
+            page: "הפקת דוחות",
+            buildingName: "ניהול",
+            buildingNameEng: "management"
+          }
+        }}
+        exact
+      >
+        <ListItemIcon className={styles.listIcon}>
+          <Description />
+        </ListItemIcon>
+        <ListItemText primary="הפקת דוחות" />
+      </ListItem>
 
-      <MenuItem className={styles.menuItem} onClick={handleClose}>
-        <NavLink
-          className={styles.menuItemLink}
-          to={{
-            pathname: "/ניהול/סעיפים מסכמים",
-            state: {
-              page: "סעיפים מסכמים",
-              buildingName: "ניהול",
-              buildingNameEng: "management"
-            }
-          }}
-          exact
-        >
-          ניהול סעיפים מסכמים
-            </NavLink>
-      </MenuItem>
 
-      <MenuItem onClick={taxClickHandler}>
-        שינוי מע"מ
-          </MenuItem>
+      <ListItem
+        button
+        component={NavLink}
+        onClick={upgradedHandleClose}
+        className={styles.menuItemLink}
+        to={{
+          pathname: "/ניהול/קודי הנהלת חשבונות",
+          state: {
+            page: "קודי הנהלת חשבונות",
+            buildingName: "ניהול",
+            buildingNameEng: "management"
+          }
+        }}
+        exact
+      >
+        <ListItemIcon className={styles.listIcon}>
+          <TableChart />
+        </ListItemIcon>
+        <ListItemText primary="ניהול קודי הנהלת חשבונות" />
+      </ListItem>
 
-      <Divider style={{ margin: "0 10px" }} />
+      <ListItem
+        button
+        component={NavLink}
+        onClick={upgradedHandleClose}
+        className={styles.menuItemLink}
+        to={{
+          pathname: "/ניהול/סעיפים מסכמים",
+          state: {
+            page: "סעיפים מסכמים",
+            buildingName: "ניהול",
+            buildingNameEng: "management"
+          }
+        }}
+        exact
+      >
+        <ListItemIcon className={styles.listIcon}>
+          <TableChart />
+        </ListItemIcon>
+        <ListItemText primary="ניהול סעיפים מסכמים" />
+      </ListItem>
 
-      <MenuItem className={styles.menuItem} onClick={handleClose}>
-        <NavLink
-          className={styles.menuItemLink}
-          to={{
-            pathname: "/הגדרות",
-            state: {
-              page: "הגדרות",
-              buildingName: "הגדרות",
-              buildingNameEng: "settings"
-            }
-          }}
-          exact
-        >
-          הגדרות
-            </NavLink>
-      </MenuItem>
+      <ListItem button onClick={taxClickHandler} className={styles.menuItemLink}>
+        <ListItemIcon className={styles.listIcon}>
+          <ChangeHistory />
+        </ListItemIcon>
+        <ListItemText primary={`שינוי מע"מ`} />
+      </ListItem>
 
-      <MenuItem className={styles.menuItem} onClick={restartAppHandler}>
-        <NavLink
-          className={styles.menuItemLink}
-          to={{}}
-          exact
-        >
-          אתחל אפליקציה
-            </NavLink>
+      <Divider style={{ margin: "8px" }} />
 
-      </MenuItem>
+      <ListItem button onClick={expandClick} className={styles.menuItemLink}>
+        <ListItemIcon className={styles.listIcon}>
+          <Settings />
+        </ListItemIcon>
+        <ListItemText primary="עוד..." />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+
+      <SubMenu open={open} restartAppHandler={restartAppHandler} />
 
     </Menu>
   );

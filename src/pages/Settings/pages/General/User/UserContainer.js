@@ -24,9 +24,7 @@ const SETTINGS_NAME = "user";
 export default () => {
   const dispatch = useDispatch();
 
-  const { user, locations } = useSelector(store => store.settings.data);
-
-  const settings = user;
+  const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
   const [data, setData] = useState(settings);
 
@@ -61,11 +59,6 @@ export default () => {
           setData({
             reports_folder_path: newPath
           });
-
-          dispatch(updateSettings("locations", {
-            ...locations,
-            reports_folder_path: newPath
-          }));
 
           dispatch(setDirty());
         } // end if

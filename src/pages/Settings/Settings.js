@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { withStyles, Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
-import Services from './pages/Services/Services';
-import General from './pages/General/General';
-import AppUpdates from './pages/AppUpdates/AppUpdates';
-import About from './pages/About/About';
-import Theme from './pages/Theme/Theme';
 import { useSelector } from 'react-redux';
 import CustomNavLink from '../../components/CustomNavLink/CustomNavLink';
+
+// LAZY LOAD PAGES
+const General = lazy(() => import('./pages/General/General'));
+const Theme = lazy(() => import('./pages/Theme/Theme'));
+const BackupAndRestore = lazy(() => import('./pages/BackupAndRestore/BackupAndRestore'));
+const Services = lazy(() => import('./pages/Services/Services'));
+const AppUpdates = lazy(() => import('./pages/AppUpdates/AppUpdates'));
+const About = lazy(() => import('./pages/About/About'));
 
 const styles = (theme) => ({
   tabs: {
@@ -49,7 +51,7 @@ const Settings = ({ classes, match }, props) => {
   const pageState = currentActive.state;
 
   return (
-    <div className="page">
+    <div className="page" style={{ height: "100%" }}>
       <AppBar classes={{ root: classes.appBar }} position="static" style={{ margin: "20px 20px 30px 20px" }}>
         <Tabs
           classes={{ root: classes.tabs, indicator: classes.indicator }}
@@ -137,27 +139,29 @@ const Settings = ({ classes, match }, props) => {
           />
         </Tabs>
       </AppBar>
-      <div>
-        <Switch>
-          <Route path={`${match.path}/כללי`} component={General} />
-          <Route path={`${match.path}/עיצוב`} component={Theme} />
-          <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
-          <Route path={`${match.path}/שירותי מערכת`} component={Services} />
-          <Route path={`${match.path}/עדכוני תוכנה`} component={AppUpdates} />
-          <Route path={`${match.path}/אודות`} component={About} />
-          <Redirect
-            exact
-            from="/הגדרות"
-            to={{
-              pathname: "/הגדרות/כללי",
-              state: {
-                page: "כללי",
-                buildingName: "הגדרות",
-                buildingNameEng: "settings"
-              }
-            }}
-          />
-        </Switch>
+      <div style={{ height: "100%" }}>
+        <Suspense fallback={<div></div>}>
+          <Switch>
+            <Route path={`${match.path}/כללי`} component={General} />
+            <Route path={`${match.path}/עיצוב`} component={Theme} />
+            <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
+            <Route path={`${match.path}/שירותי מערכת`} component={Services} />
+            <Route path={`${match.path}/עדכוני תוכנה`} component={AppUpdates} />
+            <Route path={`${match.path}/אודות`} component={About} />
+            <Redirect
+              exact
+              from="/הגדרות"
+              to={{
+                pathname: "/הגדרות/כללי",
+                state: {
+                  page: "כללי",
+                  buildingName: "הגדרות",
+                  buildingNameEng: "settings"
+                }
+              }}
+            />
+          </Switch>
+        </Suspense>
       </div>
 
     </div>
