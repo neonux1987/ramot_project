@@ -1,6 +1,5 @@
 // LIBRARIES
 const { dialog, app, BrowserWindow } = require('electron');
-const path = require('path');
 const logManager = require('../logger/LogManager');
 const rendererNotificationSvc = require('../services/RendererNotificationSvc');
 const MenuDao = require('../dao/MenuDao');
