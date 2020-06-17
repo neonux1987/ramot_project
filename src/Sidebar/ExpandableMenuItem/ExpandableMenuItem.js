@@ -16,6 +16,8 @@ import {
   collapse,
   listItem
 } from './ExpandableMenuItem.module.css';
+import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
+import { Button } from '@material-ui/core';
 
 export default props => {
 
@@ -33,6 +35,7 @@ export default props => {
 
       <ListItem
         onClick={onClick}
+        component={Button}
         className={classnames(listItem, active ? "activeExpandItem" : "")}
       >
         <ListItemIcon className={listItemIcon}>

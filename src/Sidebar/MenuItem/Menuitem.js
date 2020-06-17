@@ -8,7 +8,7 @@ import {
   listItemIcon
 } from './MenuItem.module.css';
 import classnames from 'classnames';
-import CustomNavLink from '../../components/CustomNavLink/CustomNavLink';
+import ButtonNavLink from '../../components/ButtonNavLink/ButtonNavLink';
 
 const Menuitem = (props) => {
 
@@ -23,8 +23,7 @@ const Menuitem = (props) => {
 
   return (
     <ListItem
-      component={CustomNavLink}
-      //button
+      component={ButtonNavLink}
       className={classnames(listItem, className, active ? "activeButton" : "")}
       style={style}
       to={to}

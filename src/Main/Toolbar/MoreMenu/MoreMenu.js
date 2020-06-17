@@ -4,8 +4,8 @@ import { Menu, Divider, ListItem, ListItemIcon, ListItemText } from "@material-u
 import styles from './MoreMenu.module.css';
 import { ExpandLess, ExpandMore, Description, TableChart, ChangeHistory, Settings } from "@material-ui/icons";
 import SubMenu from "./SubMenu/SubMenu";
-import CustomNavLink from "../../../components/CustomNavLink/CustomNavLink";
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
+import ButtonNavLinkWithSound from "../../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound";
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {
 
@@ -31,7 +31,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
 
       <ListItem
         button
-        component={CustomNavLink}
+        component={ButtonNavLinkWithSound}
         onClick={upgradedHandleClose}
         className={styles.menuItemLink}
         to={{
@@ -53,7 +53,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
 
       <ListItem
         button
-        component={CustomNavLink}
+        component={ButtonNavLinkWithSound}
         onClick={upgradedHandleClose}
         className={styles.menuItemLink}
         to={{
@@ -74,7 +74,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
 
       <ListItem
         button
-        component={CustomNavLink}
+        component={ButtonNavLinkWithSound}
         onClick={upgradedHandleClose}
         className={styles.menuItemLink}
         to={{

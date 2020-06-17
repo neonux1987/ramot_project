@@ -76,7 +76,11 @@ a {
   background: #d6dce00a;
 }
 
-.activeButton{
+.activeExpandItem:hover{
+  background: #d6dce00a;
+}
+
+.activeButton,.activeButton:hover{
   background: #0365a2;
   margin: 0 10px;
   width: 220px;

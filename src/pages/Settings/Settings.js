@@ -3,7 +3,6 @@ import { withStyles, Tabs, Tab } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import CustomNavLink from '../../components/CustomNavLink/CustomNavLink';
 
 // PAGES
 import General from './pages/General/General';
@@ -12,6 +11,7 @@ import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
 import Services from './pages/Services/Services';
 import AppUpdates from './pages/AppUpdates/AppUpdates';
 import About from './pages/About/About';
+import ButtonNavLinkWithSound from '../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound';
 
 const styles = (theme) => ({
   tabs: {
@@ -62,7 +62,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="כללי"
-            component={CustomNavLink}
+            component={ButtonNavLinkWithSound}
             to={{
               pathname: `${match.path}/כללי`,
               state: {
@@ -75,7 +75,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="עיצוב"
-            component={CustomNavLink}
+            component={ButtonNavLinkWithSound}
             to={{
               pathname: `${match.path}/עיצוב`,
               state: {
@@ -88,7 +88,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="גיבוי ושחזור"
-            component={CustomNavLink}
+            component={ButtonNavLinkWithSound}
             to={{
               pathname: `${match.path}/גיבוי ושחזור`,
               state: {
@@ -101,7 +101,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="שירותי מערכת"
-            component={CustomNavLink}
+            component={ButtonNavLinkWithSound}
             to={{
               pathname: `${match.path}/שירותי מערכת`,
               state: {
@@ -114,7 +114,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="עדכוני תוכנה"
-            component={CustomNavLink}
+            component={ButtonNavLinkWithSound}
             to={{
               pathname: `${match.path}/עדכוני תוכנה`,
               state: {
@@ -127,7 +127,7 @@ const Settings = ({ classes, match }, props) => {
           <Tab
             classes={{ root: classes.tab }}
             label="אודות"
-            component={CustomNavLink}
+            component={ButtonNavLinkWithSound}
             to={{
               pathname: `${match.path}/אודות`,
               state: {
