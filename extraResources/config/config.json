@@ -39,7 +39,7 @@
       "3": "rgb(220, 60, 96)",
       "4": "rgb(248, 77, 30)"
     },
-    "sticky_toolbar": false
+    "sticky_toolbar": true
   },
   "db_backup": {
     "backups_to_save": 2,
