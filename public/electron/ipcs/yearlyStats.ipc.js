@@ -13,6 +13,14 @@ const yearlyStatsIpc = (connection) => {
     });
   });
 
+  ipcMain.on('get-yearly-stats-by-year-range', (event, { buildingName, fromYear, toYear }) => {
+    yearlyStatsLogic.getYearStatsByYearRange(buildingName, fromYear, toYear).then((result) => {
+      event.sender.send("yearly-stats-by-year-range", { data: result });
+    }).catch((error) => {
+      event.reply("yearly-stats-by-year-range", { error: error.message });
+    });
+  });
+
 }
 
 module.exports = yearlyStatsIpc;

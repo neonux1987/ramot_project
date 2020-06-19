@@ -141,7 +141,7 @@ class MainSystem {
       // In the main process.
       global.sharedObject = {
         buildings: menu,
-        pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets"],
+        pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets", "statistics"],
         settings
       }
 

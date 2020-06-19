@@ -8,6 +8,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { Fragment } from 'react';
 import classnames from 'classnames';
+import { Button } from '@material-ui/core';
 
 import {
   listItemIcon,
@@ -16,8 +17,6 @@ import {
   collapse,
   listItem
 } from './ExpandableMenuItem.module.css';
-import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
-import { Button } from '@material-ui/core';
 
 export default props => {
 

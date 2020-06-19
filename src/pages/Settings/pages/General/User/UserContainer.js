@@ -75,7 +75,7 @@ export default () => {
       padding={"30px 20px"}
     >
 
-      <TitleTypography>
+      <TitleTypography underline={false} gutterBottom="10px">
         מיקום תיקיית דוחות אקסל:
       </TitleTypography>
 

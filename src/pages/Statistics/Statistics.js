@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchYearStatsByYearRange } from '../../redux/actions/yearlyStatsActions';
+import { Line } from 'react-chartjs-2';
+import Wrapper from '../../components/Wrapper/Wrapper';
+import YearsChartContainer from './YearsChartContainer';
 
-export default () => {
+const PAGE_NAME = "statistics";
+
+export default props => {
+  //building name
+  const { buildingNameEng } = props.location.state;
 
   return (
-    <div
-      className="page"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-      <h3>דף סטטיסטיקה נמצא בבנייה.</h3>
-    </div>
+    <Wrapper className="page">
+
+      <YearsChartContainer buildingName={buildingNameEng} pageName={PAGE_NAME} />
+
+    </Wrapper>
   );
 
 }

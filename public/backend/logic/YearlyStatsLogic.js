@@ -2,8 +2,12 @@ const YearlyStatsDao = require('../dao/YearlyStatsDao');
 
 class YearlyStatsLogic {
 
-  constructor(connection) {
-    this.yearlyStatsDao = new YearlyStatsDao(connection);
+  constructor() {
+    this.yearlyStatsDao = new YearlyStatsDao();
+  }
+
+  getYearStatsByYearRange(buildingName, fromYear, toYear) {
+    return this.yearlyStatsDao.getYearStatsByYearRange(buildingName, fromYear, toYear);
   }
 
   getYearStatsTrx(buildingName = String, date = Object, trx) {

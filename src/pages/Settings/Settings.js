@@ -51,7 +51,7 @@ const Settings = ({ classes, match }, props) => {
   const pageState = currentActive.state;
 
   return (
-    <div className="page" style={{ height: "100%" }}>
+    <div style={{ height: "100%" }}>
       <AppBar classes={{ root: classes.appBar }} position="static" style={{ margin: "20px 20px 30px 20px" }}>
         <Tabs
           classes={{ root: classes.tabs, indicator: classes.indicator }}

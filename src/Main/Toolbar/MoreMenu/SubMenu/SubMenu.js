@@ -12,7 +12,7 @@ const listIcon = css`
   color: #0365a2;
 `;
 
-export default ({ open, restartAppHandler }) => {
+export default ({ open, restartAppHandler, dbBackupHandler }) => {
   return <Collapse in={open} timeout="auto" unmountOnExit>
     <List component="div" disablePadding>
 
@@ -23,7 +23,7 @@ export default ({ open, restartAppHandler }) => {
         אתחל אפליקציה
       </ListItem>
 
-      <ListItem button className={nested} onClick={() => alert("בקרוב")}>
+      <ListItem button className={nested} onClick={dbBackupHandler}>
         <ListItemIcon className={listIcon}>
           <Backup />
         </ListItemIcon>

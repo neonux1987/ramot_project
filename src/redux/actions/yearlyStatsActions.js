@@ -29,6 +29,28 @@ export const fetchYearStats = (params = Object) => {
   }
 };
 
+export const fetchYearStatsByYearRange = (params = Object) => {
+  return dispatch => {
+    const { buildingName, pageName } = params;
+
+    //let react know that the fetching is started
+    dispatch(requestYearlyStats(buildingName, pageName));
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-yearly-stats-by-year-range",
+        params
+      },
+      receive: {
+        channel: "yearly-stats-by-year-range"
+      },
+      onSuccess: result => dispatch(receiveYearlyStats(buildingName, pageName, result.data)),
+      onError: result => dispatch(fetchingFailed(buildingName, pageName, result.error))
+    });
+
+  }
+};
+
 const requestYearlyStats = function (buildingName, pageName) {
   return {
     type: TYPES.YEARLY_STATS_REQUEST,

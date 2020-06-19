@@ -6,6 +6,9 @@ import { ExpandLess, ExpandMore, Description, TableChart, ChangeHistory, Setting
 import SubMenu from "./SubMenu/SubMenu";
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 import ButtonNavLinkWithSound from "../../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound";
+import { initiateDbBackup } from '../../../services/dbBackup.svc';
+import { toastManager } from "../../../toasts/ToastManager";
+import ToastRender from "../../../components/ToastRender/ToastRender";
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {
 
@@ -18,6 +21,31 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
   const upgradedHandleClose = () => {
     handleClose();
     setOpen(false)
+  }
+
+  const dbBackupHandler = async () => {
+    const id = toastManager.info(<ToastRender spinner={true} message={"גיבוי בסיס נתונים החל..."} />, {
+      autoClose: false
+    });
+
+    const promise = await initiateDbBackup().catch((result) => {
+      toastManager.update(id, {
+        render: <ToastRender message={result.error} />,
+        type: toastManager.types.ERROR,
+        delay: 3000,
+        autoClose: 2500
+      });
+    });
+
+    // success
+    if (promise)
+      toastManager.update(id, {
+        render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה."} />,
+        type: toastManager.types.SUCCESS,
+        delay: 2000,
+        autoClose: 1500
+      });
+
   }
 
   return (
@@ -119,7 +147,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
 
-      <SubMenu open={open} restartAppHandler={restartAppHandler} />
+      <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} />
 
     </Menu>
   );

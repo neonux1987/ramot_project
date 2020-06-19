@@ -78,6 +78,7 @@ const updatesIpc = () => {
   })
 
   autoUpdater.on('error', (error) => {
+    console.log("onerror", error);
     if (!cancellationToken._cancelled) cancellationToken.cancel();
     currentWindow.webContents.send('updater_error', { error: error.message });
   });
@@ -89,6 +90,7 @@ const updatesIpc = () => {
       // plus need ti fix the problem 
       // "Cannot download differentially, fallback to full download: Error"
       //currentWindow.webContents.send('updater_error', { error: error.message });
+      console.log("download-update", error);
     });
   });
 

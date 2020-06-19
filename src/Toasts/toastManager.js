@@ -77,6 +77,7 @@ class ToastManager {
     play(types.error);
     return toast.error(content, {
       className: styles.error,
+      autoClose: 5000,
       ...properties
     });
   };

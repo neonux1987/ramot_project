@@ -93,7 +93,7 @@ const App = () => {
 
           await dispatch(updateSettings("appUpdates", { userNotified: true }));
           await dispatch(saveSettings(false));
-          toastManager.AppUpdateNewVersion(version);
+          toastManager.appUpdateNewVersion(version);
         }
 
       }
@@ -177,7 +177,7 @@ const App = () => {
       return Promise.resolve();
     }
 
-    const id = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס הנתונים לפני יציאה..."} />, {
+    const id = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
       autoClose: false
     });
 
@@ -185,7 +185,7 @@ const App = () => {
       toastManager.update(id, {
         render: <ToastRender message={result.error} />,
         type: toastManager.types.ERROR,
-        delay: 2000,
+        delay: 3000,
         autoClose: 2500,
         onClose: () => {
           quitApp();

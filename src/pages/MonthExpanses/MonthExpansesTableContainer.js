@@ -220,8 +220,6 @@ const MonthExpansesTableContainer = props => {
     if (expanse.sum === 0)
       expanse.tax = 0;
 
-    console.log(expanse);
-
     //prepare the params
     let params = {
       expanse: expanse,

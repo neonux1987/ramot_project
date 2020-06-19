@@ -195,7 +195,10 @@ const BackupContainer = () => {
 
       <CheckboxWithLabel label="גיבוי ביציאה" value={data.backup_on_exit} onChange={onBackupOnExitChange} />
 
-      {/* <BackupFolderSelector path={data.path} onClick={dbSelectFolderHandler} /> */}
+      <TitleTypography underline={false} gutterBottom="10px">
+        תיקיית גיבויים:
+        </TitleTypography>
+
       <FileSelector onChangeClick={dbSelectFolderHandler} value={data.db_backups_folder_path} />
 
       <Divider margin="40px 0 20px" />

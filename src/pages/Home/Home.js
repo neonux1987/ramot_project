@@ -19,7 +19,7 @@ class Home extends Component {
           justifyContent: "center",
           alignItems: "center"
         }}>
-          <h3>דף הבית נמצא בבנייה.</h3>
+          <div>hello</div>
         </div>
 
       </div>

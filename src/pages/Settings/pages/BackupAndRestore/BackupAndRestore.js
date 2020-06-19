@@ -1,8 +1,5 @@
 // LIBRARIES
 import React from 'react';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import heLocale from "date-fns/locale/he";
 
 // CSS
 import styles from './BackupAndRestore.module.css';
@@ -12,26 +9,16 @@ import BackupContainer from './Backup/BackupContainer';
 import Restore from './Restore/Restore';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 
-const localeMap = {
-  he: heLocale
-};
-
 const BackupAndRestore = () => {
 
-  return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMap["he"]}>
+  return <div className={styles.form}>
 
-      <div className={styles.form}>
+    <BackupContainer />
 
-        <BackupContainer />
+    <Restore />
 
-        <Restore />
-
-        <GoodByeWrapper />
-      </div>
-
-    </MuiPickersUtilsProvider>
-  );
+    <GoodByeWrapper />
+  </div>;
 
 }
 

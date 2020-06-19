@@ -27,6 +27,23 @@ class YearlyStatsDao {
       });
   }
 
+  getYearStatsByYearRange(
+    buildingName = String,
+    fromYear,
+    toYear,
+    trx = this.connection
+  ) {
+    return trx("*")
+      .whereBetween('year', [fromYear, toYear])
+      .from(`${buildingName}_yearly_stats`)
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה שנתית לבניין ${buildingName} משנה ${fromYear} עד שנה ${toYear}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
   updateYearStatsTrx(
     buildingName = String,
     date = Object,
