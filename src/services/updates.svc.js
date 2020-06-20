@@ -1,6 +1,7 @@
 import { ipcSendReceive } from "../redux/actions/util/util";
 
 export const checkForUpdates = () => {
+  console.log("check");
   return (dispatch, getState) => {
     return ipcSendReceive({
       send: {
