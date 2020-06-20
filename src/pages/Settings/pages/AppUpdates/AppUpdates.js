@@ -156,6 +156,7 @@ const AppUpdates = () => {
           userNotified: true
         }));
         await dispatch(saveSettings(false));
+        console.log("wtf");
       }
     });
 
@@ -223,7 +224,8 @@ const AppUpdates = () => {
         <NoUpdate />
     )
   }
-
+  console.log("updateDownloaded", updateDownloaded);
+  console.log("isDownloading", isDownloading);
   const content = isChecking ?
     <CheckingUpdates /> :
     renderNewUpdate();
