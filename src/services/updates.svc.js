@@ -9,6 +9,9 @@ export const checkForUpdates = () => {
       },
       receive: {
         channel: "checked_for_updates",
+      },
+      onSuccess: (result) => {
+        console.log(result);
       }
     });
   }
