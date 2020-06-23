@@ -1,8 +1,8 @@
 .wrapper{
   height: 56px;
-  margin: 0 20px;
+  /* margin: 0 20px; */
   /* box-shadow: 0 5px 4px -5px #000000a1; */
-  box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+  /* box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); */
   font-size: 14px;
   color: #ffffff;
   font-weight: 600;
@@ -16,14 +16,14 @@
   /* border-left: 1px solid #dde1e2;
   border-right: 1px solid #dde1e2;
   border-bottom: 1px solid #dde1e2; */
-  /* background: rgb(46, 55, 62); */
-  background-color: #2b3a4a;
+  background: #0365a2;
+  /* background-color: #2b3a4a; */
   /* border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px; */
-  border-radius: 5px;
+  /* border-radius: 5px; */
   /* background: linear-gradient(180deg, rgb(60, 71, 80) 0%, rgb(46, 55, 62) 100%); */
   /* background: linear-gradient(180deg, rgb(255, 255, 255) 0%, rgb(253, 253, 253) 100%); */
-  /* border: 1px solid #dde1e2; */
+  /* border-bottom: 1px solid #dde1e2; */
 }
 
 .noFollow{
@@ -39,6 +39,7 @@
   flex-grow: 1;
     display: flex;
     flex-basis: 0;
+    align-items: center;
 }
 
 .alignCenter{
@@ -63,7 +64,6 @@
 }
 
 .volumeBtn{
-  width: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,6 +74,8 @@
     cursor: pointer;
     background: none;
     color: #ffffff;
+    min-width: 0;
+    margin-left: 10px;
 }
 
 .moreBtn{
@@ -85,6 +87,8 @@
     border: none;
     outline: none;
     cursor: pointer;
+    min-width: 0;
+    margin-left: 15px;
 }
 
 .notificationBtn svg:hover{
@@ -98,6 +102,13 @@
     justify-content: center;
     font-size: 15px;
     font-weight: 600;
+    margin-left: 30px;
+    background: rgba(255, 255, 255, 0.13);
+    padding: 3px 16px;
+    border-radius: 5px;
+    color: #ffffff;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .toggleBtn{
@@ -112,11 +123,7 @@
   min-width: unset;
   /* box-shadow: inset 0 4px 20px 0 rgba(0, 0, 0,.14), inset 0 7px 10px -5px rgba(175, 175, 175, 0.4); */
   /* box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12); */
-  color: #fafafa;
-}
-
-.toggleBtn:hover{
-  background: #0675bb;
+  color: #ffffff;
 }
 
 .breadcrumbs{

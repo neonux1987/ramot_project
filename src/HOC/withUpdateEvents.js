@@ -1,7 +1,7 @@
 import React from 'react';
 import DateDetails from '../components/DateDetails/DateDetails';
 
-export default (WrappedComponent) => {
+export default () => {
 
   const isCancelled = useRef(false);
 

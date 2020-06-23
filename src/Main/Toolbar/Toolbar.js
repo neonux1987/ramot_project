@@ -63,7 +63,7 @@ const Toolbar = ({ buildingName, page }) => {
 
   const tax = isFetching ?
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :
-    <span style={{ marginRight: "5px" }}>{`${data[0].tax}%`}</span>;
+    <span>{`${data[0].tax}%`}</span>;
 
   const noFollowRule = !themeSettings.sticky_toolbar ? styles.noFollow : "";
 

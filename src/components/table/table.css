@@ -13,16 +13,16 @@
 
 ._tableBody{
   display: grid;
-  border-bottom: 1px solid rgba(0,0,0,.08);
+  border-bottom: 1px solid #e3eaec;
   direction: rtl;
-  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: 1px solid #e3eaec;
   background: #fff;
   position: relative;
 }
 
 ._tableRow{
   display: grid;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #e3eaec;
 }
 
 ._tableRow:hover{
@@ -30,7 +30,7 @@
 }
 
 ._tableColumn{
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  border-right: 1px solid #e3eaec;
 }
 
 .spinnerWrapper{

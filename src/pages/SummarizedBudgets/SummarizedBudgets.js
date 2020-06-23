@@ -62,6 +62,7 @@ const SummarizedBudgets = props => {
         year={date.year}
       />}
       marginBottom={"100px"}
+      padding={"10px 15px 15px"}
     >
 
       <SummarizedBudgetsTableContainer

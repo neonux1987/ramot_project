@@ -29,7 +29,7 @@ import * as routesActions from '../redux/actions/routesActions';
 
 const mainStyle = css`
 height: 100%;
-padding-top: 20px;
+padding-top: 0px;
   /* height: 450px;
   background: #f5f5f5;
   padding-top: 10px; */

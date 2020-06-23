@@ -8,4 +8,9 @@
 
 .marginText{
   margin-right: 5px;
+    background: rgb(237, 242, 245);
+    padding: 3px 16px;
+    border-radius: 5px;
+    color: #596267;
+    font-weight: 600;
 }

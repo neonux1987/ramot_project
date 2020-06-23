@@ -21,10 +21,10 @@ const titleWrapper = css`
   display: flex;
   justify-content: flex-start;
   flex-grow: 1;
-  font-weight: 400;
+  font-weight: 600;
   color: #3f414d;
   align-items: center;
-  font-size: 1.400em;
+  font-size: 1.300em;
 `;
 
 const iconWrapper = css`
@@ -38,7 +38,7 @@ const icon = css`
 `;
 
 const collapsibleInner = css`
-  padding-top: 10px;
+  padding-top: 20px;
 `;
 
 export default ({ children, title = "" }) => {

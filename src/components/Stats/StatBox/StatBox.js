@@ -52,7 +52,7 @@ export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000",
     <div className={bottom}>
 
       <div className={incomeWrapper}>
-        <span className={incomeText} style={{ color: "rgb(19, 116, 173)" }}>
+        <span className={incomeText} style={{ color: "rgb(25, 121, 204)" }}>
           {income} {unicodeSymbol}
         </span>
         <span className={incomeDescription}>

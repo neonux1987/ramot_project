@@ -56,6 +56,7 @@ const BudgetExecutions = props => {
 
     <TableExpandableSection
       marginBottom={"100px"}
+      padding={"0px 15px 15px"}
       title={TABLE_TITLE}
       TitleIcon={TableChart}
       extraDetails={() => <DateDetails

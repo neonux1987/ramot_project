@@ -8,6 +8,7 @@ export default props => {
 
   return (
     <StyledExpandableSection
+      headerStyles={{ borderBottom: "none" }}
       {...props}
     >
       {props.children}

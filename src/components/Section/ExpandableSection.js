@@ -21,7 +21,8 @@ export default ({
   collapsable = true,
   bgColor = "initial",
   padding = "20px 15px 0 15px",
-  loading = false
+  loading = false,
+  headerStyles = {}
 }) => {
 
   const useStyles = makeStyles((theme) => ({
@@ -43,7 +44,7 @@ export default ({
 
   const headerWrapper = () => {
 
-    return (<div className={styles.wrapper}>
+    return (<div className={styles.wrapper} style={headerStyles}>
 
       <div className={styles.titleWrapper}>
         <div className={styles.iconBox} style={{ backgroundColor: iconBoxBg }}>

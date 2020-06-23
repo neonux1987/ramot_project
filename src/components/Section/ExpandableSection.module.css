@@ -3,7 +3,7 @@
   border-radius: 5px;
   background: #ffffff;
   /* border: 1px solid #dde1e2; */
-  border: 1px solid rgba(112, 112, 112, 0.12);
+  border: 1px solid #e3eaec;
 }
 
 .wrapper{
@@ -26,11 +26,11 @@
 }
 
 .title{
-  font-weight: 400;
+  font-weight: 600;
   color:  #3f414d;/*#0365a2 #3f414d*/
-  margin-right: 10px;
+  margin-right: 20px;
   align-self: center;
-  font-size: 1.400em;
+  font-size: 1.300em;
 }
 
 .extraDetailsWrapper{

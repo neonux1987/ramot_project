@@ -161,7 +161,7 @@ const SummarizedBudgetsTableContainer = props => {
     const quarters = Helper.getYearQuarters(quarter);
 
     const defaultStyle = {
-      border: "none"
+
     }
 
     const quarterColumns = quarters.map((quarter, i) => {

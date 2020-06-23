@@ -227,7 +227,6 @@ const BudgetExecutionsTable = props => {
     const months = Helper.getQuarterMonths(quarter);
 
     const defaultStyle = {
-      border: "none",
       height: "34px"
     }
 

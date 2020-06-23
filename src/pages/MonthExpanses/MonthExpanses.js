@@ -44,6 +44,8 @@ const MonthExpanses = props => {
   return (
     <div className={"page"}>
       <TableExpandableSection
+        padding={"10px 15px 15px"}
+        marginTop={"40px"}
         title={TABLE_TITLE}
         TitleIcon={TableChart}
         extraDetails={() => <DateDetails

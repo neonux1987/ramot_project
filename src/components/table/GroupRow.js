@@ -8,8 +8,8 @@ export default ({ gridTemplateColumns, style = {}, children }) => {
         borderBottom: "none",
         borderTopRightRadius: "4px",
         borderTopLeftRadius: "4px",
-        borderTop: "1px solid rgba(0, 0, 0, 0.00)",
-        borderLeft: "1px solid rgba(0, 0, 0, 0.00)",
+        borderTop: "1px solid #e3eaec",
+        borderLeft: "1px solid #e3eaec",
         ...style
       }}
       gridTemplateColumns={gridTemplateColumns}
