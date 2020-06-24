@@ -14,17 +14,18 @@ const container = css`
 const header = css`
   display: flex;
   padding: 0px 10px;
-  border-bottom: 1px solid #e2e8e8;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  line-height: 60px;
 `;
 
 const titleWrapper = css`
   display: flex;
   justify-content: flex-start;
   flex-grow: 1;
-  font-weight: 600;
+  font-weight: 400;
   color: #3f414d;
   align-items: center;
-  font-size: 1.300em;
+  font-size: 1.500em;
 `;
 
 const iconWrapper = css`
@@ -35,6 +36,8 @@ const iconWrapper = css`
 
 const icon = css`
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const collapsibleInner = css`
