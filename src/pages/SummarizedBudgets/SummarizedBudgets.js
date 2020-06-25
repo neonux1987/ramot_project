@@ -21,6 +21,8 @@ import useDate from '../../customHooks/useDate';
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
+import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
+import { IoMdStats } from 'react-icons/io';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -45,7 +47,7 @@ const SummarizedBudgets = props => {
 
   return <div className={"page"}>
 
-    <StrippedExpandableSection title={STATS_TITLE}>
+    <StrippedExpandableSection title={STATS_TITLE} TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(241, 52, 117)" />}>
       <YearStatsContainer
         buildingName={buildingNameEng}
         date={date}
@@ -55,7 +57,8 @@ const SummarizedBudgets = props => {
 
     <TableExpandableSection
       title={TABLE_TITLE}
-      TitleIcon={TableChart}
+      TitleIcon={<TableChart />}
+      iconColor="rgb(25, 121, 204)"
       extraDetails={() => <DateDetails
         month={date.monthHeb}
         quarter={date.quarter}

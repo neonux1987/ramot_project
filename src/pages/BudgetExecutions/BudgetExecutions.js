@@ -3,12 +3,14 @@ import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { TableChart } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
+import { IoMdStats } from 'react-icons/io';
 
 // COMMON COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import TableExpandableSection from '../../components/Section/TableExpandableSection';
 import DateDetails from '../../components/DateDetails/DateDetails';
+import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
@@ -46,7 +48,7 @@ const BudgetExecutions = props => {
 
   return <div className={"page"}>
 
-    <StrippedExpandableSection title={STATS_TITLE}>
+    <StrippedExpandableSection title={STATS_TITLE} TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(241, 52, 117)" />}>
       <QuarterStatsContainer
         buildingName={buildingNameEng}
         date={date}
@@ -58,7 +60,8 @@ const BudgetExecutions = props => {
       marginBottom={"100px"}
       padding={"0px 15px 15px"}
       title={TABLE_TITLE}
-      TitleIcon={TableChart}
+      TitleIcon={<TableChart />}
+      iconColor="rgb(25, 121, 204)"
       extraDetails={() => <DateDetails
         quarter={date.quarter}
         year={date.year}

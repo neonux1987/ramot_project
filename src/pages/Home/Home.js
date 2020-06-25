@@ -19,7 +19,7 @@ class Home extends Component {
           justifyContent: "center",
           alignItems: "center"
         }}>
-          <div>hello</div>
+          <div className={styles.expansesTitle}>דף הבית בבנייה</div>
         </div>
 
       </div>

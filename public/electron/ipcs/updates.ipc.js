@@ -29,6 +29,7 @@ const updatesIpc = () => {
   let cancellationToken = undefined;
 
   ipcMain.on('check-for-updates', (event) => {
+
     const currentVersion = autoUpdater.currentVersion.version;
 
     autoUpdater.checkForUpdates().then((info) => {

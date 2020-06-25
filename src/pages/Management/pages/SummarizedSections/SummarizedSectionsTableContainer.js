@@ -164,7 +164,7 @@ const SummarizedSectionsTableContainer = props => {
   }
 
   const HeadersRow = () => {
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} style={{ backgroundColor: "#f5f6f9" }}>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}/*  style={{ backgroundColor: "#f5f6f9" }} */>
 
       {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
       <Column style={defaultheaderStyle}>{"שורה"}</Column>

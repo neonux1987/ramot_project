@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 // CSS
 import {
-  container,
   buttonWrapper,
   addButton,
   reactSelectStyle
@@ -22,6 +21,7 @@ import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/Button
 
 // TOASTS
 import { toastManager } from "../../../toasts/ToastManager";
+import AddBoxContainer from "../../../components/AddBoxContainer/AddBoxContainer";
 
 
 const AddNewContainer = (props) => {
@@ -73,7 +73,7 @@ const AddNewContainer = (props) => {
   }
 
   return (
-    <form className={container} noValidate autoComplete="off" onChange={() => { }} >
+    <AddBoxContainer>
 
       <ReactSelect
         classes={{ root: reactSelectStyle }}
@@ -101,7 +101,7 @@ const AddNewContainer = (props) => {
         </ButtonWithSound>
       </div>
 
-    </form>
+    </AddBoxContainer>
   )
 }
 

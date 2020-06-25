@@ -11,20 +11,25 @@ import * as expansesCodesActions from '../../redux/actions/expansesCodesActions'
 // TOASTS
 import { toastManager } from '../../toasts/ToastManager';
 
-// COMPONENTS WITH SOUND
+// COMPONENTS
 import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
+import AddBoxContainer from '../../components/AddBoxContainer/AddBoxContainer';
 
 const styles = theme => ({
   container: {
     margin: "0px 0 10px",
     padding: "10px 10px 0",
-    border: "1px solid #00000024",
     position: "relative",
-    zIndex: "3"
+    zIndex: "3",
+    border: "1px solid #e3eaec",
+    borderRadius: "5px",
+    boxShadow: "rgba(53, 64, 82, 0.05) 0px 0px 14px 0px",
+    backgroundColor: "#ffffff"
   },
   form: {
     display: "flex",
     flexWrap: "wrap",
+    flexGrow: "1"
   },
   textField: {
     marginLeft: theme.spacing(),
@@ -384,9 +389,9 @@ class InputExpansesField extends Component {
 
   render() {
     return (
-      <div className={this.props.classes.container}>
+      <AddBoxContainer>
         {this.renderForm()}
-      </div>
+      </AddBoxContainer>
     );
   }
 };

@@ -2,17 +2,18 @@
 
 import React from 'react';
 import SavedNotification from '../../Main/Toolbar/SavedNotification/SavedNotification';
-import StyledExpandableSection from './StyledExpandableSection';
+import StrippedExpandableSection from './StrippedExpandableSection';
 
 export default props => {
 
   return (
-    <StyledExpandableSection
+    <StrippedExpandableSection
+      margin="0px 20px 40px"
       headerStyles={{ borderBottom: "none" }}
       {...props}
     >
       {props.children}
       <SavedNotification />
-    </StyledExpandableSection>
+    </StrippedExpandableSection>
   );
 }

@@ -1,7 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchYearStatsByYearRange } from '../../redux/actions/yearlyStatsActions';
-import { Line } from 'react-chartjs-2';
+import React from 'react';
 import Wrapper from '../../components/Wrapper/Wrapper';
 import YearsChartContainer from './YearsChartContainer';
 

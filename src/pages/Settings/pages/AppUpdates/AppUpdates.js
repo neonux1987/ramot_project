@@ -132,11 +132,12 @@ const AppUpdates = () => {
   };
 
   useEffect(() => {
+    console.log("check");
     dispatch(checkForUpdates());
   }, [dispatch]);
 
   useEffect(() => {
-
+    console.log("events");
     // download progress
     ipcRenderer.on("download_progress", async (event, progress) => {
       if (!isCancelled.current) setProgress(progress);
@@ -156,7 +157,6 @@ const AppUpdates = () => {
           userNotified: true
         }));
         await dispatch(saveSettings(false));
-        console.log("wtf");
       }
     });
 
@@ -224,8 +224,7 @@ const AppUpdates = () => {
         <NoUpdate />
     )
   }
-  console.log("updateDownloaded", updateDownloaded);
-  console.log("isDownloading", isDownloading);
+
   const content = isChecking ?
     <CheckingUpdates /> :
     renderNewUpdate();

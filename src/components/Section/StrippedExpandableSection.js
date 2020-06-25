@@ -7,10 +7,6 @@ import { css } from 'emotion';
 // CSS
 import styles from './ExpandableSection.module.css';
 
-const container = css`
-  margin: 20px 20px 40px;
-`;
-
 const header = css`
   display: flex;
   padding: 0px 10px;
@@ -41,10 +37,10 @@ const icon = css`
 `;
 
 const collapsibleInner = css`
-  padding-top: 20px;
+  padding: 0;
 `;
 
-export default ({ children, title = "" }) => {
+export default ({ children, title = "", margin = "20px 20px 0" }) => {
   const [open, setOpen] = useState(true);
 
   const expandClick = () => {
@@ -56,6 +52,15 @@ export default ({ children, title = "" }) => {
   const headerWrapper = () => {
 
     return <div className={header}>
+
+      {/* <div className={css`
+          display: flex;
+          padding: 0 0 0 10px;
+          align-items: center;
+          color: ${iconColor}
+        `}>
+        {TitleIcon}
+      </div> */}
 
       <div className={titleWrapper}>
         {title}
@@ -71,7 +76,7 @@ export default ({ children, title = "" }) => {
   }
 
   return (
-    <div className={container}>
+    <div className={css`margin: ${margin};`}>
       <Collapsible
         transitionTime={100}
         open={open}

@@ -103,7 +103,7 @@ class MainContainer extends Component {
 
   whichPageComponent(pageName) {
     switch (pageName) {
-      case "הוצאות חודשי": return MonthExpanses;
+      case "הוצאות חודשיות": return MonthExpanses;
       case "ביצוע מול תקציב": return BudgetExecutions;
       case "סיכום תקציבי": return SummarizedBudgets;
       case "סטטיסטיקה": return Statistics;

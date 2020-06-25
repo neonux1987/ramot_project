@@ -207,6 +207,7 @@ const DatePicker = ({
         value={selectDate.month || ""}
         onChange={onMonthChange}
         disabled={months.data.length === 0 ? true : false}
+        classes={{ select }}
       >
         {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}>בחר חודש</MenuItem> : null}
         {months.data.map((month) => {
@@ -226,6 +227,7 @@ const DatePicker = ({
         value={selectDate.quarter || ""}
         onChange={onQuarterChangeHandler}
         disabled={quarters.data.length === 0 ? true : false}
+        classes={{ select }}
       >
         {quarters.data.length === 0 || quarterExist() === false ? <MenuItem value={selectDate.quarter}>בחר רבעון</MenuItem> : null}
         {quarters.data.map((quarter) => {

@@ -1,7 +1,7 @@
 import { ipcSendReceive } from "../redux/actions/util/util";
 
 export const checkForUpdates = () => {
-  console.log("check");
+  console.log("how");
   return (dispatch, getState) => {
     return ipcSendReceive({
       send: {
@@ -9,9 +9,6 @@ export const checkForUpdates = () => {
       },
       receive: {
         channel: "checked_for_updates",
-      },
-      onSuccess: (result) => {
-        console.log(result);
       }
     });
   }

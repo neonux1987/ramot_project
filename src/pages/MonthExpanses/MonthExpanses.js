@@ -22,7 +22,7 @@ import TableExpandableSection from '../../components/Section/TableExpandableSect
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
-const TABLE_TITLE = "טבלת מעקב הוצאות חודשי";
+const TABLE_TITLE = "טבלת מעקב הוצאות חודשיות";
 
 const MonthExpanses = props => {
 
@@ -45,9 +45,10 @@ const MonthExpanses = props => {
     <div className={"page"}>
       <TableExpandableSection
         padding={"10px 15px 15px"}
-        marginTop={"40px"}
+        margin="20px 20px 40px"
         title={TABLE_TITLE}
-        TitleIcon={TableChart}
+        TitleIcon={<TableChart />}
+        iconColor="rgb(25, 121, 204)"
         extraDetails={() => <DateDetails
           month={date.monthHeb}
           quarter={date.quarter}

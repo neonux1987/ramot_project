@@ -91,12 +91,11 @@
 
 .developedByText,.appVersion{
   font-size: 14px;
-    width: initial;
-    text-align: center;
-    color: #646d79;
-    font-style: normal;
-    font-weight: 400;
-    font-family: 'Roboto';
+  width: initial;
+  text-align: center;
+  color: #646d79;
+  font-style: normal;
+  font-weight: 400;
 }
 
 .ndtsText{

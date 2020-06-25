@@ -16,7 +16,7 @@ const ExpansesCodes = () => {
   return (
     <Fragment>
 
-      <TableExpandableSection title={TABLE_TITLE} TitleIcon={TableChart}>
+      <TableExpandableSection margin="20px 20px 40px" title={TABLE_TITLE} TitleIcon={<TableChart />} iconColor="rgb(25, 121, 204)">
 
         <ExpansesCodesTableContainer />
 

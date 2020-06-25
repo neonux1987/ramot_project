@@ -28,6 +28,7 @@
   display: grid;
   align-content: center;
   white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .cellRender:hover,.cellRender:active,.cellRender:focus,.textArea:hover,.textArea:active,.textArea:focus{

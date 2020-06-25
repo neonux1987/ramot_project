@@ -32,7 +32,7 @@ const styles = (theme) => ({
   appBar: {
     width: "initial",
     boxShadow: "none",
-    backgroundColor: "#2b3a4a",
+    backgroundColor: "#3b4b5d",
     borderRadius: "5px !important"
   }
 });

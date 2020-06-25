@@ -35,7 +35,7 @@ const styles = () => ({
 const Management = ({ match }) => {
 
   return (
-    <div style={{ paddingTop: "50px", height: "100%" }}>
+    <div style={{ height: "100%" }}>
       <Switch>
         <Route path={`${match.path}/קודי הנהלת חשבונות`} component={ExpansesCodes} />
         <Route path={`${match.path}/סעיפים מסכמים`} component={SummarizedSections} />

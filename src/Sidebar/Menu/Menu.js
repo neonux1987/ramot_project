@@ -15,7 +15,7 @@ import {
 import { updateRoute } from '../../redux/actions/routesActions';
 import { useDispatch } from 'react-redux';
 
-const DEFAULT_PAGE = "הוצאות חודשי";
+const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
 const HOME_BUTTON_PATH = "/דף-הבית";
 
@@ -37,7 +37,7 @@ const Menu = (props) => {
 
   const generateIcon = (pageName) => {
     switch (pageName) {
-      case "הוצאות חודשי": return AttachMoney;
+      case "הוצאות חודשיות": return AttachMoney;
       case "ביצוע מול תקציב": return AssignmentTurnedIn;
       case "סיכום שנתי": return InsertChartOutlined;
       case "סטטיסטיקה": return Receipt;
@@ -57,7 +57,7 @@ const Menu = (props) => {
         buildingNameEng: engLabel
       }
 
-      const pathname = `/${path}/הוצאות-חודשי`;
+      const pathname = `/${path}/הוצאות-חודשיות`;
 
       dispatch(updateRoute({ pathname, state: newState }));
 

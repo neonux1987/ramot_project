@@ -82,7 +82,7 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  /* useEffect(() => {
     const { appUpdates } = settings.data;
 
     dispatch(checkForUpdates()).then(async (result) => {
@@ -98,7 +98,7 @@ const App = () => {
 
       }
     });
-  }, [dispatch, settings.data]);
+  }, [dispatch, settings.data]); */
 
   useEffect(() => {
     dispatch(fetchSidebar());
