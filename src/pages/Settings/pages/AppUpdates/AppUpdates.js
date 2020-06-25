@@ -132,12 +132,10 @@ const AppUpdates = () => {
   };
 
   useEffect(() => {
-    console.log("check");
     dispatch(checkForUpdates());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("events");
     // download progress
     ipcRenderer.on("download_progress", async (event, progress) => {
       if (!isCancelled.current) setProgress(progress);
