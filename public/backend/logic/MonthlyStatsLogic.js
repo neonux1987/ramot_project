@@ -14,6 +14,10 @@ class MonthlyStatsLogic {
     return this.monthlyStatsDao.getAllMonthsStatsByQuarterTrx(buildingName, date, trx);
   }
 
+  getAllMonthsStatsByYear(buildingName, year, trx) {
+    return this.monthlyStatsDao.getAllMonthsStatsByYear(buildingName, year, trx);
+  }
+
   updateMonthStatsTrx(buildingName = String, date = Object, budgetExpanse = null, trx) {
     return this.monthlyStatsDao.updateMonthStatsTrx(buildingName, date, budgetExpanse, trx);
   }

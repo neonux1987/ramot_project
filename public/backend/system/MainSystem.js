@@ -39,6 +39,8 @@ const ServicesLogic = require('../logic/ServicesLogic');
 
 const SetupLogic = require('../logic/SetupLogic');
 
+const UpdatesLogic = require('../logic/UpdatesLogic');
+
 const connectionPool = require('../connection/ConnectionPool');
 
 const SettingsLogic = require('../logic/SettingsLogic');
@@ -128,6 +130,7 @@ class MainSystem {
       await connectionPool.createConnection();
 
       this.servicesLogic = new ServicesLogic();
+      const updatesLogic = new UpdatesLogic();
 
       const settings = await this.settingsLogic.getSettings();
 
@@ -142,9 +145,7 @@ class MainSystem {
         settings
       }
 
-      /* const schemaBuilder = new SchemaBuilder();
-      //modify table
-      await schemaBuilder.modifyTableSchema(); */
+      await updatesLogic.runUpdateLogic();
 
       // initialize all the ipc's for connection
       // between the main process and the renderer

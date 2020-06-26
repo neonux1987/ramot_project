@@ -13,6 +13,15 @@ const monthlyStatsIpc = (connection) => {
     });
   });
 
+  ipcMain.on('get-all-months-stats-by-year', (event, { buildingName, year }) => {
+    monthlyStatsLogic.getAllMonthsStatsByYear(buildingName, year).then((result) => {
+      event.sender.send("all-months-stats-by-year", { data: result });
+    }).catch((error) => {
+      event.reply("all-months-stats-by-year", { error: error.message });
+    });
+  });
+
+
 }
 
 module.exports = monthlyStatsIpc;

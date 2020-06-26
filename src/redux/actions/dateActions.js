@@ -8,6 +8,7 @@ export const TYPES = {
 }
 
 export const initDateState = function (pageName, buildingName, initState) {
+  console.log("yes")
   return dispatch => {
     dispatch({
       type: TYPES.DATE_INIT_PAGE,

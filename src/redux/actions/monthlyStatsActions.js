@@ -29,6 +29,27 @@ export const fetchAllMonthsStatsByQuarter = (params = Object) => {
   }
 };
 
+export const fetchAllMonthsStatsByYear = (params = Object) => {
+  return dispatch => {
+    const { buildingName, pageName } = params;
+    //let react know that the fetching is started
+    dispatch(requestMonthlyStats(buildingName, pageName));
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-all-months-stats-by-year",
+        params
+      },
+      receive: {
+        channel: "all-months-stats-by-year"
+      },
+      onSuccess: (result) => dispatch(receiveMonthlyStats(buildingName, pageName, result.data)),
+      onError: (result) => dispatch(fetchingFailed(buildingName, pageName, result.error))
+    });
+
+  }
+};
+
 export const updateMonthStatsStoreOnly = (buildingName, pageName, monthStatsObj, index) => {
   return dispatch => {
     dispatch({
