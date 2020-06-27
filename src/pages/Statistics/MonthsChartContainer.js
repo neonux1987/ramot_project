@@ -15,6 +15,7 @@ const container = css`
   /* max-width: 800px; */
   /* height: 400px; */
   background: #ffffff;
+  margin: 15px 0;
 `;
 
 export default props => {
