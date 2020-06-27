@@ -10,12 +10,21 @@ import { fetchAllMonthsStatsByYear } from '../../redux/actions/monthlyStatsActio
 // COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
+import DatePicker from '../../components/DatePicker/DatePicker';
 
 const container = css`
-  /* max-width: 800px; */
-  /* height: 400px; */
-  background: #ffffff;
   margin: 15px 0;
+`;
+
+const lineContainer = css`
+  /* max-width: 800px; */
+  min-height: 600px;
+  height: 600px;
+  background: #ffffff;
+`;
+
+const lineStyle = css`
+  background: #ffffff;
 `;
 
 export default props => {
@@ -32,10 +41,10 @@ export default props => {
     const params = {
       buildingName: buildingName,
       pageName,
-      year: 2020
+      year: date.year
     }
     return dispatch(fetchAllMonthsStatsByYear(params));
-  }, [dispatch, buildingName, pageName]);
+  }, [dispatch, buildingName, pageName, date.year]);
 
   const fetchAndSetData = useCallback(async () => {
     const promise = await fetchMonthsData();
@@ -87,16 +96,29 @@ export default props => {
   if (isFetching || data.length === 0)
     return <AlignCenterMiddle className={container}><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
-  return (
-    <div className={container}>
-      <Line data={chartData} options={{
-        responsive: true,
-        title: { text: `הכנסות והוצאות לפי חודשי שנה ${2020}`, display: true },
-        tooltips: {
-          rtl: true
-        }
-      }} />
+  return <div className={container}>
+    <DatePicker
+      year
+      date={date}
+      buildingName={buildingName}
+      pageName={pageName}
+    />
+
+    <div className={lineContainer}>
+      <Line
+        data={chartData}
+        className={lineStyle}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false,
+          title: { text: `הוצאות והכנסות לפי חודשי שנת ${date.year}`, display: true },
+          tooltips: {
+            rtl: true
+          }
+        }}
+      />
     </div>
-  );
+
+  </div>
 
 }

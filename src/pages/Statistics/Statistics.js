@@ -35,8 +35,6 @@ export default props => {
 
   useEffect(() => {
     dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
-    dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
-    dispatch(initRegisteredMonths(PAGE_NAME, buildingNameEng));
   }, [dispatch, buildingNameEng]);
 
   if (date === undefined)
@@ -45,8 +43,16 @@ export default props => {
   return (
     <Wrapper className="page">
 
-      <StrippedExpandableSection title={TITLE} TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(241, 52, 117)" />}>
-        <MonthsChartContainer buildingName={buildingNameEng} pageName={PAGE_NAME} date={date} />
+      <StrippedExpandableSection
+        title={TITLE}
+        TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(241, 52, 117)" />}
+        margin="0"
+      >
+        <MonthsChartContainer
+          buildingName={buildingNameEng}
+          pageName={PAGE_NAME}
+          date={date}
+        />
       </StrippedExpandableSection>
 
       {/* <YearsChartContainer buildingName={buildingNameEng} pageName={PAGE_NAME} date={date} /> */}
