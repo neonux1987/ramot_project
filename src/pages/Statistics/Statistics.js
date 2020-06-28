@@ -23,7 +23,7 @@ import YearsChartContainer from './YearsChartContainer';
 import MonthsChartContainer from './MonthsChartContainer';
 
 const PAGE_NAME = "statistics";
-const TITLE = "סטטיסטיקה לפי חודשים";
+const TITLE = "הוצאות והכנסות לפי חודשים";
 
 export default props => {
   //building name

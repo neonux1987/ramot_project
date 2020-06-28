@@ -11,6 +11,7 @@ import { fetchAllMonthsStatsByYear } from '../../redux/actions/monthlyStatsActio
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import DatePicker from '../../components/DatePicker/DatePicker';
+import ChartWrapper from '../../components/ChartWrapper/ChartWrapper';
 
 const container = css`
   margin: 15px 0;
@@ -18,7 +19,7 @@ const container = css`
 
 const chartContainer = css`
   /* max-width: 800px; */
-  /* height: 400px; */
+  height: 400px;
   background: #ffffff;
 `;
 
@@ -97,19 +98,18 @@ export default props => {
       pageName={pageName}
     />
 
-    <div className={chartContainer}>
-      {isFetching || data.length === 0 ?
-        <AlignCenterMiddle className={container}>אין נתונים. בחר תאריך או צור דוחות חדשים.</AlignCenterMiddle>
-        :
+    <ChartWrapper itemCount={data.length} isFetching={isFetching} >
+      <div className={chartContainer}>
         <Line data={chartData} options={{
           responsive: true,
-          title: { text: `הכנסות והוצאות לפי חודשי שנה ${2020}`, display: true },
+          maintainAspectRatio: false,
+          //title: { text: `הכנסות והוצאות לפי חודשי שנה ${2020}`, display: true },
           tooltips: {
             rtl: true
           }
         }} />
-      }
-    </div>
+      </div>
+    </ChartWrapper>
   </div>
 
 }

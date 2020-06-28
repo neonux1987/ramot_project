@@ -1,40 +1,29 @@
 // LIBRARIES
-import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Line } from 'react-chartjs-2';
+import React from 'react';
 import { css } from 'emotion';
-
-// ACTIONS
-import { fetchAllMonthsStatsByYear } from '../../redux/actions/monthlyStatsActions';
 
 // COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import DatePicker from '../../components/DatePicker/DatePicker';
 
 const container = css`
-  margin: 15px 0;
+  background: #ffffff;
 `;
 
-const chartContainer = css`
-  /* max-width: 800px; */
-  /* height: 400px; */
-  background: #ffffff;
+const text = css`
+ font-size: 18px;
 `;
 
 export default props => {
   const { children, isFetching, itemCount } = props;
 
-  const Loading = isFetching ? <Spinner size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
+  const Loading = isFetching ? <Spinner size={60} loadingText={"טוען נתונים..."} /> : <div>
     {children}
   </div>;
 
   return <div className={container}>
 
-
-    <div className={chartContainer}>
-      {!loading && itemCount === 0 ? <div>אין נתונים. בחר תאריך או צור דוחות חדשים.</div> : Loading}
-    </div>
+    {!isFetching && itemCount === 0 ? <AlignCenterMiddle><span className={text}>או שאין נתונים או שלא נבחר תאריך.</span></AlignCenterMiddle> : Loading}
   </div>
 
 }
