@@ -12,11 +12,11 @@ const useDate = (
 ) => {
 
   const date = useSelector(store => store.date.pages[pageName]);
-  const store = useSelector(store => store.date);
+
   const dispatch = useDispatch();
 
-  const updateDate = (pageName, buildingName, date) => dispatch(updateDate(pageName, buildingName, date))
-  console.log(store)
+  const updateDate = (pageName, buildingName, date) => dispatch(updateDate(pageName, buildingName, date));
+
   useEffect(() => {
     if (date === undefined || date[buildingName] === undefined)
       // init the state first

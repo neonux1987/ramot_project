@@ -16,14 +16,9 @@ const container = css`
   margin: 15px 0;
 `;
 
-const lineContainer = css`
+const chartContainer = css`
   /* max-width: 800px; */
-  min-height: 600px;
-  height: 600px;
-  background: #ffffff;
-`;
-
-const lineStyle = css`
+  /* height: 400px; */
   background: #ffffff;
 `;
 
@@ -39,7 +34,7 @@ export default props => {
 
   const fetchMonthsData = useCallback(() => {
     const params = {
-      buildingName: buildingName,
+      buildingName,
       pageName,
       year: date.year
     }
@@ -90,35 +85,31 @@ export default props => {
   }, [fetchMonthsData]);
 
   useEffect(() => {
-    fetchAndSetData();
-  }, [dispatch, fetchAndSetData]);
+    if (date.year !== undefined)
+      fetchAndSetData();
+  }, [dispatch, fetchAndSetData, date.year]);
 
-  if (isFetching || data.length === 0)
-    return <AlignCenterMiddle className={container}><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
   return <div className={container}>
     <DatePicker
-      year
       date={date}
       buildingName={buildingName}
       pageName={pageName}
     />
 
-    <div className={lineContainer}>
-      <Line
-        data={chartData}
-        className={lineStyle}
-        options={{
+    <div className={chartContainer}>
+      {isFetching || data.length === 0 ?
+        <AlignCenterMiddle className={container}>אין נתונים. בחר תאריך או צור דוחות חדשים.</AlignCenterMiddle>
+        :
+        <Line data={chartData} options={{
           responsive: true,
-          maintainAspectRatio: false,
-          title: { text: `הוצאות והכנסות לפי חודשי שנת ${date.year}`, display: true },
+          title: { text: `הכנסות והוצאות לפי חודשי שנה ${2020}`, display: true },
           tooltips: {
             rtl: true
           }
-        }}
-      />
+        }} />
+      }
     </div>
-
   </div>
 
 }
