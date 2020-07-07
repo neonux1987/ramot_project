@@ -92,11 +92,18 @@ const initBuilding = function (pageName, buildingName) {
 
 export const initRegisteredYears = (pageName, buildingName) => {
   return (dispatch, getState) => {
-    const state = getState();
-    const page = state.registeredYears.pages[pageName];
-    if (page === undefined || page[buildingName] === undefined) {
-      dispatch(initPage(pageName));
-      dispatch(initBuilding(pageName, buildingName));
-    }
+
+    return new Promise((resolve) => {
+
+      const state = getState();
+      const page = state.registeredYears.pages[pageName];
+      if (page === undefined || page[buildingName] === undefined) {
+        dispatch(initPage(pageName));
+        dispatch(initBuilding(pageName, buildingName));
+        resolve();
+      }
+
+    });
+
   }
 }

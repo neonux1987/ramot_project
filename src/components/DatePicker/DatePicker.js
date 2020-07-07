@@ -16,9 +16,6 @@ const DatePicker = ({
   buildingName,
   pageName
 }) => {
-  console.log(date,
-    buildingName,
-    pageName);
   const dispatch = useDispatch();
 
   const months = useSelector(store => month ? store.registeredMonths.pages[pageName][buildingName] : undefined);
