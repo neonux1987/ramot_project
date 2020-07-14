@@ -1,15 +1,13 @@
 // LIBRARIES
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { css } from 'emotion';
 
 // ACTIONS
 import { fetchAllMonthsStatsByYear } from '../../redux/actions/monthlyStatsActions';
 
 // COMPONENTS
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../components/Spinner/Spinner';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import ChartWrapper from '../../components/ChartWrapper/ChartWrapper';
 
@@ -19,7 +17,7 @@ const container = css`
 
 const chartContainer = css`
   /* max-width: 800px; */
-  height: 400px;
+  height: 550px;
   background: #ffffff;
 `;
 
@@ -65,9 +63,26 @@ export default props => {
               label: "הכנסות",
               data: incomeData,
               //backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+              backgroundColor: 'rgba(25, 121, 204, 0.40)',
+              order: 1
+            },
+            {
+              label: "הוצאות",
+              data: outcomeData,
+              //backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+              backgroundColor: 'rgba(241, 26, 95, 0.40)',
+              order: 2
+            },
+            {
+              label: "הכנסות",
+              data: incomeData,
+              //backgroundColor: ['rgba(255, 99, 132, 0.2)'],
               borderColor: ['rgb(25, 121, 204)'],
               borderWidth: 2,
-              fill: false
+              fill: false,
+              type: "line",
+              order: 3,
+              //xAxisID: "income"
             },
             {
               label: "הוצאות",
@@ -75,7 +90,9 @@ export default props => {
               //backgroundColor: ['rgba(255, 99, 132, 0.2)'],
               borderColor: ['rgb(241, 26, 95)'],
               borderWidth: 2,
-              fill: false
+              fill: false,
+              type: "line",
+              order: 4
             }
           ]
         };
@@ -90,7 +107,6 @@ export default props => {
       fetchAndSetData();
   }, [dispatch, fetchAndSetData, date.year]);
 
-
   return <div className={container}>
     <DatePicker
       date={date}
@@ -100,14 +116,50 @@ export default props => {
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching} >
       <div className={chartContainer}>
-        <Line data={chartData} options={{
-          responsive: true,
-          maintainAspectRatio: false,
-          //title: { text: `הכנסות והוצאות לפי חודשי שנה ${2020}`, display: true },
-          tooltips: {
-            rtl: true
-          }
-        }} />
+        <Bar
+          data={chartData}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            //title: { text: `הכנסות והוצאות לפי חודשי שנה ${2020}`, display: true },
+            tooltips: {
+              rtl: true
+            },
+            layout: {
+              padding: {
+                left: 30,
+                right: 30,
+                top: 20,
+                bottom: 20
+              }
+            },
+            legend: {
+              labels: {
+                // This more specific font property overrides the global property
+                fontColor: 'black',
+                fontSize: 16
+              }
+            },
+            scales: {
+              xAxes: [
+                {
+                  ticks: {
+                    fontSize: 16,
+                    fontFamily: "Rubik"
+                  }
+                }
+              ],
+              yAxes: [
+                {
+                  ticks: {
+                    fontSize: 16,
+                    fontFamily: "Rubik"
+                  }
+                }
+              ]
+            }
+          }}
+        />
       </div>
     </ChartWrapper>
   </div>
