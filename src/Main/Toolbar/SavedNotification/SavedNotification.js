@@ -1,5 +1,5 @@
 // LIBRARIES
-import React from "react";
+import React, { useEffect } from "react";
 import { CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from "react-redux";
 import { css } from 'emotion';
@@ -33,6 +33,11 @@ const SavedNotification = () => {
 
   if (show)
     play(types.action);
+
+  // clean 
+  useEffect(() => {
+    return () => dispatch(hideSavedNotification())
+  }, [dispatch]);
 
   return (
     <CSSTransition
