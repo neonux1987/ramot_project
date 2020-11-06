@@ -4,49 +4,49 @@ const SystemPaths = require('../system/SystemPaths');
 
 class UpdatesLogic {
 
-  /*
-    run logic after the user updates the app
-  */
-  async runUpdateLogic() {
+    /*
+      run logic after the user updates the app
+    */
+    async runUpdateLogic() {
 
-    try {
+        try {
 
-      const updateConfigPath = path.join(SystemPaths.paths.setup_folder_path, "updateConfig.json");
-      const updateConfigFile = await fse.readJson(updateConfigPath);
+            const updateConfigPath = path.join(SystemPaths.paths.setup_folder_path, "updateConfig.json");
+            const updateConfigFile = await fse.readJson(updateConfigPath);
 
-      if (updateConfigFile.runScript) {
+            if (updateConfigFile.runScript === true) {
 
-        // REQUIRES
-        const { asyncForEach } = require('../../helpers/utils');
-        const connectionPool = require('../connection/ConnectionPool');
-        const BuildingsDao = require('../dao/BuildingsDao');
+                // REQUIRES
+                const { asyncForEach } = require('../../helpers/utils');
+                const connectionPool = require('../connection/ConnectionPool');
+                const BuildingsDao = require('../dao/BuildingsDao');
 
-        const buildingsDao = new BuildingsDao();
+                const buildingsDao = new BuildingsDao();
 
-        const trx = await connectionPool.getTransaction();
+                const trx = await connectionPool.getTransaction();
 
-        const buildings = await buildingsDao.getBuidlings(trx);
+                const buildings = await buildingsDao.getBuidlings(trx);
 
-        await asyncForEach(buildings, async ({ buildingNameEng }) => {
+                await asyncForEach(buildings, async ({ buildingNameEng }) => {
 
-          await trx.schema.table(`${buildingNameEng}_monthly_stats`, (table) => {
-            //console.log(table.column("month"));
-          });
+                    await trx.schema.table(`${buildingNameEng}_monthly_stats`, (table) => {
+                        //console.log(table.column("month"));
+                    });
 
-        });
+                });
 
 
-        //trx.schema.table("")
+                //trx.schema.table("")
 
-        //updateConfigFile.runScript = false;
-        //await fse.writeJSON(path.join(SystemPaths.paths.setup_folder_path, "updateConfig.json"), updateConfigFile);
+                //updateConfigFile.runScript = false;
+                //await fse.writeJSON(path.join(SystemPaths.paths.setup_folder_path, "updateConfig.json"), updateConfigFile);
 
-        trx.commit();
-      }
-    } catch (error) {
-      console.log(error);
+                trx.commit();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
 
 }
 

@@ -1,134 +1,134 @@
 {
-  "name": "ramot-group-income-outcome-management",
-  "version": "1.0.2",
-  "private": true,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/neonux1987/financial_reports_management_system.git"
-  },
-  "dependencies": {
-    "@material-ui/core": "^4.9.12",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/pickers": "^3.2.10",
-    "@material-ui/styles": "^4.9.10",
-    "chart.js": "^2.9.3",
-    "electron-context-menu": "^2.0.0",
-    "electron-is-dev": "^1.2.0",
-    "electron-updater": "^4.3.2",
-    "emotion": "^10.0.27",
-    "exceljs": "^3.9.0",
-    "file-type": "^14.4.0",
-    "fs-extra": "^9.0.0",
-    "jss-rtl": "^0.3.0",
-    "knex": "^0.21.1",
-    "log4js": "^6.2.1",
-    "nesthydrationjs": "^2.0.0",
-    "node-schedule": "^1.3.2",
-    "platform-folders": "^0.5.1",
-    "print-js": "^1.0.63",
-    "react": "^16.13.1",
-    "react-chartjs-2": "^2.9.0",
-    "react-collapsible": "^2.7.0",
-    "react-dom": "^16.13.1",
-    "react-goodbye": "^0.4.0",
-    "react-icons": "^3.10.0",
-    "react-jss": "^10.1.1",
-    "react-minimal-pie-chart": "^8.0.1",
-    "react-redux": "^7.2.0",
-    "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
-    "react-scroll": "^1.7.16",
-    "react-select": "^3.1.0",
-    "react-spinners": "^0.8.3",
-    "react-textarea-autosize": "^7.1.2",
-    "react-toastify": "^5.5.0",
-    "react-transition-group": "^4.4.1",
-    "react-virtuoso": "^0.12.3",
-    "redux": "^4.0.5",
-    "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0",
-    "sqlite3": "^4.2.0"
-  },
-  "author": {
-    "name": "Andrey Glemb",
-    "email": "neonux1987@gmail.com",
-    "url": "https://your-website.com"
-  },
-  "build": {
-    "appId": "com.my-website.ramot-group-income-outcome-management",
-    "productName": "קבוצת רמות ניהול הוצאות והכנסות",
-    "copyright": "Copyright © 2019 ${author}",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*",
-      "package.json",
-      "!dev-app-update.yml"
-    ],
-    "extraResources": [
-      "./extraResources/**"
-    ],
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "./Icon/ramot-group-icon.ico",
-      "publish": [
-        "github"
-      ]
+    "name": "ramot-group-income-outcome-management",
+    "version": "1.0.2",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/neonux1987/financial_reports_management_system.git"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "neonux1987",
-        "private": true,
-        "releaseType": "release",
-        "protocol": "https",
-        "repo": "financial_reports_management_system"
-      }
-    ],
-    "nsis": {
-      "allowToChangeInstallationDirectory": false,
-      "oneClick": false,
-      "createDesktopShortcut": true
+    "dependencies": {
+        "@material-ui/core": "^4.11.0",
+        "@material-ui/icons": "^4.9.1",
+        "@material-ui/pickers": "^3.2.10",
+        "@material-ui/styles": "^4.10.0",
+        "chart.js": "^2.9.4",
+        "electron-context-menu": "^2.3.0",
+        "electron-is-dev": "^1.2.0",
+        "electron-updater": "^4.3.5",
+        "emotion": "^10.0.27",
+        "exceljs": "^4.2.0",
+        "file-type": "^16.0.0",
+        "fs-extra": "^9.0.1",
+        "jss-rtl": "^0.3.0",
+        "knex": "^0.21.11",
+        "log4js": "^6.3.0",
+        "nesthydrationjs": "^2.0.0",
+        "node-schedule": "^1.3.2",
+        "platform-folders": "^0.5.2",
+        "print-js": "^1.5.0",
+        "react": "^17.0.1",
+        "react-chartjs-2": "^2.10.0",
+        "react-collapsible": "^2.8.1",
+        "react-dom": "^17.0.1",
+        "react-goodbye": "^0.4.0",
+        "react-icons": "^3.11.0",
+        "react-jss": "^10.4.0",
+        "react-minimal-pie-chart": "^8.0.1",
+        "react-redux": "^7.2.2",
+        "react-router": "^5.2.0",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "4.0.0",
+        "react-scroll": "^1.8.1",
+        "react-select": "^3.1.0",
+        "react-spinners": "^0.9.0",
+        "react-textarea-autosize": "^8.2.0",
+        "react-toastify": "^6.0.9",
+        "react-transition-group": "^4.4.1",
+        "react-virtuoso": "^0.12.3",
+        "redux": "^4.0.5",
+        "redux-persist": "^6.0.0",
+        "redux-thunk": "^2.3.0",
+        "sqlite3": "^5.0.0"
     },
-    "directories": {
-      "buildResources": "assets"
+    "author": {
+        "name": "Andrey Glemb",
+        "email": "neonux1987@gmail.com",
+        "url": "https://your-website.com"
+    },
+    "build": {
+        "appId": "com.my-website.ramot-group-income-outcome-management",
+        "productName": "קבוצת רמות ניהול הוצאות והכנסות",
+        "copyright": "Copyright © 2019 ${author}",
+        "files": [
+            "build/**/*",
+            "node_modules/**/*",
+            "package.json",
+            "!dev-app-update.yml"
+        ],
+        "extraResources": [
+            "./extraResources/**"
+        ],
+        "win": {
+            "target": [
+                "nsis"
+            ],
+            "icon": "./Icon/ramot-group-icon.ico",
+            "publish": [
+                "github"
+            ]
+        },
+        "publish": [
+            {
+                "provider": "github",
+                "owner": "neonux1987",
+                "private": true,
+                "releaseType": "release",
+                "protocol": "https",
+                "repo": "financial_reports_management_system"
+            }
+        ],
+        "nsis": {
+            "allowToChangeInstallationDirectory": false,
+            "oneClick": false,
+            "createDesktopShortcut": true
+        },
+        "directories": {
+            "buildResources": "assets"
+        }
+    },
+    "main": "public/electron.js",
+    "homepage": "./",
+    "scripts": {
+        "start": "rescripts start",
+        "build": "rescripts build",
+        "test": "rescripts test",
+        "eject": "react-scripts eject",
+        "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\"",
+        "postinstall": "electron-builder install-app-deps",
+        "preelectron-pack": "npm run build",
+        "electron-pack": "electron-builder --win --publish never",
+        "electron-deploy": "electron-builder --win --publish always"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": []
+    },
+    "devDependencies": {
+        "@rescripts/cli": "0.0.14",
+        "@rescripts/rescript-env": "0.0.12",
+        "concurrently": "^5.3.0",
+        "cross-env": "^7.0.2",
+        "electron": "10.1.5",
+        "electron-builder": "^22.9.1",
+        "nodemon": "^2.0.6",
+        "typescript": "^4.0.5",
+        "wait-on": "^5.2.0"
     }
-  },
-  "main": "public/electron.js",
-  "homepage": "./",
-  "scripts": {
-    "start": "rescripts start",
-    "build": "rescripts build",
-    "test": "rescripts test",
-    "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\"",
-    "postinstall": "electron-builder install-app-deps",
-    "preelectron-pack": "npm run build",
-    "electron-pack": "electron-builder --win --publish never",
-    "electron-deploy": "electron-builder --win --publish always"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": []
-  },
-  "devDependencies": {
-    "@rescripts/cli": "0.0.14",
-    "@rescripts/rescript-env": "0.0.12",
-    "concurrently": "^5.2.0",
-    "cross-env": "^7.0.2",
-    "electron": "8.2.5",
-    "electron-builder": "^22.7.0",
-    "nodemon": "^2.0.3",
-    "typescript": "^3.8.3",
-    "wait-on": "^4.0.2"
-  }
 }
