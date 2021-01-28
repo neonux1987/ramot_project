@@ -4,18 +4,15 @@ import classnames from 'classnames';
 import { Minimize, CheckBoxOutlineBlank, Close } from '@material-ui/icons';
 import Helper from '../helpers/Helper';
 import icon from '../assets/images/ramot-group-icon.ico'
+import Logo from '../Sidebar/Logo/Logo';
 
-export default ({ handlers }) => {
+const AppFrameContainer = ({ handlers }) => {
   return (
     <div className={styles.appFrame}>
 
       <div className={styles.draggableRegion}>
         <div className={styles.section} style={{ flex: "1 1" }}>
-          <div className={styles.header}>
-            <span className={styles.iconWrapper} ><img src={icon} width="20px" height="20px" alt="ramot group icon" /></span>
-
-            <span>קבוצת רמות ניהול הוצאות והכנסות</span>
-          </div>
+          <Logo />
         </div>
 
         <div className={styles.section} style={{ flex: "1 1", display: "flex", justifyContent: "center", fontSize: "13px" }}>
@@ -37,3 +34,5 @@ export default ({ handlers }) => {
     </div>
   );
 }
+
+export default AppFrameContainer;

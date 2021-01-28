@@ -12,7 +12,7 @@ const listIcon = css`
   color: #0365a2;
 `;
 
-export default ({ open, restartAppHandler, dbBackupHandler }) => {
+const SubMenu = ({ open, restartAppHandler, dbBackupHandler }) => {
   return <Collapse in={open} timeout="auto" unmountOnExit>
     <List component="div" disablePadding>
 
@@ -33,3 +33,5 @@ export default ({ open, restartAppHandler, dbBackupHandler }) => {
     </List>
   </Collapse>;
 };
+
+export default SubMenu;

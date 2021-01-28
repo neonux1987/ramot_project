@@ -3,7 +3,7 @@
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color: #0365a2;
+  color:rgb(79,84,86);
   font-style: normal;
   font-size: 26px;
 }
@@ -13,7 +13,7 @@
   text-align: right;
   font-weight: 400;
   font-size: 14px;
-  color: #ccd5da;
+  color:rgb(79,84,86);
   margin: 0;
   font-style: normal;
   letter-spacing: 0.028em;
@@ -22,10 +22,8 @@
 
 .container {
   display: flex;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #333a42;
-  margin-bottom: 15px;
-  padding: 20px 13px 20px 0;
+  padding-right: 10px;
+  width: 240px;
   position: relative;
   user-select: none;
 }
@@ -35,7 +33,7 @@
   width: 56px;
   height: 56px;
   background-size: 56px 56px;
-  filter: drop-shadow(5px 5px 5px #222);
+  /* filter: drop-shadow(5px 5px 5px #222); */
 }
 
 .LogotextWrapper{

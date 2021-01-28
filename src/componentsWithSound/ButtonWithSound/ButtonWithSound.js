@@ -3,7 +3,7 @@ import { useSound } from '../../soundManager/SoundManager';
 import { Button } from '@material-ui/core';
 import action from '../../assets/audio/action.wav';
 
-export default React.forwardRef((props, ref) => {
+const ButtonWithSound = React.forwardRef((props, ref) => {
   const { play } = useSound(action, {
     reverse: props.reverse ? props.reverse : 0
   });
@@ -19,3 +19,5 @@ export default React.forwardRef((props, ref) => {
     {props.children}
   </Button>
 });
+
+export default ButtonWithSound;

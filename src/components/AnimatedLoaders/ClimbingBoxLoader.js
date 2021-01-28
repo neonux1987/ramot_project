@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import { ClimbingBoxLoader } from 'react-spinners';
+import { ClimbingBoxLoader as CBL } from 'react-spinners';
 
-export default (props) => {
+const ClimbingBoxLoader = (props) => {
   const { loading, title = "", loaderColor = "#000000", size = 15 } = props;
   return (
     <Fragment>
@@ -15,7 +15,7 @@ export default (props) => {
       >
         {title}
       </div>
-      <ClimbingBoxLoader
+      <CBL
         size={size}
         color={loaderColor}
         loading={loading}
@@ -23,3 +23,5 @@ export default (props) => {
     </Fragment>
   );
 }
+
+export default ClimbingBoxLoader;

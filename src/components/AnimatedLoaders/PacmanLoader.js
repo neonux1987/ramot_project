@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import { PacmanLoader } from 'react-spinners';
+import { PacmanLoader as PL } from 'react-spinners';
 
-export default (props) => {
+const PacmanLoader = (props) => {
   const { loading, title = "טוען נתונים", loaderColor = "#000000", size = 10, margin = 2 } = props;
   return (
     <Fragment>
@@ -15,7 +15,7 @@ export default (props) => {
       >
         {title}
       </div>
-      <PacmanLoader
+      <PL
         margin={margin}
         size={size}
         color={loaderColor}
@@ -24,3 +24,5 @@ export default (props) => {
     </Fragment>
   );
 }
+
+export default PacmanLoader;

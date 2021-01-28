@@ -12,7 +12,7 @@ const override = css`
   background-color: #000;
 `;
 
-export default (props) => {
+const LogoLoader = (props) => {
   return (
     <div>
       <img
@@ -34,3 +34,5 @@ export default (props) => {
     </div>
   );
 }
+
+export default LogoLoader;

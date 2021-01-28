@@ -50,7 +50,7 @@ const Sidebar = () => {
     >
       <Drawer id="sidebar" variant="permanent" classes={{ paper: styles.drawerPaper }} anchor="left" className={classnames(styles.drawer, toggleSidebarAnimation)}>
 
-        <Logo />
+        {/* <Logo /> */}
 
         <Menu data={menu.data} routeState={routeState} />
 

@@ -18,7 +18,7 @@ import {
   listItem
 } from './ExpandableMenuItem.module.css';
 
-export default props => {
+const ExpandableMenuItem = props => {
 
   const {
     Icon = <div></div>,
@@ -40,7 +40,7 @@ export default props => {
         <ListItemIcon className={listItemIcon}>
           {Icon && <Icon />}
         </ListItemIcon>
-        <ListItemText className={listItemText} primary={label} />
+        <ListItemText className={listItemText} classes={{ root: listItemText }} primary={label} />
         {open ? <ExpandLess className={expandIcon} /> : <ExpandMore className={expandIcon} />}
       </ListItem>
 
@@ -58,3 +58,5 @@ export default props => {
     </Fragment>
   );
 }
+
+export default ExpandableMenuItem;

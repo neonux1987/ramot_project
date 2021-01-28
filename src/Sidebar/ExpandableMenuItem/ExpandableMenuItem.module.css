@@ -1,5 +1,9 @@
+.listItemText{
+  font-weight: 600;
+}
+
 .listItemIcon,.listItemText,.expandIcon{
-  color: #cbcdda;
+  color:rgb(107,108,119);
 }
 
 .collapse{

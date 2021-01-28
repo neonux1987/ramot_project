@@ -2,7 +2,7 @@ import React from 'react';
 import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
 import { RotateLoader } from 'react-spinners';
 
-export default ({ title = "טוען את האפליקציה", loading = false, style, size = 14 }) => {
+const AppLoader = ({ title = "טוען את האפליקציה", loading = false, style, size = 14 }) => {
 
   return (
     <AlignCenterMiddle style={{ height: "100%", ...style }}>
@@ -25,3 +25,5 @@ export default ({ title = "טוען את האפליקציה", loading = false, s
     </AlignCenterMiddle>
   );
 }
+
+export default AppLoader;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (OriginalComponent, value = Number, logicalStyle = {
+const withColumnColorLogic = (OriginalComponent, value = Number, logicalStyle = {
   negative: {
     color: "#ffffff",
     backgroundColor: "rgb(239, 34, 91)"
@@ -33,3 +33,5 @@ export default (OriginalComponent, value = Number, logicalStyle = {
 
   return props => <OriginalComponent {...props} style={{ ...props.style, ...style }} />;
 }
+
+export default withColumnColorLogic;

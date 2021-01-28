@@ -1,7 +1,7 @@
 import React from 'react';
 import DateDetails from '../components/DateDetails/DateDetails';
 
-export default (WrappedComponent) => {
+const withPageLogic = (WrappedComponent) => {
   const dateDetails = (date) => {
     return () => <DateDetails
       month={date.monthHeb}
@@ -12,3 +12,5 @@ export default (WrappedComponent) => {
 
   return (props) => <WrappedComponent dateDetails={dateDetails} {...props} />
 }
+
+export default withPageLogic;

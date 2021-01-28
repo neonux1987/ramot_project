@@ -3,7 +3,7 @@ import { useSound } from '../../soundManager/SoundManager';
 import { Slider } from '@material-ui/core';
 import slide from '../../assets/audio/slide.wav';
 
-export default props => {
+const SliderWithSound = props => {
   const { play, setOptions } = useSound(slide);
 
   return <Slider
@@ -18,3 +18,5 @@ export default props => {
     }}
   />;
 }
+
+export default SliderWithSound;

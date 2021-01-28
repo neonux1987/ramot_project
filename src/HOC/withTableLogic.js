@@ -1,7 +1,7 @@
 import React from 'react';
 import EditableColumn from '../components/table/TableCell/EditableColumn';
 
-export default (OriginalComponent) => {
+const withTableLogic = (OriginalComponent) => {
 
   return class WithTableLogic extends React.Component {
 
@@ -99,3 +99,5 @@ export default (OriginalComponent) => {
 
   }
 }
+
+export default withTableLogic;
