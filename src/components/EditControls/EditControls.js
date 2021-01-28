@@ -39,11 +39,11 @@ export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style 
   return (
     <div className={styles.wrapper} style={style}>
       <ButtonWithSound className={styles.editBtn} onClick={clickWithScroll} variant="contained" >
-        {editBtnTitle} {editIcon}
+        {editIcon}
       </ButtonWithSound>
       {
         toggleAddNewMode && <ButtonWithSound className={classnames(styles.addNewBtn, addNewBtnStyle)} onClick={toggleAddNewMode} variant="contained" >
-          {addNewBtnTitle} {addIcon}
+          {addIcon}
         </ButtonWithSound>
       }
     </div>
