@@ -40,7 +40,7 @@ const ExpandableMenuItem = props => {
         <ListItemIcon className={listItemIcon}>
           {Icon && <Icon />}
         </ListItemIcon>
-        <ListItemText className={listItemText} classes={{ root: listItemText }} primary={label} />
+        <ListItemText className={listItemText} classes={{ primary: listItemText }} primary={label} />
         {open ? <ExpandLess className={expandIcon} /> : <ExpandMore className={expandIcon} />}
       </ListItem>
 

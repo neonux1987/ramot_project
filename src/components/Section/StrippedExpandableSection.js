@@ -10,7 +10,7 @@ import styles from './ExpandableSection.module.css';
 const header = css`
   display: flex;
   padding: 0px 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  border-bottom: 1px solid #e3e5ec;
   line-height: 60px;
 `;
 

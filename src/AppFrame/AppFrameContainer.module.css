@@ -1,5 +1,5 @@
 .appFrame{
-  /* background-color: #ffffff; */
+  background-color: #f7f8fd;
   /* background: #eceeef; */
   /* background-color: #fdfdfd; */
   /* background: linear-gradient(0deg, #e5e7e8 50%, #e1e4e6 100%); */
@@ -23,8 +23,12 @@
   -webkit-app-region: drag;
 }
 
+.noDrag{
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
+}
+
 .section{
-  width: 50%;
   align-items: center;
   display: flex;
   padding: 0 1px;
@@ -72,7 +76,7 @@
   font-weight: 600;
 }
 
-.controls{
+.actions{
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
   display: flex;
@@ -88,5 +92,82 @@
 }
 
 .button svg{
-  font-size: 24px;
+  font-size: 20px;
+}
+
+.maximize svg{
+  font-size: 18px;
+  margin-top: 1px;
+}
+
+.minimize svg{
+  margin-bottom: 1px;
+}
+
+.breadcrumbs{
+  margin-right: 20px;
+  font-weight: 600;
+  font-size: 1.100em;
+}
+
+.controls{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid #f3f3f3;
+  margin-left: 15px;
+}
+
+.volumeBtn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: #8c49d6;
+  color: #fff; */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  color: rgb(79,84,86);
+  min-width: 0;
+  margin-left: 5px;
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
+}
+
+.moreBtn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  color:rgb(79,84,86);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  min-width: 0;
+  margin-left: 10px;
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
+}
+
+.vatWrapper{
+  font-size: 13px;
+  font-weight: 600;
+  margin-left: 30px;
+  background: #0365a2;
+  padding: 5px 16px;
+  border-radius: 5px;
+  color: rgb(255 255 255);
+  font-weight: 600;
+}
+
+.toggleBtn{
+padding: 4px 6px;
+border-radius: 4px;
+outline: none;
+cursor: pointer;
+margin-right: 15px;
+background-color: rgba(0, 0, 0, 0.04);
+min-width: unset;
+color: rgb(122 128 130);
 }

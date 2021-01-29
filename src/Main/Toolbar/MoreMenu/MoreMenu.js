@@ -55,6 +55,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
       keepMounted
       open={Boolean(anchorEl)}
       onClose={upgradedHandleClose}
+      className={styles.container}
     >
 
       <ListItem

@@ -18,13 +18,15 @@ const styles = (theme) => ({
     flexGrow: 1,
   },
   tab: {
-    fontSize: "16px"
+    fontSize: "16px",
+    color: "#000000",
+    fontWeight: "600"
   },
   indicator: {
-    backgroundColor: "#fff"
+    backgroundColor: "rgba(0, 0, 0, 0.04)"
   },
   selected: {
-    backgroundColor: "#ffffff2e"
+    backgroundColor: "rgba(0, 0, 0, 0.04)"
   },
   headerTitle: {
     marginBottom: "10px"
@@ -32,8 +34,10 @@ const styles = (theme) => ({
   appBar: {
     width: "initial",
     boxShadow: "none",
-    backgroundColor: "#3b4b5d",
-    borderRadius: "5px !important"
+    //backgroundColor: "#3b4b5d",
+    background: "none",
+    //borderRadius: "5px !important"
+    borderBottom: "1px solid #e3e5ec"
   }
 });
 

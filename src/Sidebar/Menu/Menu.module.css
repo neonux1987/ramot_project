@@ -39,3 +39,16 @@
 .list::-webkit-scrollbar-thumb:hover {
   background: #d4d4d4; 
 }
+
+.homeBtn{
+  padding-right: 16px;
+}
+
+.homeBtnText{
+  font-weight: 600;
+  color: rgb(39 117 195);
+}
+
+.homeBtnIcon{
+  color: rgb(39 117 195);
+}

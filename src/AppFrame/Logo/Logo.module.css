@@ -3,7 +3,7 @@
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color:rgb(79,84,86);
+  color:rgb(19 20 21);
   font-style: normal;
   font-size: 26px;
 }
@@ -13,7 +13,7 @@
   text-align: right;
   font-weight: 400;
   font-size: 14px;
-  color:rgb(79,84,86);
+  color:rgb(19 20 21);
   margin: 0;
   font-style: normal;
   letter-spacing: 0.028em;
@@ -23,21 +23,22 @@
 .container {
   display: flex;
   padding-right: 10px;
-  width: 240px;
+  width: 235px;
   position: relative;
   user-select: none;
+  border-left: 1px solid #f3f3f3;
 }
 
 .logo{
   background: url('../../assets//images//ramot\ group.png') no-repeat;
-  width: 56px;
-  height: 56px;
-  background-size: 56px 56px;
+  width: 52px;
+  height: 52px;
+  background-size: 52px 52px;
   /* filter: drop-shadow(5px 5px 5px #222); */
 }
 
 .LogotextWrapper{
-  padding-top: 3px;
+  padding-top: 2px;
 }
 
 .appVersionWrapper{

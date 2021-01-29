@@ -60,6 +60,21 @@ class MonthlyStatsDao {
       });
   }
 
+  getAllBuildingStats(
+    buildingName = String,
+    trx = this.connection
+  ) {
+    return trx("*")
+      .from(`${buildingName}_monthly_stats`)
+      .orderBy('year', 'desc')
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף את כל הסטטיסטיקה לבניין ${buildingName}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
   updateMonthStatsTrx(
     buildingName = String,
     date = Object,

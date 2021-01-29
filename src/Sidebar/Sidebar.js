@@ -12,7 +12,6 @@ import '../cssTransitions/scale.css';
 
 // COMPONENTS
 import Menu from './Menu/Menu';
-import Logo from './Logo/Logo'
 import LoadingCircle from '../components/LoadingCircle';
 //import Menuitem from './Menuitem';
 

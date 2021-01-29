@@ -29,10 +29,6 @@ import * as routesActions from '../redux/actions/routesActions';
 
 const mainStyle = css`
 height: 100%;
-padding-top: 20px;
-  /* height: 450px;
-  background: #f5f5f5;
-  padding-top: 10px; */
 `;
 
 const styles = theme => ({
@@ -129,13 +125,6 @@ class MainContainer extends Component {
         className={this.props.classes.main + this.props.toggleMain}
       >
         <main ref={this.props.mainContainer} className={mainStyle}>
-          <Toolbar
-            buildingName={locationState.buildingName}
-            page={locationState.page}
-            year={Helper.getCurrentYear()}
-            quarter={Helper.getCurrentQuarterHeb()}
-            month={Helper.getCurrentMonthHeb()}
-          />
 
           <Route render={({ location }) => (
             <TransitionGroup style={{ position: "relative" /* height: "100%" */ }}>

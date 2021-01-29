@@ -14,7 +14,7 @@
   z-index: 2;
   box-shadow: none;
   /* box-shadow: -4px 0px 4px -4px rgba(0,0,0,0.75); */
-  /* background: url('../assets/images/thana-gu.jpg') no-repeat;*/
+  background: url('../assets/images/thana-gu.jpg') no-repeat;
   /* background-size: cover; */
 }
 
@@ -86,7 +86,6 @@
   padding: 20px 0;
   display: flex;
   justify-content: center;
-  border-top: 1px solid #333a42;
   user-select: none;
 }
 
@@ -94,7 +93,7 @@
   font-size: 14px;
   width: initial;
   text-align: center;
-  color: #646d79;
+  color:rgb(107,108,119);
   font-style: normal;
   font-weight: 400;
 }
@@ -102,7 +101,7 @@
 .ndtsText{
   margin-left: 3px;
   font-weight: 600;
-  color: #7a8492;
+  color: rgb(107,108,119);
   font-style: italic;
 }
 

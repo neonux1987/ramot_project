@@ -69,6 +69,24 @@ class Helper {
     }
   }
 
+  static hebToMonthNum(month) {
+    switch (month) {
+      case "ינואר": return 0
+      case "פברואר": return 1
+      case "מרץ": return 2
+      case "אפריל": return 3
+      case "מאי": return 4
+      case "יוני": return 5
+      case "יולי": return 6
+      case "אוגוסט": return 7
+      case "ספטמבר": return 8
+      case "אוקטובר": return 9
+      case "נובמבר": return 10
+      case "דצמבר": return 1
+      default: return null
+    }
+  }
+
   getQuarterFromMonthEng() {
     switch (month) {
       case "january": return 1

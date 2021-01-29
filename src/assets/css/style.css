@@ -73,15 +73,15 @@ a {
 }
 
 .activeExpandItem{
-  background: #d6dce00a;
+  background: #e7e8ef;
 }
 
 .activeExpandItem:hover{
-  background: #d6dce00a;
+  background: #e7e8ef;
 }
 
 .activeButton,.activeButton:hover{
-  background: #0365a2;
+  background: #e7e8ef;
   margin: 0 10px;
   width: 220px;
   border-radius: 4px;
@@ -90,7 +90,7 @@ a {
 
 .activeButton2{
   border-radius: initial;
-  border-bottom: 2px solid #ffffff;
+  border-bottom: 3px solid rgb(3, 101, 162);
 }
 
 .hideAnimation{

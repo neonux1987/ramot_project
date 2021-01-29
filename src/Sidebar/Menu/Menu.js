@@ -10,7 +10,10 @@ import Menuitem from '../MenuItem/Menuitem';
 
 // CSS
 import {
-  list
+  list,
+  homeBtn,
+  homeBtnText,
+  homeBtnIcon
 } from './Menu.module.css';
 import { updateRoute } from '../../redux/actions/routesActions';
 import { useDispatch } from 'react-redux';
@@ -116,6 +119,9 @@ const Menu = (props) => {
       <Menuitem
         label={HOME_BUTTON_LABEL}
         Icon={Dashboard}
+        className={homeBtn}
+        textClassName={homeBtnText}
+        iconClassName={homeBtnIcon}
         to={{
           pathname: HOME_BUTTON_PATH,
           state: {
