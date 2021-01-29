@@ -86,9 +86,18 @@
   border: none;
   background: none;
   margin-right: 2px;
-  display: inline-flex;
-  align-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   outline: none;
+  margin-left: 4px;
+  width: 40px;
+  height: 36px;
+  border-radius: 4px;
+}
+
+.button:hover{
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .button svg{
@@ -97,11 +106,11 @@
 
 .maximize svg{
   font-size: 18px;
-  margin-top: 1px;
+  margin-top: 0px;
 }
 
 .minimize svg{
-  margin-bottom: 1px;
+  margin-bottom: 3px;
 }
 
 .breadcrumbs{
@@ -116,6 +125,7 @@
   align-items: center;
   border-left: 1px solid #f3f3f3;
   margin-left: 15px;
+  padding-left: 8px;
 }
 
 .volumeBtn{
@@ -154,10 +164,11 @@
   font-size: 13px;
   font-weight: 600;
   margin-left: 30px;
-  background: #0365a2;
+  /* background: #0365a2; */
+  box-shadow: rgba(53, 64, 82, 0.05) 0px 0px 14px 0px inset;
   padding: 5px 16px;
   border-radius: 5px;
-  color: rgb(255 255 255);
+  color: rgb(35 35 35);
   font-weight: 600;
 }
 

@@ -83,7 +83,7 @@ class MonthlyStatsDao {
   ) {
     return trx(`${buildingName}_monthly_stats`)
       .where({ year: date.year, month: date.monthHeb })
-      .update(data)
+      .update({ data })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לעדכן רשומה בסטטיסטיקת חודש לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);

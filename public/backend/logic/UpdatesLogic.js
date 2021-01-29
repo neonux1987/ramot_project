@@ -38,13 +38,13 @@ class UpdatesLogic {
 
             const hasColumn = trx.schema.hasColumn(tableName, "monthNum");
 
-            if (hasColumn) {
+            if (!hasColumn) {
 
               //table.integer("monthNum")
 
               const stats = await monthlyStatsDao.getAllBuildingStats(buildingNameEng, trx);
 
-              stats.forEach(async row => {
+              asyncForEach(stats, async (row) => {
 
                 const monthNum = Helper.hebToMonthNum(row.month);
 
@@ -55,7 +55,8 @@ class UpdatesLogic {
 
                 const data = { monthNum }
                 console.log(date);
-                //await monthlyStatsDao.updateMonthStatsTrx(buildingNameEng, date, data, trx);
+                await monthlyStatsDao.updateMonthStatsTrx(buildingNameEng, date, data, trx);
+
               });
 
             }
