@@ -1,7 +1,7 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
-import { TableChart } from '@material-ui/icons';
+import { ListAlt } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 
 // COMPONENTS
@@ -19,6 +19,7 @@ import useDate from '../../customHooks/useDate';
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
 import TableExpandableSection from '../../components/Section/TableExpandableSection';
+import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -47,7 +48,7 @@ const MonthExpanses = props => {
         padding={"10px 15px 15px"}
         margin="20px 20px 40px"
         title={TABLE_TITLE}
-        TitleIcon={<TableChart />}
+        TitleIcon={<SvgIconWrapper Icon={ListAlt} color="rgb(25,121,204)" />}
         iconColor="rgb(25, 121, 204)"
         extraDetails={() => <DateDetails
           month={date.monthHeb}

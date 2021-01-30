@@ -7,7 +7,7 @@ const withColumnColorLogic = (OriginalComponent, value = Number, logicalStyle = 
   },
   positive: {
     color: "#ffffff",
-    backgroundColor: "rgb(25, 189, 121)"
+    backgroundColor: "rgb(49 199 120)"
   },
   neutral: {
     color: "#000000",

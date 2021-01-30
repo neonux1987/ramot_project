@@ -55,9 +55,19 @@ const AppFrameContainer = ({ handlers }) => {
 
   const tax = isFetching ?
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :
-    <span>{`${data[0].tax}%`}</span>;
+    <span className={styles.taxValue}>{`${data[0].tax}%`}</span>;
 
-  const navigationPath = buildingName && page ? `${buildingName} > ${page}` : page;
+  const navigationPath = buildingName && page ? <div>
+    <span>
+      {`${buildingName}`}
+    </span>
+    <span style={{ margin: "0px 12px" }}>
+      {">"}
+    </span>
+    <span style={{ color: "#2472b5" }}>
+      {page}
+    </span>
+  </div> : page;
 
   return (
     <div className={styles.appFrame}>

@@ -10,18 +10,18 @@ import styles from './ExpandableSection.module.css';
 const header = css`
   display: flex;
   padding: 0px 10px;
-  border-bottom: 1px solid #e3e5ec;
+  border-bottom: 1px solid #e8eaf1;
   line-height: 60px;
 `;
 
 const titleWrapper = css`
   display: flex;
-  justify-content: flex-start;
-  flex-grow: 1;
+  justify-content: center;
+  flex-grow: 2;
   font-weight: 400;
   color: #3f414d;
   align-items: center;
-  font-size: 1.500em;
+  font-size: 1.600em;
 `;
 
 const iconWrapper = css`
@@ -40,7 +40,7 @@ const collapsibleInner = css`
   padding: 0;
 `;
 
-export default ({ children, title = "", margin = "20px 20px 0" }) => {
+export default ({ children, title = "", margin = "20px 20px 0", TitleIcon, iconColor }) => {
   const [open, setOpen] = useState(true);
 
   const expandClick = () => {
@@ -53,14 +53,15 @@ export default ({ children, title = "", margin = "20px 20px 0" }) => {
 
     return <div className={header}>
 
-      {/* <div className={css`
+      <div className={css`
           display: flex;
           padding: 0 0 0 10px;
           align-items: center;
-          color: ${iconColor}
+          color: ${iconColor};
+          flex-grow: 1;
         `}>
         {TitleIcon}
-      </div> */}
+      </div>
 
       <div className={titleWrapper}>
         {title}

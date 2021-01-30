@@ -45,7 +45,7 @@ export default props => {
 
       <StrippedExpandableSection
         title={TITLE}
-        TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(241, 52, 117)" />}
+        TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(255 0 82)" />}
         margin="0"
       >
         <MonthsChartContainer
