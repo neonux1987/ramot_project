@@ -115,7 +115,7 @@
 
 .breadcrumbs{
   margin-right: 20px;
-  /* font-weight: 600; */
+  font-weight: 600;
   font-size: 18px;
   color: rgb(35 35 35);
   text-shadow: 0px 0px 4px #00000012;
@@ -164,7 +164,7 @@
 
 .vatWrapper{
   font-size: 18px;
-  /* font-weight: 600; */
+  font-weight: 600;
   margin-left: 25px;
   /* background: #0365a2; */
   /* box-shadow: rgba(53, 64, 82, 0.05) 0px 0px 14px 0px inset; */
