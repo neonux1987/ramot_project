@@ -6,7 +6,10 @@ import { restartApp } from './mainProcess.svc';
 
 export const restore = (payload, byList) => {
   const toastId = toastManager.info(<ToastRender spinner={true} message={"המערכת מבצעת שיחזור של הבסיס נתונים..."} />, {
-    autoClose: false
+    autoClose: false,
+    onChange: (event) => {
+      console.log(event);
+    }
   });
 
   return ipcSendReceive({
