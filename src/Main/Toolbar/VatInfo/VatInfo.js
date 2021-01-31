@@ -4,7 +4,7 @@ import React from "react";
 const VatInfo = ({ className = "", tax = "אין" }) => {
   return (
     <div className={className}>
-      <span>מע"מ: </span>{tax}
+      <span style={{ fontSize: "18px" }}>מע"מ: </span>{tax}
     </div>
   );
 

@@ -51,7 +51,7 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
     fontFamily: [
-      'Assistant',
+      'Rubik',
       'sans-serif'
     ].join(',')
   },

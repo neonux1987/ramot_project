@@ -13,7 +13,6 @@ export const dbIndependentBackup = (fullPath) => {
 }
 
 export const initiateDbBackup = () => {
-  console.log("wtf");
   return ipcSendReceive({
     send: {
       channel: "initiate-db-backup"

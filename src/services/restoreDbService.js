@@ -2,6 +2,7 @@ import React from 'react';
 import { ipcSendReceive } from "../redux/actions/util/util";
 import { toastManager } from "../toasts/ToastManager";
 import ToastRender from "../components/ToastRender/ToastRender";
+import { restartApp } from './mainProcess.svc';
 
 export const restore = (payload, byList) => {
   const toastId = toastManager.info(<ToastRender spinner={true} message={"המערכת מבצעת שיחזור של הבסיס נתונים..."} />, {
@@ -18,18 +19,23 @@ export const restore = (payload, byList) => {
     },
     onSuccess: () => toastManager.update(toastId, {
       render: <ToastRender done={true} message={"השיחזור בוצע בהצלחה."} />,
-      type: toastManager.TYPES.SUCCESS,
+      type: toastManager.types.SUCCESS,
       delay: 2000,
-      autoClose: 1500,
-      onClose: () => {
-        toastManager.info("המערכת מבצעת איתחול בשביל שהשינויים ייכנסו לתוקף.")
-      }
+      autoClose: 500,
+      onChange: () => console.log("what change"),
+      onClose: () => toastManager.info("המערכת תבצע איתחול בשביל שהשינויים ייכנסו לתוקף.", {
+        onClose: () => {
+          console.log("hello");
+          //restartApp();
+        }
+      })
     }),
     onError: (result) => toastManager.update(toastId, {
       render: result.error,
-      type: toastManager.TYPES.ERROR,
+      type: toastManager.types.ERROR,
       delay: 2000,
-      autoClose: 3000
+      autoClose: 3000,
+      onChange: () => console.log("what change")
     }),
     withErrorNotification: false
   });

@@ -36,15 +36,15 @@ class UpdatesLogic {
 
           await trx.schema.table(tableName, async (table) => {
 
-            const hasColumn = trx.schema.hasColumn(tableName, "monthNum");
+            const hasColumn = await trx.schema.hasColumn(tableName, "monthNum");
 
-            if (!hasColumn) {
+            if (hasColumn) {
 
               //table.integer("monthNum")
 
               const stats = await monthlyStatsDao.getAllBuildingStats(buildingNameEng, trx);
 
-              asyncForEach(stats, async (row) => {
+              await asyncForEach(stats, async (row) => {
 
                 const monthNum = Helper.hebToMonthNum(row.month);
 
@@ -54,8 +54,8 @@ class UpdatesLogic {
                 }
 
                 const data = { monthNum }
-                console.log(date);
-                await monthlyStatsDao.updateMonthStatsTrx(buildingNameEng, date, data, trx);
+
+                //await monthlyStatsDao.updateMonthStatsTrx(buildingNameEng, date, data, trx);
 
               });
 
@@ -74,9 +74,10 @@ class UpdatesLogic {
         //updateConfigFile.runScript = false;
         //await fse.writeJSON(path.join(SystemPaths.paths.setup_folder_path, "updateConfig.json"), updateConfigFile);
 
-        trx.commit();
+        await trx.commit();
       }
     } catch (error) {
+      await trx.rollback();
       console.log(error);
     }
   }

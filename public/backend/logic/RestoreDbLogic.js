@@ -18,12 +18,13 @@ class RestoreDbLogic {
   }
 
   async restoreFromList(fileName) {
-    const systemSettings = await this.settingsLogic.getSystemSettings();
 
-    const backupsFolder = systemSettings.db_backups_folder_path;
+    const backupSettings = await this.settingsLogic.getDbBackupSettings();
+
+    const backupsFolder = backupSettings.db_backups_folder_path;
     const fullFilePath = path.join(backupsFolder, fileName);
-
-    return await this.restore(fullFilePath);
+    throw new Error("yes")
+    //return await this.restore(fullFilePath);
   }
 
   async restoreFromFile(filePath) {

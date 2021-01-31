@@ -58,13 +58,13 @@ const AppFrameContainer = ({ handlers }) => {
     <span className={styles.taxValue}>{`${data[0].tax}%`}</span>;
 
   const navigationPath = buildingName && page ? <div>
-    <span>
+    <span style={{ fontWeight: "600" }}>
       {`${buildingName}`}
     </span>
-    <span style={{ margin: "0px 12px" }}>
+    <span style={{ margin: "0px 8px", fontSize: "14px", fontWeight: "600" }}>
       {">"}
     </span>
-    <span style={{ color: "#2472b5" }}>
+    <span style={{ color: "rgb(116 118 121)" }}>
       {page}
     </span>
   </div> : page;
