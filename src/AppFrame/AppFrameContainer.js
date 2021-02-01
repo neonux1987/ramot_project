@@ -93,7 +93,7 @@ const AppFrameContainer = ({ handlers }) => {
 
           <div className={styles.controls}>
 
-            <VatInfo className={styles.vatWrapper} tax={tax} />
+            {/* <VatInfo className={styles.vatWrapper} tax={tax} /> */}
 
             <VolumeButton className={styles.volumeBtn} />
 

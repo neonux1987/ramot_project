@@ -10,18 +10,18 @@ import styles from './ExpandableSection.module.css';
 const header = css`
   display: flex;
   padding: 0px 10px;
-  border-bottom: 1px solid #e8eaf1;
+  /* border-bottom: 1px solid #e8eaf1; */
   line-height: 60px;
 `;
 
 const titleWrapper = css`
   display: flex;
-  justify-content: center;
-  flex-grow: 2;
+  justify-content: flex-start;
+  flex-grow: 1;
   font-weight: 400;
   color: #3f414d;
   align-items: center;
-  font-size: 1.600em;
+  font-size: 1.500em;
 `;
 
 const iconWrapper = css`
@@ -40,7 +40,7 @@ const collapsibleInner = css`
   padding: 0;
 `;
 
-export default ({ children, title = "", margin = "20px 20px 0", TitleIcon, iconColor }) => {
+export default ({ children, title = "", margin = "20px 20px 0", TitleIcon, iconColor = "#000000" }) => {
   const [open, setOpen] = useState(true);
 
   const expandClick = () => {
@@ -51,27 +51,32 @@ export default ({ children, title = "", margin = "20px 20px 0", TitleIcon, iconC
 
   const headerWrapper = () => {
 
-    return <div className={header}>
+    return <div>
 
-      <div className={css`
+      <div className={header}>
+
+        <div className={css`
           display: flex;
           padding: 0 0 0 10px;
           align-items: center;
           color: ${iconColor};
-          flex-grow: 1;
         `}>
-        {TitleIcon}
-      </div>
-
-      <div className={titleWrapper}>
-        {title}
-      </div>
-
-      <div className={iconWrapper}>
-        <div className={icon} onClick={expandClick}>
-          {expandIcon}
+          {TitleIcon}
         </div>
+
+        <div className={titleWrapper}>
+          {title}
+        </div>
+
+        <div className={iconWrapper}>
+          <div className={icon} onClick={expandClick}>
+            {expandIcon}
+          </div>
+        </div>
+
       </div>
+
+      <div style={{ height: "1px", borderRight: `120px solid ${iconColor}`, borderBottom: "1px dotted #ccc" }}></div>
 
     </div>;
   }

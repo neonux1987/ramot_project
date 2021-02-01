@@ -48,7 +48,11 @@ const BudgetExecutions = props => {
 
   return <div className={"page"}>
 
-    <StrippedExpandableSection title={STATS_TITLE} TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(255 0 82)" />}>
+    <StrippedExpandableSection
+      title={STATS_TITLE}
+      TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(255 0 82)" />}
+      iconColor="rgb(255 0 82)"
+    >
       <QuarterStatsContainer
         buildingName={buildingNameEng}
         date={date}
