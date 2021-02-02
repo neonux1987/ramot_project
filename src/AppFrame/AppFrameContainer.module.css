@@ -7,7 +7,7 @@
   -webkit-app-region: no-drag;
   /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17); */
   box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
-  /* border-bottom: 1px solid #f3eded; */
+  border-bottom: 1px solid #f3eded;
   flex-basis: 56px;
   /* background: #353c40; */
 }
@@ -114,10 +114,11 @@
 }
 
 .breadcrumbs{
-  margin-right: 15px;
+  margin-right: 10px;
   /* font-weight: 600; */
-  font-size: 18px;
-  color: rgb(35 35 35);
+  font-size: 20px;
+  color: #000000;
+  margin-top: -2px;
   /* text-shadow: 0px 0px 4px #00000012; */
 }
 
@@ -182,11 +183,11 @@
 
 .toggleBtn{
 padding: 4px 6px;
-border-radius: 0px;
+border-radius: 5px;
 outline: none;
 cursor: pointer;
-margin-right: 15px;
-/* background-color: rgba(0, 0, 0, 0.04); */
+margin-right: 10px;
+/* background-color: rgb(45 128 193); */
 min-width: unset;
-color: rgb(122 128 130);
+color: #000000;
 }

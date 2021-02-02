@@ -7,69 +7,69 @@ const fs = require('fs');
 
 const mainProcessIpc = () => {
 
-    const mainProcessLogic = new MainProcessLogic();
-    const logger = require('../../backend/logger/LogManager').getLogger();
+  const mainProcessLogic = new MainProcessLogic();
+  const logger = require('../../backend/logger/LogManager').getLogger();
 
-    ipcMain.on('quit-app', (event) => {
-        mainProcessLogic.quit();
+  ipcMain.on('quit-app', (event) => {
+    mainProcessLogic.quit();
 
+  });
+
+  ipcMain.on('restart-app', (event) => {
+    try {
+      mainProcessLogic.restart()
+    } catch (error) {
+      event.reply("app-restarted", { error: error.message });
+    }
+  });
+
+  process.on("uncaughtException", async (error, origin) => {
+    const loggerError = new LoggerError({
+      name: "MainProcess",
+      message: "קרתה תקלה לא ידועה",
+      originalError: error
     });
+    logger.error(loggerError.toString())
 
-    ipcMain.on('restart-app', (event) => {
-        try {
-            mainProcessLogic.restart()
-        } catch (error) {
-            event.reply("app-restarted", { error: error.message });
-        }
-    });
-
-    process.on("uncaughtException", async (error, origin) => {
-        const loggerError = new LoggerError({
-            name: "MainProcess",
-            message: "קרתה תקלה לא ידועה",
-            originalError: error
-        });
-        logger.error(loggerError.toString())
-
-        const title = "שגיאה";
-        const message = `
+    const title = "שגיאה";
+    const message = `
       קרתה תקלה לא ידועה: 
       ${error.message}
       לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
       ${SystemPaths.paths.logs_folder_path}
       `;
 
-        const dialogData = await dialog.showMessageBox({
-            title,
-            message,
-            type: "error",
-            buttons: ["סגור", "פתח יומן אירועים"]
-        });
-
-        if (dialogData.response === 1) {
-            openLogFile();
-        }
-
-        fs.writeSync(
-            process.stderr.fd,
-            `Caught exception: ${error}\n` +
-            `Exception origin: ${origin}`
-        );
-
+    const dialogData = await dialog.showMessageBox({
+      title,
+      message,
+      type: "error",
+      buttons: ["סגור", "פתח יומן אירועים"]
     });
 
-    process.on('unhandledRejection', (reason, promise) => {
-        console.log('Unhandled Rejection at:', promise, 'reason:', reason);
-        // Application specific logging, throwing an error, or other logic here
-    });
+    if (dialogData.response === 1) {
+      openLogFile();
+    }
 
-    ipcMain.on('show-item-in-folder', (event, path) => {
-        shell.showItemInFolder(path);
-    });
+    fs.writeSync(
+      process.stderr.fd,
+      `Caught exception: ${error}\n` +
+      `Exception origin: ${origin}`
+    );
 
-    ipcMain.on('open-item', (event, path) => {
-        shell.openPath(path);
-    });
+  });
+
+  process.on('unhandledRejection', (reason, promise) => {
+    console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Application specific logging, throwing an error, or other logic here
+  });
+
+  ipcMain.on('show-item-in-folder', (event, path) => {
+    shell.showItemInFolder(path);
+  });
+
+  ipcMain.on('open-item', (event, path) => {
+    shell.openPath(path);
+  });
 
 }
 

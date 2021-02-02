@@ -47,7 +47,11 @@ const SummarizedBudgets = props => {
 
   return <div className={"page"}>
 
-    <StrippedExpandableSection title={STATS_TITLE} TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(255 0 82)" />}>
+    <StrippedExpandableSection
+      title={STATS_TITLE}
+      TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(255 0 82)" />}
+      iconColor="rgb(255 0 82)"
+    >
       <YearStatsContainer
         buildingName={buildingNameEng}
         date={date}
@@ -58,7 +62,7 @@ const SummarizedBudgets = props => {
     <TableExpandableSection
       title={TABLE_TITLE}
       TitleIcon={<SvgIconWrapper Icon={ListAlt} color="rgb(25,121,204)" />}
-      iconColor="rgb(25, 121, 204)"
+      iconColor="rgb(36 110 173)"
       extraDetails={() => <DateDetails
         month={date.monthHeb}
         quarter={date.quarter}

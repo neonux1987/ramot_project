@@ -6,13 +6,13 @@ export default ({ gridTemplateColumns, style = {}, children, className }) => {
     <Row
       style={{
         //boxShadow: "0px 9px 19px -8px rgb(0 0 0 / 5%)",
-        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-        borderTop: "1px solid rgba(0, 0, 0, 0.12)",
-        borderLeft: "1px solid rgba(0, 0, 0, 0.08)",
+        borderTop: "1px solid #e3eaec",
+        borderLeft: "1px solid #e3eaec",
         position: "relative",
-        backgroundColor: "#f2f3f9",
+        backgroundColor: "#f7f8fd",
         textShadow: "0px 0px 4px #00000012",
         zIndex: "2",
+        fontSize: "15px",
         ...style,
       }}
       gridTemplateColumns={gridTemplateColumns}

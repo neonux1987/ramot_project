@@ -9,19 +9,9 @@ import styles from './ExpandableSection.module.css';
 
 const header = css`
   display: flex;
-  padding: 0px 10px;
+  padding: 0px 5px;
   /* border-bottom: 1px solid #e8eaf1; */
   line-height: 60px;
-`;
-
-const titleWrapper = css`
-  display: flex;
-  justify-content: flex-start;
-  flex-grow: 1;
-  font-weight: 400;
-  color: #3f414d;
-  align-items: center;
-  font-size: 1.500em;
 `;
 
 const iconWrapper = css`
@@ -60,11 +50,20 @@ export default ({ children, title = "", margin = "20px 20px 0", TitleIcon, iconC
           padding: 0 0 0 10px;
           align-items: center;
           color: ${iconColor};
+          flex-grow: 1;
         `}>
           {TitleIcon}
         </div>
 
-        <div className={titleWrapper}>
+        <div className={css`
+          display: flex;
+          justify-content: center;
+          flex-grow: 2;
+          font-weight: 600;
+          color: #3f414d;
+          align-items: center;
+          font-size: 1.600em;
+        `}>
           {title}
         </div>
 
@@ -78,7 +77,7 @@ export default ({ children, title = "", margin = "20px 20px 0", TitleIcon, iconC
 
       <div style={{ height: "1px", borderRight: `120px solid ${iconColor}`, borderBottom: "1px dotted #ccc" }}></div>
 
-    </div>;
+    </div >;
   }
 
   return (

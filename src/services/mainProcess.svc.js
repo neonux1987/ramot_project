@@ -1,5 +1,5 @@
 import { ipcSendReceive } from '../redux/actions/util/util';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 
 export const quitApp = () => {
 
@@ -25,6 +25,10 @@ export const restartApp = () => {
     }
   });
 
+};
+
+export const muteSound = (muted) => {
+  remote.getCurrentWebContents().setAudioMuted(muted)
 };
 
 export const showItemInFolder = (path) => {

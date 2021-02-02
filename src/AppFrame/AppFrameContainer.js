@@ -61,10 +61,10 @@ const AppFrameContainer = ({ handlers }) => {
     <span style={{ fontWeight: "600" }}>
       {`${buildingName}`}
     </span>
-    <span style={{ margin: "0px 8px", fontSize: "14px", fontWeight: "600" }}>
-      {">"}
+    <span style={{ margin: "0px 4px", fontSize: "14px", fontWeight: "600", color: "#9499a0" }}>
+      {"/"}
     </span>
-    <span style={{ color: "rgb(116 118 121)" }}>
+    <span style={{ color: "rgb(148, 153, 160)", fontWeight: "400" }}>
       {page}
     </span>
   </div> : page;
