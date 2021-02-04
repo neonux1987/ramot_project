@@ -1,6 +1,6 @@
 // LIBRARIES
 import React from "react";
-import { Menu as MenuIcon } from '@material-ui/icons';
+import { MenuOpen as MenuIcon } from '@material-ui/icons';
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 
 const VolumeButton = props => {

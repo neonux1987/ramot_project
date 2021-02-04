@@ -50,16 +50,15 @@ export default ({ children, title = "", margin = "20px 20px 0", TitleIcon, iconC
           padding: 0 0 0 10px;
           align-items: center;
           color: ${iconColor};
-          flex-grow: 1;
         `}>
           {TitleIcon}
         </div>
 
         <div className={css`
           display: flex;
-          justify-content: center;
-          flex-grow: 2;
-          font-weight: 600;
+          justify-content: flex-start;
+          flex-grow: 1;
+          font-weight: 400;
           color: #3f414d;
           align-items: center;
           font-size: 1.600em;

@@ -18,6 +18,7 @@ import {
 import Spinner from '../../Spinner/Spinner';
 import { PieChart } from 'react-minimal-pie-chart';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
+import { MdDateRange } from 'react-icons/md';
 
 export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000", loading = true }) => {
 
@@ -29,7 +30,8 @@ export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000",
     <div className={upper}>
 
       <div className={titleWrapper}>
-        <Typography variant="h6" className={titleText} style={{ color: titleColor }} gutterBottom>
+        <MdDateRange style={{ color: titleColor, fontSize: "2.5em" }} />
+        <Typography variant="h6" className={titleText}>
           {title}
         </Typography>
       </div>

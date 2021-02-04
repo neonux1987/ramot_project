@@ -186,8 +186,8 @@ padding: 4px 6px;
 border-radius: 5px;
 outline: none;
 cursor: pointer;
-margin-right: 10px;
-/* background-color: rgb(45 128 193); */
+margin-right: 15px;
+background-color: rgb(239 239 239 / 87%);
 min-width: unset;
 color: #000000;
 }
