@@ -9,7 +9,7 @@ export default ({ gridTemplateColumns, style = {}, children, className }) => {
         borderTop: "1px solid #e3eaec",
         borderLeft: "1px solid #e3eaec",
         position: "relative",
-        //backgroundColor: "rgb(247, 248, 249)",
+        backgroundColor: "rgb(247, 248, 249)",
         borderBottom: "1px solid #b3bcbf",
         //textShadow: "0px 0px 4px #00000012",
         zIndex: "2",
