@@ -1,5 +1,8 @@
 .wrapper{
-  margin-bottom: 5px;
+  margin-bottom: 0px;
+  background: rgb(29 88 148);
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
 }
 
 .controls{

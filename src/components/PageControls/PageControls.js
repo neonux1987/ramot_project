@@ -110,7 +110,7 @@ const ExcelButton = ({ onClick }) => <ButtonWithSound
   className={pageControlsButton}
   onClick={onClick}
 >
-  <RiFileExcel2Line style={{ color: "rgb(3, 162, 151)", fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
+  <RiFileExcel2Line style={{ color: "fafafa", fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
 </ButtonWithSound>;
 
 const PrintButton = ({ onClick }) => <ButtonWithSound style={{
@@ -118,7 +118,7 @@ const PrintButton = ({ onClick }) => <ButtonWithSound style={{
 }}
   className={pageControlsButton}
   onClick={onClick}>
-  <Print style={{ color: "#087dc5", fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
+  <Print style={{ color: "#fafafa", fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
 </ButtonWithSound>;
 
 const MoreButton = ({ onClick }) =>
@@ -127,5 +127,5 @@ const MoreButton = ({ onClick }) =>
     style={{ marginLeft: "0" }}
     onClick={onClick}
   >
-    <MoreVert style={{ fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
+    <MoreVert style={{ color: "#fafafa", fontSize: "28px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
   </ButtonWithSound>;

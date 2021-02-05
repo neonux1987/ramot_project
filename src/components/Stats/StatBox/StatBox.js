@@ -18,7 +18,6 @@ import {
 import Spinner from '../../Spinner/Spinner';
 import { PieChart } from 'react-minimal-pie-chart';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
-import { MdDateRange } from 'react-icons/md';
 
 export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000", loading = true }) => {
 
@@ -26,12 +25,12 @@ export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000",
     return <AlignCenterMiddle style={{ height: "200px" }}><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני ${title}`} size={20} /></AlignCenterMiddle>
 
 
-  return <div className={container} style={{ borderTop: `4px solid ${titleColor}` }}>
+  return <div className={container} /* style={{ borderTop: `8px solid ${titleColor}` }} */>
     <div className={upper}>
 
       <div className={titleWrapper}>
-        <MdDateRange style={{ color: titleColor, fontSize: "2.5em" }} />
-        <Typography variant="h6" className={titleText}>
+        {/* <MdDateRange style={{ color: titleColor, fontSize: "2.5em" }} /> */}
+        <Typography variant="h6" className={titleText} style={{ color: titleColor }}>
           {title}
         </Typography>
       </div>

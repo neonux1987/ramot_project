@@ -114,7 +114,7 @@
 }
 
 .breadcrumbs{
-  margin-right: 10px;
+  margin-right: 20px;
   /* font-weight: 600; */
   font-size: 20px;
   color: #000000;
@@ -126,9 +126,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-left: 1px solid #f3f3f3;
-  margin-left: 15px;
-  padding-left: 8px;
+  /* border-left: 1px solid #f3f3f3; */
+  margin-left: 0px;
+  padding-left: 0px;
 }
 
 .volumeBtn{
@@ -182,12 +182,14 @@
 
 
 .toggleBtn{
-padding: 4px 6px;
+/* padding: 4px 6px; */
 border-radius: 5px;
 outline: none;
 cursor: pointer;
 margin-right: 15px;
-background-color: rgb(239 239 239 / 87%);
+background-color: #00000008;
 min-width: unset;
-color: #000000;
+color: #0000008a;
+width: 40px;
+    height: 36px;
 }

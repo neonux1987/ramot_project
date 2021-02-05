@@ -120,7 +120,7 @@ const Menu = (props) => {
         label={HOME_BUTTON_LABEL}
         Icon={Dashboard}
         className={homeBtn}
-        textClassName={homeBtnText}
+        //textClassName={homeBtnText}
         iconClassName={homeBtnIcon}
         to={{
           pathname: HOME_BUTTON_PATH,

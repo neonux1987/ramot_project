@@ -90,11 +90,12 @@ a {
 }
 
 .activeButton,.activeButton:hover{
-  background: #e7e8ef;
+  background: rgb(41 106 171);
   margin: 0 10px;
   width: 220px;
   border-radius: 0px;
   padding-right: 12px;
+  border-radius: 5px;
 }
 
 .activeButton2{

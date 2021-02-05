@@ -59,7 +59,7 @@ export default ({ children, title = "", margin = "20px 20px 0", TitleIcon, iconC
           justify-content: flex-start;
           flex-grow: 1;
           font-weight: 400;
-          color: #3f414d;
+          color: #000000a8;
           align-items: center;
           font-size: 1.600em;
         `}>
