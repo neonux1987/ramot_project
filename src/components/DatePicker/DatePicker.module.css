@@ -13,8 +13,10 @@ justify-content: center;
 
 .formControl {
     min-width: 120;
-    margin: 8px;
     display: flex;
+    background: #ffffff12;
+    padding: 4px 40px;
+    border-radius: 5px;
   }
 
 .formSelect {

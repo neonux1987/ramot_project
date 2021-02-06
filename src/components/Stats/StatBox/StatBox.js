@@ -25,7 +25,7 @@ export default ({ title, income, outcome, unicodeSymbol, titleColor = "#000000",
     return <AlignCenterMiddle style={{ height: "200px" }}><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני ${title}`} size={20} /></AlignCenterMiddle>
 
 
-  return <div className={container} /* style={{ borderTop: `8px solid ${titleColor}` }} */>
+  return <div className={container} style={{ borderTop: `8px solid ${titleColor}` }}>
     <div className={upper}>
 
       <div className={titleWrapper}>
