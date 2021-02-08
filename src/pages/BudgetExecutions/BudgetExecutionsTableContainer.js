@@ -319,7 +319,7 @@ const BudgetExecutionsTable = props => {
     return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(index, rowData)} /> : null}
       <Column>{index + 1}</Column>
-      <Column style={{ fontWeight: "600" }}>{rowData["section"]}</Column>
+      <Column style={{ fontWeight: "600", backgroundColor: "rgb(0 0 0 / 4%)" }}>{rowData["section"]}</Column>
       {monthColumns}
       {editMode ? numberInput("evaluation", rowData["evaluation"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
       <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>

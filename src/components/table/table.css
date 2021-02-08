@@ -25,7 +25,7 @@
 
 ._tableRow{
   display: grid;
-  border-bottom: 1px solid #e3eaec;
+  border-bottom: 1px solid #cccccc;
 }
 
 ._tableRow:hover{
@@ -33,7 +33,7 @@
 }
 
 ._tableColumn{
-  border-right: 1px solid #e3eaec;
+  border-right: 1px solid #cccccc;
 }
 
 .spinnerWrapper{
