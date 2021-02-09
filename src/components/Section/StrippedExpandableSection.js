@@ -11,7 +11,7 @@ const header = css`
   display: flex;
   padding: 0px 5px;
   /* border-bottom: 1px solid #e8eaf1; */
-  line-height: 60px;
+  line-height: 50px;
 `;
 
 const iconWrapper = css`
@@ -47,9 +47,14 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
 
         <div className={css`
           display: flex;
-          padding: 0 0 0 10px;
           align-items: center;
-          color: ${iconColor};
+          justify-content: center;
+          color: #ffffff;
+          background: ${iconColor};
+          box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+          width: 50px;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
         `}>
           {TitleIcon}
         </div>
@@ -58,10 +63,11 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
           display: flex;
           justify-content: flex-start;
           flex-grow: 1;
-          font-weight: 400;
-          color: #000000a8;
+          font-weight: 600;
+          color: #21558ceb;
           align-items: center;
-          font-size: 1.600em;
+          font-size: 1.500em;
+          padding-right: 10px;
         `}>
           {title}
         </div>

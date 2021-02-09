@@ -12,10 +12,10 @@ export default ({ gridTemplateColumns, style = {}, children, className }) => {
         backgroundColor: "rgb(247, 248, 249)",
         borderBottom: "1px solid #cccccc",
         //textShadow: "0px 0px 4px #00000012",
-        boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.17)",
+        boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.07)",
         borderBottom: "1px solid #b7b7b7",
         zIndex: "2",
-        fontSize: "16px",
+        fontSize: "15px",
         ...style,
       }}
       gridTemplateColumns={gridTemplateColumns}

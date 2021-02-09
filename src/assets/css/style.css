@@ -12,23 +12,23 @@
 }
 
 @font-face {
-  font-family: "Assistant";
+  font-family: "Heebo";
   font-weight: 400;
-  src: url("../fonts/Assistant/Assistant-SemiBold.ttf");
+  src: url("../fonts/Heebo/Heebo-Regular.ttf");
 }
 
 
 @font-face {
-  font-family: "Assistant";
+  font-family: "Heebo";
   font-weight: 600;
-  src: url("../fonts/Assistant/Assistant-Bold.ttf");
+  src: url("../fonts/Heebo/Heebo-Bold.ttf");
 }
 
 html,body{
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Heebo', sans-serif;
     overflow: hidden;
 }
 

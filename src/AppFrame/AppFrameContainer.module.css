@@ -116,8 +116,8 @@
 .breadcrumbs{
   margin-right: 20px;
   /* font-weight: 600; */
-  font-size: 20px;
-  color: #277bad;
+  font-size: 16px;
+  color: #000000;
   margin-top: -2px;
   /* text-shadow: 0px 0px 4px #00000012; */
 }
@@ -187,9 +187,8 @@ border-radius: 5px;
 outline: none;
 cursor: pointer;
 margin-right: 15px;
-background-color: #00000008;
 min-width: unset;
-color: #0000008a;
+color: #000000;
 width: 40px;
     height: 36px;
 }

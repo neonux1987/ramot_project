@@ -7,7 +7,8 @@ const initState = {
       page: "דף הבית",
       buildingName: "",
       buildingNameEng: ""
-    }
+    },
+    pathsList: []
   }
 }
 

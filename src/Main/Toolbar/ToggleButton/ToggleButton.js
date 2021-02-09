@@ -1,16 +1,27 @@
 // LIBRARIES
 import React from "react";
-import { MenuOpen as MenuIcon } from '@material-ui/icons';
-import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
+import { useDispatch, useSelector } from 'react-redux';
 
-const VolumeButton = props => {
-  const { className = "", onClick } = props;
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
+import { toggleSidebar } from '../../../redux/actions/sidebarActions';
+
+const ToggleButton = props => {
+
+  const dispatch = useDispatch();
+  const { showSidebar } = useSelector(store => store.sidebar)
+
+  const icon = showSidebar ? <ArrowForwardIosIcon /> : <ArrowBackIosIcon />;
+
+  const onClick = () => dispatch(toggleSidebar());
+
   return (
-    <ButtonWithSound className={className} onClick={onClick}>
-      <MenuIcon style={{ display: "flex" }} />
+    <ButtonWithSound className={props.className} onClick={onClick}>
+      {icon}
     </ButtonWithSound>
   );
 
 }
 
-export default React.memo(VolumeButton);
+export default React.memo(ToggleButton);

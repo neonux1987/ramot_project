@@ -48,8 +48,8 @@ const MonthExpanses = props => {
         padding={"10px 15px 15px"}
         margin="20px 20px 40px"
         title={TABLE_TITLE}
-        TitleIcon={<SvgIconWrapper Icon={ListAlt} color="rgb(25,121,204)" />}
-        iconColor="rgb(36 110 173)"
+        TitleIcon={<SvgIconWrapper Icon={ListAlt} color="#ffffff" />}
+        iconColor="rgb(25,121,204)"
         extraDetails={() => <DateDetails
           month={date.monthHeb}
           quarter={date.quarter}

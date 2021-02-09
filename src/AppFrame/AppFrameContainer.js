@@ -79,7 +79,6 @@ const AppFrameContainer = ({ handlers }) => {
 
         <div className={styles.section} style={{ flex: "1 1", display: "flex", justifyContent: "end" }}>
           <ToggleButton className={classnames(styles.toggleBtn, styles.noDrag)} onClick={() => dispatch(toggleSidebar())} />
-          <Breadcrumbs className={styles.breadcrumbs} navigationPath={navigationPath} />
         </div>
 
         {/* <div className={styles.section} style={{ flex: "1 1", display: "flex", justifyContent: "center", fontSize: "13px" }}>

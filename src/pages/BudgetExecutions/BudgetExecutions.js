@@ -50,7 +50,7 @@ const BudgetExecutions = props => {
 
     <StrippedExpandableSection
       title={STATS_TITLE}
-      TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="rgb(255 0 82)" />}
+      TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="#ffffff" />}
       iconColor="rgb(255 0 82)"
     >
       <QuarterStatsContainer
@@ -64,8 +64,8 @@ const BudgetExecutions = props => {
       marginBottom={"100px"}
       padding={"0px 15px 15px"}
       title={TABLE_TITLE}
-      TitleIcon={<SvgIconWrapper Icon={ListAlt} color="rgb(25,121,204)" />}
-      iconColor="rgb(36 110 173)"
+      TitleIcon={<SvgIconWrapper Icon={ListAlt} color="#ffffff" />}
+      iconColor="rgb(25,121,204)"
       extraDetails={() => <DateDetails
         quarter={date.quarter}
         year={date.year}

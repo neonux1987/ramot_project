@@ -26,6 +26,7 @@ import Helper from '../helpers/Helper';
 // ACTIONS
 import * as sidebarActions from '../redux/actions/sidebarActions';
 import * as routesActions from '../redux/actions/routesActions';
+import Breadcrumbs from './Toolbar/Breadcrumbs/Breadcrumbs';
 
 const mainStyle = css`
 height: 100%;
@@ -71,9 +72,17 @@ class MainContainer extends Component {
     if (this.props.location !== prevProps.location) {
       const { pathname, state } = this.props.location;
 
+      const pathsList = [];
+
+      if (state.buildingName !== "" && state.buildingName !== undefined)
+        pathsList.push(state.buildingName);
+
+      pathsList.push(state.page);
+
       const active = {
         pathname,
-        state
+        state,
+        pathsList
       };
 
       this.props.updateRoute(active)
@@ -110,13 +119,14 @@ class MainContainer extends Component {
 
   render() {
     let locationState = { ...this.props.location.state };
+    const pathsList = this.props.routes.active.pathsList;
+
     //set default state for default / root location
     if (!this.props.location.state) {
       locationState = {
         page: "דף הבית"
       };
     }
-
     const timeout = { enter: 800, exit: 400 };
 
     return (
@@ -124,6 +134,9 @@ class MainContainer extends Component {
         id="mainContainer"
         className={this.props.classes.main + this.props.toggleMain}
       >
+
+        <Breadcrumbs className={styles.breadcrumbs} pathsList={pathsList} />
+
         <main ref={this.props.mainContainer} className={mainStyle}>
 
           <Route render={({ location }) => (
