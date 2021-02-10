@@ -24,11 +24,24 @@
   src: url("../fonts/Heebo/Heebo-Bold.ttf");
 }
 
+@font-face {
+  font-family: "Open Sans Hebrew";
+  font-weight: 400;
+  src: url("../fonts/OpensSansHebrew/opensanshebrew-regular-webfont.ttf");
+}
+
+
+@font-face {
+  font-family: "Open Sans Hebrew";
+  font-weight: 600;
+  src: url("../fonts/OpensSansHebrew/opensanshebrew-bold-webfont.ttf");
+}
+
 html,body{
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Heebo', sans-serif;
+    font-family: 'Open Sans Hebrew', sans-serif;
     overflow: hidden;
 }
 
@@ -90,7 +103,7 @@ a {
 }
 
 .activeButton,.activeButton:hover{
-  background: rgb(41 106 171);
+  background: rgb(28 102 165);
   margin: 0 10px;
   width: 220px;
   border-radius: 0px;

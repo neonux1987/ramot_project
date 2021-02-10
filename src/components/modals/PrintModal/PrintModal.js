@@ -10,7 +10,7 @@ const container = css`
     overflow: hidden;
     z-index: 999;
     width: initial;
-    margin:70px 41px 41px;
+    margin:50px 41px 41px;
     top: 0;
     bottom: 0;
     left: 0;
@@ -19,6 +19,7 @@ const container = css`
     background: #fff;
     border-radius: 5px;
     outline: none;
+    -webkit-app-region: no-drag;
     `;
 
 const headerContainer = css`
@@ -60,7 +61,8 @@ const titleWrapper = css`
 `;
 
 const backDropOverride = css`
-    top: 29px !important
+    top: 0px !important;
+    -webkit-app-region: no-drag;
 `;
 
 const tableRefWrapper = css`

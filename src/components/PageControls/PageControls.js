@@ -18,6 +18,7 @@ import { toastManager } from '../../toasts/ToastManager';
 import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import useModalLogic from '../../customHooks/useModalLogic';
 import PrintModal from '../modals/PrintModal/PrintModal';
+import { saveToPdf } from '../../services/print.svc';
 
 let options = {
   //Placeholder 3
@@ -56,6 +57,7 @@ const PageControls = props => {
       <PrintButton
         onClick={
           () => {
+            /* saveToPdf(); */
             showModal(PrintModal, {
               ...print,
               onClose: () => hideModal()

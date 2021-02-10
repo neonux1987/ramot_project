@@ -1,36 +1,16 @@
-const { ipcMain, BrowserWindow } = require('electron');
+const { ipcMain, webContents } = require('electron');
 
 
-const IOIpc = () => {
+const printerIpc = () => {
 
-  let workerWindow;
-  ipcMain.on('print', (event, content) => {
-    workerWindow = new BrowserWindow();
-    workerWindow.loadURL("file://" + __dirname + "/../printWorkerHtml/printWorker.html");
-    // workerWindow.hide();
-    workerWindow.webContents.openDevTools();
-    workerWindow.on("closed", () => {
-      workerWindow = undefined;
-    });
-
-    workerWindow.webContents.on("did-finish-load", () => {
-      workerWindow.webContents.send("worker-data", content);
-    });
+  console.log("hello");
+  ipcMain.on('save-to-pdf', (event, content) => {
+    const contents = webContents.getFocusedWebContents();
+    contents.printToPDF({});
+    event.sender.send("pdf-saved", { data: "location of the pdf file" });
   });
 
-  //console.log(contents);
-  ipcMain.on('print-worker-data', (event, content) => {
-    workerWindow.print({ silent: false, printBackground: false, deviceName: '' }, (error, data) => {
-
-      if (error) throw error;
-      else console.log(data);
-
-
-    })
-
-
-  });
 
 }
 
-module.exports = IOIpc;
+module.exports = printerIpc;

@@ -43,7 +43,7 @@ const Sidebar = () => {
     <CSSTransition
       in={showSidebar}
       timeout={600}
-      classNames="scale"
+      classNames="slide"
     //onEnter={() => dispatch(toggleSidebar())}
     //onExited={() => dispatch(toggleSidebar())}
     >

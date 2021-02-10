@@ -1,32 +1,61 @@
 .mainTitle{
-  font-family: 'Rubik', sans-serif;
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color:rgb(19 20 21);
+  color: #28629e;
   font-style: normal;
   font-size: 26px;
+  line-height: 28px;
+  /* text-shadow: 0px 0px 6px #0000001a; */
 }
 
 .subtitle {
-  font-family: 'Rubik', sans-serif;
   text-align: right;
+  font-size: 12px;
+  color: #108061;
   font-weight: 600;
-  font-size: 14px;
-  color:rgb(19 20 21);
   margin: 0;
   font-style: normal;
-  letter-spacing: 0.018em;
-  line-height: 10px;
+  letter-spacing: 0.098em;
+  line-height: 13px;
+  /* text-shadow: 0px 0px 6px #0000001a; */
 }
 
 .container {
   display: flex;
-  padding-right: 10px;
+  padding-right: 12px;
   width: 235px;
   position: relative;
   user-select: none;
   border-left: 1px solid #f3f3f3;
+}
+
+.logoWrapper{
+  background: #fff;
+  background: linear-gradient(0deg, #f7f8fd 0%, #ffffff 100%);
+  border: 1px solid #ccc;
+  height: 42px;
+  width: 44px;
+  margin-left: 8px;
+  display: flex;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  /* box-shadow: 0 0px 3px rgb(0 0 0 / 40%); */
+  /* border: solid 1px #1f7abb; */
+}
+
+/* .logoWrapper:before{
+  height: 40px;
+  width: 42px;
+  border: solid 1px #e0e0e0;
+  position: absolute;
+  content: "";
+  border-radius: 5px;
+} */
+
+.logoWrapper img{
+  filter: drop-shadow(0px 0px 6px #00000035);
 }
 
 .logo{
@@ -38,8 +67,8 @@
 }
 
 .LogotextWrapper{
-  padding-top: 2px;
-  margin-right: 5px;
+  margin-top: -2px;
+  margin-right: -4px;
   /* text-shadow: 0px 0px 4px #00000012; */
 }
 

@@ -20,7 +20,7 @@ import { useDispatch } from 'react-redux';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
-const HOME_BUTTON_PATH = "/דף-הבית";
+const HOME_BUTTON_PATH = "/";
 
 const Menu = (props) => {
 

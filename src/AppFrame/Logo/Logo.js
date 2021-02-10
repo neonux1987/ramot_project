@@ -1,6 +1,7 @@
 // LIBRARIES
 import React from 'react';
 import { Typography } from '@material-ui/core';
+import logoPng from '../../assets/images/ramot group.png';
 
 // CSS
 import {
@@ -9,7 +10,8 @@ import {
   logo,
   container,
   LogotextWrapper,
-  appVersionWrapper
+  appVersionWrapper,
+  logoWrapper
 } from './Logo.module.css';
 
 //ELECTRON
@@ -19,7 +21,10 @@ const Logo = () => {
   return (
     <div className={container} >
 
-      <div className={logo} />
+      {/* <div className={logo} /> */}
+      <div className={logoWrapper}>
+        <img src={logoPng} width="44px" height="44px" />
+      </div>
 
       <div className={LogotextWrapper}>
         <Typography className={mainTitle} variant="h4" gutterBottom>

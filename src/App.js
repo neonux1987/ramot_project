@@ -51,7 +51,7 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
     fontFamily: [
-      'Heebo',
+      'Open Sans Hebrew',
       'sans-serif'
     ].join(',')
   },

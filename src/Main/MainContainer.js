@@ -72,17 +72,9 @@ class MainContainer extends Component {
     if (this.props.location !== prevProps.location) {
       const { pathname, state } = this.props.location;
 
-      const pathsList = [];
-
-      if (state.buildingName !== "" && state.buildingName !== undefined)
-        pathsList.push(state.buildingName);
-
-      pathsList.push(state.page);
-
       const active = {
         pathname,
-        state,
-        pathsList
+        state
       };
 
       this.props.updateRoute(active)
@@ -119,7 +111,6 @@ class MainContainer extends Component {
 
   render() {
     let locationState = { ...this.props.location.state };
-    const pathsList = this.props.routes.active.pathsList;
 
     //set default state for default / root location
     if (!this.props.location.state) {
@@ -135,7 +126,7 @@ class MainContainer extends Component {
         className={this.props.classes.main + this.props.toggleMain}
       >
 
-        <Breadcrumbs className={styles.breadcrumbs} pathsList={pathsList} />
+        <Breadcrumbs className={styles.breadcrumbs} />
 
         <main ref={this.props.mainContainer} className={mainStyle}>
 
@@ -152,7 +143,7 @@ class MainContainer extends Component {
 
                 <Switch location={location}>
                   {this.generateRoutes(this.props.sidebar.menu.data)}
-                  <Route path="/דף-הבית" component={Home} />
+                  <Route path="/" exact component={Home} />
                   <Route path="/הגדרות"
                     render={routeProps => (
                       <Settings {...routeProps} />
