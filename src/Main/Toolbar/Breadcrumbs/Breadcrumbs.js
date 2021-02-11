@@ -12,16 +12,23 @@ const wrapper = css`
   color: #000000;
   border-bottom: 1px dotted #ccc;
   padding: 10px 5px;
+  font-weight: 600;
 `;
 
 const icon = css`
   margin-left: 10px;
-  font-weight: 400;
 `;
 
 const text = css`
   margin-left: 10px;
+  text-decoration: underline;
 `;
+
+const lastStyle = css`
+  color: #21558ceb;
+  text-decoration: none;
+  margin-left: 10px;
+`
 
 const Breadcrumbs = () => {
   const { pathname } = useLocation();
@@ -34,7 +41,7 @@ const Breadcrumbs = () => {
       <span className={icon}>
         {"/"}
       </span>
-      <span className={text} style={{ textDecoration: index !== pathnames.length - 1 ? "underline" : "none" }}>
+      <span className={index !== pathnames.length - 1 ? text : lastStyle}>
         {location}
       </span>
     </div>;
@@ -43,7 +50,7 @@ const Breadcrumbs = () => {
 
   return (
     <div className={wrapper}>
-      <span className={text} style={{ textDecoration: pathnames.length === 0 ? "none" : "underline" }}>
+      <span className={pathnames.length === 0 ? lastStyle : text} style={{ textDecoration: pathnames.length === 0 ? "none" : "underline" }}>
         דף הבית
       </span>
       {path}

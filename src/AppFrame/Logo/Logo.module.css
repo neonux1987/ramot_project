@@ -5,25 +5,27 @@
   color: #28629e;
   font-style: normal;
   font-size: 26px;
-  line-height: 28px;
+  line-height: 24px;
   /* text-shadow: 0px 0px 6px #0000001a; */
+  text-shadow: 3px 2px 2px #0000001c;
 }
 
 .subtitle {
   text-align: right;
   font-size: 12px;
-  color: #108061;
+  color: #1e9c79;
   font-weight: 600;
   margin: 0;
   font-style: normal;
   letter-spacing: 0.098em;
   line-height: 13px;
   /* text-shadow: 0px 0px 6px #0000001a; */
+  text-shadow: 3px 2px 2px #0000001c;
 }
 
 .container {
   display: flex;
-  padding-right: 12px;
+  padding-right: 15px;
   width: 235px;
   position: relative;
   user-select: none;
@@ -33,7 +35,7 @@
 .logoWrapper{
   background: #fff;
   background: linear-gradient(0deg, #f7f8fd 0%, #ffffff 100%);
-  border: 1px solid #ccc;
+  border: 1px solid #efefef;
   height: 42px;
   width: 44px;
   margin-left: 8px;
@@ -42,7 +44,13 @@
   justify-content: center;
   align-items: center;
   /* box-shadow: 0 0px 3px rgb(0 0 0 / 40%); */
-  /* border: solid 1px #1f7abb; */
+  /* border: solid 1px #1f7abb;*/
+}
+
+.logoWrapper img{
+  filter: drop-shadow(3px 2px 2px #00000030);
+  width: 50px;
+  height: 50px;
 }
 
 /* .logoWrapper:before{
@@ -53,10 +61,10 @@
   content: "";
   border-radius: 5px;
 } */
-
+/* 
 .logoWrapper img{
   filter: drop-shadow(0px 0px 6px #00000035);
-}
+} */
 
 .logo{
   background: url('../../assets//images//ramot\ group.png') no-repeat;
@@ -67,7 +75,7 @@
 }
 
 .LogotextWrapper{
-  margin-top: -2px;
+  margin-top: 1px;
   margin-right: -4px;
   /* text-shadow: 0px 0px 4px #00000012; */
 }

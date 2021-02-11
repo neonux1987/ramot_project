@@ -124,7 +124,6 @@ export default props => {
                 {
                   ticks: {
                     fontSize: 16,
-                    fontFamily: "Open Sans Hebrew"
                   }
                 }
               ],
@@ -132,7 +131,6 @@ export default props => {
                 {
                   ticks: {
                     fontSize: 16,
-                    fontFamily: "Open Sans Hebrew"
                   }
                 }
               ]

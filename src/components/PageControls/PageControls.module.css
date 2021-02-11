@@ -1,7 +1,6 @@
 .pageControls{
   float: left;
   margin: 0 20px 0 0;
-  padding-top: 3px;
   display: flex;
   align-items: center;
 }
@@ -11,13 +10,15 @@
   outline: none;
   cursor: pointer;
   background: none;
-  margin: 0 6px;
+  margin-left: 5px;
+  padding: 0;
   display: inline-flex;
   /* height: 36px;
   width: 42px; */
   justify-content: center;
   align-items: center;
-  border-radius: 4px;
   min-width: initial;
-    padding: 6px;
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
 }

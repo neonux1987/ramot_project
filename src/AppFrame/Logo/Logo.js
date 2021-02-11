@@ -23,7 +23,7 @@ const Logo = () => {
 
       {/* <div className={logo} /> */}
       <div className={logoWrapper}>
-        <img src={logoPng} width="44px" height="44px" />
+        <img src={logoPng} />
       </div>
 
       <div className={LogotextWrapper}>
