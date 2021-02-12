@@ -4,7 +4,7 @@
   margin: 0;
   color: #28629e;
   font-style: normal;
-  font-size: 26px;
+  font-size: 24px;
   line-height: 24px;
   /* text-shadow: 0px 0px 6px #0000001a; */
   text-shadow: 3px 2px 2px #0000001c;
@@ -12,12 +12,12 @@
 
 .subtitle {
   text-align: right;
-  font-size: 12px;
+  font-size: 13px;
   color: #1e9c79;
   font-weight: 600;
   margin: 0;
   font-style: normal;
-  letter-spacing: 0.098em;
+  letter-spacing: 0.016em;
   line-height: 13px;
   /* text-shadow: 0px 0px 6px #0000001a; */
   text-shadow: 3px 2px 2px #0000001c;
@@ -25,7 +25,7 @@
 
 .container {
   display: flex;
-  padding-right: 15px;
+  padding-right: 25px;
   width: 235px;
   position: relative;
   user-select: none;
@@ -33,12 +33,12 @@
 }
 
 .logoWrapper{
-  background: #fff;
-  background: linear-gradient(0deg, #f7f8fd 0%, #ffffff 100%);
-  border: 1px solid #efefef;
+  /*background: #fff; */
+  /* background: linear-gradient(0deg, #f7f8fd 0%, #ffffff 100%); */
+  /* border: 1px solid #efefef; */
   height: 42px;
   width: 44px;
-  margin-left: 8px;
+  margin-left: 0px;
   display: flex;
   border-radius: 5px;
   justify-content: center;
@@ -76,7 +76,7 @@
 
 .LogotextWrapper{
   margin-top: 1px;
-  margin-right: -4px;
+  margin-right: 2px;
   /* text-shadow: 0px 0px 4px #00000012; */
 }
 

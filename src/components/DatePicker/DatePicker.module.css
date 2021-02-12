@@ -26,6 +26,7 @@ justify-content: center;
 
   .select{
     padding: 8px 0 6px 24px;
+    font-weight: 400;
   }
 
   .select:focus {
@@ -71,7 +72,8 @@ justify-content: center;
 
   .pickerLabel{
     color: #fafafa;
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
     align-items: center;
+    font-weight: 600;
   }

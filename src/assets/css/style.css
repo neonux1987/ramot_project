@@ -37,6 +37,19 @@
   src: url("../fonts/OpensSansHebrew/opensanshebrew-bold-webfont.ttf");
 }
 
+@font-face {
+  font-family: "Assistant";
+  font-weight: 400;
+  src: url("../fonts/Assistant/Assistant-Regular.ttf");
+}
+
+
+@font-face {
+  font-family: "Assistant";
+  font-weight: 600;
+  src: url("../fonts/Assistant/Assistant-Bold.ttf");
+}
+
 html,body{
     height: 100%;
     margin: 0;

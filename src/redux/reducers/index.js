@@ -42,7 +42,7 @@ const summarizedBudgets = createPageReducer("SUMMARIZED_BUDGETS", {
   pages: {}
 });
 
-export default combineReducers({
+export default {
   sidebar,
   monthExpanses,
   budgetExecutions,
@@ -66,4 +66,4 @@ export default combineReducers({
   routes,
   savedNotification,
   goodBye
-});
+};

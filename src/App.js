@@ -82,26 +82,11 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  /* useEffect(() => {
-    const { appUpdates } = settings.data;
- 
-    dispatch(checkForUpdates()).then(async (result) => {
-      if (result.data !== undefined && result.data !== null) {
-        const { version } = result.data;
- 
-        if (appUpdates.userNotified === false && appUpdates.updateVersion !== version) {
- 
-          await dispatch(updateSettings("appUpdates", { userNotified: true }));
-          await dispatch(saveSettings(false));
-          toastManager.appUpdateNewVersion(version);
-        }
- 
-      }
-    });
-  }, [dispatch, settings.data]); */
-
   useEffect(() => {
-    dispatch(fetchSidebar());
+    dispatch(fetchSidebar()).then((result) => {
+      console.log(result);
+      //create additional reducers
+    });
 
     // play welcome melody on app start
     play(types.welcome);

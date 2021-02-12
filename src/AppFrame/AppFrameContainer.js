@@ -57,17 +57,6 @@ const AppFrameContainer = ({ handlers }) => {
     <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :
     <span className={styles.taxValue}>{`${data[0].tax}%`}</span>;
 
-  const navigationPath = buildingName && page ? <div>
-    <span style={{ fontWeight: "400" }}>
-      {`${buildingName}`}
-    </span>
-    <span style={{ margin: "0px 4px", fontSize: "18px", fontWeight: "400", color: "rgb(0 0 0 / 47%)" }}>
-      {"/"}
-    </span>
-    <span style={{ color: "rgb(0 0 0 / 47%)", fontWeight: "400" }}>
-      {page}
-    </span>
-  </div> : page;
 
   return (
     <div className={styles.appFrame}>
@@ -80,13 +69,6 @@ const AppFrameContainer = ({ handlers }) => {
         <div className={styles.section} style={{ flex: "1 1", display: "flex", justifyContent: "end" }}>
           <ToggleButton className={classnames(styles.toggleBtn, styles.noDrag)} onClick={() => dispatch(toggleSidebar())} />
         </div>
-
-        {/* <div className={styles.section} style={{ flex: "1 1", display: "flex", justifyContent: "center", fontSize: "13px" }}>
-          <div className={styles.date}>
-            <span style={{ color: "rgb(33, 117, 79)", marginLeft: "5px" }}>תאריך נוכחי: </span>
-            <span style={{ color: "#000000" }}>{`שנה ${Helper.getCurrentYear()} / ${Helper.getCurrentQuarterHeb()} / חודש ${Helper.getCurrentMonthHeb()}`}</span>
-          </div>
-        </div> */}
 
         <div className={styles.section} style={{ flex: "1 1" }}>
 

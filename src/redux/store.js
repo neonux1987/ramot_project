@@ -1,5 +1,5 @@
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/index';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import staticReducers from './reducers/index';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web and AsyncStorage for react-native
 import thunk from 'redux-thunk';
@@ -36,15 +36,31 @@ const persistConfig = {
 
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, combineReducers(staticReducers));
 
-//export const store = createStore(rootReducer);
+const store = createStore(persistedReducer, applyMiddleware(thunk));
 
+store.asyncReducers = {};
 
-export const store = createStore(persistedReducer, applyMiddleware(thunk));
-export const persistor = persistStore(store);
+store.injectReducer = (key, asyncReducer) => {
+  store.asyncReducers[key] = asyncReducer
+  store.replaceReducer(createReducer(store.asyncReducers))
+}
 
-//a way to save the state to a file
-/* store.subscribe(() => {
-  console.log(store.getState());
-}) */
+function createReducer(asyncReducers) {
+  const combinedReducers = combineReducers({
+    ...staticReducers,
+    ...asyncReducers
+  });
+
+  const persistedReducer = persistReducer(persistConfig, combinedReducers);
+
+  return persistedReducer;
+}
+
+const persistor = persistStore(store);
+
+export {
+  store,
+  persistor
+};
