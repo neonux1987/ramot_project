@@ -14,7 +14,7 @@ import {
   pageControls,
   pageControlsButton
 } from './PageControls.module.css';
-import { toastManager } from '../../toasts/ToastManager';
+import { toastManager } from '../../toasts/toastManager';
 import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import useModalLogic from '../../customHooks/useModalLogic';
 import PrintModal from '../modals/PrintModal/PrintModal';

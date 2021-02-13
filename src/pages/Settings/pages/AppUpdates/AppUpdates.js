@@ -18,7 +18,7 @@ import { initiateDbBackup } from '../../../../services/dbBackup.svc';
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 
 // TOASTS
-import { toastManager } from '../../../../toasts/ToastManager';
+import { toastManager } from '../../../../toasts/toastManager';
 import ToastRender from '../../../../components/ToastRender/ToastRender';
 
 // ELECTRON

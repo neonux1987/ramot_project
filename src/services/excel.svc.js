@@ -1,5 +1,5 @@
 import React from 'react';
-import { toastManager } from '../toasts/ToastManager';
+import { toastManager } from '../toasts/toastManager';
 import { ipcSendReceive } from '../redux/actions/util/util';
 import ToastRender from '../components/ToastRender/ToastRender';
 

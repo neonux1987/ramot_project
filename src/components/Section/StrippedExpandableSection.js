@@ -26,6 +26,11 @@ const icon = css`
   align-items: center;
 `;
 
+const collapsibleOuter = css`
+  padding: 0px 20px;
+  margin: 0px -20px;
+`;
+
 const collapsibleInner = css`
   padding: 0;
 `;
@@ -93,6 +98,7 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
         triggerDisabled={true}
         trigger={headerWrapper()}
         contentInnerClassName={collapsibleInner}
+        contentOuterClassName={collapsibleOuter}
       >
         {children}
       </Collapsible>

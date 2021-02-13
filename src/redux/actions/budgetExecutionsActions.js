@@ -1,7 +1,7 @@
 import * as monthlyStatsActions from './monthlyStatsActions';
 import * as quarterlyStatsActions from './quarterlyStatsActions';
 import { ipcSendReceive } from './util/util';
-import { toastManager } from '../../toasts/ToastManager';
+import { toastManager } from '../../toasts/toastManager';
 import { showSavedNotification } from './savedNotificationActions';
 
 // TYPES

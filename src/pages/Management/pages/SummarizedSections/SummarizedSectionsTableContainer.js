@@ -27,7 +27,7 @@ import withTableLogic from '../../../../HOC/withTableLogic';
 
 // CUSTOM HOOKS
 import AddSummarizedSectionContainer from './AddSummarizedSectionContainer/AddSummarizedSectionContainer';
-import { toastManager } from '../../../../toasts/ToastManager';
+import { toastManager } from '../../../../toasts/toastManager';
 
 const EDITMODE_TEMPLATE = "minmax(250px,5%) minmax(250px,5%) 1fr";
 const DEFAULT_TEMPLATE = "minmax(250px,5%) 1fr";

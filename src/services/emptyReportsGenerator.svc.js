@@ -1,5 +1,5 @@
 import { ipcSendReceive } from '../redux/actions/util/util';
-import { toastManager } from '../toasts/ToastManager';
+import { toastManager } from '../toasts/toastManager';
 
 export const generateEmptyReports = (date) => {
 

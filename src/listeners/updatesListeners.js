@@ -1,4 +1,4 @@
-import { toastManager } from "../toasts/ToastManager";
+import { toastManager } from "../toasts/toastManager";
 
 const { ipcRenderer } = require('electron');
 

@@ -9,7 +9,7 @@ import * as summarizedSectionsActions from '../../redux/actions/summarizedSectio
 import * as expansesCodesActions from '../../redux/actions/expansesCodesActions';
 
 // TOASTS
-import { toastManager } from '../../toasts/ToastManager';
+import { toastManager } from '../../toasts/toastManager';
 
 // COMPONENTS
 import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';

@@ -29,7 +29,7 @@ import { showModal } from '../../../../../redux/actions/modalActions';
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
 // TOASTS
-import { toastManager } from '../../../../../toasts/ToastManager';
+import { toastManager } from '../../../../../toasts/toastManager';
 
 const SETTINGS_NAME = "db_backup";
 

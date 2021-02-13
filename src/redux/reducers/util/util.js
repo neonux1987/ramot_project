@@ -216,7 +216,7 @@ export const createBuildingsState = async (store, buildings) => {
       await store.injectReducer(buildingNameEng, createPageReducer(page, state[buildingNameEng][page]));
     });
 
-    store.addToBlacklist(buildingNameEng);
+    //store.addToBlacklist(buildingNameEng);
 
   });
 

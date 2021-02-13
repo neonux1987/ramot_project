@@ -36,7 +36,7 @@ import HeaderRow from '../../components/table/HeaderRow';
 import withTableLogic from '../../HOC/withTableLogic';
 
 // AUDIO
-import { toastManager } from '../../toasts/ToastManager';
+import { toastManager } from '../../toasts/toastManager';
 import HeaderColumn from '../../components/table/HeaderColumn';
 
 const MonthExpansesTableContainer = props => {

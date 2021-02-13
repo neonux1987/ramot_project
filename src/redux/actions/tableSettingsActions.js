@@ -1,5 +1,5 @@
 import { ipcSendReceive } from './util/util';
-import { toastManager } from '../../toasts/ToastManager';
+import { toastManager } from '../../toasts/toastManager';
 
 export const TYPES = {
   TABLE_SETTINGS_REQUEST: "REQUEST_TABLE_SETTINGS",

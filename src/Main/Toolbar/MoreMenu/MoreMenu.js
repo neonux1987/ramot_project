@@ -7,7 +7,7 @@ import SubMenu from "./SubMenu/SubMenu";
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 import ButtonNavLinkWithSound from "../../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound";
 import { initiateDbBackup } from '../../../services/dbBackup.svc';
-import { toastManager } from "../../../toasts/ToastManager";
+import { toastManager } from "../../../toasts/toastManager";
 import ToastRender from "../../../components/ToastRender/ToastRender";
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {

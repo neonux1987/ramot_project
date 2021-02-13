@@ -24,7 +24,7 @@ import withTableLogic from '../../../../HOC/withTableLogic';
 
 // CONTAINERS
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
-import { toastManager } from '../../../../toasts/ToastManager';
+import { toastManager } from '../../../../toasts/toastManager';
 
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";

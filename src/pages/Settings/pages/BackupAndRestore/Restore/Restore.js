@@ -26,7 +26,7 @@ import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoad
 // SERVICES
 import { selectFileDialog } from '../../../../../services/electronDialogs.svc';
 import { restore } from '../../../../../services/restoreDbService';
-import { toastManager } from '../../../../../toasts/ToastManager';
+import { toastManager } from '../../../../../toasts/toastManager';
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
 import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';

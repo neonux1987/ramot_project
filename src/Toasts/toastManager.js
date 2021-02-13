@@ -1,6 +1,6 @@
 import React from 'react';
 import { toast } from "react-toastify";
-import styles from './ToastManager.module.css'
+import styles from './toastManager.module.css'
 import { soundManager } from "../soundManager/SoundManager";
 import AppUpdateNewVersionToast from "./CustomToasts/AppUpdateNewVersionToast/AppUpdateNewVersionToast";
 import AppUpdateInstallToast from "./CustomToasts/AppUpdateInstallToast/AppUpdateInstallToast";

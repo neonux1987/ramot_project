@@ -40,7 +40,7 @@ import { checkForUpdates } from './services/updates.svc';
 import { soundManager } from './soundManager/SoundManager';
 
 // TOASTS
-import { toastManager } from './toasts/ToastManager';
+import { toastManager } from './toasts/toastManager';
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import { generateBuildngsReducer } from './redux/reducers/util/util';
 
@@ -92,9 +92,9 @@ const App = () => {
 
     });
 
-    generateBuildngsReducer(store).then((result) => {
+    /* generateBuildngsReducer(store).then((result) => {
       //console.log(store);
-    });
+    }); */
 
     /* const state = createBuildingState();
     console.log(state); */

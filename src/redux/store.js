@@ -64,7 +64,7 @@ function createReducer(asyncReducers) {
 }
 
 const persistor = persistStore(store);
-
+console.log(persistConfig.blacklist);
 export {
   store,
   persistor

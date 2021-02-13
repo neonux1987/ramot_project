@@ -1,6 +1,6 @@
 import React from 'react';
 import { ipcSendReceive } from "../redux/actions/util/util";
-import { toastManager } from "../toasts/ToastManager";
+import { toastManager } from "../toasts/toastManager";
 import ToastRender from "../components/ToastRender/ToastRender";
 import { restartApp } from './mainProcess.svc';
 

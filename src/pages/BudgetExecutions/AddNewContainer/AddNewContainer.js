@@ -20,7 +20,7 @@ import ReactSelect from "../../../components/ReactSelect/ReactSelect";
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 
 // TOASTS
-import { toastManager } from "../../../toasts/ToastManager";
+import { toastManager } from "../../../toasts/toastManager";
 import AddBoxContainer from "../../../components/AddBoxContainer/AddBoxContainer";
 
 
