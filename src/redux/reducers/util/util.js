@@ -1,3 +1,5 @@
+import { ipcSendReceive } from '../../actions/util/util';
+
 const { buildings, pages } = require('electron').remote.getGlobal('sharedObject');
 
 export const setPageState = (state, buildingName, target) => {
@@ -183,4 +185,60 @@ export const initBuildingState = (initState) => {
   });
 
   return buildingsState;
+}
+
+const createPageState = () => {
+  return {
+    isFetching: false,
+    status: "",
+    error: "",
+    data: [],
+    pageSettings: {
+      count: 0
+    }
+  }
+}
+
+export const createBuildingsState = async (store, buildings) => {
+  console.log(store);
+  const state = {};
+
+  await buildings.forEach(async (building) => {
+    const { buildingNameEng } = building;
+
+    state[buildingNameEng] = {};
+    state[buildingNameEng].pages = {}
+
+    pages.forEach(async (page) => {
+
+      state[buildingNameEng][page] = createPageState();
+
+      await store.injectReducer(buildingNameEng, createPageReducer(page, state[buildingNameEng][page]));
+    });
+
+    store.addToBlacklist(buildingNameEng);
+
+  });
+
+  return state;
+}
+
+export const generateBuildngsReducer = async (store) => {
+
+  const result = await ipcSendReceive({
+    send: {
+      channel: "get-buildings"
+    },
+    receive: {
+      channel: "buildings-data"
+    },
+    onSuccess: async (result) => {
+
+      const state = await createBuildingsState(store, result.data);
+
+    }
+  });//end ipc send receive
+
+  return result;
+
 }

@@ -42,7 +42,7 @@ import { soundManager } from './soundManager/SoundManager';
 // TOASTS
 import { toastManager } from './toasts/ToastManager';
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
-import { createReducers } from './redux/actions/createReducers';
+import { generateBuildngsReducer } from './redux/reducers/util/util';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -87,10 +87,17 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchSidebar()).then((result) => {
-      console.log(result);
+      //console.log(result);
       //create additional reducers
+
     });
 
+    generateBuildngsReducer(store).then((result) => {
+      //console.log(store);
+    });
+
+    /* const state = createBuildingState();
+    console.log(state); */
     //createReducers(store, result.data);
 
     // play welcome melody on app start

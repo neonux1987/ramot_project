@@ -31,6 +31,7 @@ const mainProcessIpc = require('../../electron/ipcs/mainProcess.ipc');
 const restoreDbIpc = require('../../electron/ipcs/restoreDb.ipc');
 const updatesIpc = require('../../electron/ipcs/updates.ipc');
 const printerIpc = require('../../electron/ipcs/printer.ipc');
+const buildingsIpc = require('../../electron/ipcs/buildings.ipc');
 
 const { openLogFile } = require('../../helpers/utils');
 
@@ -106,6 +107,8 @@ class MainSystem {
     updatesIpc();
 
     printerIpc();
+
+    buildingsIpc();
   }
 
   async startServices() {
