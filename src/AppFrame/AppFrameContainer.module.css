@@ -104,15 +104,6 @@
   font-size: 20px;
 }
 
-.maximize svg{
-  font-size: 18px;
-  margin-top: 0px;
-}
-
-.minimize svg{
-  margin-bottom: 3px;
-}
-
 .breadcrumbs{
   margin-right: 20px;
   /* font-weight: 600; */

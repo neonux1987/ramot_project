@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import styles from './AppFrameContainer.module.css';
+import styles from './FrameControls.module.css';
 import classnames from 'classnames';
 import { Minimize, CheckBoxOutlineBlank, Close } from '@material-ui/icons';
-import { css } from 'emotion';
 
 
-const AppFrameContainer = ({ className, handlers }) => {
+const FrameControls = ({ className, handlers }) => {
 
   return (
     <div className={className}>
@@ -16,4 +15,4 @@ const AppFrameContainer = ({ className, handlers }) => {
   );
 }
 
-export default AppFrameContainer;
+export default FrameControls;

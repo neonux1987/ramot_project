@@ -25,7 +25,7 @@ import './assets/css/style.css';
 // CONTAINERS
 import MainContainer from './Main/MainContainer';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 // ACTIONS
 import { updateSettings, saveSettings } from './redux/actions/settingsActions';
@@ -42,6 +42,7 @@ import { soundManager } from './soundManager/SoundManager';
 // TOASTS
 import { toastManager } from './toasts/ToastManager';
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
+import { createReducers } from './redux/actions/createReducers';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -80,6 +81,8 @@ const App = () => {
 
   const sidebar = useSelector(store => store.sidebar);
 
+  const store = useStore();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -87,6 +90,8 @@ const App = () => {
       console.log(result);
       //create additional reducers
     });
+
+    //createReducers(store, result.data);
 
     // play welcome melody on app start
     play(types.welcome);

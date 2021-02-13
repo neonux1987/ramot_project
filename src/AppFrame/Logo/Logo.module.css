@@ -4,10 +4,10 @@
   margin: 0;
   color: #28629e;
   font-style: normal;
-  font-size: 24px;
-  line-height: 24px;
+  font-size: 26px;
+  line-height: 26px;
   /* text-shadow: 0px 0px 6px #0000001a; */
-  text-shadow: 3px 2px 2px #0000001c;
+  /* text-shadow: 3px 2px 2px #0000001c; */
 }
 
 .subtitle {
@@ -17,17 +17,18 @@
   font-weight: 600;
   margin: 0;
   font-style: normal;
-  letter-spacing: 0.016em;
+  letter-spacing: 0.054em;
   line-height: 13px;
   /* text-shadow: 0px 0px 6px #0000001a; */
-  text-shadow: 3px 2px 2px #0000001c;
+  /* text-shadow: 3px 2px 2px #0000001c; */
 }
 
 .container {
   display: flex;
-  padding-right: 25px;
+  padding-right: 18px;
   width: 235px;
   position: relative;
+  margin-top: -2px;
   user-select: none;
   border-left: 1px solid #f3f3f3;
 }
@@ -75,8 +76,8 @@
 }
 
 .LogotextWrapper{
-  margin-top: 1px;
-  margin-right: 2px;
+  margin-top: 0px;
+  margin-right: 0px;
   /* text-shadow: 0px 0px 4px #00000012; */
 }
 

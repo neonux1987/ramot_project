@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from './AppFrameContainer.module.css';
 import classnames from 'classnames';
-import { Minimize, CheckBoxOutlineBlank, Close } from '@material-ui/icons';
-import Helper from '../helpers/Helper';
-import icon from '../assets/images/ramot-group-icon.ico'
 import Logo from './Logo/Logo';
-import VatInfo from '../Main/Toolbar/VatInfo/VatInfo';
 import VolumeButton from '../Main/Toolbar/VolumeButton/VolumeButton';
 import MoreButton from '../Main/Toolbar/MoreButton/MoreButton';
 import MoreMenu from '../Main/Toolbar/MoreMenu/MoreMenu';
@@ -15,8 +11,8 @@ import Spinner from '../components/Spinner/Spinner';
 import EditVatModal from '../components/modals/EditVatModal/EditVatModal';
 import useModalLogic from '../customHooks/useModalLogic';
 import ToggleButton from '../Main/Toolbar/ToggleButton/ToggleButton';
-import Breadcrumbs from '../Main/Toolbar/Breadcrumbs/Breadcrumbs';
 import { toggleSidebar } from '../redux/actions/sidebarActions';
+import FrameControls from './FrameControls/FrameControls';
 
 const AppFrameContainer = ({ handlers }) => {
 
@@ -84,11 +80,7 @@ const AppFrameContainer = ({ handlers }) => {
 
           </div>
 
-          <div className={styles.actions}>
-            <button className={classnames(styles.button, styles.minimize)} onClick={handlers.minimize}><Minimize /></button>
-            <button className={classnames(styles.button, styles.maximize)} onClick={handlers.maximize}><CheckBoxOutlineBlank /></button>
-            <button className={classnames(styles.button, styles.close)} onClick={handlers.close}><Close /></button>
-          </div>
+          <FrameControls className={styles.actions} handlers={handlers} />
 
         </div>
 
