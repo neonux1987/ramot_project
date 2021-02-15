@@ -8,16 +8,24 @@ const initState = {
       buildingName: "",
       buildingNameEng: ""
     },
-    pathsList: []
+    expanded: {}
   }
 }
 
 export default (state = initState, action) => {
   switch (action.type) {
     case TYPES.ROUTES_UPDATE:
-      return {
-        ...state,
-        active: { ...action.active }
+      {
+        return {
+          ...state,
+          active: {
+            ...state.active,
+            expanded: {
+              ...state.active.expanded,
+              ...action.active.expanded
+            }
+          }
+        }
       }
     default: return state;
   }

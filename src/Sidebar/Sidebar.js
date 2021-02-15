@@ -27,7 +27,7 @@ const Sidebar = () => {
 
   const { showSidebar, menu } = useSelector(store => store.sidebar);
 
-  const routeState = useSelector(store => store.routes.active.state);
+  const routes = useSelector(store => store.routes);
 
   useEffect(() => {
     dispatch(fetchSidebar());
@@ -51,7 +51,7 @@ const Sidebar = () => {
 
         {/* <Logo /> */}
 
-        <Menu data={menu.data} routeState={routeState} />
+        <Menu data={menu.data} routes={routes} />
 
         <div className={styles.settingsWrapper}>
 
@@ -65,7 +65,7 @@ const Sidebar = () => {
                 buildingNameEng: "settings"
               }
             }}
-            active={routeState.buildingName === "הגדרות"}
+            active={routes.active.state.buildingName === "הגדרות"}
           />
         </div>
 

@@ -64,7 +64,6 @@ function createReducer(asyncReducers) {
   return persistedReducer;
 }
 
-console.log(storage);
 const persistor = persistStore(store);
 store.persistor = persistor;
 

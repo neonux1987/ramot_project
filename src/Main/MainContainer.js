@@ -68,9 +68,8 @@ class MainContainer extends Component {
     });
 
     const { history } = this.props;
-    //console.log(this.props.routes.active);
+
     const { state, pathname } = this.props.routes.active;
-    console.log(pathname, state);
     history.replace(pathname, state);
   }
 

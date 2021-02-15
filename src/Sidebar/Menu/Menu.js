@@ -24,7 +24,8 @@ const HOME_BUTTON_PATH = "/";
 
 const Menu = (props) => {
 
-  const { data, routeState } = props;
+  const { data, routes } = props;
+  const routeState = routes.active.state;
 
   const dispatch = useDispatch();
 
@@ -47,7 +48,7 @@ const Menu = (props) => {
       default: return Label
     };
   }
-
+  console.log(routes);
   const expandHandleClick = (item) => {
     const { label, engLabel, path } = item;
 
@@ -62,7 +63,11 @@ const Menu = (props) => {
 
       const pathname = `/${path}/הוצאות-חודשיות`;
 
-      dispatch(updateRoute({ pathname, state: newState }));
+      dispatch(updateRoute({
+        pathname,
+        state: newState,
+        expanded: state
+      }));
 
       props.history.replace(pathname, newState);
     }
@@ -79,7 +84,6 @@ const Menu = (props) => {
    * set initial open state for last saved path
    */
   useEffect(() => {
-    console.log("test");
     setState(() => ({
       ...state,
       [routeState.buildingNameEng]: {
