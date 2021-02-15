@@ -7,12 +7,12 @@ const wrapper = css`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 15px 25px 15px;
+  margin: 10px 25px 0px;
   font-size: 16px;
   color: #000000;
   border-bottom: 1px dotted #ccc;
   padding: 10px 5px;
-  font-weight: 600;
+  font-weight: 400;
 `;
 
 const icon = css`
@@ -21,7 +21,7 @@ const icon = css`
 
 const text = css`
   margin-left: 10px;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 `;
 
 const lastStyle = css`
@@ -50,7 +50,7 @@ const Breadcrumbs = () => {
 
   return (
     <div className={wrapper}>
-      <span className={pathnames.length === 0 ? lastStyle : text} style={{ textDecoration: pathnames.length === 0 ? "none" : "underline" }}>
+      <span className={pathnames.length === 0 ? lastStyle : text} style={{ textDecoration: pathnames.length === 0 ? "none" : "none" }}>
         דף הבית
       </span>
       {path}

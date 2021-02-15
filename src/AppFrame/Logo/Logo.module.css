@@ -4,28 +4,31 @@
   margin: 0;
   color: #28629e;
   font-style: normal;
-  font-size: 26px;
+  font-size: 30px;
   line-height: 26px;
   /* text-shadow: 0px 0px 6px #0000001a; */
-  /* text-shadow: 3px 2px 2px #0000001c; */
+  /* text-shadow: 3px 2px 2px #0000001c;*/
 }
 
 .subtitle {
   text-align: right;
-  font-size: 13px;
+  font-size: 11px;
   color: #1e9c79;
   font-weight: 600;
   margin: 0;
   font-style: normal;
-  letter-spacing: 0.054em;
-  line-height: 13px;
+  letter-spacing: 0.228em;
+  line-height: 8px;
+  margin-top: 0px;
+  background-color: #fafafa;
+  position: relative;
   /* text-shadow: 0px 0px 6px #0000001a; */
   /* text-shadow: 3px 2px 2px #0000001c; */
 }
 
 .container {
   display: flex;
-  padding-right: 18px;
+  padding-right: 13px;
   width: 235px;
   position: relative;
   margin-top: -2px;
@@ -34,24 +37,24 @@
 }
 
 .logoWrapper{
-  /*background: #fff; */
+  /* background: #fff; */
   /* background: linear-gradient(0deg, #f7f8fd 0%, #ffffff 100%); */
   /* border: 1px solid #efefef; */
-  height: 42px;
-  width: 44px;
+  height: 46px;
+  width: 48px;
   margin-left: 0px;
   display: flex;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
   /* box-shadow: 0 0px 3px rgb(0 0 0 / 40%); */
-  /* border: solid 1px #1f7abb;*/
+  /* border: solid 1px #1f7abb; */
 }
 
 .logoWrapper img{
   filter: drop-shadow(3px 2px 2px #00000030);
-  width: 50px;
-  height: 50px;
+  width: 54px;
+  height: 54px;
 }
 
 /* .logoWrapper:before{
@@ -69,8 +72,8 @@
 
 .logo{
   background: url('../../assets//images//ramot\ group.png') no-repeat;
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   background-size: 52px 52px;
   filter: drop-shadow(5px 5px 5px #00000012);
 }
@@ -79,6 +82,7 @@
   margin-top: 0px;
   margin-right: 0px;
   /* text-shadow: 0px 0px 4px #00000012; */
+  padding-top: 3px;
 }
 
 .appVersionWrapper{

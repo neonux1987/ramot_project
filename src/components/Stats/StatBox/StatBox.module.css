@@ -2,19 +2,19 @@
   margin: 0 0 0 15px;
   /* background: #f3f4f8; */
   background-color: #ffffff;
-  border: 1px solid #e3eaec;
+  /* border: 1px solid #e3eaec; */
   border-radius: 5px;
   height: 220px;
   padding: 20px;
-  /* box-shadow: rgba(53, 64, 82, 0.05) 0px 0px 14px 0px; */
-  box-shadow: rgba(53, 64, 82, 0.05) 0px 5px 6px 0px;
+  box-shadow: rgba(53, 64, 82, 0.05) 0px 0px 14px 0px;
+  /* box-shadow: rgba(53, 64, 82, 0.05) 0px 5px 6px 0px; */
   /* text-shadow: 0px 0px 4px #00000012; */
 }
 
 .upper{
   display: flex;
   border-bottom: 1px solid #f1eded;
-  padding-bottom: 30px;
+  padding-bottom: 40px;
 }
 
 .titleWrapper{
@@ -26,7 +26,7 @@
 
 .titleText{
   color: #000000;
-  font-size: 36px;
+  font-size: 42px;
   font-weight: 400;
   line-height: 35px;
 }
@@ -56,6 +56,7 @@
 
 .incomeText,.outcomeText,.differenceText{
   font-size: 20px;
+  font-weight: 600;
 }
 
 .outcomeWrapper{
@@ -68,7 +69,7 @@
   color: #3a3535;
   margin-right: 5px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 @media only screen and (max-width: 1400px) {

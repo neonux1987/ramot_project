@@ -1,5 +1,5 @@
 // LIBRARIES
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { List } from '@material-ui/core';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
@@ -74,6 +74,19 @@ const Menu = (props) => {
       }
     });
   };
+
+  /**
+   * set initial open state for last saved path
+   */
+  useEffect(() => {
+    console.log("test");
+    setState(() => ({
+      ...state,
+      [routeState.buildingNameEng]: {
+        open: routeState.buildingName ? true : false
+      }
+    }));
+  }, []);
 
   const menuRender = data.map((item) => {
 

@@ -28,7 +28,7 @@ const persistConfig = {
     "tableSettings",
     "modal",
     "registeredReports",
-    "routes",
+    //"routes",
     //"date",
     "savedNotification",
     "goodBye"
@@ -45,6 +45,7 @@ store.asyncReducers = {};
 store.injectReducer = (key, asyncReducer) => {
   store.asyncReducers[key] = asyncReducer;
   store.replaceReducer(createReducer(store.asyncReducers));
+  store.persistor.persist();
 }
 
 // will later be used in the creation of dynamic reducers
@@ -63,8 +64,10 @@ function createReducer(asyncReducers) {
   return persistedReducer;
 }
 
+console.log(storage);
 const persistor = persistStore(store);
-console.log(persistConfig.blacklist);
+store.persistor = persistor;
+
 export {
   store,
   persistor

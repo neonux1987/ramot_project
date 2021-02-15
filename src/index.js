@@ -8,7 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import LoadingCircle from './components/LoadingCircle';
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={store} >
     <PersistGate loading={<LoadingCircle />} persistor={persistor}>
       <App />
     </PersistGate>

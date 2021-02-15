@@ -42,7 +42,7 @@ import { soundManager } from './soundManager/SoundManager';
 // TOASTS
 import { toastManager } from './toasts/toastManager';
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
-import { generateBuildngsReducer } from './redux/reducers/util/util';
+import { generateBuildingsReducer } from './redux/reducers/util/util';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -52,7 +52,7 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
     fontFamily: [
-      'Open Sans Hebrew',
+      'Assistant',
       'sans-serif'
     ].join(',')
   },
@@ -92,9 +92,9 @@ const App = () => {
 
     });
 
-    /* generateBuildngsReducer(store).then((result) => {
+    generateBuildingsReducer(store).then((result) => {
       //console.log(store);
-    }); */
+    });
 
     /* const state = createBuildingState();
     console.log(state); */

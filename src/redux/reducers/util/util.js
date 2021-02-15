@@ -1,4 +1,6 @@
+import { combineReducers } from 'redux';
 import { ipcSendReceive } from '../../actions/util/util';
+import storage from 'redux-persist/lib/storage';
 
 const { buildings, pages } = require('electron').remote.getGlobal('sharedObject');
 
@@ -199,31 +201,24 @@ const createPageState = () => {
   }
 }
 
-export const createBuildingsState = async (store, buildings) => {
-  console.log(store);
-  const state = {};
+const createReducers = () => {
 
-  await buildings.forEach(async (building) => {
-    const { buildingNameEng } = building;
+  const reducers = {};
 
-    state[buildingNameEng] = {};
-    state[buildingNameEng].pages = {}
+  pages.forEach(async (page) => {
 
-    pages.forEach(async (page) => {
-
-      state[buildingNameEng][page] = createPageState();
-
-      await store.injectReducer(buildingNameEng, createPageReducer(page, state[buildingNameEng][page]));
-    });
-
-    //store.addToBlacklist(buildingNameEng);
-
+    reducers[page] = createPageReducer(page, createPageState());
   });
 
-  return state;
+  const combinedReducers = combineReducers({
+    ...reducers,
+  });
+
+  return combinedReducers;
+
 }
 
-export const generateBuildngsReducer = async (store) => {
+export const generateBuildingsReducer = async (store) => {
 
   const result = await ipcSendReceive({
     send: {
@@ -234,7 +229,19 @@ export const generateBuildngsReducer = async (store) => {
     },
     onSuccess: async (result) => {
 
-      const state = await createBuildingsState(store, result.data);
+      const { data } = result;
+
+      const reducers = createReducers();
+
+      await data.forEach(async (building) => {
+        const { buildingNameEng } = building;
+
+        if (storage.getItem(buildingNameEng) === undefined) {
+          await store.injectReducer(buildingNameEng, reducers);
+          store.addToBlacklist(buildingNameEng);
+        }
+
+      });
 
     }
   });//end ipc send receive

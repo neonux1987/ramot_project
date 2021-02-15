@@ -1,5 +1,5 @@
 .appFrame{
-  background-color: #f7f8fd;
+  background-color: #fafafa;
   /* background: #eceeef; */
   /* background-color: #fdfdfd; */
   /* background: linear-gradient(0deg, #ffffff -100%, #f7f8fd 100%); */
@@ -7,7 +7,7 @@
   -webkit-app-region: no-drag;
   /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17); */
   box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
-  border-bottom: 1px solid #f3eded;
+  border-bottom: 1px solid #0000000d;
   flex-basis: 56px;
   /* background: #353c40; */
 }

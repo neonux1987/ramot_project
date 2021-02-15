@@ -50,11 +50,37 @@
   src: url("../fonts/Assistant/Assistant-Bold.ttf");
 }
 
+@font-face {
+  font-family: "NotoSansHebrew";
+  font-weight: 400;
+  src: url("../fonts/NotoSansHebrew/NotoSansHebrew-Regular.ttf");
+}
+
+
+@font-face {
+  font-family: "NotoSansHebrew";
+  font-weight: 600;
+  src: url("../fonts/NotoSansHebrew/NotoSansHebrew-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Heebo";
+  font-weight: 400;
+  src: url("../fonts/Heebo/Heebo-Regular.ttf");
+}
+
+
+@font-face {
+  font-family: "Heebo";
+  font-weight: 600;
+  src: url("../fonts/Heebo/Heebo-Bold.ttf");
+}
+
 html,body{
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Open Sans Hebrew', sans-serif;
+    font-family: 'Assistant', sans-serif;
     overflow: hidden;
 }
 
@@ -64,8 +90,8 @@ html{
 
 body{
   /* background: #f3f4f8; */
-  /* background: #f5f5f5; */
-  background-color: #f7f8fd;
+  background: #fafafa;
+  /* background-color: #f7f8fd; */
 }
 
 #root{
