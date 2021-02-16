@@ -32,8 +32,9 @@ const Menu = (props) => {
   const [state, setState] = React.useState(() => {
     let newState = {};
     data.forEach(item => {
+      const buildings = routes.active.expanded;
       newState[item.engLabel] = {
-        open: false
+        open: buildings[item.engLabel] === undefined ? false : buildings[item.engLabel].open
       }
     });
     return newState;
@@ -48,7 +49,7 @@ const Menu = (props) => {
       default: return Label
     };
   }
-  console.log(routes);
+  //console.log(routes);
   const expandHandleClick = (item) => {
     const { label, engLabel, path } = item;
 

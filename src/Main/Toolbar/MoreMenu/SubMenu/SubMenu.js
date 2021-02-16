@@ -12,22 +12,29 @@ const listIcon = css`
   color: #0365a2;
 `;
 
-const SubMenu = ({ open, restartAppHandler, dbBackupHandler }) => {
+const SubMenu = ({ open, restartAppHandler, dbBackupHandler, flushCache }) => {
   return <Collapse in={open} timeout="auto" unmountOnExit>
     <List component="div" disablePadding>
-
-      <ListItem button className={nested} onClick={restartAppHandler}>
-        <ListItemIcon className={listIcon}>
-          <Replay />
-        </ListItemIcon>
-        אתחל אפליקציה
-      </ListItem>
 
       <ListItem button className={nested} onClick={dbBackupHandler}>
         <ListItemIcon className={listIcon}>
           <Backup />
         </ListItemIcon>
         גבה בסיס נתונים
+      </ListItem>
+
+      <ListItem button className={nested} onClick={flushCache}>
+        <ListItemIcon className={listIcon}>
+          <Backup />
+        </ListItemIcon>
+        מחק היסטוריית מטמון
+      </ListItem>
+
+      <ListItem button className={nested} onClick={restartAppHandler}>
+        <ListItemIcon className={listIcon}>
+          <Replay />
+        </ListItemIcon>
+        אתחל אפליקציה
       </ListItem>
 
     </List>

@@ -20,6 +20,7 @@ export default (state = initState, action) => {
           ...state,
           active: {
             ...state.active,
+            ...action.active,
             expanded: {
               ...state.active.expanded,
               ...action.active.expanded

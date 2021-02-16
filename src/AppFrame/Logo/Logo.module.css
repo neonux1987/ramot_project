@@ -4,21 +4,22 @@
   margin: 0;
   color: #28629e;
   font-style: normal;
-  font-size: 30px;
+  font-size: 32px;
   line-height: 26px;
+  letter-spacing: -1px;
   /* text-shadow: 0px 0px 6px #0000001a; */
   /* text-shadow: 3px 2px 2px #0000001c;*/
 }
 
 .subtitle {
   text-align: right;
-  font-size: 11px;
+  font-size: 14px;
   color: #1e9c79;
   font-weight: 600;
   margin: 0;
   font-style: normal;
-  letter-spacing: 0.228em;
-  line-height: 8px;
+  letter-spacing: 0.090em;
+  line-height: 12px;
   margin-top: 0px;
   background-color: #fafafa;
   position: relative;
@@ -28,12 +29,14 @@
 
 .container {
   display: flex;
-  padding-right: 13px;
+  padding-right: 14px;
   width: 235px;
   position: relative;
   margin-top: -2px;
   user-select: none;
   border-left: 1px solid #f3f3f3;
+  -webkit-app-region: no-drag;
+    -webkit-user-select: none;
 }
 
 .logoWrapper{
@@ -82,7 +85,7 @@
   margin-top: 0px;
   margin-right: 0px;
   /* text-shadow: 0px 0px 4px #00000012; */
-  padding-top: 3px;
+  padding-top: 1px;
 }
 
 .appVersionWrapper{

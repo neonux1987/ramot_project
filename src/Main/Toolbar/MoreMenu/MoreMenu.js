@@ -9,6 +9,7 @@ import ButtonNavLinkWithSound from "../../../componentsWithSound/ButtonNavLinkWi
 import { initiateDbBackup } from '../../../services/dbBackup.svc';
 import { toastManager } from "../../../toasts/toastManager";
 import ToastRender from "../../../components/ToastRender/ToastRender";
+import { flushCache } from "../../../redux/actions/persistorActions";
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {
 
@@ -148,7 +149,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
 
-      <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} />
+      <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} flushCache={flushCache} />
 
     </Menu>
   );
