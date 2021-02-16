@@ -27,8 +27,8 @@ const icon = css`
 `;
 
 const collapsibleOuter = css`
-  padding: 0px 20px;
-  margin: 0px -20px;
+  padding: 20px 20px;
+  margin: -20px -20px;
 `;
 
 const collapsibleInner = css`
