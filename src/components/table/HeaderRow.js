@@ -15,7 +15,7 @@ export default ({ gridTemplateColumns, style = {}, children, className }) => {
         //boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.07)",
         borderBottom: "1px solid #e6e6e6",
         zIndex: "2",
-        fontSize: "15px",
+        fontSize: "16px",
         ...style,
       }}
       gridTemplateColumns={gridTemplateColumns}

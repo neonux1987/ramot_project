@@ -239,7 +239,7 @@ const SummarizedBudgetsTableContainer = props => {
     return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
-      <Column style={{ fontWeight: "600" }}>{rowData["section"]}</Column>
+      <Column>{rowData["section"]}</Column>
       {quarterColumns}
       {editMode ? numberInput("evaluation", rowData["evaluation"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
       <NonZeroNumberColumn>{rowData["year_total_budget"]}</NonZeroNumberColumn>

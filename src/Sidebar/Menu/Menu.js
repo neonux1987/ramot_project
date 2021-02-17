@@ -13,7 +13,8 @@ import {
   list,
   homeBtn,
   homeBtnText,
-  homeBtnIcon
+  homeBtnIcon,
+  listItemText
 } from './Menu.module.css';
 import { updateRoute } from '../../redux/actions/routesActions';
 import { useDispatch } from 'react-redux';
@@ -113,6 +114,7 @@ const Menu = (props) => {
           label={label}
           Icon={generateIcon(label)}
           key={id}
+          textClassName={listItemText}
           to={{
             pathname: `/${item.path}/${path}`,
             state: {
@@ -138,7 +140,7 @@ const Menu = (props) => {
         label={HOME_BUTTON_LABEL}
         Icon={Dashboard}
         className={homeBtn}
-        //textClassName={homeBtnText}
+        textClassName={homeBtnText}
         iconClassName={homeBtnIcon}
         to={{
           pathname: HOME_BUTTON_PATH,

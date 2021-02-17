@@ -43,6 +43,11 @@
   src: url("../fonts/Assistant/Assistant-Regular.ttf");
 }
 
+@font-face {
+  font-family: "Assistant";
+  font-weight: 500;
+  src: url("../fonts/Assistant/Assistant-SemiBold.ttf");
+}
 
 @font-face {
   font-family: "Assistant";

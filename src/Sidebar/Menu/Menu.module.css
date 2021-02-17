@@ -7,6 +7,10 @@
   user-select: none;
 }
 
+.listItemText{
+  font-weight: 400;
+}
+
 .list:hover{
   overflow-y: overlay;
 }
@@ -45,8 +49,7 @@
 }
 
 .homeBtnText{
-  font-weight: 600;
-  color: rgb(39 117 195);
+  font-weight: 500;
 }
 
 .homeBtnIcon{

@@ -68,10 +68,12 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
           display: flex;
           justify-content: flex-start;
           flex-grow: 1;
-          font-weight: 600;
-          color: #21558ceb;
+          font-weight: 500;
+          letter-spacing: 0.02em;
+          /* color: #21558ceb; */
+          color: #000000;
           align-items: center;
-          font-size: 1.500em;
+          font-size: 1.600em;
           padding-right: 10px;
         `}>
           {title}
@@ -99,6 +101,7 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
         trigger={headerWrapper()}
         contentInnerClassName={collapsibleInner}
         contentOuterClassName={collapsibleOuter}
+        contentHiddenWhenClosed={true}
       >
         {children}
       </Collapsible>

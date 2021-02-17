@@ -10,9 +10,8 @@ const wrapper = css`
   margin: 10px 25px 0px;
   font-size: 16px;
   color: #000000;
-  border-bottom: 1px dotted #ccc;
   padding: 10px 5px;
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 const icon = css`
@@ -22,10 +21,12 @@ const icon = css`
 const text = css`
   margin-left: 10px;
   /* text-decoration: underline; */
+  color: #525e63;
 `;
 
 const lastStyle = css`
-  color: #21558ceb;
+  color: #000000;
+  font-weight: 500;
   text-decoration: none;
   margin-left: 10px;
 `
@@ -50,6 +51,10 @@ const Breadcrumbs = () => {
 
   return (
     <div className={wrapper}>
+      <span className={text} style={{ color: "#000000" }}>
+        מיקום:
+      </span>
+
       <span className={pathnames.length === 0 ? lastStyle : text} style={{ textDecoration: pathnames.length === 0 ? "none" : "none" }}>
         דף הבית
       </span>

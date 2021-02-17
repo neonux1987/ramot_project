@@ -13,6 +13,7 @@ import '../cssTransitions/scale.css';
 // COMPONENTS
 import Menu from './Menu/Menu';
 import LoadingCircle from '../components/LoadingCircle';
+import Logo from '../AppFrame/Logo/Logo';
 //import Menuitem from './Menuitem';
 
 // ACTIONS

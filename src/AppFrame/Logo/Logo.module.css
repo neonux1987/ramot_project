@@ -2,7 +2,7 @@
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color: #28629e;
+  color: #0066a2;
   font-style: normal;
   font-size: 32px;
   line-height: 26px;
@@ -55,9 +55,9 @@
 }
 
 .logoWrapper img{
-  filter: drop-shadow(3px 2px 2px #00000030);
-  width: 54px;
-  height: 54px;
+  /* filter: drop-shadow(3px 2px 2px #00000030); */
+  width: 50px;
+  height: 50px;
 }
 
 /* .logoWrapper:before{

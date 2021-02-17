@@ -10,6 +10,7 @@ export default ({ color = "#3f414d", span = 1, show = true, children, style }) =
         color,
         gridColumn: `span ${span}`,
         fontWeight: "600",
+        fontSize: "16px",
         ...style
       }}
     >
