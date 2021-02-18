@@ -27,11 +27,11 @@ const Logo = () => {
       </div>
 
       <div className={LogotextWrapper}>
-        <Typography className={mainTitle} variant="h4" gutterBottom>
+        <Typography className={mainTitle} variant="h4">
           קבוצת רמות
         </Typography>
 
-        <Typography className={subtitle} variant="h4" gutterBottom>
+        <Typography className={subtitle} variant="subtitle1">
           ניהול הוצאות והכנסות
         </Typography>
       </div>

@@ -9,6 +9,7 @@ import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCente
 import Spinner from '../../components/Spinner/Spinner';
 import TableExpandableSection from '../../components/Section/TableExpandableSection';
 import DateDetails from '../../components/DateDetails/DateDetails';
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 // CONTAINERS
 import YearStatsContainer from './YearStatsContainer';
@@ -31,7 +32,7 @@ const TABLE_TITLE = "טבלת מעקב שנתי";
 
 const SummarizedBudgets = props => {
   //building name
-  const { buildingNameEng } = props.location.state;
+  const { buildingName, buildingNameEng } = props.location.state;
 
   const dispatch = useDispatch();
 
@@ -46,6 +47,8 @@ const SummarizedBudgets = props => {
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
   return <div className={"page"}>
+
+    <PageHeader building={buildingName} page={PAGE_TITLE} />
 
     <StrippedExpandableSection
       title={STATS_TITLE}

@@ -55,7 +55,7 @@
 }
 
 .logoWrapper img{
-  /* filter: drop-shadow(3px 2px 2px #00000030); */
+  filter: drop-shadow(3px 2px 2px #00000030);
   width: 50px;
   height: 50px;
 }

@@ -25,6 +25,7 @@ const ToggleButton = props => {
       inputProps={{ 'aria-label': 'secondary checkbox' }}
       color="primary"
       size="medium"
+
     >
 
     </SwitchWithSound>

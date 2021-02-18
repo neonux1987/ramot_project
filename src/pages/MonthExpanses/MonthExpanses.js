@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import DateDetails from '../../components/DateDetails/DateDetails';
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 // CONTAINERS
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
@@ -28,7 +29,7 @@ const TABLE_TITLE = "טבלת מעקב הוצאות חודשיות";
 const MonthExpanses = props => {
 
   //building name
-  const { buildingNameEng } = props.location.state;
+  const { buildingName, buildingNameEng } = props.location.state;
 
   const dispatch = useDispatch();
 
@@ -44,6 +45,9 @@ const MonthExpanses = props => {
 
   return (
     <div className={"page"}>
+
+      <PageHeader building={buildingName} page={PAGE_TITLE} />
+
       <TableExpandableSection
         padding={"10px 15px 15px"}
         margin="20px 20px 40px"

@@ -6,12 +6,13 @@ import { css } from 'emotion';
 
 // CSS
 import styles from './ExpandableSection.module.css';
+import { Typography } from '@material-ui/core';
 
 const header = css`
   display: flex;
   padding: 0px 5px;
   /* border-bottom: 1px solid #e8eaf1; */
-  line-height: 50px;
+  height: 50px;
 `;
 
 const iconWrapper = css`
@@ -64,20 +65,20 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
           {TitleIcon}
         </div>
 
-        <div className={css`
+        <Typography variant="h5" className={css`
           display: flex;
           justify-content: flex-start;
           flex-grow: 1;
           font-weight: 500;
-          letter-spacing: 0.02em;
+          /* letter-spacing: 0.02em; */
           /* color: #21558ceb; */
           color: #000000;
           align-items: center;
-          font-size: 1.600em;
+          /* font-size: 1.600em; */
           padding-right: 10px;
         `}>
           {title}
-        </div>
+        </Typography>
 
         <div className={iconWrapper}>
           <div className={icon} onClick={expandClick}>

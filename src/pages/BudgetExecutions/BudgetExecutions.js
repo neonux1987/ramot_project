@@ -23,6 +23,7 @@ import useDate from '../../customHooks/useDate';
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -32,7 +33,7 @@ const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 const BudgetExecutions = props => {
 
   //building name
-  const { buildingNameEng } = props.location.state;
+  const { buildingName, buildingNameEng } = props.location.state;
 
   const dispatch = useDispatch();
 
@@ -48,6 +49,8 @@ const BudgetExecutions = props => {
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
   return <div className={"page"}>
+
+    <PageHeader building={buildingName} page={PAGE_TITLE} />
 
     <StrippedExpandableSection
       title={STATS_TITLE}

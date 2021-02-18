@@ -12,6 +12,7 @@ import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCente
 import Spinner from '../../components/Spinner/Spinner';
 import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
 import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
+import PageHeader from '../../components/PageHeader/PageHeader';
 
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
@@ -23,11 +24,12 @@ import YearsChartContainer from './YearsChartContainer';
 import MonthsChartContainer from './MonthsChartContainer';
 
 const PAGE_NAME = "statistics";
+const PAGE_TITLE = "סטטיסטיקה";
 const TITLE = "הוצאות והכנסות לפי חודשים";
 
 export default props => {
   //building name
-  const { buildingNameEng } = props.location.state;
+  const { buildingName, buildingNameEng } = props.location.state;
 
   const dispatch = useDispatch();
 
@@ -41,13 +43,14 @@ export default props => {
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
   return (
-    <Wrapper className="page">
+    <div className="page">
+
+      <PageHeader building={buildingName} page={PAGE_TITLE} />
 
       <StrippedExpandableSection
         title={TITLE}
         TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="$ffffff" />}
         iconColor={"#7d3bc5"}
-        margin="0"
       >
         <MonthsChartContainer
           buildingName={buildingNameEng}
@@ -60,7 +63,7 @@ export default props => {
 
 
 
-    </Wrapper>
+    </div>
   );
 
 }
