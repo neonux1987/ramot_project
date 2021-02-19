@@ -107,3 +107,13 @@
 .appVersion{
   margin-left: 5px;
 }
+
+.controls{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-left: 1px solid #f3f3f3; */
+  margin-top: 15px;
+  border-bottom: 1px solid #0000000d;
+  padding-bottom: 10px;
+}

@@ -14,6 +14,7 @@ import '../cssTransitions/scale.css';
 import Menu from './Menu/Menu';
 import LoadingCircle from '../components/LoadingCircle';
 import Logo from '../AppFrame/Logo/Logo';
+import Controls from './Controls/Controls';
 //import Menuitem from './Menuitem';
 
 // ACTIONS
@@ -52,23 +53,9 @@ const Sidebar = () => {
 
         {/* <Logo /> */}
 
+        <Controls className={styles.controls} />
+
         <Menu data={menu.data} routes={routes} />
-
-        <div className={styles.settingsWrapper}>
-
-          <SpinningButton
-            Icon={Settings}
-            to={{
-              pathname: `/הגדרות`,
-              state: {
-                page: "כללי",
-                buildingName: "הגדרות",
-                buildingNameEng: "settings"
-              }
-            }}
-            active={routes.active.state.buildingName === "הגדרות"}
-          />
-        </div>
 
         <div className={styles.developedByWrapper}>
           <span className={styles.ndtsText}>NDTS</span>

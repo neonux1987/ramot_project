@@ -72,9 +72,9 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
           font-weight: 500;
           /* letter-spacing: 0.02em; */
           /* color: #21558ceb; */
-          color: #000000;
+          color: #42474a;
           align-items: center;
-          /* font-size: 1.600em; */
+          font-size: 1.3rem;
           padding-right: 10px;
         `}>
           {title}

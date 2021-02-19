@@ -6,10 +6,12 @@ import { MdAssignmentTurnedIn } from 'react-icons/md';
 
 const container = css`
   margin: 0px 25px 40px;
-  color: #777777;
-  padding: 10px 5px;
+  padding: 10px 15px;
   font-weight: 500;
-  border-bottom: 1px solid #e0e0e0;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: rgba(53, 64, 82, 0.05) 0px 0px 14px 0px;
 `;
 
 const flexContainer = css`
@@ -21,24 +23,28 @@ const mainIcon = css`
   font-size: 36px;
   display: flex;
   align-items: center;
-  color: #777777;
+  color: #42474a;
+  display: none;
 `;
 
 const mainTitle = css`
-  margin-right: 10px;
-  color: #777777;
+  margin-right: 0px;
+  color: #42474a;
+  font-weight: 500;
+  font-size: 2.8rem;
 `;
 
 const subIcon = css`
   font-size: 16px;
   display: flex;
   align-items: center;
-  color: #777777;
+  color: #42474a;
 `;
 
 const subTitle = css`
-  margin-right: 10px;
-  color: #777777;
+  margin-right: 6px;
+  color: #42474a;
+  font-weight: 500;
 `;
 
 const PageHeader = ({ building, page }) => {

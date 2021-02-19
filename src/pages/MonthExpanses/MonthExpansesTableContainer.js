@@ -12,6 +12,7 @@ import {
   monthExpansesCleanup
 } from '../../redux/actions/monthExpansesActions';
 import { fetchExpansesCodesByStatus } from '../../redux/actions/expansesCodesActions';
+import gs from '../../redux/actions/generalSettingsActions';
 
 // UTILITY IMPORTS
 import Helper from '../../helpers/Helper';
@@ -60,10 +61,13 @@ const MonthExpansesTableContainer = props => {
   const page = useSelector(store => store.monthExpanses.pages[buildingNameEng]);
 
   // page data
-  const tax = useSelector(store => store.generalSettings.generalSettings.data[0].tax);
+  const generalSettings = useSelector(store => store.generalSettings.generalSettings);
 
   useEffect(() => {
+    dispatch(gs.fetchGeneralSettings());
+  }, []);
 
+  useEffect(() => {
     const cleanup = () => {
       //cleanup
       dispatch(monthExpansesCleanup(buildingNameEng));
@@ -98,6 +102,9 @@ const MonthExpansesTableContainer = props => {
   }, [date, buildingNameEng, dispatch]);
 
   const addNewExpanseSubmit = async (formInputs, reset) => {
+    // tax data
+    const tax = generalSettings.data[0].tax;
+
     const valid = validateFormInputs(formInputs);
     if (!valid) {
       // send the error to the notification center
@@ -142,6 +149,9 @@ const MonthExpansesTableContainer = props => {
   }
 
   const parseFormInputs = (formInputs) => {
+    // tax data
+    const tax = generalSettings.data[0].tax;
+
     const copyFormInputs = { ...formInputs };
     //parse inputs
     copyFormInputs.code = Number.parseInt(copyFormInputs.code);
@@ -189,6 +199,8 @@ const MonthExpansesTableContainer = props => {
   }
 
   const onBlurHandler = (e) => {
+    // tax data
+    const tax = generalSettings.data[0].tax;
 
     // building data
     const data = page.data;
@@ -291,8 +303,8 @@ const MonthExpansesTableContainer = props => {
       {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
-
-  if (page === undefined || page.data === undefined) {
+  console.log(generalSettings);
+  if (page === undefined || page.data === undefined || generalSettings.isFetching) {
     return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב הוצאות חודשיות..."} /></AlignCenterMiddle>;
   }
 

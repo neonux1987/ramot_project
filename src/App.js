@@ -234,8 +234,6 @@ const App = () => {
 
           <ScrollToTop mainContainer={mainContainer} />
 
-
-
           <AppFrame handlers={{
             close: closeButtonHandler,
             minimize: minimizeButtonHandler,

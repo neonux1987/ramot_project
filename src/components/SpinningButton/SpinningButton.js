@@ -8,11 +8,12 @@ export default props => {
   const {
     Icon,
     to = {},
-    active = false
+    active = false,
+    className
   } = props;
   return (
     <ButtonNavLink
-      className={classnames(navLink, active ? "activeExpandItem" : "", css`min-width:0`)}
+      className={classnames(className, navLink, active ? "activeExpandItem" : "", css`min-width:0`)}
       to={to}
     >
       <Icon className={classnames(icon, spinner)} />

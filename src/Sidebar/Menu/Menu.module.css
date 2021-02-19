@@ -1,9 +1,9 @@
 .list{
   overflow-y: hidden;
   overflow-x: hidden;
-  margin-bottom: 125px;
+  margin-bottom: 80px;
   background:  none;
-  margin-top: 20px;
+  margin-top: 10px;
   user-select: none;
 }
 
