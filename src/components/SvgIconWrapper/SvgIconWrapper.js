@@ -6,7 +6,7 @@ const SvgIconWrapper = ({ Icon, size = 32, color = "#000000" }) => {
   return <Icon className={css`
     font-size: ${size}px;
     color: ${color};
-    filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 0px 5px);
+    /* filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 0px 5px); */
   `} />;
 }
 

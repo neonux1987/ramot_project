@@ -4,6 +4,8 @@ import { withRouter } from 'react-router';
 import { List } from '@material-ui/core';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
 import { Home, AttachMoney, AssignmentTurnedIn, InsertChartOutlined, Receipt, Label, Dashboard } from '@material-ui/icons';
+import { ImStatsDots } from 'react-icons/im';
+import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 
 // COMPONENTS
 import Menuitem from '../MenuItem/Menuitem';
@@ -46,7 +48,7 @@ const Menu = (props) => {
       case "הוצאות חודשיות": return AttachMoney;
       case "ביצוע מול תקציב": return AssignmentTurnedIn;
       case "סיכום שנתי": return InsertChartOutlined;
-      case "סטטיסטיקה": return Receipt;
+      case "סטטיסטיקה": return () => <SvgIconWrapper Icon={ImStatsDots} size={22} color={"rgb(107, 108, 119)"} />;
       default: return Label
     };
   }
