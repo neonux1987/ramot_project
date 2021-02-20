@@ -24,22 +24,22 @@ const mainIcon = css`
   font-size: 36px;
   display: flex;
   align-items: center;
-  color: #444444;
+  color: #a0a0a0;
   display: none;
 `;
 
 const mainTitle = css`
   margin-right: 0px;
-  color: #0066a2;
+  color: #a0a0a0;
   font-weight: 500;
 `;
 
 const subContainer = css`
   display: flex;
   align-items: center;
-  background: #f7f7f7;
+  /* background: #f7f7f7; */
   border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
+  /* border-bottom: 1px solid #e0e0e0; */
   padding-right: 5px;
 `;
 
