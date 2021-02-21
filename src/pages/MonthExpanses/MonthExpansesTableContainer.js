@@ -390,7 +390,7 @@ export default ConnectedComponent;
 
 const headerStyle = {
   color: "#000000",
-  fontWeight: "600",
+  fontWeight: "500",
   justifyContent: "center",
   height: "34px",
   alignItems: "center"

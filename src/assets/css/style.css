@@ -142,7 +142,7 @@ a {
 }
 
 .activeExpandItem,.activeExpandItem:hover{
-  background: #e7e8ef;
+  background: #ececec;
   border-radius: 0px;
 }
 
@@ -172,6 +172,7 @@ a {
   0% {margin-right: 0px;}
   100% {
     margin-right: -244px;
+    box-shadow: none;
   }
 }
 

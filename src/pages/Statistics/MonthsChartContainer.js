@@ -19,6 +19,8 @@ const chartContainer = css`
   /* max-width: 800px; */
   height: 550px;
   background: #ffffff;
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%);
+  border-radius: 5px;
 `;
 
 export default props => {

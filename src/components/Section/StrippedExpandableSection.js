@@ -69,12 +69,12 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
           display: flex;
           justify-content: flex-start;
           flex-grow: 1;
-          font-weight: 500;
+          font-weight: 400;
           /* letter-spacing: 0.02em; */
           /* color: #21558ceb; */
           color: #42474a;
           align-items: center;
-          font-size: 1.3rem;
+          font-size: 1.2rem;
           padding-right: 10px;
         `}>
           {title}

@@ -1,10 +1,10 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
-import { List } from '@material-ui/core';
+import { List, SvgIcon } from '@material-ui/core';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
 import { Home, AttachMoney, AssignmentTurnedIn, InsertChartOutlined, Receipt, Label, Dashboard } from '@material-ui/icons';
-import { ImStatsDots } from 'react-icons/im';
+import { BiStats } from 'react-icons/bi';
 import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 
 // COMPONENTS
@@ -47,8 +47,8 @@ const Menu = (props) => {
     switch (pageName) {
       case "הוצאות חודשיות": return AttachMoney;
       case "ביצוע מול תקציב": return AssignmentTurnedIn;
-      case "סיכום שנתי": return InsertChartOutlined;
-      case "סטטיסטיקה": return () => <SvgIconWrapper Icon={ImStatsDots} size={22} color={"rgb(107, 108, 119)"} />;
+      case "סיכום תקציבי": return Label;
+      case "סטטיסטיקה": return () => <SvgIcon component={BiStats} />;
       default: return Label
     };
   }
@@ -111,7 +111,7 @@ const Menu = (props) => {
 
       {submenu.map((subItem) => {
         const { label, id, path } = subItem;
-
+        console.log(label);
         return <Menuitem
           label={label}
           Icon={generateIcon(label)}

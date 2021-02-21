@@ -1,7 +1,8 @@
 import React from 'react';
 import { css } from 'emotion';
-import { ListItem, ListItemIcon, Collapse, List } from '@material-ui/core';
+import { ListItem, ListItemIcon, Collapse, List, SvgIcon } from '@material-ui/core';
 import { Replay, Backup } from '@material-ui/icons';
+import { RiFolderHistoryLine } from 'react-icons/ri';
 
 const nested = css`
   padding-right: 32px;
@@ -25,7 +26,7 @@ const SubMenu = ({ open, restartAppHandler, dbBackupHandler, flushCache }) => {
 
       <ListItem button className={nested} onClick={flushCache}>
         <ListItemIcon className={listIcon}>
-          <Backup />
+          <SvgIcon component={RiFolderHistoryLine} />
         </ListItemIcon>
         מחק היסטוריית מטמון
       </ListItem>

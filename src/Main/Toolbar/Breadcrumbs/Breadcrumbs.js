@@ -15,6 +15,7 @@ const wrapper = css`
   box-shadow: 0px 0px 4px 0px rgb(0 0 0 / 7%);
   border-radius: 5px;
   background: #f7f7f7;
+  border: 1px solid #cccccc57;
 `;
 
 const icon = css`

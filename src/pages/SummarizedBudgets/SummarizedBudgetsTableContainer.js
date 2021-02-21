@@ -319,7 +319,7 @@ export default React.memo(ConnectedComponent, areEqual);
 
 const defaultheaderStyle = {
   color: "#000000",
-  fontWeight: "600",
+  fontWeight: "500",
   justifyContent: "center",
   height: "34px",
   alignItems: "center"

@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from 'emotion';
 import { Typography } from '@material-ui/core';
 import { RiBuilding2Fill } from 'react-icons/ri';
-import { MdAssignmentTurnedIn } from 'react-icons/md';
+import useIcons from '../../customHooks/useIcons';
 
 const container = css`
   margin: 20px 25px 20px;
@@ -32,8 +32,9 @@ const mainIcon = css`
 const mainTitle = css`
   margin-right: 0px;
   /* color: #6b6b6b; */
-  color: #0066a2;
-  font-weight: 400;
+  color: #444444;
+  font-weight: 500;
+  font-size: 2.4rem;
 `;
 
 const subContainer = css`
@@ -41,14 +42,16 @@ const subContainer = css`
   align-items: center;
   /* border-top: 1px solid #efecec; */
   border-bottom: 1px solid #efecec;
-  padding-right: 5px;
   /* background: #fdfdfd; */
+`;
+
+const subIconWrapper = css`
+  display: flex;
+  align-items: center;
 `;
 
 const subIcon = css`
   font-size: 16px;
-  display: flex;
-  align-items: center;
   color: #444444;
 `;
 
@@ -59,6 +62,10 @@ const subTitle = css`
 `;
 
 const PageHeader = ({ building, page }) => {
+
+  const [generateIcon] = useIcons();
+
+  const SubIcon = generateIcon(page);
 
   return <div className={container}>
 
@@ -71,8 +78,8 @@ const PageHeader = ({ building, page }) => {
     </div>
 
     <div className={subContainer}>
-      <div className={subIcon}>
-        <MdAssignmentTurnedIn />
+      <div className={subIconWrapper}>
+        <SubIcon className={subIcon} />
       </div>
 
       <Typography className={subTitle} variant="subtitle1">{page}</Typography>
