@@ -3,7 +3,7 @@
   /* background: #f3f4f8; */
   background-color: #ffffff;
   /* border: 1px solid #e0e0e0; */
-  border-radius: 8px;
+  border-radius: 5px;
   height: 220px;
   padding: 20px;
   box-shadow: rgba(53, 64, 82, 0.05) 0px 0px 14px 0px;
@@ -18,16 +18,28 @@
   padding-bottom: 40px;
 }
 
-.titleWrapper{
+/* .titleWrapper{
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   flex-grow: 1;
+} */
+
+.titleWrapper{
+  background: linear-gradient( 60deg , #ffa726, #fb8c00);
+  box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(255 152 0 / 40%);
+  margin-top: -40px;
+  height: 80px;
+  width: 120px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .titleText{
-  color: #000000;
-  font-size: 42px;
+  color: #ffffff;
+  font-size: 26px;
   font-weight: 500;
   line-height: 35px;
 }

@@ -9,7 +9,7 @@ const persistConfig = {
   storage,
   blacklist: [
     'app',
-    'sidebar',
+    //'sidebar',
     'monthExpanses',
     'budgetExecutions',
     "summarizedSections",

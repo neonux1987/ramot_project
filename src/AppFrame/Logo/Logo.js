@@ -5,13 +5,15 @@ import logoPng from '../../assets/images/ramot group.png';
 
 // CSS
 import {
+  mainContainer,
   mainTitle,
   subtitle,
   logo,
   container,
   LogotextWrapper,
   appVersionWrapper,
-  logoWrapper
+  logoWrapper,
+  subContainer
 } from './Logo.module.css';
 
 //ELECTRON
@@ -22,15 +24,20 @@ const Logo = () => {
     <div className={container} >
 
       {/* <div className={logo} /> */}
-      <div className={logoWrapper}>
-        <img src={logoPng} />
-      </div>
 
       <div className={LogotextWrapper}>
-        <Typography className={mainTitle} variant="h4">
-          קבוצת רמות
-        </Typography>
+        <div className={logoWrapper}>
+          <img src={logoPng} />
+        </div>
 
+        <div className={mainContainer}>
+          <Typography className={mainTitle} variant="h4">
+            קבוצת רמות
+        </Typography>
+        </div>
+      </div>
+
+      <div className={subContainer}>
         <Typography className={subtitle} variant="subtitle1">
           ניהול הוצאות והכנסות
         </Typography>

@@ -24,6 +24,7 @@ import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersAc
 import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
 import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 import { IoMdStats } from 'react-icons/io';
+import Section from '../../components/Section/Section';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -50,7 +51,7 @@ const SummarizedBudgets = props => {
 
     <PageHeader building={buildingName} page={PAGE_TITLE} />
 
-    <StrippedExpandableSection
+    <Section
       title={STATS_TITLE}
       TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="#ffffff" />}
       iconColor="rgb(255 0 82)"
@@ -60,7 +61,7 @@ const SummarizedBudgets = props => {
         date={date}
         pageName={PAGE_NAME}
       />
-    </StrippedExpandableSection>
+    </Section>
 
     <TableExpandableSection
       title={TABLE_TITLE}

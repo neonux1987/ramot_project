@@ -28,3 +28,7 @@
 .minimize svg{
   margin-bottom: 3px;
 }
+
+.close{
+  margin-left: 0;
+}

@@ -5,7 +5,7 @@ import { RiBuilding2Fill } from 'react-icons/ri';
 import { MdAssignmentTurnedIn } from 'react-icons/md';
 
 const container = css`
-  margin: 10px 25px 40px;
+  margin: 20px 25px 20px;
   /* padding: 10px 15px; */
   font-weight: 500;
   /* border: 1px solid #e0e0e0; */
@@ -21,26 +21,28 @@ const mainContainer = css`
 `;
 
 const mainIcon = css`
-  font-size: 36px;
+  font-size: 48px;
   display: flex;
   align-items: center;
-  color: #a0a0a0;
+  color: #c1c1c1;
+  padding-top: 0px;
   display: none;
 `;
 
 const mainTitle = css`
   margin-right: 0px;
-  color: #a0a0a0;
-  font-weight: 500;
+  /* color: #6b6b6b; */
+  color: #0066a2;
+  font-weight: 400;
 `;
 
 const subContainer = css`
   display: flex;
   align-items: center;
-  /* background: #f7f7f7; */
-  border-top: 1px solid #e0e0e0;
-  /* border-bottom: 1px solid #e0e0e0; */
+  /* border-top: 1px solid #efecec; */
+  border-bottom: 1px solid #efecec;
   padding-right: 5px;
+  /* background: #fdfdfd; */
 `;
 
 const subIcon = css`
@@ -53,7 +55,7 @@ const subIcon = css`
 const subTitle = css`
   margin-right: 6px;
   color: #444444;
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 const PageHeader = ({ building, page }) => {

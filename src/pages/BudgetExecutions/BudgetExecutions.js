@@ -24,6 +24,7 @@ import { initRegisteredYears } from '../../redux/actions/registeredYearsActions'
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
 import PageHeader from '../../components/PageHeader/PageHeader';
+import Section from '../../components/Section/Section';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -52,7 +53,7 @@ const BudgetExecutions = props => {
 
     <PageHeader building={buildingName} page={PAGE_TITLE} />
 
-    <StrippedExpandableSection
+    <Section
       title={STATS_TITLE}
       TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="#ffffff" />}
       iconColor="rgb(255 0 82)"
@@ -62,7 +63,7 @@ const BudgetExecutions = props => {
         date={date}
         pageName={PAGE_NAME}
       />
-    </StrippedExpandableSection>
+    </Section>
 
     <TableExpandableSection
       marginBottom={"100px"}

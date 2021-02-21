@@ -19,9 +19,9 @@ const AppFrameContainer = ({ handlers }) => {
     <div className={styles.appFrame}>
 
       <div className={styles.draggableRegion}>
-        <div className={styles.section}>
+        {/* <div className={styles.section}>
           <Logo />
-        </div>
+        </div> */}
 
         <div className={styles.section} style={{ flex: "1 1", display: "flex", justifyContent: "end" }}>
           <ToggleButton className={classnames(styles.toggleBtn, styles.noDrag)} onClick={toggleClick} />
