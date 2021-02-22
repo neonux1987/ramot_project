@@ -6,7 +6,7 @@ const _wrapper = css`
   justify-content: flex-end;
   align-items: center;
   color: #000000;
-  font-size: 16px;
+  font-size: 18px;
 `;
 
 const _label = css`

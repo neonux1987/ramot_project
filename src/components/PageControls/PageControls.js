@@ -1,24 +1,28 @@
 // LIBRARIES
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MoreVert, Print } from '@material-ui/icons';
-import { RiFileExcel2Line } from 'react-icons/ri';
 import { default as printProcess } from 'print-js';
+import { css } from 'emotion';
 
 // SERVICES
 import { saveToFileDialog } from '../../services/electronDialogs.svc';
 import { exportToExcel } from '../../services/excel.svc';
-
-// CSS
-import {
-  pageControls,
-  pageControlsButton
-} from './PageControls.module.css';
 import { toastManager } from '../../toasts/toastManager';
-import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import useModalLogic from '../../customHooks/useModalLogic';
-import PrintModal from '../modals/PrintModal/PrintModal';
 import { saveToPdf } from '../../services/print.svc';
+
+// COMPONENTS
+import PrintModal from '../modals/PrintModal/PrintModal';
+import ExcelButton from '../Buttons/ExcelButton';
+import PrintButton from '../Buttons/PrintButton';
+import MoreButton from '../Buttons/MoreButton';
+
+const _container = css`
+  float: left;
+  margin: 0 20px 0 0;
+  display: flex;
+  align-items: center;
+`;
 
 let options = {
   //Placeholder 3
@@ -51,7 +55,7 @@ const PageControls = props => {
   }
 
   return (
-    <div id="page-controls" className={pageControls} style={style}>
+    <div id="page-controls" className={_container} style={style}>
       <ExcelButton onClick={exportToExcelHandler} />
 
       <PrintButton
@@ -107,25 +111,3 @@ PageControls.propTypes = {
 };
 
 export default PageControls;
-
-const ExcelButton = ({ onClick }) => <ButtonWithSound
-  className={pageControlsButton}
-  onClick={onClick}
->
-  <RiFileExcel2Line style={{ color: "fafafa", fontSize: "24px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
-</ButtonWithSound>;
-
-const PrintButton = ({ onClick }) => <ButtonWithSound
-  className={pageControlsButton}
-  onClick={onClick}
->
-  <Print style={{ color: "#fafafa", fontSize: "26px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
-</ButtonWithSound>;
-
-const MoreButton = ({ onClick }) =>
-  <ButtonWithSound
-    className={pageControlsButton}
-    onClick={onClick}
-  >
-    <MoreVert style={{ color: "#fafafa", fontSize: "26px", filter: "drop-shadow(5px 5px 5px rgba(0,0,0,0.1))" }} />
-  </ButtonWithSound>;

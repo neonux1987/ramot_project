@@ -1,9 +1,7 @@
 .wrapper{
-  margin-bottom: 0px;
-  background: rgb(28 102 165);
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  border-bottom: none;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #efecec;
+  padding-bottom: 5px;
 }
 
 .controls{

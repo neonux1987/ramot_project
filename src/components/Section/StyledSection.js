@@ -45,6 +45,7 @@ const _titleWrapper = css`
 
 const _titleTypography = css`
   color: #ffffff;
+  font-weight: 400;
 `;
 
 const _extraDetails = css`
@@ -52,7 +53,7 @@ const _extraDetails = css`
   justify-content: flex-end;
   align-items: center;
   flex-grow: 1;
-  padding-left: 20px;
+  padding-left: 25px;
 `;
 
 const _content = css`

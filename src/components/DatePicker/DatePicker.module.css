@@ -7,7 +7,7 @@ justify-content: center;
 .formControl {
     min-width: 120;
     display: flex;
-    padding: 4px 40px;
+    padding: 0;
     border-radius: 6px;
   }
 
@@ -15,8 +15,8 @@ justify-content: center;
   text-align: center;
   margin: 0 5px;
   width: 100px;
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
-  /* background-color: #ffffff; */
+  /* background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%); */
+  background-color: #ffffff;
   font-size: 15px;
   border-radius: 6px;
   color: #000000;
@@ -71,7 +71,7 @@ justify-content: center;
   }
 
   .pickerLabel{
-    color: #fafafa;
+    color: #000000;
     font-size: 16px;
     display: flex;
     align-items: center;

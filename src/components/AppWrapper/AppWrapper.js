@@ -5,7 +5,7 @@ const style = css`
   display: flex;
   padding: 0;
   flex: 1;
-  overflow: "hidden;
+  overflow: hidden;
 `
 
 const AppWrapper = ({ children }) => <div className={style}>
