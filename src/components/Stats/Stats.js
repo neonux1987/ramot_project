@@ -1,14 +1,15 @@
 import React from 'react';
-import styles from './Stats.module.css';
-import { Box } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 
-export default ({ stats, columns = 4 }) => {
+export default ({ stats }) => {
   return (
-    <Box
-      className={styles.wrapper}
-      style={{ gridTemplateColumns: `repeat(${columns},1fr)` }}
+    <Grid
+      container
+      spacing={2}
+      justify={"space-evenly"}
+      style={{ padding: "20px 0" }}
     >
       {stats || []}
-    </Box>
+    </Grid>
   );
 }

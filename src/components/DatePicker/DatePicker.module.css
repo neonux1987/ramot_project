@@ -8,7 +8,7 @@ justify-content: center;
     min-width: 120;
     display: flex;
     padding: 4px 40px;
-    border-radius: 5px;
+    border-radius: 6px;
   }
 
 .formSelect {
@@ -18,7 +18,7 @@ justify-content: center;
   background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
   /* background-color: #ffffff; */
   font-size: 15px;
-  border-radius: 5px;
+  border-radius: 6px;
   color: #000000;
   font-weight: 400;
   border: 1px solid #efecec;

@@ -63,12 +63,13 @@ class QuarterStatsContainer extends React.PureComponent {
     const returnStats = [];
 
     for (let i = 0; i < quarterMonths.length; i++) {
+      const { month, outcome, income } = monthStats[i];
 
       returnStats[i] = <StatBox
         key={i}
-        title={`${monthStats[i].month}`}
-        outcome={monthStats[i].outcome}
-        income={monthStats[i].income}
+        title={`${month}`}
+        outcome={outcome}
+        income={income}
         unicodeSymbol={Helper.shekelUnicode}
         titleColor={colors[i]}
         loading={isFetching}
@@ -81,11 +82,13 @@ class QuarterStatsContainer extends React.PureComponent {
   }
 
   generateQuarterStats = (quarterStat, isFetching) => {
+    const { quarter, outcome, income } = quarterStat;
+
     return <StatBox
       key={3}
-      title={`רבעון ${quarterStat.quarter}`}
-      outcome={quarterStat.outcome}
-      income={quarterStat.income}
+      title={`רבעון ${quarter}`}
+      outcome={outcome}
+      income={income}
       unicodeSymbol={Helper.shekelUnicode}
       titleColor={this.context.colorSet[3]}
       loading={isFetching}

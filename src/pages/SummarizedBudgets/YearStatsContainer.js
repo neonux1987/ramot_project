@@ -59,15 +59,16 @@ class YearStatsContainer extends React.PureComponent {
     const quarters = Helper.getYearQuarters();
 
     // where the boxes will be stored fo render
-    const returnStats = [];
+    const stats = [];
 
     for (let i = 0; i < quarters.length; i++) {
+      const { outcome, income } = quarterlyStats[i];
 
-      returnStats[i] = <StatBox
+      stats[i] = <StatBox
         key={`quarter${i}`}
         title={quarters[i]}
-        outcome={quarterlyStats[i].outcome}
-        income={quarterlyStats[i].income}
+        outcome={outcome}
+        income={income}
         unicodeSymbol={Helper.shekelUnicode}
         titleColor={colors[i]}
         loading={isFetching}
@@ -75,16 +76,17 @@ class YearStatsContainer extends React.PureComponent {
 
     } // end loop
 
-    return returnStats;
+    return stats;
 
   }
 
   generateYearStats(yearStats, isFetching) {
+    const { year, income, outcome } = yearStats;
     return <StatBox
       key={"year"}
-      title={`${yearStats.year}`}
-      outcome={yearStats.outcome}
-      income={yearStats.income}
+      title={`${year}`}
+      outcome={outcome}
+      income={income}
       unicodeSymbol={Helper.shekelUnicode}
       titleColor={this.context.colorSet[4]}
       loading={isFetching}

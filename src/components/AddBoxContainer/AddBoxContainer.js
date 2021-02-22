@@ -8,7 +8,7 @@ const style = css`
   z-index: 3;
   position: relative;
   box-shadow: rgba(0, 64, 82, 0.05) 0px 0px 14px 0px;
-  border-radius: 5px;
+  border-radius: 6px;
   background-color: #ffffff;
   display: flex;
 `;

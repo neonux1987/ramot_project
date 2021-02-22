@@ -17,7 +17,7 @@ const container = css`
     right: 0;
     position: absolute;
     background: #fff;
-    border-radius: 5px;
+    border-radius: 6px;
     outline: none;
     -webkit-app-region: no-drag;
     `;

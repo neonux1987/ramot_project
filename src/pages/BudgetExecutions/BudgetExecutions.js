@@ -25,6 +25,7 @@ import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersAc
 import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
+import StyledSection from '../../components/Section/StyledSection';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -65,7 +66,7 @@ const BudgetExecutions = props => {
       />
     </Section>
 
-    <TableExpandableSection
+    <StyledSection
       marginBottom={"100px"}
       padding={"0px 15px 15px"}
       title={TABLE_TITLE}
@@ -82,7 +83,7 @@ const BudgetExecutions = props => {
         pageName={PAGE_NAME}
         pageTitle={PAGE_TITLE}
       />
-    </TableExpandableSection>
+    </StyledSection>
 
   </div>
 

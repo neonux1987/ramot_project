@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core';
 import { Element, Events } from 'react-scroll'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { css } from 'emotion';
+import classnames from 'classnames';
 
 // PAGES
 import MonthExpanses from '../pages/MonthExpanses/MonthExpanses';
@@ -18,38 +19,25 @@ import Management from '../pages/Management/Management';
 import Statistics from '../pages/Statistics/Statistics';
 
 // COMPONENTS
-import Toolbar from './Toolbar/Toolbar';
-
-// UTILS
-import Helper from '../helpers/Helper';
+import BreadcrumbsContainer from './Toolbar/Breadcrumbs/BreadcrumbsContainer';
 
 // ACTIONS
 import * as sidebarActions from '../redux/actions/sidebarActions';
 import * as routesActions from '../redux/actions/routesActions';
-import Breadcrumbs from './Toolbar/Breadcrumbs/Breadcrumbs';
+
 
 const mainStyle = css`
-height: 100%;
+  height: 100%;
 `;
 
-const styles = theme => ({
-  main: {
-    flexGrow: 1,
-    overflow: "overlay",
-    display: "block",
-    position: "relative",
-    right: "-1960px",
-    opacity: "0"
-  },
-  loadingWrapper: {
-    display: "flex",
-    height: "100%",
-    alignItems: "center",
-    color: "#000",
-    fontSize: "34px",
-    margin: "0 auto"
-  }
-})
+const elementStyle = css`
+  left: -1960px;
+  display: block;
+  opacity: 0;
+  overflow: overlay;
+  position: relative;
+  flex-grow: 1;
+`;
 
 class MainContainer extends Component {
 
@@ -125,50 +113,49 @@ class MainContainer extends Component {
     }
     const timeout = { enter: 800, exit: 400 };
 
-    return (
-      <Element
-        id="mainContainer"
-        className={this.props.classes.main + this.props.toggleMain}
-      >
+    return <Element
+      id="mainContainer"
+      className={classnames(elementStyle, this.props.toggleMain)}
+    >
 
-        <Breadcrumbs className={styles.breadcrumbs} />
+      <BreadcrumbsContainer />
 
-        <main ref={this.props.mainContainer} className={mainStyle}>
+      <main ref={this.props.mainContainer} className={mainStyle}>
 
-          <Route render={({ location }) => (
-            <TransitionGroup style={{ position: "relative" /* height: "100%" */ }}>
-              <CSSTransition
-                style={{ height: "100%", paddingBottom: "80px" }}
-                //key={location.key}
-                timeout={timeout}
-                classNames="fade"
-                mountOnEnter={false}
-                unmountOnExit={true}
-              >
+        <Route render={({ location }) => (
+          <TransitionGroup style={{ position: "relative" /* height: "100%" */ }}>
+            <CSSTransition
+              style={{ height: "100%", paddingBottom: "80px" }}
+              //key={location.key}
+              timeout={timeout}
+              classNames="fade"
+              mountOnEnter={false}
+              unmountOnExit={true}
+            >
 
-                <Switch location={location}>
-                  {this.generateRoutes(this.props.sidebar.menu.data)}
-                  <Route path="/" exact component={Home} />
-                  <Route path="/הגדרות"
-                    render={routeProps => (
-                      <Settings {...routeProps} />
-                    )}
-                  />
-                  <Route path="/ניהול" component={Management} />
-                  <Route exact path="/" component={Home} history={{
-                    page: "דף-הבית",
-                    buildingName: "דף הבית",
-                    buildingNameEng: "home"
-                  }} />
-                </Switch>
+              <Switch location={location}>
+                {this.generateRoutes(this.props.sidebar.menu.data)}
+                <Route path="/" exact component={Home} />
+                <Route path="/הגדרות"
+                  render={routeProps => (
+                    <Settings {...routeProps} />
+                  )}
+                />
+                <Route path="/ניהול" component={Management} />
+                <Route exact path="/" component={Home} history={{
+                  page: "דף-הבית",
+                  buildingName: "דף הבית",
+                  buildingNameEng: "home"
+                }} />
+              </Switch>
 
-              </CSSTransition>
-            </TransitionGroup>
-          )} />
+            </CSSTransition>
+          </TransitionGroup>
+        )} />
 
-        </main>
-      </Element>
-    );
+      </main>
+    </Element>
+
   }
 
 }
@@ -185,7 +172,5 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(withStyles(styles)(
-    MainContainer
-  ))
+  withRouter(MainContainer)
 );

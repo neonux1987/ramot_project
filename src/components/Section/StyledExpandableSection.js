@@ -1,7 +1,7 @@
 import React from 'react';
 import ExpandableSection from "./ExpandableSection";
 
-export default props => {
+const StyledExpandableSection = props => {
 
   return (
     <ExpandableSection
@@ -13,3 +13,5 @@ export default props => {
     </ExpandableSection>
   );
 }
+
+export default StyledExpandableSection;

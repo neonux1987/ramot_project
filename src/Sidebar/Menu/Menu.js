@@ -52,7 +52,7 @@ const Menu = (props) => {
       default: return Label
     };
   }
-  //console.log(routes);
+
   const expandHandleClick = (item) => {
     const { label, engLabel, path } = item;
 
@@ -111,7 +111,7 @@ const Menu = (props) => {
 
       {submenu.map((subItem) => {
         const { label, id, path } = subItem;
-        console.log(label);
+
         return <Menuitem
           label={label}
           Icon={generateIcon(label)}

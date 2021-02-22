@@ -5,19 +5,13 @@ import { RiBuilding2Fill } from 'react-icons/ri';
 import useIcons from '../../customHooks/useIcons';
 
 const container = css`
-  margin: 20px 25px 20px;
-  /* padding: 10px 15px; */
-  font-weight: 500;
-  /* border: 1px solid #e0e0e0; */
-  /* background: #fff; */
- /*  border-radius: 8px; */
-  /* box-shadow: rgba(53, 64, 82, 0.05) 0px 0px 14px 0px; */
+  margin: 20px;
 `;
 
 const mainContainer = css`
   display: flex;
   align-items: center;
-  padding: 0;
+  padding: 0 5px;
 `;
 
 const mainIcon = css`
@@ -40,9 +34,8 @@ const mainTitle = css`
 const subContainer = css`
   display: flex;
   align-items: center;
-  /* border-top: 1px solid #efecec; */
+  padding: 0 5px;
   border-bottom: 1px solid #efecec;
-  /* background: #fdfdfd; */
 `;
 
 const subIconWrapper = css`

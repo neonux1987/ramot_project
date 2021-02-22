@@ -43,6 +43,7 @@ import { soundManager } from './soundManager/SoundManager';
 import { toastManager } from './toasts/toastManager';
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import { generateBuildingsReducer } from './redux/reducers/util/util';
+import AppWrapper from './components/AppWrapper/AppWrapper';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -74,7 +75,6 @@ const TOAST_REPORTS_ID = "reportsGeneratorId";
 
 const App = () => {
 
-  const toggleSidebarAnimation = "";
   const mainContainer = useRef(null);
 
   const settings = useSelector(store => store.settings);
@@ -242,20 +242,15 @@ const App = () => {
 
           <ThemeContext.Provider value={settings.data.theme}>
 
-            <div style={{
-              display: "flex",
-              padding: "0",
-              flex: "1",
-              overflow: "hidden"
-            }}>
+            <AppWrapper>
 
               <CssBaseline />
 
-              <Sidebar toggleStyle={" " + toggleSidebarAnimation} />
+              <Sidebar />
 
-              <MainContainer mainContainer={mainContainer} toggleMain={" showMainAnimation"} />
+              <MainContainer mainContainer={mainContainer} toggleMain={"showMainAnimation"} />
 
-            </div>
+            </AppWrapper>
 
             <CustomToastContainer />
           </ThemeContext.Provider>
