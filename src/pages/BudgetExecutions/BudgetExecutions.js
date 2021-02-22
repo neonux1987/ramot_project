@@ -8,7 +8,6 @@ import { IoMdStats } from 'react-icons/io';
 // COMMON COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import TableExpandableSection from '../../components/Section/TableExpandableSection';
 import DateDetails from '../../components/DateDetails/DateDetails';
 import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 
@@ -22,7 +21,6 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
 import StyledSection from '../../components/Section/StyledSection';
@@ -67,11 +65,8 @@ const BudgetExecutions = props => {
     </Section>
 
     <StyledSection
-      marginBottom={"100px"}
-      padding={"0px 15px 15px"}
       title={TABLE_TITLE}
-      TitleIcon={<SvgIconWrapper Icon={ListAlt} color="#ffffff" />}
-      iconColor="rgb(28 102 165)"
+      Icon={ListAlt}
       extraDetails={() => <DateDetails
         quarter={date.quarter}
         year={date.year}

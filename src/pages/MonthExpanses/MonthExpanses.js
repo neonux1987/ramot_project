@@ -19,8 +19,7 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
-import TableExpandableSection from '../../components/Section/TableExpandableSection';
-import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
+import StyledSection from '../../components/Section/StyledSection';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "מעקב הוצאות חודשיות";
@@ -48,12 +47,9 @@ const MonthExpanses = props => {
 
       <PageHeader building={buildingName} page={PAGE_TITLE} />
 
-      <TableExpandableSection
-        padding={"10px 15px 15px"}
-        margin="20px 20px 40px"
+      <StyledSection
         title={TABLE_TITLE}
-        TitleIcon={<SvgIconWrapper Icon={ListAlt} color="#ffffff" />}
-        iconColor="rgb(28 102 165)"
+        Icon={ListAlt}
         extraDetails={() => <DateDetails
           month={date.monthHeb}
           quarter={date.quarter}
@@ -68,7 +64,7 @@ const MonthExpanses = props => {
           pageTitle={PAGE_TITLE}
         />
 
-      </TableExpandableSection>
+      </StyledSection>
 
     </div>
   );

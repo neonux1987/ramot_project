@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 // COMMON COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import TableExpandableSection from '../../components/Section/TableExpandableSection';
 import DateDetails from '../../components/DateDetails/DateDetails';
 import PageHeader from '../../components/PageHeader/PageHeader';
 
@@ -21,10 +20,10 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
 import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 import { IoMdStats } from 'react-icons/io';
 import Section from '../../components/Section/Section';
+import StyledSection from '../../components/Section/StyledSection';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -63,17 +62,14 @@ const SummarizedBudgets = props => {
       />
     </Section>
 
-    <TableExpandableSection
+    <StyledSection
       title={TABLE_TITLE}
-      TitleIcon={<SvgIconWrapper Icon={ListAlt} color="#ffffff" />}
-      iconColor="rgb(28 102 165)"
+      Icon={ListAlt}
       extraDetails={() => <DateDetails
         month={date.monthHeb}
         quarter={date.quarter}
         year={date.year}
       />}
-      marginBottom={"100px"}
-      padding={"10px 15px 15px"}
     >
 
       <SummarizedBudgetsTableContainer
@@ -83,7 +79,7 @@ const SummarizedBudgets = props => {
         pageTitle={PAGE_TITLE}
       />
 
-    </TableExpandableSection>
+    </StyledSection>
 
   </div>;
 
