@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from './Row';
 
-export default ({ gridTemplateColumns, style = {}, children, className }) => {
+const HeaderRow = ({ gridTemplateColumns, style = {}, children, className }) => {
   return (
     <Row
       style={{
@@ -9,10 +9,10 @@ export default ({ gridTemplateColumns, style = {}, children, className }) => {
         borderTop: "1px solid #e6e6e6",
         borderLeft: "1px solid #e6e6e6",
         position: "relative",
-        backgroundColor: "#fafafa",
+        //backgroundColor: "rgb(247, 248, 249)",
         borderBottom: "1px solid #e6e6e6",
         //textShadow: "0px 0px 4px #00000012",
-        boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.07)",
+        //boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.07)",
         borderBottom: "1px solid #e6e6e6",
         zIndex: "2",
         fontSize: "16px",
@@ -25,3 +25,5 @@ export default ({ gridTemplateColumns, style = {}, children, className }) => {
     </Row>
   );
 }
+
+export default HeaderRow;

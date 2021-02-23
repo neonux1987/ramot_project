@@ -23,7 +23,7 @@ import { initRegisteredYears } from '../../redux/actions/registeredYearsActions'
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
-import StyledSection from '../../components/Section/StyledSection';
+import TableSection from '../../components/Section/TableSection';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "מעקב ביצוע מול תקציב";
@@ -64,10 +64,10 @@ const BudgetExecutions = props => {
       />
     </Section>
 
-    <StyledSection
+    <TableSection
       title={TABLE_TITLE}
       Icon={ListAlt}
-      extraDetails={() => <DateDetails
+      extraDetails={<DateDetails
         quarter={date.quarter}
         year={date.year}
       />}
@@ -78,7 +78,7 @@ const BudgetExecutions = props => {
         pageName={PAGE_NAME}
         pageTitle={PAGE_TITLE}
       />
-    </StyledSection>
+    </TableSection>
 
   </div>
 

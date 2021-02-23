@@ -23,7 +23,7 @@ import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersAc
 import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 import { IoMdStats } from 'react-icons/io';
 import Section from '../../components/Section/Section';
-import StyledSection from '../../components/Section/StyledSection';
+import TableSection from '../../components/Section/TableSection';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -62,10 +62,10 @@ const SummarizedBudgets = props => {
       />
     </Section>
 
-    <StyledSection
+    <TableSection
       title={TABLE_TITLE}
       Icon={ListAlt}
-      extraDetails={() => <DateDetails
+      extraDetails={<DateDetails
         month={date.monthHeb}
         quarter={date.quarter}
         year={date.year}
@@ -79,7 +79,7 @@ const SummarizedBudgets = props => {
         pageTitle={PAGE_TITLE}
       />
 
-    </StyledSection>
+    </TableSection>
 
   </div>;
 

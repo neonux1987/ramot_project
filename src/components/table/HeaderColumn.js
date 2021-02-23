@@ -10,10 +10,12 @@ const icon = css`
   margin-top: -2px;
 `;
 
-export default props => {
+const HeaderColumn = props => {
   return <Column {...props} innerStyle={{ display: "flex", justtifyConten: "center", alignItems: "center" }}>
     {props.editMode ?
       <FiEdit className={icon} /> : null}
     <div>{props.children}</div>
   </Column>;
 };
+
+export default HeaderColumn;

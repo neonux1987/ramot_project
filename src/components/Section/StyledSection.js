@@ -18,7 +18,7 @@ const _header = css`
 const _titleBox = css`
   margin: -20px 20px 20px 20px;
   border-radius: 6px;
-  width: 320px;
+  padding: 0 40px;
   height: 80px;
   box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
   display: flex;
@@ -63,7 +63,7 @@ const _content = css`
 const StyledSection = ({
   title,
   Icon,
-  bgColor = "rgb(28 102 165)",
+  bgColor = "rgb(36 151 181)",
   extraDetails = null,
   children
 }) => {
@@ -92,7 +92,7 @@ const StyledSection = ({
 
       {/* extra details */}
       <div role="extra details" className={_extraDetails}>
-        {extraDetails()}
+        {extraDetails}
       </div>
       {/* end extra details */}
 

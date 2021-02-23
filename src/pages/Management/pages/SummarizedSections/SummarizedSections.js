@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import { TableChart } from '@material-ui/icons';
 
 // COMPONENTS
-import TableExpandableSection from '../../../../components/Section/TableExpandableSection';
+import TableSection from '../../../../components/Section/TableSection';
 
 // CONTAINERS
 import SummarizedSectionsTableContainer from './SummarizedSectionsTableContainer';
@@ -15,11 +15,11 @@ const SummarizedSections = () => {
   return (
     <Fragment>
 
-      <TableExpandableSection margin="20px 20px 40px" title={TABLE_TITLE} TitleIcon={<TableChart />} iconColor="rgb(25, 121, 204)">
+      <TableSection title={TABLE_TITLE} Icon={TableChart}>
 
         <SummarizedSectionsTableContainer />
 
-      </TableExpandableSection> {/* end Section */}
+      </TableSection> {/* end Section */}
 
     </Fragment>
   );

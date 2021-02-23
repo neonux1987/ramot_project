@@ -303,7 +303,7 @@ const MonthExpansesTableContainer = props => {
       {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
-  console.log(generalSettings);
+
   if (page === undefined || page.data === undefined || generalSettings.isFetching) {
     return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב הוצאות חודשיות..."} /></AlignCenterMiddle>;
   }
