@@ -22,6 +22,7 @@ import { initRegisteredMonths } from '../../redux/actions/registeredMonthsAction
 // CONTAINERS
 import YearsChartContainer from './YearsChartContainer';
 import MonthsChartContainer from './MonthsChartContainer';
+import TableSection from '../../components/Section/TableSection';
 
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
@@ -47,17 +48,16 @@ export default props => {
 
       <PageHeader building={buildingName} page={PAGE_TITLE} />
 
-      <StrippedExpandableSection
+      <TableSection
         title={TITLE}
-        TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="$ffffff" />}
-        iconColor={"#7d3bc5"}
+        Icon={IoMdStats}
       >
         <MonthsChartContainer
           buildingName={buildingNameEng}
           pageName={PAGE_NAME}
           date={date}
         />
-      </StrippedExpandableSection>
+      </TableSection>
 
       {/* <YearsChartContainer buildingName={buildingNameEng} pageName={PAGE_NAME} date={date} /> */}
 
