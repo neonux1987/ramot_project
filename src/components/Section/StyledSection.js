@@ -63,7 +63,7 @@ const _content = css`
 const StyledSection = ({
   title,
   Icon,
-  bgColor = "rgb(36 151 181)",
+  bgColor = "rgb(17 162 199)",
   extraDetails = null,
   children
 }) => {

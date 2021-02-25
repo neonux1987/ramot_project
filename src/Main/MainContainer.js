@@ -103,24 +103,13 @@ class MainContainer extends Component {
   }
 
   render() {
-    let locationState = { ...this.props.location.state };
-
-    //set default state for default / root location
-    if (!this.props.location.state) {
-      locationState = {
-        page: "דף הבית"
-      };
-    }
     const timeout = { enter: 800, exit: 400 };
 
-    return <Element
-      id="mainContainer"
-      className={classnames(elementStyle, this.props.toggleMain)}
-    >
+    return <main id="mainContainer" ref={this.props.mainContainer} className={classnames(elementStyle, this.props.toggleMain)}>
 
       <BreadcrumbsContainer />
 
-      <main ref={this.props.mainContainer} className={mainStyle}>
+      <Element className={mainStyle}>
 
         <Route render={({ location }) => (
           <TransitionGroup style={{ position: "relative" /* height: "100%" */ }}>
@@ -153,8 +142,10 @@ class MainContainer extends Component {
           </TransitionGroup>
         )} />
 
-      </main>
-    </Element>
+      </Element>
+
+    </main>
+
 
   }
 
