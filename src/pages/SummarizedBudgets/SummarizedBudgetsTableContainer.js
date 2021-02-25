@@ -35,8 +35,8 @@ import Table from '../../components/table/Table';
 import GroupRow from '../../components/table/GroupRow';
 
 // HOC 
-import withTableLogic from '../../HOC/withTableLogic';
 import HeaderColumn from '../../components/table/HeaderColumn';
+import useTableLogic from '../../customHooks/useTableLogic';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -50,10 +50,15 @@ const SummarizedBudgetsTableContainer = props => {
     date,
     dateActions,
     pageName,
-    pageTitle,
-    editMode,
-    toggleEditMode
+    pageTitle
   } = props;
+
+  const {
+    toggleEditMode,
+    editMode,
+    textAreaInput,
+    numberInput
+  } = useTableLogic();
 
   const themeContext = useContext(ThemeContext);
 
@@ -218,10 +223,6 @@ const SummarizedBudgetsTableContainer = props => {
   }
 
   const TableRow = (index) => {
-    const {
-      textAreaInput,
-      numberInput
-    } = props;
 
     // row data
     const rowData = getDataObject(index);
@@ -313,9 +314,7 @@ const SummarizedBudgetsTableContainer = props => {
 
 }
 
-const ConnectedComponent = withTableLogic(SummarizedBudgetsTableContainer);
-
-export default React.memo(ConnectedComponent, areEqual);
+export default React.memo(SummarizedBudgetsTableContainer, areEqual);
 
 const defaultheaderStyle = {
   color: "#000000",

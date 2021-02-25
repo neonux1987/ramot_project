@@ -9,7 +9,7 @@ const HeaderRow = ({ gridTemplateColumns, style = {}, children, className }) => 
         borderTop: "1px solid #e6e6e6",
         borderLeft: "1px solid #e6e6e6",
         position: "relative",
-        //backgroundColor: "rgb(247, 248, 249)",
+        backgroundColor: "#fafafa",
         borderBottom: "1px solid #e6e6e6",
         //textShadow: "0px 0px 4px #00000012",
         //boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.07)",

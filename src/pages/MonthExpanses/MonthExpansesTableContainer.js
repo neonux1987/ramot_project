@@ -33,12 +33,10 @@ import Column from '../../components/table/Column';
 import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
 import HeaderRow from '../../components/table/HeaderRow';
 
-// HOC
-import withTableLogic from '../../HOC/withTableLogic';
-
 // AUDIO
 import { toastManager } from '../../toasts/toastManager';
 import HeaderColumn from '../../components/table/HeaderColumn';
+import useTableLogic from '../../customHooks/useTableLogic';
 
 const MonthExpansesTableContainer = props => {
 
@@ -48,12 +46,17 @@ const MonthExpansesTableContainer = props => {
   const {
     date,
     pageName,
-    pageTitle,
-    editMode,
-    toggleEditMode,
-    addNewMode,
-    toggleAddNewMode
+    pageTitle
   } = props;
+
+  const {
+    toggleEditMode,
+    editMode,
+    toggleAddNewMode,
+    addNewMode,
+    textAreaInput,
+    numberInput
+  } = useTableLogic();
 
   const dispatch = useDispatch();
 
@@ -277,11 +280,6 @@ const MonthExpansesTableContainer = props => {
   }
 
   const TableRow = (index) => {
-    const {
-      textAreaInput,
-      numberInput
-    } = props;
-
     // row data
     const rowData = getDataObject(index);
     // column settings
@@ -384,9 +382,7 @@ const MonthExpansesTableContainer = props => {
 
 }
 
-const ConnectedComponent = withTableLogic(MonthExpansesTableContainer);
-
-export default ConnectedComponent;
+export default MonthExpansesTableContainer;
 
 const headerStyle = {
   color: "#000000",

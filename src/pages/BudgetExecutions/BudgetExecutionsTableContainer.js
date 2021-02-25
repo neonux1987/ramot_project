@@ -34,16 +34,16 @@ import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Table from '../../components/table/Table';
 import GroupRow from '../../components/table/GroupRow';
+import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution';
 
 // HOC
 import withColumnColorLogic from '../../HOC/withColumnColorLogic';
-import withTableLogic from '../../HOC/withTableLogic';
-import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution';
 
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
 import AddNewContainer from './AddNewContainer/AddNewContainer';
 import HeaderColumn from '../../components/table/HeaderColumn';
+import useTableLogic from '../../customHooks/useTableLogic';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -56,12 +56,17 @@ const BudgetExecutionsTable = props => {
     date,
     dateActions,
     pageName,
-    pageTitle,
-    editMode,
-    toggleEditMode,
-    addNewMode,
-    toggleAddNewMode
+    pageTitle
   } = props;
+
+  const {
+    toggleEditMode,
+    editMode,
+    toggleAddNewMode,
+    addNewMode,
+    textAreaInput,
+    numberInput
+  } = useTableLogic();
 
   const themeContext = useContext(ThemeContext);
   const { showModal } = useModalLogic();
@@ -212,7 +217,7 @@ const BudgetExecutionsTable = props => {
   }
 
   const getGridTemplateColumns = () => {
-    return props.editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
+    return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
   const getDataObject = (index) => {
@@ -220,7 +225,7 @@ const BudgetExecutionsTable = props => {
   }
 
   const HeaderGroups = () => {
-    const editMode = props.editMode;
+    const editMode = editMode;
     const { colorSet } = themeContext;
     const { quarter } = date;
 
@@ -255,7 +260,6 @@ const BudgetExecutionsTable = props => {
   }
 
   const HeadersRow = () => {
-    const editMode = props.editMode;
 
     const { colorSet } = themeContext;
 
@@ -289,11 +293,6 @@ const BudgetExecutionsTable = props => {
   }
 
   const TableRow = (index) => {
-    const {
-      textAreaInput,
-      numberInput
-    } = props;
-
     // row data
     const rowData = getDataObject(index);
 
@@ -402,9 +401,7 @@ const BudgetExecutionsTable = props => {
   );
 }
 
-const ConnectedComponent = withTableLogic(BudgetExecutionsTable);
-
-export default React.memo(ConnectedComponent, areEqual);
+export default React.memo(BudgetExecutionsTable, areEqual);
 
 const defaultheaderStyle = {
   color: "#000000",

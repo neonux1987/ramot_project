@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
   font-family: "Rubik";
   font-weight: 400;
   src: url("../fonts/Rubik/Rubik-Regular.ttf");
@@ -35,7 +35,7 @@
   font-family: "Open Sans Hebrew";
   font-weight: 600;
   src: url("../fonts/OpensSansHebrew/opensanshebrew-bold-webfont.ttf");
-}
+} */
 
 @font-face {
   font-family: "Assistant";
@@ -55,7 +55,7 @@
   src: url("../fonts/Assistant/Assistant-Bold.ttf");
 }
 
-@font-face {
+/* @font-face {
   font-family: "NotoSansHebrew";
   font-weight: 400;
   src: url("../fonts/NotoSansHebrew/NotoSansHebrew-Regular.ttf");
@@ -79,7 +79,7 @@
   font-family: "Heebo";
   font-weight: 600;
   src: url("../fonts/Heebo/Heebo-Bold.ttf");
-}
+} */
 
 html,body{
     height: 100%;
@@ -234,80 +234,8 @@ input[type="number"] {
 }
 
 input,textarea{
-    font-family: 'Rubik', sans-serif;
+  font-family: 'Assistant', sans-serif;
 }
-
-/* react table overrides */
-.ReactTable .-pagination{
-  box-shadow: none;
-  border-top: none;
-  padding: 3px 0;
-}
-
-.ReactTable{
-  background: #fff;
-  border:none;
-}
-
-.ReactTable.-striped .rt-tr.-odd{
-  background: rgb(249, 250, 251);
-}
-
-/** change body row parameters **/
-.ReactTable .rt-tbody .rt-tr-group{
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-/** change body cell paramters **/
-.ReactTable .rt-tbody .rt-td{
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.ReactTable .rt-tbody .rt-td:first-child{
-  border-right: none;
-}
-
-.ReactTable .rt-tbody .rt-td:last-child{
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.ReactTable .rt-noData{
-  font-size: 24px;
-  color: #353535;
-}
-
-.ReactTable .rt-table{
-  display: block;
-}
-
-.rt-table{
-  border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.rt-tbody{
-  height: 580px;
-}
-
-.rt-td{
-  align-items: center;
-    justify-content: center;
-    vertical-align: middle;
-    display: flex;
-    font-size: 15px;
-}
-
-.ReactTable .rt-thead .rt-th{
-  background: #ebeef1;
-}
-
-.ReactTable .rt-thead .rt-th:last-child{
-border: none;
-}
-
-.ReactTable .rt-thead .rt-th:first-child{
-  border: none;
-  }
 
 /******** Toastify override ********/
 .Toastify__toast--success {

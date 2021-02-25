@@ -20,25 +20,25 @@ import Table from '../../../../components/table/Table';
 
 // HOC
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
-import withTableLogic from '../../../../HOC/withTableLogic';
 
 // CONTAINERS
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import { toastManager } from '../../../../toasts/toastManager';
+import useTableLogic from '../../../../customHooks/useTableLogic';
 
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
-const ExpansesCodes = props => {
+const ExpansesCodes = () => {
 
   const {
-    editMode,
-    textInput,
-    numberInput,
     toggleEditMode,
+    editMode,
+    toggleAddNewMode,
     addNewMode,
-    toggleAddNewMode
-  } = props;
+    textInput,
+    numberInput
+  } = useTableLogic();
 
   const dispatch = useDispatch();
 
@@ -291,9 +291,7 @@ const ExpansesCodes = props => {
 
 }
 
-const WrappedComponent = withTableLogic(ExpansesCodes);
-
-export default React.memo(WrappedComponent, areEqual);
+export default React.memo(ExpansesCodes, areEqual);
 
 function areEqual(prevProps, nextProps) {
   if (

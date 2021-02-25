@@ -23,24 +23,24 @@ import Table from '../../../../components/table/Table';
 
 // HOC
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
-import withTableLogic from '../../../../HOC/withTableLogic';
 
 // CUSTOM HOOKS
 import AddSummarizedSectionContainer from './AddSummarizedSectionContainer/AddSummarizedSectionContainer';
 import { toastManager } from '../../../../toasts/toastManager';
+import useTableLogic from '../../../../customHooks/useTableLogic';
 
 const EDITMODE_TEMPLATE = "minmax(250px,5%) minmax(250px,5%) 1fr";
 const DEFAULT_TEMPLATE = "minmax(250px,5%) 1fr";
 
-const SummarizedSectionsTableContainer = props => {
+const SummarizedSectionsTableContainer = () => {
 
   const {
-    editMode,
     toggleEditMode,
-    addNewMode,
+    editMode,
     toggleAddNewMode,
-    textInput
-  } = props;
+    addNewMode,
+    textInput,
+  } = useTableLogic();
 
   // page data
   const {
@@ -221,9 +221,7 @@ const SummarizedSectionsTableContainer = props => {
 
 }
 
-const WrappedComponent = withTableLogic(SummarizedSectionsTableContainer);
-
-export default React.memo(WrappedComponent, areEqual);
+export default React.memo(SummarizedSectionsTableContainer, areEqual);
 
 function areEqual(prevProps, nextProps) {
   if (
