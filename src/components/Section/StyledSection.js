@@ -24,6 +24,7 @@ const _titleBox = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 320px;
 `;
 
 const _iconWrapper = css`

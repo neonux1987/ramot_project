@@ -36,7 +36,7 @@ const collapsibleInner = css`
   padding: 0;
 `;
 
-export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = "#000000" }) => {
+const StrippedExpandableSection = ({ children, title = "", margin = "20px", TitleIcon, iconColor = "#000000" }) => {
   const [open, setOpen] = useState(true);
 
   const expandClick = () => {
@@ -110,3 +110,5 @@ export default ({ children, title = "", margin = "20px", TitleIcon, iconColor = 
   );
 
 }
+
+export default StrippedExpandableSection;

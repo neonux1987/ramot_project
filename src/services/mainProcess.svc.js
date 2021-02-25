@@ -28,7 +28,12 @@ export const restartApp = () => {
 };
 
 export const muteSound = (muted) => {
-  remote.getCurrentWebContents().setAudioMuted(muted)
+  remote.getCurrentWebContents().setAudioMuted(muted);
+  remote.getCurrentWebContents().reload();
+};
+
+export const refreshView = (muted) => {
+  remote.getCurrentWebContents().reload();
 };
 
 export const showItemInFolder = (path) => {

@@ -10,6 +10,7 @@ import { initiateDbBackup } from '../../../services/dbBackup.svc';
 import { toastManager } from "../../../toasts/toastManager";
 import ToastRender from "../../../components/ToastRender/ToastRender";
 import { flushCache } from "../../../redux/actions/persistorActions";
+import { refreshView } from "../../../services/mainProcess.svc";
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {
 
@@ -22,6 +23,15 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
   const upgradedHandleClose = () => {
     handleClose();
     setOpen(false)
+  }
+
+  const clearCache = () => {
+    flushCache().then(() => {
+      toastManager.success("ניקוי היסטוריית מטמון בוצע בהצלחה. המערכת תרענן את העמוד.", {
+        autoClose: 2500,
+        onClose: () => refreshView()
+      });
+    });
   }
 
   const dbBackupHandler = async () => {
@@ -149,7 +159,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
 
-      <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} flushCache={flushCache} />
+      <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} flushCache={clearCache} />
 
     </Menu>
   );
