@@ -44,6 +44,7 @@ import useModalLogic from '../../customHooks/useModalLogic';
 import AddNewContainer from './AddNewContainer/AddNewContainer';
 import HeaderColumn from '../../components/table/HeaderColumn';
 import useTableLogic from '../../customHooks/useTableLogic';
+import useDifferenceColor from '../../customHooks/useDifferenceColor';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -74,6 +75,8 @@ const BudgetExecutionsTable = props => {
 
   // page data
   const page = useSelector(store => store.budgetExecutions.pages[buildingNameEng]);
+
+  const [whichColor] = useDifferenceColor();
 
   useEffect(() => {
 
@@ -312,6 +315,7 @@ const BudgetExecutionsTable = props => {
     }
 
     const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
+    const differenceColor = whichColor(rowData["difference"]);
 
     const odd = index % 2 === 0 ? "" : "";
 
@@ -323,7 +327,7 @@ const BudgetExecutionsTable = props => {
       {editMode ? numberInput("evaluation", rowData["evaluation"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
       <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>
       <NonZeroNumberColumn>{rowData["total_execution"]}</NonZeroNumberColumn>
-      <DifferenceColumn style={{ direction: "ltr" }}>{rowData["difference"]}</DifferenceColumn>
+      <NonZeroNumberColumn style={{ direction: "ltr", ...differenceColor }}>{rowData["difference"]}</NonZeroNumberColumn>
       {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
     </Row>
   }
