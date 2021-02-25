@@ -16,15 +16,13 @@ const neutral = {
 const useDifferenceColor = () => {
 
   const whichColor = (value) => {
-    console.log(value);
-    switch (value) {
-      case value < 0: return negative;
-      case value > 0: return positive;
-      default: return neutral;
-    }
-
+    if (value < 0)
+      return negative
+    else if (value > 0)
+      return positive;
+    else
+      return neutral;
   };
-
 
   return [whichColor];
 };

@@ -36,9 +36,6 @@ import Table from '../../components/table/Table';
 import GroupRow from '../../components/table/GroupRow';
 import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution';
 
-// HOC
-import withColumnColorLogic from '../../HOC/withColumnColorLogic';
-
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
 import AddNewContainer from './AddNewContainer/AddNewContainer';
@@ -314,7 +311,6 @@ const BudgetExecutionsTable = props => {
       monthColumns.push(<NonZeroNumberColumn key={`${months[i]}_budget_execution${i + 1}`}>{rowData[`${months[i]}_budget_execution`]}</NonZeroNumberColumn>);
     }
 
-    const DifferenceColumn = withColumnColorLogic(NonZeroNumberColumn, rowData["difference"]);
     const differenceColor = whichColor(rowData["difference"]);
 
     const odd = index % 2 === 0 ? "" : "";
