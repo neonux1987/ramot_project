@@ -7,10 +7,10 @@ const wrapper = css`
   justify-content: flex-start;
   align-items: center;
   margin: 0 20px 0;
-  font-size: 16px;
+  font-size: 15px;
   color: #000000;
   padding: 8px 15px;
-  font-weight: 400;
+  font-weight: 500;
   box-shadow: 0px 0px 4px 0px rgb(0 0 0 / 7%);
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
