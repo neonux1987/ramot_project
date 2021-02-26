@@ -1,5 +1,5 @@
 // LIBRARIES
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { useDispatch } from 'react-redux';
 import List from '@material-ui/core/List';
@@ -50,10 +50,15 @@ const Menu = (props) => {
     return newState;
   });
 
-  //console.log(state);
-
   const expandHandleClick = (item) => {
     const { label, engLabel, path } = item;
+
+    const expanded = {
+      ...state,
+      [engLabel]: {
+        open: !state[engLabel].open
+      }
+    };
 
     // when expanding the menu item, set
     // what default page it will open
@@ -68,24 +73,42 @@ const Menu = (props) => {
 
       props.history.replace(pathname, newState);
 
+      dispatch(updateRoute({
+        pathname,
+        state: newState,
+        expanded
+      }));
+    }
+
+    setState(() => {
+      dispatch(updateRoute({
+        expanded
+      }));
+
+      return expanded;
+    });
+  };
+
+  /**
+   * set initial open state for last saved path
+   */
+  useEffect(() => {
+    const { buildingNameEng } = routeState;
+
+    // if the building name is empty that means
+    // that it's the home page, in that case don't set
+    // open state
+    if (buildingNameEng !== "")
       setState(() => {
-        const expanded = {
+        return {
           ...state,
-          [engLabel]: {
-            open: !state[engLabel].open
+          [buildingNameEng]: {
+            open: true
           }
         };
-
-        dispatch(updateRoute({
-          pathname,
-          state: newState,
-          expanded
-        }));
-
-        return expanded;
       });
-    }
-  };
+
+  }, [routeState]);
 
   const menuRender = data.map((item) => {
 
