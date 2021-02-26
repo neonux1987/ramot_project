@@ -112,7 +112,7 @@ class MainContainer extends Component {
       <Element className={mainStyle}>
 
         <Route render={({ location }) => (
-          <TransitionGroup style={{ position: "relative" /* height: "100%" */ }}>
+          <TransitionGroup>
             <CSSTransition
               style={{ height: "100%", paddingBottom: "80px" }}
               //key={location.key}

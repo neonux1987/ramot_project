@@ -88,7 +88,11 @@ const Controls = ({ className }) => {
 
     <VolumeButton className={volumeBtn} />
 
-    <MoreButton className={moreBtn} onClick={handleClick} />
+    <MoreButton
+      className={moreBtn}
+      onClick={handleClick}
+      active={routes.active.state.buildingName === "ניהול"}
+    />
 
     <MoreMenu anchorEl={anchorEl} handleClose={handleClose} restartAppHandler={restartAppHandler} taxClickHandler={taxClickHandler} />
 

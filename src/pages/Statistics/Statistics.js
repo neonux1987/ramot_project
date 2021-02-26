@@ -11,6 +11,7 @@ import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCente
 import Spinner from '../../components/Spinner/Spinner';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import TableSection from '../../components/Section/TableSection';
+import Page from '../../components/Page/Page';
 
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
@@ -38,7 +39,7 @@ export default props => {
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
   return (
-    <div className="page">
+    <Page>
 
       <PageHeader building={buildingName} page={PAGE_TITLE} />
 
@@ -55,7 +56,7 @@ export default props => {
 
       {/* <YearsChartContainer buildingName={buildingNameEng} pageName={PAGE_NAME} date={date} /> */}
 
-    </div>
+    </Page>
   );
 
 }

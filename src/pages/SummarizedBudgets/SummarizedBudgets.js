@@ -3,12 +3,16 @@ import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { ListAlt } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
+import { IoMdStats } from 'react-icons/io';
 
 // COMMON COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import DateDetails from '../../components/DateDetails/DateDetails';
 import PageHeader from '../../components/PageHeader/PageHeader';
+import Section from '../../components/Section/Section';
+import TableSection from '../../components/Section/TableSection';
+import Page from '../../components/Page/Page';
 
 // CONTAINERS
 import YearStatsContainer from './YearStatsContainer';
@@ -20,9 +24,6 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-import { IoMdStats } from 'react-icons/io';
-import Section from '../../components/Section/Section';
-import TableSection from '../../components/Section/TableSection';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -45,7 +46,7 @@ const SummarizedBudgets = props => {
   if (date === undefined)
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
-  return <div className={"page"}>
+  return <Page>
 
     <PageHeader building={buildingName} page={PAGE_TITLE} />
 
@@ -80,7 +81,7 @@ const SummarizedBudgets = props => {
 
     </TableSection>
 
-  </div>;
+  </Page>;
 
 }
 

@@ -21,11 +21,13 @@ const Menuitem = (props) => {
     className,
     classes = {},
     textClassName,
-    iconClassName
+    iconClassName,
+    tabIndex
   } = props;
 
   return (
     <ListItem
+      tabIndex={tabIndex}
       component={ButtonNavLink}
       className={classnames(listItem, className, active ? "activeButton" : "")}
       classes={classes}

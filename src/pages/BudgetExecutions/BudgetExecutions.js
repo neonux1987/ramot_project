@@ -9,6 +9,9 @@ import { IoMdStats } from 'react-icons/io';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import DateDetails from '../../components/DateDetails/DateDetails';
+import PageHeader from '../../components/PageHeader/PageHeader';
+import Section from '../../components/Section/Section';
+import TableSection from '../../components/Section/TableSection';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
@@ -20,9 +23,7 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-import PageHeader from '../../components/PageHeader/PageHeader';
-import Section from '../../components/Section/Section';
-import TableSection from '../../components/Section/TableSection';
+import Page from '../../components/Page/Page';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";
@@ -47,7 +48,7 @@ const BudgetExecutions = props => {
   if (date === undefined)
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
-  return <div className={"page"}>
+  return <Page>
 
     <PageHeader building={buildingName} page={PAGE_TITLE} />
 
@@ -79,7 +80,7 @@ const BudgetExecutions = props => {
       />
     </TableSection>
 
-  </div>
+  </Page>
 
 
 }

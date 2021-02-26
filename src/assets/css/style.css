@@ -269,12 +269,12 @@ input,textarea{
   background-color: #f5f3f3;
 }
 
-.page {
+/* .page {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-}
+} */
 
 /* simple - enter transition 300ms, exit 150ms */
 .fade-appear,

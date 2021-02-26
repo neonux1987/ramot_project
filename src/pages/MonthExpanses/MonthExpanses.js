@@ -9,6 +9,8 @@ import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCente
 import Spinner from '../../components/Spinner/Spinner';
 import DateDetails from '../../components/DateDetails/DateDetails';
 import PageHeader from '../../components/PageHeader/PageHeader';
+import TableSection from '../../components/Section/TableSection';
+import Page from '../../components/Page/Page';
 
 // CONTAINERS
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
@@ -19,7 +21,6 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
-import TableSection from '../../components/Section/TableSection';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "הוצאות חודשיות";
@@ -43,7 +44,7 @@ const MonthExpanses = props => {
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
 
   return (
-    <div className={"page"}>
+    <Page>
 
       <PageHeader building={buildingName} page={PAGE_TITLE} />
 
@@ -66,7 +67,7 @@ const MonthExpanses = props => {
 
       </TableSection>
 
-    </div>
+    </Page>
   );
 }
 
