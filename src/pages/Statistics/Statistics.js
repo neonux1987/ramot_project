@@ -1,6 +1,5 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
-import Wrapper from '../../components/Wrapper/Wrapper';
 import { useDispatch } from 'react-redux';
 import { IoMdStats } from 'react-icons/io';
 
@@ -10,17 +9,12 @@ import useDate from '../../customHooks/useDate';
 // COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import StrippedExpandableSection from '../../components/Section/StrippedExpandableSection';
-import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 import PageHeader from '../../components/PageHeader/PageHeader';
 
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
-import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-import { initRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
 
 // CONTAINERS
-import YearsChartContainer from './YearsChartContainer';
 import MonthsChartContainer from './MonthsChartContainer';
 import TableSection from '../../components/Section/TableSection';
 

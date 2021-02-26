@@ -26,7 +26,7 @@ import Section from '../../components/Section/Section';
 import TableSection from '../../components/Section/TableSection';
 
 const PAGE_NAME = "budgetExecutions";
-const PAGE_TITLE = "מעקב ביצוע מול תקציב";
+const PAGE_TITLE = "ביצוע מול תקציב";
 const STATS_TITLE = "סיכום הוצאות והכנסות רבעוני";
 const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 

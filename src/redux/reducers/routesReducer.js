@@ -16,7 +16,7 @@ export default (state = initState, action) => {
   switch (action.type) {
     case TYPES.ROUTES_UPDATE:
       {
-        return {
+        const newState = {
           ...state,
           active: {
             ...state.active,
@@ -26,7 +26,8 @@ export default (state = initState, action) => {
               ...action.active.expanded
             }
           }
-        }
+        };
+        return newState;
       }
     default: return state;
   }

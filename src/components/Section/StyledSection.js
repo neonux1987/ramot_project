@@ -35,6 +35,7 @@ const _iconWrapper = css`
 
 const _icon = css`
   color: #ffffff;
+  font-size: 24px;
 `;
 
 const _titleWrapper = css`

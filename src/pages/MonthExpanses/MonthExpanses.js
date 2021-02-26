@@ -22,7 +22,7 @@ import { initRegisteredMonths } from '../../redux/actions/registeredMonthsAction
 import TableSection from '../../components/Section/TableSection';
 
 const PAGE_NAME = "monthExpanses";
-const PAGE_TITLE = "מעקב הוצאות חודשיות";
+const PAGE_TITLE = "הוצאות חודשיות";
 const TABLE_TITLE = "טבלת מעקב הוצאות חודשיות";
 
 const MonthExpanses = props => {

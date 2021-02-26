@@ -1,11 +1,11 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
+import { useDispatch } from 'react-redux';
 import { List, SvgIcon } from '@material-ui/core';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
-import { Home, AttachMoney, AssignmentTurnedIn, InsertChartOutlined, Receipt, Label, Dashboard } from '@material-ui/icons';
+import { Home, AttachMoney, AssignmentTurnedIn, Label, Dashboard } from '@material-ui/icons';
 import { BiStats } from 'react-icons/bi';
-import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 
 // COMPONENTS
 import Menuitem from '../MenuItem/Menuitem';
@@ -18,8 +18,12 @@ import {
   homeBtnIcon,
   listItemText
 } from './Menu.module.css';
+
+// ACTIONS
 import { updateRoute } from '../../redux/actions/routesActions';
-import { useDispatch } from 'react-redux';
+
+// HOOKS
+import useIcons from '../../customHooks/useIcons';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
@@ -32,26 +36,21 @@ const Menu = (props) => {
 
   const dispatch = useDispatch();
 
+  const [generateIcon] = useIcons();
+
   const [state, setState] = React.useState(() => {
     let newState = {};
+
     data.forEach(item => {
       const buildings = routes.active.expanded;
       newState[item.engLabel] = {
         open: buildings[item.engLabel] === undefined ? false : buildings[item.engLabel].open
       }
+
     });
+
     return newState;
   });
-
-  const generateIcon = (pageName) => {
-    switch (pageName) {
-      case "הוצאות חודשיות": return AttachMoney;
-      case "ביצוע מול תקציב": return AssignmentTurnedIn;
-      case "סיכום תקציבי": return Label;
-      case "סטטיסטיקה": return () => <SvgIcon component={BiStats} />;
-      default: return Label
-    };
-  }
 
   const expandHandleClick = (item) => {
     const { label, engLabel, path } = item;
@@ -88,13 +87,22 @@ const Menu = (props) => {
    * set initial open state for last saved path
    */
   useEffect(() => {
-    setState(() => ({
-      ...state,
-      [routeState.buildingNameEng]: {
-        open: routeState.buildingName ? true : false
-      }
-    }));
-  }, []);
+
+    // if the building name is empty that means
+    // that it's the home page, in that case don't set
+    // open state
+    setState(() => {
+      const { buildingNameEng, buildingName } = routeState;
+
+      return {
+        ...state,
+        [buildingNameEng]: {
+          open: buildingName !== "" ? true : false
+        }
+      };
+    });
+
+  }, [routeState]);
 
   const menuRender = data.map((item) => {
 

@@ -1,18 +1,16 @@
-import { Home, AttachMoney, AssignmentTurnedIn, InsertChartOutlined, Receipt, Label, Dashboard } from '@material-ui/icons';
-import { ImStatsDots } from 'react-icons/im';
+import { Home, AttachMoney, AssignmentTurnedIn, Receipt, Label, Dashboard } from '@material-ui/icons';
 import { BiStats } from 'react-icons/bi';
-import SvgIconWrapper from '../components/SvgIconWrapper/SvgIconWrapper';
-import { SvgIcon } from '@material-ui/core';
+import SvgIcon from '../components/SvgIconWrapper/SvgIcon';
 
 const useIcons = () => {
 
   const generateIcon = (iconName) => {
     switch (iconName) {
-      case "מעקב הוצאות חודשיות": return AttachMoney;
-      case "מעקב ביצוע מול תקציב": return AssignmentTurnedIn;
+      case "הוצאות חודשיות": return AttachMoney;
+      case "ביצוע מול תקציב": return AssignmentTurnedIn;
       case "סיכום תקציבי": return Label;
-      case "סטטיסטיקה": return BiStats;
-      case "home": return () => <SvgIcon component={Home} />;
+      case "סטטיסטיקה": return props => <SvgIcon Icon={BiStats} {...props} />;
+      case "home": return Home;
       case "dashboard": return Dashboard;
       case "receipt": return Receipt;
       default: return Label
