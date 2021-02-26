@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './FrameControls.module.css';
 import classnames from 'classnames';
 import { Minimize, CheckBoxOutlineBlank, Close } from '@material-ui/icons';

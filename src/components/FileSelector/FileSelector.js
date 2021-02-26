@@ -21,7 +21,7 @@ const buttonStyle = css`
   margin-left:6px;
 `;
 
-export default ({
+const FileSelector = ({
   className = "",
   onChangeClick,
   onOpenClick,
@@ -47,3 +47,5 @@ export default ({
     </div>
   );
 }
+
+export default FileSelector;

@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Drawer } from '@material-ui/core';
-import { Settings } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 
@@ -18,8 +17,7 @@ import Controls from './Controls/Controls';
 //import Menuitem from './Menuitem';
 
 // ACTIONS
-import { fetchSidebar, toggleSidebar } from '../redux/actions/sidebarActions';
-import SpinningButton from '../components/SpinningButton/SpinningButton';
+import { fetchSidebar } from '../redux/actions/sidebarActions';
 import { CSSTransition } from 'react-transition-group';
 
 const Sidebar = () => {

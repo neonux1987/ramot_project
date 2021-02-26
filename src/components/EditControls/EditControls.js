@@ -10,7 +10,7 @@ import EditButton from '../Buttons/EditButton';
 import AddNewButton from '../Buttons/AddNewButton';
 
 
-export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style }) => {
+const EditControls = ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style }) => {
 
   const clickWithScroll = (event) => {
     toggleEditMode(event)
@@ -33,3 +33,5 @@ export default ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style 
   </div>;
 
 }
+
+export default EditControls;

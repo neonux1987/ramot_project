@@ -12,7 +12,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default (props) => {
+const Modal = (props) => {
 
   const {
     agreeBtnText = "בצע פעולה",
@@ -97,3 +97,5 @@ export default (props) => {
 const StyledButton = (props) => {
   return <Button {...props} style={{ color: "rgb(0, 0, 0)", fontSize: "16px", fontWeight: "600" }}>{props.children}</Button>
 }
+
+export default Modal;

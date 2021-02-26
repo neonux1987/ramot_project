@@ -10,7 +10,7 @@ const container = css`
   margin-right: -11px;
   `;
 
-export default (props) => {
+const CheckBoxWithLabel = (props) => {
 
   const {
     label = "",
@@ -37,3 +37,4 @@ export default (props) => {
   );
 }
 
+export default CheckBoxWithLabel;

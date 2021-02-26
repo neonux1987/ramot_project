@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import styles from './ExpandableSection.module.css';
 import DefaultLoader from '../AnimatedLoaders/DefaultLoader';
 
-export default ({
+const ExpandableSection = ({
   TitleIcon,
   marginTop = "20px",
   marginBottom = "20px",
@@ -81,3 +81,5 @@ export default ({
   );
 
 }
+
+export default ExpandableSection;

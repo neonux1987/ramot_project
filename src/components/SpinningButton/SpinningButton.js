@@ -4,7 +4,7 @@ import { spinner, icon, navLink } from './SpinnerButton.module.css';
 import ButtonNavLink from '../ButtonNavLink/ButtonNavLink';
 import { css } from 'emotion';
 
-export default props => {
+const SpinnerButton = props => {
   const {
     Icon,
     to = {},
@@ -20,3 +20,5 @@ export default props => {
     </ButtonNavLink>
   )
 }
+
+export default SpinnerButton;

@@ -86,15 +86,11 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchSidebar()).then((result) => {
-      //console.log(result);
-      //create additional reducers
+    dispatch(fetchSidebar());
 
-    });
-
-    generateBuildingsReducer(store).then((result) => {
+    /* generateBuildingsReducer(store).then((result) => {
       //console.log(store);
-    });
+    }); */
 
     /* const state = createBuildingState();
     console.log(state); */

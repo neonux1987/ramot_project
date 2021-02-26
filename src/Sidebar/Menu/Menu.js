@@ -52,6 +52,8 @@ const Menu = (props) => {
     return newState;
   });
 
+  //console.log(state);
+
   const expandHandleClick = (item) => {
     const { label, engLabel, path } = item;
 
@@ -93,7 +95,7 @@ const Menu = (props) => {
     // open state
     setState(() => {
       const { buildingNameEng, buildingName } = routeState;
-
+      console.log(buildingName)
       return {
         ...state,
         [buildingNameEng]: {

@@ -8,16 +8,15 @@ import {
   mainContainer,
   mainTitle,
   subtitle,
-  logo,
   container,
   LogotextWrapper,
-  appVersionWrapper,
+  //appVersionWrapper,
   logoWrapper,
   subContainer
 } from './Logo.module.css';
 
 //ELECTRON
-const appVersion = require("electron").remote.app.getVersion();
+//const appVersion = require("electron").remote.app.getVersion();
 
 const Logo = () => {
   return (
@@ -27,7 +26,7 @@ const Logo = () => {
 
       <div className={LogotextWrapper}>
         <div className={logoWrapper}>
-          <img src={logoPng} />
+          <img alt="logo" src={logoPng} />
         </div>
 
         <div className={mainContainer}>
