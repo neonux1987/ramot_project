@@ -20,7 +20,6 @@ import useDate from '../../customHooks/useDate';
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 import { IoMdStats } from 'react-icons/io';
 import Section from '../../components/Section/Section';
 import TableSection from '../../components/Section/TableSection';
@@ -52,7 +51,7 @@ const SummarizedBudgets = props => {
 
     <Section
       title={STATS_TITLE}
-      TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="#ffffff" />}
+      TitleIcon={IoMdStats}
       iconColor="rgb(255 0 82)"
     >
       <YearStatsContainer

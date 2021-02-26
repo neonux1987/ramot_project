@@ -9,7 +9,6 @@ import { IoMdStats } from 'react-icons/io';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import DateDetails from '../../components/DateDetails/DateDetails';
-import SvgIconWrapper from '../../components/SvgIconWrapper/SvgIconWrapper';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
@@ -54,7 +53,7 @@ const BudgetExecutions = props => {
 
     <Section
       title={STATS_TITLE}
-      TitleIcon={<SvgIconWrapper Icon={IoMdStats} color="#ffffff" />}
+      TitleIcon={IoMdStats}
       iconColor="rgb(255 0 82)"
     >
       <QuarterStatsContainer

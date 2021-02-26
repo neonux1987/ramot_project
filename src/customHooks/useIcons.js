@@ -1,6 +1,6 @@
 import { Home, AttachMoney, AssignmentTurnedIn, Receipt, Label, Dashboard } from '@material-ui/icons';
 import { BiStats } from 'react-icons/bi';
-import SvgIcon from '../components/SvgIconWrapper/SvgIcon';
+import SvgIcon from '../components/SvgIcon/SvgIcon';
 
 const useIcons = () => {
 

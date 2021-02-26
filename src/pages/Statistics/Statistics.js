@@ -10,13 +10,13 @@ import useDate from '../../customHooks/useDate';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
 import PageHeader from '../../components/PageHeader/PageHeader';
+import TableSection from '../../components/Section/TableSection';
 
 // ACTIONS
 import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 
 // CONTAINERS
 import MonthsChartContainer from './MonthsChartContainer';
-import TableSection from '../../components/Section/TableSection';
 
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
@@ -54,8 +54,6 @@ export default props => {
       </TableSection>
 
       {/* <YearsChartContainer buildingName={buildingNameEng} pageName={PAGE_NAME} date={date} /> */}
-
-
 
     </div>
   );
