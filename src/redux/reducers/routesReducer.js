@@ -14,21 +14,17 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case TYPES.ROUTES_UPDATE:
-      {
-        const newState = {
-          ...state,
-          active: {
-            ...state.active,
-            ...action.active,
-            expanded: {
-              ...state.active.expanded,
-              ...action.active.expanded
-            }
-          }
-        };
-        return newState;
+    case TYPES.ROUTES_UPDATE: return {
+      ...state,
+      active: {
+        ...state.active,
+        ...action.active,
+        expanded: {
+          ...state.active.expanded,
+          ...action.active.expanded
+        }
       }
+    }
     default: return state;
   }
 }

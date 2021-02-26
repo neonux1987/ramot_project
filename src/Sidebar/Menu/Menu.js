@@ -1,11 +1,9 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { List, SvgIcon } from '@material-ui/core';
+import List from '@material-ui/core/List';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
-import { Home, AttachMoney, AssignmentTurnedIn, Label, Dashboard } from '@material-ui/icons';
-import { BiStats } from 'react-icons/bi';
 
 // COMPONENTS
 import Menuitem from '../MenuItem/Menuitem';
@@ -68,43 +66,26 @@ const Menu = (props) => {
 
       const pathname = `/${path}/הוצאות-חודשיות`;
 
-      dispatch(updateRoute({
-        pathname,
-        state: newState,
-        expanded: state
-      }));
-
       props.history.replace(pathname, newState);
+
+      setState(() => {
+        const expanded = {
+          ...state,
+          [engLabel]: {
+            open: !state[engLabel].open
+          }
+        };
+
+        dispatch(updateRoute({
+          pathname,
+          state: newState,
+          expanded
+        }));
+
+        return expanded;
+      });
     }
-
-    setState({
-      ...state,
-      [engLabel]: {
-        open: !state[engLabel].open
-      }
-    });
   };
-
-  /**
-   * set initial open state for last saved path
-   */
-  useEffect(() => {
-
-    // if the building name is empty that means
-    // that it's the home page, in that case don't set
-    // open state
-    setState(() => {
-      const { buildingNameEng, buildingName } = routeState;
-      console.log(buildingName)
-      return {
-        ...state,
-        [buildingNameEng]: {
-          open: buildingName !== "" ? true : false
-        }
-      };
-    });
-
-  }, [routeState]);
 
   const menuRender = data.map((item) => {
 
@@ -112,7 +93,7 @@ const Menu = (props) => {
 
     return <ExpandableMenuItem
       label={label}
-      Icon={Home}
+      Icon={generateIcon("Home")}
       onClick={() => expandHandleClick(item)}
       open={state[engLabel].open}
       key={id}
@@ -150,7 +131,7 @@ const Menu = (props) => {
     >
       <Menuitem
         label={HOME_BUTTON_LABEL}
-        Icon={Dashboard}
+        Icon={generateIcon("Dashboard")}
         className={homeBtn}
         textClassName={homeBtnText}
         iconClassName={homeBtnIcon}
