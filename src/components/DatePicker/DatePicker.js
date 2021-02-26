@@ -257,9 +257,9 @@ const DatePicker = ({
   return (
     <div id="dates" className={dates}>
       <form className={formControl}>
-        {month && renderMonths}
-        {quarter && renderQuarters}
         {renderYears}
+        {quarter && renderQuarters}
+        {month && renderMonths}
       </form>
     </div>
   );
