@@ -15,18 +15,12 @@ const TABLE_TITLE = "טבלת מעקב וניהול קודי הנהלת חשבו
 const ExpansesCodes = () => {
 
   return (
-    <Fragment>
-
-      <TableSection
-        title={TABLE_TITLE}
-        Icon={TableChart}
-      >
-
-        <ExpansesCodesTableContainer />
-
-      </TableSection> {/* end Section */}
-
-    </Fragment>
+    <TableSection
+      title={TABLE_TITLE}
+      Icon={TableChart}
+    >
+      <ExpansesCodesTableContainer />
+    </TableSection>
   );
 
 }

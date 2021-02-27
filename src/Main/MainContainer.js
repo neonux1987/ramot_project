@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
-import { withStyles } from '@material-ui/core';
 import { Element, Events } from 'react-scroll'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { css } from 'emotion';

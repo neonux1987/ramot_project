@@ -8,6 +8,7 @@ import classnames from 'classnames';
 // CSS
 import styles from './Sidebar.module.css';
 import '../cssTransitions/scale.css';
+import '../cssTransitions/slide.css';
 
 // COMPONENTS
 import Menu from './Menu/Menu';
