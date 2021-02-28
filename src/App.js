@@ -44,6 +44,7 @@ import { toastManager } from './toasts/toastManager';
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import { generateBuildingsReducer } from './redux/reducers/util/util';
 import AppWrapper from './components/AppWrapper/AppWrapper';
+import { useToasts } from 'react-toast-notifications';
 
 // ELECTRON
 const { ipcRenderer, remote } = require('electron');
@@ -84,6 +85,8 @@ const App = () => {
   const store = useStore();
 
   const dispatch = useDispatch();
+
+  const { addToast, updateToast } = useToasts();
 
   useEffect(() => {
     dispatch(fetchSidebar());
@@ -170,31 +173,35 @@ const App = () => {
       return Promise.resolve();
     }
 
-    const id = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
-      autoClose: false
+    const id = addToast(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
+      appearance: "info",
+      autoDismissTimeout: 2500
     });
 
     const promise = await initiateDbBackup().catch((result) => {
-      toastManager.update(id, {
-        render: <ToastRender message={result.error} />,
-        type: toastManager.types.ERROR,
-        delay: 3000,
-        autoClose: 2500,
-        onClose: () => {
-          quitApp();
+      updateToast(id, {
+        content: <ToastRender message={result.error} />,
+        appearance: "error",
+        //delay: 3000,
+        autoDismissTimeout: 2500,
+        transitionDuration: 2000,
+        onDismiss: () => {
+          //quitApp();
+          console.log("error");
         }
       });
     });
 
     // success
     if (promise)
-      toastManager.update(id, {
-        render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
-        type: toastManager.types.SUCCESS,
-        delay: 2000,
-        autoClose: 1500,
-        onClose: () => {
-          quitApp();
+      updateToast(id, {
+        content: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
+        appearance: "success",
+        //delay: 2000,
+        autoDismissTimeout: 1500,
+        onDismiss: () => {
+          //quitApp();
+          console.log("success");
         }
       });
 
