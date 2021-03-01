@@ -64,7 +64,7 @@ const MonthExpansesTableContainer = props => {
   const page = useSelector(store => store.monthExpanses.pages[buildingNameEng]);
 
   // page data
-  const generalSettings = useSelector(store => store.generalSettings.generalSettings);
+  const generalSettings = useSelector(store => store.generalSettings);
 
   useEffect(() => {
     dispatch(gs.fetchGeneralSettings());
