@@ -58,7 +58,7 @@ const AppContainer = () => {
     start();
   }, []);
 
-  if (sidebar.isFetching) {
+  if (sidebar.isFetching && settings.isFetching) {
     return <AlignCenterMiddle>
       <LogoLoader />
     </AlignCenterMiddle>;

@@ -18,7 +18,7 @@ const { play, types } = soundManager;
 export default props => {
 
   const data = useSelector(store => store.generalSettings.generalSettings.data);
-
+  console.log(data);
   const [vat, setVat] = useState(data[0].tax);
 
   const [valid, setValid] = useState(true);
