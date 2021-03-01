@@ -1,11 +1,8 @@
 // LIBRARIES
 import React, { useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Typography, MenuItem } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
-
-// CSS
-import styles from './BackupContainer.module.css';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
@@ -184,10 +181,6 @@ const BackupContainer = () => {
     >
 
       {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}
-
-      {settings.enabled && settings.restart_required && <Typography className={styles.restartRequired} variant="subtitle1">
-        {"*לאחר ביצוע שינויים נדרש לאתחל את השירות בלשונית שירותי מערכת."}
-      </Typography>}
 
       <TitleTypography>
         כללי:

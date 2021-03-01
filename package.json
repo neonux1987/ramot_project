@@ -23,7 +23,6 @@
     "knex": "^0.21.11",
     "log4js": "^6.3.0",
     "nesthydrationjs": "^2.0.0",
-    "node-schedule": "^1.3.2",
     "platform-folders": "^0.5.2",
     "print-js": "^1.5.0",
     "react": "^17.0.1",

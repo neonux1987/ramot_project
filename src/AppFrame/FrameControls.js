@@ -4,8 +4,6 @@ import { Minimize, CheckBoxOutlineBlank, Close } from '@material-ui/icons';
 import { css } from 'emotion';
 
 const style = css`
-  -webkit-app-region: no-drag;
-  -webkit-user-select: none;
   display: flex;
   width: 100%;
   justify-content: flex-end;
@@ -23,6 +21,8 @@ const button = css`
   width: 40px;
   height: 36px;
   border-radius: 0;
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
 
   :hover{
     background-color: rgba(0, 0, 0, 0.04);

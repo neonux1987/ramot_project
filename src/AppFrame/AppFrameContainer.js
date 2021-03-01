@@ -42,16 +42,12 @@ const AppFrameContainer = ({ settings }) => {
 
     const id = addToast(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
       appearance: "info",
-      autoDismissTimeout: 2500
     });
 
     const promise = await initiateDbBackup().catch((result) => {
       updateToast(id, {
         content: <ToastRender message={result.error} />,
         appearance: "error",
-        //delay: 3000,
-        autoDismissTimeout: 2500,
-        transitionDuration: 2000,
         onDismiss: () => {
           //quitApp();
           console.log("error");
@@ -64,8 +60,6 @@ const AppFrameContainer = ({ settings }) => {
       updateToast(id, {
         content: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
         appearance: "success",
-        //delay: 2000,
-        autoDismissTimeout: 1500,
         onDismiss: () => {
           //quitApp();
           console.log("success");
