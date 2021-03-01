@@ -13,9 +13,8 @@ import '../cssTransitions/slide.css';
 // COMPONENTS
 import Menu from './Menu/Menu';
 import LoadingCircle from '../components/LoadingCircle';
-import Logo from '../AppFrame/Logo/Logo';
+import Logo from './Logo/Logo';
 import Controls from './Controls/Controls';
-//import Menuitem from './Menuitem';
 
 // ACTIONS
 import { fetchSidebar } from '../redux/actions/sidebarActions';

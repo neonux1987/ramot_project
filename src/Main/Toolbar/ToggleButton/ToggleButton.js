@@ -1,11 +1,22 @@
 // LIBRARIES
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { css } from 'emotion';
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import SwitchWithSound from "../../../componentsWithSound/SwitchWithSound/SwitchWithSound";
 import { toggleSidebar } from '../../../redux/actions/sidebarActions';
-import { Switch } from "@material-ui/core";
+
+const style = css`
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  margin-right: 0px;
+  min-width: unset;
+  color: #000000;
+  -webkit-app-region: no-drag;
+    -webkit-user-select: none;
+`;
 
 const ToggleButton = props => {
 
@@ -18,7 +29,7 @@ const ToggleButton = props => {
 
   return (
     <SwitchWithSound
-      className={props.className}
+      className={style}
       checked={showSidebar}
       onChange={onClick}
       name="toggleButton"

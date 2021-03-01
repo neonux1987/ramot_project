@@ -160,67 +160,8 @@ const App = () => {
 
     //start services
     ipcRenderer.send("system-start-services");
-  }, []);
+  });
 
-  const closeButtonHandler = async () => {
-    const { isFetching, data } = settings;
-    const { backup_on_exit, enabled } = data.db_backup;
-
-    // in case the backend stopped working
-    // allow to close the app without backing up
-    if ((isFetching && data.length === 0) || backup_on_exit === false || enabled === false) {
-      quitApp();
-      return Promise.resolve();
-    }
-
-    const id = addToast(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
-      appearance: "info",
-      autoDismissTimeout: 2500
-    });
-
-    const promise = await initiateDbBackup().catch((result) => {
-      updateToast(id, {
-        content: <ToastRender message={result.error} />,
-        appearance: "error",
-        //delay: 3000,
-        autoDismissTimeout: 2500,
-        transitionDuration: 2000,
-        onDismiss: () => {
-          //quitApp();
-          console.log("error");
-        }
-      });
-    });
-
-    // success
-    if (promise)
-      updateToast(id, {
-        content: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
-        appearance: "success",
-        //delay: 2000,
-        autoDismissTimeout: 1500,
-        onDismiss: () => {
-          //quitApp();
-          console.log("success");
-        }
-      });
-
-  }
-
-  const minimizeButtonHandler = () => {
-    const window = remote.getCurrentWindow();
-    window.minimize();
-  }
-
-  const maximizeButtonHandler = () => {
-    const window = remote.getCurrentWindow();
-
-    if (!window.isMaximized()) {
-      window.maximize();
-    } else {
-      window.unmaximize();
-    }
-  }
 
   if (sidebar.isFetching) {
     return <AlignCenterMiddle>
@@ -237,11 +178,7 @@ const App = () => {
 
           <ScrollToTop mainContainer={mainContainer} />
 
-          <AppFrame handlers={{
-            close: closeButtonHandler,
-            minimize: minimizeButtonHandler,
-            maximize: maximizeButtonHandler
-          }} />
+          <AppFrame settings={settings} />
 
           <ThemeContext.Provider value={settings.data.theme}>
 
