@@ -8,13 +8,14 @@ const icon = css`
 
 const text = css`
   margin-left: 10px;
-  color: #525e63;
+  color: #555555;
+  text-decoration: underline;
 `;
 
 const lastStyle = css`
-  color: #000000;
+  color: #1489ce;
   font-weight: 500;
-  text-decoration: none;
+  text-decoration: underline;
   margin-left: 10px;
 `
 

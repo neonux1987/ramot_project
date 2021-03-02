@@ -17,13 +17,19 @@ const { play, types } = soundManager;
 
 export default props => {
 
-  const data = useSelector(store => store.generalSettings.data);
+  const { data, isFetching } = useSelector(store => store.generalSettings);
 
   const [vat, setVat] = useState(data[0].tax);
 
   const [valid, setValid] = useState(true);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    dispatch(generalSettingsActions.fetchGeneralSettings());
+
+  }, [vat]);
 
   useEffect(() => {
     if (vat > 100 || vat < 1) {
@@ -37,7 +43,7 @@ export default props => {
       setValid(true);
 
 
-  }, [vat])
+  }, [vat]);
 
   const formOnChange = (event) => {
     let target = event.target;
@@ -55,6 +61,9 @@ export default props => {
     };
     dispatch(generalSettingsActions.updateVat(params));
   }
+
+  if (isFetching)
+    return <div>טוען</div>
 
   return (
     <EditModal

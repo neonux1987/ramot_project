@@ -94,7 +94,7 @@ const StyledSection = ({
 
       {/* extra details */}
       <div role="extra details" className={_extraDetails}>
-        {extraDetails}
+        {/* {extraDetails} */}
       </div>
       {/* end extra details */}
 

@@ -36,10 +36,10 @@ const Menuitem = (props) => {
       selected={false}
       draggable={false}
     >
-      <ListItemIcon className={classnames(listItemIcon, iconClassName)} style={{ color: active ? "#fafafa" : "rgb(107,108,119)" }}>
+      <ListItemIcon className={classnames(listItemIcon, iconClassName)} style={{ color: active ? "#fafafa" : "#d0d0d0" }}>
         {Icon && <Icon />}
       </ListItemIcon>
-      <ListItemText className={listItemIcon} classes={{ primary: textClassName }} style={{ color: active ? "#fafafa" : "rgb(107,108,119)" }} primary={label} />
+      <ListItemText className={listItemIcon} classes={{ primary: textClassName }} style={{ color: active ? "#fafafa" : "#d0d0d0" }} primary={label} />
     </ListItem>
   );
 };

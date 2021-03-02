@@ -6,7 +6,7 @@
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color: #0066a2;
+  color: #1489ce;
   font-style: normal;
   font-size: 32px;
   letter-spacing: -1px;
@@ -22,7 +22,7 @@
 .subtitle {
   text-align: center;
   font-size: 14px;
-  color: #23a084;
+  color: #1fcca5;
   font-weight: 600;
   font-style: normal;
   letter-spacing: 0.1rem;
@@ -35,7 +35,7 @@
   width: 240px;
   position: relative;
   user-select: none;
-  background: #f3f3f3;
+  /* background: #f3f3f3; */
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
 }
