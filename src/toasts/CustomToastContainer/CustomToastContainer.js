@@ -1,7 +1,7 @@
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import CustomCloseButton from '../../components/CustomCloseButton/CustomCloseButton';
+import CustomCloseButton from '../../components/buttons/CustomCloseButton/CustomCloseButton';
 
 const CustomToastContainer = props => {
 

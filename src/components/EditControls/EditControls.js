@@ -6,8 +6,8 @@ import { scroller } from 'react-scroll';
 import styles from './EditControls.module.css';
 
 // COMPONENTS
-import EditButton from '../Buttons/EditButton';
-import AddNewButton from '../Buttons/AddNewButton';
+import EditButton from '../buttons/EditButton';
+import AddNewButton from '../buttons/AddNewButton';
 
 
 const EditControls = ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style }) => {

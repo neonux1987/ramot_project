@@ -1,7 +1,7 @@
 // LIBRARIES
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import DefaultButton from '../Buttons/DefaultButton';
+import DefaultButton from './DefaultButton';
 
 const ButtonNavLink = props => {
 

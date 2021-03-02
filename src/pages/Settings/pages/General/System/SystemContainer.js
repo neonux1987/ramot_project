@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import Sound from './Sound/Sound';
-import SaveButton from '../../../../../components/SaveButton/SaveButton';
+import SaveButton from '../../../../../components/buttons/SaveButton/SaveButton';
 import FileSelector from '../../../../../components/FileSelector/FileSelector';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
 

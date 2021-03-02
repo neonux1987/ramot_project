@@ -8,7 +8,7 @@ import {
   listItemIcon
 } from './MenuItem.module.css';
 import classnames from 'classnames';
-import ButtonNavLink from '../../components/ButtonNavLink/ButtonNavLink';
+import ButtonNavLink from '../../components/buttons/ButtonNavLink';
 
 const Menuitem = (props) => {
 

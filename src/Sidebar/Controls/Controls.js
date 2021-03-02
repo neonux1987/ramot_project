@@ -8,7 +8,7 @@ import EditVatModal from '../../components/modals/EditVatModal/EditVatModal';
 import useModalLogic from '../../customHooks/useModalLogic';
 import { restartApp } from '../../services/mainProcess.svc'
 import { css } from 'emotion';
-import SpinningButton from '../../components/SpinningButton/SpinningButton';
+import SpinningButton from '../../components/buttons/SpinningButton/SpinningButton';
 import { Settings } from '@material-ui/icons';
 
 const volumeBtn = css`

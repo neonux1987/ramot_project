@@ -9,7 +9,7 @@ import EditVatForm from '../../EditVatForm/EditVatForm';
 
 const { play, types } = soundManager;
 
-export default props => {
+const EditVatModal = props => {
 
   const data = useSelector(store => store.generalSettings.data);
 
@@ -66,3 +66,5 @@ export default props => {
     </EditModal>
   );
 }
+
+export default EditVatModal;

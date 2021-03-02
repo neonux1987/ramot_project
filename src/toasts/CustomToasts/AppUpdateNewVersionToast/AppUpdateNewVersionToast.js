@@ -1,6 +1,6 @@
 import React from 'react';
 import { container, button } from './AppUpdateNewVersionToast.module.css';
-import PrimaryButton from '../../../components/Buttons/PrimaryButton';
+import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import { NavLink } from 'react-router-dom';
 
 export default ({ version, closeToast }) => {

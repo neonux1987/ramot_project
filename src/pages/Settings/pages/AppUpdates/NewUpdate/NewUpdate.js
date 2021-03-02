@@ -27,7 +27,7 @@ import {
 } from './NewUpdate.module.css';
 
 // COMPONENTS
-import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
+import PrimaryButton from '../../../../../components/buttons/PrimaryButton';
 import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
 import { formatBytes } from '../../../../../helpers/utils';
 

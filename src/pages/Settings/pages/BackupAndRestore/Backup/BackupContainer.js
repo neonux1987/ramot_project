@@ -6,7 +6,7 @@ import { Backup } from '@material-ui/icons';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import SaveButton from '../../../../../components/SaveButton/SaveButton';
+import SaveButton from '../../../../../components/buttons/SaveButton/SaveButton';
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
 import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';

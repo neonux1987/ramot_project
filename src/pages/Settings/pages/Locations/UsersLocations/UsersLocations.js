@@ -8,8 +8,8 @@ import styles from './UsersLocations.module.css';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import SaveButton from '../../../../../components/SaveButton/SaveButton';
-import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
+import SaveButton from '../../../../../components/buttons/SaveButton/SaveButton';
+import PrimaryButton from '../../../../../components/buttons/PrimaryButton';
 
 export default (props) => {
 
