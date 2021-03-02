@@ -9,13 +9,11 @@ const icon = css`
 const text = css`
   margin-left: 6px;
   color: #555555;
-  text-decoration: underline;
 `;
 
 const lastStyle = css`
   color: #1489ce;
   font-weight: 500;
-  text-decoration: underline;
 `
 
 const Crumb = ({ last = false, location, separator = true }) => {
