@@ -8,7 +8,7 @@ import SwitchWithSound from "../../../componentsWithSound/SwitchWithSound/Switch
 import { toggleSidebar } from '../../../redux/actions/sidebarActions';
 
 const style = css`
-  border-radius: 6px;
+  border-radius: 3px;
   outline: none;
   cursor: pointer;
   margin-right: 0px;

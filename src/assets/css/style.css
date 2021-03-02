@@ -119,7 +119,7 @@ a {
 ::-webkit-scrollbar {
   width: 10px;
   overflow-x: hidden;
-  border-radius: 6px;
+  border-radius: 3px;
 }
 
 /* Track */
@@ -152,7 +152,7 @@ a {
   width: 220px;
   border-radius: 0px;
   padding-right: 16px;
-  border-radius: 6px;
+  border-radius: 3px;
 }
 
 .activeButton2{
@@ -262,7 +262,7 @@ input,textarea{
 /** perfect scrollbar overrides **/
 .ps__rail-y{
   background: none;
-  border-radius: 6px;
+  border-radius: 3px;
 }
 
 .ps__thumb-y {
