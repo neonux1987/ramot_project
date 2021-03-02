@@ -32,6 +32,7 @@ import { soundManager } from './soundManager/SoundManager';
 
 // TOASTS
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
+import generalSettingsActions from './redux/actions/generalSettingsActions';
 
 
 const { play, types } = soundManager;
@@ -42,6 +43,8 @@ const AppContainer = () => {
 
   const settings = useSelector(store => store.settings);
 
+  const generalSettings = useSelector(store => store.generalSettings);
+
   const sidebar = useSelector(store => store.sidebar);
 
   const dispatch = useDispatch();
@@ -50,6 +53,9 @@ const AppContainer = () => {
 
   useEffect(() => {
     dispatch(fetchSidebar());
+
+    dispatch(generalSettingsActions.fetchGeneralSettings());
+
     // play welcome melody on app start
     play(types.welcome);
   }, [dispatch]);
@@ -58,7 +64,7 @@ const AppContainer = () => {
     start();
   }, []);
 
-  if (sidebar.isFetching && settings.isFetching) {
+  if (sidebar.isFetching && settings.isFetching && generalSettings.isFetching) {
     return <AlignCenterMiddle>
       <LogoLoader />
     </AlignCenterMiddle>;

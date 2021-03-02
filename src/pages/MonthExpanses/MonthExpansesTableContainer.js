@@ -12,7 +12,6 @@ import {
   monthExpansesCleanup
 } from '../../redux/actions/monthExpansesActions';
 import { fetchExpansesCodesByStatus } from '../../redux/actions/expansesCodesActions';
-import gs from '../../redux/actions/generalSettingsActions';
 
 // UTILITY IMPORTS
 import Helper from '../../helpers/Helper';
@@ -65,10 +64,6 @@ const MonthExpansesTableContainer = props => {
 
   // page data
   const generalSettings = useSelector(store => store.generalSettings);
-
-  useEffect(() => {
-    dispatch(gs.fetchGeneralSettings());
-  }, []);
 
   useEffect(() => {
     const cleanup = () => {

@@ -1,49 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { TextField } from '@material-ui/core';
 import { soundManager } from '../../../soundManager/SoundManager';
 import { toast } from 'react-toastify';
-
 import Section from '../../Section/Section';
-
 import EditModal from '../modalTypes/EditModal';
-
-import styles from './EditVatModal.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-
-// ACTIONS
 import generalSettingsActions from '../../../redux/actions/generalSettingsActions';
+import EditVatForm from '../../EditVatForm/EditVatForm';
 
 const { play, types } = soundManager;
 
 export default props => {
 
-  const { data, isFetching } = useSelector(store => store.generalSettings);
+  const data = useSelector(store => store.generalSettings.data);
 
   const [vat, setVat] = useState(data[0].tax);
 
   const [valid, setValid] = useState(true);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-
-    dispatch(generalSettingsActions.fetchGeneralSettings());
-
-  }, [vat]);
-
-  useEffect(() => {
-    if (vat > 100 || vat < 1) {
-      //send the error to the notification center
-      toast.error('מע"מ יכול להיות בין 1 ל- 100 בלבד.', {
-        onOpen: () => play(types.error)
-      });
-
-      setValid(false);
-    } else
-      setValid(true);
-
-
-  }, [vat]);
 
   const formOnChange = (event) => {
     let target = event.target;
@@ -52,18 +26,28 @@ export default props => {
     setVat(target.type === "number" ? parseFloat(value) : value);
   }
 
-  const saveSettings = (event) => {
-    const params = {
-      id: data[0].id,
-      settings: {
-        tax: Number.parseFloat(vat)
-      }
-    };
-    dispatch(generalSettingsActions.updateVat(params));
-  }
+  const saveSettings = () => {
 
-  if (isFetching)
-    return <div>טוען</div>
+    if (vat > 100 || vat < 1) {
+      //send the error to the notification center
+      toast.error('מע"מ יכול להיות בין 1 ל- 100 בלבד.', {
+        onOpen: () => play(types.error)
+      });
+
+      setValid(false);
+    } else {
+      setValid(true);
+
+      const params = {
+        id: data[0].id,
+        settings: {
+          tax: Number.parseFloat(vat)
+        }
+      };
+      dispatch(generalSettingsActions.updateVat(params));
+    }
+
+  }
 
   return (
     <EditModal
@@ -74,18 +58,10 @@ export default props => {
       {...props}
     >
       <Section>
-        <form className={styles.form} style={{ width: "400px" }} onChange={(event) => formOnChange(event)} onSubmit={(event) => event.preventDefault()}>
-          <label className={styles.label}>מע"מ:</label>
-          <TextField
-            name="vat"
-            type="number"
-            autoFocus
-            value={vat}
-            classes={{ root: styles.textField }}
-            onClick={(event => event.target.select())}
-            inputProps={{ min: 0, max: 100 }}
-          />
-        </form>
+        <EditVatForm
+          onChange={formOnChange}
+          value={vat}
+        />
       </Section>
     </EditModal>
   );
