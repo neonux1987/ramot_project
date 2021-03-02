@@ -17,12 +17,10 @@ import Settings from '../pages/Settings/Settings';
 import Management from '../pages/Management/Management';
 import Statistics from '../pages/Statistics/Statistics';
 
-// COMPONENTS
-import BreadcrumbsContainer from './Toolbar/Breadcrumbs/BreadcrumbsContainer';
-
 // ACTIONS
 import * as sidebarActions from '../redux/actions/sidebarActions';
 import * as routesActions from '../redux/actions/routesActions';
+import Toolbar from './Toolbar/Toolbar';
 
 
 const mainStyle = css`
@@ -106,7 +104,7 @@ class MainContainer extends Component {
 
     return <main id="mainContainer" ref={this.props.mainContainer} className={classnames(elementStyle, this.props.toggleMain)}>
 
-      <BreadcrumbsContainer />
+      <Toolbar />
 
       <Element className={mainStyle}>
 

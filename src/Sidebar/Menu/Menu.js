@@ -116,7 +116,7 @@ const Menu = (props) => {
 
     return <ExpandableMenuItem
       label={label}
-      Icon={generateIcon("Home")}
+      Icon={generateIcon("home")}
       onClick={() => expandHandleClick(item)}
       open={state[engLabel].open}
       key={id}
@@ -154,7 +154,7 @@ const Menu = (props) => {
     >
       <Menuitem
         label={HOME_BUTTON_LABEL}
-        Icon={generateIcon("Dashboard")}
+        Icon={generateIcon("dashboard")}
         className={homeBtn}
         textClassName={homeBtnText}
         iconClassName={homeBtnIcon}

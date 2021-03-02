@@ -8,12 +8,12 @@ const icon = css`
 
 const text = css`
   margin-left: 6px;
-  color: #555555;
+  color: #7d7d7d;
 `;
 
 const lastStyle = css`
-  color: #1489ce;
-  font-weight: 500;
+  color: #9e9e9e;
+  font-weight: 400;
 `
 
 const Crumb = ({ last = false, location, separator = true }) => {

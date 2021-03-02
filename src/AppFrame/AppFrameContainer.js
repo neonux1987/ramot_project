@@ -14,8 +14,8 @@ import DraggableFrame from './DraggableFrame';
 import AppFrame from './AppFrame';
 import ToastRender from '../components/ToastRender/ToastRender';
 import FrameControls from './FrameControls';
-import ToggleButton from '../Main/Toolbar/ToggleButton/ToggleButton';
 import { quitApp } from '../services/mainProcess.svc';
+import Title from './Title';
 
 const remote = require('electron').remote;
 
@@ -89,7 +89,8 @@ const AppFrameContainer = ({ settings }) => {
       <DraggableFrame>
 
         <AppFrameSection>
-          <ToggleButton onClick={toggleClick} />
+          {/* <ToggleButton onClick={toggleClick} /> */}
+          <Title />
         </AppFrameSection>
 
         <AppFrameSection>
