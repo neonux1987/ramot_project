@@ -1,5 +1,7 @@
 const YearlyStatsDao = require('../dao/YearlyStatsDao');
-
+const BuildingsDao = require('../dao/BuildingsDao');
+const connectionPool = require('../connection/ConnectionPool');
+const { asyncForEach } = require('../../helpers/utils')
 class YearlyStatsLogic {
 
   constructor() {
@@ -20,6 +22,32 @@ class YearlyStatsLogic {
 
   insertYearStatsTrx(buildingName, data, trx) {
     return this.yearlyStatsDao.insertYearStatsTrx(buildingName, data, trx);
+  }
+
+  async getAllBuildingsStatsByYear(year) {
+
+    const stats = {};
+    const date = {
+      year
+    };
+
+    const trx = await connectionPool.getTransaction();
+
+    const buildingsDao = new BuildingsDao();
+
+    const buildings = await buildingsDao.getBuidlings(trx);
+
+    await asyncForEach(buildings, async ({ buildingName, buildingNameEng }) => {
+      const stat = {
+        label: buildingName,
+        data: await this.getYearStatsTrx(buildingNameEng, date, trx)
+      };
+      stats[buildingNameEng] = stat;
+    });
+
+    trx.commit();
+
+    return stats;
   }
 
 }

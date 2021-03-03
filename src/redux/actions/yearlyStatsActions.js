@@ -4,7 +4,11 @@ export const TYPES = {
   YEARLY_STATS_REQUEST: "YEARLY_STATS_REQUEST",
   YEARLY_STATS_RECEIVE: "YEARLY_STATS_RECEIVE",
   YEARLY_STATS_FETCHING_FAILED: "YEARLY_STATS_FETCHING_FAILED",
-  YEARLY_STATS_CLEANUP: "YEARLY_STATS_CLEANUP"
+  YEARLY_STATS_CLEANUP: "YEARLY_STATS_CLEANUP",
+  All_BUILDINGS_STATS_REQUEST: "All_BUILDINGS_STATS_REQUEST",
+  All_BUILDINGS_STATS_RECEIVE: "All_BUILDINGS_STATS_RECEIVE",
+  All_BUILDINGS_STATS_FETCHING_FAILED: "All_BUILDINGS_STATS_FETCHING_FAILED",
+  All_BUILDINGS_STATS_CLEANUP: "All_BUILDINGS_STATS_CLEANUP"
 }
 
 export const fetchYearStats = (params = Object) => {
@@ -59,6 +63,8 @@ const requestYearlyStats = function (buildingName, pageName) {
   }
 };
 
+
+
 const receiveYearlyStats = function (buildingName, pageName, data) {
   return {
     type: TYPES.YEARLY_STATS_RECEIVE,
@@ -84,3 +90,50 @@ export const cleanupYearlyStats = (buildingName, pageName) => {
     pageName
   }
 }
+
+const requestAllBuildingsStats = function () {
+  return {
+    type: TYPES.All_BUILDINGS_STATS_REQUEST
+  }
+};
+
+const receiveAllBuildingsStats = function (data) {
+  return {
+    type: TYPES.All_BUILDINGS_STATS_RECEIVE,
+    data
+  }
+};
+
+const fetchingAllBuildingsStatsFailed = function (error) {
+  return {
+    type: TYPES.All_BUILDINGS_STATS_FETCHING_FAILED,
+    payload: error
+  }
+};
+
+export const cleanupAllBuildingsStats = () => {
+  return {
+    type: TYPES.All_BUILDINGS_STATS_CLEANUP
+  }
+}
+
+export const fetchAllBuildingsStatsByYear = (year) => {
+  return dispatch => {
+
+    //let react know that the fetching is started
+    dispatch(requestAllBuildingsStats());
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-all-buildings-stats-by-year",
+        params: year
+      },
+      receive: {
+        channel: "all-buildings-stats-by-year-data"
+      },
+      onSuccess: result => dispatch(receiveAllBuildingsStats(result.data)),
+      onError: result => dispatch(fetchingAllBuildingsStatsFailed(result.error))
+    });
+
+  }
+};

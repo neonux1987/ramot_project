@@ -25,7 +25,7 @@ import useIcons from '../../customHooks/useIcons';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
-const HOME_BUTTON_PATH = "/";
+const HOME_BUTTON_PATH = "/דף-הבית";
 
 const Menu = (props) => {
 
@@ -175,4 +175,4 @@ const Menu = (props) => {
 
 };
 
-export default withRouter(Menu);
+export default withRouter(React.memo(Menu));

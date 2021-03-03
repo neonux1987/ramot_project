@@ -80,10 +80,16 @@
 
   .titleWrapper{
     height: 60px;
-    width: 100px;
+    width: 90px;
   }
 
   .titleText{
     font-size: 20px;
+  }
+
+  .chart{
+    width: 50px;
+    height: 50px;
+    shape-rendering: geometricprecision;
   }
 }

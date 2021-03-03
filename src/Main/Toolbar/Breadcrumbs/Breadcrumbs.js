@@ -6,7 +6,7 @@ const wrapper = css`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-right: 10px;
+  margin-right: 20px;
   font-size: 16px;
   color: #555555;
   /* padding: 10px 20px; */

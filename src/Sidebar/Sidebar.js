@@ -17,23 +17,17 @@ import Logo from './Logo/Logo';
 import Controls from './Controls/Controls';
 
 // ACTIONS
-import { fetchSidebar } from '../redux/actions/sidebarActions';
 import { CSSTransition } from 'react-transition-group';
 
 const Sidebar = () => {
   let toggleSidebarAnimation = "";
 
-  const dispatch = useDispatch();
-
-  const { showSidebar, menu } = useSelector(store => store.sidebar);
+  const { data, isFetching } = useSelector(store => store.menu);
+  const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
 
   const routes = useSelector(store => store.routes);
 
-  useEffect(() => {
-    dispatch(fetchSidebar());
-  }, [dispatch]);
-
-  if (menu.isFetching) {
+  if (isFetching) {
     return <LoadingCircle wrapperStyle={styles.loadingWrapper} textStyle={styles.loadingText} circleStyle={styles.loadingCircle} />;
   }
 
@@ -53,7 +47,7 @@ const Sidebar = () => {
 
         <Controls className={styles.controls} />
 
-        <Menu data={menu.data} routes={routes} />
+        <Menu data={data} routes={routes} />
 
         <div className={styles.developedByWrapper}>
           <span className={styles.ndtsText}>NDTS</span>

@@ -25,7 +25,7 @@ import MainContainer from './Main/MainContainer';
 import useServices from './customHooks/useServices';
 
 // ACTIONS
-import { fetchSidebar } from './redux/actions/sidebarActions';
+import { fetchMenu } from './redux/actions/menuActions';
 
 // SOUND
 import { soundManager } from './soundManager/SoundManager';
@@ -33,7 +33,6 @@ import { soundManager } from './soundManager/SoundManager';
 // TOASTS
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
-
 
 const { play, types } = soundManager;
 
@@ -45,26 +44,25 @@ const AppContainer = () => {
 
   const generalSettings = useSelector(store => store.generalSettings);
 
-  const sidebar = useSelector(store => store.sidebar);
+  const menu = useSelector(store => store.menu);
 
   const dispatch = useDispatch();
 
   const [start] = useServices();
 
   useEffect(() => {
-    dispatch(fetchSidebar());
-
+    dispatch(fetchMenu());
     dispatch(generalSettingsActions.fetchGeneralSettings());
-
-    // play welcome melody on app start
-    play(types.welcome);
   }, [dispatch]);
 
   useEffect(() => {
     start();
-  }, []);
 
-  if (sidebar.isFetching && settings.isFetching && generalSettings.isFetching) {
+    // play welcome melody on app start
+    play(types.welcome);
+  }, [start]);
+
+  if (menu.isFetching || generalSettings.isFetching) {
     return <AlignCenterMiddle>
       <LogoLoader />
     </AlignCenterMiddle>;
@@ -93,4 +91,4 @@ const AppContainer = () => {
 
 }
 
-export default AppContainer;
+export default React.memo(AppContainer);

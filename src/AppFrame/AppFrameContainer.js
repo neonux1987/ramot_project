@@ -1,9 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useToasts } from 'react-toast-notifications';
-
-// ACTIONS
-import { toggleSidebar } from '../redux/actions/sidebarActions';
 
 // SERVICES
 import { initiateDbBackup } from '../services/dbBackup.svc';
@@ -20,12 +16,6 @@ import Title from './Title';
 const remote = require('electron').remote;
 
 const AppFrameContainer = ({ settings }) => {
-
-  const dispatch = useDispatch();
-
-  const toggleClick = () => {
-    dispatch(toggleSidebar())
-  }
 
   const { addToast, updateToast } = useToasts();
 

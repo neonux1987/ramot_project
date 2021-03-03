@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { css } from 'emotion';
 
-import { toggleSidebar } from '../../../redux/actions/sidebarActions';
+import { toggleSidebar } from '../../../redux/actions/toggleSidebarActions';
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 import { MoreVert, ViewList } from "@material-ui/icons";
 
@@ -32,7 +32,7 @@ const iconStyle = css`
 const ToggleButton = props => {
 
   const dispatch = useDispatch();
-  const { showSidebar } = useSelector(store => store.sidebar)
+  const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
 
   const icon = showSidebar ? <MoreVert className={iconStyle} /> : <ViewList className={iconStyle} style={{ transform: "scaleX(-1)" }} />;
 

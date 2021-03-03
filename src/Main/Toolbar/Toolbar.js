@@ -11,7 +11,7 @@ import ToggleButton from "./ToggleButton/ToggleButton";
 import BreadcrumbsContainer from "./Breadcrumbs/BreadcrumbsContainer";
 
 // ACTIONS
-import { toggleSidebar } from '../../redux/actions/sidebarActions';
+import { toggleSidebar } from '../../redux/actions/toggleSidebarActions';
 
 const Toolbar = () => {
 

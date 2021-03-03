@@ -61,6 +61,8 @@ const _extraDetails = css`
 
 const _content = css`
   margin: 0 15px 15px;
+  overflow: auto;
+  position: relative;
 `;
 
 const StyledSection = ({
