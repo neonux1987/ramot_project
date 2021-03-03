@@ -13,7 +13,7 @@
 }
 
 .drawer {
-  width: 240px;
+  width: 250px;
   flex-shrink: 0;
   z-index: 2;
   box-shadow: none;
@@ -24,7 +24,7 @@
 }
 
 .drawerPaper {
-  width: 240px;
+  width: 250px;
   /* background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%); */
   /* background-color: #f7f7f7; */
   /* background-color: #f2f3f9; */

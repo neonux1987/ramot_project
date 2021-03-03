@@ -1,5 +1,7 @@
 .listItem{
   padding-right: 16px;
+  width: 230px;
+  margin: 0 10px;
 }
 
 .listItem,.listItemIcon,.listItemText{
