@@ -18,6 +18,7 @@ import {
   outcomeText,
   outcomeDescription
 } from './StatBox.module.css';
+import { IoIosCalendar } from 'react-icons/io';
 
 const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#ffffff", loading = true }) => {
 
@@ -40,12 +41,12 @@ const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#ffffff"
         <div className={chartWrapper}>
           <PieChart
             className={chart}
-            paddingAngle={5}
+            paddingAngle={2}
             lineWidth={20}
             totalValue={income + outcome}
             data={[
-              { title: 'הוצאות', value: outcome, color: 'rgb(255 0 82)' },
-              { title: 'הכנסות', value: income, color: '#1979cc' },
+              { title: 'הוצאות', value: outcome, color: '#1979cc' },
+              { title: 'הכנסות', value: income, color: 'rgb(31 173 131)' },
             ]}
           />
         </div>
@@ -55,7 +56,7 @@ const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#ffffff"
       {/* start bottom */}
       <div className={bottom}>
         <div className={incomeWrapper}>
-          <span className={incomeText} style={{ color: "rgb(25, 121, 204)" }}>
+          <span className={incomeText} style={{ color: "rgb(31 173 131)" }}>
             {income} {unicodeSymbol}
           </span>
           <span className={incomeDescription}>
@@ -64,7 +65,7 @@ const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#ffffff"
         </div>
 
         <div className={outcomeWrapper}>
-          <div className={outcomeText} style={{ color: "rgb(255 0 82)" }}>
+          <div className={outcomeText} style={{ color: "#1979cc" }}>
             {outcome} {unicodeSymbol}
           </div>
           <div className={outcomeDescription}>

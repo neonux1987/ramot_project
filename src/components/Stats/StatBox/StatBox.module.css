@@ -9,7 +9,7 @@
 .upper{
   display: flex;
   border-bottom: 1px solid #f1eded;
-  padding-bottom: 40px;
+  padding-bottom: 25px;
 }
 
 .titleWrapper{
@@ -39,8 +39,8 @@
 }
 
 .chart{
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   shape-rendering: geometricprecision;
 }
 
@@ -91,5 +91,11 @@
     width: 50px;
     height: 50px;
     shape-rendering: geometricprecision;
+  }
+
+  .upper{
+    display: flex;
+    border-bottom: 1px solid #f1eded;
+    padding-bottom: 45px;
   }
 }

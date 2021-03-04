@@ -143,7 +143,7 @@ a {
 
 .activeExpandItem,.activeExpandItem:hover{
   background: #0000001f;
-  border-radius: 0px;
+  border-radius: 3px;
 }
 
 .activeButton,.activeButton:hover{
