@@ -74,7 +74,7 @@ class MainContainer extends Component {
 
       <Toolbar />
 
-      <Element className={mainStyle}>
+      <div className={mainStyle}>
 
         <Route render={({ location }) => (
           <TransitionGroup>
@@ -93,7 +93,7 @@ class MainContainer extends Component {
           </TransitionGroup>
         )} />
 
-      </Element>
+      </div>
 
     </main>
 

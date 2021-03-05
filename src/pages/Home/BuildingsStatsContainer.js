@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ThemeContext from '../../context/ThemeContext';
 import Helper from '../../helpers/Helper';
 import Stats from '../../components/Stats/Stats';
 import StatBox from '../../components/Stats/StatBox/StatBox';
@@ -13,8 +12,6 @@ const BuildingsStatsContainer = () => {
 
   const { data, isFetching } = useSelector(store => store.yearlyStats.all);
 
-  const themeContext = useContext(ThemeContext);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,7 +19,6 @@ const BuildingsStatsContainer = () => {
   }, [dispatch]);
 
   const generateBuildingsStats = (data, isFetching) => {
-    const colors = themeContext.colorSet;
 
     const keys = Object.keys(data);
 
@@ -36,7 +32,6 @@ const BuildingsStatsContainer = () => {
         outcome={outcome}
         income={income}
         unicodeSymbol={Helper.shekelUnicode}
-        titleColor={colors[index]}
         loading={isFetching}
       />;
     });

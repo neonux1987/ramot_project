@@ -8,6 +8,7 @@ import Spinner from '../../components/Spinner/Spinner';
 
 const container = css`
   background: #ffffff;
+  margin-top: 20px;
 `;
 
 const text = css`

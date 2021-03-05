@@ -68,8 +68,8 @@ const _content = css`
 const StyledSection = ({
   title,
   Icon,
-  bgColor = "rgb(37 152 183)",
-  extraDetails = null,
+  bgColor = "rgb(111 80 206)",
+  //extraDetails = null,
   children
 }) => {
   return <div className={_container}>

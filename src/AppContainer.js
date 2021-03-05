@@ -57,10 +57,12 @@ const AppContainer = () => {
 
   useEffect(() => {
     start();
+  }, [start]);
 
+  useEffect(() => {
     // play welcome melody on app start
     play(types.welcome);
-  }, [start]);
+  }, []);
 
   if (menu.isFetching || generalSettings.isFetching) {
     return <AlignCenterMiddle>

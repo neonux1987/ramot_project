@@ -296,3 +296,11 @@ input,textarea{
     opacity: 0;
     transition: opacity 150ms linear;
 }
+
+/****************************************************
+apex charts override
+****************************************************/
+
+.apexcharts-toolbar {
+  left: 0;
+}

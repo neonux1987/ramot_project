@@ -19,59 +19,46 @@ import {
   outcomeDescription
 } from './StatBox.module.css';
 import { IoIosCalendar } from 'react-icons/io';
+import ReactApexChart from 'react-apexcharts';
 
-const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#ffffff", loading = true }) => {
+const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#555555", loading = true }) => {
 
-  if (loading)
-    return <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
-      <AlignCenterMiddle style={{ height: "200px" }}><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני ${title}`} size={20} /></AlignCenterMiddle>
-    </Grid>
+  const chart = <div className={chartWrapper}>
+    <ReactApexChart options={{
+      chart: {
+        type: 'donut'
+      },
+      responsive: [{
+        breakpoint: 1400,
+        options: {
+          chart: {
+            width: 220
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      }]
+    }} series={[income, outcome]} type="donut" width="260px" />
+  </div>;
 
   return <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
     <Paper className={paper} >
 
       {/* start upper */}
       <div className={upper}>
-        <div className={titleWrapper} style={{ background: titleColor }}>
-          <Typography variant="h6" className={titleText}>
+        <div className={titleWrapper}>
+          <Typography variant="h6" className={titleText} /* style={{ color: titleColor }} */>
             {title}
           </Typography>
         </div>
 
-        <div className={chartWrapper}>
-          <PieChart
-            className={chart}
-            paddingAngle={2}
-            lineWidth={20}
-            totalValue={income + outcome}
-            data={[
-              { title: 'הוצאות', value: outcome, color: '#1979cc' },
-              { title: 'הכנסות', value: income, color: 'rgb(31 173 131)' },
-            ]}
-          />
-        </div>
       </div>
       {/* end upper */}
 
       {/* start bottom */}
       <div className={bottom}>
-        <div className={incomeWrapper}>
-          <span className={incomeText} style={{ color: "rgb(31 173 131)" }}>
-            {income} {unicodeSymbol}
-          </span>
-          <span className={incomeDescription}>
-            הכנסות
-            </span>
-        </div>
-
-        <div className={outcomeWrapper}>
-          <div className={outcomeText} style={{ color: "#1979cc" }}>
-            {outcome} {unicodeSymbol}
-          </div>
-          <div className={outcomeDescription}>
-            הוצאות
-              </div>
-        </div>
+        {loading ? <Loader /> : chart}
       </div>
       {/* end bottom */}
 
@@ -80,3 +67,7 @@ const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#ffffff"
 }
 
 export default StatBox;
+
+const Loader = () => <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
+  <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} size={20} /></AlignCenterMiddle>
+</Grid>;
