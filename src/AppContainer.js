@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppWrapper from './components/AppWrapper/AppWrapper';
 
 // COMPONENTS
-import Sidebar from "./Sidebar/Sidebar";
 import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './containers/ScrollToTop/ScrollToTop';
 import { AlignCenterMiddle } from './components/AlignCenterMiddle/AlignCenterMiddle';
@@ -20,6 +19,7 @@ import './assets/css/style.css';
 
 // CONTAINERS
 import MainContainer from './Main/MainContainer';
+import SideBarContainer from './Sidebar/SideBarContainer';
 
 // HOOKS
 import useServices from './customHooks/useServices';
@@ -33,6 +33,7 @@ import { soundManager } from './soundManager/SoundManager';
 // TOASTS
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
+
 
 const { play, types } = soundManager;
 
@@ -81,7 +82,7 @@ const AppContainer = () => {
 
         <CssBaseline />
 
-        <Sidebar />
+        <SideBarContainer />
 
         <MainContainer mainContainer={mainContainer} toggleMain={"showMainAnimation"} />
 

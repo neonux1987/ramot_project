@@ -9,8 +9,6 @@ const TOAST_AUTO_CLOSE = 3000;
 const TOAST_BACKUP_ID = "dbBackupSvc";
 const TOAST_REPORTS_ID = "reportsGeneratorId";
 
-const { play, types } = soundManager;
-
 const useServices = () => {
 
   const start = () => {
@@ -19,8 +17,6 @@ const useServices = () => {
 
     // setup listeners
     setupListeners();
-
-    play(types.welcome);
   }
 
   const startServices = () => {
@@ -80,7 +76,7 @@ const useServices = () => {
       }
     };
 
-    // when he state updates it re-runs useEffect again
+    // when the state updates it re-runs useEffect again
     // to avoid multiple register of of the same event
     // unregister all events
     ipcRenderer.removeAllListeners("notify-renderer");
