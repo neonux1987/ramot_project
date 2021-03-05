@@ -5,7 +5,7 @@ const Stats = ({ stats }) => <Grid
   container
   spacing={2}
   justify={"space-evenly"}
-  style={{ padding: "20px 0" }}
+  style={{ padding: "0 0 20px" }}
 >
   {stats || []}
 </Grid>

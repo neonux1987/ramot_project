@@ -7,17 +7,9 @@
   user-select: none;
 }
 
-.listItemText{
-  font-weight: 400;
-}
 
 .list:hover{
   overflow-y: overlay;
-}
-
-.listSubheader{
-  color: #cbcdda;
-  /* background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgb(46, 55, 62) 100%); */
 }
 
 /* width */
@@ -42,20 +34,4 @@
 
 .list::-webkit-scrollbar-thumb:hover {
   background: #d4d4d4; 
-}
-
-.homeBtn{
-  padding-right: 16px;
-}
-
-.homeBtnText{
-  font-weight: 500;
-}
-
-.homeBtnIcon{
-  color: rgb(39 117 195);
-}
-
-.icon{
-  font-size: 1.5rem;
 }

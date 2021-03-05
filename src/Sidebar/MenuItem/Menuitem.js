@@ -17,11 +17,7 @@ const Menuitem = (props) => {
     Icon = <div></div>,
     active,
     to,
-    style,
     className,
-    classes = {},
-    textClassName,
-    iconClassName,
     tabIndex
   } = props;
 
@@ -30,16 +26,14 @@ const Menuitem = (props) => {
       tabIndex={tabIndex}
       component={ButtonNavLink}
       className={classnames(listItem, className, active ? "activeButton" : "")}
-      classes={classes}
-      style={style}
       to={to}
       selected={false}
       draggable={false}
     >
-      <ListItemIcon className={classnames(listItemIcon, iconClassName)} style={{ color: active ? "#fafafa" : "#d0d0d0" }}>
+      <ListItemIcon className={listItemIcon} style={{ color: active ? "#fafafa" : "#d0d0d0" }}>
         {Icon && <Icon />}
       </ListItemIcon>
-      <ListItemText className={listItemIcon} classes={{ primary: textClassName }} style={{ color: active ? "#fafafa" : "#d0d0d0" }} primary={label} />
+      <ListItemText className={listItemIcon} style={{ color: active ? "#fafafa" : "#d0d0d0" }} primary={label} />
     </ListItem>
   );
 };

@@ -9,23 +9,17 @@ import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
 import Menuitem from '../MenuItem/Menuitem';
 
 // CSS
-import {
-  list,
-  homeBtn,
-  homeBtnText,
-  homeBtnIcon,
-  listItemText
-} from './Menu.module.css';
+import { list } from './Menu.module.css';
 
 // ACTIONS
 import { updateRoute } from '../../redux/actions/routesActions';
 
 // HOOKS
 import useIcons from '../../customHooks/useIcons';
+import HomeButton from '../HomeButton/HomeButton';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
-const HOME_BUTTON_PATH = "/דף-הבית";
 
 const Menu = (props) => {
 
@@ -130,7 +124,6 @@ const Menu = (props) => {
           label={label}
           Icon={generateIcon(label)}
           key={id}
-          textClassName={listItemText}
           to={{
             pathname: `/${item.path}/${path}`,
             state: {
@@ -152,23 +145,7 @@ const Menu = (props) => {
       aria-labelledby="nested-list-subheader"
       className={list}
     >
-      <Menuitem
-        label={HOME_BUTTON_LABEL}
-        Icon={generateIcon("dashboard")}
-        className={homeBtn}
-        textClassName={homeBtnText}
-        iconClassName={homeBtnIcon}
-        to={{
-          pathname: HOME_BUTTON_PATH,
-          state: {
-            page: HOME_BUTTON_LABEL,
-            buildingName: "",
-            buildingNameEng: ""
-          }
-        }}
-        active={routeState.page === HOME_BUTTON_LABEL}
-      />
-
+      <HomeButton active={routeState.page === HOME_BUTTON_LABEL} />
       {menuRender}
     </List>
   );

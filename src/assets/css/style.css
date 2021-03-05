@@ -147,7 +147,7 @@ a {
 }
 
 .activeButton,.activeButton:hover{
-  background: rgb(28 102 165);
+  background: rgb(28 102 165 / 48%);
   margin: 0 10px;
   width: 230px;
   border-radius: 0px;
