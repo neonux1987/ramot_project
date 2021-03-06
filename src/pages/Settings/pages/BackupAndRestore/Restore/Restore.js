@@ -29,7 +29,7 @@ import { restore } from '../../../../../services/restoreDbService';
 import { toastManager } from '../../../../../toasts/toastManager';
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
-import PrimaryButton from '../../../../../components/Buttons/PrimaryButton';
+import PrimaryButton from '../../../../../components/buttons/PrimaryButton';
 
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";

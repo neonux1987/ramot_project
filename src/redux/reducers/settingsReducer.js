@@ -29,6 +29,7 @@ export default (state = initState, action) => {
       return {
         ...state,
         status: "error",
+        isFetching: false,
         error: action.payload
       }
     case TYPES.SETTINGS_UPDATE:

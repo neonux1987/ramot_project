@@ -1,7 +1,6 @@
 // LIBRARIES
 const { dialog, app, BrowserWindow } = require('electron');
 const logManager = require('../logger/LogManager');
-const rendererNotificationSvc = require('../services/RendererNotificationSvc');
 const MenuDao = require('../dao/MenuDao');
 const SchemaBuilder = require('../dao/schemaBuilder/SchemaBuilder');
 
@@ -26,7 +25,6 @@ const registeredBackupsIpc = require('../../electron/ipcs/registeredBackups.ipc'
 const dbBackupIpc = require('../../electron/ipcs/dbBackup.ipc');
 const excelIpc = require('../../electron/ipcs/excel.ipc');
 const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenerator.ipc');
-const servicesIpc = require('../../electron/ipcs/services.ipc');
 const mainProcessIpc = require('../../electron/ipcs/mainProcess.ipc');
 const restoreDbIpc = require('../../electron/ipcs/restoreDb.ipc');
 const updatesIpc = require('../../electron/ipcs/updates.ipc');
@@ -36,8 +34,6 @@ const buildingsIpc = require('../../electron/ipcs/buildings.ipc');
 const { openLogFile } = require('../../helpers/utils');
 
 const SystemPaths = require('./SystemPaths');
-
-const ServicesLogic = require('../logic/ServicesLogic');
 
 const SetupLogic = require('../logic/SetupLogic');
 
@@ -50,7 +46,6 @@ const SettingsLogic = require('../logic/SettingsLogic');
 class MainSystem {
 
   constructor() {
-    this.servicesLogic = undefined;
     this.setupLogic = new SetupLogic();
     this.settingsLogic = new SettingsLogic();
     this.logger = logManager.getLogger();
@@ -100,8 +95,6 @@ class MainSystem {
 
     registeredReportsIpc();
 
-    servicesIpc();
-
     restoreDbIpc();
 
     updatesIpc();
@@ -109,22 +102,6 @@ class MainSystem {
     printerIpc();
 
     buildingsIpc();
-  }
-
-  async startServices() {
-    await this.servicesLogic.startAllServices()
-      .catch((result) => {
-        rendererNotificationSvc.notifyRenderer("notify-renderer", "systemError", result.message);
-        this.logger.error(result.error);
-      });
-  }
-
-  async stopServices() {
-    await this.servicesLogic.stopAllServices()
-      .catch((result) => {
-        rendererNotificationSvc.notifyRenderer("notify-renderer", "systemError", result.message);
-        this.logger.error(result.error);
-      });
   }
 
   async startSystem() {
@@ -135,7 +112,6 @@ class MainSystem {
       // set up the db connection
       await connectionPool.createConnection();
 
-      this.servicesLogic = new ServicesLogic();
       const updatesLogic = new UpdatesLogic();
 
       const settings = await this.settingsLogic.getSettings();
@@ -184,7 +160,6 @@ class MainSystem {
   }
 
   async stopSystem() {
-    await this.stopServices();
     await connectionPool.destroy();
   }
 

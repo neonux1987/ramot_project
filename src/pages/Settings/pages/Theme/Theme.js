@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
-import SaveButton from '../../../../components/SaveButton/SaveButton';
+import SaveButton from '../../../../components/buttons/SaveButton/SaveButton';
 import CheckboxWithLabel from '../../../../components/CheckboxWithLabel/CheckboxWithLabel';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 import TitleTypography from '../../../../components/Typographies/TitleTypography';

@@ -1,76 +1,35 @@
 import React from 'react';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import Spinner from '../../Spinner/Spinner';
-import { PieChart } from 'react-minimal-pie-chart';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
 import {
   paper,
   upper,
   titleWrapper,
   titleText,
-  chartWrapper,
-  chart,
   bottom,
-  incomeWrapper,
-  incomeText,
-  incomeDescription,
-  outcomeWrapper,
-  outcomeText,
-  outcomeDescription
 } from './StatBox.module.css';
 
-const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#ffffff", loading = true }) => {
 
-  if (loading)
-    return <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
-      <AlignCenterMiddle style={{ height: "200px" }}><Spinner style={{ fontWeight: 600 }} loadingText={`טוען נתוני ${title}`} size={20} /></AlignCenterMiddle>
-    </Grid>
+const StatBox = ({ title, titleColor = "#555555", loading = true, children }) => {
 
   return <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
     <Paper className={paper} >
 
       {/* start upper */}
       <div className={upper}>
-        <div className={titleWrapper} style={{ background: titleColor }}>
-          <Typography variant="h6" className={titleText}>
+        <div className={titleWrapper}>
+          <Typography variant="h6" className={titleText} /* style={{ color: titleColor }} */>
             {title}
           </Typography>
         </div>
 
-        <div className={chartWrapper}>
-          <PieChart
-            className={chart}
-            paddingAngle={5}
-            lineWidth={20}
-            totalValue={income + outcome}
-            data={[
-              { title: 'הוצאות', value: outcome, color: 'rgb(255 0 82)' },
-              { title: 'הכנסות', value: income, color: '#1979cc' },
-            ]}
-          />
-        </div>
       </div>
       {/* end upper */}
 
       {/* start bottom */}
       <div className={bottom}>
-        <div className={incomeWrapper}>
-          <span className={incomeText} style={{ color: "rgb(25, 121, 204)" }}>
-            {income} {unicodeSymbol}
-          </span>
-          <span className={incomeDescription}>
-            הכנסות
-            </span>
-        </div>
-
-        <div className={outcomeWrapper}>
-          <div className={outcomeText} style={{ color: "rgb(255 0 82)" }}>
-            {outcome} {unicodeSymbol}
-          </div>
-          <div className={outcomeDescription}>
-            הוצאות
-              </div>
-        </div>
+        {loading ? <Loader /> : children}
       </div>
       {/* end bottom */}
 
@@ -79,3 +38,7 @@ const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#ffffff"
 }
 
 export default StatBox;
+
+const Loader = () => <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
+  <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} size={20} /></AlignCenterMiddle>
+</Grid>;

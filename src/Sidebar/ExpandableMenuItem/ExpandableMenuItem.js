@@ -8,7 +8,6 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { Fragment } from 'react';
 import classnames from 'classnames';
-import { Button } from '@material-ui/core';
 
 import {
   listItemIcon,
@@ -34,13 +33,13 @@ const ExpandableMenuItem = props => {
 
       <ListItem
         onClick={onClick}
-        component={Button}
         className={classnames(listItem, active ? "activeExpandItem" : "")}
+        button
       >
         <ListItemIcon className={listItemIcon}>
           {Icon && <Icon />}
         </ListItemIcon>
-        <ListItemText className={listItemText} classes={{ primary: listItemText }} primary={label} />
+        <ListItemText className={listItemText} primary={label} />
         {open ? <ExpandLess className={expandIcon} /> : <ExpandMore className={expandIcon} />}
       </ListItem>
 

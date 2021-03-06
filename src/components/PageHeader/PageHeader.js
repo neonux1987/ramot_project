@@ -5,7 +5,7 @@ import { RiBuilding2Fill } from 'react-icons/ri';
 import useIcons from '../../customHooks/useIcons';
 
 const container = css`
-  margin: 20px;
+  margin: 20px 20px 30px;
 `;
 
 const mainContainer = css`
@@ -18,7 +18,7 @@ const mainIcon = css`
   font-size: 48px;
   display: flex;
   align-items: center;
-  color: #c1c1c1;
+  color: #555555;
   padding-top: 0px;
   display: none;
 `;
@@ -26,7 +26,7 @@ const mainIcon = css`
 const mainTitle = css`
   margin-right: 0px;
   /* color: #6b6b6b; */
-  color: #444444;
+  color: #555555;
   font-weight: 500;
   font-size: 2.4rem;
 `;
@@ -45,12 +45,12 @@ const subIconWrapper = css`
 
 const subIcon = css`
   font-size: 16px;
-  color: #444444;
+  color: #1489ce;
 `;
 
 const subTitle = css`
   margin-right: 6px;
-  color: #444444;
+  color: #555555;
   font-weight: 400;
 `;
 

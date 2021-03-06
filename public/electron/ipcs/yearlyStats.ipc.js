@@ -21,6 +21,14 @@ const yearlyStatsIpc = (connection) => {
     });
   });
 
+  ipcMain.on('get-all-buildings-stats-by-year', (event, year) => {
+    yearlyStatsLogic.getAllBuildingsStatsByYear(year).then((result) => {
+      event.sender.send("all-buildings-stats-by-year-data", { data: result });
+    }).catch((error) => {
+      event.reply("all-buildings-stats-by-year-data", { error: error.message });
+    });
+  });
+
 }
 
 module.exports = yearlyStatsIpc;

@@ -58,17 +58,6 @@ const SettingsNavigation = props => {
           active={page === "גיבוי ושחזור" ? true : false}
         />
         <Tab
-          label="שירותי מערכת"
-          to={{
-            pathname: `${match.path}/שירותי מערכת`,
-            state: {
-              page: "שירותי מערכת",
-              buildingName: "הגדרות"
-            }
-          }}
-          active={page === "שירותי מערכת" ? true : false}
-        />
-        <Tab
           label="עדכוני תוכנה"
           to={{
             pathname: `${match.path}/עדכוני תוכנה`,

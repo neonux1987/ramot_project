@@ -1,7 +1,7 @@
 import React from 'react';
 import SubtitleBoldTypography from "../../../../../../components/Typographies/SubtitleBoldTypography";
 import styles from './ManualBackupSelector.module.css';
-import PrimaryButton from '../../../../../../components/Buttons/PrimaryButton';
+import PrimaryButton from '../../../../../../components/buttons/PrimaryButton';
 
 export default (props) => {
 

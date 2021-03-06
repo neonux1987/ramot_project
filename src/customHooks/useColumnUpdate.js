@@ -8,7 +8,7 @@ const useColumnUpdate = (value) => {
     setNewValue(target.value);
   }
 
-  return [newValue, onChange];
+  return [newValue, onChange, setNewValue];
 };
 
 export default useColumnUpdate;

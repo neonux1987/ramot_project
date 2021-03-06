@@ -58,10 +58,6 @@
     "restart_required": false,
     "backup_on_exit": true
   },
-  "empty_reports_generator": {
-    "enabled": false,
-    "restart_required": false
-  },
   "appUpdates": {
     "availableUpdate": false,
     "updateVersion": "",

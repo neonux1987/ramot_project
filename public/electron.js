@@ -87,10 +87,6 @@ async function createWindow() {
     event.preventDefault()
   });
 
-  ipcMain.on('system-start-services', (event, arg) => {
-    mainSystem.startServices();
-  });
-
   powerMonitor.on('resume', () => {
     console.log('The system is up');
     //const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();

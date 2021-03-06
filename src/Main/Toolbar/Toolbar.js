@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect } from "react";
+import React from "react";
 import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,63 +7,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './Toolbar.module.css';
 
 // COMPONENTS
-import Spinner from "../../components/Spinner/Spinner";
-import EditVatModal from "../../components/modals/EditVatModal/EditVatModal";
-import VolumeButton from "./VolumeButton/VolumeButton";
-import MoreButton from "./MoreButton/MoreButton";
-import MoreMenu from "./MoreMenu/MoreMenu";
-import VatInfo from "./VatInfo/VatInfo";
 import ToggleButton from "./ToggleButton/ToggleButton";
-import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
+import BreadcrumbsContainer from "./Breadcrumbs/BreadcrumbsContainer";
 
 // ACTIONS
-import { toggleSidebar } from '../../redux/actions/sidebarActions';
-import generalSettingsActions from '../../redux/actions/generalSettingsActions';
+import { toggleSidebar } from '../../redux/actions/toggleSidebarActions';
 
-// HOOKS
-import useModalLogic from "../../customHooks/useModalLogic";
-
-// SERVICES
-import { restartApp } from "../../services/mainProcess.svc";
-
-const Toolbar = ({ buildingName, page }) => {
-
-  const navigationPath = buildingName && page ? `${buildingName} > ${page}` : page;
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const { showModal } = useModalLogic();
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const taxClickHandler = () => {
-    handleClose();
-    showModal(EditVatModal);
-  }
+const Toolbar = () => {
 
   const dispatch = useDispatch();
 
-  const { isFetching, data } = useSelector(store => store.generalSettings.generalSettings);
+  const onClick = () => {
+    dispatch(toggleSidebar());
+  };
 
   const themeSettings = useSelector(store => store.settings.data.theme);
-
-  useEffect(() => {
-    dispatch(generalSettingsActions.fetchGeneralSettings());
-  }, [dispatch]);
-
-  const restartAppHandler = () => {
-    restartApp();
-  }
-
-  const tax = isFetching ?
-    <Spinner spinnerClass={styles.spinner} size={16} color={"#404040"} /> :
-    <span>{`${data[0].tax}%`}</span>;
 
   const noFollowRule = !themeSettings.sticky_toolbar ? styles.noFollow : "";
 
@@ -71,20 +29,8 @@ const Toolbar = ({ buildingName, page }) => {
     <div className={classnames(styles.wrapper, noFollowRule)}>
 
       <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
-        <ToggleButton className={styles.toggleBtn} onClick={() => dispatch(toggleSidebar())} />
-        <Breadcrumbs className={styles.breadcrumbs} navigationPath={navigationPath} />
-      </div>
-
-      <div className={classnames(styles.section, styles.flexAlignLeft)}>
-
-        <VatInfo className={styles.vatWrapper} tax={tax} />
-
-        <VolumeButton className={styles.volumeBtn} />
-
-        <MoreButton className={styles.moreBtn} onClick={handleClick} />
-
-        <MoreMenu anchorEl={anchorEl} handleClose={handleClose} restartAppHandler={restartAppHandler} taxClickHandler={taxClickHandler} />
-
+        <ToggleButton onClick={onClick} />
+        <BreadcrumbsContainer />
       </div>
 
     </div>

@@ -3,19 +3,17 @@ import React from "react";
 import { css } from 'emotion';
 
 const icon = css`
-  margin-left: 10px;
+  margin-left: 6px;
 `;
 
 const text = css`
-  margin-left: 10px;
-  color: #525e63;
+  margin-left: 6px;
+  color: #7d7d7d;
 `;
 
 const lastStyle = css`
-  color: #000000;
-  font-weight: 500;
-  text-decoration: none;
-  margin-left: 10px;
+  color: #9e9e9e;
+  font-weight: 400;
 `
 
 const Crumb = ({ last = false, location, separator = true }) => {

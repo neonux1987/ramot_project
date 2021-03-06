@@ -9,7 +9,7 @@ const persistConfig = {
   storage,
   blacklist: [
     'app',
-    //'sidebar',
+    //'menu',
     'monthExpanses',
     'budgetExecutions',
     "summarizedSections",
@@ -31,7 +31,8 @@ const persistConfig = {
     //"routes",
     //"date",
     "savedNotification",
-    "goodBye"
+    "goodBye",
+    //"toggleSidebar"
   ]
 
 }

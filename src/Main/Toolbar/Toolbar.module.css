@@ -1,6 +1,5 @@
 .wrapper{
-  height: 56px;
-  margin: 0 20px;
+  margin: 5px 0 20px;
   /* box-shadow: 0 5px 4px -5px #000000a1; */
   /* box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); */
   font-size: 14px;
@@ -12,18 +11,17 @@
   top: 0;
   display: flex;
   justify-content: stretch;
-  /* background: #f3f4f8; */
+  background: #fafafa;
   /* border-left: 1px solid #dde1e2;
   border-right: 1px solid #dde1e2;
   border-bottom: 1px solid #dde1e2; */
   /* background: #1672ab; */
-  background-color: #3b4b5d;
   /* border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px; */
-  border-radius: 6px;
   /* background: linear-gradient(180deg, rgb(60, 71, 80) 0%, rgb(46, 55, 62) 100%); */
   /* background: linear-gradient(180deg, rgb(255, 255, 255) 0%, rgb(253, 253, 253) 100%); */
   /* border-bottom: 1px solid #dde1e2; */
+  padding:10px 20px;
 }
 
 .noFollow{

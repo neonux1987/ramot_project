@@ -2,27 +2,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { Element, Events } from 'react-scroll'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { css } from 'emotion';
 import classnames from 'classnames';
 
-// PAGES
-import MonthExpanses from '../pages/MonthExpanses/MonthExpanses';
-import Home from '../pages/Home/Home';
-import BudgetExecutions from '../pages/BudgetExecutions/BudgetExecutions';
-import SummarizedBudgets from '../pages/SummarizedBudgets/SummarizedBudgets';
-import Settings from '../pages/Settings/Settings';
-import Management from '../pages/Management/Management';
-import Statistics from '../pages/Statistics/Statistics';
-
-// COMPONENTS
-import BreadcrumbsContainer from './Toolbar/Breadcrumbs/BreadcrumbsContainer';
-
 // ACTIONS
-import * as sidebarActions from '../redux/actions/sidebarActions';
 import * as routesActions from '../redux/actions/routesActions';
+import Toolbar from './Toolbar/Toolbar';
+import Routes from './Routes';
 
 
 const mainStyle = css`
@@ -78,37 +67,14 @@ class MainContainer extends Component {
     Events.scrollEvent.remove('end');
   }
 
-  //gnerate routes from menu array with sub arrays
-  generateRoutes(menu) {
-    //generate menu routes and submenu routes
-    let routes = [];
-    menu.forEach(route => {
-      routes.push(route.submenu.map(subRoute => {
-        return (<Route path={"/" + route.path + "/" + subRoute.path} exact component={this.whichPageComponent(subRoute.label)} key={route.id} />);
-      }));
-    });
-    return routes;
-  }
-
-  whichPageComponent(pageName) {
-    switch (pageName) {
-      case "הוצאות חודשיות": return MonthExpanses;
-      case "ביצוע מול תקציב": return BudgetExecutions;
-      case "סיכום תקציבי": return SummarizedBudgets;
-      case "סטטיסטיקה": return Statistics;
-      case "ניהול": return Management;
-      default: return Home;
-    }
-  }
-
   render() {
     const timeout = { enter: 800, exit: 400 };
 
     return <main id="mainContainer" ref={this.props.mainContainer} className={classnames(elementStyle, this.props.toggleMain)}>
 
-      <BreadcrumbsContainer />
+      <Toolbar />
 
-      <Element className={mainStyle}>
+      <div className={mainStyle}>
 
         <Route render={({ location }) => (
           <TransitionGroup>
@@ -121,27 +87,13 @@ class MainContainer extends Component {
               unmountOnExit={true}
             >
 
-              <Switch location={location}>
-                {this.generateRoutes(this.props.sidebar.menu.data)}
-                <Route path="/" exact component={Home} />
-                <Route path="/הגדרות"
-                  render={routeProps => (
-                    <Settings {...routeProps} />
-                  )}
-                />
-                <Route path="/ניהול" component={Management} />
-                <Route exact path="/" component={Home} history={{
-                  page: "דף-הבית",
-                  buildingName: "דף הבית",
-                  buildingNameEng: "home"
-                }} />
-              </Switch>
+              <Routes location={location} />
 
             </CSSTransition>
           </TransitionGroup>
         )} />
 
-      </Element>
+      </div>
 
     </main>
 
@@ -152,12 +104,10 @@ class MainContainer extends Component {
 
 const mapStateToProps = state => ({
   generalSettings: state.generalSettings,
-  sidebar: state.sidebar,
   routes: state.routes
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSidebar: () => dispatch(sidebarActions.fetchSidebar()),
   updateRoute: (active) => dispatch(routesActions.updateRoute(active))
 });
 

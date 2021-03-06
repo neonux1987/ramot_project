@@ -6,14 +6,11 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import LoadingCircle from './components/LoadingCircle';
-import { ToastProvider } from 'react-toast-notifications';
 
 ReactDOM.render(
   <Provider store={store} >
     <PersistGate loading={<LoadingCircle />} persistor={persistor}>
-      <ToastProvider autoDismiss placement={"bottom-right"}>
-        <App />
-      </ToastProvider>
+      <App />
     </PersistGate>
   </Provider>, document.getElementById('root'));
 

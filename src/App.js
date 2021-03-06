@@ -1,53 +1,21 @@
 // LIBRARIES
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { CssBaseline } from '@material-ui/core';
 import { MemoryRouter } from 'react-router-dom';
 import { withGoodBye } from 'react-goodbye';
 
 // COMPONENTS
-import Sidebar from "./Sidebar/Sidebar";
 import RTL from './components/RTL';
-import ToastRender from './components/ToastRender/ToastRender';
-import AppFrame from './AppFrame/AppFrameContainer';
-import ScrollToTop from './components/ScrollToTop/ScrollToTop';
-import { AlignCenterMiddle } from './components/AlignCenterMiddle/AlignCenterMiddle';
-import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
 import ModalRoot from './components/modals/ModalRoot';
-
-// CONTEXT
-import ThemeContext from './context/ThemeContext';
 
 // CSS
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/css/style.css';
 
 // CONTAINERS
-import MainContainer from './Main/MainContainer';
+import AppContainer from './AppContainer';
 
-import { useDispatch, useSelector, useStore } from 'react-redux';
-
-// ACTIONS
-import { updateSettings, saveSettings } from './redux/actions/settingsActions';
-import { quitApp } from './services/mainProcess.svc';
-import { fetchSidebar } from './redux/actions/sidebarActions';
-
-// SERVICES
-import { initiateDbBackup } from './services/dbBackup.svc';
-import { checkForUpdates } from './services/updates.svc';
-
-// SOUND
-import { soundManager } from './soundManager/SoundManager';
-
-// TOASTS
-import { toastManager } from './toasts/toastManager';
-import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
-import { generateBuildingsReducer } from './redux/reducers/util/util';
-import AppWrapper from './components/AppWrapper/AppWrapper';
-import { useToasts } from 'react-toast-notifications';
-
-// ELECTRON
-const { ipcRenderer, remote } = require('electron');
+import { ToastProvider } from 'react-toast-notifications';
 
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
@@ -68,165 +36,7 @@ const theme = createMuiTheme({
   },
 });
 
-const { play, types } = soundManager;
-
-const TOAST_AUTO_CLOSE = 3000;
-const TOAST_BACKUP_ID = "dbBackupSvc";
-const TOAST_REPORTS_ID = "reportsGeneratorId";
-
 const App = () => {
-
-  const mainContainer = useRef(null);
-
-  const settings = useSelector(store => store.settings);
-
-  const sidebar = useSelector(store => store.sidebar);
-
-  const store = useStore();
-
-  const dispatch = useDispatch();
-
-  const { addToast, updateToast } = useToasts();
-
-  useEffect(() => {
-    dispatch(fetchSidebar());
-
-    /* generateBuildingsReducer(store).then((result) => {
-      //console.log(store);
-    }); */
-
-    /* const state = createBuildingState();
-    console.log(state); */
-    //createReducers(store, result.data);
-
-    // play welcome melody on app start
-    play(types.welcome);
-  }, [dispatch]);
-
-  useEffect(() => {
-
-    const listenerCallback = (event, action, message) => {
-      switch (action) {
-        case "dbBackupStarted":
-          toastManager.info(<ToastRender spinner={true} message={message} />, {
-            autoClose: false,
-            toastId: TOAST_BACKUP_ID
-          });
-          break;
-        case "dbBackupFinished":
-          toastManager.update(TOAST_BACKUP_ID, {
-            render: <ToastRender done={true} message={message} />,
-            type: toastManager.types.SUCCESS,
-            delay: 2000,
-            autoClose: TOAST_AUTO_CLOSE
-          });
-          break;
-        case "dbBackupError":
-          toastManager.update(TOAST_BACKUP_ID, {
-            render: <ToastRender done={true} message={message} />,
-            type: toastManager.types.ERROR,
-            delay: 2000,
-            autoClose: TOAST_AUTO_CLOSE
-          });
-          break;
-        case "reportsGenerationStarted":
-          toastManager.info(<ToastRender spinner={true} message={message} />, {
-            autoClose: false,
-            toastId: TOAST_REPORTS_ID
-          });
-          break;
-        case "reportsGenerationFinished":
-          toastManager.update(TOAST_REPORTS_ID, {
-            render: <ToastRender done={true} message={message} />,
-            type: toastManager.types.SUCCESS,
-            delay: 2000,
-            autoClose: TOAST_AUTO_CLOSE
-          });
-          break;
-        case "systemError":
-          toastManager.error(message);
-          break;
-        default: return null;
-      }
-    };
-
-    // when he state updates it re-runs useEffect again
-    // to avoid multiple register of of the same event
-    // unregister all events
-    ipcRenderer.removeAllListeners("notify-renderer");
-
-    //listen when the data comes back
-    ipcRenderer.on("notify-renderer", listenerCallback);
-
-    //start services
-    ipcRenderer.send("system-start-services");
-  }, []);
-
-  const closeButtonHandler = async () => {
-    const { isFetching, data } = settings;
-    const { backup_on_exit, enabled } = data.db_backup;
-
-    // in case the backend stopped working
-    // allow to close the app without backing up
-    if ((isFetching && data.length === 0) || backup_on_exit === false || enabled === false) {
-      quitApp();
-      return Promise.resolve();
-    }
-
-    const id = addToast(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
-      appearance: "info",
-      autoDismissTimeout: 2500
-    });
-
-    const promise = await initiateDbBackup().catch((result) => {
-      updateToast(id, {
-        content: <ToastRender message={result.error} />,
-        appearance: "error",
-        //delay: 3000,
-        autoDismissTimeout: 2500,
-        transitionDuration: 2000,
-        onDismiss: () => {
-          //quitApp();
-          console.log("error");
-        }
-      });
-    });
-
-    // success
-    if (promise)
-      updateToast(id, {
-        content: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
-        appearance: "success",
-        //delay: 2000,
-        autoDismissTimeout: 1500,
-        onDismiss: () => {
-          //quitApp();
-          console.log("success");
-        }
-      });
-
-  }
-
-  const minimizeButtonHandler = () => {
-    const window = remote.getCurrentWindow();
-    window.minimize();
-  }
-
-  const maximizeButtonHandler = () => {
-    const window = remote.getCurrentWindow();
-
-    if (!window.isMaximized()) {
-      window.maximize();
-    } else {
-      window.unmaximize();
-    }
-  }
-
-  if (sidebar.isFetching) {
-    return <AlignCenterMiddle>
-      <LogoLoader />
-    </AlignCenterMiddle>;
-  }
 
   return (
     <RTL>
@@ -235,30 +45,13 @@ const App = () => {
 
         <EnhancedRouter>
 
-          <ScrollToTop mainContainer={mainContainer} />
+          <ToastProvider autoDismiss placement={"bottom-right"}>
 
-          <AppFrame handlers={{
-            close: closeButtonHandler,
-            minimize: minimizeButtonHandler,
-            maximize: maximizeButtonHandler
-          }} />
+            <AppContainer />
 
-          <ThemeContext.Provider value={settings.data.theme}>
+            <ModalRoot />
 
-            <AppWrapper>
-
-              <CssBaseline />
-
-              <Sidebar />
-
-              <MainContainer mainContainer={mainContainer} toggleMain={"showMainAnimation"} />
-
-            </AppWrapper>
-
-            <CustomToastContainer />
-          </ThemeContext.Provider>
-
-          <ModalRoot />
+          </ToastProvider>
 
         </EnhancedRouter>
 

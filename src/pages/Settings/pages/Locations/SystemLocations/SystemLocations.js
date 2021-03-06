@@ -8,7 +8,7 @@ import styles from './SystemLocations.module.css';
 
 // COMPONENTS
 import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import SaveButton from '../../../../../components/SaveButton/SaveButton';
+import SaveButton from '../../../../../components/buttons/SaveButton/SaveButton';
 import FileSelector from '../../../../../components/FileSelector/FileSelector';
 
 export default (props) => {

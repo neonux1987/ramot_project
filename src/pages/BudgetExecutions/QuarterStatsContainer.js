@@ -7,8 +7,8 @@ import * as quarterlyStatsActions from '../../redux/actions/quarterlyStatsAction
 
 import Helper from '../../helpers/Helper';
 
-import StatBox from '../../components/Stats/StatBox/StatBox';
 import Stats from '../../components/Stats/Stats';
+import DonutStatBox from '../../components/Stats/DonutStatBox';
 
 import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
@@ -65,7 +65,7 @@ class QuarterStatsContainer extends React.PureComponent {
     for (let i = 0; i < quarterMonths.length; i++) {
       const { month, outcome, income } = monthStats[i];
 
-      returnStats[i] = <StatBox
+      returnStats[i] = <DonutStatBox
         key={i}
         title={`${month}`}
         outcome={outcome}
@@ -84,7 +84,7 @@ class QuarterStatsContainer extends React.PureComponent {
   generateQuarterStats = (quarterStat, isFetching) => {
     const { quarter, outcome, income } = quarterStat;
 
-    return <StatBox
+    return <DonutStatBox
       key={3}
       title={`רבעון ${quarter}`}
       outcome={outcome}

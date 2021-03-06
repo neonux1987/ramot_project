@@ -16,15 +16,14 @@ const _header = css`
 `;
 
 const _titleBox = css`
-  margin: -20px 20px 20px 20px;
-  border-radius: 6px;
-  padding: 0 40px;
-  height: 80px;
+  margin: -20px 15px 20px 0px;
+  border-radius: 3px;
+  height: 65px;
   box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 320px;
+  width: 62px;
 `;
 
 const _iconWrapper = css`
@@ -42,12 +41,14 @@ const _titleWrapper = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 6px;
+  margin-right: 15px;
+  padding-bottom: 10px;
 `;
 
 const _titleTypography = css`
-  color: #ffffff;
+  color: #555555;
   font-weight: 400;
+  font-size: 1.3em;
 `;
 
 const _extraDetails = css`
@@ -59,14 +60,16 @@ const _extraDetails = css`
 `;
 
 const _content = css`
-  margin: 20px;
+  margin: 0 15px 15px;
+  overflow: auto;
+  position: relative;
 `;
 
 const StyledSection = ({
   title,
   Icon,
-  bgColor = "rgb(37 152 183)",
-  extraDetails = null,
+  bgColor = "rgb(111 80 206)",
+  //extraDetails = null,
   children
 }) => {
   return <div className={_container}>
@@ -83,18 +86,18 @@ const StyledSection = ({
         </div>
         {/* end icon */}
 
-        {/* title */}
-        <div role="title" className={_titleWrapper}>
-          <Typography className={_titleTypography} variant="h6">{title}</Typography>
-        </div>
-        {/* end title */}
-
       </div>
       {/* end title box */}
 
+      {/* title */}
+      <div role="title" className={_titleWrapper}>
+        <Typography className={_titleTypography} variant="h6">{title}</Typography>
+      </div>
+      {/* end title */}
+
       {/* extra details */}
       <div role="extra details" className={_extraDetails}>
-        {extraDetails}
+        {/* {extraDetails} */}
       </div>
       {/* end extra details */}
 

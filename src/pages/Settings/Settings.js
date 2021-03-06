@@ -6,7 +6,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import General from './pages/General/General';
 import Theme from './pages/Theme/Theme';
 import BackupAndRestore from './pages/BackupAndRestore/BackupAndRestore';
-import Services from './pages/Services/Services';
 import AppUpdates from './pages/AppUpdates/AppUpdates';
 import About from './pages/About/About';
 import SettingsNavigation from './AppBarContainer/SettingsNavigation';
@@ -22,7 +21,6 @@ const Settings = ({ match }) => {
           <Route path={`${match.path}/כללי`} component={General} />
           <Route path={`${match.path}/עיצוב`} component={Theme} />
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
-          <Route path={`${match.path}/שירותי מערכת`} component={Services} />
           <Route path={`${match.path}/עדכוני תוכנה`} component={AppUpdates} />
           <Route path={`${match.path}/אודות`} component={About} />
           <Redirect

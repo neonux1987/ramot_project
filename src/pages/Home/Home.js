@@ -1,30 +1,16 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
-import styles from './Home.module.css';
+import React from 'react';
+import BuildingsStatsContainer from './BuildingsStatsContainer';
+import Page from '../../components/Page/Page';
+import Section from '../../components/Section/Section';
 
-class Home extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  render() {
-    return (
-      <div className={`${styles.wrapper} page`}>
-
-        <div style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-          <div className={styles.expansesTitle}>דף הבית בבנייה</div>
-        </div>
-
-      </div>
-    );
-  }
+const Home = () => {
+  return (
+    <Page>
+      <Section>
+        <BuildingsStatsContainer />
+      </Section>
+    </Page>
+  );
 }
 
-export default withStyles(styles)(Home);
+export default Home;

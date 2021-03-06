@@ -10,7 +10,7 @@ import { useSound } from "../../../soundManager/SoundManager";
 const container = css`
   background: rgb(47, 53, 58);
   padding: 6px 16px;
-  border-radius: 6px;
+  border-radius: 3px;
   color: #ffffff;
   z-index: 888;
   position: absolute;

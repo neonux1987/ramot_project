@@ -12,12 +12,12 @@
   }
 
   .icon{
-    color: rgb(79,84,86);
+    color: #d0d0d0;
     font-size: 1.5rem;
   }
 
   .navLink{
     display: flex;
     padding: 6px 8px;
-    border-radius: 6px;
+    border-radius: 3px;
   }

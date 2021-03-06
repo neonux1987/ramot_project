@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import sidebar from './sidebarReducer';
+import menu from './menuReducer';
 import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
 import generalSettings from './generalSettingsReducer';
@@ -19,6 +19,7 @@ import date from './dateReducer';
 import modal from './modalReducer';
 import savedNotification from './savedNotificationReducer';
 import goodBye from './goodByeReducer';
+import toggleSidebar from './toggleSidebarReducer';
 import { createPageReducer } from './util/util';
 
 // init month expanses reducer
@@ -43,7 +44,7 @@ const summarizedBudgets = createPageReducer("SUMMARIZED_BUDGETS", {
 });
 
 export default {
-  sidebar,
+  menu,
   monthExpanses,
   budgetExecutions,
   summarizedSections,
@@ -65,5 +66,6 @@ export default {
   registeredReports,
   routes,
   savedNotification,
-  goodBye
+  goodBye,
+  toggleSidebar
 };

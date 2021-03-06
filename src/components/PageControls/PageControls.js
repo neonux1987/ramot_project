@@ -13,9 +13,9 @@ import { saveToPdf } from '../../services/print.svc';
 
 // COMPONENTS
 import PrintModal from '../modals/PrintModal/PrintModal';
-import ExcelButton from '../Buttons/ExcelButton';
-import PrintButton from '../Buttons/PrintButton';
-import MoreButton from '../Buttons/MoreButton';
+import ExcelButton from '../buttons/ExcelButton';
+import PrintButton from '../buttons/PrintButton';
+import MoreButton from '../buttons/MoreButton';
 
 const _container = css`
   float: left;

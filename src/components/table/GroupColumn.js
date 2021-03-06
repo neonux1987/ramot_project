@@ -11,6 +11,7 @@ export default ({ color = "#3f414d", span = 1, show = true, children, style, xs 
       gridColumn: `span ${span}`,
       fontWeight: "500",
       fontSize: "16px",
+      borderRight: "none",
       ...style
     }}
   >

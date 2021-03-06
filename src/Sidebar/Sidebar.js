@@ -1,65 +1,32 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
-import { withRouter } from 'react-router';
+import React from 'react';
 import { Drawer } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
+
 import classnames from 'classnames';
 
 // CSS
 import styles from './Sidebar.module.css';
 import '../cssTransitions/scale.css';
-import '../cssTransitions/slide.css';
-
-// COMPONENTS
-import Menu from './Menu/Menu';
-import LoadingCircle from '../components/LoadingCircle';
-import Logo from '../AppFrame/Logo/Logo';
-import Controls from './Controls/Controls';
-//import Menuitem from './Menuitem';
+/* import '../cssTransitions/slide.css'; */
 
 // ACTIONS
-import { fetchSidebar } from '../redux/actions/sidebarActions';
 import { CSSTransition } from 'react-transition-group';
 
-const Sidebar = () => {
-  let toggleSidebarAnimation = "";
+const Sidebar = ({ show, children }) => {
 
-  const dispatch = useDispatch();
-
-  const { showSidebar, menu } = useSelector(store => store.sidebar);
-
-  const routes = useSelector(store => store.routes);
-
-  useEffect(() => {
-    dispatch(fetchSidebar());
-  }, [dispatch]);
-
-  if (menu.isFetching) {
-    return <LoadingCircle wrapperStyle={styles.loadingWrapper} textStyle={styles.loadingText} circleStyle={styles.loadingCircle} />;
-  }
-
-  toggleSidebarAnimation = !showSidebar ? "hideAnimation" : "showAnimation";
+  const toggleAnimation = !show ? "hideAnimation" : "showAnimation";
 
   return (
     <CSSTransition
-      in={showSidebar}
+      in={show}
       timeout={600}
       classNames="slide"
     //onEnter={() => dispatch(toggleSidebar())}
     //onExited={() => dispatch(toggleSidebar())}
     >
-      <Drawer id="sidebar" variant="permanent" classes={{ paper: styles.drawerPaper }} anchor="left" className={classnames(styles.drawer, toggleSidebarAnimation)}>
+      <Drawer id="sidebar" variant="permanent" anchor="left" classes={{ paper: styles.drawerPaper }} className={classnames(styles.drawer, toggleAnimation)}>
 
-        <Logo />
-
-        <Controls className={styles.controls} />
-
-        <Menu data={menu.data} routes={routes} />
-
-        <div className={styles.developedByWrapper}>
-          <span className={styles.ndtsText}>NDTS</span>
-          <span className={styles.developedByText}>developed by</span>
-        </div>
+        {children}
 
       </Drawer>
     </CSSTransition>
@@ -67,5 +34,5 @@ const Sidebar = () => {
 
 }
 
-export default withRouter(Sidebar);
+export default React.memo(Sidebar);
 

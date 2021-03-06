@@ -4,10 +4,7 @@ const SettingsLogic = require('./SettingsLogic');
 const BuildingsDao = require('../dao/BuildingsDao');
 const Helper = require('../../helpers/Helper');
 const LogicError = require('../customErrors/LogicError');
-const fse = require('fs-extra');
-const path = require('path');
 const connectionPool = require('../connection/ConnectionPool');
-const { asyncForEach } = require('../../helpers/utils');
 
 class EmptyReportsGeneratorLogic {
 

@@ -31,7 +31,6 @@ const STATS_TITLE = "סיכום הוצאות והכנסות רבעוני";
 const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 
 const BudgetExecutions = props => {
-
   //building name
   const { buildingName, buildingNameEng } = props.location.state;
 

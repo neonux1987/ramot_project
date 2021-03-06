@@ -11,8 +11,8 @@ const BreadcrumbsContainer = () => {
   const pathnames = pathname.split("/").filter(x => x);
 
   const path = pathnames.map((location, index) => {
-
-    return <Crumb key={location} location={location} last={index === pathnames.length - 1 ? true : false} />;
+    const newLocation = location.replace(/-/g, " ");
+    return <Crumb key={location} location={newLocation} last={index === pathnames.length - 1 ? true : false} />;
 
   });
 

@@ -4,7 +4,7 @@ import { css } from 'emotion';
 import { TextField } from '@material-ui/core';
 
 // COMPONENTS
-import PrimaryButton from '../Buttons/PrimaryButton';
+import PrimaryButton from '../buttons/PrimaryButton';
 
 const textFieldRoot = css`
 margin-top: 0px;

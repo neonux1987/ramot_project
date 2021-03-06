@@ -3,7 +3,7 @@
 }
 
 .listItemIcon,.listItemText,.expandIcon{
-  color:rgb(107,108,119);
+  color:#d0d0d0;
 }
 
 .collapse{
@@ -14,4 +14,6 @@
 .listItem{
   margin-bottom: 0px;
   cursor: pointer;
+  width: 230px;
+  margin: 0 10px;
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { css } from 'emotion';
 import { Close } from '@material-ui/icons';
-import PrimaryButton from '../../Buttons/PrimaryButton';
+import PrimaryButton from '../../buttons/PrimaryButton';
 import ButtonWithSound from '../../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import { Typography, Modal } from '@material-ui/core';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
@@ -17,7 +17,7 @@ const container = css`
     right: 0;
     position: absolute;
     background: #fff;
-    border-radius: 6px;
+    border-radius: 3px;
     outline: none;
     -webkit-app-region: no-drag;
     `;

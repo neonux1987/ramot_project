@@ -6,7 +6,7 @@
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color: #0066a2;
+  color: #1489ce;
   font-style: normal;
   font-size: 32px;
   letter-spacing: -1px;
@@ -22,7 +22,7 @@
 .subtitle {
   text-align: center;
   font-size: 14px;
-  color: #23a084;
+  color: #1fcca5;
   font-weight: 600;
   font-style: normal;
   letter-spacing: 0.1rem;
@@ -32,10 +32,10 @@
 }
 
 .container {
-  width: 240px;
+  width: 250px;
   position: relative;
   user-select: none;
-  background: #f3f3f3;
+  /* background: #f3f3f3; */
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
 }
@@ -48,7 +48,7 @@
   width: 48px;
   margin-left: 0px;
   display: flex;
-  border-radius: 6px;
+  border-radius: 3px;
   justify-content: center;
   align-items: center;
   /* box-shadow: 0 0px 3px rgb(0 0 0 / 40%); */
@@ -67,7 +67,7 @@
   border: solid 1px #e0e0e0;
   position: absolute;
   content: "";
-  border-radius: 6px;
+  border-radius: 3px;
 } */
 /* 
 .logoWrapper img{
@@ -85,7 +85,7 @@
 .LogotextWrapper{
   margin-top: 15px;
   display: flex;
-  padding-right: 16px;
+  padding-right: 21px;
 }
 
 .appVersionWrapper{

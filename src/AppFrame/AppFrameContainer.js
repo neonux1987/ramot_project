@@ -1,37 +1,97 @@
 import React from 'react';
-import styles from './AppFrameContainer.module.css';
-import classnames from 'classnames';
-import ToggleButton from '../Main/Toolbar/ToggleButton/ToggleButton';
-import { toggleSidebar } from '../redux/actions/sidebarActions';
-import FrameControls from './FrameControls/FrameControls';
-import { useDispatch } from 'react-redux';
+import { useToasts } from 'react-toast-notifications';
 
-const AppFrameContainer = ({ handlers }) => {
+// SERVICES
+import { initiateDbBackup } from '../services/dbBackup.svc';
 
-  const dispatch = useDispatch();
+// COMPONENTS
+import AppFrameSection from './AppFrameSection';
+import DraggableFrame from './DraggableFrame';
+import AppFrame from './AppFrame';
+import ToastRender from '../components/ToastRender/ToastRender';
+import FrameControls from './FrameControls';
+import { quitApp } from '../services/mainProcess.svc';
+import Title from './Title';
 
-  const toggleClick = () => {
-    dispatch(toggleSidebar())
+const remote = require('electron').remote;
+
+const AppFrameContainer = ({ settings }) => {
+
+  const { addToast, updateToast } = useToasts();
+
+  const onClose = async () => {
+    const { isFetching, data } = settings;
+    const { backup_on_exit, enabled } = data.db_backup;
+
+    // in case the backend stopped working
+    // allow to close the app without backing up
+    if ((isFetching && data.length === 0) || backup_on_exit === false || enabled === false) {
+      quitApp();
+      return Promise.resolve();
+    }
+
+    const id = addToast(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
+      appearance: "info",
+    });
+
+    const promise = await initiateDbBackup().catch((result) => {
+      updateToast(id, {
+        content: <ToastRender message={result.error} />,
+        appearance: "error",
+        onDismiss: () => {
+          //quitApp();
+          console.log("error");
+        }
+      });
+    });
+
+    // success
+    if (promise)
+      updateToast(id, {
+        content: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
+        appearance: "success",
+        onDismiss: () => {
+          //quitApp();
+          console.log("success");
+        }
+      });
+
+  }
+
+  const onMinimize = () => {
+    const window = remote.getCurrentWindow();
+    window.minimize();
+  }
+
+  const onMaximize = () => {
+    const window = remote.getCurrentWindow();
+
+    if (!window.isMaximized()) {
+      window.maximize();
+    } else {
+      window.unmaximize();
+    }
   }
 
   return (
-    <div className={styles.appFrame}>
+    <AppFrame>
 
-      <div className={styles.draggableRegion}>
+      <DraggableFrame>
 
-        <div className={styles.section} style={{ flex: "1 1", display: "flex", justifyContent: "end" }}>
-          <ToggleButton className={classnames(styles.toggleBtn, styles.noDrag)} onClick={toggleClick} />
-        </div>
+        <AppFrameSection>
+          {/* <ToggleButton onClick={toggleClick} /> */}
+          <Title />
+        </AppFrameSection>
 
-        <div className={styles.section} style={{ flex: "1 1" }}>
+        <AppFrameSection>
 
-          <FrameControls className={styles.actions} handlers={handlers} />
+          <FrameControls onMinimize={onMinimize} onMaximize={onMaximize} onClose={onClose} />
 
-        </div>
+        </AppFrameSection>
 
-      </div>
+      </DraggableFrame>
 
-    </div>
+    </AppFrame>
   );
 }
 

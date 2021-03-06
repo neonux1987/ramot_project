@@ -12,7 +12,6 @@ import {
   monthExpansesCleanup
 } from '../../redux/actions/monthExpansesActions';
 import { fetchExpansesCodesByStatus } from '../../redux/actions/expansesCodesActions';
-import gs from '../../redux/actions/generalSettingsActions';
 
 // UTILITY IMPORTS
 import Helper from '../../helpers/Helper';
@@ -64,11 +63,7 @@ const MonthExpansesTableContainer = props => {
   const page = useSelector(store => store.monthExpanses.pages[buildingNameEng]);
 
   // page data
-  const generalSettings = useSelector(store => store.generalSettings.generalSettings);
-
-  useEffect(() => {
-    dispatch(gs.fetchGeneralSettings());
-  }, []);
+  const generalSettings = useSelector(store => store.generalSettings);
 
   useEffect(() => {
     const cleanup = () => {

@@ -8,7 +8,7 @@ import StyledExpandableSection from '../../../../components/Section/StyledExpand
 import NewUpdate from './NewUpdate/NewUpdate';
 import NoUpdate from './NoUpdate/NoUpdate';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
-import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
+import PrimaryButton from '../../../../components/buttons/PrimaryButton';
 
 // SERVICES
 import { checkForUpdates, downloadUpdate, abortDownload, deleteUpdate, installUpdate } from '../../../../services/updates.svc';
