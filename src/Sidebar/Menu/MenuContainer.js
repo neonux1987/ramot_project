@@ -20,7 +20,6 @@ const HOME_BUTTON_LABEL = "דף הבית";
 
 const MenuContainer = props => {
 
-
   const routes = useSelector(store => store.routes);
 
   const { data } = useSelector(store => store.menu);
