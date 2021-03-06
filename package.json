@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/neonux1987/financial_reports_management_system.git"
+    "url": "https://github.com/neonux1987/ramot_project.git"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -85,7 +85,7 @@
         "private": true,
         "releaseType": "release",
         "protocol": "https",
-        "repo": "financial_reports_management_system"
+        "repo": "ramot_project"
       }
     ],
     "nsis": {
