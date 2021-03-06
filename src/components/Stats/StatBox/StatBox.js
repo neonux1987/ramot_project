@@ -1,46 +1,17 @@
 import React from 'react';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import Spinner from '../../Spinner/Spinner';
-import { PieChart } from 'react-minimal-pie-chart';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
 import {
   paper,
   upper,
   titleWrapper,
   titleText,
-  chartWrapper,
-  chart,
   bottom,
-  incomeWrapper,
-  incomeText,
-  incomeDescription,
-  outcomeWrapper,
-  outcomeText,
-  outcomeDescription
 } from './StatBox.module.css';
-import { IoIosCalendar } from 'react-icons/io';
-import ReactApexChart from 'react-apexcharts';
 
-const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#555555", loading = true }) => {
 
-  const chart = <div className={chartWrapper}>
-    <ReactApexChart options={{
-      chart: {
-        type: 'donut'
-      },
-      responsive: [{
-        breakpoint: 1400,
-        options: {
-          chart: {
-            width: 220
-          },
-          legend: {
-            position: 'right'
-          }
-        }
-      }]
-    }} series={[income, outcome]} type="donut" width="260px" />
-  </div>;
+const StatBox = ({ title, titleColor = "#555555", loading = true, children }) => {
 
   return <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
     <Paper className={paper} >
@@ -58,7 +29,7 @@ const StatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#555555"
 
       {/* start bottom */}
       <div className={bottom}>
-        {loading ? <Loader /> : chart}
+        {loading ? <Loader /> : children}
       </div>
       {/* end bottom */}
 

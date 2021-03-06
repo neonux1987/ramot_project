@@ -301,6 +301,6 @@ input,textarea{
 apex charts override
 ****************************************************/
 
-.apexcharts-toolbar {
-  left: 0;
+.apexcharts-legend-text {
+  margin-right: 3px;
 }

@@ -8,7 +8,7 @@ import * as yearlyStatsActions from '../../redux/actions/yearlyStatsActions';
 
 import Helper from '../../helpers/Helper';
 
-import StatBox from '../../components/Stats/StatBox/StatBox';
+import DonutStatBox from '../../components/Stats/DonutStatBox';
 import Stats from '../../components/Stats/Stats';
 
 import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
@@ -64,7 +64,7 @@ class YearStatsContainer extends React.PureComponent {
     for (let i = 0; i < quarters.length; i++) {
       const { outcome, income } = quarterlyStats[i];
 
-      stats[i] = <StatBox
+      stats[i] = <DonutStatBox
         key={`quarter${i}`}
         title={quarters[i]}
         outcome={outcome}
@@ -82,7 +82,7 @@ class YearStatsContainer extends React.PureComponent {
 
   generateYearStats(yearStats, isFetching) {
     const { year, income, outcome } = yearStats;
-    return <StatBox
+    return <DonutStatBox
       key={"year"}
       title={`${year}`}
       outcome={outcome}

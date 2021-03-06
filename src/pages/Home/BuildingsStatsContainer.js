@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Helper from '../../helpers/Helper';
 import Stats from '../../components/Stats/Stats';
-import StatBox from '../../components/Stats/StatBox/StatBox';
+import DonutStatBox from '../../components/Stats/DonutStatBox';
 
 // ACTIONS
 import { fetchAllBuildingsStatsByYear } from '../../redux/actions/yearlyStatsActions';
@@ -26,7 +26,7 @@ const BuildingsStatsContainer = () => {
       const label = data[building].label;
       const { income, outcome } = data[building].data[0];
 
-      return <StatBox
+      return <DonutStatBox
         key={label}
         title={label}
         outcome={outcome}
