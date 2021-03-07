@@ -15,13 +15,29 @@ const ColumnChart = ({ categories = [], series, options }) => {
         offsetX: 0,
         tools: {
           download: true,
-          selection: true,
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: true,
-          reset: true | '<img src="/static/icons/reset.png" width="20">',
-          customIcons: []
+          selection: false,
+          zoom: false,
+          zoomin: false,
+          zoomout: false,
+          pan: false,
+          reset: false
+        },
+        export: {
+          csv: {
+            filename: undefined,
+            columnDelimiter: ',',
+            headerCategory: 'category',
+            headerValue: 'value',
+            dateFormatter(timestamp) {
+              return new Date(timestamp).toDateString()
+            }
+          },
+          svg: {
+            filename: undefined,
+          },
+          png: {
+            filename: undefined,
+          }
         }
       },
       defaultLocale: 'he',
@@ -82,6 +98,7 @@ const ColumnChart = ({ categories = [], series, options }) => {
     },
     xaxis: {
       categories: categories,
+      tickPlacement: 'on',
       labels: {
         style: {
           fontSize: "16px",

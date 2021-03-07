@@ -195,28 +195,67 @@ input,textarea{
   font-size: 16px;
 }
 
-
-/** perfect scrollbar overrides **/
-.ps__rail-y{
-  background: none;
-  border-radius: 3px;
-}
-
-.ps__thumb-y {
-  background-color: #f5f3f3;
-}
-
-/* .page {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-} */
-
 /****************************************************
 apex charts override
 ****************************************************/
 
 .apexcharts-legend-text {
   margin-right: 3px;
+}
+
+.exportPNG{
+  visibility: hidden;
+  position: relative;
+}
+
+.exportPNG::after{
+  visibility: visible;
+  position: absolute;
+  top: 0;
+  right: 0;
+  content: "ייצא לתמונה PNG";
+  padding: 6px 7px;
+  width: 102px;
+}
+
+.exportPNG:hover::after{
+  background: #eee;
+}
+
+.exportSVG{
+  visibility: hidden;
+  position: relative;
+}
+
+.exportSVG:hover::after{
+  background: #eee;
+}
+
+.exportSVG::after{
+  visibility: visible;
+  position: absolute;
+  top: 0;
+  right: 0;
+  content: "ייצא לתמונה SVG";
+  padding: 6px 7px;
+  width: 102px;
+}
+
+.exportCSV{
+  visibility: hidden;
+  position: relative;
+}
+
+.exportCSV:hover::after{
+  background: #eee;
+}
+
+.exportCSV::after{
+  visibility: visible;
+  position: absolute;
+  top: 0;
+  right: 0;
+  content: "ייצא לקובץ CSV";
+  padding: 6px 7px;
+  width: 102px;
 }
