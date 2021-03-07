@@ -73,6 +73,7 @@ class QuarterStatsContainer extends React.PureComponent {
         unicodeSymbol={Helper.shekelUnicode}
         titleColor={colors[i]}
         loading={isFetching}
+        index={i}
       />;
 
     } // end loop

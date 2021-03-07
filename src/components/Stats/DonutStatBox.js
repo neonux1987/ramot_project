@@ -3,6 +3,7 @@ import DonutChart from '../charts/DonutChart';
 import StatBox from './StatBox/StatBox';
 import { css } from 'emotion';
 import classnames from 'classnames';
+import { Grow } from '@material-ui/core';
 
 const wrapper = css`
   display: flex;
@@ -57,29 +58,35 @@ const green = css`
   background-color: rgb(0, 227, 150);
 `;
 
-const DonutStatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#555555", loading = true }) => {
+const DonutStatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#555555", loading = true, index = 1 }) => {
 
   const incomeText = `הכנסות ${income} ${unicodeSymbol}`;
   const outcomeText = `הוצאות ${outcome} ${unicodeSymbol}`;
 
-  return <StatBox title={title} titleColor={titleColor} loading={loading}>
-    <div className={wrapper}>
+  return <Grow
+    in={true}
+    style={{ transformOrigin: '0 0 0' }}
+    {...(true ? { timeout: 5000 } : {})}
+  >
+    <StatBox title={title} titleColor={titleColor} loading={loading}>
+      <div className={wrapper}>
 
-      <div className={legend}>
-        <div className={row}>
-          <div className={classnames(marker, blue)}></div>
-          <div className={text}>{outcomeText}</div>
-        </div>
+        <div className={legend}>
+          <div className={row}>
+            <div className={classnames(marker, blue)}></div>
+            <div className={text}>{outcomeText}</div>
+          </div>
 
-        <div className={row}>
-          <div className={classnames(marker, green)}></div>
-          <div className={text}>{incomeText}</div>
+          <div className={row}>
+            <div className={classnames(marker, green)}></div>
+            <div className={text}>{incomeText}</div>
+          </div>
         </div>
+        <DonutChart series={[outcome, income]} labels={["הוצאות", "הכנסות"]} />
+
       </div>
-      <DonutChart series={[outcome, income]} labels={["הוצאות", "הכנסות"]} />
-
-    </div>
-  </StatBox >
+    </StatBox >
+  </Grow>
 }
 
 export default DonutStatBox;
