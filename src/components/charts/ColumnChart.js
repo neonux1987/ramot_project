@@ -72,7 +72,7 @@ const ColumnChart = ({ categories = [], series, options }) => {
       show: true,
       fontSize: "16px",
       fontWeight: 400,
-      position: 'left',
+      position: 'bottom',
       offsetY: 0,
       inverseOrder: true,
       horizontalAlign: "center",
@@ -98,7 +98,7 @@ const ColumnChart = ({ categories = [], series, options }) => {
         },
         tickAmount: 6,
         axisBorder: {
-          show: true,
+          show: false,
           color: '#555555',
         },
         labels: {
@@ -111,6 +111,9 @@ const ColumnChart = ({ categories = [], series, options }) => {
         }
       }
     ],
+    grid: {
+      strokeDashArray: 3
+    },
     tooltip: {
       followCursor: true
     },

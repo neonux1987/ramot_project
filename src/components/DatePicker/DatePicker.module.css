@@ -26,7 +26,7 @@ justify-content: center;
 
   .select{
     padding: 8px 0 6px 24px;
-    font-weight: 500;
+    font-weight: 400;
   }
 
   .select:focus {
@@ -75,5 +75,5 @@ justify-content: center;
     font-size: 16px;
     display: flex;
     align-items: center;
-    font-weight: 500;
+    font-weight: 400;
   }
