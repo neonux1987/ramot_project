@@ -7,6 +7,7 @@ import TableSection from '../../../../components/Section/TableSection';
 
 // CONTAINERS
 import ExpansesCodesTableContainer from './ExpansesCodesTableContainer';
+import Page from '../../../../components/Page/Page';
 
 
 
@@ -15,12 +16,14 @@ const TABLE_TITLE = "טבלת מעקב וניהול קודי הנהלת חשבו
 const ExpansesCodes = () => {
 
   return (
-    <TableSection
-      title={TABLE_TITLE}
-      Icon={TableChart}
-    >
-      <ExpansesCodesTableContainer />
-    </TableSection>
+    <Page>
+      <TableSection
+        title={TABLE_TITLE}
+        Icon={TableChart}
+      >
+        <ExpansesCodesTableContainer />
+      </TableSection>
+    </Page>
   );
 
 }

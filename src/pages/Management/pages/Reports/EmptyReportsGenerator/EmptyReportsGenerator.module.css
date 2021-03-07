@@ -1,12 +1,5 @@
 .container{
-  background: #fff;
   padding: 40px 20px 60px;
-  border-radius: 3px;
-}
-
-.divider{
-  margin-bottom: 30px;
-  margin-top: 5px;
 }
 
 .paddingLeft{
@@ -19,10 +12,6 @@
 
 .createBtn,.createBtn:hover{
   background-color: rgb(3, 101, 162);
-}
-
-.description{
-  font-size: 16px;
 }
 
 .subtitle{

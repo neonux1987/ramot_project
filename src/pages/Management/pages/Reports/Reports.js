@@ -1,19 +1,16 @@
-import React, { useEffect } from 'react';
-import EmptyReportsGenerator from './EmptyReportsGenerator/EmptyReportsGenerator';
-import styles from './Reports.module.css';
-import ExcelReportsGenerator from './ExcelReportsGenerator/ExcelReportsGenerator';
+import React from 'react';
+import ExcelReportsGeneratorContainer from './ExcelReportsGenerator/ExcelReportsGeneratorContainer';
+import Page from '../../../../components/Page/Page';
+import EmptyReportsGeneratorContainer from './EmptyReportsGenerator/EmptyReportsGeneratorContainer';
 
-export default props => {
-
-  useEffect(() => {
-
-  });
-
+const Reports = () => {
   return (
-    <div className={styles.container}>
-      <EmptyReportsGenerator />
-      <ExcelReportsGenerator />
-    </div>
+    <Page>
+      <EmptyReportsGeneratorContainer />
+      <ExcelReportsGeneratorContainer />
+    </Page>
   );
 
 }
+
+export default Reports;

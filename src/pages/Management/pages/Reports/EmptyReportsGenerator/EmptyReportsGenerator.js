@@ -1,68 +1,26 @@
 // LIBRARIES
-import React, { useState } from 'react';
+import React from 'react';
 import { Select, Button, MenuItem } from '@material-ui/core';
-import { Description } from '@material-ui/icons';
 
 // COMPONENTS
 import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 
 // UTILS
-import Helper from '../../../../../helpers/Helper';
 import classnames from 'classnames';
-
-// SERVICES
-import { generateEmptyReports } from '../../../../../services/emptyReportsGenerator.svc';
 
 //CSS
 import {
   subtitle,
   paddingLeft,
   select,
-  createBtn
+  createBtn,
+  container
 } from './EmptyReportsGenerator.module.css';
-import { withRouter } from 'react-router';
 
-const years = generateYears(new Date().getFullYear());
-const quarters = Helper.getYearQuarters();
 
-const EmptyReportsGenerator = (props) => {
-  const date = new Date();//current date
-
-  const [selectDate, setSelectDate] = useState({
-    year: date.getFullYear(),
-    month: date.getMonth(),
-    quarter: Helper.getCurrentQuarter()
-  });
-
-  // default on change handler
-  // for months and quarters
-  const onChangeHandler = (event) => {
-    const { name, value } = event.target;
-
-    setSelectDate({
-      ...selectDate,
-      [name]: Number.parseInt(value)
-    });
-  }
-
-  const onClickHandler = async () => {
-    const newDate = {
-      year: selectDate.year,
-      quarter: selectDate.quarter,
-      quarterHeb: Helper.getQuarterHeb(selectDate.quarter),
-      quarterEng: Helper.convertQuarterToEng(selectDate.quarter)
-    }
-    generateEmptyReports(newDate);
-  }
-
+const EmptyReportsGenerator = ({ selectDate, onChangeHandler, onClickHandler, years, quarters }) => {
   return (
-    <StyledExpandableSection
-      title={"הפקת דוחות חדשים (ריקים)"}
-      TitleIcon={Description}
-      padding={"30px 20px 50px"}
-      iconColor={"#0365a2"}
-    >
+    <div className={container}>
 
       <div className={subtitle}>
         <SubtitleBoldTypography>
@@ -99,17 +57,8 @@ const EmptyReportsGenerator = (props) => {
         color="secondary">
         צור
       </Button>
-    </StyledExpandableSection>
+    </div>
   )
 };
 
-function generateYears(currentYear) {
-  const arr = [];
-  const backToYearLimit = currentYear - 5;
-  for (let i = currentYear; i > backToYearLimit; i--)
-    arr.push(i);
-
-  return arr;
-}
-
-export default withRouter(EmptyReportsGenerator);
+export default EmptyReportsGenerator;

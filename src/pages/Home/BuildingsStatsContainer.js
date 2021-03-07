@@ -33,6 +33,7 @@ const BuildingsStatsContainer = () => {
         income={income}
         unicodeSymbol={Helper.shekelUnicode}
         loading={isFetching}
+        index={index + 1}
       />;
     });
 

@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, memo, useEffect, Fragment, useRef, useCallback } from 'react';
+import React, { useState, memo, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SystemUpdateAlt } from '@material-ui/icons';
 
@@ -20,6 +20,7 @@ import { updateSettings, saveSettings } from '../../../../redux/actions/settings
 // TOASTS
 import { toastManager } from '../../../../toasts/toastManager';
 import ToastRender from '../../../../components/ToastRender/ToastRender';
+import Page from '../../../../components/Page/Page';
 
 // ELECTRON
 const { ipcRenderer } = require('electron');
@@ -228,7 +229,7 @@ const AppUpdates = () => {
     renderNewUpdate();
 
   return (
-    <Fragment>
+    <Page>
       <StyledExpandableSection
         title={"עדכוני תוכנה"}
         TitleIcon={SystemUpdateAlt}
@@ -240,7 +241,7 @@ const AppUpdates = () => {
         {content}
 
       </StyledExpandableSection >
-    </Fragment>
+    </Page>
   );
 }
 

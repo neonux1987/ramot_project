@@ -84,7 +84,7 @@ const AppContainer = () => {
 
         <SideBarContainer />
 
-        <MainContainer mainContainer={mainContainer} toggleMain={"showMainAnimation"} />
+        <MainContainer mainContainer={mainContainer} />
 
       </AppWrapper>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Grow, Paper, Typography } from '@material-ui/core';
 import Spinner from '../../Spinner/Spinner';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
 import {
@@ -11,29 +11,35 @@ import {
 } from './StatBox.module.css';
 
 
-const StatBox = ({ title, titleColor = "#555555", loading = true, children }) => {
+const StatBox = ({ title, loading = true, children, index = 1 }) => {
 
   return <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
-    <Paper className={paper} >
+    <Grow
+      in={!loading}
+      style={{ transformOrigin: '0 0 0' }}
+      timeout={(index) * 400}
+    >
+      <Paper className={paper} >
 
-      {/* start upper */}
-      <div className={upper}>
-        <div className={titleWrapper}>
-          <Typography variant="h6" className={titleText} /* style={{ color: titleColor }} */>
-            {title}
-          </Typography>
+        {/* start upper */}
+        <div className={upper}>
+          <div className={titleWrapper}>
+            <Typography variant="h6" className={titleText}>
+              {title}
+            </Typography>
+          </div>
+
         </div>
+        {/* end upper */}
 
-      </div>
-      {/* end upper */}
+        {/* start bottom */}
+        <div className={bottom}>
+          {loading ? <Loader /> : children}
+        </div>
+        {/* end bottom */}
 
-      {/* start bottom */}
-      <div className={bottom}>
-        {loading ? <Loader /> : children}
-      </div>
-      {/* end bottom */}
-
-    </Paper>
+      </Paper>
+    </Grow>
   </Grid >
 }
 

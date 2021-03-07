@@ -72,6 +72,7 @@ class YearStatsContainer extends React.PureComponent {
         unicodeSymbol={Helper.shekelUnicode}
         titleColor={colors[i]}
         loading={isFetching}
+        index={i + 1}
       />;
 
     } // end loop
@@ -90,6 +91,7 @@ class YearStatsContainer extends React.PureComponent {
       unicodeSymbol={Helper.shekelUnicode}
       titleColor={this.context.colorSet[4]}
       loading={isFetching}
+      index={5}
     />;
   }
 

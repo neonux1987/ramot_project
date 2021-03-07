@@ -1,12 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import SystemContainer from './System/SystemContainer';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 import UserContainer from './User/UserContainer';
+import Page from '../../../../components/Page/Page';
 
 export const General = () => {
 
   return (
-    <Fragment>
+    <Page>
 
       <UserContainer />
 
@@ -14,7 +15,7 @@ export const General = () => {
 
       <GoodByeWrapper />
 
-    </Fragment>
+    </Page>
   );
 
 }

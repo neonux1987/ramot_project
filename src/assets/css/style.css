@@ -160,69 +160,6 @@ a {
   border-bottom: 3px solid rgb(3, 101, 162);
 }
 
-.hideAnimation{
-  animation: hide 0.2s ease forwards;
-}
-
-.showAnimation{
-  animation: show 0.2s ease backwards;
-}
-
-@keyframes hide{
-  0% {margin-right: 0px;}
-  100% {
-    margin-right: -254px;
-    box-shadow: none;
-  }
-}
-
-@keyframes show{
-  0% {
-    margin-right: -254px;
-  }
-  100% {
-    margin-right: 0px;
-  }
-}
-
-.hideButtonAnimation{
-  animation: hideButton 0.5s ease 0.5s forwards;
-}
-
-.showButtonAnimation{
-  animation: showButton 0.5s ease 0.5s backwards;
-}
-
-@keyframes hideButton{
-  0% {right: 16px;}
-  100% {
-    right: 224px;
-  }
-}
-
-@keyframes showButton{
-  0% {
-    right: 224px;
-  }
-  100% {
-    right: 16px;
-  }
-}
-
-.showMainAnimation{
-  animation: showMain 0.4s ease 0.4s forwards;
-}
-
-@keyframes showMain{
-  0% {
-    left: -1960px;
-  }
-  100% {
-    opacity: 1;
-    left: 0px;
-  }
-}
-
 /* Hide HTML5 Up and Down arrows. */
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -275,27 +212,6 @@ input,textarea{
   left: 0;
   right: 0;
 } */
-
-/* simple - enter transition 300ms, exit 150ms */
-.fade-appear,
-.fade-enter {
-    opacity: 0;
-    z-index: 1;
-}
-.fade-appear-active,
-.fade-enter.fade-enter-active {
-    opacity: 1;
-    transition: opacity 300ms linear 150ms;
-}
-
-.fade-exit {
-    opacity: 1;
-}
-
-.fade-exit.fade-exit-active {
-    opacity: 0;
-    transition: opacity 150ms linear;
-}
 
 /****************************************************
 apex charts override

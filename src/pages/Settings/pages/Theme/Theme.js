@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { Style } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -13,6 +13,7 @@ import TitleTypography from '../../../../components/Typographies/TitleTypography
 // ACTIONS
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 import { setDirty } from '../../../../redux/actions/goodByeActions';
+import Page from '../../../../components/Page/Page';
 
 const SETTINGS_NAME = "theme";
 
@@ -46,7 +47,7 @@ export const Theme = () => {
   }
 
   return (
-    <Fragment>
+    <Page>
 
       <StyledExpandableSection
         title={"עיצוב"}
@@ -65,7 +66,7 @@ export const Theme = () => {
       </StyledExpandableSection >
 
       <GoodByeWrapper />
-    </Fragment>
+    </Page>
   );
 
 }

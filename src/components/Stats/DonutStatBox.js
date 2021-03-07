@@ -63,30 +63,24 @@ const DonutStatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#55
   const incomeText = `הכנסות ${income} ${unicodeSymbol}`;
   const outcomeText = `הוצאות ${outcome} ${unicodeSymbol}`;
 
-  return <Grow
-    in={true}
-    style={{ transformOrigin: '0 0 0' }}
-    {...(true ? { timeout: 5000 } : {})}
-  >
-    <StatBox title={title} titleColor={titleColor} loading={loading}>
-      <div className={wrapper}>
+  return <StatBox title={title} titleColor={titleColor} loading={loading} index={index}>
+    <div className={wrapper}>
 
-        <div className={legend}>
-          <div className={row}>
-            <div className={classnames(marker, blue)}></div>
-            <div className={text}>{outcomeText}</div>
-          </div>
-
-          <div className={row}>
-            <div className={classnames(marker, green)}></div>
-            <div className={text}>{incomeText}</div>
-          </div>
+      <div className={legend}>
+        <div className={row}>
+          <div className={classnames(marker, blue)}></div>
+          <div className={text}>{outcomeText}</div>
         </div>
-        <DonutChart series={[outcome, income]} labels={["הוצאות", "הכנסות"]} />
 
+        <div className={row}>
+          <div className={classnames(marker, green)}></div>
+          <div className={text}>{incomeText}</div>
+        </div>
       </div>
-    </StatBox >
-  </Grow>
+      <DonutChart series={[outcome, income]} labels={["הוצאות", "הכנסות"]} />
+
+    </div>
+  </StatBox >
 }
 
 export default DonutStatBox;

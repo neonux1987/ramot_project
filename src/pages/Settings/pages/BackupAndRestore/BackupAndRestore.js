@@ -8,17 +8,18 @@ import styles from './BackupAndRestore.module.css';
 import BackupContainer from './Backup/BackupContainer';
 import Restore from './Restore/Restore';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
+import Page from '../../../../components/Page/Page';
 
 const BackupAndRestore = () => {
 
-  return <div className={styles.form}>
+  return <Page>
 
     <BackupContainer />
 
     <Restore />
 
     <GoodByeWrapper />
-  </div>;
+  </Page>;
 
 }
 

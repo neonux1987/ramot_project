@@ -1,12 +1,12 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 
-export default ({ children, className, style, underline = false, gutterBottom }) => {
+const SubtitleBoldTypography = ({ children, className, style, underline = false, gutterBottom }) => {
   return <Typography
     variant="subtitle1"
     className={className}
     style={{
-      fontWeight: "bold",
+      fontWeight: "500",
       textDecoration: underline ? "underline" : "",
       ...style
     }}
@@ -15,3 +15,5 @@ export default ({ children, className, style, underline = false, gutterBottom })
     {children}
   </Typography>
 }
+
+export default SubtitleBoldTypography;

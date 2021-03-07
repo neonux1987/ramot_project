@@ -1,8 +1,5 @@
 .container{
-  margin-top: 20px;
-  background: #fff;
   padding: 40px 20px 60px;
-  border-radius: 3px;
 }
 
 .divider{
@@ -28,6 +25,7 @@
 
 .descriptionText{
   font-size: 14px;
+  font-weight: 400;
 }
 
 .subtitle{
