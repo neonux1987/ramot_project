@@ -15,11 +15,12 @@ import MenuContainer from './Menu/MenuContainer';
 const SidebarContainer = () => {
 
   const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
+  const routes = useSelector(store => store.routes);
 
   return <Sidebar show={showSidebar}>
     <Logo />
-    <ControlsContainer />
-    <MenuContainer />
+    <ControlsContainer routes={routes} />
+    <MenuContainer routes={routes} />
     <Credits />
   </Sidebar>
 

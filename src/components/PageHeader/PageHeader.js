@@ -35,7 +35,7 @@ const subContainer = css`
   display: flex;
   align-items: center;
   padding: 0 5px;
-  border-bottom: 1px solid #efecec;
+  border-bottom: 1px solid #ececec;
 `;
 
 const subIconWrapper = css`

@@ -18,9 +18,7 @@ import Menu from './Menu';
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
 
-const MenuContainer = props => {
-
-  const routes = useSelector(store => store.routes);
+const MenuContainer = ({ routes, history }) => {
 
   const { data } = useSelector(store => store.menu);
 
@@ -65,7 +63,7 @@ const MenuContainer = props => {
 
       const pathname = `/${path}/הוצאות-חודשיות`;
 
-      props.history.replace(pathname, newState);
+      history.replace(pathname, newState);
 
       dispatch(updateRoute({
         pathname,

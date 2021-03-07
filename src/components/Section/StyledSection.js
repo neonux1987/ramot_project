@@ -13,6 +13,7 @@ const _container = css`
 const _header = css`
   height: 60px;
   display: flex;
+  border-bottom: 1px solid #ececec;
 `;
 
 const _titleBox = css`
@@ -42,7 +43,6 @@ const _titleWrapper = css`
   justify-content: center;
   align-items: center;
   margin-right: 15px;
-  padding-bottom: 10px;
 `;
 
 const _titleTypography = css`

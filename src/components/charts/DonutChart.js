@@ -12,6 +12,7 @@ const DonutChart = ({ labels = [], series, options, width = "130px" }) => {
       labels: labels,
       plotOptions: {
         pie: {
+          //customScale: 1,
           donut: {
             value: {
               show: true
@@ -23,16 +24,14 @@ const DonutChart = ({ labels = [], series, options, width = "130px" }) => {
         enabled: false
       },
       legend: {
-        fontSize: "16px",
-        fontWeight: 500,
         show: false
       },
       responsive: [{
         breakpoint: 1400,
         options: {
           chart: {
-            width: 140,
-            height: 140
+            width: 130,
+            height: 130
           },
           legend: {
             position: 'right'

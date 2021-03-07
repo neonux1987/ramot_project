@@ -4,8 +4,29 @@ import StatBox from './StatBox/StatBox';
 import { css } from 'emotion';
 import classnames from 'classnames';
 
+const wrapper = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  width: 200px;
+  margin-top: -10px;
+
+  @media (max-width: 1400px) {
+    flex-direction: column-reverse;
+    width: 160px;
+    margin-top: 0px;
+    padding-bottom: 20px;
+    padding-top: 15px;
+  }
+`;
+
 const legend = css`
   margin-top: -20px;
+
+  @media (max-width: 1400px) {
+    margin-top: 0;
+  }
 `;
 
 const row = css`
@@ -16,7 +37,7 @@ const row = css`
 
 const text = css`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 
@@ -42,18 +63,22 @@ const DonutStatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#55
   const outcomeText = `הוצאות ${outcome} ${unicodeSymbol}`;
 
   return <StatBox title={title} titleColor={titleColor} loading={loading}>
-    <div className={legend}>
-      <div className={row}>
-        <div className={classnames(marker, blue)}></div>
-        <div className={text}>{outcomeText}</div>
-      </div>
+    <div className={wrapper}>
 
-      <div className={row}>
-        <div className={classnames(marker, green)}></div>
-        <div className={text}>{incomeText}</div>
+      <div className={legend}>
+        <div className={row}>
+          <div className={classnames(marker, blue)}></div>
+          <div className={text}>{outcomeText}</div>
+        </div>
+
+        <div className={row}>
+          <div className={classnames(marker, green)}></div>
+          <div className={text}>{incomeText}</div>
+        </div>
       </div>
+      <DonutChart series={[outcome, income]} labels={["הוצאות", "הכנסות"]} />
+
     </div>
-    <DonutChart series={[outcome, income]} labels={[outcomeText, incomeText]} />
   </StatBox >
 }
 
