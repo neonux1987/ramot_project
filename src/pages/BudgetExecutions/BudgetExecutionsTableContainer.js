@@ -225,37 +225,27 @@ const BudgetExecutionsTable = props => {
   }
 
   const HeaderGroups = () => {
-    const editMode = editMode;
     const { colorSet } = themeContext;
     const { quarter } = date;
 
     const months = Helper.getQuarterMonths(quarter);
-
-    const defaultStyle = {
-      height: "34px"
-    }
 
     const monthColumns = months.map((month, i) => {
       return <GroupColumn
         span={2}
         color={colorSet[i]}
         key={i}
-        style={defaultStyle}
       >{month}</GroupColumn>;
     });
 
-    return <GroupRow gridTemplateColumns={getGridTemplateColumns()}/*  style={{ backgroundColor: "#f5f6f9" }} */>
-      {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
-      <GroupColumn style={defaultStyle}></GroupColumn>
-      <GroupColumn style={defaultStyle}></GroupColumn>
+    return <GroupRow gridTemplateColumns={getGridTemplateColumns()}>
+      {editMode ? <GroupColumn></GroupColumn> : null}
+      <GroupColumn></GroupColumn>
+      <GroupColumn></GroupColumn>
       {monthColumns}
-      <GroupColumn
-        span={3}
-        color={colorSet[3]}
-        style={defaultStyle}
-      >{`סוף רבעון ${quarter}`}</GroupColumn>
-      <GroupColumn style={defaultStyle}></GroupColumn>
-      <GroupColumn style={defaultStyle}></GroupColumn>
+      <GroupColumn span={3} color={colorSet[3]}>{`סוף רבעון ${quarter}`}</GroupColumn>
+      <GroupColumn></GroupColumn>
+      <GroupColumn></GroupColumn>
     </GroupRow>
   }
 

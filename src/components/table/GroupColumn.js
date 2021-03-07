@@ -1,8 +1,7 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
 import Column from './Column';
 
-export default ({ color = "#3f414d", span = 1, show = true, children, style, xs = "auto" }) => {
+const GroupColumn = ({ color = "#555555", span = 1, show = true, children }) => {
   return <Column
     show={show}
     style={{
@@ -12,9 +11,11 @@ export default ({ color = "#3f414d", span = 1, show = true, children, style, xs 
       fontWeight: "500",
       fontSize: "16px",
       borderRight: "none",
-      ...style
+      borderBottom: "1px solid"
     }}
   >
     {children}
   </Column>
 }
+
+export default GroupColumn;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default React.memo(({ children, style, innerStyle, show = true, onDoubleClick, className }) => {
+const Column = ({ children, style, innerStyle, show = true, onDoubleClick, className }) => {
   return (
     <div className={`_tableColumn ${className}`}
       style={{
@@ -17,10 +17,12 @@ export default React.memo(({ children, style, innerStyle, show = true, onDoubleC
     >
       <div style={innerStyle}>{children}</div>
     </div>);
-}, areEqual);
+};
 
 function areEqual(prevProps, nextProps) {
   if (prevProps.children === nextProps.children)
     return true;
   else return false;
 }
+
+export default React.memo(Column, areEqual)
