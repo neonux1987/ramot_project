@@ -11,6 +11,7 @@ import DatePicker from '../../../components/DatePicker/DatePicker';
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
+import useDate from '../../../customHooks/useDate';
 
 const container = css`
   margin: 15px 0;
@@ -26,11 +27,11 @@ const chartContainer = css`
 
 const MonthsChartContainer = props => {
   //building name
-  const { buildingName, pageName, date } = props;
+  const { buildingName, pageName } = props;
 
   const { isFetching, data } = useSelector(store => store.monthlyStats[buildingName].pages[pageName]);
 
-  const [ready, setReady] = useState(false);
+  const [date] = useDate(pageName, buildingName);
 
   const dispatch = useDispatch();
 
@@ -81,7 +82,6 @@ const MonthsChartContainer = props => {
 
     }
 
-    setReady(() => true);
   }, [fetchMonthsData]);
 
   useEffect(() => {
@@ -90,7 +90,6 @@ const MonthsChartContainer = props => {
   }, [dispatch, fetchAndPrepareData, date.year]);
 
   return <div className={container}>
-
     <TableControls
       middlePane={
         <DatePicker
@@ -100,9 +99,7 @@ const MonthsChartContainer = props => {
         />}
     />
 
-
-
-    <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
+    <ChartWrapper itemCount={data.length} isFetching={isFetching} >
       <div className={chartContainer}>
 
         <ColumnChart series={chartData.series} categories={chartData.labels} />

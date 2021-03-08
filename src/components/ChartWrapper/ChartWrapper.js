@@ -15,10 +15,10 @@ const text = css`
  font-size: 18px;
 `;
 
-export default props => {
+const ChartWrapper = props => {
   const { children, isFetching, itemCount } = props;
 
-  const Loading = isFetching ? <Spinner size={60} loadingText={"טוען נתונים..."} /> : <div>
+  const Loading = isFetching ? <Loader /> : <div>
     {children}
   </div>;
 
@@ -27,4 +27,10 @@ export default props => {
     {!isFetching && itemCount === 0 ? <AlignCenterMiddle><span className={text}>או שאין נתונים או שלא נבחר תאריך.</span></AlignCenterMiddle> : Loading}
   </div>
 
+}
+
+export default ChartWrapper;
+
+const Loader = () => {
+  return <AlignCenterMiddle><Spinner size={60} loadingText={"טוען נתונים..."} /></AlignCenterMiddle>;
 }

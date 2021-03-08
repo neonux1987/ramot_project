@@ -65,11 +65,7 @@ const SummarizedBudgets = props => {
     <TableSection
       title={TABLE_TITLE}
       Icon={ListAlt}
-      extraDetails={<DateDetails
-        month={date.monthHeb}
-        quarter={date.quarter}
-        year={date.year}
-      />}
+      bgColor="rgb(0, 143, 251)"
     >
 
       <SummarizedBudgetsTableContainer

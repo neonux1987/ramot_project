@@ -7,7 +7,6 @@ import { css } from 'emotion';
 import { fetchYearStatsByYearRange } from '../../../redux/actions/yearlyStatsActions';
 
 // COMPONENTS
-import DatePicker from '../../../components/DatePicker/DatePicker';
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
@@ -30,7 +29,7 @@ const YearsChartContainer = props => {
 
   const date = new Date();
 
-  const { isFetching, data } = useSelector(store => store.monthlyStats[buildingName].pages[pageName]);
+  const { isFetching, data } = useSelector(store => store.yearlyStats[buildingName].pages[pageName]);
 
   const [ready, setReady] = useState(false);
 

@@ -51,11 +51,6 @@ const MonthExpanses = props => {
       <TableSection
         title={TABLE_TITLE}
         Icon={ListAlt}
-        extraDetails={<DateDetails
-          month={date.monthHeb}
-          quarter={date.quarter}
-          year={date.year}
-        />}
       >
 
         <MonthExpansesTableContainer

@@ -66,10 +66,7 @@ const BudgetExecutions = props => {
     <TableSection
       title={TABLE_TITLE}
       Icon={ListAlt}
-      extraDetails={<DateDetails
-        quarter={date.quarter}
-        year={date.year}
-      />}
+      bgColor="rgb(0, 143, 251)"
     >
       <BudgetExecutionsTableContainer
         location={props.location}

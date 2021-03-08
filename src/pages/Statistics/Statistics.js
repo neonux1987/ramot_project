@@ -8,10 +8,7 @@ import { Button } from '@material-ui/core';
 import useDate from '../../customHooks/useDate';
 
 // COMPONENTS
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../components/Spinner/Spinner';
 import PageHeader from '../../components/PageHeader/PageHeader';
-import TableSection from '../../components/Section/TableSection';
 import Page from '../../components/Page/Page';
 
 // ACTIONS
@@ -21,10 +18,10 @@ import { initRegisteredYears } from '../../redux/actions/registeredYearsActions'
 import MonthsChartContainer from './charts/MonthsChartContainer';
 import YearsChartContainer from './charts/YearsChartContainer';
 import QuartersChartContainer from './charts/QuartersChartContainer';
+import StyledSection from '../../components/Section/StyledSection';
 
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
-const TITLE = "הוצאות והכנסות לפי חודשים";
 
 const Statistics = props => {
   //building name
@@ -32,9 +29,7 @@ const Statistics = props => {
 
   const dispatch = useDispatch();
 
-  const [chartName, setChartName] = useState("months");
-
-  const [date] = useDate(PAGE_NAME, buildingNameEng);
+  const [chartName, setChartName] = useState("חודשים");
 
   useEffect(() => {
     dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
@@ -44,51 +39,40 @@ const Statistics = props => {
     setChartName(name);
   }
 
-  if (date === undefined)
-    return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
-
   const Chart = whichChart(chartName);
 
-  return (
-    <Page>
+  return <Page>
 
-      <PageHeader building={buildingName} page={PAGE_TITLE} />
+    <PageHeader building={buildingName} page={PAGE_TITLE} />
 
-      <TableSection
-        title={TITLE}
-        Icon={IoMdStats}
-        extraDetails={<TableNav onClick={onClick} active={chartName} />}
-      >
-        <Chart
-          buildingName={buildingNameEng}
-          pageName={PAGE_NAME}
-          date={date}
-        />
-      </TableSection>
+    <StyledSection
+      title={`הוצאות והכנסות לפי ${chartName}`}
+      Icon={IoMdStats}
+      extraDetails={<SectionNav onClick={onClick} active={chartName} />}
+    >
+      <Chart buildingName={buildingNameEng} pageName={PAGE_NAME} />
+    </StyledSection>
 
-      {/* <YearsChartContainer buildingName={buildingNameEng} pageName={PAGE_NAME} date={date} /> */}
-
-    </Page>
-  );
+  </Page>;
 
 }
 
 export default Statistics;
 
-const TableNav = ({ active, onClick }) => {
+const SectionNav = ({ active, onClick }) => {
 
   return <div>
-    <Button onClick={() => onClick("months")} className={active === "months" ? "activeExpandItem" : ""}>חודשים</Button>
-    <Button onClick={() => onClick("quarters")} className={active === "quarters" ? "activeExpandItem" : ""}>רבעונים</Button>
-    <Button onClick={() => onClick("years")} className={active === "years" ? "activeExpandItem" : ""}>שנים</Button>
+    <Button onClick={() => onClick("חודשים")} className={active === "חודשים" ? "activeExpandItem" : ""}>חודשים</Button>
+    <Button onClick={() => onClick("רבעונים")} className={active === "רבעונים" ? "activeExpandItem" : ""}>רבעונים</Button>
+    <Button onClick={() => onClick("שנים")} className={active === "שנים" ? "activeExpandItem" : ""}>שנים</Button>
   </div>
 }
 
 function whichChart(name) {
   switch (name) {
-    case "months": return MonthsChartContainer;
-    case "quarters": return QuartersChartContainer;
-    case "years": return YearsChartContainer;
+    case "חודשים": return MonthsChartContainer;
+    case "רבעונים": return QuartersChartContainer;
+    case "שנים": return YearsChartContainer;
     default: return MonthsChartContainer;
   }
 }
