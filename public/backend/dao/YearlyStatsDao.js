@@ -36,6 +36,7 @@ class YearlyStatsDao {
     return trx("*")
       .whereBetween('year', [fromYear, toYear])
       .from(`${buildingName}_yearly_stats`)
+      .orderBy("year", "desc")
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה שנתית לבניין ${buildingName} משנה ${fromYear} עד שנה ${toYear}`;
         const newError = new DbError(msg, FILENAME, error);

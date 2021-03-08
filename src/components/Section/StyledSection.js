@@ -69,7 +69,7 @@ const StyledSection = ({
   title,
   Icon,
   bgColor = "rgb(111 80 206)",
-  //extraDetails = null,
+  extraDetails = null,
   children
 }) => {
   return <div className={_container}>
@@ -97,7 +97,7 @@ const StyledSection = ({
 
       {/* extra details */}
       <div role="extra details" className={_extraDetails}>
-        {/* {extraDetails} */}
+        {extraDetails}
       </div>
       {/* end extra details */}
 

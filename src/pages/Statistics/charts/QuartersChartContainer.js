@@ -1,18 +1,16 @@
 // LIBRARIES
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Bar } from 'react-chartjs-2';
 import { css } from 'emotion';
 
 // ACTIONS
-import { fetchAllMonthsStatsByYear } from '../../redux/actions/monthlyStatsActions';
+import { fetchAllQuartersStatsByYear } from '../../../redux/actions/quarterlyStatsActions';
 
 // COMPONENTS
-import DatePicker from '../../components/DatePicker/DatePicker';
-import ChartWrapper from '../../components/ChartWrapper/ChartWrapper';
-import ReactApexChart from 'react-apexcharts';
-import TableControls from '../../components/table/TableControls/TableControls';
-import ColumnChart from '../../components/charts/ColumnChart';
+import DatePicker from '../../../components/DatePicker/DatePicker';
+import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
+import TableControls from '../../../components/table/TableControls/TableControls';
+import ColumnChart from '../../../components/charts/ColumnChart';
 
 const container = css`
   margin: 15px 0;
@@ -26,7 +24,7 @@ const chartContainer = css`
   border-radius: 3px;
 `;
 
-export default props => {
+const QuartersChartContainer = props => {
   //building name
   const { buildingName, pageName, date } = props;
 
@@ -45,9 +43,10 @@ export default props => {
     const params = {
       buildingName,
       pageName,
-      year: date.year
+      date
     }
-    return dispatch(fetchAllMonthsStatsByYear(params));
+
+    return dispatch(fetchAllQuartersStatsByYear(params));
   }, [dispatch, buildingName, pageName, date.year]);
 
   const fetchAndPrepareData = useCallback(async () => {
@@ -60,7 +59,7 @@ export default props => {
       const outcomeData = [];
 
       promise.data.forEach((element) => {
-        labels.push(element.month);
+        labels.push(`רבעון ${element.quarter}`);
         incomeData.push(element.income);
         outcomeData.push(element.outcome);
       });
@@ -106,11 +105,11 @@ export default props => {
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
       <div className={chartContainer}>
-
         <ColumnChart series={chartData.series} categories={chartData.labels} />
-
       </div>
     </ChartWrapper>
   </div>
 
 }
+
+export default QuartersChartContainer;

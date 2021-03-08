@@ -4,9 +4,9 @@ import { css } from 'emotion';
 import Column from './Column';
 
 const icon = css`
-  width: 18px;
-  height: 18px;
-  margin-left: 5px;
+  width: 14px;
+  height: 14px;
+  margin-left: 3px;
   margin-top: -2px;
 `;
 
