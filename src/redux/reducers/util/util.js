@@ -249,3 +249,15 @@ export const generateBuildingsReducer = async (store) => {
   return result;
 
 }
+
+export const initStatisticsState = (initState) => {
+  const state = {};
+
+  buildings.forEach((building) => {
+    state[building.engLabel] = {
+      ...initState
+    };
+  });
+
+  return state;
+}

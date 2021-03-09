@@ -15,14 +15,6 @@ const container = css`
   margin: 15px 0;
 `;
 
-const chartContainer = css`
-  /* max-width: 800px; */
-  height: 550px;
-  background: #ffffff;
-  /* box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%); */
-  border-radius: 3px;
-`;
-
 const YearsChartContainer = props => {
   //building name
   const { buildingName, pageName } = props;
@@ -97,9 +89,7 @@ const YearsChartContainer = props => {
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
-      <div className={chartContainer}>
-        <ColumnChart series={chartData.series} categories={chartData.labels} />
-      </div>
+      <ColumnChart series={chartData.series} categories={chartData.labels} />
     </ChartWrapper>
   </div>
 

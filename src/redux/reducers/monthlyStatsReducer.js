@@ -8,7 +8,7 @@ const initState = initBuildingState({
   data: []
 });
 
-export default (state = initState, action) => {
+const monthlyStatsReducer = (state = initState, action) => {
   const { buildingName, pageName } = action;
   switch (action.type) {
     case TYPES.RECEIVE_MONTHLY_STATS:
@@ -46,3 +46,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default monthlyStatsReducer;

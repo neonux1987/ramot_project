@@ -32,7 +32,8 @@ const persistConfig = {
     //"date",
     "savedNotification",
     "goodBye",
-    //"toggleSidebar"
+    //"toggleSidebar",
+    //statistics
   ]
 
 }

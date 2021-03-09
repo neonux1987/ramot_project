@@ -41,7 +41,6 @@ const BudgetExecutions = props => {
   useEffect(() => {
     dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
     dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
-    window.scrollTo(0, 0);
   }, [dispatch, buildingNameEng]);
 
   if (date === undefined)

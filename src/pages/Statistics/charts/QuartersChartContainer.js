@@ -11,27 +11,16 @@ import DatePicker from '../../../components/DatePicker/DatePicker';
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
-import useDate from '../../../customHooks/useDate';
 
 const container = css`
   margin: 15px 0;
 `;
 
-const chartContainer = css`
-  /* max-width: 800px; */
-  height: 550px;
-  background: #ffffff;
-  /* box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%); */
-  border-radius: 3px;
-`;
-
 const QuartersChartContainer = props => {
   //building name
-  const { buildingName, pageName } = props;
+  const { buildingName, pageName, date } = props;
 
-  const { isFetching, data } = useSelector(store => store.monthlyStats[buildingName].pages[pageName]);
-
-  const [date] = useDate(pageName, buildingName);
+  const { isFetching, data } = useSelector(store => store.quarterlyStats[buildingName].pages[pageName]);
 
   const dispatch = useDispatch();
 
@@ -101,12 +90,8 @@ const QuartersChartContainer = props => {
         />}
     />
 
-
-
     <ChartWrapper itemCount={data.length} isFetching={isFetching} >
-      <div className={chartContainer}>
-        <ColumnChart series={chartData.series} categories={chartData.labels} />
-      </div>
+      <ColumnChart series={chartData.series} categories={chartData.labels} />
     </ChartWrapper>
   </div>
 

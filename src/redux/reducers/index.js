@@ -20,6 +20,7 @@ import modal from './modalReducer';
 import savedNotification from './savedNotificationReducer';
 import goodBye from './goodByeReducer';
 import toggleSidebar from './toggleSidebarReducer';
+import statistics from './statisticsReducer';
 import { createPageReducer } from './util/util';
 
 // init month expanses reducer
@@ -67,5 +68,6 @@ export default {
   routes,
   savedNotification,
   goodBye,
-  toggleSidebar
+  toggleSidebar,
+  statistics
 };

@@ -2,7 +2,7 @@ const initialState = {
   pages: {}
 }
 
-export default (state = initialState, action) => {
+const dateReducer = (state = initialState, action) => {
   switch (action.type) {
     case `DATE_UPDATE`: {
       const {
@@ -66,6 +66,8 @@ export default (state = initialState, action) => {
   }
 
 }
+
+export default dateReducer;
 
 const setDateState = (state, pageName, buildingName, target) => {
   return {

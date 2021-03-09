@@ -82,7 +82,7 @@ const ColumnChart = ({ categories = [], series, options }) => {
       }
     },
     stroke: {
-      width: [1, 1]
+      width: 1
     },
     legend: {
       show: true,
