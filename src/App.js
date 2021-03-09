@@ -15,8 +15,6 @@ import './assets/css/style.css';
 // CONTAINERS
 import AppContainer from './AppContainer';
 
-import { ToastProvider } from 'react-toast-notifications';
-
 const theme = createMuiTheme({
   direction: 'rtl', // Both here and <body dir="rtl">
   typography: {
@@ -40,23 +38,14 @@ const App = () => {
 
   return (
     <RTL>
-
       <MuiThemeProvider theme={theme}>
 
         <EnhancedRouter>
-
-          <ToastProvider autoDismiss placement={"bottom-right"}>
-
-            <AppContainer />
-
-            <ModalRoot />
-
-          </ToastProvider>
-
+          <AppContainer />
+          <ModalRoot />
         </EnhancedRouter>
 
       </MuiThemeProvider>
-
     </RTL>
   );
 

@@ -3,9 +3,10 @@ import { ToastContainer } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import CustomCloseButton from '../../components/buttons/CustomCloseButton/CustomCloseButton';
 
-const CustomToastContainer = props => {
+const CustomToastContainer = () => {
 
   const toastContainerProps = useSelector(store => store.settings.data.notifications.toastContainerProps);
+
   const {
     width,
     position,

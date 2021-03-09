@@ -1,8 +1,9 @@
 import React from 'react';
-import { useToasts } from 'react-toast-notifications';
 
 // SERVICES
 import { initiateDbBackup } from '../services/dbBackup.svc';
+import { quitApp } from '../services/mainProcess.svc';
+import { toastManager } from '../toasts/toastManager';
 
 // COMPONENTS
 import AppFrameSection from './AppFrameSection';
@@ -10,14 +11,12 @@ import DraggableFrame from './DraggableFrame';
 import AppFrame from './AppFrame';
 import ToastRender from '../components/ToastRender/ToastRender';
 import FrameControls from './FrameControls';
-import { quitApp } from '../services/mainProcess.svc';
+
 import Title from './Title';
 
 const remote = require('electron').remote;
 
 const AppFrameContainer = ({ settings }) => {
-
-  const { addToast, updateToast } = useToasts();
 
   const onClose = async () => {
     const { isFetching, data } = settings;
@@ -30,29 +29,31 @@ const AppFrameContainer = ({ settings }) => {
       return Promise.resolve();
     }
 
-    const id = addToast(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
-      appearance: "info",
+    const id = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני יציאה..."} />, {
+      autoClose: false
     });
 
     const promise = await initiateDbBackup().catch((result) => {
-      updateToast(id, {
-        content: <ToastRender message={result.error} />,
-        appearance: "error",
-        onDismiss: () => {
-          //quitApp();
-          console.log("error");
+      toastManager.update(id, {
+        render: <ToastRender message={result.error} />,
+        type: toastManager.types.ERROR,
+        delay: 3000,
+        autoClose: 2500,
+        onClose: () => {
+          quitApp();
         }
       });
     });
 
     // success
     if (promise)
-      updateToast(id, {
-        content: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
-        appearance: "success",
-        onDismiss: () => {
-          //quitApp();
-          console.log("success");
+      toastManager.update(id, {
+        render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה. המערכת מבצעת כעת יציאה..."} />,
+        type: toastManager.types.SUCCESS,
+        delay: 2000,
+        autoClose: 1500,
+        onClose: () => {
+          quitApp();
         }
       });
 
