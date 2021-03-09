@@ -1,7 +1,6 @@
 // LIBRARIES
 import React from 'react';
 import { Typography } from '@material-ui/core';
-import logoPng from '../../assets/images/ramot group.png';
 
 // CSS
 import {
@@ -12,9 +11,6 @@ import {
   logoWrapper,
   subContainer
 } from './Logo.module.css';
-
-//ELECTRON
-const appVersion = require("electron").remote.app.getVersion();
 
 const Logo = props => {
   return (

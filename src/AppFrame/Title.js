@@ -7,6 +7,7 @@ const container = css`
   padding-right: 5px;
   display: flex;
   align-items: center;
+  -webkit-user-select: none;
 `;
 
 const image = css`
