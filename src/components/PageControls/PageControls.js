@@ -1,7 +1,6 @@
 // LIBRARIES
 import React from 'react';
 import PropTypes from 'prop-types';
-import { default as printProcess } from 'print-js';
 import { css } from 'emotion';
 
 // SERVICES
@@ -25,7 +24,6 @@ const _container = css`
 `;
 
 let options = {
-  //Placeholder 3
   filters: [
     { name: 'Excel', extensions: ['xlsx'] }
   ]
@@ -67,28 +65,6 @@ const PageControls = props => {
               onClose: () => hideModal()
             });
           }
-          /* printProcess({
-            documentTitle: print.title,
-            printable: pageName,
-            type: 'html',
-            //properties: [
-            //  { field: 'id', displayName: 'ספרור' },
-            //  { field: 'code', displayName: 'קוד הנהח"ש' },
-            //  { field: 'codeName', displayName: 'שם חשבון' },
-            //  { field: 'supplierName', displayName: 'ספק' },
-            //  { field: 'sum', displayName: 'סכום' },
-            // { field: 'notes', displayName: 'הערות' }
-            //],
-            header: print.pageTitle,
-            gridHeaderStyle: 'color: #000;  border: 1px solid #000000;',
-            gridStyle: 'border: 1px solid #000000;',
-            css: './../assets/css/print.css',
-            //ignoreElements: ['page-controls', 'inputExpanses', 'dates'],
-            font: 'arial',
-            font_size: '14px',
-            scanStyles: false,
-            repeatTableHeader: true
-          }) */
         }
       />
 
