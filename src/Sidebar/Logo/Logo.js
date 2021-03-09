@@ -9,42 +9,43 @@ import {
   mainTitle,
   subtitle,
   container,
-  LogotextWrapper,
-  //appVersionWrapper,
   logoWrapper,
   subContainer
 } from './Logo.module.css';
 
 //ELECTRON
-//const appVersion = require("electron").remote.app.getVersion();
+const appVersion = require("electron").remote.app.getVersion();
 
-const Logo = () => {
+const Logo = props => {
   return (
     <div className={container} >
 
-      {/* <div className={logo} /> */}
+      {/* wrapper */}
+      <div>
 
-      <div className={LogotextWrapper}>
+        {/* logo wrapper */}
         <div className={logoWrapper}>
-          <img alt="logo" src={logoPng} />
-        </div>
 
-        <div className={mainContainer}>
-          <Typography className={mainTitle} variant="h4">
-            קבוצת רמות
+          <div className={mainContainer}>
+            <Typography className={mainTitle} variant="h4">
+              קבוצת רמות
         </Typography>
-        </div>
-      </div>
+          </div>
 
-      <div className={subContainer}>
-        <Typography className={subtitle} variant="subtitle1">
-          ניהול הוצאות והכנסות
+          <div className={subContainer}>
+            <Typography className={subtitle} variant="subtitle1">
+              ניהול הוצאות והכנסות
         </Typography>
-      </div>
+          </div>
 
-      {/* <div className={appVersionWrapper}>
-                <span>{`v${appVersion}`}</span>
-            </div> */}
+        </div>
+        {/* end logo wrapper */}
+
+      </div>
+      {/* end wrapper */}
+
+      {props.children}
+
     </div>
   );
 };

@@ -18,8 +18,10 @@ const SidebarContainer = () => {
   const routes = useSelector(store => store.routes);
 
   return <Sidebar show={showSidebar}>
-    <Logo />
-    <ControlsContainer routes={routes} />
+    <Logo>
+      <ControlsContainer routes={routes} />
+    </Logo>
+
     <MenuContainer routes={routes} />
     <Credits />
   </Sidebar>

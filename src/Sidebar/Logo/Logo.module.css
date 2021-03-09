@@ -1,12 +1,48 @@
+.container {
+  width: 250px;
+  position: relative;
+  user-select: none;
+  /* background: #f3f3f3; */
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
+}
+
+.container:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.6;
+  background-image: url('../../assets/images/ramot\ group.png');
+  background-repeat: no-repeat;
+  background-size:  220px;
+  background-position: right;
+  background-position-x: 110px;
+  background-position-y: -45px;
+  background-blend-mode: overlay;
+}
+
+.logoWrapper{
+  margin-top: 15px;
+  position: relative;
+  z-index: 3;
+}
+
 .mainContainer{
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .mainTitle{
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color: #1489ce;
+  color: #dedede;
   font-style: normal;
   font-size: 32px;
   letter-spacing: -1px;
@@ -17,75 +53,19 @@
 .subContainer{
   text-align: right;
   margin-top: -5px;
+  z-index: 3;
 }
 
 .subtitle {
   text-align: center;
   font-size: 14px;
   color: #1fcca5;
-  font-weight: 600;
+  font-weight: 500;
   font-style: normal;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.08rem;
   position: relative;
   /* text-shadow: 0px 0px 6px #0000001a; */
   /* text-shadow: 3px 2px 2px #0000001c; */
-}
-
-.container {
-  width: 250px;
-  position: relative;
-  user-select: none;
-  /* background: #f3f3f3; */
-  -webkit-app-region: no-drag;
-  -webkit-user-select: none;
-}
-
-.logoWrapper{
-  /* background: #fff; */
-  /* background: linear-gradient(0deg, #f7f8fd 0%, #ffffff 100%); */
-  /* border: 1px solid #efefef; */
-  height: 46px;
-  width: 48px;
-  margin-left: 0px;
-  display: flex;
-  border-radius: 3px;
-  justify-content: center;
-  align-items: center;
-  /* box-shadow: 0 0px 3px rgb(0 0 0 / 40%); */
-  /* border: solid 1px #1f7abb; */
-}
-
-.logoWrapper img{
-  /* filter: drop-shadow(3px 2px 2px #00000030); */
-  width: 50px;
-  height: 50px;
-}
-
-/* .logoWrapper:before{
-  height: 40px;
-  width: 42px;
-  border: solid 1px #e0e0e0;
-  position: absolute;
-  content: "";
-  border-radius: 3px;
-} */
-/* 
-.logoWrapper img{
-  filter: drop-shadow(0px 0px 6px #00000035);
-} */
-
-.logo{
-  background: url('../../assets//images//ramot\ group.png') no-repeat;
-  width: 54px;
-  height: 54px;
-  background-size: 52px 52px;
-  filter: drop-shadow(5px 5px 5px #00000012);
-}
-
-.LogotextWrapper{
-  margin-top: 15px;
-  display: flex;
-  padding-right: 21px;
 }
 
 .appVersionWrapper{
