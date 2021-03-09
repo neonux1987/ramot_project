@@ -10,7 +10,7 @@ import {
 } from './Restore.module.css';
 
 // COMPONENTS
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
+import ExpandableSection from '../../../../../components/Section/ExpandableSection';
 import Separator from '../../../../../components/Seperator/Separator';
 import RestoreFromList from './RestoreFromList/RestoreFromList';
 import RestoreFromFile from './RestoreFromFile/RestoreFromFile';
@@ -30,7 +30,6 @@ import { toastManager } from '../../../../../toasts/toastManager';
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
 import PrimaryButton from '../../../../../components/buttons/PrimaryButton';
-
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
@@ -153,13 +152,12 @@ export default () => {
 
   return (
 
-    <StyledExpandableSection
+    <ExpandableSection
       title={"שיחזור בסיס נתונים"}
-      TitleIcon={Restore}
-      iconColor={"#0365a2"}
-      padding={"30px 20px"}
+      Icon={Restore}
+      bgColor={"#0365a2"}
     >
       {render}
-    </StyledExpandableSection>
+    </ExpandableSection>
   );
 }

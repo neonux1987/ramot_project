@@ -4,9 +4,8 @@ import { Android } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
 import Sound from './Sound/Sound';
-import SaveButton from '../../../../../components/buttons/SaveButton/SaveButton';
+import SettingsExpandableSection from '../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import FileSelector from '../../../../../components/FileSelector/FileSelector';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
 
@@ -17,7 +16,10 @@ import { updateSettings, saveSettings } from '../../../../../redux/actions/setti
 import { soundManager } from '../../../../../soundManager/SoundManager';
 import Divider from '../../../../../components/Divider/Divider';
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
+
+// SERVICES
 import { openItem } from '../../../../../services/mainProcess.svc';
+
 
 const SETTINGS_NAME = "system";
 
@@ -68,12 +70,11 @@ export default () => {
   }
 
   return (
-    <StyledExpandableSection
+    <SettingsExpandableSection
       title={"מערכת"}
-      TitleIcon={Android}
-      iconColor={"#0365a2"}
-      extraDetails={() => <SaveButton onClick={save}>שמור</SaveButton>}
-      padding={"30px 20px"}
+      Icon={Android}
+      bgColor={"#0365a2"}
+      onSaveClick={save}
     >
 
       <TitleTypography gutterBottom>
@@ -96,6 +97,6 @@ export default () => {
 
       <FileSelector buttonLabel="פתח תיקייה" onOpenClick={() => openItem(config_folder_path)} value={config_folder_path} />
 
-    </StyledExpandableSection >
+    </SettingsExpandableSection >
   );
 }

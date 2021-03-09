@@ -4,8 +4,7 @@ import { AccessibilityNew } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import SaveButton from '../../../../../components/buttons/SaveButton/SaveButton';
+import SettingsExpandableSection from '../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import FileSelector from '../../../../../components/FileSelector/FileSelector';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
 
@@ -18,6 +17,7 @@ import { openItem } from '../../../../../services/mainProcess.svc';
 
 // ACTIONS
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
+
 
 const SETTINGS_NAME = "user";
 
@@ -67,12 +67,11 @@ export default () => {
   }
 
   return (
-    <StyledExpandableSection
+    <SettingsExpandableSection
       title={"משתמש"}
-      TitleIcon={AccessibilityNew}
-      iconColor={"#0365a2"}
-      extraDetails={() => <SaveButton onClick={save}>שמור</SaveButton>}
-      padding={"30px 20px"}
+      Icon={AccessibilityNew}
+      bgColor={"#0365a2"}
+      onSaveClick={save}
     >
 
       <TitleTypography underline={false} gutterBottom="10px">
@@ -81,6 +80,6 @@ export default () => {
 
       <FileSelector onChangeClick={dbSelectFolderHandler} onOpenClick={() => openItem(reports_folder_path)} value={reports_folder_path} />
 
-    </StyledExpandableSection >
+    </SettingsExpandableSection >
   );
 }

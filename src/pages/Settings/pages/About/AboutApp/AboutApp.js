@@ -3,7 +3,7 @@ import React from 'react';
 import { LaptopMac } from '@material-ui/icons';
 
 // COMPONENTS
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
+import ExpandableSection from '../../../../../components/Section/ExpandableSection';
 import BoldUnderlineLabel from '../../../../../components/BoldUnderlineLabel/BoldUnderlineLabel';
 
 //ELECTRON
@@ -14,11 +14,10 @@ const appName = app.name;
 const AboutApp = () => {
 
   return (
-    <StyledExpandableSection
+    <ExpandableSection
       title={"אודות התוכנה"}
-      TitleIcon={LaptopMac}
-      padding={"30px 20px 60px"}
-      iconColor={"#0365a2"}
+      Icon={LaptopMac}
+      bgColor={"#0365a2"}
     >
 
       <BoldUnderlineLabel label={`שם תוכנה:`}>
@@ -33,7 +32,7 @@ const AboutApp = () => {
         {appCurrentVersion}
       </BoldUnderlineLabel>
 
-    </StyledExpandableSection >
+    </ExpandableSection >
   );
 }
 

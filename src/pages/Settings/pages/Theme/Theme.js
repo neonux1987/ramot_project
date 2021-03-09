@@ -4,8 +4,7 @@ import { Style } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
-import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
-import SaveButton from '../../../../components/buttons/SaveButton/SaveButton';
+import SettingsExpandableSection from '../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import CheckboxWithLabel from '../../../../components/CheckboxWithLabel/CheckboxWithLabel';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 import TitleTypography from '../../../../components/Typographies/TitleTypography';
@@ -49,12 +48,11 @@ export const Theme = () => {
   return (
     <Page>
 
-      <StyledExpandableSection
+      <SettingsExpandableSection
         title={"עיצוב"}
-        TitleIcon={Style}
-        iconColor={"#0365a2"}
-        extraDetails={() => <SaveButton onClick={save}>שמור</SaveButton>}
-        padding={"30px 20px"}
+        Icon={Style}
+        bgColor={"#0365a2"}
+        onSaveClick={save}
       >
 
         <TitleTypography>
@@ -63,7 +61,7 @@ export const Theme = () => {
 
         <CheckboxWithLabel label="סרגל כלים דביק" name="sticky_toolbar" value={data.sticky_toolbar} onChange={onCheckChange} />
 
-      </StyledExpandableSection >
+      </SettingsExpandableSection >
 
       <GoodByeWrapper />
     </Page>

@@ -1,11 +1,15 @@
 import React from 'react';
-import styles from './TableWrapper.module.css';
+import { css } from 'emotion';
+
+const style = css`
+  margin: 0 15px 20px;
+`;
 
 // name tableElement is used for 
 // scrollTo functionality
 const TableWrapper = ({ children, id }) => {
   return (
-    <div id={id} className={styles.tableWrapper} name="tableElement">
+    <div id={id} className={style} name="tableElement">
       {children}
     </div>
   );

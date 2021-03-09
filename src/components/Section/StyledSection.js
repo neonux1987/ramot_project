@@ -60,14 +60,14 @@ const _extraDetails = css`
 `;
 
 const _content = css`
-  margin: 0 15px 15px;
+  /* margin: 0 15px 15px; */
   overflow: auto;
   position: relative;
 `;
 
 const StyledSection = ({
   title,
-  Icon,
+  Icon = <div></div>,
   bgColor = "rgb(111 80 206)",
   extraDetails = null,
   children

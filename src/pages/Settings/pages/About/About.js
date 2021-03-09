@@ -8,12 +8,10 @@ import Page from '../../../../components/Page/Page';
 
 const About = () => {
 
-  return (
-    <Page>
-      <AboutDeveloper />
-      <AboutApp />
-    </Page>
-  );
+  return <Page>
+    <AboutApp />
+    <AboutDeveloper />
+  </Page>;
 }
 
 export default About;

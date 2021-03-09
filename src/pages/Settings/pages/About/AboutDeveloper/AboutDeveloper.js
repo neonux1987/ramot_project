@@ -3,15 +3,15 @@ import React from 'react';
 import { Code } from '@material-ui/icons';
 
 // COMPONENTS
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
+import ExpandableSection from '../../../../../components/Section/ExpandableSection';
 import BoldUnderlineLabel from '../../../../../components/BoldUnderlineLabel/BoldUnderlineLabel';
 
 const AboutDeveloper = () => {
 
   return (
-    <StyledExpandableSection
+    <ExpandableSection
       title={"אודות המפתח"}
-      TitleIcon={Code}
+      Icon={Code}
       padding={"30px 20px 60px"}
       iconColor={"#0365a2"}
     >
@@ -28,7 +28,7 @@ const AboutDeveloper = () => {
         NDTS (Noobs Delivering Technology Solutions)
       </BoldUnderlineLabel>
 
-    </StyledExpandableSection >
+    </ExpandableSection >
   );
 }
 

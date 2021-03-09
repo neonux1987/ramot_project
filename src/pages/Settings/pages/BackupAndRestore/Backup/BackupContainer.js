@@ -5,8 +5,7 @@ import { MenuItem } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
 
 // COMPONENTS
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import SaveButton from '../../../../../components/buttons/SaveButton/SaveButton';
+import SettingsExpandableSection from '../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
 import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';
@@ -170,14 +169,11 @@ const BackupContainer = () => {
   });
 
   return (
-    <StyledExpandableSection
+    <SettingsExpandableSection
       title={"גיבוי בסיס נתונים"}
-      TitleIcon={Backup}
-      extraDetails={() =>
-        <SaveButton onClick={save}>שמור</SaveButton>
-      }
-      padding={"30px 20px"}
-      iconColor={"#0365a2"}
+      Icon={Backup}
+      onSaveClick={save}
+      bgColor={"#0365a2"}
     >
 
       {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}
@@ -238,7 +234,7 @@ const BackupContainer = () => {
 
       <ManualBackupSelector onClick={dbIndependentBackupHandler} />
 
-    </StyledExpandableSection >
+    </SettingsExpandableSection >
   );
 }
 

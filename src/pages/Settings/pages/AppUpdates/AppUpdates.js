@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SystemUpdateAlt } from '@material-ui/icons';
 
 // COMPONENTS
-import StyledExpandableSection from '../../../../components/Section/StyledExpandableSection';
+import ToastRender from '../../../../components/ToastRender/ToastRender';
+import Page from '../../../../components/Page/Page';
+import ExpandableSection from '../../../../components/Section/ExpandableSection';
 import NewUpdate from './NewUpdate/NewUpdate';
 import NoUpdate from './NoUpdate/NoUpdate';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
@@ -19,8 +21,6 @@ import { updateSettings, saveSettings } from '../../../../redux/actions/settings
 
 // TOASTS
 import { toastManager } from '../../../../toasts/toastManager';
-import ToastRender from '../../../../components/ToastRender/ToastRender';
-import Page from '../../../../components/Page/Page';
 
 // ELECTRON
 const { ipcRenderer } = require('electron');
@@ -230,17 +230,16 @@ const AppUpdates = () => {
 
   return (
     <Page>
-      <StyledExpandableSection
+      <ExpandableSection
         title={"עדכוני תוכנה"}
-        TitleIcon={SystemUpdateAlt}
-        padding={"30px 20px"}
-        iconColor={"#0365a2"}
-        extraDetails={() => <PrimaryButton onClick={refreshHandler}>רענן</PrimaryButton>}
+        Icon={SystemUpdateAlt}
+        bgColor={"#0365a2"}
+        extraDetails={<PrimaryButton onClick={refreshHandler}>רענן</PrimaryButton>}
       >
 
         {content}
 
-      </StyledExpandableSection >
+      </ExpandableSection >
     </Page>
   );
 }

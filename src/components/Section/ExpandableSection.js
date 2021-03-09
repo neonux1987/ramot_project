@@ -1,38 +1,26 @@
 // LIBRARIES
 import React, { useState } from 'react';
-import { Box, Typography } from '@material-ui/core';
+import Collapse from '@material-ui/core/Collapse';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
-import Collapsible from 'react-collapsible';
-import classnames from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
+import { css } from 'emotion';
 
 // CSS
 import styles from './ExpandableSection.module.css';
 import DefaultLoader from '../AnimatedLoaders/DefaultLoader';
+import StyledSection from './StyledSection';
+
+const _content = css`
+  padding: 20px 15px;
+`;
 
 const ExpandableSection = ({
-  TitleIcon,
-  marginTop = "20px",
-  marginBottom = "20px",
-  children,
-  iconBoxBg = "#0365a2",
   title,
+  Icon,
+  bgColor,
+  children,
   extraDetails,
-  collapsable = true,
-  bgColor = "initial",
-  padding = "20px 15px 0 15px",
-  loading = false,
-  headerStyles = {}
+  loading = false
 }) => {
-
-  const useStyles = makeStyles((theme) => ({
-    contentInnerClassName: {
-      padding,
-      backgroundColor: bgColor
-    }
-  }));
-
-  const classes = useStyles();
 
   const [open, setOpen] = useState(true);
 
@@ -42,43 +30,31 @@ const ExpandableSection = ({
 
   const expandIcon = open ? <ExpandLess className={styles.expandIcon} /> : <ExpandMore className={styles.expandIcon} />
 
-  const headerWrapper = () => {
+  const ExtraDetails = () => <div className={styles.extraDetailsWrapper}>
+    <div>
+      {extraDetails}
+    </div>
 
-    return (<div className={styles.wrapper} style={headerStyles}>
+    <div className={styles.expandIconWrapper} onClick={expandClick}>
+      {expandIcon}
+    </div>
+  </div>;
 
-      <div className={styles.titleWrapper}>
-        <div className={styles.iconBox} style={{ backgroundColor: iconBoxBg }}>
-          {TitleIcon && <TitleIcon />}
-        </div>
-        <Typography className={styles.title}>
-          {title}
-        </Typography>
-      </div>
-
-      <div className={styles.extraDetailsWrapper}>
-        {extraDetails && extraDetails()}
-      </div>
-
-      {collapsable && <div className={styles.expandIconWrapper} onClick={expandClick}>
-        {expandIcon}
-      </div>}
-
-    </div>);
-  }
-
-  return (
-    <Box className={styles.boxWrapper} mt={marginTop} mb={marginBottom} mx={"20px"}>
-      <Collapsible
-        transitionTime={100}
-        open={open}
-        triggerDisabled={true}
-        trigger={headerWrapper() || ""}
-        contentInnerClassName={classnames(classes.contentInnerClassName)}
-      >
+  return <StyledSection
+    title={title}
+    Icon={Icon}
+    bgColor={bgColor}
+    extraDetails={<ExtraDetails />}
+  >
+    <Collapse
+      timeout={300}
+      in={open}
+    >
+      <div className={_content}>
         {loading ? <DefaultLoader loading={loading} /> : children}
-      </Collapsible>
-    </Box>
-  );
+      </div>
+    </Collapse>
+  </StyledSection>
 
 }
 
