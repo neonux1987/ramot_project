@@ -22,8 +22,8 @@
   border-bottom: 1px solid #ececec;
 }
 
-._tableRow:hover{
-  background-color: rgb(247, 248, 249);
+._tableColumn:hover{
+  background-color: #fafafa;
 }
 
 ._tableColumn{

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default ({ style = {}, children, gridTemplateColumns = "unset", className = "" }) => {
+const Row = ({ style = {}, children, gridTemplateColumns = "unset", className = "" }) => {
   return (
     <div
       className={`_tableRow ${className}`}
@@ -12,3 +12,5 @@ export default ({ style = {}, children, gridTemplateColumns = "unset", className
     </div>
   );
 }
+
+export default Row;

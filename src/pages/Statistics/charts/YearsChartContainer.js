@@ -10,6 +10,7 @@ import { fetchYearStatsByYearRange } from '../../../redux/actions/yearlyStatsAct
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
+import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
 
 const container = css`
   margin: 15px 0;
@@ -17,9 +18,9 @@ const container = css`
 
 const YearsChartContainer = props => {
   //building name
-  const { buildingName, pageName } = props;
+  const { buildingName, pageName, date } = props;
 
-  const date = new Date();
+  const currentDate = new Date();
 
   const { isFetching, data } = useSelector(store => store.yearlyStats[buildingName].pages[pageName]);
 
@@ -36,8 +37,8 @@ const YearsChartContainer = props => {
     const params = {
       buildingName,
       pageName,
-      fromYear: date.getFullYear() - 9, // 10 years of data only
-      toYear: date.getFullYear() + 1
+      fromYear: currentDate.getFullYear() - 9, // 10 years of data only
+      toYear: currentDate.getFullYear() + 1
     }
 
     return dispatch(fetchYearStatsByYearRange(params));
@@ -85,7 +86,7 @@ const YearsChartContainer = props => {
 
   return <div className={container}>
     <TableControls
-      middlePane={<div></div>}
+      middlePane={<DateRangePicker pageName={pageName} buildingName={buildingName} date={date} />}
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
