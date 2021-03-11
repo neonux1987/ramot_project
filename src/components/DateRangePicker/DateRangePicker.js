@@ -1,80 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { Select, MenuItem, InputLabel } from '@material-ui/core';
-import Spinner from '../Spinner/Spinner';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateDate } from '../../redux/actions/dateActions';
-import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
+import React, { useState } from 'react';
+import { MenuItem } from '@material-ui/core';
+import PrimaryButton from '../buttons/PrimaryButton';
+import Select from '../Select/Select';
+import FormWrapper from '../FormWrapper/FormWrapper';
+import WhiteButton from '../buttons/WhiteButton';
 
-const DateRangePicker = ({ buildingName, pageName, date }) => {
-  const dispatch = useDispatch();
-  const currentDate = new Date();
-  const { data, isFetching } = useSelector(store => store.registeredYears.pages[pageName][buildingName]);
-
+const DateRangePicker = ({ years, date, submit }) => {
   const [selectDate, setDate] = useState({
-    fromYear: date.fromYear ? date.fromYear : "",
-    toYear: currentDate.getFullYear()
+    fromYear: date.fromYear || years[0].year,
+    toYear: date.toYear || years[years.length - 1].year
   });
-  console.log(date);
-  useEffect(() => {
-    dispatch(fetchRegisteredYears({ pageName, buildingName }));
-  }, [dispatch, pageName, buildingName]);
-
-  useEffect(() => {
-    setDate(() => ({
-      ...selectDate,
-      fromYear: date.fromYear ? date.fromYear : "",
-    }));
-  }, [date]);
 
   const onChange = (event) => {
     const { value, name } = event.target;
     const newValue = Number.parseInt(value);
-    updateDate(buildingName, pageName, selectDate);
-    /* setDate(() => {
-      updateDate(buildingName, pageName, selectDate);
-      return {
-        ...selectDate,
-        [name]: newValue
-      };
-    }); */
 
+    setDate({
+      ...selectDate,
+      [name]: newValue
+    });
   }
 
-  if (isFetching || selectDate.fromYear === 0)
-    return <div>yes</div>
-
-  const fromList = () => {
-    return data.map(({ year }) => {
+  const list = () => {
+    return years.map(({ year }) => {
       return <MenuItem key={year} value={year}>{year}</MenuItem>
     });
   }
 
-  //if years data exist, render it
-  const fromSelect = <div>
-    <InputLabel id="label">מ- </InputLabel>
+  const onClickHandler = () => {
+    submit(selectDate);
+  }
+
+
+  return <FormWrapper>
     <Select
       name="fromYear"
+      label="מ-"
       value={selectDate.fromYear}
       onChange={onChange}
     >
-      {fromList()}
+      {list()}
     </Select>
-  </div>;
+    <Select
+      name="toYear"
+      label="עד-"
+      value={selectDate.toYear}
+      onChange={onChange}
+    >
+      {list()}
+    </Select>
+    <WhiteButton onClick={onClickHandler}>טען</WhiteButton>
+  </FormWrapper>;
 
-  return (
-    <div>
-      <form>
-        {fromSelect}
-      </form>
-    </div>
-  );
-
-}
-
-const FormSelectDummy = () => {
-  return <div>
-    <Spinner size={18} />
-  </div>
 }
 
 export default React.memo(DateRangePicker);

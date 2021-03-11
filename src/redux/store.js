@@ -34,6 +34,9 @@ const persistConfig = {
     "goodBye",
     //"toggleSidebar",
     //statistics
+    //"monthsChart",
+    //"quartersChart",
+    //"yearsChart"
   ]
 
 }

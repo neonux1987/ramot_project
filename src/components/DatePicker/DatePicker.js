@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Select, MenuItem, InputLabel } from '@material-ui/core';
-import { pickerWrapper, pickerLabel, formSelect, formControl, dates, select } from './DatePicker.module.css';
-import Spinner from '../Spinner/Spinner';
+import { MenuItem } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateDate } from '../../redux/actions/dateActions';
 import Helper from '../../helpers/Helper';
 import { fetchRegisteredMonths, cleanupMonths } from '../../redux/actions/registeredMonthsActions';
 import { fetchRegisteredYears, cleanupYears } from '../../redux/actions/registeredYearsActions';
 import { fetchRegisteredQuarters, cleanupQuarters } from '../../redux/actions/registeredQuartersActions';
+import Select from '../Select/Select';
+import FormWrapper from '../FormWrapper/FormWrapper';
 
 const DatePicker = ({
   quarter = false,
@@ -197,79 +197,55 @@ const DatePicker = ({
   }
 
   //if months data exist, render it
-  const renderMonths = month ?
-    <div className={pickerWrapper}>
-      <InputLabel className={pickerLabel} id="label" disabled={months.data.length === 0 ? true : false}>חודש:</InputLabel>
-      <Select
-        name="month"
-        className={formSelect}
-        value={selectDate.month || ""}
-        onChange={onMonthChange}
-        disabled={months.data.length === 0 ? true : false}
-        classes={{ select }}
-      >
-        {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}>בחר חודש</MenuItem> : null}
-        {months.data.map((month) => {
-          return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
-        })}
-      </Select>
-    </div>
-    : <FormSelectDummy />;
+  const renderMonths = () => <Select
+    name="month"
+    label={"חודש:"}
+    value={selectDate.month || ""}
+    onChange={onMonthChange}
+    disabled={months.data.length === 0 ? true : false}
+    loading={month === undefined}
+  >
+    {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}>בחר חודש</MenuItem> : null}
+    {months.data.map((month) => {
+      return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
+    })}
+  </Select>;
 
   //if quarters data exist, render it
-  const renderQuarters = quarter ?
-    <div className={pickerWrapper}>
-      <InputLabel className={pickerLabel} id="label" disabled={quarters.data.length === 0 ? true : false}>רבעון:</InputLabel>
-      <Select
-        name="quarter"
-        className={formSelect}
-        value={selectDate.quarter || ""}
-        onChange={onQuarterChangeHandler}
-        disabled={quarters.data.length === 0 ? true : false}
-        classes={{ select }}
-      >
-        {quarters.data.length === 0 || quarterExist() === false ? <MenuItem value={selectDate.quarter}>בחר רבעון</MenuItem> : null}
-        {quarters.data.map((quarter) => {
-          return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
-        })}
-      </Select>
-    </div>
-    : <FormSelectDummy />;
+  const renderQuarters = () => <Select
+    name="quarter"
+    label={"רבעון:"}
+    value={selectDate.quarter || ""}
+    onChange={onQuarterChangeHandler}
+    disabled={quarters.data.length === 0 ? true : false}
+    loading={quarter === undefined}
+  >
+    {quarters.data.length === 0 || quarterExist() === false ? <MenuItem value={selectDate.quarter}>בחר רבעון</MenuItem> : null}
+    {quarters.data.map((quarter) => {
+      return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
+    })}
+  </Select>;
 
   //if years data exist, render it
-  const renderYears = <div className={pickerWrapper}>
-    <InputLabel className={pickerLabel} id="label">שנה:</InputLabel>
-    <Select
-      name="year"
-      className={formSelect}
-      value={selectDate.year || "choose year"}
-      onChange={onYearChangeHandler}
-      classes={{ select }}
-    >
-      {years.data.length === 0 || yearExist() === false || date.year === undefined
-        ? <MenuItem value={selectDate.year || "choose year"}>בחר שנה</MenuItem> : null}
-      {years.data.map((year) => {
-        return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
-      })}
-    </Select>
-  </div>;
+  const renderYears = <Select
+    name="year"
+    label={"שנה:"}
+    value={selectDate.year || "choose year"}
+    onChange={onYearChangeHandler}
+  >
+    {years.data.length === 0 || yearExist() === false || date.year === undefined
+      ? <MenuItem value={selectDate.year || "choose year"}>בחר שנה</MenuItem> : null}
+    {years.data.map((year) => {
+      return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;
+    })}
+  </Select>;
 
-  return (
-    <div id="dates" className={dates}>
-      <form className={formControl}>
-        {renderYears}
-        {quarter && renderQuarters}
-        {month && renderMonths}
-      </form>
-    </div>
-  );
+  return <FormWrapper>
+    {renderYears}
+    {quarter && renderQuarters()}
+    {month && renderMonths()}
+  </FormWrapper>;
 
-}
-
-const FormSelectDummy = () => {
-  return <div className={formSelect}>
-    <Spinner size={18} />
-  </div>
 }
 
 export default React.memo(DatePicker, (prevProps, nextProps) => {

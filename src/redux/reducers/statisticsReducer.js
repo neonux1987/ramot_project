@@ -1,7 +1,7 @@
 import { TYPES } from '../actions/statisticsActions';
-import { initStatisticsState } from '../reducers/util/util';
+import { initState as is } from '../reducers/util/util';
 
-const initState = initStatisticsState({
+const initState = is({
   selectedChart: "חודשים"
 });
 

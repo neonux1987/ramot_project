@@ -250,7 +250,7 @@ export const generateBuildingsReducer = async (store) => {
 
 }
 
-export const initStatisticsState = (initState) => {
+export const initState = (initState) => {
   const state = {};
 
   buildings.forEach((building) => {

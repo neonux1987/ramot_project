@@ -2,9 +2,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { css } from 'emotion';
+import { toastManager } from '../../../toasts/toastManager';
 
 // ACTIONS
 import { fetchYearStatsByYearRange } from '../../../redux/actions/yearlyStatsActions';
+import { fetchRegisteredYears } from '../../../redux/actions/registeredYearsActions';
+import { updateDate } from '../../../redux/actions/yearsChartActions';
 
 // COMPONENTS
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
@@ -18,11 +21,11 @@ const container = css`
 
 const YearsChartContainer = props => {
   //building name
-  const { buildingName, pageName, date } = props;
-
-  const currentDate = new Date();
+  const { buildingName, pageName } = props;
 
   const { isFetching, data } = useSelector(store => store.yearlyStats[buildingName].pages[pageName]);
+  const registeredYears = useSelector(store => store.registeredYears.pages[pageName][buildingName]);
+  const { date } = useSelector(store => store.yearsChart[buildingName]);
 
   const [ready, setReady] = useState(false);
 
@@ -33,19 +36,19 @@ const YearsChartContainer = props => {
     series: []
   });
 
-  const fetchMonthsData = useCallback(() => {
+  const fetchMonthsData = useCallback((date) => {
     const params = {
       buildingName,
       pageName,
-      fromYear: currentDate.getFullYear() - 9, // 10 years of data only
-      toYear: currentDate.getFullYear() + 1
+      fromYear: date.fromYear,
+      toYear: date.toYear
     }
 
     return dispatch(fetchYearStatsByYearRange(params));
   }, [dispatch, buildingName, pageName, date.year]);
 
-  const fetchAndPrepareData = useCallback(async () => {
-    const promise = await fetchMonthsData();
+  const fetchAndPrepareData = useCallback(async (date) => {
+    const promise = await fetchMonthsData(date);
 
     if (promise !== undefined) {
 
@@ -81,12 +84,34 @@ const YearsChartContainer = props => {
   }, [fetchMonthsData]);
 
   useEffect(() => {
-    fetchAndPrepareData();
-  }, [dispatch, fetchAndPrepareData]);
+    dispatch(fetchRegisteredYears({ pageName, buildingName }));
+  }, [dispatch, pageName, buildingName]);
+
+
+  // load on start the previous selected data
+  useEffect(() => {
+    fetchAndPrepareData(date)
+  }, []);
+
+  const submit = (date) => {
+    if (date.fromYear > date.toYear)
+      toastManager.error("תאריך התחלה לא יכול להיות יותר גדול מתאריך סוף.");
+    else {
+      dispatch(updateDate(buildingName, date));
+      fetchAndPrepareData(date);
+    }
+  }
+
+  if (registeredYears.isFetching || date === undefined)
+    return <div>yes</div>
 
   return <div className={container}>
     <TableControls
-      middlePane={<DateRangePicker pageName={pageName} buildingName={buildingName} date={date} />}
+      middlePane={<DateRangePicker
+        years={registeredYears.data}
+        date={date}
+        submit={submit}
+      />}
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
@@ -96,4 +121,4 @@ const YearsChartContainer = props => {
 
 }
 
-export default YearsChartContainer;
+export default React.memo(YearsChartContainer);

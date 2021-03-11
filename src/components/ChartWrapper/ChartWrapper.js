@@ -9,6 +9,7 @@ import Spinner from '../../components/Spinner/Spinner';
 const container = css`
   background: #ffffff;
   margin-top: 20px;
+  min-height: 500px;
 `;
 
 const text = css`
@@ -24,7 +25,7 @@ const ChartWrapper = props => {
 
   return <div className={container}>
 
-    {!isFetching && itemCount === 0 ? <AlignCenterMiddle><span className={text}>או שאין נתונים או שלא נבחר תאריך.</span></AlignCenterMiddle> : Loading}
+    {!isFetching && itemCount === 0 ? <AlignCenterMiddle><span className={text}>לא נטענו נתונים.</span></AlignCenterMiddle> : Loading}
   </div>
 
 }
