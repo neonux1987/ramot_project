@@ -19,7 +19,7 @@ const DatePicker = ({
   const dispatch = useDispatch();
 
   const months = useSelector(store => month ? store.registeredMonths[buildingName] : undefined);
-  const quarters = useSelector(store => quarter ? store.registeredQuarters.pages[pageName][buildingName] : undefined);
+  const quarters = useSelector(store => quarter ? store.registeredQuarters[buildingName] : undefined);
   const years = useSelector(store => store.registeredYears[buildingName]);
 
   const [selectDate, setDate] = useState({
@@ -40,8 +40,7 @@ const DatePicker = ({
 
       if (quarter && date.year !== undefined)
         dispatch(fetchRegisteredQuarters({
-          pageName,
-          buildingName,
+          buildingNameEng: buildingName,
           date: {
             year: date.year
           }
@@ -56,7 +55,7 @@ const DatePicker = ({
       // fetching the registered years
       dispatch(cleanupYears(buildingName))
       if (quarter)
-        dispatch(cleanupQuarters(pageName, buildingName))
+        dispatch(cleanupQuarters(buildingName))
       if (month)
         dispatch(cleanupMonths(buildingName))
     }
@@ -129,8 +128,7 @@ const DatePicker = ({
 
     if (quarter) {
       dispatch(fetchRegisteredQuarters({
-        pageName,
-        buildingName,
+        buildingNameEng: buildingName,
         date: {
           year
         }

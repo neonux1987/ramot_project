@@ -17,7 +17,6 @@ import QuartersChartContainer from './charts/QuartersChartContainer';
 
 // ACTIONS
 import { updateSelectedChart } from '../../redux/actions/statisticsActions';
-import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 
 // HOOKS
 import useDate from '../../customHooks/useDate';
@@ -38,10 +37,6 @@ const Statistics = props => {
   const onClick = (name) => {
     dispatch(updateSelectedChart(buildingNameEng, name));
   }
-
-  useEffect(() => {
-    dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
-  }, [dispatch, buildingNameEng]);
 
   if (date === undefined)
     return <CenteredLoader />

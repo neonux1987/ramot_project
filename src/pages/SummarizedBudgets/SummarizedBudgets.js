@@ -21,9 +21,6 @@ import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
 // HOOKS
 import useDate from '../../customHooks/useDate';
 
-// ACTIONS
-import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
 const STATS_TITLE = "סיכום הוצאות והכנסות שנתי";
@@ -36,10 +33,6 @@ const SummarizedBudgets = props => {
   const dispatch = useDispatch();
 
   const [date] = useDate(PAGE_NAME, buildingNameEng);
-
-  useEffect(() => {
-    dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
-  }, [dispatch, buildingNameEng]);
 
   if (date === undefined)
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;

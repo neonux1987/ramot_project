@@ -71,7 +71,7 @@ const BudgetExecutionsTable = props => {
   const dispatch = useDispatch();
 
   // page data
-  const page = useSelector(store => store.budgetExecutions.pages[buildingNameEng]);
+  const page = useSelector(store => store.budgetExecutions[buildingNameEng]);
   const pages = useSelector(store => store.budgetExecutions);
   console.log(pages);
   const [whichColor] = useDifferenceColor();

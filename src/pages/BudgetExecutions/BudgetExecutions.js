@@ -21,8 +21,8 @@ import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 import useDate from '../../customHooks/useDate';
 
 // ACTIONS
-import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 import Page from '../../components/Page/Page';
+import { fetchBudgetExecutions } from '../../redux/actions/budgetExecutionsActions';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";
@@ -36,10 +36,23 @@ const BudgetExecutions = props => {
   const dispatch = useDispatch();
 
   const { date, data, isFetching } = useSelector(store => store.budgetExecutions[buildingNameEng]);
+  console.log(data, date);
 
   useEffect(() => {
-    dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
-  }, [dispatch, buildingNameEng]);
+    const buildingInfo = {
+      buildingNameEng,
+      buildingName
+    };
+
+    // how many rows of data to pull from the database
+    const range = {
+      startElement: 0,
+      pageSize: 1000
+    };
+
+    dispatch(fetchBudgetExecutions(buildingInfo, date, range));
+  }, [dispatch, date]);
+
 
   if (date === undefined)
     return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;

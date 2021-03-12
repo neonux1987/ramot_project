@@ -11,11 +11,11 @@ export const TYPES = {
 }
 
 export const fetchRegisteredQuarters = (params = Object) => {
-  return (dispatch, getState) => {
-    const { pageName, buildingName } = params;
+  return dispatch => {
+    const { pageName, buildingNameEng } = params;
 
     //let react know that the fetching is started
-    dispatch(requestRegisteredQuarters(pageName, buildingName));
+    dispatch(requestRegisteredQuarters(pageName, buildingNameEng));
 
     return ipcSendReceive({
       send: {
@@ -25,34 +25,32 @@ export const fetchRegisteredQuarters = (params = Object) => {
       receive: {
         channel: "registered-quarters-data"
       },
-      onSuccess: result => dispatch(receiveRegisteredQuarters(result.data, pageName, buildingName)),
-      onError: result => dispatch(fetchingFailed(result.error, pageName, buildingName))
+      onSuccess: result => dispatch(receiveRegisteredQuarters(result.data, buildingNameEng)),
+      onError: result => dispatch(fetchingFailed(result.error, buildingNameEng))
     });
   }
 };
 
-const requestRegisteredQuarters = function (pageName, buildingName) {
+const requestRegisteredQuarters = function (buildingNameEng) {
   return {
     type: TYPES.REGISTERED_QUARTERS_REQUEST,
-    pageName,
-    buildingName
+    buildingNameEng
   }
 };
 
-const receiveRegisteredQuarters = function (data, pageName, buildingName) {
+const receiveRegisteredQuarters = function (data, buildingNameEng) {
   return {
     type: TYPES.REGISTERED_QUARTERS_RECEIVE,
     data,
-    pageName,
-    buildingName
+    buildingNameEng
   }
 }
 
-const fetchingFailed = function (error, pageName, buildingName) {
+const fetchingFailed = function (error, buildingNameEng) {
   return {
     type: TYPES.REGISTERED_QUARTERS_FETCHING_FAILED,
     error,
-    pageName, buildingName
+    buildingNameEng
   }
 };
 
@@ -65,35 +63,9 @@ export const registeredQuartersUpdateDataCount = (dataCount) => {
   }
 }
 
-export const cleanupQuarters = (pageName, buildingName) => {
+export const cleanupQuarters = (buildingNameEng) => {
   return {
     type: TYPES.REGISTERED_QUARTERS_CLEANUP,
-    pageName, buildingName
-  }
-}
-
-const initPage = function (pageName) {
-  return {
-    type: TYPES.REGISTERED_QUARTERS_INIT_PAGE,
-    pageName
-  }
-};
-
-const initBuilding = function (pageName, buildingName) {
-  return {
-    type: TYPES.REGISTERED_QUARTERS_INIT_BUILDING,
-    pageName,
-    buildingName
-  }
-};
-
-export const initRegisteredQuarters = (pageName, buildingName) => {
-  return (dispatch, getState) => {
-    const state = getState();
-    const page = state.registeredQuarters.pages[pageName];
-    if (page === undefined || page[buildingName] === undefined) {
-      dispatch(initPage(pageName));
-      dispatch(initBuilding(pageName, buildingName));
-    }
+    buildingNameEng
   }
 }
