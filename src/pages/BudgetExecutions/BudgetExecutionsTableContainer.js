@@ -94,14 +94,14 @@ const BudgetExecutionsTable = props => {
       pageSize: 1000
     };
 
-    const returnedPromise = dispatch(initBudgetExecutionsState(buildingNameEng));
+    //const returnedPromise = dispatch(initBudgetExecutionsState(buildingNameEng));
 
-    returnedPromise.then(() => {
+    /* returnedPromise.then(() => {
       if (date.year !== undefined || date.quarter !== undefined)
         dispatch(fetchBudgetExecutions(buildingInfo, date, range));
-    })
+    }) */
 
-    return cleanup;
+    //return cleanup;
   }, [date, buildingNameEng, buildingName, dispatch]);
 
   const loadDataByDate = ({ year, quarter }) => {

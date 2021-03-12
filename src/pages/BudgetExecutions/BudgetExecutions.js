@@ -50,7 +50,7 @@ const BudgetExecutions = props => {
       pageSize: 1000
     };
 
-    dispatch(fetchBudgetExecutions(buildingInfo, date, range));
+    //dispatch(fetchBudgetExecutions(buildingInfo, date, range));
   }, [dispatch, date]);
 
 
