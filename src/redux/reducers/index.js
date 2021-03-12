@@ -24,6 +24,7 @@ import statistics from './statisticsReducer';
 import monthsChart from './monthsChartReducer';
 import quartersChart from './quartersChartReducer';
 import yearsChart from './yearsChartReducer';
+import budgetExecutions from './budgetExecutionsReducer';
 import { createPageReducer } from './util/util';
 
 // init month expanses reducer
@@ -33,12 +34,12 @@ const monthExpanses = createPageReducer("MONTH_EXPANSES", {
   pages: {}
 });
 
-// init budget executions reducer
+/* // init budget executions reducer
 const budgetExecutions = createPageReducer("BUDGET_EXECUTIONS", {
   pageName: "budgetExecutions",
   headerTitle: "מעקב ביצוע מול תקציב",
   pages: {}
-});
+}); */
 
 // init budget executions reducer
 const summarizedBudgets = createPageReducer("SUMMARIZED_BUDGETS", {

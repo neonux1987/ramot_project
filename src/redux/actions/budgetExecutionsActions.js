@@ -13,15 +13,16 @@ export const TYPES = {
   BUDGET_EXECUTIONS_ADD: "BUDGET_EXECUTIONS_ADD",
   BUDGET_EXECUTIONS_DELETE: "BUDGET_EXECUTIONS_DELETE",
   BUDGET_EXECUTIONS_INIT_STATE: "BUDGET_EXECUTIONS_INIT_STATE",
-  BUDGET_EXECUTIONS_CLEANUP: "BUDGET_EXECUTIONS_CLEANUP"
+  BUDGET_EXECUTIONS_CLEANUP: "BUDGET_EXECUTIONS_CLEANUP",
+  BUDGET_EXECUTIONS_UPDATE_DATE: "BUDGET_EXECUTIONS_UPDATE_DATE"
 }
 
 export const fetchBudgetExecutions = (buildingInfo, date, range) => {
   return dispatch => {
-    const { buildingName } = buildingInfo;
+    const { buildingNameEng } = buildingInfo;
 
     //let react know that the fetching is started
-    dispatch(requestBudgetExecutions(buildingName));
+    dispatch(requestBudgetExecutions(buildingNameEng));
 
     return ipcSendReceive({
       send: {
@@ -32,47 +33,47 @@ export const fetchBudgetExecutions = (buildingInfo, date, range) => {
         channel: "budget-executions",
       },
       onSuccess: (result) => {
-        dispatch(receiveBudgetExecutions([], buildingName));
+        dispatch(receiveBudgetExecutions([], buildingNameEng));
 
         //success store the data
-        dispatch(receiveBudgetExecutions(result.data.data, buildingName));
+        dispatch(receiveBudgetExecutions(result.data.data, buildingNameEng));
       },
       onError: (result) => {
-        dispatch(budgetExecutionsFetchingFailed(result.error, buildingName));
+        dispatch(budgetExecutionsFetchingFailed(result.error, buildingNameEng));
       }
     });
 
   }
 };
 
-const requestBudgetExecutions = function (buildingName) {
+const requestBudgetExecutions = function (buildingNameEng) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_REQUEST,
-    buildingName
+    buildingNameEng
   }
 };
 
-const receiveBudgetExecutions = function (data, buildingName) {
+const receiveBudgetExecutions = function (data, buildingNameEng) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_RECEIVE,
     data,
-    buildingName
+    buildingNameEng
   }
 }
 
-const budgetExecutionsFetchingFailed = function (error, buildingName) {
+const budgetExecutionsFetchingFailed = function (error, buildingNameEng) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_FETCHING_FAILED,
     error,
-    buildingName
+    buildingNameEng
   }
 };
 
-export const initBudgetExecutionsState = function (buildingName) {
+export const initBudgetExecutionsState = function (buildingNameEng) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      if (buildingName) {
-        dispatch(setInitialBudgetExecutionsState(buildingName));
+      if (buildingNameEng) {
+        dispatch(setInitialBudgetExecutionsState(buildingNameEng));
         resolve();
       } else {
         reject("page canot be empty/undefined or null");
@@ -81,55 +82,55 @@ export const initBudgetExecutionsState = function (buildingName) {
   };
 };
 
-const setInitialBudgetExecutionsState = function (buildingName) {
+const setInitialBudgetExecutionsState = function (buildingNameEng) {
   return dispatch => {
     dispatch({
       type: TYPES.BUDGET_EXECUTIONS_INIT_STATE,
-      buildingName
+      buildingNameEng
     });
   }
 };
 
-export const budgetExecutionsCleanup = function (buildingName) {
+export const budgetExecutionsCleanup = function (buildingNameEng) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_CLEANUP,
-    buildingName
+    buildingNameEng
   }
 }
 
-const removeBudgetExecutionInStore = (buildingName, index) => {
+const removeBudgetExecutionInStore = (buildingNameEng, index) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_DELETE,
-    buildingName,
+    buildingNameEng,
     index
   }
 }
 
-export const deleteBudgetExecution = (buildingName, date, index, rollbackData) => {
+export const deleteBudgetExecution = (buildingNameEng, date, index, rollbackData) => {
   return dispatch => {
     const rollbackDataCopy = { ...rollbackData };
-    dispatch(removeBudgetExecutionInStore(buildingName, index));
+    dispatch(removeBudgetExecutionInStore(buildingNameEng, index));
 
     return ipcSendReceive({
       send: {
         channel: "delete-budget-execution",
-        params: { buildingName, date, id: rollbackData.id }
+        params: { buildingNameEng, date, id: rollbackData.id }
       },
       receive: {
         channel: "budget-execution-deleted"
       },
       onSuccess: () => toastManager.success("השורה נמחקה בהצלחה."),
       onError: (result) => {
-        dispatch(addBudgetExecutionInStore(buildingName, rollbackDataCopy, sortByCode));
+        dispatch(addBudgetExecutionInStore(buildingNameEng, rollbackDataCopy, sortByCode));
       }
     });
   }
 };
 
-const addBudgetExecutionInStore = (buildingName, payload, compareFunc) => {
+const addBudgetExecutionInStore = (buildingNameEng, payload, compareFunc) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_ADD,
-    buildingName,
+    buildingNameEng,
     payload,
     compareFunc
   }
@@ -146,8 +147,8 @@ export const addBudgetExecution = (params = Object) => {
         channel: "budget-execution-added"
       },
       onSuccess: (result) => {
-        const { buildingName } = params;
-        dispatch(addBudgetExecutionInStore(buildingName, result.data, sortByCode));
+        const { buildingNameEng } = params;
+        dispatch(addBudgetExecutionInStore(buildingNameEng, result.data, sortByCode));
 
         toastManager.success("השורה נוספה בהצלחה.");
       }
@@ -155,12 +156,12 @@ export const addBudgetExecution = (params = Object) => {
   }
 };
 
-export const updateBudgetExecutionStoreOnly = (payload, index, buildingName) => {
+export const updateBudgetExecutionStoreOnly = (payload, index, buildingNameEng) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_UPDATE,
     payload,
     index,
-    buildingName
+    buildingNameEng
   }
 }
 
@@ -168,18 +169,18 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
   return (dispatch, getState) => {
     const {
       pageName,
-      buildingName
+      buildingNameEng
     } = params;
     //get te state
     const state = getState();
 
     //stats of all months
-    const monthlyStatsArr = [...state.monthlyStats[buildingName].pages[pageName].data];
+    const monthlyStatsArr = [...state.monthlyStats[buildingNameEng].pages[pageName].data];
 
     let monthStatsIndex = null;
 
     //quarter total stats
-    const quarterlyStatsData = { ...state.quarterlyStats[buildingName].pages[pageName].data[0] };
+    const quarterlyStatsData = { ...state.quarterlyStats[buildingNameEng].pages[pageName].data[0] };
 
     //copy for rollback
     const quarterStatsOld = { ...quarterlyStatsData };
@@ -204,10 +205,10 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
       quarterlyStatsData.income = quarterlyStatsData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
 
       //update month total
-      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(buildingName, pageName, monthStatsObject, monthStatsIndex));
+      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(buildingNameEng, pageName, monthStatsObject, monthStatsIndex));
 
       //update quarter total
-      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(buildingName, pageName, quarterlyStatsData));
+      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(buildingNameEng, pageName, quarterlyStatsData));
     }
 
     //copy of the un-modified month total object for rollback
@@ -222,7 +223,7 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
 
     //update the new data in the store first for
     //better and fast user experience
-    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingName));
+    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingNameEng));
 
     return ipcSendReceive({
       send: {
@@ -235,7 +236,7 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
       onSuccess: () => dispatch(showSavedNotification()),
       onError: () => {
         //rollback to the old budget execution object
-        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingName));
+        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingNameEng));
 
         //rollback to the old month total stats
         dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));
@@ -248,6 +249,13 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
 
   };
 };
+
+export const updateDate = function (buildingNameEng) {
+  return {
+    type: TYPES.BUDGET_EXECUTIONS_CLEANUP,
+    buildingNameEng
+  }
+}
 
 export function sortByCode(a, b) {
   if (a.section < b.section) {

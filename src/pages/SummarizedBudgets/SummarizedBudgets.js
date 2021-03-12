@@ -22,7 +22,6 @@ import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
 import useDate from '../../customHooks/useDate';
 
 // ACTIONS
-import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 
 const PAGE_NAME = "summarizedBudgets";
@@ -39,7 +38,6 @@ const SummarizedBudgets = props => {
   const [date] = useDate(PAGE_NAME, buildingNameEng);
 
   useEffect(() => {
-    dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
     dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
   }, [dispatch, buildingNameEng]);
 

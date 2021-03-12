@@ -5,17 +5,15 @@ export const TYPES = {
   REGISTERED_MONTHS_RECEIVE: "REGISTERED_MONTHS_RECEIVE",
   REGISTERED_MONTHS_FETCHING_FAILED: "REGISTERED_MONTHS_FETCHING_FAILED",
   REGISTERED_MONTHS_UPDATE_DATA_COUNT: "REGISTERED_MONTHS_UPDATE_DATA_COUNT",
-  REGISTERED_MONTHS_CLEANUP: "REGISTERED_MONTHS_CLEANUP",
-  REGISTERED_MONTHS_INIT_PAGE: "REGISTERED_MONTHS_INIT_PAGE",
-  REGISTERED_MONTHS_INIT_BUILDING: "REGISTERED_MONTHS_INIT_BUILDING"
+  REGISTERED_MONTHS_CLEANUP: "REGISTERED_MONTHS_CLEANUP"
 }
 
 export const fetchRegisteredMonths = (params = Object) => {
-  return (dispatch, getState) => {
-    const { pageName, buildingName } = params;
+  return dispatch => {
+    const { buildingNameEng } = params;
 
     //let react know that the fetching is started
-    dispatch(requestRegisteredMonths(pageName, buildingName));
+    dispatch(requestRegisteredMonths(buildingNameEng));
 
     return ipcSendReceive({
       send: {
@@ -25,35 +23,32 @@ export const fetchRegisteredMonths = (params = Object) => {
       receive: {
         channel: "registered-months-data"
       },
-      onSuccess: result => dispatch(receiveRegisteredMonths(result.data, pageName, buildingName)),
-      onError: result => dispatch(fetchingFailed(result.error, pageName, buildingName))
+      onSuccess: result => dispatch(receiveRegisteredMonths(result.data, buildingNameEng)),
+      onError: result => dispatch(fetchingFailed(result.error, buildingNameEng))
     });
   }
 };
 
-const requestRegisteredMonths = function (pageName, buildingName) {
+const requestRegisteredMonths = function (buildingNameEng) {
   return {
     type: TYPES.REGISTERED_MONTHS_REQUEST,
-    pageName,
-    buildingName
+    buildingNameEng
   }
 };
 
-const receiveRegisteredMonths = function (data, pageName, buildingName) {
+const receiveRegisteredMonths = function (data, buildingNameEng) {
   return {
     type: TYPES.REGISTERED_MONTHS_RECEIVE,
     data,
-    pageName,
-    buildingName
+    buildingNameEng
   }
 }
 
-const fetchingFailed = function (error, pageName, buildingName) {
+const fetchingFailed = function (error, buildingNameEng) {
   return {
     type: TYPES.REGISTERED_MONTHS_FETCHING_FAILED,
     error,
-    pageName,
-    buildingName
+    buildingNameEng
   }
 };
 
@@ -66,36 +61,9 @@ export const registeredMonthsUpdateDataCount = (dataCount) => {
   }
 }
 
-export const cleanupMonths = (pageName, buildingName) => {
+export const cleanupMonths = (buildingNameEng) => {
   return {
     type: TYPES.REGISTERED_MONTHS_CLEANUP,
-    pageName,
-    buildingName
-  }
-}
-
-const initPage = function (pageName) {
-  return {
-    type: TYPES.REGISTERED_MONTHS_INIT_PAGE,
-    pageName
-  }
-};
-
-const initBuilding = function (pageName, buildingName) {
-  return {
-    type: TYPES.REGISTERED_MONTHS_INIT_BUILDING,
-    pageName,
-    buildingName
-  }
-};
-
-export const initRegisteredMonths = (pageName, buildingName) => {
-  return (dispatch, getState) => {
-    const state = getState();
-    const page = state.registeredMonths.pages[pageName];
-    if (page === undefined || page[buildingName] === undefined) {
-      dispatch(initPage(pageName));
-      dispatch(initBuilding(pageName, buildingName));
-    }
+    buildingNameEng
   }
 }

@@ -1,79 +1,57 @@
 import { TYPES } from '../actions/registeredYearsActions';
-import { setState } from './util/util';
+import { initState } from './util/util';
 
-const initState = {
-  pages: {}
+const initialState = initState({
+  isFetching: true,
+  status: "",
+  error: "",
+  data: []
+});
+
+const setState = (buildingName, state, newState) => {
+  return {
+    ...state,
+    [buildingName]: {
+      ...state[buildingName],
+      ...newState
+    }
+  }
 }
 
-export default (state = initState, action) => {
+const registeredYears = (state = initialState, action) => {
+  const buildingNameEng = action.buildingNameEng;
+
   switch (action.type) {
     case TYPES.REGISTERED_YEARS_RECEIVE: {
-      const { pageName, buildingName, data } = action;
-      return setState(state, pageName, buildingName, {
+      const { data } = action;
+      return setState(buildingNameEng, state, {
         isFetching: false,
         status: "success",
         data
       });
     }
     case TYPES.REGISTERED_YEARS_REQUEST: {
-      const { pageName, buildingName } = action;
-      return setState(state, pageName, buildingName, {
+      return setState(buildingNameEng, state, {
         isFetching: true
       });
     }
     case TYPES.REGISTERED_YEARS_FETCHING_FAILED: {
-      const { pageName, buildingName, error } = action;
-      return setState(state, pageName, buildingName, {
+      const { error } = action;
+      return setState(buildingNameEng, state, {
         status: "error",
         error
       });
     }
     case TYPES.REGISTERED_YEARS_CLEANUP: {
-      const { pageName, buildingName } = action;
-      return setState(state, pageName, buildingName, {
+      return setState(buildingNameEng, state, {
         isFetching: false,
         status: "",
         error: "",
         data: []
       });
     }
-    case TYPES.REGISTERED_YEARS_INIT_PAGE: {
-      const {
-        pageName
-      } = action;
-
-      return {
-        ...state,
-        pages: {
-          ...state.pages,
-          [pageName]: {
-            ...state.pages[pageName]
-          }
-        }
-      };
-    }
-    case TYPES.REGISTERED_YEARS_INIT_BUILDING: {
-      const {
-        buildingName,
-        pageName
-      } = action;
-
-      return {
-        ...state,
-        pages: {
-          ...state.pages,
-          [pageName]: {
-            ...state.pages[pageName],
-            [buildingName]: {
-              isFetching: false,
-              status: "",
-              error: "",
-              data: []
-            }
-          }
-        }
-      };
-    }
     default: return state;
   }
 }
+
+export default registeredYears;

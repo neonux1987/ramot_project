@@ -17,9 +17,7 @@ import QuartersChartContainer from './charts/QuartersChartContainer';
 
 // ACTIONS
 import { updateSelectedChart } from '../../redux/actions/statisticsActions';
-import { initRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
-import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 
 // HOOKS
 import useDate from '../../customHooks/useDate';
@@ -42,8 +40,6 @@ const Statistics = props => {
   }
 
   useEffect(() => {
-    dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
-    dispatch(initRegisteredMonths(PAGE_NAME, buildingNameEng));
     dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
   }, [dispatch, buildingNameEng]);
 

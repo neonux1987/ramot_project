@@ -24,9 +24,9 @@ const YearsChartContainer = props => {
   const { buildingName, pageName } = props;
 
   const { isFetching, data } = useSelector(store => store.yearlyStats[buildingName].pages[pageName]);
-  const registeredYears = useSelector(store => store.registeredYears.pages[pageName][buildingName]);
+  const registeredYears = useSelector(store => store.registeredYears[buildingName]);
   const { date } = useSelector(store => store.yearsChart[buildingName]);
-
+  console.log(registeredYears);
   const [ready, setReady] = useState(false);
 
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const YearsChartContainer = props => {
     series: []
   });
 
-  const fetchMonthsData = useCallback((date) => {
+  const fetchData = useCallback((date) => {
     const params = {
       buildingName,
       pageName,
@@ -48,7 +48,7 @@ const YearsChartContainer = props => {
   }, [dispatch, buildingName, pageName, date.year]);
 
   const fetchAndPrepareData = useCallback(async (date) => {
-    const promise = await fetchMonthsData(date);
+    const promise = await fetchData(date);
 
     if (promise !== undefined) {
 
@@ -81,10 +81,10 @@ const YearsChartContainer = props => {
     }
 
     setReady(() => true);
-  }, [fetchMonthsData]);
+  }, [fetchData]);
 
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ pageName, buildingName }));
+    dispatch(fetchRegisteredYears({ buildingNameEng: buildingName }));
   }, [dispatch, pageName, buildingName]);
 
 

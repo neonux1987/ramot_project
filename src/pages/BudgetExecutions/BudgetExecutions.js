@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { ListAlt } from '@material-ui/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IoMdStats } from 'react-icons/io';
 
 // COMMON COMPONENTS
@@ -21,7 +21,6 @@ import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 import useDate from '../../customHooks/useDate';
 
 // ACTIONS
-import { initRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { initRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 import Page from '../../components/Page/Page';
 
@@ -36,10 +35,9 @@ const BudgetExecutions = props => {
 
   const dispatch = useDispatch();
 
-  const [date] = useDate(PAGE_NAME, buildingNameEng);
+  const { date, data, isFetching } = useSelector(store => store.budgetExecutions[buildingNameEng]);
 
   useEffect(() => {
-    dispatch(initRegisteredYears(PAGE_NAME, buildingNameEng));
     dispatch(initRegisteredQuarters(PAGE_NAME, buildingNameEng));
   }, [dispatch, buildingNameEng]);
 
@@ -72,6 +70,8 @@ const BudgetExecutions = props => {
         date={date}
         pageName={PAGE_NAME}
         pageTitle={PAGE_TITLE}
+        data={data}
+        isFetching={isFetching}
       />
     </TableSection>
 

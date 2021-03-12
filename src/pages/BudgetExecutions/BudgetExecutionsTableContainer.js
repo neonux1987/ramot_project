@@ -72,7 +72,8 @@ const BudgetExecutionsTable = props => {
 
   // page data
   const page = useSelector(store => store.budgetExecutions.pages[buildingNameEng]);
-
+  const pages = useSelector(store => store.budgetExecutions);
+  console.log(pages);
   const [whichColor] = useDifferenceColor();
 
   useEffect(() => {
@@ -83,8 +84,8 @@ const BudgetExecutionsTable = props => {
     }
 
     const buildingInfo = {
-      buildingName: buildingNameEng,
-      buildingNameHeb: buildingName
+      buildingNameEng,
+      buildingName
     };
 
     // how many rows of data to pull from the database

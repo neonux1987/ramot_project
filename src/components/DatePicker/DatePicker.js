@@ -18,9 +18,9 @@ const DatePicker = ({
 }) => {
   const dispatch = useDispatch();
 
-  const months = useSelector(store => month ? store.registeredMonths.pages[pageName][buildingName] : undefined);
+  const months = useSelector(store => month ? store.registeredMonths[buildingName] : undefined);
   const quarters = useSelector(store => quarter ? store.registeredQuarters.pages[pageName][buildingName] : undefined);
-  const years = useSelector(store => store.registeredYears.pages[pageName][buildingName]);
+  const years = useSelector(store => store.registeredYears[buildingName]);
 
   const [selectDate, setDate] = useState({
     year: date.year,
@@ -29,11 +29,10 @@ const DatePicker = ({
   });
 
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ pageName, buildingName })).then(() => {
+    dispatch(fetchRegisteredYears({ buildingNameEng: buildingName })).then(() => {
       if (month && date.year !== undefined)
         dispatch(fetchRegisteredMonths({
-          pageName,
-          buildingName,
+          buildingNameEng: buildingName,
           date: {
             year: date.year
           }
@@ -55,11 +54,11 @@ const DatePicker = ({
       // pages at the same time for 300ms, when dispatching the cleanup for years,
       // it overwrites the reducer state of the new mounted page that also
       // fetching the registered years
-      dispatch(cleanupYears(pageName, buildingName))
+      dispatch(cleanupYears(buildingName))
       if (quarter)
         dispatch(cleanupQuarters(pageName, buildingName))
       if (month)
-        dispatch(cleanupMonths(pageName, buildingName))
+        dispatch(cleanupMonths(buildingName))
     }
 
     return cleanup;
@@ -109,7 +108,7 @@ const DatePicker = ({
     const year = Number.parseInt(value);
 
     if (month) {
-      dispatch(fetchRegisteredMonths({ pageName, buildingName, date: { year } })).then((result) => {
+      dispatch(fetchRegisteredMonths({ buildingNameEng: buildingName, date: { year } })).then((result) => {
         // get the earliest month in the list 
         const month = result.data[0].month;
 
