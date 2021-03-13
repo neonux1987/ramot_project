@@ -45,7 +45,19 @@ let mainWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();
 
 async function createWindow() {
-  let loading = new BrowserWindow({ show: false, frame: false });
+  let loading = new BrowserWindow({
+    show: false,
+    frame: false,
+    resizeable: false,
+    width: 320,
+    height: 380,
+    //maxWidth: 320,
+    //maxHeight: 380,
+    //minWidth: 320,
+    //minHeight: 380,
+    transparent: true,
+    icon: path.join(app.getAppPath(), 'Icon/ramot-group-icon.png'),
+  });
 
   loading.once('show', () => {
     // Create the browser window.

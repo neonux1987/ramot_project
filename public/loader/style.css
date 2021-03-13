@@ -5,30 +5,57 @@ html,body{
 }
 
 body{
-  background: #333333;
+  background: #f1f1f1;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: sans-serif;
+  /* -webkit-app-region: drag; */
+  -webkit-user-select: none;
+  border-radius: 26px;
 }
 
 h1,h3{
   margin: 0;
+  text-align: center;
+}
+
+.logo{
+  display: flex;
+  justify-content: center;
 }
 
 .mainTitle{
-  color: #ddd;
+  color: #444;
   font-weight: 400;
+}
+
+.mainTitle h1{
+  font-size: 24px;
 }
 
 .subTitle{
-  color: #ddd;
+  color: #444;
+  
+}
+
+.subTitle h3{
+  font-size: 14px;
   font-weight: 400;
-  margin-right: 50px;
 }
 
 .loadingText{
-  font-size: 28px;
-  color: #ddd;
+  color: #444;
+  margin-top: 20px;
+}
+
+.loadingText h1{
   font-weight: 400;
+  font-size: 18px;
+}
+
+.gif{
+  background: url('./loader.gif') no-repeat;
+  width: 160px;
+  height: 24px;
 }
