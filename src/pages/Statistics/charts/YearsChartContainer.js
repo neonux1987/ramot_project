@@ -21,11 +21,11 @@ const container = css`
 
 const YearsChartContainer = props => {
   //building name
-  const { buildingName, pageName } = props;
+  const { buildingNameEng, pageName } = props;
 
-  const { isFetching, data } = useSelector(store => store.yearlyStats[buildingName].pages[pageName]);
-  const registeredYears = useSelector(store => store.registeredYears[buildingName]);
-  const { date } = useSelector(store => store.yearsChart[buildingName]);
+  const { isFetching, data } = useSelector(store => store.yearlyStats[buildingNameEng].pages[pageName]);
+  const registeredYears = useSelector(store => store.registeredYears[buildingNameEng]);
+  const { date } = useSelector(store => store.yearsChart[buildingNameEng]);
   console.log(registeredYears);
   const [ready, setReady] = useState(false);
 
@@ -38,14 +38,14 @@ const YearsChartContainer = props => {
 
   const fetchData = useCallback((date) => {
     const params = {
-      buildingName,
+      buildingName: buildingNameEng,
       pageName,
       fromYear: date.fromYear,
       toYear: date.toYear
     }
 
     return dispatch(fetchYearStatsByYearRange(params));
-  }, [dispatch, buildingName, pageName, date.year]);
+  }, [dispatch, buildingNameEng, pageName, date.year]);
 
   const fetchAndPrepareData = useCallback(async (date) => {
     const promise = await fetchData(date);
@@ -84,8 +84,8 @@ const YearsChartContainer = props => {
   }, [fetchData]);
 
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ buildingNameEng: buildingName }));
-  }, [dispatch, pageName, buildingName]);
+    dispatch(fetchRegisteredYears({ buildingNameEng }));
+  }, [dispatch, pageName, buildingNameEng]);
 
 
   // load on start the previous selected data
@@ -97,7 +97,7 @@ const YearsChartContainer = props => {
     if (date.fromYear > date.toYear)
       toastManager.error("תאריך התחלה לא יכול להיות יותר גדול מתאריך סוף.");
     else {
-      dispatch(updateDate(buildingName, date));
+      dispatch(updateDate(buildingNameEng, date));
       fetchAndPrepareData(date);
     }
   }

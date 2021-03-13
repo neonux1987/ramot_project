@@ -52,7 +52,7 @@ const Statistics = props => {
       Icon={IoMdStats}
       extraDetails={<SectionNav onClick={onClick} active={selectedChart} />}
     >
-      <Chart buildingName={buildingNameEng} pageName={PAGE_NAME} date={date} />
+      <Chart buildingNameEng={buildingNameEng} pageName={PAGE_NAME} date={date} />
     </StyledSection>
 
   </Page>;

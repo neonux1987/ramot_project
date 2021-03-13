@@ -1,4 +1,4 @@
-import { TYPES } from '../actions/monthlyStatsActions';
+import { TYPES } from '../actions/budgetExecutionsActions';
 import { initState } from '../reducers/util/util';
 
 const initialState = initState({
@@ -9,9 +9,6 @@ const initialState = initState({
   date: {
     quarter: "",
     year: ""
-  },
-  pageSettings: {
-    count: 0
   }
 });
 
@@ -29,18 +26,17 @@ const budgetExecutionsReducer = (state = initialState, action) => {
   const buildingNameEng = action.buildingNameEng;
 
   switch (action.type) {
-    case `BUDGET_EXECUTIONS_RECEIVE`:
+    case TYPES.BUDGET_EXECUTIONS_RECEIVE:
       return setState(buildingNameEng, state, {
         isFetching: false,
         status: "success",
-        data: action.data,
-        pageSettings: action.data.info
+        data: action.data
       });
-    case `BUDGET_EXECUTIONS_REQUEST`:
+    case TYPES.BUDGET_EXECUTIONS_REQUEST:
       return setState(buildingNameEng, state, {
         isFetching: true
       });
-    case `BUDGET_EXECUTIONS_UPDATE`:
+    case TYPES.BUDGET_EXECUTIONS_UPDATE:
       {
         const {
           payload,
@@ -58,7 +54,7 @@ const budgetExecutionsReducer = (state = initialState, action) => {
           data: dataCopy
         });
       }
-    case `BUDGET_EXECUTIONS_ADD`: {
+    case TYPES.BUDGET_EXECUTIONS_ADD: {
       const {
         payload,
         buildingNameEng,
@@ -75,19 +71,11 @@ const budgetExecutionsReducer = (state = initialState, action) => {
         dataCopy = dataCopy.sort(compareFunc);
       }
 
-      // copy page settings
-      const pageSettingsCopy = { ...state[buildingNameEng].pageSettings };
-
-      // add 1 to the count in page settings
-      // the data grew in 1 in the database
-      pageSettingsCopy.count += 1;
-
       return setState(buildingNameEng, state, {
-        data: dataCopy,
-        pageSettings: pageSettingsCopy
+        data: dataCopy
       });
     };
-    case `BUDGET_EXECUTIONS_DELETE`: {
+    case TYPES.BUDGET_EXECUTIONS_DELETE: {
       const {
         buildingNameEng,
         index
@@ -99,41 +87,20 @@ const budgetExecutionsReducer = (state = initialState, action) => {
       //remove from the array
       dataCopy.splice(index, 1);
 
-      // copy page settings
-      const pageSettingsCopy = { ...state[buildingNameEng].pageSettings };
-
-      // subtract 1 from the count in page settings
-      // the data shrink in 1 in the database
-      pageSettingsCopy.count -= 1;
-
       return setState(buildingNameEng, state, {
-        data: dataCopy,
-        pageSettings: pageSettingsCopy
+        data: dataCopy
       });
     };
-    case `BUDGET_EXECUTIONS_FETCHING_FAILED`:
+    case TYPES.BUDGET_EXECUTIONS_FETCHING_FAILED:
       return setState(buildingNameEng, state, {
         status: "error",
         error: action.error
       });
-    case `BUDGET_EXECUTIONS_INIT_STATE`:
-      return {
-        ...state,
-        [buildingNameEng]: {
-          isFetching: false,
-          status: "",
-          error: "",
-          data: [],
-          date: {
-            quarter: "",
-            year: ""
-          },
-          pageSettings: {
-            count: 0
-          }
-        }
-      }
-    case `BUDGET_EXECUTIONS_CLEANUP`:
+    case TYPES.BUDGET_EXECUTIONS_UPDATE_DATE:
+      return setState(buildingNameEng, state, {
+        date: action.date
+      });
+    case TYPES.BUDGET_EXECUTIONS_CLEANUP:
       {
         let stateCopy = { ...state };
         delete stateCopy[buildingNameEng];

@@ -26,9 +26,9 @@ class BudgetExecutionLogic {
     this.logger = logManager.getLogger();
   }
 
-  getAllBudgetExecutionsTrx(buildingName, date, trx) {
+  getAllBudgetExecutionsTrx(buildingNameEng, date, trx) {
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
-    return this.budgetExecutionDao.getAllBudgetExecutionsTrx(buildingName, date, quarterQuery, trx);
+    return this.budgetExecutionDao.getAllBudgetExecutionsTrx(buildingNameEng, date, quarterQuery, trx);
   }
 
   getBudgetExecutionsByRange(buildingInfo, date, range) {
@@ -36,7 +36,7 @@ class BudgetExecutionLogic {
 
     return this.budgetExecutionDao.getBudgetExecutionsByRange(buildingInfo, date, range, quarterQuery).then((data) => {
 
-      return this.budgetExecutionDao.dataRowCount(buildingInfo.buildingName, date).then((count) => {
+      return this.budgetExecutionDao.dataRowCount(buildingInfo.buildingNameEng, date).then((count) => {
         return {
           data,
           info: {
@@ -53,21 +53,21 @@ class BudgetExecutionLogic {
     return this.budgetExecutionDao.getAllByQuarter(buildingInfo, date, quarterQuery)
   }
 
-  getBudgetExecutionTrx(buildingName = String, date = Object, summarized_section_id = Number, trx) {
+  getBudgetExecutionTrx(buildingNameEng = String, date = Object, summarized_section_id = Number, trx) {
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
-    return this.budgetExecutionDao.getBudgetExecutionTrx(buildingName, date, quarterQuery, summarized_section_id, trx);
+    return this.budgetExecutionDao.getBudgetExecutionTrx(buildingNameEng, date, quarterQuery, summarized_section_id, trx);
   }
 
-  getBudgetExecutionById(buildingName = String, date = Object, id = Number, trx) {
+  getBudgetExecutionById(buildingNameEng = String, date = Object, id = Number, trx) {
     const quarterQuery = BudgetExecutionLogic.getQuarterQuery(date.quarter);
-    return this.budgetExecutionDao.getBudgetExecutionById(buildingName, date, quarterQuery, id, trx);
+    return this.budgetExecutionDao.getBudgetExecutionById(buildingNameEng, date, quarterQuery, id, trx);
   }
 
-  async addBudgetExecutionTrx({ buildingName = String, date = Object, payload = Object }) {
+  async addBudgetExecutionTrx({ buildingNameEng = String, date = Object, payload = Object }) {
 
     const trx = await connectionPool.getTransaction();
 
-    const returnedBudgetExecution = await this.getBudgetExecutionTrx(buildingName, date, payload.id, trx);
+    const returnedBudgetExecution = await this.getBudgetExecutionTrx(buildingNameEng, date, payload.id, trx);
 
     if (returnedBudgetExecution.length > 0) {
       trx.rollback();
@@ -78,14 +78,14 @@ class BudgetExecutionLogic {
     const readyPayload = this.prepareBudgetExecutionForAdd(date, payload.id);
 
     // add budget execution
-    const returnedId = await this.budgetExecutionDao.addBudgetExecution(buildingName, date, readyPayload, trx);
+    const returnedId = await this.budgetExecutionDao.addBudgetExecution(buildingNameEng, date, readyPayload, trx);
 
     // prepare summarized budget object for add
     const sammarizedBudgetPayload = this.prepareSammarizedBudgetForAdd(date, payload.id);
 
-    await this.summarizedBudgetLogic.addSummarizedBudgetTrx(buildingName, sammarizedBudgetPayload, trx);
+    await this.summarizedBudgetLogic.addSummarizedBudgetTrx(buildingNameEng, sammarizedBudgetPayload, trx);
 
-    const returnToRenderer = await this.getBudgetExecutionById(buildingName, date, returnedId[0], trx);
+    const returnToRenderer = await this.getBudgetExecutionById(buildingNameEng, date, returnedId[0], trx);
 
     trx.commit();
 
@@ -141,17 +141,17 @@ class BudgetExecutionLogic {
     return payload;
   }
 
-  async updateBudgetExecutionTrx({ buildingName = String, date = Object, summarized_section_id = Number, budgetExec = Object, special = false }, trx) {
+  async updateBudgetExecutionTrx({ buildingNameEng = String, date = Object, summarized_section_id = Number, budgetExec = Object, special = false }, trx) {
 
     if (trx === undefined) {
       trx = await connectionPool.getTransaction();
     }
 
     //update budget execution
-    await this.budgetExecutionDao.updateBudgetExecutionTrx(buildingName, date, summarized_section_id, budgetExec, trx);
+    await this.budgetExecutionDao.updateBudgetExecutionTrx(buildingNameEng, date, summarized_section_id, budgetExec, trx);
 
     //get all budget executions
-    const allBudgetExecutions = await this.getAllBudgetExecutionsTrx(buildingName, date, trx);
+    const allBudgetExecutions = await this.getAllBudgetExecutionsTrx(buildingNameEng, date, trx);
 
     //if a budget of specific month was updated
     //then month will exist
@@ -164,13 +164,13 @@ class BudgetExecutionLogic {
         const preparedMonthStatsObj = this.prepareMonthStatsObj(date.month, allBudgetExecutions);
 
         //update month stats
-        await this.monthlyStatsLogic.updateMonthStatsTrx(buildingName, date, {
+        await this.monthlyStatsLogic.updateMonthStatsTrx(buildingNameEng, date, {
           outcome: preparedMonthStatsObj.outcome,
           income: preparedMonthStatsObj.income
         }, trx);
 
         //update quarter stats
-        await this.quarterlyStatsLogic.updateQuarterStatsTrx(buildingName, date, {
+        await this.quarterlyStatsLogic.updateQuarterStatsTrx(buildingNameEng, date, {
           outcome: preparedMonthStatsObj.totalOutcome,
           income: preparedMonthStatsObj.totalIncome
         }, trx);
@@ -179,17 +179,17 @@ class BudgetExecutionLogic {
     }
 
     //get budget execution after it was updated
-    const budgetExecution = await this.getBudgetExecutionTrx(buildingName, date, summarized_section_id, trx);
+    const budgetExecution = await this.getBudgetExecutionTrx(buildingNameEng, date, summarized_section_id, trx);
 
     //get budget execution after it was updated
-    const summarizedBudgetObj = await this.summarizedBudgetLogic.getSummarizedBudgetByIdTrx(summarized_section_id, buildingName, date, trx);
+    const summarizedBudgetObj = await this.summarizedBudgetLogic.getSummarizedBudgetByIdTrx(summarized_section_id, buildingNameEng, date, trx);
 
     const { total_budget, total_execution, evaluation } = budgetExecution[0];
 
     const preparedSumBudgetObj = this.prepareSummarizedBudgetObj(date.quarter, total_budget, total_execution, evaluation, summarizedBudgetObj[0]);
 
     //update summarized budget data
-    await this.summarizedBudgetLogic.updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget: preparedSumBudgetObj, buildingName, date, special }, trx);
+    await this.summarizedBudgetLogic.updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget: preparedSumBudgetObj, buildingNameEng, date, special }, trx);
 
   }
 
@@ -258,8 +258,8 @@ class BudgetExecutionLogic {
     };
   }
 
-  batchInsert(buildingName, date, rows, trx) {
-    return this.budgetExecutionDao.batchInsert(buildingName, date, rows, trx);
+  batchInsert(buildingNameEng, date, rows, trx) {
+    return this.budgetExecutionDao.batchInsert(buildingNameEng, date, rows, trx);
   }
 
   prepareDefaultBatchInsertion(data, date) {
@@ -288,12 +288,12 @@ class BudgetExecutionLogic {
 
   /**
    * creates empty report for the new budget execution table
-   * @param {*} buildingName 
+   * @param {*} buildingNameEng 
    * @param {*} date 
    */
   async createEmptyReport(buildingName, date, trx) {
 
-    const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingName, date.quarter, date.year, trx);
+    const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingNameEng, date.quarter, date.year, trx);
 
     //if the quarter is already registered
     //return empty promise
@@ -311,7 +311,7 @@ class BudgetExecutionLogic {
     };
 
     //get all the budget executions of the previous quarter if exists
-    const budgetExec = await this.getAllBudgetExecutionsTrx(buildingName, newDate, trx);
+    const budgetExec = await this.getAllBudgetExecutionsTrx(buildingNameEng, newDate, trx);
 
     //0 means no budget execuion exist of previous quarter
     if (budgetExec.length === 0) {
@@ -319,12 +319,12 @@ class BudgetExecutionLogic {
       //prepare the data for insertion
       const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
       //insert the batch
-      await this.batchInsert(buildingName, date, preparedDefaultSections, trx);
+      await this.batchInsert(buildingNameEng, date, preparedDefaultSections, trx);
     } else {
       //prepare the data for insertion
       const preparedSections = this.prepareBatchInsertion(budgetExec, date);
       //insert the batch
-      await this.batchInsert(buildingName, date, preparedSections, trx);
+      await this.batchInsert(buildingNameEng, date, preparedSections, trx);
     }
 
     //all the months of a specific quarter
@@ -334,13 +334,13 @@ class BudgetExecutionLogic {
     const monthlyStatsArr = this.generateEmptyMonthlyStats(months, date);
 
     // batch insert the months
-    await this.monthlyStatsLogic.batchInsert(buildingName, monthlyStatsArr, trx);
+    await this.monthlyStatsLogic.batchInsert(buildingNameEng, monthlyStatsArr, trx);
 
     //register quarter
-    await this.registeredQuartersLogic.registerNewQuarter(buildingName, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
+    await this.registeredQuartersLogic.registerNewQuarter(buildingNameEng, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
 
     //call to create summarized budget report data
-    await this.summarizedBudgetLogic.createEmptyReport(buildingName, date, trx);
+    await this.summarizedBudgetLogic.createEmptyReport(buildingNameEng, date, trx);
   }
 
   generateEmptyMonthlyStats(months, date) {
@@ -358,13 +358,13 @@ class BudgetExecutionLogic {
     return data;
   }
 
-  async deleteBudgetExecution({ buildingName, date, id }) {
+  async deleteBudgetExecution({ buildingNameEng, date, id }) {
 
     const quarterMonths = Helper.getQuarterMonths(date.quarter);
 
     const trx = await connectionPool.getTransaction();
 
-    const budgetExecution = await this.getBudgetExecutionById(buildingName, date, id, trx);
+    const budgetExecution = await this.getBudgetExecutionById(buildingNameEng, date, id, trx);
 
     const { summarized_section_id } = budgetExecution[0];
 
@@ -378,7 +378,7 @@ class BudgetExecutionLogic {
 
       // fetch month expanses of the new date
       const monthExpanses = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(
-        buildingName,
+        buildingNameEng,
         newDate,
         summarized_section_id,
         trx
@@ -391,14 +391,14 @@ class BudgetExecutionLogic {
           linked: false
         }
 
-        await this.monthExpansesDao.updateMonthExpanseTrx(buildingName, item.id, payload, trx);
+        await this.monthExpansesDao.updateMonthExpanseTrx(buildingNameEng, item.id, payload, trx);
       });
 
     });
 
-    await this.budgetExecutionDao.deleteBudgetExecutionTrx(buildingName, date, id, trx);
+    await this.budgetExecutionDao.deleteBudgetExecutionTrx(buildingNameEng, date, id, trx);
 
-    await this.summarizedBudgetDao.deleteBySummarizedSectionIdTrx(buildingName, date.year, summarized_section_id, trx);
+    await this.summarizedBudgetDao.deleteBySummarizedSectionIdTrx(buildingNameEng, date.year, summarized_section_id, trx);
 
     trx.commit();
 

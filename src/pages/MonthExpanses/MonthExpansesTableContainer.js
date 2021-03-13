@@ -333,7 +333,7 @@ const MonthExpansesTableContainer = props => {
           <DatePicker
             month
             date={date}
-            buildingName={buildingNameEng}
+            buildingNameEng={buildingNameEng}
             submitHandler={loadDataByDate}
             pageName={pageName}
           />

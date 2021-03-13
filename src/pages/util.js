@@ -3,7 +3,7 @@ export function areEqual(prevProps, nextProps) {
     prevProps.date.year === nextProps.date.year &&
     prevProps.date.month === nextProps.date.month &&
     prevProps.date.quarter === nextProps.date.quarter &&
-    prevProps.location.state.buildingName === nextProps.location.state.buildingName
+    prevProps.buildingName === nextProps.buildingName
   ) return true;
   else return false;
 }

@@ -18,9 +18,9 @@ const container = css`
 
 const QuartersChartContainer = props => {
   //building name
-  const { buildingName, pageName, date } = props;
+  const { buildingNameEng, pageName, date } = props;
 
-  const { isFetching, data } = useSelector(store => store.quarterlyStats[buildingName].pages[pageName]);
+  const { isFetching, data } = useSelector(store => store.quarterlyStats[buildingNameEng].pages[pageName]);
 
   const dispatch = useDispatch();
 
@@ -31,13 +31,13 @@ const QuartersChartContainer = props => {
 
   const fetchMonthsData = useCallback(() => {
     const params = {
-      buildingName,
+      buildingName: buildingNameEng,
       pageName,
       date
     }
 
     return dispatch(fetchAllQuartersStatsByYear(params));
-  }, [dispatch, buildingName, pageName, date.year]);
+  }, [dispatch, buildingNameEng, pageName, date.year]);
 
   const fetchAndPrepareData = useCallback(async () => {
     const promise = await fetchMonthsData();
@@ -85,7 +85,7 @@ const QuartersChartContainer = props => {
       middlePane={
         <DatePicker
           date={date}
-          buildingName={buildingName}
+          buildingNameEng={buildingNameEng}
           pageName={pageName}
         />}
     />

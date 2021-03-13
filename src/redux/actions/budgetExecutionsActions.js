@@ -17,7 +17,7 @@ export const TYPES = {
   BUDGET_EXECUTIONS_UPDATE_DATE: "BUDGET_EXECUTIONS_UPDATE_DATE"
 }
 
-export const fetchBudgetExecutions = (buildingInfo, date, range) => {
+export const fetchBudgetExecutions = (buildingInfo, date) => {
   return dispatch => {
     const { buildingNameEng } = buildingInfo;
 
@@ -27,16 +27,14 @@ export const fetchBudgetExecutions = (buildingInfo, date, range) => {
     return ipcSendReceive({
       send: {
         channel: "get-budget-executions",
-        params: { buildingInfo, date, range }
+        params: { buildingInfo, date }
       },
       receive: {
         channel: "budget-executions",
       },
       onSuccess: (result) => {
-        dispatch(receiveBudgetExecutions([], buildingNameEng));
-
         //success store the data
-        dispatch(receiveBudgetExecutions(result.data.data, buildingNameEng));
+        dispatch(receiveBudgetExecutions(result.data, buildingNameEng));
       },
       onError: (result) => {
         dispatch(budgetExecutionsFetchingFailed(result.error, buildingNameEng));
@@ -250,10 +248,11 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
   };
 };
 
-export const updateDate = function (buildingNameEng) {
+export const updateDate = function (buildingNameEng, date) {
   return {
-    type: TYPES.BUDGET_EXECUTIONS_CLEANUP,
-    buildingNameEng
+    type: TYPES.BUDGET_EXECUTIONS_UPDATE_DATE,
+    buildingNameEng,
+    date
   }
 }
 

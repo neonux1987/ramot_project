@@ -19,7 +19,7 @@ class QuarterStatsContainer extends React.PureComponent {
   static contextType = ThemeContext;
 
   componentDidMount() {
-    if (this.props.date.year !== undefined)
+    if (this.props.date.year !== "")
       this.fetchData();
   }
 
@@ -145,4 +145,4 @@ TotalStatsFetcher.propTypes = {
   date: propTypes.object.isRequired
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuarterStatsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(QuarterStatsContainer));

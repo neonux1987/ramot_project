@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { MenuItem } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateDate } from '../../redux/actions/dateActions';
 import Helper from '../../helpers/Helper';
 import { fetchRegisteredMonths, cleanupMonths } from '../../redux/actions/registeredMonthsActions';
 import { fetchRegisteredYears, cleanupYears } from '../../redux/actions/registeredYearsActions';
 import { fetchRegisteredQuarters, cleanupQuarters } from '../../redux/actions/registeredQuartersActions';
 import Select from '../Select/Select';
 import FormWrapper from '../FormWrapper/FormWrapper';
+import { updateDate } from '../../redux/actions/budgetExecutionsActions';
 
 const DatePicker = ({
   quarter = false,
   month = false,
   date,
-  buildingName,
+  buildingNameEng,
   pageName
 }) => {
   const dispatch = useDispatch();
 
-  const months = useSelector(store => month ? store.registeredMonths[buildingName] : undefined);
-  const quarters = useSelector(store => quarter ? store.registeredQuarters[buildingName] : undefined);
-  const years = useSelector(store => store.registeredYears[buildingName]);
+  const months = useSelector(store => month ? store.registeredMonths[buildingNameEng] : undefined);
+  const quarters = useSelector(store => quarter ? store.registeredQuarters[buildingNameEng] : undefined);
+  const years = useSelector(store => store.registeredYears[buildingNameEng]);
 
   const [selectDate, setDate] = useState({
     year: date.year,
@@ -29,10 +29,10 @@ const DatePicker = ({
   });
 
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ buildingNameEng: buildingName })).then(() => {
+    dispatch(fetchRegisteredYears({ buildingNameEng })).then(() => {
       if (month && date.year !== undefined)
         dispatch(fetchRegisteredMonths({
-          buildingNameEng: buildingName,
+          buildingNameEng,
           date: {
             year: date.year
           }
@@ -40,33 +40,14 @@ const DatePicker = ({
 
       if (quarter && date.year !== undefined)
         dispatch(fetchRegisteredQuarters({
-          buildingNameEng: buildingName,
+          buildingNameEng,
           date: {
             year: date.year
           }
         }));
     });
 
-    // cleanup
-    const cleanup = () => {
-      // because we're doing page effect transition which shows 2 
-      // pages at the same time for 300ms, when dispatching the cleanup for years,
-      // it overwrites the reducer state of the new mounted page that also
-      // fetching the registered years
-      dispatch(cleanupYears(buildingName))
-      if (quarter)
-        dispatch(cleanupQuarters(buildingName))
-      if (month)
-        dispatch(cleanupMonths(buildingName))
-    }
-
-    return cleanup;
-  }, [month, quarter, dispatch, pageName, buildingName, date.year]);
-
-  useEffect(() => {
-    dispatch(updateDate(pageName, buildingName, selectDate));
-  }, [selectDate, pageName, buildingName, dispatch]);
-
+  }, [month, quarter, dispatch, pageName, buildingNameEng, date.year]);
 
   const onMonthChange = (event) => {
     const { value } = event.target;
@@ -80,7 +61,7 @@ const DatePicker = ({
       quarter: newDate.quarter
     });
 
-    dispatch(updateDate(pageName, buildingName, newDate));
+    dispatch(updateDate(buildingNameEng, newDate));
   }
 
   // default on change handler
@@ -99,7 +80,7 @@ const DatePicker = ({
       quarterHeb: Helper.getQuarterHeb(value),
       year: selectDate.year
     }
-    dispatch(updateDate(pageName, buildingName, newDate));
+    dispatch(updateDate(buildingNameEng, newDate));
   }
 
   const onYearChangeHandler = (event) => {
@@ -107,7 +88,7 @@ const DatePicker = ({
     const year = Number.parseInt(value);
 
     if (month) {
-      dispatch(fetchRegisteredMonths({ buildingNameEng: buildingName, date: { year } })).then((result) => {
+      dispatch(fetchRegisteredMonths({ buildingNameEng, date: { year } })).then((result) => {
         // get the earliest month in the list 
         const month = result.data[0].month;
 
@@ -121,14 +102,14 @@ const DatePicker = ({
           year
         });
 
-        dispatch(updateDate(pageName, buildingName, newDate));
+        dispatch(updateDate(buildingNameEng, newDate));
 
       });
     }
 
     if (quarter) {
       dispatch(fetchRegisteredQuarters({
-        buildingNameEng: buildingName,
+        buildingNameEng,
         date: {
           year
         }
@@ -148,7 +129,7 @@ const DatePicker = ({
           quarterHeb: Helper.getQuarterHeb(quarter),
           year
         }
-        dispatch(updateDate(pageName, buildingName, newDate));
+        dispatch(updateDate(buildingNameEng, newDate));
 
       });
     }
@@ -250,7 +231,7 @@ export default React.memo(DatePicker, (prevProps, nextProps) => {
     prevProps.year === nextProps.year &&
     prevProps.quarter === nextProps.quarter &&
     prevProps.month === nextProps.month &&
-    prevProps.buildingName === nextProps.buildingName &&
+    prevProps.buildingNameEng === nextProps.buildingNameEng &&
     prevProps.pageName === nextProps.pageName &&
     prevProps.date === nextProps.date
   )

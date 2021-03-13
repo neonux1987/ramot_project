@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
-import { withRouter } from 'react-router';
+import { useLocation } from 'react-router';
 import { ListAlt } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdStats } from 'react-icons/io';
@@ -15,7 +15,7 @@ import TableSection from '../../components/Section/TableSection';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
-import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
+import TableContainer from './TableContainer';
 
 // HOOKS
 import useDate from '../../customHooks/useDate';
@@ -30,32 +30,25 @@ const STATS_TITLE = "סיכום הוצאות והכנסות רבעוני";
 const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 
 const BudgetExecutions = props => {
-  //building name
-  const { buildingName, buildingNameEng } = props.location.state;
+
+  const { buildingName, buildingNameEng } = useLocation().state;
 
   const dispatch = useDispatch();
 
   const { date, data, isFetching } = useSelector(store => store.budgetExecutions[buildingNameEng]);
-  console.log(data, date);
 
   useEffect(() => {
-    const buildingInfo = {
-      buildingNameEng,
-      buildingName
-    };
+    // fetch only when date is not empty strings
+    // that means a date was selected
+    if (date.year !== "" || date.quarter !== "") {
+      const buildingInfo = {
+        buildingNameEng,
+        buildingName
+      };
 
-    // how many rows of data to pull from the database
-    const range = {
-      startElement: 0,
-      pageSize: 1000
-    };
-
-    //dispatch(fetchBudgetExecutions(buildingInfo, date, range));
-  }, [dispatch, date]);
-
-
-  if (date === undefined)
-    return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
+      dispatch(fetchBudgetExecutions(buildingInfo, date));
+    }
+  }, [date]);
 
   return <Page>
 
@@ -78,8 +71,9 @@ const BudgetExecutions = props => {
       Icon={ListAlt}
       bgColor="rgb(0, 143, 251)"
     >
-      <BudgetExecutionsTableContainer
-        location={props.location}
+      <TableContainer
+        buildingName={buildingName}
+        buildingNameEng={buildingNameEng}
         date={date}
         pageName={PAGE_NAME}
         pageTitle={PAGE_TITLE}
@@ -93,4 +87,4 @@ const BudgetExecutions = props => {
 
 }
 
-export default withRouter(BudgetExecutions);
+export default BudgetExecutions;

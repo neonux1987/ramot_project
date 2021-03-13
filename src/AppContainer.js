@@ -34,7 +34,6 @@ import { soundManager } from './soundManager/SoundManager';
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
 
-
 const { play, types } = soundManager;
 
 const AppContainer = () => {
@@ -65,11 +64,11 @@ const AppContainer = () => {
     play(types.welcome);
   }, []);
 
-  if (menu.isFetching || generalSettings.isFetching) {
-    return <AlignCenterMiddle>
-      <LogoLoader />
-    </AlignCenterMiddle>;
-  }
+  /*   if (menu.isFetching || generalSettings.isFetching) {
+      return <AlignCenterMiddle>
+        <LogoLoader />
+      </AlignCenterMiddle>;
+    } */
 
   return (
     <ThemeContext.Provider value={settings.data.theme}>

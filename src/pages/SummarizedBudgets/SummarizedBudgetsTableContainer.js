@@ -273,7 +273,7 @@ const SummarizedBudgetsTableContainer = props => {
         } // end rightPane
         middlePane={
           <DatePicker
-            buildingName={buildingNameEng}
+            buildingNameEng={buildingNameEng}
             date={date}
             submitHandler={loadDataByDate}
             pageName={pageName}

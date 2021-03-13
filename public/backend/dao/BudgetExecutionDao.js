@@ -80,7 +80,7 @@ class BudgetExecutionDao {
     buildingName = String,
     date = {
       year: year = Number,
-      quarter: quarter = String
+      quarter: quarter = Number
     },
     quarterQuery = Array
     ,
@@ -114,7 +114,7 @@ class BudgetExecutionDao {
   getBudgetExecutionsByRange(
     buildingInfo,
     date,
-    pageSettings = {
+    range = {
       pageSize: 100,
       startElement: 0
     },
@@ -122,9 +122,9 @@ class BudgetExecutionDao {
     trx = this.connection
   ) {
     const { quarter, year } = date;
-    const { buildingName, buildingNameHeb } = buildingInfo;
-    const { pageSize, startElement } = pageSettings;
-
+    const { buildingNameEng, buildingName } = buildingInfo;
+    const { pageSize, startElement } = range;
+    console.log(buildingInfo, date, range, quarterQuery);
     return trx
       .where({ year, quarter })
       .select(
@@ -139,11 +139,11 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      ).from(buildingNameEng + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
       .limit(pageSize).offset(startElement)
       .orderBy("section")
       .catch((error) => {
-        const msg = `המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין ${buildingNameHeb} רבעון ${quarter} שנה ${year}`;
+        const msg = `המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין ${buildingName} רבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

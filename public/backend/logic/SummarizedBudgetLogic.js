@@ -47,21 +47,21 @@ class SummarizedBudgetLogic {
     return this.summarizedBudgetDao.addSummarizedBudgetTrx(buildingName, payload, trx);
   }
 
-  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingName = String, date = Object, special = false }, trx) {
+  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingNameEng = String, date = Object, special = false }, trx) {
 
     if (trx === undefined) {
       trx = await connectionPool.getTransaction();
     }
 
-    await this.summarizedBudgetDao.updateSummarizedBudgetTrx(summarized_section_id, buildingName, summarizedBudget, date, trx);
+    await this.summarizedBudgetDao.updateSummarizedBudgetTrx(summarized_section_id, buildingNameEng, summarizedBudget, date, trx);
 
-    const allSummarizedBudgets = await this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingName, date, trx);
+    const allSummarizedBudgets = await this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingNameEng, date, trx);
 
     if (!special) {
       const yearStats = this.prepareYearStats(allSummarizedBudgets);
 
       //update year stats
-      await this.yearlyStatsLogic.updateYearStatsTrx(buildingName, date, {
+      await this.yearlyStatsLogic.updateYearStatsTrx(buildingNameEng, date, {
         outcome: yearStats.year_total_execution,
         income: yearStats.year_total_budget
       }, trx);

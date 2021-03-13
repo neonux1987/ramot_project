@@ -6,24 +6,24 @@ const budgetExecutionIpc = () => {
   //fetch month expanses data
   const budgetExecutionLogic = new BudgetExecutionLogic();
 
-  ipcMain.on('get-budget-executions', (event, { buildingInfo, date, range }) => {
-    budgetExecutionLogic.getBudgetExecutionsByRange(buildingInfo, date, range).then((result) => {
+  ipcMain.on('get-budget-executions', (event, { buildingInfo, date }) => {
+    budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingInfo.buildingNameEng, date).then((result) => {
       event.sender.send("budget-executions", { data: result });
     }).catch((error) => {
       event.reply("budget-executions", { error: error.message });
     });
   });
 
-  ipcMain.on('update-budget-execution', (event, arg) => {
-    budgetExecutionLogic.updateBudgetExecutionTrx(arg).then((result) => {
+  ipcMain.on('update-budget-execution', (event, params) => {
+    budgetExecutionLogic.updateBudgetExecutionTrx(params).then((result) => {
       event.sender.send("budget-execution-updated", { data: result });
     }).catch((error) => {
       event.reply("budget-execution-updated", { error: error.message });
     });
   });
 
-  ipcMain.on('add-budget-execution', (event, arg) => {
-    budgetExecutionLogic.addBudgetExecutionTrx(arg).then((result) => {
+  ipcMain.on('add-budget-execution', (event, params) => {
+    budgetExecutionLogic.addBudgetExecutionTrx(params).then((result) => {
       event.sender.send("budget-execution-added", { data: result });
     }).catch((error) => {
       event.reply("budget-execution-added", { error: error.message });
@@ -38,8 +38,8 @@ const budgetExecutionIpc = () => {
     });
   });
 
-  ipcMain.on('generate-budget-execution-report', (event, arg) => {
-    budgetExecutionLogic.createEmptyReport(arg.buildingName, arg.date).then((result) => {
+  ipcMain.on('generate-budget-execution-report', (event, params) => {
+    budgetExecutionLogic.createEmptyReport(params.buildingName, params.date).then((result) => {
       event.sender.send("generated-budget-execution-data", { data: result });
     }).catch((error) => {
       event.reply("generated-budget-execution-data", { error: error.message });

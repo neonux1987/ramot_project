@@ -1,19 +1,16 @@
 // LIBRARIES
-import React, { useEffect, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useContext } from 'react';
+import { useDispatch } from 'react-redux';
 
 // ACTIONS
 import {
-  initBudgetExecutionsState,
   fetchBudgetExecutions,
   updateBudgetExecution,
   deleteBudgetExecution,
-  budgetExecutionsCleanup
 } from '../../redux/actions/budgetExecutionsActions';
 
 // UTILS
 import Helper from '../../helpers/Helper';
-import { areEqual } from '../util';
 
 // CONTEXT
 import ThemeContext from '../../context/ThemeContext';
@@ -23,8 +20,6 @@ import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import EditControls from '../../components/EditControls/EditControls';
-import Spinner from '../../components/Spinner/Spinner';
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import GroupColumn from '../../components/table/GroupColumn';
 import HeaderRow from '../../components/table/HeaderRow';
@@ -46,15 +41,16 @@ import useDifferenceColor from '../../customHooks/useDifferenceColor';
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
-const BudgetExecutionsTable = props => {
-  // building names
-  const { buildingName, buildingNameEng } = props.location.state;
+const TableContainer = props => {
 
   const {
     date,
-    dateActions,
+    buildingName,
+    buildingNameEng,
     pageName,
-    pageTitle
+    pageTitle,
+    data,
+    isFetching
   } = props;
 
   const {
@@ -70,45 +66,9 @@ const BudgetExecutionsTable = props => {
   const { showModal } = useModalLogic();
   const dispatch = useDispatch();
 
-  // page data
-  const page = useSelector(store => store.budgetExecutions[buildingNameEng]);
-  const pages = useSelector(store => store.budgetExecutions);
-  console.log(pages);
   const [whichColor] = useDifferenceColor();
 
-  useEffect(() => {
-
-    const cleanup = () => {
-      //cleanup
-      dispatch(budgetExecutionsCleanup(buildingNameEng));
-    }
-
-    const buildingInfo = {
-      buildingNameEng,
-      buildingName
-    };
-
-    // how many rows of data to pull from the database
-    const range = {
-      startElement: 0,
-      pageSize: 1000
-    };
-
-    //const returnedPromise = dispatch(initBudgetExecutionsState(buildingNameEng));
-
-    /* returnedPromise.then(() => {
-      if (date.year !== undefined || date.quarter !== undefined)
-        dispatch(fetchBudgetExecutions(buildingInfo, date, range));
-    }) */
-
-    //return cleanup;
-  }, [date, buildingNameEng, buildingName, dispatch]);
-
   const loadDataByDate = ({ year, quarter }) => {
-
-    const { pageName } = props;
-    const { buildingNameEng } = props.location.state;
-
     //important params that allow to pull the current data by
     //current quarter, month and year.
     let params = {
@@ -123,15 +83,9 @@ const BudgetExecutionsTable = props => {
 
     // fetch data
     dispatch(fetchBudgetExecutions(params));
-
-    // update global date
-    dispatch(dateActions.updateDate(pageName, buildingNameEng, params.date));
   }
 
   const onBlurHandler = (e) => {
-
-    // building data
-    const { data } = page;
 
     const target = e.target;
 
@@ -159,7 +113,7 @@ const BudgetExecutionsTable = props => {
 
     //prepare the params object
     let params = {
-      buildingName: buildingNameEng,
+      buildingNameEng,
       pageName,
       date,
       budgetExec: newBudgetExecutionObj,
@@ -179,14 +133,15 @@ const BudgetExecutionsTable = props => {
     e.target.blur();
   }
 
+
+  const onAgreeHandler = async (buildingNameEng, date, index, rowData) => {
+    dispatch(deleteBudgetExecution(buildingNameEng, date, index, rowData));
+  }
+
   const deleteHandler = (index, rowData) => {
     showModal(ConfirmDeleteBudgetExecution, {
       onAgreeHandler: () => onAgreeHandler(buildingNameEng, date, index, rowData)
     });
-  }
-
-  const onAgreeHandler = async (buildingNameEng, date, index, rowData) => {
-    dispatch(deleteBudgetExecution(buildingNameEng, date, index, rowData));
   }
 
   /**
@@ -217,13 +172,13 @@ const BudgetExecutionsTable = props => {
     return objToSave;
   }
 
-  const getGridTemplateColumns = () => {
+  const getGridTemplateColumns = useCallback(() => {
     return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
-  }
+  }, [editMode]);
 
-  const getDataObject = (index) => {
-    return page.data[index];
-  }
+  const getDataObject = useCallback(index => {
+    return data[index];
+  }, [data]);
 
   const HeaderGroups = () => {
     const { colorSet } = themeContext;
@@ -319,18 +274,7 @@ const BudgetExecutionsTable = props => {
     </Row>
   }
 
-  if (page === undefined || page.data === undefined) {
-    return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
-  }
-
-  // provider data
-  const {
-    data,
-    isFetching,
-    //pageSettings
-  } = page;
-
-  const addNewBox = addNewMode ? <AddNewContainer date={date} buildingName={buildingNameEng} /> : null;
+  const addNewBox = addNewMode ? <AddNewContainer date={date} buildingNameEng={buildingNameEng} /> : null;
 
   return (
     <TableWrapper>
@@ -349,7 +293,7 @@ const BudgetExecutionsTable = props => {
           <DatePicker
             quarter
             date={date}
-            buildingName={buildingNameEng}
+            buildingNameEng={buildingNameEng}
             submitHandler={loadDataByDate}
             pageName={pageName}
           />
@@ -392,7 +336,7 @@ const BudgetExecutionsTable = props => {
   );
 }
 
-export default React.memo(BudgetExecutionsTable, areEqual);
+export default React.memo(TableContainer);
 
 const defaultheaderStyle = {
   color: "#000000",
