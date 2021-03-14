@@ -11,7 +11,7 @@ export const TYPES = {
   SUMMARIZED_BUDGETS_DELETE: "SUMMARIZED_BUDGETS_DELETE",
   SUMMARIZED_BUDGETS_INIT_STATE: "SUMMARIZED_BUDGETS_INIT_STATE",
   SUMMARIZED_BUDGETS_CLEANUP: "SUMMARIZED_BUDGETS_CLEANUP",
-  SUMMARIZED_BUDGETS_CLEANUP: "SUMMARIZED_BUDGETS_CLEANUP"
+  SUMMARIZED_BUDGETS_UPDATE_DATE: "SUMMARIZED_BUDGETS_UPDATE_DATE"
 }
 
 export const fetchSummarizedBudgets = (params = Object) => {
@@ -96,7 +96,7 @@ export const summarizedBudgetsCleanup = function (buildingNameEng) {
 
 export const updateDate = function (buildingNameEng, date) {
   return {
-    type: TYPES.SUMMARIZED_BUDGETS_UPDATE,
+    type: TYPES.SUMMARIZED_BUDGETS_UPDATE_DATE,
     buildingNameEng,
     date
   }

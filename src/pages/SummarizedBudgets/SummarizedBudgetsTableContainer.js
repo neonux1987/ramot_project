@@ -253,7 +253,7 @@ const SummarizedBudgetsTableContainer = props => {
 
 }
 
-export default React.memo(SummarizedBudgetsTableContainer, areEqual);
+export default SummarizedBudgetsTableContainer;
 
 const defaultheaderStyle = {
   color: "#000000",

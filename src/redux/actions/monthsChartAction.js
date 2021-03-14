@@ -3,7 +3,6 @@ export const TYPES = {
 }
 
 export const updateDate = (buildingName, date) => {
-  console.log("da");
   return {
     type: TYPES.MONTHS_CHART_UPDATE_DATE,
     buildingName,

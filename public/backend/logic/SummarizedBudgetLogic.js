@@ -19,7 +19,7 @@ class SummarizedBudgetLogic {
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
   }
 
-  getBuildingSummarizedBudgetTrx(buildingName, date, trx) {
+  getBuildingSummarizedBudgetTrx(buildingNameEng, date, trx) {
     return this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingNameEng, date, trx);
   }
 
