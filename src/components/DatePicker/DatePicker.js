@@ -91,59 +91,10 @@ const DatePicker = ({
     const { value } = event.target;
     const year = Number.parseInt(value);
 
-    if (month) {
-      dispatch(fetchRegisteredMonths({ buildingNameEng, date: { year } })).then((result) => {
-        // get the earliest month in the list 
-        const month = result.data[0].month;
-
-        const newDate = Helper.generateAllDateByMonthName(month);
-        newDate.year = year;
-
-        setDate({
-          ...selectDate,
-          month,
-          quarter: newDate.quarter,
-          year
-        });
-
-        dispatch(updateDate(buildingNameEng, newDate));
-
-      });
-    }
-
-    if (quarter) {
-      dispatch(fetchRegisteredQuarters({
-        buildingNameEng,
-        date: {
-          year
-        }
-      })).then((result) => {
-        // get the earliest quarter in the list
-        const quarter = result.data[0].quarter;
-
-        setDate({
-          ...selectDate,
-          year,
-          quarter
-        });
-
-        const newDate = {
-          quarter: quarter,
-          quarterEng: Helper.convertQuarterToEng(quarter),
-          quarterHeb: Helper.getQuarterHeb(quarter),
-          year
-        }
-        dispatch(updateDate(buildingNameEng, newDate));
-
-      });
-    }
-
-    if (!month && !quarter) {
-      setDate({
-        ...selectDate,
-        year
-      });
-    }
+    setDate({
+      ...selectDate,
+      year
+    });
 
   }
 
@@ -182,12 +133,12 @@ const DatePicker = ({
   const renderMonths = () => <Select
     name="month"
     label={"חודש:"}
-    value={selectDate.month || ""}
+    value={selectDate.month}
     onChange={onMonthChange}
     disabled={months.data.length === 0 ? true : false}
     loading={month === undefined}
   >
-    {months.data.length === 0 || monthExist() === false ? <MenuItem value={selectDate.month}>בחר חודש</MenuItem> : null}
+    {selectDate.month === "" ? <MenuItem value={""}>בחר חודש</MenuItem> : null}
     {months.data.map((month) => {
       return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
     })}

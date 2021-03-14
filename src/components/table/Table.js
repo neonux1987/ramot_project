@@ -5,7 +5,7 @@ import Spinner from '../Spinner/Spinner';
 
 import { Virtuoso } from 'react-virtuoso';
 
-export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) => {
+const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) => {
 
   const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
     <Virtuoso
@@ -20,11 +20,11 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount })
     <div className="_table">
 
       {/* HEADERS GROUPS */}
-      {!isFetching && itemCount === 0 ? null : GroupComponent && GroupComponent()}
+      {itemCount > 0 ? GroupComponent && GroupComponent() : null}
       {/* END HEADERS GROUPS */}
 
       {/* HEADERS */}
-      {!isFetching && itemCount === 0 ? null : HeaderComponent()}
+      {itemCount > 0 ? HeaderComponent && HeaderComponent() : null}
       {/* END HEADERS */}
 
       {!isFetching && itemCount === 0 ? <div className="spinnerWrapper noDataText">אין נתונים. בחר תאריך או צור דוחות חדשים.</div> : Loading}
@@ -33,3 +33,5 @@ export default ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount })
 
   );
 }
+
+export default Table;

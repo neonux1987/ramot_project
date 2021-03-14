@@ -197,6 +197,7 @@ const MonthExpansesTableContainer = props => {
   }
 
   const HeadersRow = () => {
+    console.log("no way");
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
