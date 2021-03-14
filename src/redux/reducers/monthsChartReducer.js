@@ -3,7 +3,7 @@ import { initState as is } from '../reducers/util/util';
 
 const initState = is({
   date: {
-    year: (new Date()).getFullYear()
+    year: ""
   }
 });
 

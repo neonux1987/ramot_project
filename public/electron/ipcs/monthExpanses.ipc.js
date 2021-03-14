@@ -6,17 +6,17 @@ const monthExpansesIpc = (connection) => {
   //fetch month expanses data
   const monthExpansesLogic = new MonthExpansesLogic(connection);
 
-  ipcMain.on('get-month-expanses-data-by-range', (event, arg) => {
-    monthExpansesLogic.getMonthExpansesByRange(arg.buildingName, arg.date, arg.range).then((result) => {
+  ipcMain.on('get-month-expanses', (event, { buildingNameEng, date }) => {
+    monthExpansesLogic.getAllMonthExpansesTrx(buildingNameEng, date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
-      event.reply("month-expanses-data-by-range", { data: result });
+      event.reply("month-expanses-data", { data: result });
     }).catch((error) => {
-      event.reply("month-expanses-data-by-range", { error: error.message });
+      event.reply("month-expanses-data", { error: error.message });
     });
   });
 
-  ipcMain.on('get-data-row-count', (event, arg) => {
-    monthExpansesLogic.dataRowCount(arg.buildingName, arg.date).then((result) => {
+  ipcMain.on('get-data-row-count', (event, { buildingNameEng, date }) => {
+    monthExpansesLogic.dataRowCount(buildingNameEng, date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("data-row-count", { data: result });
     }).catch((error) => {
@@ -24,16 +24,16 @@ const monthExpansesIpc = (connection) => {
     });
   });
 
-  ipcMain.on('update-month-expanse', (event, data) => {
-    monthExpansesLogic.updateMonthExpanse(data).then((result) => {
+  ipcMain.on('update-month-expanse', (event, params) => {
+    monthExpansesLogic.updateMonthExpanse(params).then((result) => {
       event.reply("month-expanse-updated", { data: result });
     }).catch((error) => {
       event.reply("month-expanse-updated", { error: error.message });
     });
   });
 
-  ipcMain.on('add-new-month-expanse', (event, data) => {
-    monthExpansesLogic.addNewMonthExpanse(data).then((result) => {
+  ipcMain.on('add-new-month-expanse', (event, params) => {
+    monthExpansesLogic.addNewMonthExpanse(params).then((result) => {
       event.reply("month-expanse-added", { data: result });
     }).catch((error) => {
 
@@ -58,8 +58,8 @@ const monthExpansesIpc = (connection) => {
     });
   });
 
-  ipcMain.on('generate-empty-month-expanses-report', (event, arg) => {
-    monthExpansesLogic.createEmptyReport(arg.buildingName, arg.date).then((result) => {
+  ipcMain.on('generate-empty-month-expanses-report', (event, { buildingNameEng, date }) => {
+    monthExpansesLogic.createEmptyReport(buildingNameEng, date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-month-expanses-data", { data: result });
     }).catch((error) => {

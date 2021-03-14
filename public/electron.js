@@ -39,6 +39,7 @@ contextMenu({
 //app details
 const companyName = "NDT Solutions";
 const appName = "מערכת ניהול דוחות";
+const icon = path.join(app.getAppPath(), 'Icon/ramot-group-icon.png');
 
 let mainWindow = null;
 
@@ -51,12 +52,12 @@ async function createWindow() {
     resizeable: false,
     width: 320,
     height: 380,
-    //maxWidth: 320,
-    //maxHeight: 380,
-    //minWidth: 320,
-    //minHeight: 380,
+    maxWidth: 320,
+    maxHeight: 380,
+    minWidth: 320,
+    minHeight: 380,
     transparent: true,
-    icon: path.join(app.getAppPath(), 'Icon/ramot-group-icon.png'),
+    icon,
   });
 
   loading.once('show', () => {
@@ -74,7 +75,7 @@ async function createWindow() {
       },
 
       backgroundColor: "#eee",
-      icon: path.join(app.getAppPath(), 'Icon/ramot-group-icon.png'),
+      icon,
       frame: false,
       resizeable: false,
       show: false
@@ -113,7 +114,7 @@ async function createWindow() {
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
   });
   loading.loadURL(isDev ? 'http://localhost:3000/loader/loader.html' : `file://${path.join(__dirname, '../build/loader/loader.html')}`)
-  loading.show()
+  loading.show();
 
 }
 

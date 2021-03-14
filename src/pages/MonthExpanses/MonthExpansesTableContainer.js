@@ -4,12 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // ACTIONS IMPORTS
 import {
-  initMonthExpansesState,
-  fetchMonthExpanses,
   updateMonthExpanse,
   addMonthExpanse,
   deleteMonthExpanse,
-  monthExpansesCleanup
+  updateDate
 } from '../../redux/actions/monthExpansesActions';
 import { fetchExpansesCodesByStatus } from '../../redux/actions/expansesCodesActions';
 
@@ -39,13 +37,14 @@ import useTableLogic from '../../customHooks/useTableLogic';
 
 const MonthExpansesTableContainer = props => {
 
-  // building names
-  const { buildingName, buildingNameEng } = props.location.state;
-
   const {
     date,
     pageName,
-    pageTitle
+    pageTitle,
+    buildingName,
+    buildingNameEng,
+    data,
+    isFetching
   } = props;
 
   const {
@@ -60,44 +59,11 @@ const MonthExpansesTableContainer = props => {
   const dispatch = useDispatch();
 
   // page data
-  const page = useSelector(store => store.monthExpanses.pages[buildingNameEng]);
-
-  // page data
   const generalSettings = useSelector(store => store.generalSettings);
 
   useEffect(() => {
-    const cleanup = () => {
-      //cleanup
-      dispatch(monthExpansesCleanup(buildingNameEng));
-    }
-
-    const params = {
-      buildingName: buildingNameEng,
-      date,
-      range: {
-        startElement: 0,
-        pageSize: 1000
-      }
-    }
-
-    const dispatchActions = async () => {
-      await dispatch(initMonthExpansesState(params.buildingName));
-
-      // the init state of date has 0
-      // properties. when a date is chosen in date picker
-      // then the date is available so dont fetch when date
-      // doesn't have properties
-      if (date.year !== undefined)
-        dispatch(fetchMonthExpanses(params)).catch((result) => {
-          toastManager.info(result.error)
-        });
-
-      dispatch(fetchExpansesCodesByStatus("active"));
-    }
-    dispatchActions();
-
-    return cleanup;
-  }, [date, buildingNameEng, dispatch]);
+    dispatch(fetchExpansesCodesByStatus("active"));
+  }, [dispatch]);
 
   const addNewExpanseSubmit = async (formInputs, reset) => {
     // tax data
@@ -128,7 +94,7 @@ const MonthExpansesTableContainer = props => {
     const parsedFormInputs = parseFormInputs(copiedFormInputs);
 
     const params = {
-      buildingName: buildingNameEng,
+      buildingNameEng,
       expanse: parsedFormInputs,
       date: date
     }
@@ -164,7 +130,7 @@ const MonthExpansesTableContainer = props => {
 
   const findExpanseIndex = (code = null, codeName = null) => {
     let result = null;
-    page.data.forEach((row, index) => {
+    data.forEach((row, index) => {
       if (row["code"] === Number.parseInt(code) || row["codeName"] === codeName) {
         result = index;
       }
@@ -172,36 +138,9 @@ const MonthExpansesTableContainer = props => {
     return result;
   }
 
-  const loadDataByDate = ({ month, year }) => {
-    const monthNum = Helper.convertEngToMonthNum(month);
-
-    //important params that allows to pull the current data by
-    //building name, current month and year.
-    let params = {
-      buildingName: buildingNameEng,
-      date: {
-        year: year,
-        month: month,
-        monthNum: monthNum,
-        monthHeb: Helper.convertEngToHebMonth(month),
-        quarter: Helper.getCurrentQuarter(monthNum),
-        quarterEng: Helper.convertMonthNumToQuarterEng(monthNum),
-        quarterHeb: Helper.getCurrentQuarterHeb(monthNum)
-      }
-    }
-
-    //get the building month expanses
-    dispatch(fetchMonthExpanses(params));
-
-    //dispatch(dateActions.updateDate(pageName, buildingNameEng, params.date));
-  }
-
   const onBlurHandler = (e) => {
     // tax data
     const tax = generalSettings.data[0].tax;
-
-    // building data
-    const data = page.data;
 
     const target = e.target;
 
@@ -233,7 +172,7 @@ const MonthExpansesTableContainer = props => {
     //prepare the params
     let params = {
       expanse: expanse,
-      buildingName: buildingNameEng,
+      buildingNameEng,
       date
     };
 
@@ -247,14 +186,14 @@ const MonthExpansesTableContainer = props => {
     //prepare the params
     let params = {
       id,
-      buildingName: buildingNameEng,
+      buildingNameEng,
       date
     };
     dispatch(deleteMonthExpanse(params, index));
   }
 
   const getDataObject = (index) => {
-    return page.data[index];
+    return data[index];
   }
 
   const HeadersRow = () => {
@@ -297,16 +236,9 @@ const MonthExpansesTableContainer = props => {
     </Row>
   }
 
-  if (page === undefined || page.data === undefined || generalSettings.isFetching) {
+  if (generalSettings.isFetching) {
     return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב הוצאות חודשיות..."} /></AlignCenterMiddle>;
   }
-
-  // provider data
-  const {
-    data,
-    isFetching,
-    //pageSettings
-  } = page;
 
   //add new month expanse box
   const addNewBox = addNewMode ?
@@ -331,10 +263,10 @@ const MonthExpansesTableContainer = props => {
         } // end rightPane
         middlePane={
           <DatePicker
+            updateDate={updateDate}
             month
             date={date}
             buildingNameEng={buildingNameEng}
-            submitHandler={loadDataByDate}
             pageName={pageName}
           />
 

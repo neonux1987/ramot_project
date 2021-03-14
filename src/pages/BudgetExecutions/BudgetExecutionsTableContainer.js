@@ -7,6 +7,7 @@ import {
   fetchBudgetExecutions,
   updateBudgetExecution,
   deleteBudgetExecution,
+  updateDate,
 } from '../../redux/actions/budgetExecutionsActions';
 
 // UTILS
@@ -41,7 +42,7 @@ import useDifferenceColor from '../../customHooks/useDifferenceColor';
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
-const TableContainer = props => {
+const BudgetExecutionsTableContainer = props => {
 
   const {
     date,
@@ -67,23 +68,6 @@ const TableContainer = props => {
   const dispatch = useDispatch();
 
   const [whichColor] = useDifferenceColor();
-
-  const loadDataByDate = ({ year, quarter }) => {
-    //important params that allow to pull the current data by
-    //current quarter, month and year.
-    let params = {
-      buildingName: buildingNameEng,
-      date: {
-        quarter,
-        quarterHeb: Helper.getQuarterHeb(quarter),
-        quarterEng: Helper.getCurrentQuarterEng(quarter),
-        year
-      }
-    };
-
-    // fetch data
-    dispatch(fetchBudgetExecutions(params));
-  }
 
   const onBlurHandler = (e) => {
 
@@ -294,8 +278,8 @@ const TableContainer = props => {
             quarter
             date={date}
             buildingNameEng={buildingNameEng}
-            submitHandler={loadDataByDate}
             pageName={pageName}
+            updateDate={updateDate}
           />
         } // end middlePane
         leftPane={
@@ -336,7 +320,7 @@ const TableContainer = props => {
   );
 }
 
-export default React.memo(TableContainer);
+export default React.memo(BudgetExecutionsTableContainer);
 
 const defaultheaderStyle = {
   color: "#000000",

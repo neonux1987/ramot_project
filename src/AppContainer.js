@@ -59,16 +59,16 @@ const AppContainer = () => {
     start();
   }, [start]);
 
-  useEffect(() => {
-    // play welcome melody on app start
-    play(types.welcome);
-  }, []);
+  /*  useEffect(() => {
+     // play welcome melody on app start
+     play(types.welcome);
+   }, []); */
 
-  /*   if (menu.isFetching || generalSettings.isFetching) {
-      return <AlignCenterMiddle>
-        <LogoLoader />
-      </AlignCenterMiddle>;
-    } */
+  if (menu.isFetching || generalSettings.isFetching) {
+    return <AlignCenterMiddle>
+      <LogoLoader />
+    </AlignCenterMiddle>;
+  }
 
   return (
     <ThemeContext.Provider value={settings.data.theme}>

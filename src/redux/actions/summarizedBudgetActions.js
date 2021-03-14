@@ -8,9 +8,9 @@ export const TYPES = {
   SUMMARIZED_BUDGETS_RECEIVE: "SUMMARIZED_BUDGETS_RECEIVE",
   SUMMARIZED_BUDGETS_FETCHING_FAILED: "SUMMARIZED_BUDGETS_FETCHING_FAILED",
   SUMMARIZED_BUDGETS_UPDATE: "SUMMARIZED_BUDGETS_UPDATE",
-  SUMMARIZED_BUDGETS_ADD: "SUMMARIZED_BUDGETS_ADD",
   SUMMARIZED_BUDGETS_DELETE: "SUMMARIZED_BUDGETS_DELETE",
   SUMMARIZED_BUDGETS_INIT_STATE: "SUMMARIZED_BUDGETS_INIT_STATE",
+  SUMMARIZED_BUDGETS_CLEANUP: "SUMMARIZED_BUDGETS_CLEANUP",
   SUMMARIZED_BUDGETS_CLEANUP: "SUMMARIZED_BUDGETS_CLEANUP"
 }
 
@@ -18,7 +18,7 @@ export const fetchSummarizedBudgets = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestSummarizedBudgets(params.buildingName));
+    dispatch(requestSummarizedBudgets(params.buildingNameEng));
 
     return ipcSendReceive({
       send: {
@@ -28,57 +28,32 @@ export const fetchSummarizedBudgets = (params = Object) => {
       receive: {
         channel: "summarized-budgets"
       },
-      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data.data, params.date, params.buildingName)),
-      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingName))
+      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data, params.date, params.buildingNameEng)),
+      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingNameEng))
     });
 
   }
 };
 
-const requestSummarizedBudgets = function (buildingName) {
+const requestSummarizedBudgets = function (buildingNameEng) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_REQUEST,
-    buildingName
+    buildingNameEng
   }
 };
 
-const receiveSummarizedBudgets = function (data, date, buildingName) {
+const receiveSummarizedBudgets = function (data, date, buildingNameEng) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_RECEIVE,
     data,
     date,
-    buildingName
+    buildingNameEng
   }
 }
 
-/**
- * init the state
- */
-export const initSummarizedBudgetsState = function (buildingName) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      if (buildingName) {
-        dispatch(setSummarizedBudgetsInitialState(buildingName));
-        resolve();
-      } else {
-        reject("page canot be empty/undefined or null");
-      }
-    });
-  };
-};
-
-const setSummarizedBudgetsInitialState = function (buildingName) {
-  return dispatch => {
-    dispatch({
-      type: TYPES.SUMMARIZED_BUDGETS_INIT_STATE,
-      buildingName
-    });
-  }
-};
-
 export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
   return dispatch => {
-    const buildingName = params.buildingName;
+    const buildingNameEng = params.buildingNameEng;
 
     const fullSummarizedBudget = {
       ...oldCopy,
@@ -86,7 +61,7 @@ export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
     }
 
     // first update the store for fast user response
-    dispatch(updateSummarizedBudgetInStore(buildingName, fullSummarizedBudget, index));
+    dispatch(updateSummarizedBudgetInStore(buildingNameEng, fullSummarizedBudget, index));
 
     return ipcSendReceive({
       send: {
@@ -97,32 +72,40 @@ export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
         channel: "summarized-budget-updated"
       },
       onSuccess: () => dispatch(showSavedNotification()),
-      onError: () => updateSummarizedBudgetInStore(buildingName, oldCopy, index)
+      onError: () => updateSummarizedBudgetInStore(buildingNameEng, oldCopy, index)
     });
 
   }
 };
 
-const updateSummarizedBudgetInStore = (buildingName, summarizedBudget, index) => {
+const updateSummarizedBudgetInStore = (buildingNameEng, payload, index) => {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_UPDATE,
     index,
-    payload: summarizedBudget,
-    buildingName
+    payload,
+    buildingNameEng
   };
 }
 
-export const summarizedBudgetsCleanup = function (buildingName) {
+export const summarizedBudgetsCleanup = function (buildingNameEng) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_CLEANUP,
-    buildingName
+    buildingNameEng
   }
 }
 
-const summarizedBudgetsFetchingFailed = function (error, buildingName) {
+export const updateDate = function (buildingNameEng, date) {
+  return {
+    type: TYPES.SUMMARIZED_BUDGETS_UPDATE,
+    buildingNameEng,
+    date
+  }
+}
+
+const summarizedBudgetsFetchingFailed = function (error, buildingNameEng) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_FETCHING_FAILED,
     payload: error,
-    buildingName
+    buildingNameEng
   }
 };

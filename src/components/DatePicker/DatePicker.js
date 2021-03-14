@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { MenuItem } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import Helper from '../../helpers/Helper';
-import { fetchRegisteredMonths, cleanupMonths } from '../../redux/actions/registeredMonthsActions';
-import { fetchRegisteredYears, cleanupYears } from '../../redux/actions/registeredYearsActions';
-import { fetchRegisteredQuarters, cleanupQuarters } from '../../redux/actions/registeredQuartersActions';
+import { fetchRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
+import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
+import { fetchRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 import Select from '../Select/Select';
 import FormWrapper from '../FormWrapper/FormWrapper';
-import { updateDate } from '../../redux/actions/budgetExecutionsActions';
 
 const DatePicker = ({
   quarter = false,
   month = false,
   date,
   buildingNameEng,
-  pageName
+  pageName,
+  updateDate
 }) => {
   const dispatch = useDispatch();
 
@@ -48,6 +48,10 @@ const DatePicker = ({
     });
 
   }, [month, quarter, dispatch, pageName, buildingNameEng, date.year]);
+
+  useEffect(() => {
+    dispatch(updateDate(buildingNameEng, selectDate));
+  }, [selectDate, pageName, buildingNameEng, dispatch]);
 
   const onMonthChange = (event) => {
     const { value } = event.target;

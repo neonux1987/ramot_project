@@ -1,14 +1,10 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
-import { withRouter } from 'react-router';
+import { useLocation, withRouter } from 'react-router';
 import { ListAlt } from '@material-ui/icons';
-import { useDispatch } from 'react-redux';
 import { IoMdStats } from 'react-icons/io';
 
 // COMMON COMPONENTS
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../components/Spinner/Spinner';
-import DateDetails from '../../components/DateDetails/DateDetails';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
 import TableSection from '../../components/Section/TableSection';
@@ -17,28 +13,31 @@ import Page from '../../components/Page/Page';
 // CONTAINERS
 import YearStatsContainer from './YearStatsContainer';
 import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
-
-// HOOKS
-import useDate from '../../customHooks/useDate';
+import { fetchSummarizedBudgets } from '../../redux/actions/summarizedBudgetActions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
 const STATS_TITLE = "סיכום הוצאות והכנסות שנתי";
 const TABLE_TITLE = "טבלת מעקב שנתי";
 
-const SummarizedBudgets = props => {
-  //building name
-  const { buildingName, buildingNameEng } = props.location.state;
+const SummarizedBudgets = () => {
 
   const dispatch = useDispatch();
 
-  const [date] = useDate(PAGE_NAME, buildingNameEng);
+  const { buildingName, buildingNameEng } = useLocation().state;
 
-  if (date === undefined)
-    return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
+  const { date, data, isFetching } = useSelector(store => store.summarizedBudgets[buildingNameEng]);
+
+  useEffect(() => {
+    // fetch only when date is not empty strings
+    // that means a date was selected
+    if (date.year !== "" || date.month !== "") {
+      dispatch(fetchSummarizedBudgets({ buildingNameEng, date }));
+    }
+  }, [date]);
 
   return <Page>
-
     <PageHeader building={buildingName} page={PAGE_TITLE} />
 
     <Section
@@ -60,14 +59,16 @@ const SummarizedBudgets = props => {
     >
 
       <SummarizedBudgetsTableContainer
-        location={props.location}
+        buildingName={buildingName}
+        buildingNameEng={buildingNameEng}
         date={date}
         pageName={PAGE_NAME}
         pageTitle={PAGE_TITLE}
+        data={data}
+        isFetching={isFetching}
       />
 
     </TableSection>
-
   </Page>;
 
 }

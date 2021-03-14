@@ -11,6 +11,7 @@ import DatePicker from '../../../components/DatePicker/DatePicker';
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
+import { updateDate } from '../../../redux/actions/quartersChartActions';
 
 const container = css`
   margin: 15px 0;
@@ -18,10 +19,10 @@ const container = css`
 
 const QuartersChartContainer = props => {
   //building name
-  const { buildingNameEng, pageName, date } = props;
+  const { buildingNameEng, pageName } = props;
 
   const { isFetching, data } = useSelector(store => store.quarterlyStats[buildingNameEng].pages[pageName]);
-
+  const date = useSelector(store => store.quartersChart[buildingNameEng].date);
   const dispatch = useDispatch();
 
   const [chartData, setChartData] = useState({
@@ -87,6 +88,7 @@ const QuartersChartContainer = props => {
           date={date}
           buildingNameEng={buildingNameEng}
           pageName={pageName}
+          updateDate={updateDate}
         />}
     />
 

@@ -12,6 +12,9 @@ body{
   font-family: sans-serif;
   /* -webkit-app-region: drag; */
   -webkit-user-select: none;
+}
+
+.wrapper{
   border-radius: 26px;
 }
 

@@ -66,7 +66,7 @@ class MonthExpansesLogic {
     return this.saveExpanse("add", params);
   }
 
-  async saveExpanse(action = String, { date = Object, buildingName = String, expanse = Object }) {
+  async saveExpanse(action = String, { date = Object, buildingNameEng = String, expanse = Object }) {
 
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
@@ -83,7 +83,7 @@ class MonthExpansesLogic {
       //fields so it can be saved.
       const expanseToUpdate = { supplierName: expanse.supplierName, sum: expanse.sum, tax: expanse.tax, notes: expanse.notes };
       //update month expanse
-      returnMonthExpanseId = await this.monthExpansesDao.updateMonthExpanseTrx(buildingName, expanse.id, expanseToUpdate, trx);
+      returnMonthExpanseId = await this.monthExpansesDao.updateMonthExpanseTrx(buildingNameEng, expanse.id, expanseToUpdate, trx);
     } else {
       //prepare the expanse obejct, remove all the unneccessary 
       //fields so it can be saved.
@@ -96,15 +96,15 @@ class MonthExpansesLogic {
         tax: expanse.tax,
         notes: expanse.notes
       };
-      returnMonthExpanseId = await this.monthExpansesDao.addNewMonthExpanseTrx(buildingName, expanseToInsert, trx);
+      returnMonthExpanseId = await this.monthExpansesDao.addNewMonthExpanseTrx(buildingNameEng, expanseToInsert, trx);
     }
 
     //get the total sum of expanses that are related
     //to the same summarized section id
-    const monthExpanses = await this.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, expanse.summarized_section_id, trx);
+    const monthExpanses = await this.getMonthExpansesBySummarizedSectionIdTrx(buildingNameEng, date, expanse.summarized_section_id, trx);
 
     //get budget execution after it was updated
-    let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, expanse.summarized_section_id, trx);
+    let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingNameEng, date, expanse.summarized_section_id, trx);
 
     // if there is no refference to a sammarized section
     // in the budget execution data for a specific date,
@@ -124,7 +124,7 @@ class MonthExpansesLogic {
     const special = code.startsWith(SPECIAL_CODE_PREFIX);
 
     //update execution
-    await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingName, date, summarized_section_id: expanse.summarized_section_id, budgetExec, special }, trx);
+    await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingNameEng, date, summarized_section_id: expanse.summarized_section_id, budgetExec, special }, trx);
 
     return returnMonthExpanseId[0];
   }
@@ -175,23 +175,23 @@ class MonthExpansesLogic {
 
   }
 
-  async deleteMonthExpanseTrx({ buildingName, date, id }) {
+  async deleteMonthExpanseTrx({ buildingNameEng, date, id }) {
 
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
 
     //get the month expanses object that about to be deleting
-    const monthExpanseObj = await this.monthExpansesDao.getMonthExpansesByIdTrx(id, buildingName, trx);
+    const monthExpanseObj = await this.monthExpansesDao.getMonthExpansesByIdTrx(id, buildingNameEng, trx);
 
     //after we got the object it' safe to delete it from the database
-    await this.monthExpansesDao.deleteMonthExpanse(buildingName, id, trx);
+    await this.monthExpansesDao.deleteMonthExpanse(buildingNameEng, id, trx);
 
     //get all the month expanses by summarized section id
     //in order to calculate the total outcome
-    const monthExpansesList = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(buildingName, date, monthExpanseObj[0].summarized_section_id, trx);
+    const monthExpansesList = await this.monthExpansesDao.getMonthExpansesBySummarizedSectionIdTrx(buildingNameEng, date, monthExpanseObj[0].summarized_section_id, trx);
 
     //get budget execution after it was updated
-    let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingName, date, monthExpanseObj[0].summarized_section_id, trx);
+    let budgetExecution = await this.budgetExecutionLogic.getBudgetExecutionTrx(buildingNameEng, date, monthExpanseObj[0].summarized_section_id, trx);
 
     //caluclate execution and prepare an object for te insertion or update
     const budgetExec = this.prepareBudgetExecutionObj(budgetExecution[0], monthExpansesList, date);
@@ -207,13 +207,13 @@ class MonthExpansesLogic {
     const special = code.startsWith(SPECIAL_CODE_PREFIX);
 
     //update execution
-    await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingName, date, summarized_section_id: monthExpanseObj[0].summarized_section_id, budgetExec, special }, trx);
+    await this.budgetExecutionLogic.updateBudgetExecutionTrx({ buildingNameEng, date, summarized_section_id: monthExpanseObj[0].summarized_section_id, budgetExec, special }, trx);
 
     return monthExpanseObj;
   }
 
   batchInsert(buildingName, rows, trx) {
-    return this.monthExpansesDao.batchInsert(buildingName, rows, trx);
+    return this.monthExpansesDao.batchInsert(buildingNameEng, rows, trx);
   }
 
   /**
@@ -221,7 +221,7 @@ class MonthExpansesLogic {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  async createEmptyReport(buildingName, date, trx) {
+  async createEmptyReport(buildingNameEng, date, trx) {
 
     // Using trx as a transaction object:
     //const trx = await connectionPool.getTransaction();
@@ -229,7 +229,7 @@ class MonthExpansesLogic {
       trx = await connectionPool.getTransaction()
     }
 
-    const registeredMonth = await this.registeredMonthsLogic.getRegisteredMonthTrx(buildingName, date.month, date.year, trx);
+    const registeredMonth = await this.registeredMonthsLogic.getRegisteredMonthTrx(buildingNameEng, date.month, date.year, trx);
 
     //if the month is already registered
     //return empty promise
@@ -248,7 +248,7 @@ class MonthExpansesLogic {
     }
 
     //get all the expanses of the previous month if exists
-    const expanses = await this.getAllMonthExpansesTrx(buildingName, newDate, trx);
+    const expanses = await this.getAllMonthExpansesTrx(buildingNameEng, newDate, trx);
 
     //0 means there is no previous month
     if (expanses.length === 0) {
@@ -259,17 +259,17 @@ class MonthExpansesLogic {
       this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
 
       //insert the batch
-      await this.batchInsert(buildingName, defaultCodes, trx);
+      await this.batchInsert(buildingNameEng, defaultCodes, trx);
     } else {
       //prepare the data for insertion
       this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
 
       //insert the batch
-      await this.batchInsert(buildingName, expanses, trx);
+      await this.batchInsert(buildingNameEng, expanses, trx);
     }
 
     //can safely register new year, it's not registered from other reports
-    await this.registeredMonthsLogic.registerNewMonth(buildingName, {
+    await this.registeredMonthsLogic.registerNewMonth(buildingNameEng, {
       year: date.year,
       month: date.month,
       monthHeb: date.monthHeb,
@@ -279,7 +279,7 @@ class MonthExpansesLogic {
       trx);
 
     //call to create budget execution empty report data
-    await this.budgetExecutionLogic.createEmptyReport(buildingName, date, trx);
+    await this.budgetExecutionLogic.createEmptyReport(buildingNameEng, date, trx);
   }
 
 }

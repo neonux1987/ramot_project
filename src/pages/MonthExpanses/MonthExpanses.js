@@ -1,38 +1,40 @@
 // LIBRARIES
-import React from 'react';
-import { withRouter } from 'react-router';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { ListAlt } from '@material-ui/icons';
 
 // COMPONENTS
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../components/Spinner/Spinner';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import TableSection from '../../components/Section/TableSection';
 import Page from '../../components/Page/Page';
 
 // CONTAINERS
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
-
-// HOOKS
-import useDate from '../../customHooks/useDate';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMonthExpanses } from '../../redux/actions/monthExpansesActions';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "הוצאות חודשיות";
 const TABLE_TITLE = "טבלת מעקב הוצאות חודשיות";
 
-const MonthExpanses = props => {
+const MonthExpanses = () => {
 
-  //building name
-  const { buildingName, buildingNameEng } = props.location.state;
+  const dispatch = useDispatch();
 
-  const [date] = useDate(PAGE_NAME, buildingNameEng);
+  const { buildingName, buildingNameEng } = useLocation().state;
 
-  if (date === undefined)
-    return <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} /></AlignCenterMiddle>;
+  const { date, data, isFetching } = useSelector(store => store.monthExpanses[buildingNameEng]);
+
+  useEffect(() => {
+    // fetch only when date is not empty strings
+    // that means a date was selected
+    if (date.year !== "" || date.month !== "") {
+      dispatch(fetchMonthExpanses({ buildingNameEng, date }));
+    }
+  }, [date]);
 
   return (
     <Page>
-
       <PageHeader building={buildingName} page={PAGE_TITLE} />
 
       <TableSection
@@ -41,16 +43,18 @@ const MonthExpanses = props => {
       >
 
         <MonthExpansesTableContainer
-          location={props.location}
+          buildingName={buildingName}
+          buildingNameEng={buildingNameEng}
           date={date}
           pageName={PAGE_NAME}
           pageTitle={PAGE_TITLE}
+          data={data}
+          isFetching={isFetching}
         />
 
       </TableSection>
-
     </Page>
   );
 }
 
-export default withRouter(MonthExpanses)
+export default MonthExpanses;

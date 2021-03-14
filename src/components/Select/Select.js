@@ -41,7 +41,7 @@ const _classesSelect = css`
   }
 `;
 
-const Select = ({ label, name, value, disabled, onChange, loading, children }) => {
+const Select = ({ label, name, value, disabled, onChange, loading = false, children }) => {
 
   const render = loading ? <Dummy /> : <Selec
     name={name}

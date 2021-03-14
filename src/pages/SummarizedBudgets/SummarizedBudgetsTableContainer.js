@@ -7,7 +7,8 @@ import {
   initSummarizedBudgetsState,
   fetchSummarizedBudgets,
   updateSummarizedBudget,
-  summarizedBudgetsCleanup
+  summarizedBudgetsCleanup,
+  updateDate
 } from '../../redux/actions/summarizedBudgetActions';
 
 // UTILS
@@ -43,14 +44,14 @@ const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 
 const SummarizedBudgetsTableContainer = props => {
 
-  // building names
-  const { buildingName, buildingNameEng } = props.location.state;
-
   const {
     date,
-    dateActions,
+    data,
+    isFetching,
     pageName,
-    pageTitle
+    pageTitle,
+    buildingName,
+    buildingNameEng
   } = props;
 
   const {
@@ -64,58 +65,7 @@ const SummarizedBudgetsTableContainer = props => {
 
   const dispatch = useDispatch();
 
-  // page data
-  const page = useSelector(store => store.summarizedBudgets.pages[buildingNameEng]);
-
-  useEffect(() => {
-
-    const cleanup = () => {
-      //cleanup
-      dispatch(summarizedBudgetsCleanup(buildingNameEng));
-    }
-
-    const params = {
-      date: date,
-      buildingName: buildingNameEng,
-      range: {
-        startElement: 0,
-        pageSize: 1000
-      }
-    }
-
-    const returnedPromise = dispatch(initSummarizedBudgetsState(params.buildingName));
-
-    returnedPromise.then(() => {
-      // dont fetch if date picker hasn't selected a date yet
-      if (date.year !== undefined)
-        dispatch(fetchSummarizedBudgets(params));
-    })
-
-    return cleanup;
-  }, [date, buildingNameEng, dispatch]);
-
-
-
-  const loadDataByDate = ({ year }) => {
-    //important params that allows to pull the current data by
-    //building name, current month and year.
-    let params = {
-      buildingName: buildingNameEng,
-      date: {
-        year: year
-      }
-    }
-
-    //get the building month expanses
-    dispatch(fetchSummarizedBudgets(params));
-
-    dispatch(dateActions.updateDate(pageName, buildingNameEng, params.date));
-
-  }
-
   const onBlurHandler = (e) => {
-    const data = page.data;
-
     const target = e.target;
 
     const { key, index } = target.dataset;
@@ -135,7 +85,7 @@ const SummarizedBudgetsTableContainer = props => {
 
     //prepare the params object
     let params = {
-      buildingName: buildingNameEng,
+      buildingNameEng,
       date,
       summarizedBudget: newCopy,
       summarized_section_id: oldCopy.summarized_section_id
@@ -155,7 +105,7 @@ const SummarizedBudgetsTableContainer = props => {
 
 
   const getDataObject = (index) => {
-    return page.data[index];
+    return data[index];
   }
 
   const HeaderGroups = () => {
@@ -249,17 +199,6 @@ const SummarizedBudgetsTableContainer = props => {
     </Row>
   }
 
-  if (page === undefined || page.data === undefined) {
-    return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב ביצוע מול תקציב..."} /></AlignCenterMiddle>;
-  }
-
-  // provider data
-  const {
-    data,
-    isFetching,
-    //pageSettings
-  } = page;
-
   return (
     <TableWrapper>
 
@@ -275,8 +214,8 @@ const SummarizedBudgetsTableContainer = props => {
           <DatePicker
             buildingNameEng={buildingNameEng}
             date={date}
-            submitHandler={loadDataByDate}
             pageName={pageName}
+            updateDate={updateDate}
           />
         } // end middlePane
         leftPane={<PageControls

@@ -6,19 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IoMdStats } from 'react-icons/io';
 
 // COMMON COMPONENTS
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../components/Spinner/Spinner';
-import DateDetails from '../../components/DateDetails/DateDetails';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
 import TableSection from '../../components/Section/TableSection';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
-import TableContainer from './TableContainer';
-
-// HOOKS
-import useDate from '../../customHooks/useDate';
+import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 
 // ACTIONS
 import Page from '../../components/Page/Page';
@@ -29,11 +23,11 @@ const PAGE_TITLE = "ביצוע מול תקציב";
 const STATS_TITLE = "סיכום הוצאות והכנסות רבעוני";
 const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 
-const BudgetExecutions = props => {
-
-  const { buildingName, buildingNameEng } = useLocation().state;
+const BudgetExecutions = () => {
 
   const dispatch = useDispatch();
+
+  const { buildingName, buildingNameEng } = useLocation().state;
 
   const { date, data, isFetching } = useSelector(store => store.budgetExecutions[buildingNameEng]);
 
@@ -51,7 +45,6 @@ const BudgetExecutions = props => {
   }, [date]);
 
   return <Page>
-
     <PageHeader building={buildingName} page={PAGE_TITLE} />
 
     <Section
@@ -71,7 +64,7 @@ const BudgetExecutions = props => {
       Icon={ListAlt}
       bgColor="rgb(0, 143, 251)"
     >
-      <TableContainer
+      <BudgetExecutionsTableContainer
         buildingName={buildingName}
         buildingNameEng={buildingNameEng}
         date={date}
@@ -81,10 +74,7 @@ const BudgetExecutions = props => {
         isFetching={isFetching}
       />
     </TableSection>
-
-  </Page>
-
-
+  </Page>;
 }
 
 export default BudgetExecutions;

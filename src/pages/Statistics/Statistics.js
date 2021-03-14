@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IoMdStats } from 'react-icons/io';
 import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Page from '../../components/Page/Page';
 import StyledSection from '../../components/Section/StyledSection';
-import CenteredLoader from '../../components/AnimatedLoaders/CenteredLoader';
 
 // CHARTS
 import MonthsChartContainer from './charts/MonthsChartContainer';
@@ -30,16 +29,11 @@ const Statistics = props => {
 
   const { selectedChart } = useSelector(store => store.statistics[buildingNameEng]);
 
-  const [date] = useDate(PAGE_NAME, buildingNameEng);
-
   const dispatch = useDispatch();
 
   const onClick = (name) => {
     dispatch(updateSelectedChart(buildingNameEng, name));
   }
-
-  if (date === undefined)
-    return <CenteredLoader />
 
   const Chart = whichChart(selectedChart);
 
@@ -52,7 +46,7 @@ const Statistics = props => {
       Icon={IoMdStats}
       extraDetails={<SectionNav onClick={onClick} active={selectedChart} />}
     >
-      <Chart buildingNameEng={buildingNameEng} pageName={PAGE_NAME} date={date} />
+      <Chart buildingNameEng={buildingNameEng} pageName={PAGE_NAME} />
     </StyledSection>
 
   </Page>;

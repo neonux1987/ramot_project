@@ -124,7 +124,7 @@ class BudgetExecutionDao {
     const { quarter, year } = date;
     const { buildingNameEng, buildingName } = buildingInfo;
     const { pageSize, startElement } = range;
-    console.log(buildingInfo, date, range, quarterQuery);
+
     return trx
       .where({ year, quarter })
       .select(

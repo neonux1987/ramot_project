@@ -26,7 +26,7 @@ const YearsChartContainer = props => {
   const { isFetching, data } = useSelector(store => store.yearlyStats[buildingNameEng].pages[pageName]);
   const registeredYears = useSelector(store => store.registeredYears[buildingNameEng]);
   const { date } = useSelector(store => store.yearsChart[buildingNameEng]);
-  console.log(registeredYears);
+
   const [ready, setReady] = useState(false);
 
   const dispatch = useDispatch();

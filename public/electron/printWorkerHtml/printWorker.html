@@ -5,7 +5,6 @@
 <body>
   <script>
     import { ipcRenderer } from "electron";
-    console.log("inside worker html");
     ipcRenderer.on("worker-data", (event, doc) => {
 
 

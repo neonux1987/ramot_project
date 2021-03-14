@@ -6,8 +6,8 @@ const summarizedBudgetIpc = (connection) => {
   //fetch month expanses data
   const summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
 
-  ipcMain.on('get-summarized-budgets', (event, params) => {
-    summarizedBudgetLogic.getSummarizedBudgetsByRange(params.buildingName, params.date, params.range).then((result) => {
+  ipcMain.on('get-summarized-budgets', (event, { buildingNameEng, date }) => {
+    summarizedBudgetLogic.getBuildingSummarizedBudgetTrx(buildingNameEng, date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.sender.send("summarized-budgets", { data: result });
     }).catch((error) => {
@@ -24,8 +24,8 @@ const summarizedBudgetIpc = (connection) => {
     });
   });
 
-  ipcMain.on('generate-empty-summarized-budget-report', (event, params) => {
-    summarizedBudgetLogic.createEmptyReport(params.buildingName, params.date).then((result) => {
+  ipcMain.on('generate-empty-summarized-budget-report', (event, { buildingNameEng, date }) => {
+    summarizedBudgetLogic.createEmptyReport(buildingNameEng, date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-summarized-budget-data", { data: result });
     }).catch((error) => {

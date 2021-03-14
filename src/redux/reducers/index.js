@@ -25,14 +25,16 @@ import monthsChart from './monthsChartReducer';
 import quartersChart from './quartersChartReducer';
 import yearsChart from './yearsChartReducer';
 import budgetExecutions from './budgetExecutionsReducer';
+import monthExpanses from './monthExpansesReducer';
+import summarizedBudgets from './summarizedBudgetsReducer';
 import { createPageReducer } from './util/util';
 
 // init month expanses reducer
-const monthExpanses = createPageReducer("MONTH_EXPANSES", {
+/* const monthExpanses = createPageReducer("MONTH_EXPANSES", {
   pageName: "monthExpanses",
   headerTitle: "מעקב הוצאות חודשיות",
   pages: {}
-});
+}); */
 
 /* // init budget executions reducer
 const budgetExecutions = createPageReducer("BUDGET_EXECUTIONS", {
@@ -42,11 +44,11 @@ const budgetExecutions = createPageReducer("BUDGET_EXECUTIONS", {
 }); */
 
 // init budget executions reducer
-const summarizedBudgets = createPageReducer("SUMMARIZED_BUDGETS", {
+/* const summarizedBudgets = createPageReducer("SUMMARIZED_BUDGETS", {
   pageName: "summarizedBudgets",
   headerTitle: "סיכום תקציבי",
   pages: {}
-});
+}); */
 
 export default {
   menu,

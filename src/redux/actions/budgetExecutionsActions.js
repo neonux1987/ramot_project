@@ -67,28 +67,6 @@ const budgetExecutionsFetchingFailed = function (error, buildingNameEng) {
   }
 };
 
-export const initBudgetExecutionsState = function (buildingNameEng) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      if (buildingNameEng) {
-        dispatch(setInitialBudgetExecutionsState(buildingNameEng));
-        resolve();
-      } else {
-        reject("page canot be empty/undefined or null");
-      }
-    });
-  };
-};
-
-const setInitialBudgetExecutionsState = function (buildingNameEng) {
-  return dispatch => {
-    dispatch({
-      type: TYPES.BUDGET_EXECUTIONS_INIT_STATE,
-      buildingNameEng
-    });
-  }
-};
-
 export const budgetExecutionsCleanup = function (buildingNameEng) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_CLEANUP,
