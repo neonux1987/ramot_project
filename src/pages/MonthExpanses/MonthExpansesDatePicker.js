@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { updateDate } from '../../redux/actions/monthExpansesActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { fetchRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
-import DatePickerV2 from './DatePickerV2';
+import DatePicker from '../../components/DatePicker/DatePicker';
 
 const MonthExpansesDatePicker = ({
   buildingNameEng,
   date
 }) => {
-
   const dispatch = useDispatch();
 
   const [localYear, setLocalYear] = useState(date.year);
@@ -21,28 +20,7 @@ const MonthExpansesDatePicker = ({
     dispatch(fetchRegisteredYears({ buildingNameEng }));
   }, [buildingNameEng, dispatch]);
 
-  /* useEffect(() => {
-    if (date.year !== "") {
-      dispatch(fetchRegisteredYears({ buildingNameEng })).then(() => {
-        dispatch(fetchRegisteredMonths({
-          buildingNameEng,
-          date: {
-            year: date.year
-          }
-        }));
-      });
-    }
-    else if (date.month !== "") {
-      dispatch(fetchRegisteredMonths({
-        buildingNameEng,
-        date: {
-          year: date.year
-        }
-      }));
-    }
-  }, [years]); */
-
-  const onChange = useCallback((name, value) => {
+  const onChange = (name, value) => {
 
     if (name === "year") {
       setLocalYear(value);
@@ -55,11 +33,11 @@ const MonthExpansesDatePicker = ({
       }));
     }
     else {
-      dispatch(updateDate(buildingNameEng, { year: localYear }));
+      dispatch(updateDate(buildingNameEng, { year: localYear, month: value }));
     }
-  }, [onChange])
+  };
 
-  return <DatePickerV2
+  return <DatePicker
     date={date}
     month
     monthsList={months}

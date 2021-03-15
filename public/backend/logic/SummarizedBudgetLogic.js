@@ -27,16 +27,8 @@ class SummarizedBudgetLogic {
     return this.summarizedBudgetDao.getAll(buildingNameEng, date);
   }
 
-  async getSummarizedBudgetsByRange(buildingNameEng, date, range) {
-    const data = await this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingNameEng, date, range);
-    const count = await this.summarizedBudgetDao.dataRowCount(buildingNameEng, date);
-
-    return {
-      data,
-      info: {
-        count: count
-      }
-    }
+  async getSummarizedBudgetsByRange(buildingNameEng, fromYear, toYear) {
+    return this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingNameEng, fromYear, toYear);
   }
 
   getSummarizedBudgetByIdTrx(summarized_section_id, buildingNameEng, date, trx) {

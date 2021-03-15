@@ -15,6 +15,16 @@ const summarizedBudgetIpc = (connection) => {
     });
   });
 
+  ipcMain.on('get-summarized-budgets-by-range', (event, { buildingNameEng, date }) => {
+    const { fromYear, toYear } = date;
+    summarizedBudgetLogic.getSummarizedBudgetsByRange(buildingNameEng, fromYear, toYear).then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.sender.send("summarized-budgets-by-range-data", { data: result });
+    }).catch((error) => {
+      event.reply("summarized-budgets-by-range-data", { error: error.message });
+    });
+  });
+
   ipcMain.on('update-summarized-budget', (event, params) => {
     summarizedBudgetLogic.updateSummarizedBudgetTrx(params).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);

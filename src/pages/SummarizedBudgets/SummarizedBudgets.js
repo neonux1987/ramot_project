@@ -32,7 +32,7 @@ const SummarizedBudgets = () => {
   useEffect(() => {
     // fetch only when date is not empty strings
     // that means a date was selected
-    if (date.year !== "" || date.month !== "") {
+    if (date.year !== "" && date.month !== "") {
       dispatch(fetchSummarizedBudgets({ buildingNameEng, date }));
     }
   }, [date]);

@@ -1,13 +1,10 @@
 // LIBRARIES
-import React, { useEffect, useContext } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 
 // ACTIONS
 import {
-  initSummarizedBudgetsState,
-  fetchSummarizedBudgets,
   updateSummarizedBudget,
-  summarizedBudgetsCleanup,
   updateDate
 } from '../../redux/actions/summarizedBudgetActions';
 
@@ -21,10 +18,7 @@ import ThemeContext from '../../context/ThemeContext';
 // COMPONENTS
 import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
-import DatePicker from '../../components/DatePicker/DatePicker';
 import EditControls from '../../components/EditControls/EditControls';
-import Spinner from '../../components/Spinner/Spinner';
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import GroupColumn from '../../components/table/GroupColumn';
 import HeaderRow from '../../components/table/HeaderRow';
@@ -38,6 +32,7 @@ import GroupRow from '../../components/table/GroupRow';
 // HOC 
 import HeaderColumn from '../../components/table/HeaderColumn';
 import useTableLogic from '../../customHooks/useTableLogic';
+import YearOnlyDatePicker from '../../components/DatePicker/YearOnlyDatePicker';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -211,10 +206,9 @@ const SummarizedBudgetsTableContainer = props => {
           />
         } // end rightPane
         middlePane={
-          <DatePicker
-            buildingNameEng={buildingNameEng}
+          <YearOnlyDatePicker
             date={date}
-            pageName={pageName}
+            buildingNameEng={buildingNameEng}
             updateDate={updateDate}
           />
         } // end middlePane

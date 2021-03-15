@@ -4,10 +4,8 @@ import { useDispatch } from 'react-redux';
 
 // ACTIONS
 import {
-  fetchBudgetExecutions,
   updateBudgetExecution,
-  deleteBudgetExecution,
-  updateDate,
+  deleteBudgetExecution
 } from '../../redux/actions/budgetExecutionsActions';
 
 // UTILS
@@ -19,7 +17,6 @@ import ThemeContext from '../../context/ThemeContext';
 // COMPONENTS
 import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
-import DatePicker from '../../components/DatePicker/DatePicker';
 import EditControls from '../../components/EditControls/EditControls';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import GroupColumn from '../../components/table/GroupColumn';
@@ -38,6 +35,7 @@ import AddNewContainer from './AddNewContainer/AddNewContainer';
 import HeaderColumn from '../../components/table/HeaderColumn';
 import useTableLogic from '../../customHooks/useTableLogic';
 import useDifferenceColor from '../../customHooks/useDifferenceColor';
+import BudgetExecutionsDatePicker from './BudgetExecutionsDatePicker';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -274,12 +272,9 @@ const BudgetExecutionsTableContainer = props => {
           />
         } // end rightPane
         middlePane={
-          <DatePicker
-            quarter
+          <BudgetExecutionsDatePicker
             date={date}
             buildingNameEng={buildingNameEng}
-            pageName={pageName}
-            updateDate={updateDate}
           />
         } // end middlePane
         leftPane={

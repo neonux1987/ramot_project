@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select as Selec, InputLabel } from '@material-ui/core';
+import { Select as Selec, InputLabel, MenuItem } from '@material-ui/core';
 import { css } from 'emotion';
 import Spinner from '../Spinner/Spinner';
 
@@ -41,7 +41,16 @@ const _classesSelect = css`
   }
 `;
 
-const Select = ({ label, name, value, disabled, onChange, loading = false, children }) => {
+const Select = ({ label,
+  name,
+  value,
+  disabled,
+  onChange,
+  loading = false,
+  displayEmpty = false,
+  emptyLabel = "אנא בחר",
+  children
+}) => {
 
   const render = loading ? <Dummy /> : <Selec
     name={name}
@@ -50,7 +59,9 @@ const Select = ({ label, name, value, disabled, onChange, loading = false, child
     disabled={disabled}
     onChange={onChange}
     classes={{ select: _classesSelect }}
+    displayEmpty={displayEmpty}
   >
+    {displayEmpty ? <MenuItem value={""} disabled>{emptyLabel}</MenuItem> : null}
     {children}
   </Selec>;
 

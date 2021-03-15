@@ -102,14 +102,8 @@ class SummarizedBudgetDao {
 
   getSummarizedBudgetsByRange(
     buildingName = String,
-    date = {
-      year: year = Number,
-      month: month = String
-    },
-    pageSettings = {
-      pageSize: 100,
-      startElement: 0
-    },
+    fromYear,
+    toYear,
     trx = this.connection
   ) {
     return trx.select(
@@ -130,12 +124,11 @@ class SummarizedBudgetDao {
       "building.year_total_execution AS year_total_execution",
       "building.notes AS notes"
     )
-      .where({ year: date.year })
+      .whereBetween('year', [fromYear, toYear])
       .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id")
-      .limit(pageSettings.pageSize).offset(pageSettings.startElement)
-      .orderBy("section")
+      .orderBy("section", "desc")
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין ${buildingName} מ- ${fromYear} עד- ${toYear}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

@@ -13,15 +13,15 @@ import StyledSection from '../../components/Section/StyledSection';
 import MonthsChartContainer from './charts/MonthsChartContainer';
 import YearsChartContainer from './charts/YearsChartContainer';
 import QuartersChartContainer from './charts/QuartersChartContainer';
+import TopChartContainer from './charts/TopChartContainer';
 
 // ACTIONS
 import { updateSelectedChart } from '../../redux/actions/statisticsActions';
 
-// HOOKS
-import useDate from '../../customHooks/useDate';
-
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
+
+const activeClass = "activeExpandItem";
 
 const Statistics = props => {
   //building name
@@ -58,9 +58,10 @@ export default Statistics;
 const SectionNav = ({ active, onClick }) => {
 
   return <div>
-    <Button onClick={() => onClick("חודשים")} className={active === "חודשים" ? "activeExpandItem" : ""}>חודשים</Button>
-    <Button onClick={() => onClick("רבעונים")} className={active === "רבעונים" ? "activeExpandItem" : ""}>רבעונים</Button>
-    <Button onClick={() => onClick("שנים")} className={active === "שנים" ? "activeExpandItem" : ""}>שנים</Button>
+    <Button onClick={() => onClick("חודשים")} className={active === "חודשים" ? activeClass : ""}>חודשים</Button>
+    <Button onClick={() => onClick("רבעונים")} className={active === "רבעונים" ? activeClass : ""}>רבעונים</Button>
+    <Button onClick={() => onClick("שנים")} className={active === "שנים" ? activeClass : ""}>שנים</Button>
+    <Button onClick={() => onClick("טופ")} className={active === "טופ" ? activeClass : ""}>טופ</Button>
   </div>
 }
 
@@ -69,6 +70,7 @@ function whichChart(name) {
     case "חודשים": return MonthsChartContainer;
     case "רבעונים": return QuartersChartContainer;
     case "שנים": return YearsChartContainer;
+    case "טופ": return TopChartContainer;
     default: return MonthsChartContainer;
   }
 }

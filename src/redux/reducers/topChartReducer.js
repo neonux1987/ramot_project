@@ -1,15 +1,16 @@
-import { TYPES } from '../actions/quartersChartActions';
+import { TYPES } from '../actions/topChartActions';
 import { initState as is } from '../reducers/util/util';
 
 const initState = is({
   date: {
-    year: ""
+    fromYear: "",
+    toYear: ""
   }
 });
 
-const quartersChartReducer = (state = initState, action) => {
+const topChartReducer = (state = initState, action) => {
   switch (action.type) {
-    case TYPES.QUARTERS_CHART_UPDATE_DATE: {
+    case TYPES.TOP_CHART_UPDATE_DATE: {
       const { buildingName, date } = action;
 
       return {
@@ -26,4 +27,4 @@ const quartersChartReducer = (state = initState, action) => {
   }
 }
 
-export default quartersChartReducer;
+export default topChartReducer;

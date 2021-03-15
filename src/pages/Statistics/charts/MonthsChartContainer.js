@@ -7,11 +7,13 @@ import { css } from 'emotion';
 import { fetchAllMonthsStatsByYear } from '../../../redux/actions/monthlyStatsActions';
 
 // COMPONENTS
-import DatePicker from '../../../components/DatePicker/DatePicker';
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
+
+// HOOKS
 import { updateDate } from '../../../redux/actions/monthsChartAction';
+import YearOnlyDatePicker from '../../../components/DatePicker/YearOnlyDatePicker';
 
 const container = css`
   margin: 15px 0;
@@ -83,18 +85,18 @@ const MonthsChartContainer = props => {
   return <div className={container}>
     <TableControls
       middlePane={
-        <DatePicker
+        <YearOnlyDatePicker
           date={date}
           buildingNameEng={buildingNameEng}
-          pageName={pageName}
           updateDate={updateDate}
-        />}
+        />
+      }
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching} >
       <ColumnChart series={chartData.series} categories={chartData.labels} />
     </ChartWrapper>
-  </div>
+  </div >
 
 }
 

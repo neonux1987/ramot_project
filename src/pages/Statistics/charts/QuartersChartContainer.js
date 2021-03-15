@@ -7,11 +7,11 @@ import { css } from 'emotion';
 import { fetchAllQuartersStatsByYear } from '../../../redux/actions/quarterlyStatsActions';
 
 // COMPONENTS
-import DatePicker from '../../../components/DatePicker/DatePicker';
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
 import { updateDate } from '../../../redux/actions/quartersChartActions';
+import YearOnlyDatePicker from '../../../components/DatePicker/YearOnlyDatePicker';
 
 const container = css`
   margin: 15px 0;
@@ -84,10 +84,9 @@ const QuartersChartContainer = props => {
 
     <TableControls
       middlePane={
-        <DatePicker
+        <YearOnlyDatePicker
           date={date}
           buildingNameEng={buildingNameEng}
-          pageName={pageName}
           updateDate={updateDate}
         />}
     />

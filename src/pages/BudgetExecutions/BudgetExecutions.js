@@ -34,7 +34,7 @@ const BudgetExecutions = () => {
   useEffect(() => {
     // fetch only when date is not empty strings
     // that means a date was selected
-    if (date.year !== "" || date.quarter !== "") {
+    if (date.year !== "" && date.quarter !== "") {
       const buildingInfo = {
         buildingNameEng,
         buildingName

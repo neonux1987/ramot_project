@@ -5,7 +5,7 @@ import { css } from 'emotion';
 import { toastManager } from '../../../toasts/toastManager';
 
 // ACTIONS
-import { fetchYearStatsByYearRange } from '../../../redux/actions/yearlyStatsActions';
+import { fetchSummarizedBudgetsByRange } from '../../../redux/actions/summarizedBudgetActions';
 import { fetchRegisteredYears } from '../../../redux/actions/registeredYearsActions';
 import { updateDate } from '../../../redux/actions/yearsChartActions';
 
@@ -15,18 +15,19 @@ import TableControls from '../../../components/table/TableControls/TableControls
 import ColumnChart from '../../../components/charts/ColumnChart';
 import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
 
+
 const container = css`
   margin: 15px 0;
 `;
 
-const YearsChartContainer = props => {
+const TopChartContainer = props => {
   //building name
   const { buildingNameEng, pageName } = props;
 
-  const { isFetching, data } = useSelector(store => store.yearlyStats[buildingNameEng].pages[pageName]);
+  const { isFetching, data } = useSelector(store => store.summarizedBudgets[buildingNameEng]);
   const registeredYears = useSelector(store => store.registeredYears[buildingNameEng]);
-  const { date } = useSelector(store => store.yearsChart[buildingNameEng]);
-
+  const { date } = useSelector(store => store.topChart[buildingNameEng]);
+  console.log(data);
   const [ready, setReady] = useState(false);
 
   const dispatch = useDispatch();
@@ -38,14 +39,15 @@ const YearsChartContainer = props => {
 
   const fetchData = useCallback((date) => {
     const params = {
-      buildingName: buildingNameEng,
-      pageName,
-      fromYear: date.fromYear,
-      toYear: date.toYear
+      buildingNameEng,
+      date: {
+        fromYear: date.fromYear,
+        toYear: date.toYear
+      }
     }
 
-    return dispatch(fetchYearStatsByYearRange(params));
-  }, [dispatch, buildingNameEng, pageName, date.year]);
+    return dispatch(fetchSummarizedBudgetsByRange(params));
+  }, [dispatch, buildingNameEng, date.fromYear, date.toYear]);
 
   const fetchAndPrepareData = useCallback(async (date) => {
     const promise = await fetchData(date);
@@ -81,7 +83,7 @@ const YearsChartContainer = props => {
     }
 
     setReady(() => true);
-  }, [fetchData, date]);
+  }, [fetchData]);
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingNameEng }));
@@ -115,10 +117,10 @@ const YearsChartContainer = props => {
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
-      <ColumnChart series={chartData.series} categories={chartData.labels} />
+      {/* <ColumnChart series={chartData.series} categories={chartData.labels} /> */}
     </ChartWrapper>
   </div>
 
 }
 
-export default React.memo(YearsChartContainer);
+export default React.memo(TopChartContainer);

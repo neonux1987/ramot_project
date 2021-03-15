@@ -6,8 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   updateMonthExpanse,
   addMonthExpanse,
-  deleteMonthExpanse,
-  updateDate
+  deleteMonthExpanse
 } from '../../redux/actions/monthExpansesActions';
 import { fetchExpansesCodesByStatus } from '../../redux/actions/expansesCodesActions';
 
@@ -16,7 +15,6 @@ import Helper from '../../helpers/Helper';
 
 // COMMON COMPONENTS IMPORTS
 import PageControls from '../../components/PageControls/PageControls';
-import DatePicker from '../../components/DatePicker/DatePicker';
 import TableControls from '../../components/table/TableControls/TableControls';
 import EditControls from '../../components/EditControls/EditControls';
 import TableActions from '../../components/table/TableActions/TableActions';
@@ -34,6 +32,7 @@ import HeaderRow from '../../components/table/HeaderRow';
 import { toastManager } from '../../toasts/toastManager';
 import HeaderColumn from '../../components/table/HeaderColumn';
 import useTableLogic from '../../customHooks/useTableLogic';
+import MonthExpansesDatePicker from './MonthExpansesDatePicker';
 
 const MonthExpansesTableContainer = props => {
 
@@ -197,7 +196,6 @@ const MonthExpansesTableContainer = props => {
   }
 
   const HeadersRow = () => {
-    console.log("no way");
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
@@ -263,12 +261,10 @@ const MonthExpansesTableContainer = props => {
           />
         } // end rightPane
         middlePane={
-          <DatePicker
-            updateDate={updateDate}
-            month
+          <MonthExpansesDatePicker
             date={date}
             buildingNameEng={buildingNameEng}
-            pageName={pageName}
+
           />
 
         } // end middlePane
