@@ -21,11 +21,13 @@ import { dbIndependentBackup } from '../../../../../services/dbBackup.svc';
 // ACTIONS
 import { saveSettings, updateSettings } from '../../../../../redux/actions/settingsActions';
 import { initializeRegisteredBackups } from '../../../../../redux/actions/registeredBackupsActions';
-import { showModal } from '../../../../../redux/actions/modalActions';
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
 // TOASTS
 import { toastManager } from '../../../../../toasts/toastManager';
+
+// HOOKS
+import useModalLogic from '../../../../../customHooks/useModalLogic';
 
 const SETTINGS_NAME = "db_backup";
 
@@ -34,6 +36,8 @@ const HOURS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const BackupContainer = () => {
 
   const dispatch = useDispatch();
+
+  const { showModal } = useModalLogic();
 
   // state
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);

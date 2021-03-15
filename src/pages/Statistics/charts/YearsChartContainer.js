@@ -115,7 +115,11 @@ const YearsChartContainer = props => {
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
-      <ColumnChart series={chartData.series} categories={chartData.labels} />
+      <ColumnChart
+        title={date.fromYear + "-" + date.toYear}
+        series={chartData.series}
+        categories={chartData.labels}
+      />
     </ChartWrapper>
   </div>
 

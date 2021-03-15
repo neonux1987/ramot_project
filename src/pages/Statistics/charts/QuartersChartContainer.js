@@ -92,7 +92,11 @@ const QuartersChartContainer = props => {
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching} >
-      <ColumnChart series={chartData.series} categories={chartData.labels} />
+      <ColumnChart
+        title={date.year}
+        series={chartData.series}
+        categories={chartData.labels}
+      />
     </ChartWrapper>
   </div>
 

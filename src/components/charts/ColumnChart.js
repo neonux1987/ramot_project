@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const ColumnChart = ({ categories = [], series, options }) => {
+const ColumnChart = ({ title = "", categories = [], series, options }) => {
 
   return <ReactApexChart options={{
     chart: {
@@ -11,7 +11,7 @@ const ColumnChart = ({ categories = [], series, options }) => {
       fontFamily: "Assistant, sans-serif",
       toolbar: {
         show: true,
-        offsetY: -10,
+        offsetY: 5,
         offsetX: 0,
         tools: {
           download: true,
@@ -59,6 +59,15 @@ const ColumnChart = ({ categories = [], series, options }) => {
           }
         }
       }]
+    },
+    title: {
+      text: title,
+      align: "center",
+      style: {
+        fontSize: '34px',
+        fontWeight: "500",
+        color: '#263238'
+      }
     },
     //colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800'],
     dataLabels: {

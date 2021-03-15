@@ -1,17 +1,17 @@
 import { useDispatch } from 'react-redux';
-import { showModal, hideModal } from '../redux/actions/modalActions';
+import { show, hide } from '../redux/actions/modalActions';
 
-export default () => {
+const useModalLogic = () => {
 
   const dispatch = useDispatch();
 
   const showModal = (modelComponent, props) => {
-    dispatch(showModal(modelComponent, props))
+    dispatch(show(modelComponent, props))
   }
 
   const hideModal = () => {
     setTimeout(() => {
-      dispatch(hideModal());
+      dispatch(hide());
     }, 300);
 
   }
@@ -21,3 +21,5 @@ export default () => {
     hideModal
   }
 }
+
+export default useModalLogic;
