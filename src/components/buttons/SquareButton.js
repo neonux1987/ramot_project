@@ -31,8 +31,10 @@ const SquareButton = ({
   Icon = null,
   onClick,
   bgColor = "none",
-  iconColor = "#ffffff"
+  iconColor = "#ffffff",
+  disabled
 }) => <ButtonWithSound
+  disabled={disabled}
   className={classnames(_container, css`background:${bgColor}; margin: ${margin}`, className)}
   onClick={onClick}
 >

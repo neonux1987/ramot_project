@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'emotion';
+import classnames from 'classnames';
 
 // SERVICES
 import { saveToFileDialog } from '../../services/electronDialogs.svc';
@@ -23,6 +24,14 @@ const _container = css`
   align-items: center;
 `;
 
+const _hide = css`
+  display: none;
+`;
+
+const _show = css`
+  display: flex;
+`;
+
 let options = {
   filters: [
     { name: 'Excel', extensions: ['xlsx'] }
@@ -34,8 +43,11 @@ const PageControls = props => {
     excel,
     print,
     pageName,
-    style
+    style,
+    dataExist = false
   } = props;
+
+  const show = dataExist ? _show : _hide;
 
   const { showModal, hideModal } = useModalLogic();
 
@@ -53,7 +65,7 @@ const PageControls = props => {
   }
 
   return (
-    <div id="page-controls" className={_container} style={style}>
+    <div id="page-controls" className={classnames(_container, show)} style={style}>
       <ExcelButton onClick={exportToExcelHandler} />
 
       <PrintButton

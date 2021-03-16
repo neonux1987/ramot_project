@@ -56,6 +56,27 @@ export const fetchSummarizedBudgetsByRange = (params = Object) => {
   }
 };
 
+export const fetchSummarizedBudgetsTopIncomeOutcome = (params = Object) => {
+  return dispatch => {
+
+    //let react know that the fetching is started
+    dispatch(requestSummarizedBudgets(params.buildingNameEng));
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-summarized-budgets-top-income-outcome",
+        params
+      },
+      receive: {
+        channel: "summarized-budgets-top-income-outcome-data"
+      },
+      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data, params.date, params.buildingNameEng)),
+      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingNameEng))
+    });
+
+  }
+};
+
 const requestSummarizedBudgets = function (buildingNameEng) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_REQUEST,

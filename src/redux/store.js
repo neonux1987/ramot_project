@@ -37,7 +37,8 @@ const persistConfig = {
     //"monthsChart",
     //"quartersChart",
     //"yearsChart",
-    //"monthsChart"
+    //"monthsChart",
+    //"topChart"
   ]
 
 }

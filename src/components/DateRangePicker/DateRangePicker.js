@@ -5,7 +5,7 @@ import Select from '../Select/Select';
 import FormWrapper from '../FormWrapper/FormWrapper';
 import WhiteButton from '../buttons/WhiteButton';
 
-const DateRangePicker = ({ years, date, submit }) => {
+const DateRangePicker = ({ years, date, submit, loading = false }) => {
   const [selectDate, setDate] = useState({
     fromYear: date.fromYear || years[0].year,
     toYear: date.toYear || years[years.length - 1].year
@@ -38,6 +38,7 @@ const DateRangePicker = ({ years, date, submit }) => {
       label="מ-"
       value={selectDate.fromYear}
       onChange={onChange}
+      loading={loading}
     >
       {list()}
     </Select>
@@ -46,6 +47,7 @@ const DateRangePicker = ({ years, date, submit }) => {
       label="עד-"
       value={selectDate.toYear}
       onChange={onChange}
+      loading={loading}
     >
       {list()}
     </Select>

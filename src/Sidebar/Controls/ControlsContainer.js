@@ -44,7 +44,7 @@ const settingsBtn = css`
 `;
 
 const ControlsContainer = ({ routes }) => {
-  console.log("wtf");
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const { showModal } = useModalLogic();

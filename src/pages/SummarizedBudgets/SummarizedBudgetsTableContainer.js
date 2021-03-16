@@ -203,6 +203,7 @@ const SummarizedBudgetsTableContainer = props => {
           <EditControls
             editMode={editMode}
             toggleEditMode={toggleEditMode}
+            dataExist={data.length > 0}
           />
         } // end rightPane
         middlePane={
@@ -213,6 +214,7 @@ const SummarizedBudgetsTableContainer = props => {
           />
         } // end middlePane
         leftPane={<PageControls
+          dataExist={data.length > 0}
           excel={{
             data,
             fileName: Helper.getSummarizedBudgetsFilename(buildingName, date),

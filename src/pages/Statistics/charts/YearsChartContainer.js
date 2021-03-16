@@ -102,15 +102,13 @@ const YearsChartContainer = props => {
     }
   }
 
-  if (registeredYears.isFetching || date === undefined)
-    return <div>yes</div>
-
   return <div className={container}>
     <TableControls
       middlePane={<DateRangePicker
         years={registeredYears.data}
         date={date}
         submit={submit}
+        loading={registeredYears.isFetching}
       />}
     />
 

@@ -31,6 +31,10 @@ class SummarizedBudgetLogic {
     return this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingNameEng, fromYear, toYear);
   }
 
+  getSummarizedBudgetTopIncomeOutcome(buildingNameEng, fromYear, toYear, limit) {
+    return this.summarizedBudgetDao.getSummarizedBudgetTopIncomeOutcome(buildingNameEng, fromYear, toYear, limit);
+  }
+
   getSummarizedBudgetByIdTrx(summarized_section_id, buildingNameEng, date, trx) {
     return this.summarizedBudgetDao.getSummarizedBudgetByIdTrx(summarized_section_id, buildingNameEng, date, trx);
   }

@@ -82,7 +82,16 @@ const summarizedBudgetsRedcuer = (state = initialState, action) => {
     case TYPES.SUMMARIZED_BUDGETS_CLEANUP:
       {
         let stateCopy = { ...state };
-        delete stateCopy[buildingNameEng];
+        stateCopy[buildingNameEng] = {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: [],
+          date: {
+            month: "",
+            year: ""
+          }
+        };
 
         return stateCopy;
       }

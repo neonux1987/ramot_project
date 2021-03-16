@@ -31,3 +31,11 @@
   justify-content: center;
   color: rgb(46, 55, 62);
 }
+
+.hidden{
+  display: none;
+}
+
+.show{
+  display: block;
+}

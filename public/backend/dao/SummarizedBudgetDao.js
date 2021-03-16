@@ -135,6 +135,34 @@ class SummarizedBudgetDao {
       });
   }
 
+  getSummarizedBudgetTopIncomeOutcome(
+    buildingName = String,
+    fromYear,
+    toYear,
+    limit = 10,
+    trx = this.connection
+  ) {
+    return trx.select(
+      "building.id AS id",
+      "building.year AS year",
+      "sc.id AS summarized_section_id",
+      "sc.section AS section",
+      "building.year_total_budget AS income",
+      "building.year_total_execution AS outcome"
+    )
+      .whereBetween('year', [fromYear, toYear])
+      .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id")
+      .orderBy([{ column: 'building.year_total_budget', order: 'desc' }, { column: 'building.year_total_execution', order: 'desc' }])
+      .groupBy('building.summarized_section_id')
+      .limit(limit)
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף נתוני טופ סיכום שנתי לבניין ${buildingName} מ- ${fromYear} עד- ${toYear}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
   getSummarizedBudgetByIdTrx(
     summarized_section_id = Number,
     buildingName = String,

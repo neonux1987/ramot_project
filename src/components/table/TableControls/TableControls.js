@@ -1,9 +1,7 @@
 import React from 'react';
 import styles from './TableControls.module.css';
 
-const TableControls = ({ style, rightPane, middlePane, leftPane /*,  editMode */ }) => {
-  /* const editModeColor = editMode ? "#33af37" : "#ff2864";
-  const editModeText = editMode ? "פעיל" : "כבוי"; */
+const TableControls = ({ style, rightPane, middlePane, leftPane }) => {
 
   return (
     <div className={styles.wrapper} style={style}>

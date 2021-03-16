@@ -269,6 +269,7 @@ const BudgetExecutionsTableContainer = props => {
             toggleEditMode={toggleEditMode}
             addNewMode={addNewMode}
             toggleAddNewMode={toggleAddNewMode}
+            dataExist={data.length > 0}
           />
         } // end rightPane
         middlePane={
@@ -284,7 +285,7 @@ const BudgetExecutionsTableContainer = props => {
               fileName: Helper.getBudgetExecutionFilename(buildingName, date),
               buildingName,
               buildingNameEng,
-              date
+              date,
             }}
             print={{
               title: pageTitle,
@@ -296,6 +297,7 @@ const BudgetExecutionsTableContainer = props => {
               itemCount: data.length
             }}
             pageName={pageName}
+            dataExist={data.length > 0}
           />
         } // end leftPane
 

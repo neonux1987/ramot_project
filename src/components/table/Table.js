@@ -27,7 +27,7 @@ const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) 
       {itemCount > 0 ? HeaderComponent && HeaderComponent() : null}
       {/* END HEADERS */}
 
-      {!isFetching && itemCount === 0 ? <div className="spinnerWrapper noDataText">אין נתונים. בחר תאריך או צור דוחות חדשים.</div> : Loading}
+      {!isFetching && itemCount === 0 ? <div className="spinnerWrapper noDataText">לא נבחר תאריך.</div> : Loading}
 
     </div>
 

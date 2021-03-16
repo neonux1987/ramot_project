@@ -5,14 +5,14 @@ import { css } from 'emotion';
 import { toastManager } from '../../../toasts/toastManager';
 
 // ACTIONS
-import { fetchSummarizedBudgetsByRange } from '../../../redux/actions/summarizedBudgetActions';
+import { fetchSummarizedBudgetsTopIncomeOutcome, summarizedBudgetsCleanup } from '../../../redux/actions/summarizedBudgetActions';
 import { fetchRegisteredYears } from '../../../redux/actions/registeredYearsActions';
-import { updateDate } from '../../../redux/actions/yearsChartActions';
+import { updateDate, fetchTopIncomeOutcome } from '../../../redux/actions/topChartActions';
 
 // COMPONENTS
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
-import ColumnChart from '../../../components/charts/ColumnChart';
+import HorizontalColumnChart from '../../../components/charts/HorizontalColumnChart';
 import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
 
 
@@ -24,10 +24,9 @@ const TopChartContainer = props => {
   //building name
   const { buildingNameEng, pageName } = props;
 
-  const { isFetching, data } = useSelector(store => store.summarizedBudgets[buildingNameEng]);
   const registeredYears = useSelector(store => store.registeredYears[buildingNameEng]);
-  const { date } = useSelector(store => store.topChart[buildingNameEng]);
-  console.log(data);
+  const { date, data, isFetching } = useSelector(store => store.topChart[buildingNameEng]);
+
   const [ready, setReady] = useState(false);
 
   const dispatch = useDispatch();
@@ -43,23 +42,23 @@ const TopChartContainer = props => {
       date: {
         fromYear: date.fromYear,
         toYear: date.toYear
-      }
+      },
+      limit: 10
     }
 
-    return dispatch(fetchSummarizedBudgetsByRange(params));
+    return dispatch(fetchTopIncomeOutcome(params));
   }, [dispatch, buildingNameEng, date.fromYear, date.toYear]);
 
-  const fetchAndPrepareData = useCallback(async (date) => {
+  const fetchAndPrepareData = useCallback(async () => {
     const promise = await fetchData(date);
 
     if (promise !== undefined) {
-
       const labels = [];
       const incomeData = [];
       const outcomeData = [];
 
       promise.data.forEach((element) => {
-        labels.push(element.year);
+        labels.push(element.section);
         incomeData.push(element.income);
         outcomeData.push(element.outcome);
       });
@@ -69,11 +68,9 @@ const TopChartContainer = props => {
           labels,
           series: [
             {
-              name: "הוצאות",
               data: outcomeData
             },
             {
-              name: "הכנסות",
               data: incomeData
             }
           ]
@@ -83,7 +80,7 @@ const TopChartContainer = props => {
     }
 
     setReady(() => true);
-  }, [fetchData]);
+  }, [fetchData, date]);
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingNameEng }));
@@ -92,20 +89,16 @@ const TopChartContainer = props => {
 
   // load on start the previous selected data
   useEffect(() => {
-    fetchAndPrepareData(date)
-  }, []);
+    fetchAndPrepareData();
+  }, [date]);
 
   const submit = (date) => {
     if (date.fromYear > date.toYear)
       toastManager.error("תאריך התחלה לא יכול להיות יותר גדול מתאריך סוף.");
     else {
       dispatch(updateDate(buildingNameEng, date));
-      fetchAndPrepareData(date);
     }
   }
-
-  if (registeredYears.isFetching || date === undefined)
-    return <div>yes</div>
 
   return <div className={container}>
     <TableControls
@@ -113,11 +106,16 @@ const TopChartContainer = props => {
         years={registeredYears.data}
         date={date}
         submit={submit}
+        loading={registeredYears.isFetching}
       />}
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
-      {/* <ColumnChart series={chartData.series} categories={chartData.labels} /> */}
+      <HorizontalColumnChart
+        title={`טופ 10 סעיפים - (${date.fromYear}-${date.toYear})`}
+        series={chartData.series}
+        categories={chartData.labels}
+      />
     </ChartWrapper>
   </div>
 

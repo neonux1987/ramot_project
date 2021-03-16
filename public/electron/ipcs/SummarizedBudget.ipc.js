@@ -15,6 +15,16 @@ const summarizedBudgetIpc = (connection) => {
     });
   });
 
+  ipcMain.on('get-summarized-budgets-top-income-outcome', (event, { buildingNameEng, date, limit }) => {
+    const { fromYear, toYear } = date;
+    summarizedBudgetLogic.getSummarizedBudgetTopIncomeOutcome(buildingNameEng, fromYear, toYear, limit).then((result) => {
+      //let data = nestHydrationJS.nest(result, DEFINITION);
+      event.sender.send("summarized-budgets-top-income-outcome-data", { data: result });
+    }).catch((error) => {
+      event.reply("summarized-budgets-top-income-outcome-data", { error: error.message });
+    });
+  });
+
   ipcMain.on('get-summarized-budgets-by-range', (event, { buildingNameEng, date }) => {
     const { fromYear, toYear } = date;
     summarizedBudgetLogic.getSummarizedBudgetsByRange(buildingNameEng, fromYear, toYear).then((result) => {

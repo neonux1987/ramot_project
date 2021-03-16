@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const ColumnChart = ({ title = "", categories = [], series, options }) => {
+const ColumnChart = ({ title = "", categories = [], series, options, height = 450 }) => {
 
   return <ReactApexChart options={{
     chart: {
@@ -147,7 +147,7 @@ const ColumnChart = ({ title = "", categories = [], series, options }) => {
   }}
     series={series}
     type="bar"
-    height={450}
+    height={height}
   />
 
 }

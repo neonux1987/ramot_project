@@ -258,6 +258,7 @@ const MonthExpansesTableContainer = props => {
             toggleEditMode={toggleEditMode}
             addNewMode={addNewMode}
             toggleAddNewMode={toggleAddNewMode}
+            dataExist={data.length > 0}
           />
         } // end rightPane
         middlePane={
@@ -287,6 +288,7 @@ const MonthExpansesTableContainer = props => {
               itemCount: data.length
             }}
             pageName={pageName}
+            dataExist={data.length > 0}
           />
         } // end leftPane
       /> {/* end TableControls */}
