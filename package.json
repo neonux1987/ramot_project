@@ -19,6 +19,8 @@
     "exceljs": "^4.2.0",
     "file-type": "^16.0.0",
     "fs-extra": "^9.0.1",
+    "highcharts": "^9.0.1",
+    "highcharts-react-official": "^3.0.0",
     "jss-rtl": "^0.3.0",
     "knex": "^0.21.11",
     "log4js": "^6.3.0",
