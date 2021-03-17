@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MenuItem } from '@material-ui/core';
-import PrimaryButton from '../buttons/PrimaryButton';
 import Select from '../Select/Select';
 import FormWrapper from '../FormWrapper/FormWrapper';
 import WhiteButton from '../buttons/WhiteButton';
 
-const DateRangePicker = ({ years, date, submit, loading = false }) => {
+const DateRangePicker = ({ years = [], date, submit, loading = false }) => {
+
   const [selectDate, setDate] = useState({
-    fromYear: date.fromYear || years[0].year,
-    toYear: date.toYear || years[years.length - 1].year
+    fromYear: date.fromYear,
+    toYear: date.toYear
   });
 
   const onChange = (event) => {
@@ -39,6 +39,8 @@ const DateRangePicker = ({ years, date, submit, loading = false }) => {
       value={selectDate.fromYear}
       onChange={onChange}
       loading={loading}
+      displayEmpty
+      emptyLabel={"בחר שנה"}
     >
       {list()}
     </Select>
@@ -48,6 +50,8 @@ const DateRangePicker = ({ years, date, submit, loading = false }) => {
       value={selectDate.toYear}
       onChange={onChange}
       loading={loading}
+      displayEmpty
+      emptyLabel={"בחר שנה"}
     >
       {list()}
     </Select>
