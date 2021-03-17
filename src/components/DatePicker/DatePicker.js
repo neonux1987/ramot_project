@@ -3,7 +3,7 @@ import { MenuItem } from '@material-ui/core';
 import Select from '../Select/Select';
 import FormWrapper from '../FormWrapper/FormWrapper';
 
-const DatePickerV2 = ({
+const DatePicker = ({
   quarter = false,
   month = false,
   date,
@@ -91,4 +91,4 @@ const DatePickerV2 = ({
 
 }
 
-export default React.memo(DatePickerV2);
+export default React.memo(DatePicker);

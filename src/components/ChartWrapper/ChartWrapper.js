@@ -25,7 +25,7 @@ const ChartWrapper = props => {
 
   return <div className={container}>
 
-    {!isFetching && itemCount === 0 ? <AlignCenterMiddle><span className={text}>לא נטענו נתונים.</span></AlignCenterMiddle> : Loading}
+    {isFetching === false && itemCount === 0 ? <AlignCenterMiddle><span className={text}>לא נטענו נתונים.</span></AlignCenterMiddle> : Loading}
   </div>
 
 }

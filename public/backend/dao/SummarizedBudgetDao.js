@@ -152,7 +152,7 @@ class SummarizedBudgetDao {
     )
       .whereBetween('year', [fromYear, toYear])
       .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id")
-      .orderBy([{ column: 'building.year_total_budget', order: 'desc' }, { column: 'building.year_total_execution', order: 'desc' }])
+      .orderBy([{ column: 'building.year_total_execution', order: 'desc' }])
       .groupBy('building.summarized_section_id')
       .limit(limit)
       .catch((error) => {

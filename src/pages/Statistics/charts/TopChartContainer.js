@@ -68,9 +68,11 @@ const TopChartContainer = props => {
           labels,
           series: [
             {
+              name: "הוצאות",
               data: outcomeData
             },
             {
+              name: "הכנסות",
               data: incomeData
             }
           ]
@@ -89,7 +91,8 @@ const TopChartContainer = props => {
 
   // load on start the previous selected data
   useEffect(() => {
-    fetchAndPrepareData();
+    if (date.fromYear !== "" && date.toYear !== "")
+      fetchAndPrepareData();
   }, [date]);
 
   const submit = (date) => {
@@ -110,7 +113,7 @@ const TopChartContainer = props => {
       />}
     />
 
-    <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
+    <ChartWrapper itemCount={data.length} isFetching={isFetching && !ready} >
       <HorizontalColumnChart
         title={`טופ 10 סעיפים - (${date.fromYear}-${date.toYear})`}
         series={chartData.series}
