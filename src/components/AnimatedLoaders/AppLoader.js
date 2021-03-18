@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
-import { RotateLoader } from 'react-spinners';
+import RotateLoader from 'react-spinners/RotateLoader';
 
 const AppLoader = ({ title = "טוען את האפליקציה", loading = false, style, size = 14 }) => {
 

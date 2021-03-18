@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarLoader } from 'react-spinners';
+import BarLoader from 'react-spinners/BarLoader';
 import logo from '../../../assets/images/ramot group.png';
 import { css, keyframes } from 'emotion';
 

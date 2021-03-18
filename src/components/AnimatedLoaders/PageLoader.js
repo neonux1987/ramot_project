@@ -1,5 +1,4 @@
 import React from 'react';
-import { PropagateLoader } from 'react-spinners';
 import AppLoader from './AppLoader';
 
 const PageLoader = ({ style }) => {

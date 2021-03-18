@@ -18,7 +18,15 @@ const BudgetExecutionsDatePicker = ({
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingNameEng }));
-  }, [buildingNameEng, dispatch]);
+
+    if (date.year !== "")
+      dispatch(fetchRegisteredQuarters({
+        buildingNameEng,
+        date: {
+          year: date.year
+        }
+      }));
+  }, [buildingNameEng, dispatch, date.year]);
 
   const onChange = (name, value) => {
 

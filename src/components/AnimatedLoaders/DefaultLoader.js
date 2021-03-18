@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
-import { ScaleLoader } from 'react-spinners';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 const DefaultLoader = (props) => {
   const { loading, title = "טוען נתונים", loaderColor = "#000000" } = props;

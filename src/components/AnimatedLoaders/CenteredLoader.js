@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
+import AlignCenterMiddle from '../AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../Spinner/Spinner';
 
 const CenteredLoader = () => <AlignCenterMiddle>

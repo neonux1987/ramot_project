@@ -3,7 +3,7 @@ import DonutChart from '../charts/DonutChart';
 import StatBox from './StatBox/StatBox';
 import { css } from 'emotion';
 import classnames from 'classnames';
-import { Grow } from '@material-ui/core';
+import DonutChartV2 from '../charts/DonutChartV2';
 
 const wrapper = css`
   display: flex;
@@ -77,7 +77,13 @@ const DonutStatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#55
           <div className={text}>{incomeText}</div>
         </div>
       </div>
-      <DonutChart series={[outcome, income]} labels={["הוצאות", "הכנסות"]} />
+      <DonutChartV2
+        series={[
+          {
+            data: [{ name: "d", y: outcome, color: "#30a3fc" }, { name: "a", y: income, color: "#30e8aa" }]
+          }
+        ]}
+      />
 
     </div>
   </StatBox >
