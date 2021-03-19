@@ -16,17 +16,28 @@ const BudgetExecutionsDatePicker = ({
   const quarters = useSelector(store => store.registeredQuarters[buildingNameEng].data);
   const years = useSelector(store => store.registeredYears[buildingNameEng].data);
 
+  // initial fetch of years
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ buildingNameEng }));
+    const fetchYears = () => {
+      dispatch(fetchRegisteredYears({ buildingNameEng }));
+    }
+    fetchYears();
+  }, []);
 
-    if (date.year !== "")
-      dispatch(fetchRegisteredQuarters({
-        buildingNameEng,
-        date: {
-          year: date.year
-        }
-      }));
-  }, [buildingNameEng, dispatch, date.year]);
+  // initial fetch of quarters if year is not empty
+  useEffect(() => {
+    const fetchQuarters = () => {
+      if (date.year !== "")
+        dispatch(fetchRegisteredQuarters({
+          buildingNameEng,
+          date: {
+            year: date.year
+          }
+        }));
+    }
+
+    fetchQuarters();
+  }, []);
 
   const onChange = (name, value) => {
 

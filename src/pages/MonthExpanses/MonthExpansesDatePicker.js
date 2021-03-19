@@ -16,9 +16,29 @@ const MonthExpansesDatePicker = ({
   const months = useSelector(store => store.registeredMonths[buildingNameEng].data);
   const years = useSelector(store => store.registeredYears[buildingNameEng].data);
 
+  // initial fetch of years
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ buildingNameEng }));
-  }, [buildingNameEng, dispatch]);
+    const fetchYears = () => {
+      dispatch(fetchRegisteredYears({ buildingNameEng }));
+    }
+
+    fetchYears();
+  }, []);
+
+  // initial fetch of months if year is not empty
+  useEffect(() => {
+    const fetchMonths = () => {
+      if (date.year !== "")
+        dispatch(fetchRegisteredMonths({
+          buildingNameEng,
+          date: {
+            year: date.year
+          }
+        }));
+    }
+
+    fetchMonths();
+  }, []);
 
   const onChange = (name, value) => {
 
