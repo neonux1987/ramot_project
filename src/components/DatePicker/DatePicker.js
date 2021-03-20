@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { MenuItem } from '@material-ui/core';
 import Select from '../Select/Select';
 import FormWrapper from '../FormWrapper/FormWrapper';
@@ -21,6 +21,14 @@ const DatePicker = ({
     quarter: date.quarter,
     month: date.month
   });
+
+  /* useEffect(() => {
+    setDate(() => ({
+      year: date.year,
+      quarter: date.quarter,
+      month: date.month
+    }));
+  }, [date]); */
 
   const internalOnChange = useCallback((event) => {
     const { value, name } = event.target;
@@ -48,8 +56,6 @@ const DatePicker = ({
     value={monthsList.length === 0 ? "" : selectDate.month}
     onChange={internalOnChange}
     disabled={monthsList.length === 0 ? true : false}
-    displayEmpty
-    emptyLabel={"בחר חודש"}
     loading={monthsFetching}
   >
     {monthsList.map((month) => {

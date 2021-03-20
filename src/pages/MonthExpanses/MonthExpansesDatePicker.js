@@ -47,7 +47,11 @@ const MonthExpansesDatePicker = ({
         date: {
           year: value
         }
-      }));
+      })).then(({ data }) => {
+        console.log(data[0].monthHeb);
+        // load first available month
+        dispatch(updateDate(buildingNameEng, { year: value, month: data[0].monthHeb }));
+      });
     }
     else {
       dispatch(updateDate(buildingNameEng, { year: localYear, month: value }));
