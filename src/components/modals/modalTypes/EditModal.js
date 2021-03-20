@@ -4,7 +4,7 @@ import Edit from '@material-ui/icons/Edit';
 
 import Modal from '../Modal';
 
-export default props => {
+const EditModal = props => {
 
   return (
     <Modal
@@ -15,3 +15,5 @@ export default props => {
     />
   );
 }
+
+export default EditModal;

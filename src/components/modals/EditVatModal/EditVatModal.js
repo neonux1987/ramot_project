@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { soundManager } from '../../../soundManager/SoundManager';
 import { toast } from 'react-toastify';
 import Section from '../../Section/Section';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-export default () => {
+const ModalRoot = () => {
 
   const { ModalComponent, props } = useSelector(store => store.modal);
 
@@ -11,3 +11,5 @@ export default () => {
 
   return <ModalComponent {...props} />
 }
+
+export default ModalRoot;

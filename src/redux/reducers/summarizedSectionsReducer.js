@@ -7,7 +7,7 @@ const initState = {
   data: []
 }
 
-export default (state = initState, action) => {
+const SummarizedSectionsReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.SUMMARIZED_SECTIONS_RECEIVE:
       return {
@@ -77,3 +77,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default SummarizedSectionsReducer;

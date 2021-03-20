@@ -3,7 +3,7 @@ const initialState = {
   props: {}
 }
 
-export default (state = initialState, action) => {
+const ModalReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SHOW_MODAL':
       return {
@@ -16,3 +16,5 @@ export default (state = initialState, action) => {
       return state
   }
 }
+
+export default ModalReducer;

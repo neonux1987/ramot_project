@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { Fragment } from 'react';
+import React from 'react';
 import { TableChart } from '@material-ui/icons';
 
 // COMPONENTS

@@ -2,7 +2,7 @@ import React from 'react';
 
 import WarningModal from '../modalTypes/WarningModal';
 
-export default props => {
+const ConfirmDbRestoreModal = props => {
 
   return (
     <WarningModal
@@ -14,3 +14,5 @@ export default props => {
     />
   );
 }
+
+export default ConfirmDbRestoreModal;

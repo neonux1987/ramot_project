@@ -9,7 +9,6 @@ import { saveToFileDialog } from '../../services/electronDialogs.svc';
 import { exportToExcel } from '../../services/excel.svc';
 import { toastManager } from '../../toasts/toastManager';
 import useModalLogic from '../../customHooks/useModalLogic';
-import { saveToPdf } from '../../services/print.svc';
 
 // COMPONENTS
 import PrintModal from '../modals/PrintModal/PrintModal';

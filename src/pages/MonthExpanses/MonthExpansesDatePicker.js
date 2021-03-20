@@ -13,17 +13,13 @@ const MonthExpansesDatePicker = ({
 
   const [localYear, setLocalYear] = useState(date.year);
 
-  const months = useSelector(store => store.registeredMonths[buildingNameEng].data);
-  const years = useSelector(store => store.registeredYears[buildingNameEng].data);
+  const months = useSelector(store => store.registeredMonths[buildingNameEng]);
+  const years = useSelector(store => store.registeredYears[buildingNameEng]);
 
   // initial fetch of years
   useEffect(() => {
-    const fetchYears = () => {
-      dispatch(fetchRegisteredYears({ buildingNameEng }));
-    }
-
-    fetchYears();
-  }, []);
+    dispatch(fetchRegisteredYears({ buildingNameEng }));
+  }, [buildingNameEng, dispatch]);
 
   // initial fetch of months if year is not empty
   useEffect(() => {
@@ -38,6 +34,7 @@ const MonthExpansesDatePicker = ({
     }
 
     fetchMonths();
+    //eslint-disable-next-line
   }, []);
 
   const onChange = (name, value) => {
@@ -60,9 +57,11 @@ const MonthExpansesDatePicker = ({
   return <DatePicker
     date={date}
     month
-    monthsList={months}
-    yearsList={years}
+    monthsList={months.data}
+    yearsList={years.data}
     onChange={onChange}
+    yearsFetching={years.isFetching}
+    monthsFetching={months.isFetching}
   />
 
 }

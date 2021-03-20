@@ -23,7 +23,7 @@ import { openItem } from '../../../../../services/mainProcess.svc';
 
 const SETTINGS_NAME = "system";
 
-export default () => {
+const SystemContainer = () => {
   const dispatch = useDispatch();
 
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
@@ -100,3 +100,5 @@ export default () => {
     </SettingsExpandableSection >
   );
 }
+
+export default SystemContainer;

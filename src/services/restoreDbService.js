@@ -6,10 +6,7 @@ import { restartApp } from './mainProcess.svc';
 
 export const restore = (payload, byList) => {
   const toastId = toastManager.info(<ToastRender spinner={true} message={"המערכת מבצעת שיחזור של הבסיס נתונים..."} />, {
-    autoClose: false,
-    onChange: (event) => {
-      console.log(event);
-    }
+    autoClose: false
   });
 
   return ipcSendReceive({
@@ -28,8 +25,7 @@ export const restore = (payload, byList) => {
       onChange: () => console.log("what change"),
       onClose: () => toastManager.info("המערכת תבצע איתחול בשביל שהשינויים ייכנסו לתוקף.", {
         onClose: () => {
-          console.log("hello");
-          //restartApp();
+          restartApp();
         }
       })
     }),
@@ -37,8 +33,7 @@ export const restore = (payload, byList) => {
       render: result.error,
       type: toastManager.types.ERROR,
       delay: 2000,
-      autoClose: 3000,
-      onChange: () => console.log("what change")
+      autoClose: 3000
     }),
     withErrorNotification: false
   });

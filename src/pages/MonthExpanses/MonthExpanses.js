@@ -30,7 +30,7 @@ const MonthExpanses = () => {
     // that means a date was selected
     if (date.year !== "" && date.month !== "")
       dispatch(fetchMonthExpanses({ buildingNameEng, date }));
-  }, [date]);
+  }, [dispatch, buildingNameEng, date]);
 
   return (
     <Page>

@@ -7,7 +7,7 @@ const initState = {
   data: []
 }
 
-export default (state = initState, action) => {
+const MenuReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.MENU_RECEIVE:
       return {
@@ -30,3 +30,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default MenuReducer;

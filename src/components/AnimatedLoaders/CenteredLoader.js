@@ -1,9 +1,9 @@
 import React from 'react';
-import AlignCenterMiddle from '../AlignCenterMiddle/AlignCenterMiddle';
+import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../Spinner/Spinner';
 
-const CenteredLoader = () => <AlignCenterMiddle>
-  <Spinner loadingText={"טוען נתונים"} />
+const CenteredLoader = ({ text = "טוען נתונים" }) => <AlignCenterMiddle>
+  <Spinner loadingText={text} />
 </AlignCenterMiddle>;
 
 export default CenteredLoader;

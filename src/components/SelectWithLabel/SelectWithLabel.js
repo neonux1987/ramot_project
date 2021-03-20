@@ -14,7 +14,7 @@ margin-right: 20px;
   width: 40px;
 `;
 
-export default (props) => {
+const SelectWithLabel = props => {
 
   const {
     label = "",
@@ -44,3 +44,4 @@ export default (props) => {
   );
 }
 
+export default SelectWithLabel;

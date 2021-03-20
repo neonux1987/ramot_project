@@ -113,7 +113,7 @@ const MonthExpansesTableContainer = props => {
 
   const parseFormInputs = (formInputs) => {
     // tax data
-    const tax = generalSettings.data[0].tax;
+    //const tax = generalSettings.data[0].tax;
 
     const copyFormInputs = { ...formInputs };
     //parse inputs

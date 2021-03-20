@@ -110,7 +110,7 @@ class QuarterStatsContainer extends React.PureComponent {
     const quarterlyStatsState = quarterlyStats[buildingName].pages[pageName];
 
     if ((monthlyStatsState.data.length === 0) || quarterlyStatsState.data.length === 0)
-      return <AlignCenterMiddle style={{ height: "202px", fontSize: "18px" }}>לא נטענו נתונים.</AlignCenterMiddle>;
+      return <AlignCenterMiddle style={{ height: "256px", fontSize: "18px" }}>לא נטענו נתונים.</AlignCenterMiddle>;
     else {
 
       //generate quarter months stats

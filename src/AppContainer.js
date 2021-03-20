@@ -27,14 +27,9 @@ import useServices from './customHooks/useServices';
 // ACTIONS
 import { fetchMenu } from './redux/actions/menuActions';
 
-// SOUND
-import { soundManager } from './soundManager/SoundManager';
-
 // TOASTS
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
-
-const { play, types } = soundManager;
 
 const AppContainer = () => {
 

@@ -7,7 +7,7 @@ const initState = {
   data: []
 }
 
-export default (state = initState, action) => {
+const registeredBackupsReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.REGISTERED_BACKUPS_RECEIVE:
       return {
@@ -38,3 +38,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default registeredBackupsReducer;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Column from './Column';
 import ReactSelect from '../ReactSelect/ReactSelect';
 
-export default ({
+const SelectColumn = ({
   children,
   onBlurHandler,
   options,
@@ -17,10 +17,6 @@ export default ({
 
   const onClick = () => {
     setSelect(true);
-  }
-
-  const onMenuCloseHandler = () => {
-    setSelect(false);
   }
 
   const onChangeHandler = (data) => {
@@ -54,3 +50,5 @@ export default ({
   >{render}
   </Column>;
 }
+
+export default SelectColumn;

@@ -5,7 +5,6 @@ import { css } from 'emotion';
 import { toastManager } from '../../../toasts/toastManager';
 
 // ACTIONS
-import { fetchSummarizedBudgetsTopIncomeOutcome, summarizedBudgetsCleanup } from '../../../redux/actions/summarizedBudgetActions';
 import { fetchRegisteredYears } from '../../../redux/actions/registeredYearsActions';
 import { updateDate, fetchTopIncomeOutcome } from '../../../redux/actions/topChartActions';
 
@@ -36,7 +35,7 @@ const TopChartContainer = props => {
     series: []
   });
 
-  const fetchData = useCallback((date) => {
+  const fetchData = useCallback(() => {
     const params = {
       buildingNameEng,
       date: {
@@ -93,7 +92,7 @@ const TopChartContainer = props => {
   useEffect(() => {
     if (date.fromYear !== "" && date.toYear !== "")
       fetchAndPrepareData();
-  }, [date]);
+  }, [date, fetchAndPrepareData]);
 
   const submit = (date) => {
     if (date.fromYear > date.toYear)

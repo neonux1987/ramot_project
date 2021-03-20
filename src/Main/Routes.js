@@ -1,7 +1,6 @@
 // LIBRARIES
-import React, { Component } from 'react';
-import { connect, useSelector } from 'react-redux';
-import { withRouter } from 'react-router';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
 // PAGES
@@ -11,7 +10,6 @@ import BudgetExecutions from '../pages/BudgetExecutions/BudgetExecutions';
 import SummarizedBudgets from '../pages/SummarizedBudgets/SummarizedBudgets';
 import Management from '../pages/Management/Management';
 import Statistics from '../pages/Statistics/Statistics';
-import { Fragment } from 'react';
 import Settings from '../pages/Settings/Settings';
 
 const Routes = props => {

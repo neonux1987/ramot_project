@@ -3,7 +3,7 @@ import { container, button } from './AppUpdateNewVersionToast.module.css';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import { NavLink } from 'react-router-dom';
 
-export default ({ version, closeToast }) => {
+const AppUpdateNewVersionToast = ({ version, closeToast }) => {
   return (
     <div className={container}>
 
@@ -28,3 +28,5 @@ export default ({ version, closeToast }) => {
     </div>
   );
 }
+
+export default AppUpdateNewVersionToast;

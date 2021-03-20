@@ -4,7 +4,7 @@ import Info from '@material-ui/icons/Info';
 
 import Modal from '../Modal';
 
-export default props => {
+const InfoModal = props => {
 
   return (
     <Modal
@@ -16,3 +16,5 @@ export default props => {
     />
   );
 }
+
+export default InfoModal;

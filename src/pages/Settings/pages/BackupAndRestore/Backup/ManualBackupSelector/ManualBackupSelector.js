@@ -3,7 +3,7 @@ import SubtitleBoldTypography from "../../../../../../components/Typographies/Su
 import styles from './ManualBackupSelector.module.css';
 import PrimaryButton from '../../../../../../components/buttons/PrimaryButton';
 
-export default (props) => {
+const ManualBackupSelector = (props) => {
 
   const {
     onClick
@@ -23,3 +23,4 @@ export default (props) => {
   );
 }
 
+export default ManualBackupSelector;

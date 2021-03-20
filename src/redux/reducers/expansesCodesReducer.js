@@ -7,7 +7,7 @@ const initState = {
   data: []
 }
 
-export default (state = initState, action) => {
+const expansesCodeReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.EXPANSES_CODES_ADD: {
       const copyData = [...state.data];
@@ -74,3 +74,5 @@ function setState(state, target) {
     ...target
   }
 }
+
+export default expansesCodeReducer;

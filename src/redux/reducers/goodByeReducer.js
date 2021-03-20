@@ -4,7 +4,7 @@ const initState = {
   dirty: false
 }
 
-export default (state = initState, action) => {
+const goodByeReducer = (state = initState, action) => {
   const { dirty } = action;
   switch (action.type) {
     case TYPES.GOODBYE_SET_DIRTY:
@@ -12,3 +12,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default goodByeReducer;

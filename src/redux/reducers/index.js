@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import menu from './menuReducer';
 import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
@@ -29,7 +28,7 @@ import budgetExecutions from './budgetExecutionsReducer';
 import monthExpanses from './monthExpansesReducer';
 import summarizedBudgets from './summarizedBudgetsReducer';
 
-export default {
+const reducers = {
   menu,
   monthExpanses,
   budgetExecutions,
@@ -60,3 +59,5 @@ export default {
   yearsChart,
   topChart
 };
+
+export default reducers;

@@ -10,7 +10,7 @@ const initState = {
   data: settings ? settings : {}
 };
 
-export default (state = initState, action) => {
+const settingsReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.SETTINGS_RECEIVE:
       const { data } = action;
@@ -64,3 +64,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default settingsReducer;

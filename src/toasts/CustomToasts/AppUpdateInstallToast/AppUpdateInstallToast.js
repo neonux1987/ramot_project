@@ -1,7 +1,7 @@
 import React from 'react';
 import { container, button } from './AppUpdateInstallToast.module.css';
 
-export default ({ version, closeToast }) => {
+const AppUpdateInstallToast = ({ version, closeToast }) => {
   return (
     <div className={container}>
 
@@ -19,3 +19,5 @@ export default ({ version, closeToast }) => {
     </div>
   );
 }
+
+export default AppUpdateInstallToast;

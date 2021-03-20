@@ -4,7 +4,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 
 import Modal from '../Modal';
 
-export default props => {
+const WarningModal = props => {
 
   return (
     <Modal
@@ -16,3 +16,5 @@ export default props => {
     />
   );
 }
+
+export default WarningModal;

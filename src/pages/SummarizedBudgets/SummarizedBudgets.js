@@ -35,7 +35,7 @@ const SummarizedBudgets = () => {
     if (date.year !== "" && date.month !== "") {
       dispatch(fetchSummarizedBudgets({ buildingNameEng, date }));
     }
-  }, [date]);
+  }, [buildingNameEng, dispatch, date]);
 
   return <Page>
     <PageHeader building={buildingName} page={PAGE_TITLE} />

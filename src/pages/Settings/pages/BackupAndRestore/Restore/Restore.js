@@ -2,7 +2,7 @@
 import React, { useEffect, Fragment, useState } from 'react';
 import { Typography, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { Restore } from '@material-ui/icons';
+import { Restore as Res } from '@material-ui/icons';
 
 // CSS
 import {
@@ -33,7 +33,7 @@ import PrimaryButton from '../../../../../components/buttons/PrimaryButton';
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
-export default () => {
+const Restore = () => {
 
   const dispatch = useDispatch();
 
@@ -66,7 +66,7 @@ export default () => {
     const newLocaleDateTime = locale.slice(0, locale.length - 3);
     return <MenuItem value={backup.fileName} key={index}>{newLocaleDateTime}</MenuItem>
   }) : <MenuItem value="לא קיימים גיבויים שמורים" disabled>
-      לא קיימים גיבויים
+    לא קיימים גיבויים
 </MenuItem>;
 
   const onBackupDateChangeHandler = (event) => {
@@ -154,10 +154,12 @@ export default () => {
 
     <ExpandableSection
       title={"שיחזור בסיס נתונים"}
-      Icon={Restore}
+      Icon={Res}
       bgColor={"#0365a2"}
     >
       {render}
     </ExpandableSection>
   );
 }
+
+export default Restore;

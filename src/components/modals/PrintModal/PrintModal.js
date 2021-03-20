@@ -80,7 +80,7 @@ const tableHeaderDate = css`
       font-size: 16px;
     `;
 
-export default props => {
+const PrintModal = props => {
   const {
     //title,
     pageTitle,
@@ -162,3 +162,5 @@ export default props => {
     </Modal>
   );
 }
+
+export default PrintModal;

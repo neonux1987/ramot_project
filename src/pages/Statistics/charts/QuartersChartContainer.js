@@ -38,7 +38,7 @@ const QuartersChartContainer = props => {
     }
 
     return dispatch(fetchAllQuartersStatsByYear(params));
-  }, [dispatch, buildingNameEng, pageName, date.year]);
+  }, [dispatch, buildingNameEng, pageName, date]);
 
   const fetchAndPrepareData = useCallback(async () => {
     const promise = await fetchMonthsData();

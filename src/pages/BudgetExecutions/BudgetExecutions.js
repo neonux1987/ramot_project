@@ -42,7 +42,7 @@ const BudgetExecutions = () => {
 
       dispatch(fetchBudgetExecutions(buildingInfo, date));
     }
-  }, [date]);
+  }, [dispatch, buildingNameEng, buildingName, date]);
 
   return <Page>
     <PageHeader building={buildingName} page={PAGE_TITLE} />

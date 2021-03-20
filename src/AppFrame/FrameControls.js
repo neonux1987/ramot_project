@@ -37,10 +37,6 @@ const icon = css`
   font-size: 20px;
 `;
 
-const minimizeIcon = css`
-  margin-bottom: 3px;
-`;
-
 const maximizeIcon = css`
   font-size: 18px;
   margin-top: 0px;

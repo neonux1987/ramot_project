@@ -1,9 +1,6 @@
 // LIBRARIES
 import React from 'react';
 
-// CSS
-import styles from './BackupAndRestore.module.css';
-
 // CONTAINERS
 import BackupContainer from './Backup/BackupContainer';
 import Restore from './Restore/Restore';

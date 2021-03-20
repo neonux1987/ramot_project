@@ -15,7 +15,7 @@ import {
 import SliderWithSound from '../../../../../../componentsWithSound/SliderWithSound/SliderWithSound';
 import SwitchWithSound from '../../../../../../componentsWithSound/SwitchWithSound/SwitchWithSound';
 
-export default ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur, soundManager }) => {
+const Sound = ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur }) => {
 
   const [sliderValue, setSliderValue] = useState(soundVolume);
 
@@ -73,3 +73,5 @@ export default ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur, soundMa
     </div>
   );
 }
+
+export default Sound;

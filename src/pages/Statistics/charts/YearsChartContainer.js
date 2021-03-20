@@ -45,7 +45,7 @@ const YearsChartContainer = props => {
     }
 
     return dispatch(fetchYearStatsByYearRange(params));
-  }, [dispatch, buildingNameEng, pageName, date.year]);
+  }, [dispatch, buildingNameEng, pageName, date.fromYear, date.toYear]);
 
   const fetchAndPrepareData = useCallback(async (date) => {
     const promise = await fetchData(date);
@@ -81,7 +81,7 @@ const YearsChartContainer = props => {
     }
 
     setReady(() => true);
-  }, [fetchData, date]);
+  }, [fetchData]);
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingNameEng }));
@@ -90,7 +90,7 @@ const YearsChartContainer = props => {
 
   // load on start the previous selected data
   useEffect(() => {
-    fetchAndPrepareData(date)
+    fetchAndPrepareData(date);
   }, []);
 
   const submit = (date) => {

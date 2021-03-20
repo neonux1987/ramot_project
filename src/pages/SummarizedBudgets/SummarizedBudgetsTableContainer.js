@@ -10,7 +10,6 @@ import {
 
 // UTILS
 import Helper from '../../helpers/Helper';
-import { areEqual } from '../util';
 
 // CONTEXT
 import ThemeContext from '../../context/ThemeContext';

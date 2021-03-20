@@ -2,7 +2,7 @@ import React from 'react';
 
 import InfoModal from '../modalTypes/InfoModal';
 
-export default props => {
+const LeaveWithoutSavingModal = props => {
 
   return (
     <InfoModal
@@ -14,3 +14,5 @@ export default props => {
     />
   );
 }
+
+export default LeaveWithoutSavingModal;

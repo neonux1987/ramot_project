@@ -106,7 +106,7 @@ const updateVatInStore = function (vat) {
   }
 };
 
-export default {
+const generalSettingsActions = {
   fetchGeneralSettings,
   updateGeneralSettings,
   fetchingFailed,
@@ -114,3 +114,5 @@ export default {
   requestGeneralSettings,
   updateVat
 };
+
+export default generalSettingsActions;

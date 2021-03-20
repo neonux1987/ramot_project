@@ -12,7 +12,7 @@ const initState = {
   }
 }
 
-export default (state = initState, action) => {
+const routesReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.ROUTES_UPDATE: return {
       ...state,
@@ -28,3 +28,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default routesReducer;

@@ -1,6 +1,5 @@
 // LIBRARIES
 import React, { useState } from 'react';
-import { Select, Button, MenuItem } from '@material-ui/core';
 import { Description } from '@material-ui/icons';
 
 // COMPONENTS

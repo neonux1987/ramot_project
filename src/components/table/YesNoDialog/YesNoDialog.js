@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './YesNoDialog.module.css';
 import { Done, Close } from '@material-ui/icons';
 
-export default ({ show, closeDialog, deleteHandler }) => {
+const YesNoDialog = ({ closeDialog, deleteHandler }) => {
 
   return <div className={styles.dialog}>
     <button onClick={() => {
@@ -12,3 +12,5 @@ export default ({ show, closeDialog, deleteHandler }) => {
     <button onClick={closeDialog} className={styles.btn + " " + styles.close}><Close style={{ fontSize: "22px" }} /></button>
   </div>
 }
+
+export default YesNoDialog;

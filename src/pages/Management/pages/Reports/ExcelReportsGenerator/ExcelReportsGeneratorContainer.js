@@ -1,30 +1,13 @@
 // LIBRARIES
-import React, { useState, useEffect, Fragment } from 'react';
-import { Button, MenuItem, Typography, Select, } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RiFileExcel2Line } from 'react-icons/ri';
 
 // UTILS
 import Helper from '../../../../../helpers/Helper';
-import classnames from 'classnames';
 
 // SERVICES
 import { exportToExcelBulk } from '../../../../../services/excel.svc';
-
-// COMPONENTS
-import StyledExpandableSection from '../../../../../components/Section/StyledExpandableSection';
-import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
-
-//CSS
-import {
-  subtitle,
-  paddingLeft,
-  select,
-  createBtn,
-  description,
-  descriptionText,
-  error
-} from './ExcelReportsGenerator.module.css';
 
 // ACTIONS
 import { fetchRegisteredReportsGroupedByYear, fetchRegisteredReportsByYear } from '../../../../../redux/actions/registeredReportsActions';

@@ -9,7 +9,7 @@ import SubtitleBoldTypography from '../../../../../../components/Typographies/Su
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
-export default props => {
+const RestoreFromList = props => {
 
   const {
     selectedBackupDate,
@@ -52,3 +52,5 @@ export default props => {
     </div>
   );
 }
+
+export default RestoreFromList;

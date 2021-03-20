@@ -2,7 +2,7 @@ const initState = {
   showSidebar: true
 }
 
-export default (state = initState, action) => {
+const toggleSidebarReducer = (state = initState, action) => {
   switch (action.type) {
     case "SIDEBAR_TOGGLE":
       return {
@@ -12,3 +12,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default toggleSidebarReducer;

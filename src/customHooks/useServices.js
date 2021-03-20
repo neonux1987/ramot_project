@@ -1,5 +1,4 @@
 import ToastRender from '../components/ToastRender/ToastRender';
-import { soundManager } from '../soundManager/SoundManager';
 import { toastManager } from '../toasts/toastManager';
 
 // ELECTRON

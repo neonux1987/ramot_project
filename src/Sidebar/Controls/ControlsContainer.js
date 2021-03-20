@@ -2,7 +2,6 @@ import React from 'react';
 import VolumeButton from '../../Main/Toolbar/VolumeButton/VolumeButton';
 import MoreButton from '../../Main/Toolbar/MoreButton/MoreButton';
 import MoreMenu from '../../Main/Toolbar/MoreMenu/MoreMenu';
-import { useSelector } from 'react-redux';
 import EditVatModal from '../../components/modals/EditVatModal/EditVatModal';
 import useModalLogic from '../../customHooks/useModalLogic';
 import { restartApp } from '../../services/mainProcess.svc'
@@ -61,8 +60,6 @@ const ControlsContainer = ({ routes }) => {
     handleClose();
     showModal(EditVatModal);
   }
-
-  const themeSettings = useSelector(store => store.settings.data.theme);
 
   const restartAppHandler = () => {
     restartApp();

@@ -5,10 +5,12 @@ const style = css`
   padding: 20px;
 `;
 
-export default props => {
+const Wrapper = props => {
   const { children, className = "" } = props;
 
   return <div {...props} className={`${style} ${className}`}>
     {children}
   </div>
 }
+
+export default Wrapper;

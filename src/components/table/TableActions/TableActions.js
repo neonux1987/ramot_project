@@ -3,7 +3,7 @@ import { DeleteForever } from '@material-ui/icons';
 import styles from './TableActions.module.css';
 import YesNoDialog from '../YesNoDialog/YesNoDialog';
 
-export default (props) => {
+const TableActions = props => {
 
   const [showDialog, setShowDialog] = React.useState(false);
 
@@ -27,3 +27,5 @@ export default (props) => {
   );
 
 }
+
+export default TableActions;

@@ -21,7 +21,7 @@ import { setDirty } from '../../../../../redux/actions/goodByeActions';
 
 const SETTINGS_NAME = "user";
 
-export default () => {
+const UserContainer = () => {
   const dispatch = useDispatch();
 
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
@@ -83,3 +83,5 @@ export default () => {
     </SettingsExpandableSection >
   );
 }
+
+export default UserContainer;

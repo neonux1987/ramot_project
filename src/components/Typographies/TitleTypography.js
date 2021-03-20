@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import { css } from 'emotion';
 
-export default ({
+const TitleTypography = ({
   fontWeight = "600",
   underline = true,
   gutterBottom = "20px",
@@ -22,3 +22,5 @@ export default ({
     {children}
   </Typography>
 }
+
+export default TitleTypography;

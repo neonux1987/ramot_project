@@ -7,7 +7,7 @@ const initState = {
   data: {}
 }
 
-export default (state = initState, action) => {
+const servicesReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.SERVICES_RECEIVE:
       return {
@@ -74,3 +74,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default servicesReducer;

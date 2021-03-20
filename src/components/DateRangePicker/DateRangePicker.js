@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MenuItem } from '@material-ui/core';
 import Select from '../Select/Select';
 import FormWrapper from '../FormWrapper/FormWrapper';

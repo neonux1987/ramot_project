@@ -10,20 +10,20 @@ const YearOnlyDatePicker = ({
 }) => {
   const dispatch = useDispatch();
 
-  const years = useSelector(store => store.registeredYears[buildingNameEng].data);
+  const years = useSelector(store => store.registeredYears[buildingNameEng]);
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingNameEng }));
   }, [buildingNameEng, dispatch]);
 
   const onChange = (name, value) => {
-
     dispatch(updateDate(buildingNameEng, { [name]: value }));
   };
 
   return <DatePicker
     date={date}
-    yearsList={years}
+    yearsList={years.data}
+    yearsLoading={years.isFetching}
     onChange={onChange}
   />
 

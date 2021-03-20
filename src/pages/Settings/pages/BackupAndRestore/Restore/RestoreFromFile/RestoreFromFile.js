@@ -11,7 +11,7 @@ import {
 } from './RestoreFromFile.module.css';
 import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
 
-export default props => {
+const RestoreFromFile = props => {
 
   const {
     selectDbFileHandler,
@@ -49,3 +49,5 @@ export default props => {
     </div>
   );
 }
+
+export default RestoreFromFile;

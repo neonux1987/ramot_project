@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useColumnUpdate from '../../../customHooks/useColumnUpdate';
 import { css } from 'emotion';
 

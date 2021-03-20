@@ -6,7 +6,7 @@ const initState = {
   }
 }
 
-export default (state = initState, action) => {
+const TableSettingsReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.TABLE_SETTINGS_RECEIVE:
       return {
@@ -91,3 +91,5 @@ export default (state = initState, action) => {
     default: return state;
   }
 }
+
+export default TableSettingsReducer;

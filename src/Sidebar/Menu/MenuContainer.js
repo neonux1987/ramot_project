@@ -91,9 +91,9 @@ const MenuContainer = ({ routes, history }) => {
     // that it's the home page, in that case don't set
     // open state
     if (buildingNameEng !== "")
-      setState(() => {
+      setState(prevState => {
         return {
-          ...state,
+          ...prevState,
           [buildingNameEng]: {
             open: true
           }
