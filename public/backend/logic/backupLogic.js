@@ -2,7 +2,6 @@ const fse = require('fs-extra');
 const SettingsLogic = require('./SettingsLogic');
 const RegisteredBackupsLogic = require('./RegisteredBackupsLogic');
 const ServiceError = require('../customErrors/ServiceError');
-const connectionPool = require('../connection/ConnectionPool');
 const logManager = require('../logger/LogManager');
 const DbError = require('../customErrors/DbError');
 const SystemPaths = require('../system/SystemPaths');
@@ -25,6 +24,8 @@ class BackupLogic {
    * dont back it up
   *****************************************************/
   async checkDbHealth() {
+    const connectionPool = require('../connection/ConnectionPool');
+
     const connection = await connectionPool.getConnection();
     return await connection('buildings').count()
       .catch((error) => {

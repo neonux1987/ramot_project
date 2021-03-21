@@ -17,28 +17,29 @@ const DatePicker = ({
 }) => {
 
   const [selectDate, setDate] = useState({
-    year: date.year,
-    quarter: date.quarter,
-    month: date.month
+    year: "",
+    quarter: "",
+    month: ""
   });
 
-  /* useEffect(() => {
+  useEffect(() => {
     setDate(() => ({
       year: date.year,
       quarter: date.quarter,
       month: date.month
     }));
-  }, [date]); */
+  }, [date]);
 
   const internalOnChange = useCallback((event) => {
     const { value, name } = event.target;
     const newValue = name === "year" ? Number.parseInt(value) : value;
 
     if (name === "year")
-      setDate(() => ({
+      setDate(prevSelectDate => ({
+        ...prevSelectDate,
         year: newValue,
-        quarter: "",
-        month: ""
+        month: "",
+        quarter: ""
       }));
     else
       setDate(prevSelectDate => ({
@@ -53,10 +54,12 @@ const DatePicker = ({
   const renderMonths = () => month && <Select
     name="month"
     label={"חודש:"}
-    value={monthsList.length === 0 ? "" : selectDate.month}
+    value={selectDate.month}
     onChange={internalOnChange}
     disabled={monthsList.length === 0 ? true : false}
     loading={monthsFetching}
+    displayEmpty={selectDate.month === ""}
+    emptyLabel={"בחר חודש"}
   >
     {monthsList.map((month) => {
       return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
@@ -67,10 +70,10 @@ const DatePicker = ({
   const renderQuarters = () => quarter && <Select
     name="quarter"
     label={"רבעון:"}
-    value={quartersList.length === 0 ? "" : selectDate.quarter}
+    value={selectDate.quarter}
     onChange={internalOnChange}
     disabled={quartersList.length === 0 ? true : false}
-    displayEmpty
+    displayEmpty={date.quarter === ""}
     emptyLabel={"בחר רבעון"}
     loading={quartersFetching}
   >
@@ -83,9 +86,9 @@ const DatePicker = ({
   const renderYears = <Select
     name="year"
     label={"שנה:"}
-    value={yearsList.length === 0 ? "" : selectDate.year}
+    value={selectDate.year}
     onChange={internalOnChange}
-    displayEmpty
+    displayEmpty={selectDate.year === ""}
     emptyLabel={"בחר שנה"}
     loading={yearsFetching}
   >

@@ -1,12 +1,8 @@
-const FileType = require('file-type');
-const fse = require('fs-extra');
 const LogicError = require('../customErrors/LogicError');
-const connectionPool = require('../connection/ConnectionPool');
 const SettingsLogic = require('../logic/SettingsLogic');
 const path = require('path');
 
 const EXT = "sqlite";
-const DB_BACKUP_FILENAME = "mezach-db-backup-D-";
 
 class RestoreDbLogic {
 
@@ -29,6 +25,10 @@ class RestoreDbLogic {
   }
 
   async restore(path) {
+    const FileType = require('file-type');
+    const fse = require('fs-extra');
+    const connectionPool = require('../connection/ConnectionPool');
+
     const fileType = await FileType.fromFile(path);
     if (fileType === undefined || fileType.ext !== EXT)
       throw new LogicError(`הקובץ שבחרת הוא לא קובץ בסיס נתונים מסוג ${EXT}`);

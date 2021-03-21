@@ -3,7 +3,6 @@ const MainProcessLogic = require('../../backend/logic/MainProcessLogic');
 const SystemPaths = require('../../backend/system/SystemPaths');
 const LoggerError = require('../../backend/customErrors/LoggerError');
 const { openLogFile } = require('../../helpers/utils');
-const fs = require('fs');
 
 const mainProcessIpc = () => {
 
@@ -24,6 +23,8 @@ const mainProcessIpc = () => {
   });
 
   process.on("uncaughtException", async (error, origin) => {
+    const fs = require('fs');
+
     const loggerError = new LoggerError({
       name: "MainProcess",
       message: "קרתה תקלה לא ידועה",

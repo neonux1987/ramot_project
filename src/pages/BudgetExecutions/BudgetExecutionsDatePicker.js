@@ -33,6 +33,15 @@ const BudgetExecutionsDatePicker = ({
     //eslint-disable-next-line
   }, []);
 
+  const quarterExist = (month, data) => {
+    let exist = false;
+    data.forEach((item) => {
+      if (month === item.month)
+        exist = true;
+    });
+    return exist;
+  }
+
   const onChange = (name, value) => {
 
     if (name === "year") {
@@ -43,7 +52,12 @@ const BudgetExecutionsDatePicker = ({
         date: {
           year: value
         }
-      }));
+      })).then(({ data }) => {
+        // load the same quarter of the previous year if exist in the chosen year
+        // if not load just the first quarter availble in the list
+        const quarter = quarterExist(date.quarter, data) ? date.quarter : data[0].quarter;
+        dispatch(updateDate(buildingNameEng, { year: value, quarter }));
+      });
     }
     else {
       dispatch(updateDate(buildingNameEng, { year: localYear, quarter: value }));

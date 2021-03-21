@@ -1,7 +1,7 @@
 const { ipcMain } = require('electron');
 const { exportExcel, exportExcelBulk } = require('../../backend/services/excel/excelSvc');
 
-const excelIpc = (connection) => {
+const excelIpc = () => {
 
   ipcMain.on('export-to-excel', (event, { buildingName, buildingNameEng, pageName, fileName, date, data }) => {
     exportExcel(buildingName, buildingNameEng, pageName, fileName, date, data).then((result) => {

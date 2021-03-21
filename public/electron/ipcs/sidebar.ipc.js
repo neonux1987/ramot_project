@@ -1,10 +1,10 @@
 const { ipcMain } = require('electron');
 const MenuDao = require('../../backend/dao/MenuDao');
 
-const sidearIpc = (connection) => {
+const sidearIpc = () => {
 
   //prepare renderer menu
-  const menuDao = new MenuDao(connection);
+  const menuDao = new MenuDao();
 
   ipcMain.on("get-menu", (event, arg) => {
     menuDao.getMenu().then((result) => {

@@ -2,18 +2,6 @@
 const monthExpansesWorkbook = require('./workbooks/monthExpansesWorkbook');
 const budgetExecutionWorkbook = require('./workbooks/budgetExecutionWorkbook');
 const summarizedBudgetsWorkbook = require('./workbooks/summarizedBudgetsWorkbook');
-const SettingsLogic = require('../../logic/SettingsLogic');
-const MonthExpansesLogic = require('../../logic/MonthExpansesLogic');
-const BudgetExecutionLogic = require('../../logic/BudgetExecutionLogic');
-const SummarizedBudgetLogic = require('../../logic/SummarizedBudgetLogic');
-const BuildingsDao = require('../../dao/BuildingsDao');
-const RegisteredMonths = require('../../logic/RegisteredMonthsLogic');
-const ServiceError = require('../../customErrors/ServiceError');
-
-const fse = require('fs-extra');
-const path = require('path');
-
-const { asyncForEach } = require('../../../helpers/utils');
 
 const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, date, data) => {
   // fill the workbook with data
@@ -24,6 +12,19 @@ const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, da
 }
 
 const exportExcelBulk = async (date) => {
+  const fse = require('fs-extra');
+  const path = require('path');
+
+  const SettingsLogic = require('../../logic/SettingsLogic');
+  const MonthExpansesLogic = require('../../logic/MonthExpansesLogic');
+  const BudgetExecutionLogic = require('../../logic/BudgetExecutionLogic');
+  const SummarizedBudgetLogic = require('../../logic/SummarizedBudgetLogic');
+  const BuildingsDao = require('../../dao/BuildingsDao');
+  const RegisteredMonths = require('../../logic/RegisteredMonthsLogic');
+  const ServiceError = require('../../customErrors/ServiceError');
+
+  const { asyncForEach } = require('../../../helpers/utils');
+
   const { year, quarter, quarterHeb } = date;
 
   const settingsLogic = new SettingsLogic();

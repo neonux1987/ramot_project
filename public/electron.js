@@ -1,13 +1,14 @@
-//========================= electron imports =========================//
+//========================= Libraries =========================//
+require('v8-compile-cache');
 const { app, BrowserWindow, powerMonitor } = require('electron');
-
-//========================= services =========================//
-const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
-const mainSystem = require('./backend/system/MainSystem');
 const os = require('os');
 const path = require('path');
 const isDev = require('electron-is-dev');
 const contextMenu = require('electron-context-menu');
+
+//========================= services =========================//
+const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
+const mainSystem = require('./backend/system/MainSystem');
 
 //token
 process.env.GH_TOKEN = "f55ef78253864c051c9520dca400f7a8313ff8fa";

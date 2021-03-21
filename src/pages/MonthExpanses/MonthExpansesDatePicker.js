@@ -37,6 +37,15 @@ const MonthExpansesDatePicker = ({
     //eslint-disable-next-line
   }, []);
 
+  const monthExist = (month, data) => {
+    let exist = false;
+    data.forEach((item) => {
+      if (month === item.month)
+        exist = true;
+    });
+    return exist;
+  }
+
   const onChange = (name, value) => {
 
     if (name === "year") {
@@ -48,9 +57,10 @@ const MonthExpansesDatePicker = ({
           year: value
         }
       })).then(({ data }) => {
-        console.log(data[0].monthHeb);
-        // load first available month
-        dispatch(updateDate(buildingNameEng, { year: value, month: data[0].monthHeb }));
+        // load the same month of the previous year if exist in the chosen year
+        // if not load just the first month availble in the list
+        const month = monthExist(date.month, data) ? date.month : data[0].month;
+        dispatch(updateDate(buildingNameEng, { year: value, month }));
       });
     }
     else {

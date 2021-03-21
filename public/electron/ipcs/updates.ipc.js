@@ -1,7 +1,6 @@
 const { ipcMain, BrowserWindow } = require('electron');
 const { autoUpdater, CancellationToken } = require('electron-updater');
 const isDev = require('electron-is-dev');
-const fse = require('fs-extra');
 const logManager = require('../../backend/logger/LogManager');
 
 const updatesIpc = () => {
@@ -96,6 +95,8 @@ const updatesIpc = () => {
   });
 
   ipcMain.on('delete-update', (event, path) => {
+    const fse = require('fs-extra');
+
     fse.remove(path).then(() => {
       currentWindow.webContents.send('update_deleted', { data: {} });
     }).catch((error) => {
