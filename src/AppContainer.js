@@ -54,11 +54,6 @@ const AppContainer = () => {
     start();
   }, [start]);
 
-  /*  useEffect(() => {
-     // play welcome melody on app start
-     play(types.welcome);
-   }, []); */
-
   if (menu.isFetching || generalSettings.isFetching) {
     return <AlignCenterMiddle>
       <LogoLoader />

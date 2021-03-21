@@ -75,13 +75,13 @@ const StyledSection = ({
   return <div className={_container}>
 
     {/* header */}
-    <div role="header" className={_header}>
+    <div className={_header}>
 
       {/* title box */}
-      <div role="title box" className={classnames(_titleBox, css`background-Color: ${bgColor}`)}>
+      <div className={classnames(_titleBox, css`background-Color: ${bgColor}`)}>
 
         {/* icon */}
-        <div role="icon" className={_iconWrapper}>
+        <div className={_iconWrapper}>
           <Icon className={_icon} />
         </div>
         {/* end icon */}
@@ -90,13 +90,13 @@ const StyledSection = ({
       {/* end title box */}
 
       {/* title */}
-      <div role="title" className={_titleWrapper}>
+      <div className={_titleWrapper}>
         <Typography className={_titleTypography} variant="h6">{title}</Typography>
       </div>
       {/* end title */}
 
       {/* extra details */}
-      <div role="extra details" className={_extraDetails}>
+      <div className={_extraDetails}>
         {extraDetails}
       </div>
       {/* end extra details */}
@@ -105,7 +105,7 @@ const StyledSection = ({
     {/* end header */}
 
     {/* content */}
-    <div role="content" className={_content}>
+    <div className={_content}>
       {children}
     </div>
     {/* end content */}

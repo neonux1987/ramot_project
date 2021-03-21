@@ -36,7 +36,7 @@ const YearsChartContainer = props => {
     series: []
   });
 
-  const fetchData = useCallback((date) => {
+  const fetchData = useCallback(() => {
     const params = {
       buildingName: buildingNameEng,
       pageName,
@@ -47,8 +47,8 @@ const YearsChartContainer = props => {
     return dispatch(fetchYearStatsByYearRange(params));
   }, [dispatch, buildingNameEng, pageName, date.fromYear, date.toYear]);
 
-  const fetchAndPrepareData = useCallback(async (date) => {
-    const promise = await fetchData(date);
+  const fetchAndPrepareData = useCallback(async () => {
+    const promise = await fetchData();
 
     if (promise !== undefined) {
 
@@ -90,7 +90,8 @@ const YearsChartContainer = props => {
 
   // load on start the previous selected data
   useEffect(() => {
-    fetchAndPrepareData(date);
+    fetchAndPrepareData();
+    //eslint-disable-next-line
   }, []);
 
   const submit = (date) => {

@@ -114,7 +114,7 @@ const TopChartContainer = props => {
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching && !ready} >
       <HorizontalColumnChart
-        title={`טופ 10 סעיפים - (${date.fromYear}-${date.toYear})`}
+        title={`טופ 10 הוצאות - (${date.fromYear}-${date.toYear})`}
         series={chartData.series}
         categories={chartData.labels}
       />

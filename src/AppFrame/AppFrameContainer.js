@@ -24,7 +24,7 @@ const AppFrameContainer = ({ settings }) => {
 
   const onClose = async () => {
     const { isFetching, data } = settings;
-    const { backup_on_exit, enabled } = data.db_backup;
+    const { backup_on_exit } = data.db_backup;
 
     // exit without backup if the option
     // selected in settings

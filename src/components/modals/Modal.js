@@ -9,13 +9,14 @@ import useModalLogic from '../../customHooks/useModalLogic';
 import { css } from 'emotion';
 import ModalButton from '../buttons/ModalButton';
 
-const dialog = css`
-  width: 500px;
-`;
-
-const header = css`
+const _header = css`
   display: flex; 
   align-items: center;
+`;
+
+const _dialogTitle = css`
+  padding-right: 12px;
+  flex: initial;
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -83,13 +84,14 @@ const Modal = (props) => {
     fullWidth
     maxWidth="xs"
   >
-    <div className={header}>
-      <Icon style={{
-        margin: "16px 24px 16px 0",
-        color: iconColor,
-        fontSize: "28px",
-      }} />
-      <DialogTitle id="alert-dialog-slide-title" style={{ paddingRight: "12px", flex: "initial" }}>{title}</DialogTitle>
+    <div className={_header}>
+      <Icon className={css`
+        margin: 16px 24px 16px 0;
+        color: ${iconColor};
+        font-size: 28px;
+      `}
+      />
+      <DialogTitle id="alert-dialog-slide-title" classes={{ root: _dialogTitle }}>{title}</DialogTitle>
     </div>
 
     <DialogContent>
