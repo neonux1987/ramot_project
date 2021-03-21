@@ -12,35 +12,39 @@ const style = css`
 const button = css`
   border: none;
   background: none;
-  margin-right: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
   outline: none;
-  margin-left: 4px;
-  width: 40px;
+  width: 42px;
   height: 36px;
   border-radius: 0;
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
 
   :hover{
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(0, 0, 0, 0.06);
   }
 `;
 
 const close = css`
-  margin-left: 0;
+  margin-left: -4px;
+
+  :hover{
+    background: red;
+    color: #ffffff;
+  }
 `;
 
 const icon = css`
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const maximizeIcon = css`
-  font-size: 18px;
+  font-size: 16px;
   margin-top: 0px;
 `;
+
 
 const FrameControls = ({ onMinimize, onMaximize, onClose }) => {
 

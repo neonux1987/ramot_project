@@ -3,7 +3,7 @@ import { css } from 'emotion';
 
 const style = css`
   position: absolute;
-  height: 32px;
+  height: 30px;
   display: flex;
   top: 4px;
   left: 4px;
