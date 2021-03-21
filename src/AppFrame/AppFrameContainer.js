@@ -26,14 +26,21 @@ const AppFrameContainer = ({ settings }) => {
     const { isFetching, data } = settings;
     const { backup_on_exit, enabled } = data.db_backup;
 
+    // exit without backup if the option
+    // selected in settings
+    if (backup_on_exit === false) {
+      quitApp();
+      return Promise.resolve();
+    }
+
     /* start showModal */
     showModal(BackupOnExitModal, {
       onAgreeHandler: async () => {
 
         // in case the backend stopped working
         // allow to close the app without backing up
-        if ((isFetching && data.length === 0) || backup_on_exit === false || enabled === false) {
-          //quitApp();
+        if (isFetching && data.length === 0) {
+          quitApp();
           return Promise.resolve();
         }
 
