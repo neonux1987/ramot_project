@@ -8,11 +8,12 @@ const container = css`
   display: flex;
   align-items: center;
   -webkit-user-select: none;
+  margin-top: 1px;
 `;
 
 const image = css`
-  width:20px;
-  height: 20px;
+  width:22px;
+  height: 22px;
 `;
 
 const title = css`

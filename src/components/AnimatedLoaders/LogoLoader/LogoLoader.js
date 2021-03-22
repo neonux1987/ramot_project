@@ -1,44 +1,50 @@
 import React from 'react';
-import BarLoader from 'react-spinners/BarLoader';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 import logo from '../../../assets/images/ramot group.png';
 import { css, keyframes } from 'emotion';
+import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
 
 const container = css`
   background: #efefef;
-  padding: 50px;
-  box-shadow: 0 0 4px 4px #00000003;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-`;
-const spin = keyframes`
-  0% { -webkit-transform: rotateY(0deg); }
-  100% { -webkit-transform: rotateY(360deg); }
+  flex-direction: column;
 `;
 
-const override = css`
-  background-color: #000;
+const imageWrapper = css`
+  /* height: 88px; */
+  overflow: hidden;
+  margin-bottom: 10px;
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  /* box-shadow: 0px -5px 4px -4px #0000001a inset; */
+`;
+
+const spin = keyframes`
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
 `;
 
 const LogoLoader = (props) => {
   return (
-    <div className={container}>
-      <img
-        className={css`
-        animation: ${spin} 3s linear infinite;
+    <AlignCenterMiddle className={container}>
+      <div className={imageWrapper}>
+        <img
+          className={css`
+          animation: ${spin} 3s linear infinite;
+          filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.19));
       `}
-        src={logo}
-        width="100px"
-        height="100px"
-        alt="spinning loader"
-      />
-      <BarLoader
-        width={100}
-        height={4}
+          src={logo}
+          width="100px"
+          height="100px"
+          alt="spinning loader"
+        />
+      </div>
+      <PropagateLoader
+        size={15}
         loading={props.loading}
         color={"#0365a2"}
-        css={override}
       />
-    </div>
+    </AlignCenterMiddle>
   );
 }
 

@@ -11,8 +11,8 @@ import { updateDate, fetchTopIncomeOutcome } from '../../../redux/actions/topCha
 // COMPONENTS
 import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
-import HorizontalColumnChart from '../../../components/charts/HorizontalColumnChart';
 import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
+import BarChart from '../../../components/charts/BarChart';
 
 
 const container = css`
@@ -68,11 +68,13 @@ const TopChartContainer = props => {
           series: [
             {
               name: "הוצאות",
-              data: outcomeData
+              data: outcomeData,
+              color: "#30a3fc"
             },
             {
               name: "הכנסות",
-              data: incomeData
+              data: incomeData,
+              color: "#30e8aa"
             }
           ]
         };
@@ -113,8 +115,8 @@ const TopChartContainer = props => {
     />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching && !ready} >
-      <HorizontalColumnChart
-        title={`טופ 10 הוצאות - (${date.fromYear}-${date.toYear})`}
+      <BarChart
+        title={`טופ 10 הוצאות מ- ${date.fromYear} עד- ${date.toYear}`}
         series={chartData.series}
         categories={chartData.labels}
       />

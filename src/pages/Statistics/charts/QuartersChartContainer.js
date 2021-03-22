@@ -61,11 +61,13 @@ const QuartersChartContainer = props => {
           series: [
             {
               name: "הוצאות",
-              data: outcomeData
+              data: outcomeData,
+              color: "#30a3fc"
             },
             {
               name: "הכנסות",
-              data: incomeData
+              data: incomeData,
+              color: "#30e8aa"
             }
           ]
         };

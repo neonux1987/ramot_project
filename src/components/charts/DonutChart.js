@@ -1,56 +1,41 @@
 import React from 'react';
-import ReactApexChart from 'react-apexcharts';
+import Chart from './Chart';
 
-const DonutChart = ({ labels = [], series, options, width = "130px" }) => {
+const DonutChart = props => {
 
-  return <ReactApexChart
+  return <Chart
     options={{
-      chart: {
-        type: 'donut',
-        fontFamily: "Assistant, sans-serif"
-      },
-      labels: labels,
-      plotOptions: {
-        pie: {
-          //customScale: 1,
-          donut: {
-            value: {
-              show: true
-            }
-          }
-        }
-      },
-      dataLabels: {
+      credits: {
         enabled: false
       },
-      legend: {
-        show: false
+      chart: {
+        type: "pie",
+        width: 150,
+        height: 150
       },
-      responsive: [{
-        breakpoint: 1400,
-        options: {
-          chart: {
-            width: 130,
-            height: 130
+      exporting: {
+        enabled: false
+      },
+      plotOptions: {
+        pie: {
+          showInLegend: false,
+          innerSize: "60%",
+          dataLabels: {
+            enabled: false,
           },
-          legend: {
-            position: 'right'
-          }
+          size: 120,
+          enableMouseTracking: false
         }
-      }],
-      tooltip: {
-        enabled: true,
-        onDatasetHover: {
-          highlightDataSeries: false,
-        },
       },
-      ...options
+      title: {
+        text: ""
+      },
+      series: props.series,
+      tooltip: {
+        enabled: false
+      }
     }}
-    series={series}
-    type="donut"
-    width={width}
-    height="130px"
-  />
+  />;
 
 }
 

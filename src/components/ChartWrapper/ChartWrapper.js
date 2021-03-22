@@ -8,7 +8,7 @@ import Spinner from '../../components/Spinner/Spinner';
 
 const container = css`
   background: #ffffff;
-  margin-top: 20px;
+  margin: 20px 15px 0;
   min-height: 500px;
 `;
 

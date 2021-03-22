@@ -7,7 +7,6 @@ import AppWrapper from './components/AppWrapper/AppWrapper';
 // COMPONENTS
 import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './containers/ScrollToTop/ScrollToTop';
-import { AlignCenterMiddle } from './components/AlignCenterMiddle/AlignCenterMiddle';
 import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
 
 // CONTEXT
@@ -55,9 +54,7 @@ const AppContainer = () => {
   }, [start]);
 
   if (menu.isFetching || generalSettings.isFetching) {
-    return <AlignCenterMiddle>
-      <LogoLoader />
-    </AlignCenterMiddle>;
+    return <LogoLoader />;
   }
 
   return (

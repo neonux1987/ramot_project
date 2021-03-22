@@ -3,7 +3,6 @@ import DonutChart from '../charts/DonutChart';
 import StatBox from './StatBox/StatBox';
 import { css } from 'emotion';
 import classnames from 'classnames';
-import DonutChartV2 from '../charts/DonutChartV2';
 
 const wrapper = css`
   display: flex;
@@ -77,10 +76,10 @@ const DonutStatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#55
           <div className={text}>{incomeText}</div>
         </div>
       </div>
-      <DonutChartV2
+      <DonutChart
         series={[
           {
-            data: [{ name: "d", y: outcome, color: "#30a3fc" }, { name: "a", y: income, color: "#30e8aa" }]
+            data: [{ name: "הוצאות", y: outcome, color: "#30a3fc" }, { name: "הכנסות", y: income, color: "#30e8aa" }]
           }
         ]}
       />

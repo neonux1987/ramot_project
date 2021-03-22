@@ -42,7 +42,7 @@ const Statistics = props => {
     <PageHeader building={buildingName} page={PAGE_TITLE} />
 
     <StyledSection
-      title={`הוצאות והכנסות לפי ${selectedChart}`}
+      title={selectedChart}
       Icon={IoMdStats}
       extraDetails={<SectionNav onClick={onClick} active={selectedChart} />}
     >
@@ -58,19 +58,19 @@ export default Statistics;
 const SectionNav = ({ active, onClick }) => {
 
   return <div>
-    <Button onClick={() => onClick("חודשים")} className={active === "חודשים" ? activeClass : ""}>חודשים</Button>
-    <Button onClick={() => onClick("רבעונים")} className={active === "רבעונים" ? activeClass : ""}>רבעונים</Button>
-    <Button onClick={() => onClick("שנים")} className={active === "שנים" ? activeClass : ""}>שנים</Button>
-    <Button onClick={() => onClick("טופ")} className={active === "טופ" ? activeClass : ""}>טופ</Button>
+    <Button onClick={() => onClick("הוצאות והכנסות לפי חודשים")} className={active === "הוצאות והכנסות לפי חודשים" ? activeClass : ""}>חודשים</Button>
+    <Button onClick={() => onClick("הוצאות והכנסות לפי רבעונים")} className={active === "הוצאות והכנסות לפי רבעונים" ? activeClass : ""}>רבעונים</Button>
+    <Button onClick={() => onClick("הוצאות והכנסות לפי שנים")} className={active === "הוצאות והכנסות לפי שנים" ? activeClass : ""}>שנים</Button>
+    <Button onClick={() => onClick("טופ הוצאות")} className={active === "טופ הוצאות" ? activeClass : ""}>טופ</Button>
   </div>
 }
 
 function whichChart(name) {
   switch (name) {
-    case "חודשים": return MonthsChartContainer;
-    case "רבעונים": return QuartersChartContainer;
-    case "שנים": return YearsChartContainer;
-    case "טופ": return TopChartContainer;
+    case "הוצאות והכנסות לפי חודשים": return MonthsChartContainer;
+    case "הוצאות והכנסות לפי רבעונים": return QuartersChartContainer;
+    case "הוצאות והכנסות לפי שנים": return YearsChartContainer;
+    case "טופ הוצאות": return TopChartContainer;
     default: return MonthsChartContainer;
   }
 }

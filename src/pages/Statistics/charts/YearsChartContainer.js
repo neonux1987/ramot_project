@@ -36,7 +36,7 @@ const YearsChartContainer = props => {
     series: []
   });
 
-  const fetchData = useCallback(() => {
+  const fetchData = useCallback((date) => {
     const params = {
       buildingName: buildingNameEng,
       pageName,
@@ -45,10 +45,10 @@ const YearsChartContainer = props => {
     }
 
     return dispatch(fetchYearStatsByYearRange(params));
-  }, [dispatch, buildingNameEng, pageName, date.fromYear, date.toYear]);
+  }, [dispatch, buildingNameEng, pageName]);
 
-  const fetchAndPrepareData = useCallback(async () => {
-    const promise = await fetchData();
+  const fetchAndPrepareData = useCallback(async (date) => {
+    const promise = await fetchData(date);
 
     if (promise !== undefined) {
 
@@ -68,11 +68,13 @@ const YearsChartContainer = props => {
           series: [
             {
               name: "הוצאות",
-              data: outcomeData
+              data: outcomeData,
+              color: "#30a3fc"
             },
             {
               name: "הכנסות",
-              data: incomeData
+              data: incomeData,
+              color: "#30e8aa"
             }
           ]
         };
@@ -90,7 +92,7 @@ const YearsChartContainer = props => {
 
   // load on start the previous selected data
   useEffect(() => {
-    fetchAndPrepareData();
+    fetchAndPrepareData(date);
     //eslint-disable-next-line
   }, []);
 
@@ -115,7 +117,7 @@ const YearsChartContainer = props => {
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
       <ColumnChart
-        title={date.fromYear + "-" + date.toYear}
+        title={`מ- ${date.fromYear} עד- ${date.toYear}`}
         series={chartData.series}
         categories={chartData.labels}
       />

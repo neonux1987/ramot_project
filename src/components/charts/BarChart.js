@@ -10,20 +10,20 @@ const menuClassName = css`
   }
 `;
 
-const ColumnChart = ({ title = "", categories = [], series, options }) => {
+const BarChart = ({ title = "", categories = [], series }) => {
 
   return <ChartWithExporting
     options={{
       chart: {
-        type: "column",
+        type: "bar",
         style: {
           fontFamily: "Assistant, sans-serif"
         },
-        height: "450px"
+        height: "650px"
       },
       legend: {
         rtl: true,
-        reversed: true,
+        reversed: false,
         title: {
           style: {
             fontWeight: "500",
@@ -83,6 +83,7 @@ const ColumnChart = ({ title = "", categories = [], series, options }) => {
       },
       yAxis: {
         opposite: true,
+        reversed: true,
         title: {
           enabled: false
         },
@@ -90,12 +91,14 @@ const ColumnChart = ({ title = "", categories = [], series, options }) => {
         labels: {
           style: {
             fontSize: "14px"
-          }
+          },
+          opposite: true
         }
       },
       xAxis: {
         categories,
         crosshair: true,
+        opposite: true,
         labels: {
           style: {
             fontSize: "16px"
@@ -108,4 +111,4 @@ const ColumnChart = ({ title = "", categories = [], series, options }) => {
 
 }
 
-export default ColumnChart;
+export default BarChart;

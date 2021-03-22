@@ -54,7 +54,7 @@ const DatePicker = ({
   const renderMonths = () => month && <Select
     name="month"
     label={"חודש:"}
-    value={selectDate.month}
+    value={monthsList.length === 0 ? "" : selectDate.month}
     onChange={internalOnChange}
     disabled={monthsList.length === 0 ? true : false}
     loading={monthsFetching}
@@ -70,7 +70,7 @@ const DatePicker = ({
   const renderQuarters = () => quarter && <Select
     name="quarter"
     label={"רבעון:"}
-    value={selectDate.quarter}
+    value={quartersList.length === 0 ? "" : selectDate.quarter}
     onChange={internalOnChange}
     disabled={quartersList.length === 0 ? true : false}
     displayEmpty={date.quarter === ""}
@@ -86,7 +86,7 @@ const DatePicker = ({
   const renderYears = <Select
     name="year"
     label={"שנה:"}
-    value={selectDate.year}
+    value={yearsList.length === 0 ? "" : selectDate.year}
     onChange={internalOnChange}
     displayEmpty={selectDate.year === ""}
     emptyLabel={"בחר שנה"}
