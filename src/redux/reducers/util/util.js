@@ -201,55 +201,6 @@ const createPageState = () => {
   }
 }
 
-const createReducers = () => {
-
-  const reducers = {};
-
-  pages.forEach(async (page) => {
-
-    reducers[page] = createPageReducer(page, createPageState());
-  });
-
-  const combinedReducers = combineReducers({
-    ...reducers,
-  });
-
-  return combinedReducers;
-
-}
-
-export const generateBuildingsReducer = async (store) => {
-
-  const result = await ipcSendReceive({
-    send: {
-      channel: "get-buildings"
-    },
-    receive: {
-      channel: "buildings-data"
-    },
-    onSuccess: async (result) => {
-
-      const { data } = result;
-
-      const reducers = createReducers();
-
-      await data.forEach(async (building) => {
-        const { buildingNameEng } = building;
-
-        if (storage.getItem(buildingNameEng) === undefined) {
-          await store.injectReducer(buildingNameEng, reducers);
-          store.addToBlacklist(buildingNameEng);
-        }
-
-      });
-
-    }
-  });//end ipc send receive
-
-  return result;
-
-}
-
 export const initState = (initState) => {
   const state = {};
 
