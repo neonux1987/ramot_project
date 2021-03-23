@@ -105,14 +105,17 @@ async function createWindow() {
       //const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
     });
 
-    mainWindow.webContents.once('dom-ready', () => {
-      console.log('main loaded')
-      mainWindow.show()
-      loading.hide()
-      loading.close()
+    mainSystem.startSystem().then(() => {
+      mainWindow.webContents.once('dom-ready', () => {
+        console.log('main loaded')
+        mainWindow.show()
+        loading.hide()
+        loading.close()
+      });
+      // long loading html
+      mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
     });
-    // long loading html
-    mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+
   });
   loading.loadURL(isDev ? 'http://localhost:3000/loader/loader.html' : `file://${path.join(__dirname, '../build/loader/loader.html')}`)
   loading.show();
@@ -164,7 +167,7 @@ if (!gotTheLock) {
 // Start the system
 // loads ipc's listeners and all the backend,services etc...
 //-------------------------------------------------------------------
-mainSystem.startSystem();
+
 
 
 
