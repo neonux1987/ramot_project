@@ -2,7 +2,7 @@ import { TYPES } from '../actions/statisticsActions';
 import { initState as is } from '../reducers/util/util';
 
 const initState = is({
-  selectedChart: "חודשים"
+  selectedChart: "הוצאות והכנסות לפי חודשים"
 });
 
 const statisticsReducer = (state = initState, action) => {
