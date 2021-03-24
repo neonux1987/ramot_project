@@ -9,7 +9,7 @@ import SettingsExpandableSection from '../../../../../components/Section/Setting
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
 import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
 import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';
-import CheckboxWithLabel from '../../../../../components/CheckboxWithLabel/CheckboxWithLabel';
+import CheckboxWithLabel from '../../../../../components/Checkboxes/CheckboxWithLabel';
 import Divider from '../../../../../components/Divider/Divider';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
 import FileSelector from '../../../../../components/FileSelector/FileSelector';
@@ -186,7 +186,7 @@ const BackupContainer = () => {
         כללי:
         </TitleTypography>
 
-      <CheckboxWithLabel label="גיבוי ביציאה" value={data.backup_on_exit} onChange={onBackupOnExitChange} />
+      <CheckboxWithLabel label="גיבוי ביציאה" checked={data.backup_on_exit} onChange={onBackupOnExitChange} />
 
       <TitleTypography underline={false} gutterBottom="10px">
         תיקיית גיבויים:
@@ -200,7 +200,7 @@ const BackupContainer = () => {
         הגדרות גיבוי:
         </TitleTypography>
 
-      <CheckboxWithLabel label="גיבוי לפי זמן" value={data.byTime.enabled} onChange={onByTimeChange} />
+      <CheckboxWithLabel label="גיבוי לפי זמן" checked={data.byTime.enabled} onChange={onByTimeChange} />
 
       <SelectWithLabel
         label="כל כמה שעות לבצע בדיקה:"

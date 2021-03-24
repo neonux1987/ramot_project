@@ -41,6 +41,8 @@ const ColumnChart = ({ title = "", categories = [], series, options }) => {
       },
       exporting: {
         enabled: true,
+        sourceWidth: 1280,
+        sourceHeight: 720,
         buttons: {
           contextButton: {
             enabled: true,

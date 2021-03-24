@@ -27,6 +27,7 @@ import topChart from './topChartReducer';
 import budgetExecutions from './budgetExecutionsReducer';
 import monthExpanses from './monthExpansesReducer';
 import summarizedBudgets from './summarizedBudgetsReducer';
+import reports from './reportsReducer';
 
 const reducers = {
   menu,
@@ -57,7 +58,8 @@ const reducers = {
   monthsChart,
   quartersChart,
   yearsChart,
-  topChart
+  topChart,
+  reports
 };
 
 export default reducers;

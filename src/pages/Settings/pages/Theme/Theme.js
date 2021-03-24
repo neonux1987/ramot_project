@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
 import SettingsExpandableSection from '../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
-import CheckboxWithLabel from '../../../../components/CheckboxWithLabel/CheckboxWithLabel';
+import CheckboxWithLabel from '../../../../components/Checkboxes/CheckboxWithLabel';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 import TitleTypography from '../../../../components/Typographies/TitleTypography';
 
@@ -59,7 +59,7 @@ export const Theme = () => {
           כללי:
         </TitleTypography>
 
-        <CheckboxWithLabel label="סרגל כלים דביק" name="sticky_toolbar" value={data.sticky_toolbar} onChange={onCheckChange} />
+        <CheckboxWithLabel label="סרגל כלים דביק" name="sticky_toolbar" checked={data.sticky_toolbar} onChange={onCheckChange} />
 
       </SettingsExpandableSection >
 

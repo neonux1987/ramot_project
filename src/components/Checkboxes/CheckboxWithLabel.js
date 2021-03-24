@@ -5,28 +5,37 @@ import { css } from 'emotion';
 
 const container = css`
   display: flex;
-  margin-bottom: 20px;
   align-items: center;
-  margin-right: -11px;
-  `;
+  margin-left: 21px;
+  margin-right: -11px
+`;
 
-const CheckBoxWithLabel = (props) => {
+const CheckboxWithLabel = (props) => {
 
   const {
     label = "",
     name = "",
-    value = false,
+    checked = false,
     onChange,
+    color = "#0066a2",
+    disabled = false
   } = props;
+
+  const colorCss = css`color: ${color}`;
 
   return (
     <div className={container}>
 
       <CheckBoxWithSound
-        checked={value}
+        checked={checked}
         onChange={onChange}
         name={name}
-        color="primary"
+        color="default"
+        classes={{
+          root: colorCss,
+          checked: colorCss
+        }}
+        disabled={disabled}
       />
 
       <SubtitleBoldTypography>
@@ -37,4 +46,4 @@ const CheckBoxWithLabel = (props) => {
   );
 }
 
-export default CheckBoxWithLabel;
+export default CheckboxWithLabel;

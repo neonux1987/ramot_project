@@ -13,6 +13,7 @@ import { exportToExcelBulk } from '../../../../../services/excel.svc';
 import { fetchRegisteredReportsGroupedByYear, fetchRegisteredReportsByYear } from '../../../../../redux/actions/registeredReportsActions';
 import StyledSection from '../../../../../components/Section/StyledSection';
 import ExcelReportsGenerator from './ExcelReportsGenerator';
+import BuildingPicker from './BuildingPicker/BuildingPicker';
 
 const ExcelReportsGeneratorContainer = () => {
   const date = new Date();//current date
@@ -88,7 +89,7 @@ const ExcelReportsGeneratorContainer = () => {
       bgColor={"rgb(22, 156, 144)"}
       loading={registeredReports.isFetching && registeredReports.data.length === 0}
     >
-
+      <BuildingPicker />
       <ExcelReportsGenerator
         year={year}
         quarter={quarter}
