@@ -3,52 +3,44 @@ import { getBuildings } from './util/util';
 
 const buildings = getBuildings();
 
-const chosenBuildings = {}
+const checkedBuildings = []
 
 buildings.forEach(building => {
   const { label, engLabel } = building;
 
-  chosenBuildings[engLabel] = {
+  checkedBuildings.push({
     buildingName: label,
     buildingNameEng: engLabel,
-    checked: true
-  }
+    isChecked: true
+  });
 });
 
 const initState = {
   excelReports: {
-    chosenBuildings,
-    all: true
+    checkedBuildings,
+    isAllChecked: true
   }
 };
 
 const reportsReducer = (state = initState, action) => {
   switch (action.type) {
-    case TYPES.EXCEL_REPORTS_UPDATE_CHECKED_BUILDING: {
-      const { buildingNameEng, checked } = action;
-
-      const newState = {
-        ...state,
-        excelReports: {
-          ...state.excelReports,
-          chosenBuildings: {
-            ...state.excelReports.chosenBuildings,
-            [buildingNameEng]: {
-              ...state.excelReports.chosenBuildings[buildingNameEng],
-              checked
-            }
-          }
-        }
-      };
-
-      return newState;
-    }
-    case TYPES.EXCEL_REPORTS_SET_ALL: {
+    case TYPES.EXCEL_REPORTS_CHECK_BUILDING: {
+      const { isAllChecked, checkedBuildings } = action;
       return {
         ...state,
         excelReports: {
-          ...state.excelReports,
-          all: action.status
+          checkedBuildings,
+          isAllChecked
+        }
+      };
+    }
+    case TYPES.EXCEL_REPORTS_SET_ALL_CHECKED: {
+      const { isAllChecked, checkedBuildings } = action;
+      return {
+        ...state,
+        excelReports: {
+          checkedBuildings,
+          isAllChecked
         }
       }
     }

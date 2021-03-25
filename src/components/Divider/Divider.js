@@ -3,13 +3,13 @@ import React from 'react';
 import { css } from 'emotion';
 import { Divider as Dvdr } from '@material-ui/core';
 
-const Divider = ({ margin = "20px 0" }) => {
+const Divider = ({ margin = "20px 0", orientation = "horizontal", flexItem = false }) => {
   const root = css`
   margin: ${margin};
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: #ececec;
   `;
 
-  return <Dvdr className={root} />;
+  return <Dvdr className={root} orientation={orientation} flexItem={flexItem} />;
 }
 
 export default Divider;

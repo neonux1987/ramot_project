@@ -1,28 +1,35 @@
-import { getBuildings } from "../reducers/util/util";
-
 // TYPES
 export const TYPES = {
-  EXCEL_REPORTS_UPDATE_CHECKED_BUILDING: "EXCEL_REPORTS_UPDATE_CHECKED_BUILDING",
-  EXCEL_REPORTS_SET_ALL: "EXCEL_REPORTS_SET_ALL"
+  EXCEL_REPORTS_CHECK_BUILDING: "EXCEL_REPORTS_CHECK_BUILDING",
+  EXCEL_REPORTS_SET_ALL_CHECKED: "EXCEL_REPORTS_SET_ALL_CHECKED"
 }
 
-export const updateCheckedBuilding = (buildingNameEng, checked) => {
+export const checkBuilding = (buildingNameEng, checked, checkedBuildings) => {
+
+  let isAllChecked = true;
+
+  checkedBuildings.forEach(building => {
+    if (building.buildingNameEng === buildingNameEng)
+      building.isChecked = checked;
+
+    if (building.isChecked === false)
+      isAllChecked = false;
+  })
+
   return {
-    type: TYPES.EXCEL_REPORTS_UPDATE_CHECKED_BUILDING,
+    type: TYPES.EXCEL_REPORTS_CHECK_BUILDING,
     buildingNameEng,
-    checked
+    checkedBuildings,
+    isAllChecked
   };
 }
 
-export const setAll = (status) => {
-  return (dispatch, getState) => {
+export const setAllChecked = (isAllChecked, checkedBuildings) => {
+  checkedBuildings.forEach(building => building.isChecked = isAllChecked);
 
-    const state = getState().reports.excelReports;
-    console.log(state);
-
-    dispatch({
-      type: TYPES.EXCEL_REPORTS_SET_ALL,
-      status
-    });
-  }
+  return {
+    type: TYPES.EXCEL_REPORTS_SET_ALL_CHECKED,
+    isAllChecked,
+    checkedBuildings
+  };
 }

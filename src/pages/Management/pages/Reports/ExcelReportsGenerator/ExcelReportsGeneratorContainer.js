@@ -21,6 +21,8 @@ const ExcelReportsGeneratorContainer = () => {
   const [year, setYear] = useState(date.getFullYear());
   const [quarter, setQuarter] = useState(Helper.getCurrentQuarter(date.getMonth()));
 
+  const { checkedBuildings, isAllChecked } = useSelector(store => store.reports.excelReports);
+
   const dispatch = useDispatch();
 
   const [quarters, setQuarters] = useState([]);
@@ -78,7 +80,7 @@ const ExcelReportsGeneratorContainer = () => {
       quarterEng: Helper.convertQuarterToEng(quarter)
     }
 
-    exportToExcelBulk(newDate);
+    exportToExcelBulk(newDate, checkedBuildings);
   }
 
   return (
@@ -89,7 +91,10 @@ const ExcelReportsGeneratorContainer = () => {
       bgColor={"rgb(22, 156, 144)"}
       loading={registeredReports.isFetching && registeredReports.data.length === 0}
     >
-      <BuildingPicker />
+      <BuildingPicker
+        checkedBuildings={checkedBuildings}
+        isAllChecked={isAllChecked}
+      />
       <ExcelReportsGenerator
         year={year}
         quarter={quarter}

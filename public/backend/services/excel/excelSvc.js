@@ -11,7 +11,7 @@ const exportExcel = async (buildingName, buildingNameEng, pageName, fileName, da
   })
 }
 
-const exportExcelBulk = async (date) => {
+const exportExcelBulk = async (date, buildings) => {
   const fse = require('fs-extra');
   const path = require('path');
 
@@ -19,7 +19,6 @@ const exportExcelBulk = async (date) => {
   const MonthExpansesLogic = require('../../logic/MonthExpansesLogic');
   const BudgetExecutionLogic = require('../../logic/BudgetExecutionLogic');
   const SummarizedBudgetLogic = require('../../logic/SummarizedBudgetLogic');
-  const BuildingsDao = require('../../dao/BuildingsDao');
   const RegisteredMonths = require('../../logic/RegisteredMonthsLogic');
   const ServiceError = require('../../customErrors/ServiceError');
 
@@ -31,7 +30,6 @@ const exportExcelBulk = async (date) => {
   const summarizedBudgetLogic = new SummarizedBudgetLogic();
   const monthExpansesLogic = new MonthExpansesLogic();
   const budgetExecutionLogic = new BudgetExecutionLogic();
-  const buildingsDao = new BuildingsDao();
   const registeredMonths = new RegisteredMonths();
 
   const userSettings = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.USER);
@@ -42,15 +40,15 @@ const exportExcelBulk = async (date) => {
   // ensure the user reports folder exist, if not create it
   await fse.ensureDir(reports_folder_path);
 
-  // get buildings info
-  const buildingsData = await buildingsDao.getBuidlings();
-
   // loop through each building and create a year folder
   // inside the year folder create the summarized budgets excel
   // file for that year, also create a quarter folder and inside
   // that folder create the budget execution excel file
-  await asyncForEach(buildingsData, async (building) => {
-    const { buildingName, buildingNameEng } = building;
+  await asyncForEach(buildings, async (building) => {
+    const { buildingName, buildingNameEng, isChecked } = building;
+
+    if (isChecked === false)
+      return;
 
     const buildingFolder = path.join(reports_folder_path, buildingName);
     const yearFolder = path.join(buildingFolder, `שנה ${year}`);

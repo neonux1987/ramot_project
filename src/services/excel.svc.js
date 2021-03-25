@@ -18,7 +18,7 @@ export const exportToExcel = (excelData) => {
 
 };
 
-export const exportToExcelBulk = (date) => {
+export const exportToExcelBulk = (date, buildings) => {
 
   const toastId = toastManager.info(<ToastRender spinner={true} message={"מבצע ייצוא לקבצי אקסל..."} />, {
     autoClose: false
@@ -27,7 +27,10 @@ export const exportToExcelBulk = (date) => {
   return ipcSendReceive({
     send: {
       channel: "export-to-excel-bulk",
-      params: date
+      params: {
+        date,
+        buildings
+      }
     },
     receive: {
       channel: "excel-bulk-exported"

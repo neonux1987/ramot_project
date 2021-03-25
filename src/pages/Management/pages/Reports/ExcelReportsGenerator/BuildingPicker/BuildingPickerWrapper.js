@@ -6,7 +6,7 @@ const _container = css`
   display: flex;
   align-items: center;
   padding: 0 20px;
-  margin: 20px 0 0;
+  margin: 30px 0 0;
 `;
 
 const BuildingPickerWrapper = ({ children }) => {
