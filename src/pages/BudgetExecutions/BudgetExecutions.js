@@ -45,7 +45,7 @@ const BudgetExecutions = () => {
   }, [dispatch, buildingNameEng, buildingName, date]);
 
   return <Page>
-    <PageHeader building={buildingName} page={PAGE_TITLE} />
+    <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
 
     <Section
       title={STATS_TITLE}

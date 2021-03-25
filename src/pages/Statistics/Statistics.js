@@ -39,7 +39,7 @@ const Statistics = props => {
 
   return <Page>
 
-    <PageHeader building={buildingName} page={PAGE_TITLE} />
+    <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
 
     <StyledSection
       title={selectedChart}

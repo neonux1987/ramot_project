@@ -24,12 +24,15 @@ export const exportToExcelBulk = (date, buildings) => {
     autoClose: false
   });
 
+  // keep only the selected buildings
+  const filteredBuildings = buildings.filter(building => building.isChecked === true);
+
   return ipcSendReceive({
     send: {
       channel: "export-to-excel-bulk",
       params: {
         date,
-        buildings
+        buildings: filteredBuildings
       }
     },
     receive: {

@@ -34,7 +34,7 @@ const MonthExpanses = () => {
 
   return (
     <Page>
-      <PageHeader building={buildingName} page={PAGE_TITLE} />
+      <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
 
       <TableSection
         title={TABLE_TITLE}

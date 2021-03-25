@@ -2,7 +2,12 @@ import React from 'react';
 import { css } from 'emotion';
 import { Typography } from '@material-ui/core';
 import { RiBuilding2Fill } from 'react-icons/ri';
-import useIcons from '../../customHooks/useIcons';
+import MoreButton from './MoreBuildingMenu/MoreButton';
+import Subtitle from './Subtitle';
+import MoreBuildingMenu from './MoreBuildingMenu/MoreBuildingMenu';
+import { exportToExcelBulk } from '../../services/excel.svc';
+import useModalLogic from '../../customHooks/useModalLogic';
+import GenerateReportsModal from '../modals/GenerateReportsModal';
 
 const container = css`
   margin: 20px 20px 30px;
@@ -34,49 +39,66 @@ const mainTitle = css`
 const subContainer = css`
   display: flex;
   align-items: center;
-  padding: 0 5px;
+  
   border-bottom: 1px solid #ececec;
 `;
 
-const subIconWrapper = css`
-  display: flex;
-  align-items: center;
-`;
+const PageHeader = ({ buildingName, buildingNameEng, date, page }) => {
 
-const subIcon = css`
-  font-size: 16px;
-  color: #1489ce;
-`;
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-const subTitle = css`
-  margin-right: 6px;
-  color: #555555;
-  font-weight: 400;
-`;
+  const { showModal } = useModalLogic();
 
-const PageHeader = ({ building, page }) => {
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  const [generateIcon] = useIcons();
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  const SubIcon = generateIcon(page);
+  const generateReports = () => {
+
+    showModal(GenerateReportsModal, {
+      buildingName
+    });
+
+    /* const building = {
+      buildingName,
+      buildingNameEng
+    }
+    exportToExcelBulk(date, [building]); */
+  }
 
   return <div className={container}>
 
+    {/* main container */}
     <div className={mainContainer}>
       <div className={mainIcon}>
         <RiBuilding2Fill />
       </div>
 
-      <Typography className={mainTitle} variant="h3">{building}</Typography>
+      <Typography className={mainTitle} variant="h3">{buildingName}</Typography>
     </div>
+    {/* endmain container */}
 
+    {/* sub container */}
     <div className={subContainer}>
-      <div className={subIconWrapper}>
-        <SubIcon className={subIcon} />
-      </div>
 
-      <Typography className={subTitle} variant="subtitle1">{page}</Typography>
+      <Subtitle page={page} />
+
+      {/* more */}
+      <MoreButton
+        onClick={handleClick}
+      />
+      <MoreBuildingMenu
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        generateReports={generateReports}
+      />
+      {/* end more */}
     </div>
+    {/* end sub container */}
 
   </div>
 }

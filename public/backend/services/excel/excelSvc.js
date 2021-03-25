@@ -47,9 +47,6 @@ const exportExcelBulk = async (date, buildings) => {
   await asyncForEach(buildings, async (building) => {
     const { buildingName, buildingNameEng, isChecked } = building;
 
-    if (isChecked === false)
-      return;
-
     const buildingFolder = path.join(reports_folder_path, buildingName);
     const yearFolder = path.join(buildingFolder, `שנה ${year}`);
     const quarterFolder = path.join(yearFolder, quarterHeb);

@@ -9,7 +9,7 @@ const useIcons = () => {
       case "הוצאות חודשיות": return AttachMoney;
       case "ביצוע מול תקציב": return AssignmentTurnedIn;
       case "סיכום תקציבי": return Label;
-      case "סטטיסטיקה": return props => <SvgIcon Icon={BiStats} {...props} />;
+      case "סטטיסטיקה": return props => <SvgIcon Icon={BiStats} color="rgb(208, 208, 208)" {...props} />;
       case "home": return Home;
       case "dashboard": return Dashboard;
       case "receipt": return Receipt;
