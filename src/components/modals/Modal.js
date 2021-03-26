@@ -17,6 +17,7 @@ const Modal = (props) => {
     iconColor = "#ffffff",
     onAgreeHandler,
     onCancelHandler,
+    onBackdropClickHandler,
     title,
     contentText,
     Icon,
@@ -44,6 +45,11 @@ const Modal = (props) => {
     hideModal();
   }
 
+  const onBackdropClick = () => {
+    onBackdropClickHandler && onBackdropClickHandler();
+    onEscapeKeyDown();
+  }
+
   const onKeyPressHandler = (event) => {
     // Number 13 is the "Enter" key on the keyboard
     if (event.key === "Enter") {
@@ -61,7 +67,7 @@ const Modal = (props) => {
     open={open}
     onEscapeKeyDown={onEscapeKeyDown}
     onKeyPress={onKeyPressHandler}
-    onBackdropClick={onEscapeKeyDown}
+    onBackdropClick={onBackdropClick}
   >
     <ModalHeader title={title} Icon={Icon} iconColor={iconColor} />
 

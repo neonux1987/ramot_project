@@ -22,6 +22,7 @@ const GoodByeWrapper = () => {
           }
           }
           onCancelHandler={handleCancel}
+          onBackdropClickHandler={handleCancel}
         />
       )
     }
