@@ -17,7 +17,7 @@ const subIconWrapper = css`
 
 const subIcon = css`
   font-size: 16px;
-  color: #1489ce;
+  color: #555555;
 `;
 
 const subTitle = css`

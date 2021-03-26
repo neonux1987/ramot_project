@@ -8,8 +8,10 @@ import Spinner from '../../components/Spinner/Spinner';
 
 const container = css`
   background: #ffffff;
-  margin: 20px 15px 0;
+  margin: 5px 15px 0;
   min-height: 500px;
+  border-top: 1px solid #ececec;
+  padding-top: 10px;
 `;
 
 const text = css`

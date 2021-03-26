@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { css } from 'emotion';
 
 // ACTIONS
 import { fetchAllMonthsStatsByYear } from '../../../redux/actions/monthlyStatsActions';
@@ -14,10 +13,7 @@ import ColumnChart from '../../../components/charts/ColumnChart';
 // HOOKS
 import { updateDate } from '../../../redux/actions/monthsChartAction';
 import YearOnlyDatePicker from '../../../components/DatePicker/YearOnlyDatePicker';
-
-const container = css`
-  margin: 15px 0;
-`;
+import Tab from '../../../components/Tab/Tab';
 
 const MonthsChartContainer = props => {
   //building name
@@ -84,7 +80,7 @@ const MonthsChartContainer = props => {
       fetchAndPrepareData();
   }, [dispatch, fetchAndPrepareData, date.year]);
 
-  return <div className={container}>
+  return <Tab>
     <TableControls
       middlePane={
         <YearOnlyDatePicker
@@ -102,7 +98,7 @@ const MonthsChartContainer = props => {
         categories={chartData.labels}
       />
     </ChartWrapper>
-  </div >
+  </Tab >
 
 }
 

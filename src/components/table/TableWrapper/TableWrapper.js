@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from 'emotion';
 
 const style = css`
-  margin: 0 15px 20px;
+  margin: 0 0px 0px;
 `;
 
 // name tableElement is used for 

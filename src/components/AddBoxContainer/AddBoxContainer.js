@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from 'emotion';
+import { Slide } from '@material-ui/core';
 
 const style = css`
   margin: 0px 0 10px;
@@ -9,7 +10,10 @@ const style = css`
   display: flex;
 `;
 
-const AddBoxContainer = props => (<div className={style}>{props.children}</div>)
+const AddBoxContainer = props => <Slide direction="down" in={true} mountOnEnter unmountOnExit timeout={300}>
+  <div className={style}>{props.children}</div>
+</Slide>
+
 
 export default AddBoxContainer;
 

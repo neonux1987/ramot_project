@@ -39,7 +39,8 @@ const AddNewContainer = (props) => {
 
   const {
     buildingNameEng,
-    date
+    date,
+    show
   } = props;
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const AddNewContainer = (props) => {
   }
 
   return (
-    <AddBoxContainer>
+    <AddBoxContainer show={show}>
 
       <ReactSelect
         classes={{ root: reactSelectStyle }}

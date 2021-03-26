@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { css } from 'emotion';
 
 // ACTIONS
 import { fetchAllQuartersStatsByYear } from '../../../redux/actions/quarterlyStatsActions';
@@ -12,10 +11,7 @@ import TableControls from '../../../components/table/TableControls/TableControls
 import ColumnChart from '../../../components/charts/ColumnChart';
 import { updateDate } from '../../../redux/actions/quartersChartActions';
 import YearOnlyDatePicker from '../../../components/DatePicker/YearOnlyDatePicker';
-
-const container = css`
-  margin: 15px 0;
-`;
+import Tab from '../../../components/Tab/Tab';
 
 const QuartersChartContainer = props => {
   //building name
@@ -82,7 +78,7 @@ const QuartersChartContainer = props => {
       fetchAndPrepareData();
   }, [dispatch, fetchAndPrepareData, date.year]);
 
-  return <div className={container}>
+  return <Tab>
 
     <TableControls
       middlePane={
@@ -100,7 +96,7 @@ const QuartersChartContainer = props => {
         categories={chartData.labels}
       />
     </ChartWrapper>
-  </div>
+  </Tab>
 
 }
 

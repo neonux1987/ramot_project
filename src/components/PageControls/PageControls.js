@@ -79,7 +79,7 @@ const PageControls = props => {
         }
       />
 
-      <MoreButton onClick={() => { }} />
+      {/* <MoreButton onClick={() => { }} /> */}
     </div>);
 }
 

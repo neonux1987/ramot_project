@@ -62,50 +62,53 @@ async function createWindow() {
   });
 
   loading.once('show', () => {
-    // Create the browser window.
-    mainWindow = new BrowserWindow({
-      minWidth: 1280,
-      minHeight: 720,
-      width: 1280,
-      height: 720,
-      title: appName + " - " + companyName,
-      titleBarStyle: "hidden",
-      webPreferences: {
-        nodeIntegration: true,
-        enableRemoteModule: true
-      },
 
-      backgroundColor: "#eee",
-      icon,
-      frame: false,
-      resizeable: false,
-      show: false
-    });
-
-    //const ses = mainWindow.webContents.session;
-
-    if (isDev) {
-      // Open the DevTools.
-      mainWindow.webContents.openDevTools();
-
-      //add react dev tools
-      //ses.loadExtension(
-      //    path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
-      //);
-    }
-
-    mainWindow.on('closed', () => mainWindow = null);
-
-    mainWindow.webContents.on('new-window', event => {
-      event.preventDefault()
-    });
-
-    powerMonitor.on('resume', () => {
-      console.log('The system is up');
-      //const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
-    });
-
+    /* start system */
     mainSystem.startSystem().then(() => {
+
+      // Create the browser window.
+      mainWindow = new BrowserWindow({
+        minWidth: 1280,
+        minHeight: 720,
+        width: 1280,
+        height: 720,
+        title: appName + " - " + companyName,
+        titleBarStyle: "hidden",
+        webPreferences: {
+          nodeIntegration: true,
+          enableRemoteModule: true
+        },
+
+        backgroundColor: "#eee",
+        icon,
+        frame: false,
+        resizeable: false,
+        show: false
+      });
+
+      //const ses = mainWindow.webContents.session;
+
+      if (isDev) {
+        // Open the DevTools.
+        mainWindow.webContents.openDevTools();
+
+        //add react dev tools
+        //ses.loadExtension(
+        //    path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
+        //);
+      }
+
+      mainWindow.on('closed', () => mainWindow = null);
+
+      mainWindow.webContents.on('new-window', event => {
+        event.preventDefault()
+      });
+
+      powerMonitor.on('resume', () => {
+        console.log('The system is up');
+        //const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
+      });
+
       mainWindow.webContents.once('dom-ready', () => {
         console.log('main loaded')
         mainWindow.show()
@@ -115,6 +118,7 @@ async function createWindow() {
       // long loading html
       mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
     });
+    /* end start system */
 
   });
   loading.loadURL(isDev ? 'http://localhost:3000/loader/loader.html' : `file://${path.join(__dirname, '../build/loader/loader.html')}`)

@@ -239,20 +239,20 @@ const BudgetExecutionsTableContainer = props => {
       monthColumns.push(<NonZeroNumberColumn key={`${months[i]}_budget_execution${i + 1}`}>{rowData[`${months[i]}_budget_execution`]}</NonZeroNumberColumn>);
     }
 
-    const differenceColor = whichColor(rowData["difference"]);
+    const differenceColor = whichColor(rowData.difference);
 
     const odd = index % 2 === 0 ? "" : "";
 
     return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(index, rowData)} /> : null}
       <Column>{index + 1}</Column>
-      <Column>{rowData["section"]}</Column>
+      <Column>{rowData.section}</Column>
       {monthColumns}
-      {editMode ? numberInput("evaluation", rowData["evaluation"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
-      <NonZeroNumberColumn>{rowData["total_budget"]}</NonZeroNumberColumn>
-      <NonZeroNumberColumn>{rowData["total_execution"]}</NonZeroNumberColumn>
-      <NonZeroNumberColumn style={{ direction: "ltr", ...differenceColor }}>{rowData["difference"]}</NonZeroNumberColumn>
-      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
+      {editMode ? numberInput("evaluation", rowData.evaluation, index, onBlurHandler) : <NonZeroNumberColumn>{rowData.evaluation}</NonZeroNumberColumn>}
+      <NonZeroNumberColumn>{rowData.total_budget}</NonZeroNumberColumn>
+      <NonZeroNumberColumn>{rowData.total_execution}</NonZeroNumberColumn>
+      <NonZeroNumberColumn style={{ direction: "ltr", ...differenceColor }}>{rowData.difference}</NonZeroNumberColumn>
+      {editMode ? textAreaInput("notes", rowData.notes, index, onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData.notes}</Column>}
     </Row>
   }
 

@@ -13,18 +13,19 @@ const _container = css`
 const _header = css`
   height: 60px;
   display: flex;
-  border-bottom: 1px solid #ececec;
+  /* border-bottom: 1px solid #ececec; */
 `;
 
 const _titleBox = css`
-  margin: -20px 15px 20px 0px;
-  border-radius: 3px;
-  height: 65px;
-  box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
+  /* margin: -20px 15px 20px 0px; */
+  /* border-radius: 3px; */
+  /* height: 65px; */
+  /* box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%); */
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 62px;
+  /* width: 62px; */
+  padding: 0 15px;
 `;
 
 const _iconWrapper = css`
@@ -34,7 +35,7 @@ const _iconWrapper = css`
 `;
 
 const _icon = css`
-  color: #ffffff;
+  color: #444444;
   font-size: 24px;
 `;
 
@@ -42,7 +43,7 @@ const _titleWrapper = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 15px;
+  /* margin-right: 15px; */
 `;
 
 const _titleTypography = css`
@@ -56,7 +57,6 @@ const _extraDetails = css`
   justify-content: flex-end;
   align-items: center;
   flex-grow: 1;
-  padding-left: 25px;
 `;
 
 const _content = css`
@@ -67,7 +67,7 @@ const _content = css`
 
 const StyledSection = ({
   title,
-  Icon = <div></div>,
+  Icon,
   bgColor = "rgb(111 80 206)",
   extraDetails = null,
   children
@@ -78,11 +78,11 @@ const StyledSection = ({
     <div className={_header}>
 
       {/* title box */}
-      <div className={classnames(_titleBox, css`background-Color: ${bgColor}`)}>
+      <div className={_titleBox}>
 
         {/* icon */}
         <div className={_iconWrapper}>
-          <Icon className={_icon} />
+          <Icon className={classnames(_icon, css`color:${bgColor}`)} />
         </div>
         {/* end icon */}
 

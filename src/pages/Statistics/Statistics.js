@@ -21,6 +21,11 @@ import { updateSelectedChart } from '../../redux/actions/statisticsActions';
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
 
+const BY_MONTHS_TITLE = "הוצאות והכנסות לפי חודשים";
+const BY_QUARTERS_TITLE = "הוצאות והכנסות לפי רבעונים";
+const BY_YEARS_TITLE = "הוצאות והכנסות לפי שנים";
+const TOP_EXPANSES_TITLE = "טופ הוצאות";
+
 const activeClass = "activeExpandItem";
 
 const Statistics = props => {
@@ -57,20 +62,20 @@ export default Statistics;
 
 const SectionNav = ({ active, onClick }) => {
 
-  return <div>
-    <Button onClick={() => onClick("הוצאות והכנסות לפי חודשים")} className={active === "הוצאות והכנסות לפי חודשים" ? activeClass : ""}>חודשים</Button>
-    <Button onClick={() => onClick("הוצאות והכנסות לפי רבעונים")} className={active === "הוצאות והכנסות לפי רבעונים" ? activeClass : ""}>רבעונים</Button>
-    <Button onClick={() => onClick("הוצאות והכנסות לפי שנים")} className={active === "הוצאות והכנסות לפי שנים" ? activeClass : ""}>שנים</Button>
-    <Button onClick={() => onClick("טופ הוצאות")} className={active === "טופ הוצאות" ? activeClass : ""}>טופ</Button>
+  return <div style={{ paddingLeft: "10px" }}>
+    <Button onClick={() => onClick(BY_MONTHS_TITLE)} className={active === BY_MONTHS_TITLE ? activeClass : ""}>חודשים</Button>
+    <Button onClick={() => onClick(BY_QUARTERS_TITLE)} className={active === BY_QUARTERS_TITLE ? activeClass : ""}>רבעונים</Button>
+    <Button onClick={() => onClick(BY_YEARS_TITLE)} className={active === BY_YEARS_TITLE ? activeClass : ""}>שנים</Button>
+    <Button onClick={() => onClick(TOP_EXPANSES_TITLE)} className={active === TOP_EXPANSES_TITLE ? activeClass : ""}>טופ</Button>
   </div>
 }
 
 function whichChart(name) {
   switch (name) {
-    case "הוצאות והכנסות לפי חודשים": return MonthsChartContainer;
-    case "הוצאות והכנסות לפי רבעונים": return QuartersChartContainer;
-    case "הוצאות והכנסות לפי שנים": return YearsChartContainer;
-    case "טופ הוצאות": return TopChartContainer;
+    case BY_MONTHS_TITLE: return MonthsChartContainer;
+    case BY_QUARTERS_TITLE: return QuartersChartContainer;
+    case BY_YEARS_TITLE: return YearsChartContainer;
+    case TOP_EXPANSES_TITLE: return TopChartContainer;
     default: return MonthsChartContainer;
   }
 }

@@ -10,8 +10,8 @@ const GroupColumn = ({ color = "#555555", span = 1, show = true, children }) => 
       gridColumn: `span ${span}`,
       fontWeight: "500",
       fontSize: "16px",
-      borderRight: "none",
-      //borderBottom: "1px solid"
+      //borderBottom: "1px solid",
+      borderRight: "none"
     }}
   >
     {children}

@@ -9,9 +9,7 @@
 
 ._tableBody{
   display: grid;
-  border-bottom: 1px solid #e3eaec;
   direction: rtl;
-  border-left: 1px solid #e3eaec;
   background: #fff;
   position: relative;
   color: #000000;
@@ -29,6 +27,10 @@
 ._tableColumn{
   border-right: 1px solid #ececec;
   font-size: 15px;
+}
+
+._tableColumn:first-child{
+  border-right: none;
 }
 
 .spinnerWrapper{

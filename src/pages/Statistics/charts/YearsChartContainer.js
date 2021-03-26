@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { css } from 'emotion';
 import { toastManager } from '../../../toasts/toastManager';
 
 // ACTIONS
@@ -14,10 +13,7 @@ import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
 import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
-
-const container = css`
-  margin: 15px 0;
-`;
+import Tab from '../../../components/Tab/Tab';
 
 const YearsChartContainer = props => {
   //building name
@@ -105,7 +101,7 @@ const YearsChartContainer = props => {
     }
   }
 
-  return <div className={container}>
+  return <Tab>
     <TableControls
       middlePane={<DateRangePicker
         years={registeredYears.data}
@@ -122,7 +118,7 @@ const YearsChartContainer = props => {
         categories={chartData.labels}
       />
     </ChartWrapper>
-  </div>
+  </Tab>
 
 }
 
