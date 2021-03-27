@@ -203,6 +203,7 @@ const SummarizedSectionsTableContainer = () => {
             toggleEditMode={toggleEditMode}
             addNewMode={addNewMode}
             toggleAddNewMode={toggleAddNewMode}
+            dataExist={data.length > 0}
           />
         } // end rightPane
       /> {/* end TableControls */}
