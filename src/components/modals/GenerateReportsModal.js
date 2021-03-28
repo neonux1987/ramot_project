@@ -80,7 +80,7 @@ const GenerateReportsModal = ({ buildingName, buildingNameEng }) => {
       hideAgreeButton={true}
       cancelBtnText="סגור"
     >
-      <Section>
+      <Section marginTop="30px">
         <ExcelReportsGenerator
           year={year}
           quarter={quarter}

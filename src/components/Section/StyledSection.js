@@ -65,14 +65,25 @@ const _content = css`
   position: relative;
 `;
 
+const fullscreenStyle = css`
+  margin: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+`;
+
 const StyledSection = ({
   title,
   Icon,
   bgColor = "rgb(111 80 206)",
   extraDetails = null,
-  children
+  children,
+  fullscreen = false
 }) => {
-  return <div className={_container}>
+  return <div className={classnames(_container, fullscreen ? fullscreenStyle : "")}>
 
     {/* header */}
     <div className={_header}>
