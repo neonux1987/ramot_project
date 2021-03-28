@@ -9,7 +9,6 @@ const EditModal = props => {
   return (
     <Modal
       Icon={Edit}
-      iconColor={"#000000"}
       agreeBtnText={"שמור"}
       {...props}
     />

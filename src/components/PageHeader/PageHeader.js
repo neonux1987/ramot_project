@@ -58,16 +58,10 @@ const PageHeader = ({ buildingName, buildingNameEng, date, page }) => {
   };
 
   const generateReports = () => {
-
     showModal(GenerateReportsModal, {
-      buildingName
-    });
-
-    /* const building = {
       buildingName,
       buildingNameEng
-    }
-    exportToExcelBulk(date, [building]); */
+    });
   }
 
   return <div className={container}>

@@ -14,6 +14,7 @@ import { fetchRegisteredReportsGroupedByYear, fetchRegisteredReportsByYear } fro
 import StyledSection from '../../../../../components/Section/StyledSection';
 import ExcelReportsGenerator from './ExcelReportsGenerator';
 import BuildingPicker from './BuildingPicker/BuildingPicker';
+import Section from '../../../../../components/Section/Section';
 
 const ExcelReportsGeneratorContainer = () => {
   const date = new Date();//current date
@@ -79,8 +80,10 @@ const ExcelReportsGeneratorContainer = () => {
       quarterHeb: Helper.getQuarterHeb(quarter),
       quarterEng: Helper.convertQuarterToEng(quarter)
     }
+    // keep only the selected buildings
+    const filteredBuildings = checkedBuildings.filter(building => building.isChecked === true);
 
-    exportToExcelBulk(newDate, checkedBuildings);
+    exportToExcelBulk(newDate, filteredBuildings);
   }
 
   return (
@@ -95,15 +98,17 @@ const ExcelReportsGeneratorContainer = () => {
         checkedBuildings={checkedBuildings}
         isAllChecked={isAllChecked}
       />
-      <ExcelReportsGenerator
-        year={year}
-        quarter={quarter}
-        quarters={quarters}
-        registeredReports={registeredReports}
-        onClickHandler={onClickHandler}
-        onQuarterChangeHandler={onQuarterChangeHandler}
-        onYearChangeHandler={onYearChangeHandler}
-      />
+      <Section marginBottom="50px">
+        <ExcelReportsGenerator
+          year={year}
+          quarter={quarter}
+          quarters={quarters}
+          registeredReports={registeredReports}
+          onClickHandler={onClickHandler}
+          onQuarterChangeHandler={onQuarterChangeHandler}
+          onYearChangeHandler={onYearChangeHandler}
+        />
+      </Section>
 
     </StyledSection>
   )

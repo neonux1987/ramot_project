@@ -12,9 +12,10 @@ const Modal = (props) => {
 
   const {
     agreeBtnText = "בצע פעולה",
+    hideAgreeButton = false,
     cancelBtnText = "בטל",
     valid,
-    iconColor = "#ffffff",
+    iconColor,
     onAgreeHandler,
     onCancelHandler,
     onBackdropClickHandler,
@@ -78,9 +79,9 @@ const Modal = (props) => {
       <ModalButton onClick={cancel}>
         {cancelBtnText}
       </ModalButton>
-      <ModalButton onClick={agree}>
+      {!hideAgreeButton && <ModalButton onClick={agree}>
         {agreeBtnText}
-      </ModalButton>
+      </ModalButton>}
     </DialogActions>
   </Dialog>;
 }

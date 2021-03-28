@@ -22,7 +22,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
 
   const upgradedHandleClose = () => {
     handleClose();
-    setOpen(false)
+    setOpen(false);
   }
 
   const clearCache = () => {
@@ -63,7 +63,6 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
     <Menu
       id="simple-menu"
       anchorEl={anchorEl}
-      keepMounted
       open={Boolean(anchorEl)}
       onClose={upgradedHandleClose}
       className={styles.container}

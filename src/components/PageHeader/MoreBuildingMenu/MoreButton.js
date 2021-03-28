@@ -24,7 +24,7 @@ const button = css`
 const MoreButton = ({ onClick, active }) => {
   return <div className={wrapper}>
     <ButtonWithSound onClick={onClick} className={classnames(button, active ? "activeExpandItem" : "")}>
-      <SvgIcon Icon={IoMdSettings} color="#999" size="32px" />
+      <SvgIcon Icon={IoMdSettings} color="#555555" size="32px" />
     </ButtonWithSound>
   </div>
 

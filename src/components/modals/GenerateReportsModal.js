@@ -1,23 +1,95 @@
-import React from 'react';
+import { truncate } from 'fs-extra';
+import React, { useEffect, useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
+import Helper from '../../helpers/Helper';
+import ExcelReportsGenerator from '../../pages/Management/pages/Reports/ExcelReportsGenerator/ExcelReportsGenerator';
+import { fetchRegisteredReportsByYear, fetchRegisteredReportsGroupedByYear } from '../../redux/actions/registeredReportsActions';
+import { exportToExcelBulk } from '../../services/excel.svc';
 import Section from '../Section/Section';
 
 import EditModal from './modalTypes/EditModal';
 
+const GenerateReportsModal = ({ buildingName, buildingNameEng }) => {
+  const date = new Date();//current date
 
-const GenerateReportsModal = props => {
+  const [year, setYear] = useState(date.getFullYear());
+  const [quarter, setQuarter] = useState(Helper.getCurrentQuarter(date.getMonth()));
 
-  //const data = useSelector(store => store.generalSettings.data);
+  const dispatch = useDispatch();
+
+  const [quarters, setQuarters] = useState([]);
+  const registeredReports = useSelector(store => store.registeredReports);
+
+  useEffect(() => {
+    dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
+      const yearsData = result.data;
+
+      if (yearsData.length > 0) {
+        const lastYear = yearsData[0].year;
+        setYear(() => lastYear);
+
+        dispatch(fetchRegisteredReportsByYear(lastYear)).then(({ data }) => {
+          if (data.length > 0)
+            setQuarters(() => {
+              setQuarter(() => data[0].quarter);
+              return data;
+            });
+        }); // end dispatch
+
+      } // end if
+
+
+    }); // end dispatch
+
+
+  }, [dispatch]);
+
+  const onYearChangeHandler = (event) => {
+    const { value } = event.target;
+    setYear(value);
+
+    dispatch(fetchRegisteredReportsByYear(value)).then(({ data }) => {
+      if (data.length > 0)
+        setQuarters(() => {
+          setQuarter(() => data[0].quarter);
+          return data;
+        });
+    }); // end dispatch
+  }
+
+  const onQuarterChangeHandler = (event) => {
+    const { value } = event.target;
+    setQuarter(value);
+  }
+
+  const onClickHandler = () => {
+    const newDate = {
+      year,
+      quarter,
+      quarterHeb: Helper.getQuarterHeb(quarter),
+      quarterEng: Helper.convertQuarterToEng(quarter)
+    }
+
+    exportToExcelBulk(newDate, [{ buildingName, buildingNameEng }]);
+  }
 
   return (
     <EditModal
-      title={`הפקת דוחות לבניין ${props.buildingName}`}
-      agreeBtnText="הפק דוחות"
+      title={`הפקת דוחות לבניין ${buildingName}`}
+      hideAgreeButton={true}
       cancelBtnText="סגור"
     >
       <Section>
-        <div>asd</div>
+        <ExcelReportsGenerator
+          year={year}
+          quarter={quarter}
+          quarters={quarters}
+          registeredReports={registeredReports}
+          onClickHandler={onClickHandler}
+          onQuarterChangeHandler={onQuarterChangeHandler}
+          onYearChangeHandler={onYearChangeHandler}
+        />
       </Section>
     </EditModal>
   );

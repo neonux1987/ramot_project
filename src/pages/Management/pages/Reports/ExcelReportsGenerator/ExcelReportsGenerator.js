@@ -5,13 +5,9 @@ import { Button, MenuItem, Typography, Select, } from '@material-ui/core';
 // UTILS
 import classnames from 'classnames';
 
-// COMPONENTS
-import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
-
 //CSS
 import {
-  container,
-  subtitle,
+  selectsWrapper,
   paddingLeft,
   select,
   createBtn,
@@ -32,45 +28,39 @@ const ExcelReportsGenerator = ({
 
   const content = () => {
     return <Fragment>
+      <div className={selectsWrapper}>
+        <Select
+          name="quarter"
+          className={classnames(paddingLeft, select)}
+          value={quarters.length === 0 ? "" : quarter}
+          onChange={onQuarterChangeHandler}
+        >
+          {quarters.map((element) => {
+            const { quarter } = element;
+            return <MenuItem value={quarter} key={quarter}>{`רבעון ${quarter}`}</MenuItem>;
+          })}
+        </Select>
 
-      <div className={subtitle}>
+        <Select
+          name="year"
+          className={classnames(paddingLeft, select)}
+          value={quarters.length === 0 ? "" : year}
+          onChange={onYearChangeHandler}
+        >
+          {registeredReports.data.map((element, index) => {
+            const { year } = element;
+            return <MenuItem value={year} key={index}>{year}</MenuItem>;
+          })}
+        </Select>
 
-        <SubtitleBoldTypography>
-          הפקת דוחות לכל הבניינים:
-  </SubtitleBoldTypography>
-      </div>
-
-      <Select
-        name="quarter"
-        className={classnames(paddingLeft, select)}
-        value={quarters.length === 0 ? "" : quarter}
-        onChange={onQuarterChangeHandler}
-      >
-        {quarters.map((element) => {
-          const { quarter } = element;
-          return <MenuItem value={quarter} key={quarter}>{`רבעון ${quarter}`}</MenuItem>;
-        })}
-      </Select>
-
-      <Select
-        name="year"
-        className={classnames(paddingLeft, select)}
-        value={quarters.length === 0 ? "" : year}
-        onChange={onYearChangeHandler}
-      >
-        {registeredReports.data.map((element, index) => {
-          const { year } = element;
-          return <MenuItem value={year} key={index}>{year}</MenuItem>;
-        })}
-      </Select>
-
-      <Button
-        className={createBtn}
-        onClick={onClickHandler}
-        variant="contained"
-        color="secondary">
-        צור
+        <Button
+          className={createBtn}
+          onClick={onClickHandler}
+          variant="contained"
+          color="secondary">
+          צור
       </Button>
+      </div>
 
       <div className={description}>
         <Typography className={descriptionText} variant="h6">
@@ -85,7 +75,7 @@ const ExcelReportsGenerator = ({
     : content();
 
   return (
-    <div className={container}>
+    <div>
       {renderContent}
     </div>
   )

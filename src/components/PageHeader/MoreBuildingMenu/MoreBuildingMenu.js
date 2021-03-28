@@ -1,14 +1,27 @@
 // LIBRARIES
 import React from "react";
-import { Menu, Divider, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
-import { ExpandLess, ExpandMore, Description, TableChart, ChangeHistory, Settings } from "@material-ui/icons";
+import { css } from 'emotion';
+import { Menu, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { Description } from "@material-ui/icons";
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
-import ButtonNavLinkWithSound from "../../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound";
-import { exportToExcelBulk } from "../../../services/excel.svc";
+
+const listItemIcon = css`
+  min-width: 36px;
+  color: #555555;
+  
+`;
+
+const listItemText = css`
+  padding: 0px 16px;
+  width: 100%;
+  font-size: 16px;
+`;
+
 
 const MoreBuildingMenu = ({ anchorEl, handleClose, generateReports }) => {
 
-  const upgradedHandleClose = () => {
+  const onClick = () => {
+    generateReports();
     handleClose();
   }
 
@@ -16,20 +29,19 @@ const MoreBuildingMenu = ({ anchorEl, handleClose, generateReports }) => {
     <Menu
       id="simple-menu"
       anchorEl={anchorEl}
-      keepMounted
       open={Boolean(anchorEl)}
-      onClose={upgradedHandleClose}
+      onClose={handleClose}
     >
 
       <ListItem
         button
         component={ButtonWithSound}
-        onClick={generateReports}
+        onClick={onClick}
       >
-        <ListItemIcon>
+        <ListItemIcon className={listItemIcon}>
           <Description />
         </ListItemIcon>
-        <ListItemText primary="הפק כל הדוחות לבניין זה" />
+        <ListItemText className={listItemText} primary="הפק דוחות" />
       </ListItem>
 
     </Menu>
