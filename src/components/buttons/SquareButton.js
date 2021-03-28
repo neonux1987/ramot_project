@@ -21,7 +21,7 @@ const _container = css`
 `;
 
 const _icon = css`
-  color: #ffffff;
+  color: #555555;
   font-size: 24px;
 `;
 
@@ -31,7 +31,7 @@ const SquareButton = ({
   Icon = null,
   onClick,
   bgColor = "none",
-  iconColor = "#ffffff",
+  iconColor = "#555555",
   disabled
 }) => <ButtonWithSound
   disabled={disabled}
