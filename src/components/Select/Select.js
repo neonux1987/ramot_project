@@ -12,7 +12,7 @@ const _label = css`
   font-size: 16px;
   display: flex;
   align-items: center;
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 const _select = css`

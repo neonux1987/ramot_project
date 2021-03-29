@@ -12,7 +12,7 @@ const persistConfig = {
     //'menu',
     //'monthExpanses',
     //'budgetExecutions',
-    //"summarizedSections",
+    "summarizedSections",
     "expansesCodes",
     "generalSettings",
     //"summarizedBudgets",

@@ -4,6 +4,10 @@ import storage from 'redux-persist/lib/storage';
 
 const { buildings, pages } = require('electron').remote.getGlobal('sharedObject');
 
+export function getBuildings() {
+  return buildings;
+}
+
 export const setPageState = (state, buildingName, target) => {
   return {
     ...state,
@@ -198,17 +202,5 @@ export const initState = (initState) => {
     };
   });
 
-  return state;
-}
-
-export const initStateV2 = (buildings, initState) => {
-  const state = {};
-
-  buildings.forEach((building) => {
-    state[building.buildingNameEng] = {
-      ...initState
-    };
-  });
-  console.log(state);
   return state;
 }
