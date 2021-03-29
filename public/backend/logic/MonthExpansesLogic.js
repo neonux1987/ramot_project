@@ -68,6 +68,9 @@ class MonthExpansesLogic {
 
   async saveExpanse(action = String, { date = Object, buildingNameEng = String, expanse = Object }) {
 
+    // add quarter to the date object
+    date.quarter = Helper.getQuarterFromMonthEng(date.month);
+
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
 
@@ -212,13 +215,13 @@ class MonthExpansesLogic {
     return monthExpanseObj;
   }
 
-  batchInsert(buildingName, rows, trx) {
+  batchInsert(buildingNameEng, rows, trx) {
     return this.monthExpansesDao.batchInsert(buildingNameEng, rows, trx);
   }
 
   /**
    * creates empty report for the new month
-   * @param {*} buildingName 
+   * @param {*} buildingNameEng 
    * @param {*} date 
    */
   async createEmptyReport(buildingNameEng, date, trx) {

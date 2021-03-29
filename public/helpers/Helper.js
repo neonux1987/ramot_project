@@ -87,7 +87,7 @@ class Helper {
     }
   }
 
-  getQuarterFromMonthEng() {
+  static getQuarterFromMonthEng(month) {
     switch (month) {
       case "january": return 1
       case "february": return 1

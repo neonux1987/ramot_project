@@ -25,6 +25,7 @@ const monthExpansesIpc = (connection) => {
   });
 
   ipcMain.on('update-month-expanse', (event, params) => {
+    console.log(params)
     monthExpansesLogic.updateMonthExpanse(params).then((result) => {
       event.reply("month-expanse-updated", { data: result });
     }).catch((error) => {
