@@ -2,9 +2,6 @@ import menu from './menuReducer';
 import summarizedSections from './summarizedSectionsReducer';
 import expansesCodes from './expansesCodesReducer';
 import generalSettings from './generalSettingsReducer';
-import registeredMonths from './registeredMonthsReducer';
-import registeredYears from './registeredYearsReducer';
-import registeredQuarters from './registeredQuartersReducer';
 import settings from './settingsReducer';
 import services from './servicesReducer';
 import registeredBackups from './registeredBackupsReducer';
@@ -24,22 +21,12 @@ import monthsChart from './monthsChartReducer';
 import quartersChart from './quartersChartReducer';
 import yearsChart from './yearsChartReducer';
 import topChart from './topChartReducer';
-import budgetExecutions from './budgetExecutionsReducer';
-import monthExpanses from './monthExpansesReducer';
-import summarizedBudgets from './summarizedBudgetsReducer';
-import reports from './reportsReducer';
 
 const reducers = {
   menu,
-  monthExpanses,
-  budgetExecutions,
   summarizedSections,
   expansesCodes,
   generalSettings,
-  summarizedBudgets,
-  registeredMonths,
-  registeredYears,
-  registeredQuarters,
   settings,
   services,
   registeredBackups,
@@ -58,8 +45,7 @@ const reducers = {
   monthsChart,
   quartersChart,
   yearsChart,
-  topChart,
-  reports
+  topChart
 };
 
 export default reducers;

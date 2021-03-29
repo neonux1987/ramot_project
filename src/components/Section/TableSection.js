@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import SavedNotification from '../../Main/Toolbar/SavedNotification/SavedNotification';
-import DefaultButton from '../buttons/DefaultButton';
 import FullScreenButton from '../buttons/FullScreenButton';
 import StyledSection from './StyledSection';
 

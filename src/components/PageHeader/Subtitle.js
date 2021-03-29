@@ -13,6 +13,9 @@ const subTitleContainer = css`
 const subIconWrapper = css`
   display: flex;
   align-items: center;
+  background: #ececec;
+  padding: 2px;
+  border-radius: 3px;
 `;
 
 const subIcon = css`
