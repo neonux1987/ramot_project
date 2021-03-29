@@ -1,4 +1,5 @@
 const MonthlyStatsDao = require('../dao/MonthlyStatsDao');
+const Helper = require('../../helpers/Helper');
 
 class MonthlyStatsLogic {
 
@@ -19,6 +20,9 @@ class MonthlyStatsLogic {
   }
 
   updateMonthStatsTrx(buildingName = String, date = Object, budgetExpanse = null, trx) {
+    date.monthHeb = Helper.convertEngToHebMonth(date.month);
+    date.monthNum = Helper.hebToMonthNum(date.monthHeb);
+
     return this.monthlyStatsDao.updateMonthStatsTrx(buildingName, date, budgetExpanse, trx);
   }
 

@@ -291,7 +291,7 @@ class BudgetExecutionLogic {
    * @param {*} buildingNameEng 
    * @param {*} date 
    */
-  async createEmptyReport(buildingName, date, trx) {
+  async createEmptyReport(buildingNameEng, date, trx) {
 
     const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingNameEng, date.quarter, date.year, trx);
 
