@@ -13,7 +13,6 @@ const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) 
       totalCount={itemCount}
       item={Row}
       overscan={200}
-      fixedItemHeight={35}
     />
   </div>;
 

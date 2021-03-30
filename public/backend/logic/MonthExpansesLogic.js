@@ -180,6 +180,8 @@ class MonthExpansesLogic {
 
   async deleteMonthExpanseTrx({ buildingNameEng, date, id }) {
 
+    date.quarter = Helper.getQuarterFromMonthEng(date.month);
+
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
 

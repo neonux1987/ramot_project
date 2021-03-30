@@ -1,16 +1,16 @@
 const negative = {
   color: "#ffffff",
-  backgroundColor: "rgb(239, 34, 91)"
+  backgroundColor: "#ff0000b3"
 }
 
 const positive = {
   color: "#ffffff",
-  backgroundColor: "rgb(49 199 120)"
+  backgroundColor: "#008000b3"
 }
 
 const neutral = {
   color: "#000000",
-  backgroundColor: "rgb(231, 255, 31)"
+  backgroundColor: "#ffff00b3"
 }
 
 const useDifferenceColor = () => {
