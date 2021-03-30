@@ -70,7 +70,7 @@ const fullscreenStyle = css`
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 999;
+  z-index: 700;
   width: 100%;
   height: 100%;
 `;
