@@ -1,6 +1,6 @@
 // LIBRARIES
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ExcelReportsCheckbox from '../../../../../../components/Checkboxes/ExcelReportsCheckbox';
 import VerticalDivider from '../../../../../../components/Divider/VerticalDivider';
 import { setAllChecked, checkBuilding } from '../../../../../../redux/actions/reportsActions';

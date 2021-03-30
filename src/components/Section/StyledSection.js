@@ -78,7 +78,7 @@ const fullscreenStyle = css`
 const StyledSection = ({
   title,
   Icon,
-  bgColor = "rgb(111 80 206)",
+  bgColor = "#555555",
   extraDetails = null,
   children,
   fullscreen = false

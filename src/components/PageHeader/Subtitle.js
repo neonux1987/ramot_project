@@ -13,14 +13,14 @@ const subTitleContainer = css`
 const subIconWrapper = css`
   display: flex;
   align-items: center;
-  background: #ececec;
+  background-color: rgb(0,143,251);
   padding: 2px;
   border-radius: 3px;
 `;
 
 const subIcon = css`
   font-size: 16px;
-  color: #555555;
+  color: #ffffff;
 `;
 
 const subTitle = css`

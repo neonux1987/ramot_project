@@ -5,7 +5,6 @@ import { RiBuilding2Fill } from 'react-icons/ri';
 import MoreButton from './MoreBuildingMenu/MoreButton';
 import Subtitle from './Subtitle';
 import MoreBuildingMenu from './MoreBuildingMenu/MoreBuildingMenu';
-import { exportToExcelBulk } from '../../services/excel.svc';
 import useModalLogic from '../../customHooks/useModalLogic';
 import GenerateReportsModal from '../modals/GenerateReportsModal';
 
