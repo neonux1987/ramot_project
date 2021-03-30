@@ -229,7 +229,6 @@ class MonthExpansesLogic {
   async createEmptyReport(buildingNameEng, date, trx) {
 
     // Using trx as a transaction object:
-    //const trx = await connectionPool.getTransaction();
     if (trx === undefined) {
       trx = await connectionPool.getTransaction()
     }
@@ -239,39 +238,17 @@ class MonthExpansesLogic {
     //if the month is already registered
     //return empty promise
     if (registeredMonth.length > 0) {
-
       return Promise.resolve([]);
     }
 
-    const monthNum = date.monthNum > 0 ? date.monthNum - 1 : 11;//if the month is 0 january, then go to month 11 december of previous year
-    const year = monthNum === 11 ? date.year - 1 : date.year;//if the month is 11 december, go to previous year
+    //get the default codes
+    const defaultCodes = await this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx);
 
-    //previous date
-    const newDate = {
-      month: Helper.getCurrentMonthEng(monthNum),
-      year: year
-    }
+    //prepare the data for insertion
+    this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
 
-    //get all the expanses of the previous month if exists
-    const expanses = await this.getAllMonthExpansesTrx(buildingNameEng, newDate, trx);
-
-    //0 means there is no previous month
-    if (expanses.length === 0) {
-      //get the default codes
-      const defaultCodes = await this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx);
-
-      //prepare the data for insertion
-      this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
-
-      //insert the batch
-      await this.batchInsert(buildingNameEng, defaultCodes, trx);
-    } else {
-      //prepare the data for insertion
-      this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
-
-      //insert the batch
-      await this.batchInsert(buildingNameEng, expanses, trx);
-    }
+    //insert the batch
+    await this.batchInsert(buildingNameEng, defaultCodes, trx);
 
     //can safely register new year, it's not registered from other reports
     await this.registeredMonthsLogic.registerNewMonth(buildingNameEng, {
