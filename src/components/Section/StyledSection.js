@@ -81,9 +81,9 @@ const StyledSection = ({
   bgColor = "#555555",
   extraDetails = null,
   children,
-  fullscreen = false
+  isFullscreen = false
 }) => {
-  return <div className={classnames(_container, fullscreen ? fullscreenStyle : "")}>
+  return <div className={classnames(_container, isFullscreen ? fullscreenStyle : "")}>
 
     {/* header */}
     <div className={_header}>
