@@ -1,7 +1,3 @@
-import { combineReducers } from 'redux';
-import { ipcSendReceive } from '../../actions/util/util';
-import storage from 'redux-persist/lib/storage';
-
 const { buildings, pages } = require('electron').remote.getGlobal('sharedObject');
 
 export function getBuildings() {
