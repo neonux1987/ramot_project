@@ -8,12 +8,10 @@ const style = css`
   z-index: 3;
   position: relative;
   display: flex;
-  border: 1px solid #ececec;
-  border-radius: 3px;
-  background: #fafafa;
+  background: #ffffff;
 `;
 
-const AddBoxContainer = props => <Slide direction="down" in={true} mountOnEnter unmountOnExit timeout={300}>
+const AddBoxContainer = props => <Slide direction="left" in={true} mountOnEnter unmountOnExit timeout={400}>
   <div className={style}>{props.children}</div>
 </Slide>
 

@@ -203,7 +203,7 @@ const BudgetExecutionsTableContainer = props => {
       color: colorSet[3]
     }
 
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} /* style={{ backgroundColor: "#f5f6f9" }} */>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
 
       {editMode ? <HeaderColumn style={defaultheaderStyle}>{"פעולות"}</HeaderColumn> : null}
       <HeaderColumn style={defaultheaderStyle}>{"שורה"}</HeaderColumn>
@@ -229,21 +229,18 @@ const BudgetExecutionsTableContainer = props => {
 
     const monthColumns = [];
 
-    // generate month columns
-    for (let i = 0; i < months.length; i++) {
+    months.forEach((month, i) => {
       monthColumns.push(
         editMode ?
-          numberInput(`${months[i]}_budget`, rowData[`${months[i]}_budget`], index, onBlurHandler) :
-          <NonZeroNumberColumn key={`${months[i]}_budget${i}`}>{rowData[`${months[i]}_budget`]}</NonZeroNumberColumn>
+          numberInput(`${month}_budget`, rowData[`${month}_budget`], index, onBlurHandler) :
+          <NonZeroNumberColumn key={`${month}_budget${i}`}>{rowData[`${month}_budget`]}</NonZeroNumberColumn>
       );
-      monthColumns.push(<NonZeroNumberColumn key={`${months[i]}_budget_execution${i + 1}`}>{rowData[`${months[i]}_budget_execution`]}</NonZeroNumberColumn>);
-    }
+      monthColumns.push(<NonZeroNumberColumn key={`${month}_budget_execution${i + 1}`}>{rowData[`${month}_budget_execution`]}</NonZeroNumberColumn>);
+    });
 
     const differenceColor = whichColor(rowData.difference);
 
-    const odd = index % 2 === 0 ? "" : "";
-
-    return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
+    return <Row key={index} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(index, rowData)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData.section}</Column>
@@ -262,7 +259,6 @@ const BudgetExecutionsTableContainer = props => {
     <TableWrapper>
 
       <TableControls
-        editMode={editMode}
         rightPane={
           <EditControls
             editMode={editMode}

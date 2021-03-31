@@ -6,6 +6,7 @@ const Row = ({ style = {}, children, gridTemplateColumns = "unset", className = 
       className={`_tableRow ${className}`}
       style={{
         gridTemplateColumns: gridTemplateColumns,
+        minHeight: "35px",
         ...style
       }}>
       {children}

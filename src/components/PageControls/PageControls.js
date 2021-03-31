@@ -14,6 +14,7 @@ import useModalLogic from '../../customHooks/useModalLogic';
 import PrintModal from '../modals/PrintModal/PrintModal';
 import ExcelButton from '../buttons/ExcelButton';
 import PrintButton from '../buttons/PrintButton';
+import { saveToPdf } from '../../services/print.svc';
 //import MoreButton from '../buttons/MoreButton';
 
 const _container = css`
@@ -68,15 +69,7 @@ const PageControls = props => {
       <ExcelButton onClick={exportToExcelHandler} />
 
       <PrintButton
-        onClick={
-          () => {
-            /* saveToPdf(); */
-            showModal(PrintModal, {
-              ...print,
-              onClose: () => hideModal()
-            });
-          }
-        }
+        onClick={saveToPdf}
       />
 
       {/* <MoreButton onClick={() => { }} /> */}

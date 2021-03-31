@@ -99,10 +99,11 @@
     "build": "rescripts build",
     "test": "rescripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\"",
+    "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\"",
     "postinstall": "electron-builder install-app-deps",
-    "pack": "electron-builder --win --publish never",
-    "deploy": "electron-builder --win --publish always"
+    "preelectron-pack": "npm run build",
+    "electron-pack": "electron-builder --win --publish never",
+    "electron-deploy": "electron-builder --win --publish always"
   },
   "eslintConfig": {
     "extends": "react-app"

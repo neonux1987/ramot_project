@@ -179,9 +179,7 @@ const SummarizedBudgetsTableContainer = props => {
       quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_execution`}>{rowData[`quarter${i}_execution`]}</NonZeroNumberColumn>);
     }
 
-    const odd = index % 2 === 0 ? "" : "";
-
-    return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
+    return <Row key={index} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData.id, index)} /> : null}
       <Column>{index + 1}</Column>
       <Column>{rowData["section"]}</Column>
@@ -197,7 +195,6 @@ const SummarizedBudgetsTableContainer = props => {
     <TableWrapper>
 
       <TableControls
-        editMode={editMode}
         rightPane={
           <EditControls
             editMode={editMode}

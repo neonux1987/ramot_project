@@ -7,8 +7,11 @@ const initialState = initState({
   error: "",
   data: [],
   date: {
+    year: "",
     month: "",
-    year: ""
+    monthHeb: "",
+    monthNum: "",
+    quarter: ""
   }
 });
 

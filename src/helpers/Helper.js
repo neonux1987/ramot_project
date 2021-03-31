@@ -71,6 +71,24 @@ class Helper {
     }
   }
 
+  static engMonthToQuarter(monthEng) {
+    switch (monthEng) {
+      case "january": return 1
+      case "february": return 1
+      case "march": return 1
+      case "april": return 2
+      case "may": return 2
+      case "june": return 2
+      case "july": return 3
+      case "august": return 3
+      case "september": return 3
+      case "october": return 4
+      case "november": return 4
+      case "december": return 4
+      default: return null
+    }
+  }
+
   static getCurrentMonth(month = (new Date()).getMonth()) {
     switch (month) {
       case 0: return "january"

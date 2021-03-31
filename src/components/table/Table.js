@@ -12,7 +12,7 @@ const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) 
       style={{ overflow: "overlay", direction: "rtl" }}//overscrollBehavior: "contain"
       totalCount={itemCount}
       item={Row}
-      overscan={200}
+      overscan={10}
     />
   </div>;
 

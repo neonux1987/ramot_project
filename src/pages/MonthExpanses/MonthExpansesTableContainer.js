@@ -218,9 +218,7 @@ const MonthExpansesTableContainer = props => {
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    const odd = index % 2 === 0 ? "" : "";
-
-    return <Row key={index} style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={gridTemplateColumns}>
+    return <Row key={index} gridTemplateColumns={gridTemplateColumns}>
       {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}
 
       <Column>{index + 1}</Column>

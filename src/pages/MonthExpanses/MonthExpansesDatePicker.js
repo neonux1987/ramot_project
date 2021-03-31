@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import { fetchRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
 import DatePicker from '../../components/DatePicker/DatePicker';
+import Helper from '../../helpers/Helper';
 
 const MonthExpansesDatePicker = ({
   buildingNameEng,
@@ -60,11 +61,23 @@ const MonthExpansesDatePicker = ({
         // load the same month of the previous year if exist in the chosen year
         // if not load just the first month availble in the list
         const month = monthExist(date.month, data) ? date.month : data[0].month;
-        dispatch(updateDate(buildingNameEng, { year: value, month }));
+        dispatch(updateDate(buildingNameEng, {
+          year: value,
+          month,
+          monthHeb: Helper.convertEngToHebMonth(month),
+          monthNum: Helper.convertEngToMonthNum(month),
+          quarter: Helper.engMonthToQuarter(month)
+        }));
       });
     }
     else {
-      dispatch(updateDate(buildingNameEng, { year: localYear, month: value }));
+      dispatch(updateDate(buildingNameEng, {
+        year: localYear,
+        month: value,
+        monthHeb: Helper.convertEngToHebMonth(value),
+        monthNum: Helper.convertEngToMonthNum(value),
+        quarter: Helper.engMonthToQuarter(value)
+      }));
     }
   };
 
