@@ -69,7 +69,12 @@ const PageControls = props => {
       <ExcelButton onClick={exportToExcelHandler} />
 
       <PrintButton
-        onClick={saveToPdf}
+        onClick={() => {
+          showModal(PrintModal, {
+            ...print,
+            onClose: () => hideModal()
+          })
+        }}
       />
 
       {/* <MoreButton onClick={() => { }} /> */}
