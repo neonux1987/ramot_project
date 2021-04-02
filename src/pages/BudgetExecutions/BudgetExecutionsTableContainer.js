@@ -290,7 +290,8 @@ const BudgetExecutionsTableContainer = props => {
               Row: TableRow,
               GroupComponent: HeaderGroups,
               HeaderComponent: HeadersRow,
-              itemCount: data.length
+              itemCount: data.length,
+              data
             }}
             pageName={pageName}
             dataExist={data.length > 0}

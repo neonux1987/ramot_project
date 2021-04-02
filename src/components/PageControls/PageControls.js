@@ -14,7 +14,6 @@ import useModalLogic from '../../customHooks/useModalLogic';
 import PrintModal from '../modals/PrintModal/PrintModal';
 import ExcelButton from '../buttons/ExcelButton';
 import PrintButton from '../buttons/PrintButton';
-import { saveToPdf } from '../../services/print.svc';
 //import MoreButton from '../buttons/MoreButton';
 
 const _container = css`

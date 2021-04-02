@@ -15,6 +15,7 @@ const ButtonWithSound = React.forwardRef((props, ref) => {
       props.onClick && props.onClick(event);
     }}
     ref={ref}
+    disableRipple={true}
   >
     {props.children}
   </Button>

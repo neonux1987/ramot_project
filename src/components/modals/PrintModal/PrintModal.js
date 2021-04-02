@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { css } from 'emotion';
-import { Close } from '@material-ui/icons';
 import PrimaryButton from '../../buttons/PrimaryButton';
-import ButtonWithSound from '../../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import { Typography, Modal } from '@material-ui/core';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
-import { saveToPdf } from '../../../services/print.svc';
-import html2canvas from 'html2canvas';
+import CloseButton from '../../buttons/CloseButton';
+import { print } from '../../../services/print.svc';
 
 const container = css`
   overflow: hidden;
@@ -30,7 +28,7 @@ const headerContainer = css`
   justify-content: flex-end;
   border-bottom: 1px solid #e6e6e6;
   padding-bottom: 10px;
-  padding: 15px;
+  padding: 15px 0;
 `;
 
 const printbutton = css`margin-right: 10px`;
@@ -40,19 +38,7 @@ const buttonWrapper = css`
   align-items: center;
   flex: 1;
   justify-content: flex-end;
-`;
-
-const closeButton = css`
-  min-width: initial; 
-  margin-left: -8px;
-`;
-
-const closeButtonText = css`
-  font-size: 18px;
-`;
-
-const closeButtonIcon = css`
-  font-size: 20px;
+  padding-left: 5px;
 `;
 
 const titleWrapper = css`
@@ -60,6 +46,7 @@ const titleWrapper = css`
   display: flex;
   align-items: center;
   flex: 1;
+  padding-right: 15px;
 `;
 
 const backDropOverride = css`
@@ -95,7 +82,7 @@ const PrintModal = props => {
     date
   } = props;
 
-  const tableRef = useRef(null);
+  const [ref, setRef] = useState(null);
 
   const [generating, setGenerating] = useState(true);
 
@@ -113,8 +100,28 @@ const PrintModal = props => {
   }
 
   useEffect(() => {
-    setGenerating(false);
+    onPrint();
+  }, [ref, onPrint]);
+
+  const onRefSet = useCallback(ref => {
+    console.log(ref);
+    setRef(ref);
   }, []);
+
+  const onPrint = useCallback(() => {
+
+    if (ref !== null) {
+      const element = document.getElementById("print-table");
+      print(element).then(() => {
+        setGenerating(false);
+        //ref.innerHTML = "";
+        //ref.appendChild("hello");
+      });
+
+    }
+
+
+  }, [ref]);
 
   return (
     <Modal BackdropProps={{ className: backDropOverride }} onClose={onClick} open={open}>
@@ -125,35 +132,20 @@ const PrintModal = props => {
 
           <div className={titleWrapper}>
             <Typography variant="h5">תצוגה לפני הדפסה</Typography>
-            <PrimaryButton className={printbutton} onClick={() => {
-              const element = document.getElementById("print-table");
-
-              html2canvas(element, {
-                width: element.scrollWidth,
-                height: element.scrollHeight
-              }).then(function (canvas) {
-                const img = canvas.toDataURL();
-                element.innerHTML = "";
-                element.appendChild(canvas);
-                saveToPdf(img, element.scrollWidth, element.scrollHeight);
-              });
-            }}>
+            <PrimaryButton className={printbutton} onClick={() => { }}>
               הדפס
             </PrimaryButton>
           </div>
 
           <div className={buttonWrapper}>
-            <ButtonWithSound onClick={onClick} className={closeButton}>
-              <Close className={closeButtonIcon} />
-              <span className={closeButtonText}>סגור</span>
-            </ButtonWithSound>
+            <CloseButton onClick={onClick} />
           </div>
 
         </div>
 
-        <AlignCenterMiddle style={{ display: generating ? "flex" : "none" }}>מייצר תצוגה...</AlignCenterMiddle>
+        {generating ? <AlignCenterMiddle style={{ display: generating ? "flex" : "none" }}>מייצר תצוגה...</AlignCenterMiddle> : null}
 
-        <div id="print-table" ref={tableRef} className={tableRefWrapper} style={{ display: generating ? "none" : "block" }}>
+        <div id="print-table" ref={onRefSet} className={tableRefWrapper} style={{ visibility: generating ? "hidden" : "visible" }}>
           <div className={tableHeaderContainer}>
             <div>
               <Typography variant="h5">{pageTitle}</Typography>
@@ -174,7 +166,7 @@ const PrintModal = props => {
         </div>
 
       </div>
-    </Modal>
+    </Modal >
   );
 }
 
