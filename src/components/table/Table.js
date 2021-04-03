@@ -5,7 +5,7 @@ import Spinner from '../Spinner/Spinner';
 
 import { Virtuoso } from 'react-virtuoso';
 
-const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) => {
+const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, id }) => {
 
   const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : <div className="_tableBody">
     <Virtuoso
@@ -17,7 +17,7 @@ const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount }) 
   </div>;
 
   return (
-    <div className="_table">
+    <div className="_table" id={id}>
 
       {/* HEADERS GROUPS */}
       {itemCount > 0 ? GroupComponent && GroupComponent() : null}

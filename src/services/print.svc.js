@@ -1,5 +1,6 @@
 import { openItem } from './mainProcess.svc';
-
+import './Assistant-Regular-normal';
+import html2canvas from 'html2canvas';
 export const print = (element) => {
 
   return import('jspdf')
@@ -15,38 +16,42 @@ export const print = (element) => {
         format: "a4"
       });
 
-      doc.setFont("sans-serif");
+      doc.setFont("Assistant-Regular");
 
-      doc.html(element, {
-        callback: function (doc) {
-          doc.autoPrint({ variant: 'non-conform' });
+      return new Promise((resolve, reject) => {
 
-          const outputPath = path.join(os.tmpdir(), "print.pdf");
+        doc.html(element, {
+          callback: function (doc) {
+            //doc.autoPrint({ variant: 'non-conform' });
 
-          fs.writeFile(outputPath, doc.output(), function (err) {
-            if (err) {
-              console.log(err);
-            } else {
-              //openItem(outputPath);
-              console.log('PDF Generated Successfully');
-            }
-          });
+            const outputPath = path.join(os.tmpdir(), "print.pdf");
+
+            const pdfBlob = doc.output('bloburl');
+
+            fs.writeFile(outputPath, doc.output(), function (err) {
+              if (err) {
+                console.log(err);
+                reject();
+              } else {
+                //openItem(outputPath);
+                resolve(pdfBlob);
+                console.log('PDF Generated Successfully');
+              }
+            });
 
 
-          //doc.save("test");
-        },
-        x: 0,
-        y: 0,
-        fontFaces: [{
-          family: "sans-serif"
-        }],
-        html2canvas: {
-          scale: 0.245
-        }
+            //doc.save("test");
+          },
+          x: 0,
+          y: 0,
+          html2canvas: {
+            scale: 0.18,
+            width: element.scrollWidth,
+            height: element.scrollHeight
+          }
+        });
+
       });
-
-      //doc.addImage(dataUrl, 'JPEG', 0, 0, width, height);
-      //doc.save(path.join(SystemPaths.paths.user_main_folder, "dada.pdf"));
 
     });
 

@@ -45,23 +45,49 @@ const printerIpc = () => {
     event.sender.send("pdf-saved", { data: "location of the pdf file" });
   });
 
-  ipcMain.on('save-to-pdf', (event, { dataUrl, landscape = false }) => {
+  ipcMain.on('save-to-pdf', (event, { element }) => {
+    console.log("element");
+    const path = require('path');
+    const fs = require('fs');
+    const os = require('os');
 
-    const { jsPDF } = require("jspdf");
+    const { jsPDF } = require('jspdf');
+
     const doc = new jsPDF({
       orientation: 'l',
       unit: 'mm',
-      format: 'a4'
+      format: "a4"
     });
 
-    doc.html("dataUrl", {
+    doc.setFont("sans-serif");
+
+    doc.html(element, {
       callback: function (doc) {
-        doc.save(path.join(SystemPaths.paths.user_main_folder, "dada.pdf"));
+        doc.autoPrint({ variant: 'non-conform' });
+
+        const outputPath = path.join(os.tmpdir(), "print.pdf");
+
+        /* fs.writeFile(outputPath, doc.output(), function (err) {
+          if (err) {
+            console.log(err);
+          } else {
+            //openItem(outputPath);
+            console.log('PDF Generated Successfully');
+          }
+        }); */
+
+
+        //doc.save("test");
+      },
+      x: 0,
+      y: 0,
+      fontFaces: [{
+        family: "sans-serif"
+      }],
+      html2canvas: {
+        scale: 0.245
       }
-    },
-      0,
-      0
-    );
+    });
 
     event.sender.send("pdf-saved", { data: "location of the pdf file" });
   });

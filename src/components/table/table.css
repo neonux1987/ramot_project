@@ -1,10 +1,9 @@
 ._table{
-  width: 100%;
-  overflow: hidden;
   /* padding: 10px; */
   border-radius: 0px;
   position: relative;
   background: #fff;
+  font-family: 'Assistant' !important;
 }
 
 ._tableBody{

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { css } from 'emotion';
 import PrimaryButton from '../../buttons/PrimaryButton';
 import { Typography, Modal } from '@material-ui/core';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
 import CloseButton from '../../buttons/CloseButton';
 import { print } from '../../../services/print.svc';
+import usePrint from '../../../customHooks/usePrint';
 
 const container = css`
   overflow: hidden;
@@ -70,21 +71,25 @@ const tableHeaderDate = css`
   font-size: 16px;
 `;
 
+const iframeStyle = css`
+width: 100%; 
+height: 100vh; 
+border: none;
+`;
+
+
+
 const PrintModal = props => {
   const {
     //title,
     pageTitle,
     onClose,
-    GroupComponent,
-    HeaderComponent,
-    Row,
-    itemCount,
-    date
+    date,
+    id,
+    data
   } = props;
 
-  const [ref, setRef] = useState(null);
-
-  const [generating, setGenerating] = useState(true);
+  const [generating, output] = usePrint(id);
 
   const [open, setOpen] = useState(true);
 
@@ -93,35 +98,10 @@ const PrintModal = props => {
     onClose();
   }
 
-  const rows = [];
-
-  for (let i = 0; i < itemCount; i++) {
-    rows.push(Row(i, i));
-  }
-
   useEffect(() => {
-    onPrint();
-  }, [ref, onPrint]);
-
-  const onRefSet = useCallback(ref => {
-    console.log(ref);
-    setRef(ref);
-  }, []);
-
-  const onPrint = useCallback(() => {
-
-    if (ref !== null) {
-      const element = document.getElementById("print-table");
-      print(element).then(() => {
-        setGenerating(false);
-        //ref.innerHTML = "";
-        //ref.appendChild("hello");
-      });
-
-    }
-
-
-  }, [ref]);
+    if (output !== null)
+      document.getElementById("main-iframe").setAttribute('src', output);
+  }, [output]);
 
   return (
     <Modal BackdropProps={{ className: backDropOverride }} onClose={onClick} open={open}>
@@ -145,7 +125,7 @@ const PrintModal = props => {
 
         {generating ? <AlignCenterMiddle style={{ display: generating ? "flex" : "none" }}>מייצר תצוגה...</AlignCenterMiddle> : null}
 
-        <div id="print-table" ref={onRefSet} className={tableRefWrapper} style={{ visibility: generating ? "hidden" : "visible" }}>
+        <div id="print-table" className={tableRefWrapper} style={{ visibility: generating ? "hidden" : "visible" }}>
           <div className={tableHeaderContainer}>
             <div>
               <Typography variant="h5">{pageTitle}</Typography>
@@ -154,15 +134,8 @@ const PrintModal = props => {
             <div className={tableHeaderDate}>{date}</div>
           </div>
 
-          <div className={"_table"}>
+          <iframe id="main-iframe" className={iframeStyle}></iframe>
 
-            {GroupComponent && GroupComponent()}
-            {HeaderComponent && HeaderComponent()}
-
-            <div className={"_tableBody"}>
-              {rows}
-            </div>
-          </div>
         </div>
 
       </div>

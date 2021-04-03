@@ -40,6 +40,8 @@ import BudgetExecutionsDatePicker from './BudgetExecutionsDatePicker';
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
+const PRINTABLE_ID = "budgetExecution-printable";
+
 const BudgetExecutionsTableContainer = props => {
 
   const {
@@ -281,17 +283,13 @@ const BudgetExecutionsTableContainer = props => {
               fileName: Helper.getBudgetExecutionFilename(buildingName, date),
               buildingName,
               buildingNameEng,
-              date,
+              date
             }}
             print={{
               title: pageTitle,
               pageTitle: pageTitle + " - " + buildingName,
               date: `שנה ${date.year}\\רבעון ${date.quarter}`,
-              Row: TableRow,
-              GroupComponent: HeaderGroups,
-              HeaderComponent: HeadersRow,
-              itemCount: data.length,
-              data
+              id: PRINTABLE_ID
             }}
             pageName={pageName}
             dataExist={data.length > 0}
@@ -308,6 +306,7 @@ const BudgetExecutionsTableContainer = props => {
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
         itemCount={data.length}
+        id={PRINTABLE_ID}
       />
 
     </TableWrapper>
