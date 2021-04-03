@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { css } from 'emotion';
 import PrimaryButton from '../../buttons/PrimaryButton';
 import { Typography, Modal } from '@material-ui/core';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
 import CloseButton from '../../buttons/CloseButton';
-import { print } from '../../../services/print.svc';
 import usePrint from '../../../customHooks/usePrint';
+import { useDispatch } from 'react-redux';
+import { setPrintMode } from '../../../redux/actions/printActions';
 
 const container = css`
   overflow: hidden;
@@ -21,15 +22,16 @@ const container = css`
   border-radius: 3px;
   outline: none;
   -webkit-app-region: no-drag;
+  display: flex;
 `;
 
-const headerContainer = css`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+const sidebar = css`
   border-bottom: 1px solid #e6e6e6;
   padding-bottom: 10px;
-  padding: 15px 0;
+  width: 250px;
+  border-left: 1px solid #ececec;
+  display: flex;
+  flex-direction: column;
 `;
 
 const printbutton = css`margin-right: 10px`;
@@ -37,17 +39,14 @@ const printbutton = css`margin-right: 10px`;
 const buttonWrapper = css`
   display: flex;
   align-items: center;
-  flex: 1;
-  justify-content: flex-end;
-  padding-left: 5px;
+  justify-content: flex-start;
+  padding: 15px;
 `;
 
 const titleWrapper = css`
-  justify-content: flex-start;
   display: flex;
-  align-items: center;
-  flex: 1;
-  padding-right: 15px;
+  flex-grow: 1;
+  padding: 15px;
 `;
 
 const backDropOverride = css`
@@ -55,43 +54,28 @@ const backDropOverride = css`
   -webkit-app-region: no-drag;
 `;
 
-const tableRefWrapper = css`
-  overflow: overlay;
-  max-height: 87%;
-  padding: 15px 20px;
-  margin-top: 1%;
-  visibillity: hidden;
-`;
-
-const tableHeaderContainer = css`
-  margin-bottom: 10px;
-`;
-
-const tableHeaderDate = css`
-  font-size: 16px;
+const _content = css`
+  margin: 0;
+  flex-grow: 1;
 `;
 
 const iframeStyle = css`
 width: 100%; 
-height: 100vh; 
-border: none;
+height: 100%; 
+border: 1px solid #ececec;
 `;
-
-
 
 const PrintModal = props => {
   const {
-    //title,
-    pageTitle,
     onClose,
-    date,
-    id,
-    data
+    id
   } = props;
 
   const [generating, output] = usePrint(id);
 
   const [open, setOpen] = useState(true);
+
+  const dispatch = useDispatch();
 
   const onClick = () => {
     setOpen(false);
@@ -100,41 +84,41 @@ const PrintModal = props => {
 
   useEffect(() => {
     if (output !== null)
-      document.getElementById("main-iframe").setAttribute('src', output);
+      document.getElementById("print-iframe").setAttribute('src', output);
+
   }, [output]);
+
+  useEffect(() => {
+    if (!generating)
+      dispatch(setPrintMode(false));
+
+  }, [dispatch, generating]);
 
   return (
     <Modal BackdropProps={{ className: backDropOverride }} onClose={onClick} open={open}>
 
       <div className={container}>
 
-        <div className={headerContainer}>
+        <div className={sidebar}>
 
           <div className={titleWrapper}>
-            <Typography variant="h5">תצוגה לפני הדפסה</Typography>
+            <Typography variant="h5">תצוגה מקדימה</Typography>
+          </div>
+
+          <div className={buttonWrapper}>
+            <CloseButton onClick={onClick} />
             <PrimaryButton className={printbutton} onClick={() => { }}>
               הדפס
             </PrimaryButton>
           </div>
 
-          <div className={buttonWrapper}>
-            <CloseButton onClick={onClick} />
-          </div>
-
         </div>
 
-        {generating ? <AlignCenterMiddle style={{ display: generating ? "flex" : "none" }}>מייצר תצוגה...</AlignCenterMiddle> : null}
+        <div id="print-table" className={_content} /* style={{ visibility: generating ? "hidden" : "visible" }} */>
 
-        <div id="print-table" className={tableRefWrapper} style={{ visibility: generating ? "hidden" : "visible" }}>
-          <div className={tableHeaderContainer}>
-            <div>
-              <Typography variant="h5">{pageTitle}</Typography>
-            </div>
+          {generating ? <AlignCenterMiddle style={{ display: generating ? "flex" : "none" }}>מייצר תצוגה...</AlignCenterMiddle> : null}
 
-            <div className={tableHeaderDate}>{date}</div>
-          </div>
-
-          <iframe id="main-iframe" className={iframeStyle}></iframe>
+          <iframe title="print-preview" id="print-iframe" className={iframeStyle}></iframe>
 
         </div>
 

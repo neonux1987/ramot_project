@@ -28,6 +28,7 @@ import budgetExecutions from './budgetExecutionsReducer';
 import monthExpanses from './monthExpansesReducer';
 import summarizedBudgets from './summarizedBudgetsReducer';
 import reports from './reportsReducer';
+import print from './printReducer';
 
 const reducers = {
   menu,
@@ -59,7 +60,8 @@ const reducers = {
   quartersChart,
   yearsChart,
   topChart,
-  reports
+  reports,
+  print
 };
 
 export default reducers;

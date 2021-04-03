@@ -14,6 +14,8 @@ import useModalLogic from '../../customHooks/useModalLogic';
 import PrintModal from '../modals/PrintModal/PrintModal';
 import ExcelButton from '../buttons/ExcelButton';
 import PrintButton from '../buttons/PrintButton';
+import { setPrintMode } from '../../redux/actions/printActions';
+import { useDispatch } from 'react-redux';
 //import MoreButton from '../buttons/MoreButton';
 
 const _container = css`
@@ -50,6 +52,8 @@ const PageControls = props => {
 
   const { showModal, hideModal } = useModalLogic();
 
+  const dispatch = useDispatch();
+
   const exportToExcelHandler = () => {
     if (excel.date.year === undefined)
       toastManager.info("לא נבחר דוח לייצוא")
@@ -69,6 +73,7 @@ const PageControls = props => {
 
       <PrintButton
         onClick={() => {
+          dispatch(setPrintMode(true));
           showModal(PrintModal, {
             ...print,
             onClose: () => hideModal()

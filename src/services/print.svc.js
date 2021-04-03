@@ -27,8 +27,8 @@ export const print = (element) => {
             const outputPath = path.join(os.tmpdir(), "print.pdf");
 
             const pdfBlob = doc.output('bloburl');
-
-            fs.writeFile(outputPath, doc.output(), function (err) {
+            resolve(pdfBlob);
+            /* fs.writeFile(outputPath, doc.output(), function (err) {
               if (err) {
                 console.log(err);
                 reject();
@@ -37,11 +37,12 @@ export const print = (element) => {
                 resolve(pdfBlob);
                 console.log('PDF Generated Successfully');
               }
-            });
+            }); */
 
 
             //doc.save("test");
           },
+          margin: [80, 80, 80, 80],
           x: 0,
           y: 0,
           html2canvas: {
