@@ -72,8 +72,14 @@ export const print = async (element) => {
       y: 0,
       html2canvas: {
         scale: 0.5,
-        width,
-        height
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        width: 800,
+        height: 600,
+        onclone: function (document) {
+          const row = document.getElementById("st-thead-row");
+          console.log(row)
+        }
       }
     });
 

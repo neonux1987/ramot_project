@@ -4,8 +4,8 @@ import "./SampleTable.css";
 const SampleTable = () => {
 
   return <table id="print">
-    <thead>
-      <tr>
+    <thead id="st-thead">
+      <tr id="st-thead-row">
         <th>חברה</th>
         <th>צור קשר</th>
         <th>מדינה</th>

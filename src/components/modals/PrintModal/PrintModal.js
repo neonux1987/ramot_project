@@ -49,11 +49,6 @@ const titleWrapper = css`
   padding: 15px;
 `;
 
-const backDropOverride = css`
-  top: 0px !important;
-  -webkit-app-region: no-drag;
-`;
-
 const _content = css`
   margin: 0;
   flex-grow: 1;
@@ -99,7 +94,11 @@ const PrintModal = props => {
   }, [dispatch, generating]); */
 
   return (
-    <Modal BackdropProps={{ className: backDropOverride }} onClose={onClick} open={open}>
+    <Modal
+      onClose={onClick}
+      open={open}
+      disableBackdropClick={true}
+    >
 
       <div className={container}>
 
