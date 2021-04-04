@@ -43,9 +43,9 @@ const SampleTable = () => {
         <td>Island Trading</td>
         <td>Helen Bennett</td>
         <td>UK</td>
-        <td>UK</td>
-        <td>UK</td>
-        <td>UK</td>
+        <td>103</td>
+        <td>12</td>
+        <td>13</td>
       </tr>
       <tr>
         <td>Laughing Bacchus Winecellars</td>

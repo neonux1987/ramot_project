@@ -1,5 +1,5 @@
 const initialState = {
-  enabled: false
+  printMode: false
 }
 
 const printReducer = (state = initialState, action) => {
@@ -7,7 +7,7 @@ const printReducer = (state = initialState, action) => {
     case `SET_PRINT_MODE`: {
       return {
         ...state,
-        enabled: action.enabled
+        printMode: action.printMode
       };
     }
     default: return state;

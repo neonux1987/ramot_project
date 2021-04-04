@@ -3,7 +3,7 @@ import { css } from 'emotion';
 import PrimaryButton from '../../buttons/PrimaryButton';
 import { Typography, Modal } from '@material-ui/core';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
-import CloseButton from '../../buttons/CloseButton';
+import DefaultButton from '../../buttons/DefaultButton';
 import usePrint from '../../../customHooks/usePrint';
 import { useDispatch } from 'react-redux';
 import { setPrintMode } from '../../../redux/actions/printActions';
@@ -28,7 +28,7 @@ const container = css`
 const sidebar = css`
   border-bottom: 1px solid #e6e6e6;
   padding-bottom: 10px;
-  width: 250px;
+  width: 350px;
   border-left: 1px solid #ececec;
   display: flex;
   flex-direction: column;
@@ -71,9 +71,11 @@ const PrintModal = props => {
     id
   } = props;
 
-  const [generating, output] = usePrint(id);
+  const [generating, output] = usePrint("print");
 
   const [open, setOpen] = useState(true);
+
+  const [pages, setPages] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -83,16 +85,18 @@ const PrintModal = props => {
   }
 
   useEffect(() => {
-    if (output !== null)
-      document.getElementById("print-iframe").setAttribute('src', output);
+    if (output !== null) {
+      document.getElementById("print-iframe").setAttribute('src', output.pdfBlob);
+      setPages(output.pages)
+    }
 
   }, [output]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!generating)
       dispatch(setPrintMode(false));
 
-  }, [dispatch, generating]);
+  }, [dispatch, generating]); */
 
   return (
     <Modal BackdropProps={{ className: backDropOverride }} onClose={onClick} open={open}>
@@ -102,11 +106,12 @@ const PrintModal = props => {
         <div className={sidebar}>
 
           <div className={titleWrapper}>
-            <Typography variant="h5">תצוגה מקדימה</Typography>
+            <Typography variant="h5">הדפסה</Typography>
+            {pages > 0 ? <Typography variant="h6">{`${pages} עמודים`}</Typography> : null}
           </div>
 
           <div className={buttonWrapper}>
-            <CloseButton onClick={onClick} />
+            <DefaultButton onClick={onClick}>סגור</DefaultButton>
             <PrimaryButton className={printbutton} onClick={() => { }}>
               הדפס
             </PrimaryButton>

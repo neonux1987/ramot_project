@@ -9,9 +9,9 @@ const usePrint = (id) => {
   useEffect(() => {
     const element = document.getElementById(id);
 
-    print(element).then((pdf) => {
+    print(element).then((data) => {
       setGenerating(false);
-      setOutput(pdf);
+      setOutput(data);
     });
   }, [id]);
 

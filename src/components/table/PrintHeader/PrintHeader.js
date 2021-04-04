@@ -2,11 +2,16 @@ import React from 'react';
 import { css } from 'emotion';
 import { Typography } from '@material-ui/core';
 
-const tableHeaderContainer = css`
+const _container = css`
   margin-bottom: 10px;
+  font-family: 'Assistant-Regular' !important;
 `;
 
-const tableHeaderDate = css`
+const _title = css`
+font-family: 'Assistant-Regular' !important;
+`;
+
+const _date = css`
   font-size: 16px;
 `;
 
@@ -16,12 +21,12 @@ const PrintHeader = props => {
     date
   } = props;
 
-  return <div className={tableHeaderContainer}>
+  return <div className={_container}>
     <div>
-      <Typography variant="h5">{pageTitle}</Typography>
+      <Typography className={_title} variant="h5">{pageTitle}</Typography>
     </div>
 
-    <div className={tableHeaderDate}>{date}</div>
+    <div className={_date}>{date}</div>
   </div>;
 }
 

@@ -2,11 +2,13 @@ table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  font-family: "Assistant-Regular";
+  direction: rtl;
 }
 
 td, th {
   border: 1px solid #dddddd;
-  text-align: left;
+  text-align: right;
   padding: 8px;
 }
 

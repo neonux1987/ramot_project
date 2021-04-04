@@ -3,7 +3,6 @@
   border-radius: 0px;
   position: relative;
   background: #fff;
-  font-family: 'Assistant' !important;
 }
 
 ._tableBody{
@@ -12,6 +11,7 @@
   background: #fff;
   position: relative;
   color: #000000;
+  text-align: left;
 }
 
 ._tableRow{
