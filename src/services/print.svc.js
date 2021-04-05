@@ -1,6 +1,8 @@
 import { openItem } from './mainProcess.svc';
 import './Assistant-Regular-normal';
 import { withWidth } from '@material-ui/core';
+import html2canvas from 'html2canvas';
+import { ipcRenderer } from 'electron';
 
 export const print = async (element) => {
 
@@ -21,13 +23,16 @@ export const print = async (element) => {
 
   const width = doc.internal.pageSize.getWidth();
   const height = doc.internal.pageSize.getHeight();
-
+  console.log(width);
   const ratio = width / height;
 
-  /* const canvas = await html2canvas(element, {
-    scale: 0.65,
+  const canvas = await html2canvas(element, {
     width: element.scrollWidth,
-    height: element.scrollHeight
+    height: element.scrollHeight,
+    scrollX: element.scrollWidth,
+    scrollY: element.scrollHeight,
+    x: 0,
+    y: 0
   });
   doc.addImage(canvas, 0, 0);
 
@@ -37,52 +42,15 @@ export const print = async (element) => {
     pages: doc.internal.getNumberOfPages(),
     pdfBlob,
     scale: doc.internal.scaleFactor
-  }; */
-
-  return new Promise((resolve, reject) => {
-
-    doc.html(element, {
-      callback: function (doc) {
-        //doc.autoPrint({ variant: 'non-conform' });
-
-        const outputPath = path.join(os.tmpdir(), "print.pdf");
-
-        const pdfBlob = doc.output('bloburl');
-        resolve({
-          pages: doc.internal.getNumberOfPages(),
-          pdfBlob,
-          scale: doc.internal.scaleFactor
-        });
-        /* fs.writeFile(outputPath, doc.output(), function (err) {
-          if (err) {
-            console.log(err);
-            reject();
-          } else {
-            //openItem(outputPath);
-            resolve(pdfBlob);
-            console.log('PDF Generated Successfully');
-          }
-        }); */
+  };
 
 
-        //doc.save("test");
-      },
-      margin: 80,
-      x: 0,
-      y: 0,
-      html2canvas: {
-        scale: 0.5,
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight,
-        width: 800,
-        height: 600,
-        onclone: function (document) {
-          const row = document.getElementById("st-thead-row");
-          console.log(row)
-        }
-      }
-    });
-
-  });
 
 };
+
+export const print2 = () => {
+
+  ipcRenderer.send("print-content");
+
+
+}

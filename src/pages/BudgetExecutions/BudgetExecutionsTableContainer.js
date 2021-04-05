@@ -312,8 +312,6 @@ const BudgetExecutionsTableContainer = props => {
         date={`שנה ${date.year}\\רבעון ${date.quarter}`}
       />
 
-      <SampleTable />
-
     </TableWrapper>
   );
 }

@@ -26,7 +26,7 @@ const Toolbar = () => {
   const noFollowRule = !themeSettings.sticky_toolbar ? styles.noFollow : "";
 
   return (
-    <div className={classnames(styles.wrapper, noFollowRule)}>
+    <div className={classnames(styles.wrapper, noFollowRule)} id="toolbar">
 
       <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
         <ToggleButton onClick={onClick} />

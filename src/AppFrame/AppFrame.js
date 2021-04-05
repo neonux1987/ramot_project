@@ -16,7 +16,7 @@ const style = css`
 `;
 
 const AppFrame = props => {
-  return <div className={style}>
+  return <div className={style} id="appFrame">
     {props.children}
   </div>;
 }

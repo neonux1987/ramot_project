@@ -83,10 +83,10 @@ const StyledSection = ({
   children,
   isFullscreen = false
 }) => {
-  return <div className={classnames(_container, isFullscreen ? fullscreenStyle : "")}>
+  return <div className={classnames(_container, isFullscreen ? fullscreenStyle : "")} id="styledSection">
 
     {/* header */}
-    <div className={_header}>
+    <div className={_header} id="styledSection-header">
 
       {/* title box */}
       <div className={_titleBox}>

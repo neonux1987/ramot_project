@@ -259,3 +259,38 @@ apex charts override
   padding: 6px 7px;
   width: 102px;
 }
+
+@media only print {
+  @page {
+    size: auto;   /* auto is the initial value */
+    margin: 10px;  /* this affects the margin in the printer settings */
+  }
+
+  body{
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  #appFrame,#sidebar,#pageHeader,#toolbar,#tableControls,#section,#styledSection-header{
+    display: none !important;
+  }
+
+  #styledSection{
+    margin:0;
+    padding: 0;
+    box-shadow: none;
+    height: 100vh;
+  }
+
+  #styledSection:first-child{
+    display: none !important;
+  }
+
+  #printHeader{
+    display: block;
+  }
+
+  ._tableColumn:first-child{
+    border-right: 1px solid #ececec;
+  }
+
+}

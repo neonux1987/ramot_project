@@ -63,7 +63,7 @@ const PageHeader = ({ buildingName, buildingNameEng, date, page }) => {
     });
   }
 
-  return <div className={container}>
+  return <div className={container} id="pageHeader">
 
     {/* main container */}
     <div className={mainContainer}>

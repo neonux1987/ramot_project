@@ -66,7 +66,7 @@ const PrintModal = props => {
     id
   } = props;
 
-  const [generating, output] = usePrint("print");
+  const [generating, output] = usePrint(id);
 
   const [open, setOpen] = useState(true);
 

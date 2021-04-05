@@ -10,14 +10,14 @@ import PrintHeader from './PrintHeader/PrintHeader';
 const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, id, pageTitle, date }) => {
 
   const printMode = useSelector(store => store.print.printMode);
-
+  const printHeight = itemCount * 35;
   const Loading = isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> :
     <div className="_tableBody">
       <Virtuoso
         style={{
           overflow: "overlay",
           direction: "rtl",
-          height: printMode ? "100vh" : "40rem"
+          height: printMode ? `${printHeight}px` : "40rem"
         }}//overscrollBehavior: "contain"
         totalCount={itemCount}
         item={Row}
@@ -26,10 +26,10 @@ const Table = ({ GroupComponent, HeaderComponent, Row, isFetching, itemCount, id
     </div>;
 
   return (
-    <div className="_table" id={id} style={{ fontFamily: printMode ? 'Assistant-Regular' : 'Assistant' }}>
+    <div className="_table" id={id}>
 
       {/* PRINT HEADER active only in print mode*/}
-      {!printMode ? null : <PrintHeader pageTitle={pageTitle} date={date} />}
+      <PrintHeader pageTitle={pageTitle} date={date} />
 
       {/* HEADERS GROUPS */}
       {itemCount > 0 ? GroupComponent && GroupComponent() : null}

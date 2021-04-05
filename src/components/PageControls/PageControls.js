@@ -16,6 +16,7 @@ import ExcelButton from '../buttons/ExcelButton';
 import PrintButton from '../buttons/PrintButton';
 import { setPrintMode } from '../../redux/actions/printActions';
 import { useDispatch } from 'react-redux';
+import { print2 } from '../../services/print.svc';
 //import MoreButton from '../buttons/MoreButton';
 
 const _container = css`
@@ -74,10 +75,15 @@ const PageControls = props => {
       <PrintButton
         onClick={() => {
           dispatch(setPrintMode(true));
-          showModal(PrintModal, {
+          /*           setTimeout(() => {
+                      print2();
+                    }, 3000); */
+          window.print();
+
+          /* showModal(PrintModal, {
             ...print,
             onClose: () => hideModal()
-          })
+          }) */
         }}
       />
 

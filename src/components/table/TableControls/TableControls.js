@@ -4,7 +4,7 @@ import styles from './TableControls.module.css';
 const TableControls = ({ style, rightPane, middlePane, leftPane }) => {
 
   return (
-    <div className={styles.wrapper} style={style}>
+    <div className={styles.wrapper} style={style} id="tableControls">
       <div className={styles.controls}>
 
         <div className={styles.rightPane}>{rightPane}</div>

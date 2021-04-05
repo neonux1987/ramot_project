@@ -7,7 +7,7 @@ const Section = ({
   children,
   className
 }) => {
-  return <Box mt={marginTop} mb={marginBottom} mx={"20px"} className={className}>
+  return <Box mt={marginTop} mb={marginBottom} mx={"20px"} className={className} id="section">
     {children}
   </Box>
 

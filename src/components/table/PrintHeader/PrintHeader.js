@@ -4,11 +4,13 @@ import { Typography } from '@material-ui/core';
 
 const _container = css`
   margin-bottom: 10px;
-  font-family: 'Assistant-Regular' !important;
+  font-family: 'Assistant';
+  display: none;
+  background: yellow;
 `;
 
 const _title = css`
-font-family: 'Assistant-Regular' !important;
+font-family: 'Assistant';
 `;
 
 const _date = css`
@@ -21,7 +23,7 @@ const PrintHeader = props => {
     date
   } = props;
 
-  return <div className={_container}>
+  return <div className={_container} id="printHeader">
     <div>
       <Typography className={_title} variant="h5">{pageTitle}</Typography>
     </div>
