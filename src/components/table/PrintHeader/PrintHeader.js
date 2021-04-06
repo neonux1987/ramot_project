@@ -3,25 +3,29 @@ import { css } from 'emotion';
 import { Typography } from '@material-ui/core';
 
 const _container = css`
-  margin-bottom: 10px;
-  font-family: 'Assistant';
   display: none;
-  background: yellow;
 `;
 
 const _title = css`
-font-family: 'Assistant';
+font-family: sans-serif;
+
+font-size: 24pt;
 `;
 
 const _date = css`
-  font-size: 16px;
+  font-size: 16pt;
+  font-family: sans-serif;
 `;
 
-const PrintHeader = props => {
+const PrintHeader = ({ printHeaderDetails = {
+  pageTitle: "",
+  date: ""
+} }) => {
+
   const {
     pageTitle,
     date
-  } = props;
+  } = printHeaderDetails;
 
   return <div className={_container} id="printHeader">
     <div>

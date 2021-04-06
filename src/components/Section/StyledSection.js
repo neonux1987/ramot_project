@@ -116,7 +116,7 @@ const StyledSection = ({
     {/* end header */}
 
     {/* content */}
-    <div className={_content}>
+    <div className={_content} id="styledSection-content">
       {children}
     </div>
     {/* end content */}

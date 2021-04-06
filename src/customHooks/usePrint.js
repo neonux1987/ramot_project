@@ -1,19 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { print } from '../services/print.svc';
 
-const usePrint = (id) => {
+const usePrint = () => {
 
   const [generating, setGenerating] = useState(true);
   const [output, setOutput] = useState(null);
 
   useEffect(() => {
-    const element = document.getElementById(id);
-
-    print(element).then((data) => {
+    print().then((data) => {
       setGenerating(false);
       setOutput(data);
     });
-  }, [id]);
+  }, []);
 
 
   return [generating, output];

@@ -4,6 +4,7 @@ import Row from './Row';
 const HeaderRow = ({ gridTemplateColumns, style = {}, children, className }) => {
   return (
     <Row
+      id="headerRow"
       style={{
         //boxShadow: "0px 9px 19px -8px rgb(0 0 0 / 5%)",
         borderTop: "1px solid #ececec",

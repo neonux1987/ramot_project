@@ -1,9 +1,6 @@
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
+#st-table {
   width: 100%;
-  font-family: "Assistant-Regular";
-  direction: rtl;
+  height: auto;
 }
 
 td, th {
@@ -12,6 +9,27 @@ td, th {
   padding: 8px;
 }
 
-tr:nth-child(even) {
+
+
+#st-thead-group{
+  display: table-header-group;
+  width: 100%;
+}
+
+#st-thead-group div{
+  display: table-cell;
+}
+
+#st-tbody-row{
+  display: table-row;
+  width: 100%;
+  table-layout: auto;
+}
+
+#st-tbody-row div{
+  display: table-cell;
+}
+
+#st-tbody-row:nth-child(even) {
   background-color: #dddddd;
 }

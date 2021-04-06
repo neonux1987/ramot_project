@@ -41,8 +41,6 @@ import SampleTable from './SampleTable';
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
-const PRINTABLE_ID = "budgetExecution-printable";
-
 const BudgetExecutionsTableContainer = props => {
 
   const {
@@ -287,10 +285,7 @@ const BudgetExecutionsTableContainer = props => {
               date
             }}
             print={{
-              title: pageTitle,
-              pageTitle: pageTitle + " - " + buildingName,
-              date: `שנה ${date.year}\\רבעון ${date.quarter}`,
-              id: PRINTABLE_ID
+              pageSetup: {}
             }}
             pageName={pageName}
             dataExist={data.length > 0}
@@ -301,16 +296,19 @@ const BudgetExecutionsTableContainer = props => {
 
       {addNewBox}
 
-      <Table
+      {/* <Table
         Row={TableRow}
         GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
         itemCount={data.length}
-        id={PRINTABLE_ID}
-        pageTitle={pageTitle + " - " + buildingName}
-        date={`שנה ${date.year}\\רבעון ${date.quarter}`}
-      />
+        printHeaderDetails={{
+          pageTitle: pageTitle + " - " + buildingName,
+          date: `שנה ${date.year}\\רבעון ${date.quarter}`
+        }}
+      /> */}
+
+      <SampleTable />
 
     </TableWrapper>
   );

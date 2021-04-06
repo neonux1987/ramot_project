@@ -5,12 +5,12 @@ const negative = {
 
 const positive = {
   color: "#ffffff",
-  backgroundColor: "#008000b3"
+  backgroundColor: "rgb(7 187 126)"
 }
 
 const neutral = {
   color: "#000000",
-  backgroundColor: "#ffff00b3"
+  backgroundColor: "white"
 }
 
 const useDifferenceColor = () => {

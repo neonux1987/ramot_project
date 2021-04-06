@@ -219,13 +219,7 @@ const SummarizedBudgetsTableContainer = props => {
             date
           }}
           print={{
-            title: pageTitle,
-            pageTitle: pageTitle + " - " + buildingName,
-            date: `שנה ${date.year}`,
-            Row: TableRow,
-            GroupComponent: HeaderGroups,
-            HeaderComponent: HeadersRow,
-            itemCount: data.length
+            pageSetup: {}
           }}
           pageName={pageName}
         />} // end leftPane
@@ -238,6 +232,10 @@ const SummarizedBudgetsTableContainer = props => {
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
         itemCount={data.length}
+        printHeaderDetails={{
+          pageTitle: pageTitle + " - " + buildingName,
+          date: `שנה ${date.year}`
+        }}
       />
 
     </TableWrapper>

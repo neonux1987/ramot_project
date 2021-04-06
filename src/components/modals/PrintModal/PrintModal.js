@@ -63,14 +63,14 @@ border: 1px solid #ececec;
 const PrintModal = props => {
   const {
     onClose,
-    id
+    pageSetup
   } = props;
 
-  const [generating, output] = usePrint(id);
+  const [generating, output] = usePrint(pageSetup);
 
   const [open, setOpen] = useState(true);
 
-  const [pages, setPages] = useState(0);
+  const [pdf, setPdf] = useState("");
 
   const dispatch = useDispatch();
 
@@ -81,23 +81,23 @@ const PrintModal = props => {
 
   useEffect(() => {
     if (output !== null) {
-      document.getElementById("print-iframe").setAttribute('src', output.pdfBlob);
-      setPages(output.pages)
+      setPdf(output);
+      //setPages(output.pages)
     }
-
   }, [output]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     if (!generating)
       dispatch(setPrintMode(false));
 
-  }, [dispatch, generating]); */
+  }, [dispatch, generating]);
 
   return (
     <Modal
       onClose={onClick}
       open={open}
       disableBackdropClick={true}
+      id="printModal"
     >
 
       <div className={container}>
@@ -106,7 +106,6 @@ const PrintModal = props => {
 
           <div className={titleWrapper}>
             <Typography variant="h5">הדפסה</Typography>
-            {pages > 0 ? <Typography variant="h6">{`${pages} עמודים`}</Typography> : null}
           </div>
 
           <div className={buttonWrapper}>
@@ -122,7 +121,7 @@ const PrintModal = props => {
 
           {generating ? <AlignCenterMiddle style={{ display: generating ? "flex" : "none" }}>מייצר תצוגה...</AlignCenterMiddle> : null}
 
-          <iframe title="print-preview" id="print-iframe" className={iframeStyle}></iframe>
+          <iframe title="print-preview" id="print-iframe" className={iframeStyle} src={pdf.blobUrl}></iframe>
 
         </div>
 

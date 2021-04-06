@@ -15,7 +15,6 @@ const quarterlyStatsIpc = (connection) => {
 
   ipcMain.on('get-all-quarters-stats-by-year', (event, arg) => {
     quarterlyStatsLogic.getAllQuartersStatsByYearTrx(arg).then((result) => {
-
       event.sender.send("all-quarters-stats-by-year", { data: result });
     }).catch((error) => {
       event.reply("all-quarters-stats-by-year", { error: error.message });

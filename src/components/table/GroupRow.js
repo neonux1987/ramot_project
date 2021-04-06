@@ -4,6 +4,7 @@ import Row from './Row';
 const GroupRow = ({ gridTemplateColumns, style = {}, children }) => {
   return (
     <Row
+      id="groupRow"
       style={{
         borderBottom: "none",
         borderTopRightRadius: "0px",

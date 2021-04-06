@@ -75,15 +75,11 @@ const PageControls = props => {
       <PrintButton
         onClick={() => {
           dispatch(setPrintMode(true));
-          /*           setTimeout(() => {
-                      print2();
-                    }, 3000); */
-          window.print();
 
-          /* showModal(PrintModal, {
+          showModal(PrintModal, {
             ...print,
             onClose: () => hideModal()
-          }) */
+          })
         }}
       />
 
@@ -98,9 +94,7 @@ PageControls.propTypes = {
     fileName: PropTypes.string.isRequired
   }).isRequired,
   print: PropTypes.shape({
-    handler: PropTypes.func,
-    title: PropTypes.string.isRequired,
-    pageTitle: PropTypes.string.isRequired
+    pageSetup: PropTypes.object.isRequired
   }).isRequired,
   pageName: PropTypes.string.isRequired,
 };

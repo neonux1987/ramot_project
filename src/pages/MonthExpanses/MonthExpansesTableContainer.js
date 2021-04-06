@@ -278,12 +278,7 @@ const MonthExpansesTableContainer = props => {
               date
             }}
             print={{
-              title: pageTitle,
-              pageTitle: pageTitle + " - " + buildingName,
-              date: `שנה ${date.year}\\רבעון ${date.quarter}\\חודש ${date.monthHeb}`,
-              Row: TableRow,
-              HeaderComponent: HeadersRow,
-              itemCount: data.length
+              pageSetup: {}
             }}
             pageName={pageName}
             dataExist={data.length > 0}
@@ -299,6 +294,10 @@ const MonthExpansesTableContainer = props => {
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
         itemCount={data.length}
+        printHeaderDetails={{
+          pageTitle: pageTitle + " - " + buildingName,
+          date: `שנה ${date.year}\\רבעון ${date.quarter}\\חודש ${date.monthHeb}`
+        }}
       />
 
     </TableWrapper>

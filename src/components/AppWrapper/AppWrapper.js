@@ -8,7 +8,7 @@ const style = css`
   overflow: hidden;
 `
 
-const AppWrapper = ({ children }) => <div className={style}>
+const AppWrapper = ({ children }) => <div className={style} id="appWrapper">
   {children}
 </div>
 

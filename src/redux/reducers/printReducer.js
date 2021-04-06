@@ -1,5 +1,11 @@
 const initialState = {
-  printMode: false
+  printMode: false,
+  page: {
+    margin: 0,
+    size: "a4",
+    scale: 100,
+    orientation: "landscape"
+  }
 }
 
 const printReducer = (state = initialState, action) => {

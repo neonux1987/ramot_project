@@ -264,13 +264,31 @@ apex charts override
   @page {
     size: auto;   /* auto is the initial value */
     margin: 10px;  /* this affects the margin in the printer settings */
+    page-break-after: left;
   }
 
   body{
     -webkit-print-color-adjust: exact !important;
   }
 
-  #appFrame,#sidebar,#pageHeader,#toolbar,#tableControls,#section,#styledSection-header{
+  html,body,#mainContainer,#appWrapper{
+    overflow: visible !important;
+  }
+
+  #root{
+    height: initial !important;
+    display: block !important;
+    flex-direction: unset !important;
+  }
+
+  #appFrame,
+  #sidebar,
+  #pageHeader,
+  #toolbar,
+  #tableControls,
+  #section,
+  #styledSection-header,
+  #printModal{
     display: none !important;
   }
 
@@ -281,16 +299,68 @@ apex charts override
     height: 100vh;
   }
 
-  #styledSection:first-child{
-    display: none !important;
-  }
 
   #printHeader{
     display: block;
   }
 
-  ._tableColumn:first-child{
-    border-right: 1px solid #ececec;
+  thead {display: table-header-group;}
+
+  ._table{
+    display: table !important;
+    width: 100% !important;
   }
+
+  ._table, ._tableBody{
+    position: initial !important;
+  }
+
+  ._tableBody div:nth-child(1){
+    position: initial !important;
+    overflow: hidden;
+  }
+
+  #groupRow{
+    background-color: #f5f5f5;
+    border-top: thin solid #000 !important;
+    /* display: table-header-group; */
+  }
+
+  #headerRow{
+    background-color: #f5f5f5;
+    border-top: none !important;
+    /* display: table-header-group; */
+  }
+
+  ._tableRow{
+    display: grid;
+    border-bottom: thin solid #000 !important;
+    border-left: thin solid #000 !important;
+    page-break-inside: avoid;
+  }
+
+  ._tableColumn:first-child{
+    border-right: thin solid #000 !important;
+  }
+
+  ._tableColumn:hover{
+    background-color: initial;
+  }
+
+  ._tableColumn{
+    border-right: thin solid #000 !important;
+    font-size: 15px;
+  }
+
+  #tableFooter{
+    display: table-footer-group;
+  }
+
+  #tableFooter:after {
+    display: table-footer-group;
+    counter-increment: page;
+    content:counter(pages) " מתוך " counter(page);
+    font-size: 16px;
+}
 
 }
