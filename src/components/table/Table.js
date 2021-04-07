@@ -6,52 +6,59 @@ import Spinner from '../Spinner/Spinner';
 import { Virtuoso } from 'react-virtuoso';
 import { useSelector } from 'react-redux';
 import PrintHeader from './PrintHeader/PrintHeader';
+import useTableComponents from '../../customHooks/useTableComponents';
 
 const Table = ({
   GroupComponent,
   HeaderComponent,
   Row,
   isFetching,
-  itemCount,
+  totalCount,
   printHeaderDetails
 }) => {
 
   const printMode = useSelector(store => store.print.printMode);
-  const printHeight = itemCount * 35;
 
-  const table = <div className="_tableBody">
+  const [components] = useTableComponents();
+
+  const printHeight = totalCount * 35;
+
+  const table = <div className="_tableBody" style={{ height: printMode ? `${printHeight + 35}px` : "600px" }}>
     <Virtuoso
       style={{
         overflow: "overlay",
-        direction: "rtl",
-        //height: printMode ? `${printHeight + 35}px` : "40rem"
+        direction: "rtl"
       }}
-      totalCount={itemCount}
-      item={Row}
+      totalCount={totalCount}
+      itemContent={Row}
       overscan={10}
+      components={components}
     />
   </div>;
 
   return (
-    <div className="_table">
+    <div id="table">
 
-      {/* PRINT HEADER active only in print mode*/}
-      <PrintHeader printHeaderDetails={printHeaderDetails} />
+      {/* TABLE HEADERS */}
+      <div id="tableHeaders">
 
-      {/* HEADERS GROUPS */}
-      {itemCount > 0 ? GroupComponent && GroupComponent() : null}
+        {/* PRINT HEADER active only in print mode*/}
+        <PrintHeader printHeaderDetails={printHeaderDetails} />
 
-      {/* HEADERS */}
-      {itemCount > 0 ? HeaderComponent && HeaderComponent() : null}
+        {totalCount > 0 ? GroupComponent && GroupComponent() : null}
+
+        {totalCount > 0 ? HeaderComponent && HeaderComponent() : null}
+
+      </div>
 
       {/* SPINNER */}
       {isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : null}
 
       {/* NO DATA */}
-      {!isFetching && itemCount === 0 ? <div className="spinnerWrapper noDataText">לא נבחר תאריך.</div> : null}
+      {!isFetching && totalCount === 0 ? <div className="spinnerWrapper noDataText">לא נבחר תאריך.</div> : null}
 
       {/* TABLE */}
-      {itemCount > 0 && !isFetching ? table : null}
+      {totalCount > 0 && !isFetching ? table : null}
 
       <div id="tableFooter"></div>
 

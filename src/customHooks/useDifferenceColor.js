@@ -1,6 +1,6 @@
 const negative = {
   color: "#ffffff",
-  backgroundColor: "rgb(255, 9, 9)"
+  backgroundColor: "rgb(255 9 71)"
 }
 
 const positive = {

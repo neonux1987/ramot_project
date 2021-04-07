@@ -86,11 +86,11 @@ const PrintModal = props => {
     }
   }, [output]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!generating)
       dispatch(setPrintMode(false));
 
-  }, [dispatch, generating]);
+  }, [dispatch, generating]); */
 
   return (
     <Modal

@@ -299,41 +299,34 @@ apex charts override
     height: 100vh;
   }
 
-
   #printHeader{
     display: block;
   }
 
   thead {display: table-header-group;}
 
-  ._table{
+  #table{
     display: table !important;
     width: 100% !important;
   }
 
-  ._table, ._tableBody{
-    position: initial !important;
-  }
-
-  ._tableBody div:nth-child(1){
-    position: initial !important;
-    overflow: hidden;
+  #tableHeaders{
+    display: table-header-group;
   }
 
   #groupRow{
     background-color: #f5f5f5;
     border-top: thin solid #000 !important;
-    /* display: table-header-group; */
   }
 
   #headerRow{
     background-color: #f5f5f5;
     border-top: none !important;
-    /* display: table-header-group; */
+    
   }
 
   ._tableRow{
-    display: grid;
+    display: table-row;
     border-bottom: thin solid #000 !important;
     border-left: thin solid #000 !important;
     page-break-inside: avoid;

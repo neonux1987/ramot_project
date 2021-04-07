@@ -296,19 +296,19 @@ const BudgetExecutionsTableContainer = props => {
 
       {addNewBox}
 
-      {/* <Table
+      <Table
         Row={TableRow}
         GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
-        itemCount={data.length}
+        totalCount={data.length}
         printHeaderDetails={{
           pageTitle: pageTitle + " - " + buildingName,
           date: `שנה ${date.year}\\רבעון ${date.quarter}`
         }}
-      /> */}
+      />
 
-      <SampleTable />
+      {/* <SampleTable /> */}
 
     </TableWrapper>
   );
