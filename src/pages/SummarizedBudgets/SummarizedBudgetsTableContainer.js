@@ -231,7 +231,7 @@ const SummarizedBudgetsTableContainer = props => {
         GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
-        itemCount={data.length}
+        totalCount={data.length}
         printHeaderDetails={{
           pageTitle: pageTitle + " - " + buildingName,
           date: `שנה ${date.year}`
