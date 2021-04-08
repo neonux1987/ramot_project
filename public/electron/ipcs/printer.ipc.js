@@ -26,6 +26,10 @@ const printerIpc = () => {
       }] */
 
     }).then(data => {
+      var PDFParser = require('pdf2json');
+      var pdfParser = new PDFParser();
+
+
       event.sender.send("pdf-printed", { data });
     }).catch(error => {
       event.sender.send("pdf-printed", { error: error.message })
