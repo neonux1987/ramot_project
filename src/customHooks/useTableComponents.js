@@ -16,7 +16,6 @@ const useTableComponents = () => {
             ref={listRef}
             id="tableBody"
             style={{
-              //display: "table-row-group",
               ...style
             }}
           >

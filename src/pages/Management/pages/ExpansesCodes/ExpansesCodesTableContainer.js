@@ -284,7 +284,7 @@ const ExpansesCodes = () => {
         Row={TableRow}
         HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
-        itemCount={data.length}
+        totalCount={data.length}
       />
 
     </TableWrapper>

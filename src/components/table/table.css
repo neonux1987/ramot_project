@@ -1,14 +1,33 @@
 #table{
   border-radius: 0px;
-  position: relative;
   background: #fff;
+  width: 100%;
+  position: relative;
+}
+
+th,td{
+  padding: 0;
+  margin: 0;
+  page-break-after: avoid;
+}
+
+tr{
+  page-break-after: avoid;
+}
+
+table{
+  border-collapse: collapse;
+  page-break-after: always !important;
+}
+
+thead{
+  page-break-after: avoid;
 }
 
 ._tableBody{
   display: grid;
   direction: rtl;
   background: #fff;
-  position: relative;
   color: #000000;
   text-align: left;
 }
@@ -16,6 +35,7 @@
 ._tableRow{
   display: grid;
   border-bottom: 1px solid #ececec;
+  page-break-after: avoid;
 }
 
 ._tableColumn:hover{

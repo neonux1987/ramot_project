@@ -23,48 +23,82 @@ const Table = ({
 
   const printHeight = totalCount * 35;
 
-  const table = <div className="_tableBody" style={{ height: printMode ? `${printHeight + 35}px` : "600px" }}>
-    <Virtuoso
-      style={{
-        overflow: "overlay",
-        direction: "rtl"
-      }}
-      totalCount={totalCount}
-      itemContent={Row}
-      overscan={10}
-      components={components}
-    />
-  </div>;
+  const table = <Virtuoso
+    style={{
+      overflow: "overlay",
+      direction: "rtl"
+    }}
+    totalCount={totalCount}
+    itemContent={Row}
+    overscan={10}
+    components={components}
+  />;
 
-  return (
-    <div id="table">
+  return <TableWrapper id="table" printMode={printMode}>
 
-      {/* TABLE HEADERS */}
-      <div id="tableHeaders">
+    {/* TABLE HEADERS */}
+    <Thead printMode={printMode}>
 
-        {/* PRINT HEADER active only in print mode*/}
-        <PrintHeader printHeaderDetails={printHeaderDetails} />
+      {/* PRINT HEADER active only in print mode*/}
+      <PrintHeader printHeaderDetails={printHeaderDetails} />
 
-        {totalCount > 0 ? GroupComponent && GroupComponent() : null}
+      {totalCount > 0 ? GroupComponent && GroupComponent() : null}
 
-        {totalCount > 0 ? HeaderComponent && HeaderComponent() : null}
+      {totalCount > 0 ? HeaderComponent && HeaderComponent() : null}
 
+    </Thead>
+
+    <Tbody>
+
+      <div className="_tableBody" style={{ height: printMode ? `${printHeight + 35}px` : "600px" }}>
+        {/* SPINNER */}
+        {isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : null}
+
+        {/* NO DATA */}
+        {!isFetching && totalCount === 0 ? <div className="spinnerWrapper noDataText">לא נבחר תאריך.</div> : null}
+
+        {/* TABLE */}
+        {totalCount > 0 && !isFetching ? table : null}
       </div>
 
-      {/* SPINNER */}
-      {isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : null}
+    </Tbody>
 
-      {/* NO DATA */}
-      {!isFetching && totalCount === 0 ? <div className="spinnerWrapper noDataText">לא נבחר תאריך.</div> : null}
 
-      {/* TABLE */}
-      {totalCount > 0 && !isFetching ? table : null}
 
-      <div id="tableFooter"></div>
+    {/* <div id="tableFooter"></div> */}
 
-    </div>
+  </TableWrapper>;
 
-  );
 }
 
 export default Table;
+
+const TableWrapper = ({ printMode, children, id }) => {
+
+  return printMode ? <table id={id}>{children}</table> : <div id={id}>{children}</div>;
+
+}
+
+const Thead = ({ printMode, children }) => {
+
+  return printMode ? <thead>
+    <tr>
+      <th>
+        {children}
+      </th>
+    </tr>
+  </thead> : <div>{children}</div>;
+
+}
+
+const Tbody = ({ printMode, children }) => {
+
+  return printMode ? <tbody>
+    <tr>
+      <td>
+        {children}
+      </td>
+    </tr>
+  </tbody> : <div>{children}</div>
+
+}

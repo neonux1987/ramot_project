@@ -3,91 +3,413 @@ import "./SampleTable.css";
 
 const SampleTable = () => {
 
-  return <div id="st-table">
-    <div id="st-thead">
-      <div id="st-thead-group">
-        <div>חברה</div>
-        <div>צור קשר</div>
-        <div>מדינה</div>
-        <div>מדינה</div>
-        <div>מדינה</div>
-        <div>מדינה</div>
-      </div>
-    </div>
-    <div id="st-tbody">
-      <div id="st-tbody-row">
-        <div>Alfreds Futterkiste</div>
-        <div>Maria Anders</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-      </div>
+  return <table>
+    <thead>
+      <tr>
+        <th>
+          <div className="header">
+            <div>header</div>
+            <div>header</div>
+            <div>header</div>
+            <div>header</div>
+            <div>header</div>
+            <div>header</div>
+          </div>
+          <div className="header">
+            <div>header</div>
+            <div>header</div>
+            <div>header</div>
+            <div>header</div>
+            <div>header</div>
+            <div>header</div>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
 
-      <div id="st-tbody-row">
-        <div>Alfreds Futterkiste</div>
-        <div>Maria Anders</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-      </div>
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
 
-      <div id="st-tbody-row">
-        <div>Alfreds Futterkiste</div>
-        <div>Maria Anders</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-      </div>
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
 
-      <div id="st-tbody-row">
-        <div>Alfreds Futterkiste</div>
-        <div>Maria Anders</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-      </div>
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
 
-      <div id="st-tbody-row">
-        <div>Alfreds Futterkiste</div>
-        <div>Maria Anders</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-      </div>
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
 
-      <div id="st-tbody-row">
-        <div>Alfreds Futterkiste</div>
-        <div>Maria Anders</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-      </div>
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
 
-      <div id="st-tbody-row">
-        <div>Alfreds Futterkiste</div>
-        <div>Maria Anders</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-      </div>
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
 
-      <div id="st-tbody-row">
-        <div>Alfreds Futterkiste</div>
-        <div>Maria Anders</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-        <div>Germany</div>
-      </div>
-    </div>
-  </div>;
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+
+          <div className="st-tbody-row">
+            <div>Alfreds Futterkiste</div>
+            <div>Maria Anders</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+            <div>Germany</div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>;
 }
 
 export default SampleTable;
