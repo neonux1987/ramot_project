@@ -3,7 +3,7 @@ const { RecordVoiceOver } = require('@material-ui/icons');
 const printerIpc = () => {
   const { ipcMain, BrowserWindow } = require('electron');
 
-  ipcMain.on('print-pdf', (event, pageSetup) => {
+  ipcMain.on('print-pdf', async (event, pageSetup) => {
     /* const {
       orientation,
       size,
@@ -13,27 +13,38 @@ const printerIpc = () => {
     // Create the browser window.
     const win = BrowserWindow.getAllWindows()[0];
 
-    win.webContents.printToPDF({
+    const options = {
       marginsType: 0,
       pageSize: 'A4',
       printBackground: true,
       printSelectionOnly: false,
       silent: true,
-      landscape: true,
-      /* headerFooter: [{
-        title: "asdasdas",
-        url: "http://localhost:3000"
-      }] */
+      landscape: true
+    };
 
-    }).then(data => {
-      var PDFParser = require('pdf2json');
-      var pdfParser = new PDFParser();
+    const data = await win.webContents.printToPDF(options);
 
+    const { PDFDocument } = require('pdf-lib');
+    const doc = await PDFDocument.load(data);
+    const pages = doc.getPages();
 
-      event.sender.send("pdf-printed", { data });
-    }).catch(error => {
-      event.sender.send("pdf-printed", { error: error.message })
-    });
+    if (data === undefined || data === null)
+      event.sender.send("pdf-printed", { error: `המערכת לא הצליחה לקרוא את קובץ ה-pdf לתצוגת הדפסה` })
+    else {
+      // add page numbers
+      for (let i = 0; i < pages.length; i++) {
+        pages[i].drawText(`${i + 1}/${pages.length}`, {
+          x: 10,
+          y: 10,
+          size: 14
+        })
+      }
+
+      event.sender.send("pdf-printed", {
+        data: await doc.save(),
+        pageCount: pages.length
+      });
+    }
 
   });
 

@@ -24,6 +24,10 @@ thead{
   page-break-after: avoid;
 }
 
+tfoot{
+  display: none;
+}
+
 ._tableBody{
   display: grid;
   direction: rtl;

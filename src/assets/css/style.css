@@ -264,6 +264,13 @@ apex charts override
   @page {
     size: auto;   /* auto is the initial value */
     margin: 10px;  /* this affects the margin in the printer settings */
+    
+    /* counter-increment: page;
+    @bottom-center {
+      
+      content:counter(pages) " מתוך " counter(page);
+      font-size: 16px;
+    } */
   }
 
   body{
@@ -299,23 +306,45 @@ apex charts override
     position: unset;
   }
 
+  #styledSection-content{
+    overflow: visible !important;
+    position: unset !important;
+  }
+
   #printHeader{
     display: block;
+  }
+  
+  body{
+    counter-reset: page;
   }
 
   table{
     page-break-after: always !important;
     padding: 1px;
   }
+  
+  ._tableBody > div{
+    position: unset !important;
+  }
+
+  ._tableBody > div > div{
+    position: relative !important;
+  }
+
+  #table{
+    position: unset !important;
+  }
 
   #groupRow{
     background-color: #f5f5f5;
     border-top: thin solid #000 !important;
+    border-bottom: none !important;
   }
 
   #headerRow{
     background-color: #f5f5f5;
-    border-top: none !important;
+    border-top: thin solid #000 !important;
   }
 
   ._tableRow{
@@ -336,15 +365,13 @@ apex charts override
     font-size: 15px;
   }
 
-  #tableFooter{
-    display: table-footer-group;
+  tfoot{
+    display: table-footer-group !important;
   }
 
-  #tableFooter:after {
-    display: table-footer-group;
-    counter-increment: page;
+  /* tfoot:after {
     content:counter(pages) " מתוך " counter(page);
     font-size: 16px;
-}
+  } */
 
 }

@@ -6,13 +6,14 @@ export const print = async () => {
 
   return new Promise((resolve, reject) => {
 
-    ipcRenderer.on("pdf-printed", (event, result) => {
-      if (result.error)
-        reject(result.error);
+    ipcRenderer.on("pdf-printed", (event, { data, pageCount, error }) => {
+      if (error)
+        reject(error);
       else {
-        const blob = new Blob([result.data], { type: 'application/pdf' });
+        const blob = new Blob([data], { type: 'application/pdf' });
         resolve({
-          blobUrl: URL.createObjectURL(blob)
+          blobUrl: URL.createObjectURL(blob),
+          pageCount
         });
       }
 

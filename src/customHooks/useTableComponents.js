@@ -1,9 +1,4 @@
 import React, { useMemo } from "react";
-import { css } from 'emotion';
-
-const tableBody = css`
-  display: "table-row-group"
-`;
 
 const useTableComponents = () => {
 

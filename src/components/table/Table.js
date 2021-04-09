@@ -21,7 +21,8 @@ const Table = ({
 
   const [components] = useTableComponents();
 
-  const printHeight = totalCount * 35;
+  const element = printMode ? document.getElementById("tableBody") : null;
+  const printHeight = element ? element.style.height : "600px";
 
   const table = <Virtuoso
     style={{
@@ -48,9 +49,9 @@ const Table = ({
 
     </Thead>
 
-    <Tbody>
+    <Tbody printMode={printMode}>
 
-      <div className="_tableBody" style={{ height: printMode ? `${printHeight + 35}px` : "600px" }}>
+      <div className="_tableBody" style={{ minHeight: printHeight }}>
         {/* SPINNER */}
         {isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : null}
 
@@ -63,9 +64,7 @@ const Table = ({
 
     </Tbody>
 
-
-
-    {/* <div id="tableFooter"></div> */}
+    <Tfoot />
 
   </TableWrapper>;
 
@@ -80,7 +79,6 @@ const TableWrapper = ({ printMode, children, id }) => {
 }
 
 const Thead = ({ printMode, children }) => {
-
   return printMode ? <thead>
     <tr>
       <th>
@@ -88,17 +86,18 @@ const Thead = ({ printMode, children }) => {
       </th>
     </tr>
   </thead> : <div>{children}</div>;
-
 }
 
 const Tbody = ({ printMode, children }) => {
-
   return printMode ? <tbody>
     <tr>
       <td>
         {children}
       </td>
     </tr>
-  </tbody> : <div>{children}</div>
+  </tbody> : <div>{children}</div>;
+}
 
+const Tfoot = ({ printMode, children }) => {
+  return printMode ? <tfoot>{children}</tfoot> : null;
 }

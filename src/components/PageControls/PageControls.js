@@ -16,7 +16,6 @@ import ExcelButton from '../buttons/ExcelButton';
 import PrintButton from '../buttons/PrintButton';
 import { setPrintMode } from '../../redux/actions/printActions';
 import { useDispatch } from 'react-redux';
-import { print2 } from '../../services/print.svc';
 //import MoreButton from '../buttons/MoreButton';
 
 const _container = css`
