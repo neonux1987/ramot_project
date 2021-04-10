@@ -8,22 +8,37 @@ const initialState = {
   },
   templates: {
     monthExpanses: {
-      margin: 0,
-      size: "a4",
-      scale: 100,
-      orientation: "portrait"
+      printer: "",
+      size: "A4",
+      pages: "all",
+      landscape: false,
+      colors: true,
+      range: {
+        from: 0,
+        to: 0
+      }
     },
     budgetExecution: {
-      margin: 0,
-      size: "a4",
-      scale: 100,
-      orientation: "landscape"
+      printer: "",
+      size: "A4",
+      pages: "all",
+      landscape: false,
+      colors: true,
+      range: {
+        from: 0,
+        to: 0
+      }
     },
     summarizedBudgets: {
-      margin: 0,
-      size: "a4",
-      scale: 100,
-      orientation: "landscape"
+      printer: "",
+      size: "A4",
+      pages: "all",
+      landscape: false,
+      colors: true,
+      range: {
+        from: 0,
+        to: 0
+      }
     }
   }
 }

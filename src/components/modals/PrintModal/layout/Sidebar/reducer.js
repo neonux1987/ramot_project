@@ -15,10 +15,10 @@ export function reducer(state, action) {
         ...state,
         pages: action.pages
       };
-    case 'setOrientation':
+    case 'setLandscape':
       return {
         ...state,
-        orientation: action.orientation
+        landscape: action.landscape
       };
     case 'setColors':
       return {
@@ -42,10 +42,10 @@ export const initialState = {
   printer: "",
   size: "A4",
   pages: "all",
-  orientation: "portrait",
-  colors: "colorful",
+  landscape: false,
+  colors: true,
   range: {
-    from: "",
-    to: ""
+    from: 0,
+    to: 0
   },
 }

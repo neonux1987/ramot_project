@@ -62,7 +62,8 @@ const Sidebar = props => {
     pdf,
     onClose,
     onPrint,
-    printers
+    printers,
+    preview
   } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -72,6 +73,10 @@ const Sidebar = props => {
         dispatch({ type: "setPrinter", printer: displayName });
     });
   }, [printers]);
+
+  useEffect(() => {
+    preview(state);
+  }, [state]);
 
   const onPrinterChange = (event) => {
     const target = event.target;
@@ -94,9 +99,9 @@ const Sidebar = props => {
     dispatch({ type: "setRange", from: range[0], to: range[1] });
   }
 
-  const onOrientationChange = (event) => {
+  const onLandscapeChange = (event) => {
     const target = event.target;
-    dispatch({ type: "setOrientation", orientation: target.value });
+    dispatch({ type: "setLandscape", landscape: target.value });
   }
 
   const onColorsChange = (event) => {
@@ -110,7 +115,7 @@ const Sidebar = props => {
 
   const range = state.range.from !== "" & state.range.to !== "" ? `${state.range.from}-${state.range.to}` : "";
 
-  return <div className={sidebar}>
+  return <form className={sidebar}>
 
     <Row>
       <RightPane>
@@ -166,7 +171,6 @@ const Sidebar = props => {
           <Input
             classes={{ root: select }}
             inputProps={{ className: input, min: 0, max: pdf ? pdf.pageCount : 0, onBlur: onRangeBlur }}
-            value={range}
             placeholder="דוגמא: 1-5, 8, 11-13"
           />
         </LeftPane>
@@ -198,11 +202,11 @@ const Sidebar = props => {
       <LeftPane>
         <WideSelect
           name="orientation"
-          value={state.orientation}
-          onChange={onOrientationChange}
+          value={state.landscape}
+          onChange={onLandscapeChange}
         >
-          <MenuItem value="portrait">לאורך</MenuItem>
-          <MenuItem value="landscape">לרוחב</MenuItem>
+          <MenuItem value={false}>לאורך</MenuItem>
+          <MenuItem value={true}>לרוחב</MenuItem>
         </WideSelect>
       </LeftPane>
     </Row>
@@ -218,8 +222,8 @@ const Sidebar = props => {
           value={state.colors}
           onChange={onColorsChange}
         >
-          <MenuItem value="colorful">צבעוני</MenuItem>
-          <MenuItem value="balck-white">שחור לבן</MenuItem>
+          <MenuItem value={true}>צבעוני</MenuItem>
+          <MenuItem value={false}>שחור לבן</MenuItem>
         </WideSelect>
       </LeftPane>
     </Row>
@@ -231,7 +235,7 @@ const Sidebar = props => {
     </PrimaryButton>
     </div>
 
-  </div>;
+  </form>;
 }
 
 export default React.memo(Sidebar);

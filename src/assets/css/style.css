@@ -263,7 +263,7 @@ apex charts override
 @media only print {
   @page {
     size: auto;   /* auto is the initial value */
-    margin: 10px 10px 35px;  /* this affects the margin in the printer settings */
+    margin: 10px 10px 35px 10px;  /* this affects the margin in the printer settings */
   }
 
   body{

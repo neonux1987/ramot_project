@@ -93,7 +93,7 @@ PageControls.propTypes = {
     fileName: PropTypes.string.isRequired
   }).isRequired,
   print: PropTypes.shape({
-    pageSetup: PropTypes.object.isRequired
+    pageName: PropTypes.string.isRequired
   }).isRequired,
   pageName: PropTypes.string.isRequired,
 };

@@ -10,11 +10,12 @@ import Container from './Container';
 const PrintModal = props => {
   const {
     onClose,
-    pageSetup
+    pageSetup,
+    pageName
   } = props;
 
-  const printers = useSelector(store => store.print.printers);
-  const [generating, output] = usePrint(pageSetup);
+  const { printers, templates } = useSelector(store => store.print);
+  const [generating, output, preview] = usePrint(templates[pageName]);
 
   const [open, setOpen] = useState(true);
 
@@ -60,6 +61,7 @@ const PrintModal = props => {
         onClose={onClick}
         onPrint={onPrint}
         printers={printers}
+        preview={preview}
       />
 
       <Content
