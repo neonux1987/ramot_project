@@ -37,6 +37,8 @@ import useTableLogic from '../../customHooks/useTableLogic';
 import useDifferenceColor from '../../customHooks/useDifferenceColor';
 import BudgetExecutionsDatePicker from './BudgetExecutionsDatePicker';
 
+import SampleTable from './SampleTable'
+
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
 
@@ -306,6 +308,8 @@ const BudgetExecutionsTableContainer = props => {
           date: `שנה ${date.year}\\רבעון ${date.quarter}`
         }}
       />
+
+      {/* <SampleTable data={data} /> */}
 
     </TableWrapper>
   );

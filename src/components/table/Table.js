@@ -64,8 +64,6 @@ const Table = ({
 
     </Tbody>
 
-    <Tfoot />
-
   </TableWrapper>;
 
 }
@@ -96,8 +94,4 @@ const Tbody = ({ printMode, children }) => {
       </td>
     </tr>
   </tbody> : <div>{children}</div>;
-}
-
-const Tfoot = ({ printMode, children }) => {
-  return printMode ? <tfoot>{children}</tfoot> : null;
 }

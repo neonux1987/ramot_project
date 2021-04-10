@@ -2,6 +2,7 @@ import React from 'react';
 import { Select as Selec, InputLabel, MenuItem } from '@material-ui/core';
 import { css } from 'emotion';
 import Spinner from '../Spinner/Spinner';
+import classnames from 'classnames';
 
 const _container = css`
   display: flex;
@@ -49,12 +50,13 @@ const Select = ({ label,
   loading = false,
   displayEmpty = false,
   emptyLabel = "אנא בחר",
-  children
+  children,
+  selectStyle
 }) => {
 
-  const render = loading ? <Dummy /> : <Selec
+  const render = loading ? <Dummy selectStyle={selectStyle} /> : <Selec
     name={name}
-    className={_select}
+    className={classnames(_select, selectStyle)}
     value={value}
     disabled={disabled}
     onChange={onChange}
@@ -76,8 +78,8 @@ const Select = ({ label,
 
 export default React.memo(Select);
 
-const Dummy = () => {
-  return <div className={_select}>
+const Dummy = ({ selectStyle }) => {
+  return <div className={classnames(_select, selectStyle)}>
     <Spinner size={18} />
   </div>
 }

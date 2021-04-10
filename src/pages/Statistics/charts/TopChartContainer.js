@@ -48,12 +48,10 @@ const TopChartContainer = props => {
 
     if (promise !== undefined) {
       const labels = [];
-      const incomeData = [];
       const outcomeData = [];
 
       promise.data.forEach((element) => {
         labels.push(element.section);
-        incomeData.push(element.income);
         outcomeData.push(element.outcome);
       });
 
@@ -65,11 +63,6 @@ const TopChartContainer = props => {
               name: "הוצאות",
               data: outcomeData,
               color: "#30a3fc"
-            },
-            {
-              name: "הכנסות",
-              data: incomeData,
-              color: "#30e8aa"
             }
           ]
         };

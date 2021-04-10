@@ -263,14 +263,7 @@ apex charts override
 @media only print {
   @page {
     size: auto;   /* auto is the initial value */
-    margin: 10px;  /* this affects the margin in the printer settings */
-    
-    /* counter-increment: page;
-    @bottom-center {
-      
-      content:counter(pages) " מתוך " counter(page);
-      font-size: 16px;
-    } */
+    margin: 10px 10px 35px;  /* this affects the margin in the printer settings */
   }
 
   body{
@@ -364,14 +357,5 @@ apex charts override
     border-right: thin solid #000 !important;
     font-size: 15px;
   }
-
-  tfoot{
-    display: table-footer-group !important;
-  }
-
-  /* tfoot:after {
-    content:counter(pages) " מתוך " counter(page);
-    font-size: 16px;
-  } */
 
 }

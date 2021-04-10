@@ -153,7 +153,7 @@ class SummarizedBudgetDao {
       .whereBetween('year', [fromYear, toYear])
       .from(buildingName + "_summarized_budget AS building").innerJoin("summarized_sections AS sc", "building.summarized_section_id", "sc.id")
       .orderBy([{ column: 'building.year_total_execution', order: 'desc' }])
-      .groupBy('building.summarized_section_id')
+      //.groupBy('building.summarized_section_id')
       .limit(limit)
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני טופ סיכום שנתי לבניין ${buildingName} מ- ${fromYear} עד- ${toYear}`;

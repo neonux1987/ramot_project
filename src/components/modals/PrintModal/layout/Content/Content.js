@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from 'emotion';
-import CenteredLoader from '../../AnimatedLoaders/CenteredLoader';
+import CenteredLoader from '../../../../AnimatedLoaders/CenteredLoader';
 
 const _content = css`
   margin: 0;

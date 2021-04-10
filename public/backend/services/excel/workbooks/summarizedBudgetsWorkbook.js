@@ -285,8 +285,7 @@ module.exports = async (
   data.forEach((row) => {
     Helper.replaceZeroWithEmpty(row);
     // instead of null to make the borders appear
-    row.notes = "";
-
+    row.notes = row.notes === null ? "" : row.notes;
     sheet.addRow(row);
   });
 

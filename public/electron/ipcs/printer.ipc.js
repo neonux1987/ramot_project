@@ -48,6 +48,28 @@ const printerIpc = () => {
 
   });
 
+  ipcMain.on('get-printers', async (event, pageSetup) => {
+    /* const {
+      orientation,
+      size,
+      margin
+    } = pageSetup; */
+
+    // Create the browser window.
+    const win = BrowserWindow.getAllWindows()[0];
+    const printers = win.webContents.getPrinters();
+
+    const list = [];
+    printers.forEach(({ displayName, isDefault }) => {
+      list.push({
+        displayName,
+        isDefault
+      })
+    })
+    event.sender.send("printers-list", { data: list })
+
+  });
+
 }
 
 module.exports = printerIpc;

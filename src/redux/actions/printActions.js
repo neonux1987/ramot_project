@@ -1,6 +1,10 @@
+import { ipcRenderer } from "electron";
+
 // TYPES
 export const TYPES = {
-  SET_PRINT_MODE: "SET_PRINT_MODE"
+  SET_PRINT_MODE: "SET_PRINT_MODE",
+  PRINT_REQUEST: "PRINT_REQUEST",
+  PRINT_RECEIVE: "PRINT_RECEIVE"
 }
 
 export const setPrintMode = function async(printMode) {
@@ -12,4 +16,29 @@ export const setPrintMode = function async(printMode) {
   }
 }
 
+export const getPrinters = () => {
 
+  return dispatch => {
+    dispatch(requestPrinters());
+
+    ipcRenderer.send("get-printers");
+
+    ipcRenderer.on("printers-list", (event, { data }) => {
+      dispatch(receivePrinters(data));
+    });
+  }
+
+};
+
+const requestPrinters = function () {
+  return {
+    type: TYPES.PRINT_REQUEST
+  }
+};
+
+const receivePrinters = function (data) {
+  return {
+    type: TYPES.PRINT_RECEIVE,
+    data
+  }
+}

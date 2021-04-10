@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '@material-ui/core';
 import usePrint from '../../../customHooks/usePrint';
-import { useDispatch } from 'react-redux';
-import { setPrintMode } from '../../../redux/actions/printActions';
-import Sidebar from './Sidebar';
-import Content from './Content';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPrinters, setPrintMode } from '../../../redux/actions/printActions';
+import Sidebar from './layout/Sidebar/Sidebar';
+import Content from './layout/Content/Content';
 import Container from './Container';
 
 const PrintModal = props => {
@@ -13,6 +13,7 @@ const PrintModal = props => {
     pageSetup
   } = props;
 
+  const printers = useSelector(store => store.print.printers);
   const [generating, output] = usePrint(pageSetup);
 
   const [open, setOpen] = useState(true);
@@ -38,6 +39,14 @@ const PrintModal = props => {
 
   }, [dispatch, generating]);
 
+  useEffect(() => {
+    dispatch(getPrinters());
+  }, [dispatch]);
+
+  const onPrint = (printer, colors, orientation, pages) => {
+
+  }
+
   return <Modal
     onClose={onClick}
     open={open}
@@ -46,7 +55,12 @@ const PrintModal = props => {
   >
 
     <Container>
-      <Sidebar pdf={pdf} onClose={onClick} onPrint={() => { }} />
+      <Sidebar
+        pdf={pdf}
+        onClose={onClick}
+        onPrint={onPrint}
+        printers={printers}
+      />
 
       <Content
         loading={generating || pdf === null}

@@ -399,12 +399,12 @@ const SampleTable = () => {
           </div>
 
           <div className="st-tbody-row">
-            <div>Alfreds Futterkiste</div>
-            <div>Maria Anders</div>
-            <div>Germany</div>
-            <div>Germany</div>
-            <div>Germany</div>
-            <div>Germany</div>
+            <div>end</div>
+            <div>end</div>
+            <div>end</div>
+            <div>end</div>
+            <div>end</div>
+            <div>end</div>
           </div>
         </td>
       </tr>
