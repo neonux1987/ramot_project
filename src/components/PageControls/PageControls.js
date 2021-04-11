@@ -1,5 +1,5 @@
 // LIBRARIES
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'emotion';
 import classnames from 'classnames';
@@ -54,6 +54,8 @@ const PageControls = props => {
 
   const dispatch = useDispatch();
 
+  const onClose = useCallback(() => hideModal(), [hideModal]);
+
   const exportToExcelHandler = () => {
     if (excel.date.year === undefined)
       toastManager.info("לא נבחר דוח לייצוא")
@@ -77,7 +79,7 @@ const PageControls = props => {
 
           showModal(PrintModal, {
             ...print,
-            onClose: () => hideModal()
+            onClose
           })
         }}
       />

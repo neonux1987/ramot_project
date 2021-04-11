@@ -5,15 +5,10 @@ export function reducer(state, action) {
         ...state,
         printer: action.printer
       };
-    case 'setSize':
+    case 'setPageSize':
       return {
         ...state,
-        size: action.size
-      };
-    case 'setPages':
-      return {
-        ...state,
-        pages: action.pages
+        pageSize: action.pageSize
       };
     case 'setLandscape':
       return {
@@ -28,24 +23,9 @@ export function reducer(state, action) {
     case 'setRange':
       return {
         ...state,
-        range: {
-          from: action.from,
-          to: action.to
-        }
+        range: action.range
       };
     default:
       throw new Error();
   }
 };
-
-export const initialState = {
-  printer: "",
-  size: "A4",
-  pages: "all",
-  landscape: false,
-  colors: true,
-  range: {
-    from: 0,
-    to: 0
-  },
-}

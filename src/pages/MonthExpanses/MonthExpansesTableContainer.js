@@ -278,7 +278,7 @@ const MonthExpansesTableContainer = props => {
               date
             }}
             print={{
-              pageSetup: {}
+              pageName
             }}
             pageName={pageName}
             dataExist={data.length > 0}

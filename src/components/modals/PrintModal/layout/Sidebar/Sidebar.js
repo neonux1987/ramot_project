@@ -4,7 +4,8 @@ import PrimaryButton from '../../../../buttons/PrimaryButton';
 import { Collapse, Input, MenuItem, Typography } from '@material-ui/core';
 import DefaultButton from '../../../../buttons/DefaultButton';
 import Select from '../../../../Select/Select';
-import { reducer, initialState } from './reducer';
+import { reducer } from './reducer';
+import printTemplates from "../../printTemplates";
 
 const sidebar = css`
   border-bottom: 1px solid #e6e6e6;
@@ -55,7 +56,34 @@ const input = css`
   width: 180px;
   background: #f5f5f5;
   margin: 0;
+
+  '&:before'{
+    border-bottom: none;
+  }
 `;
+
+const rangeError = css`
+  color: red;
+  display: flex;
+  justify-content: center;
+  margin-top: -15px;
+  padding-left: 20px;
+`;
+
+const rangeRegex = "^(\\s*\\d+\\s*\\-\\s*\\d+\\s*,?|\\d)+$";
+
+function initState(data, pageName) {
+  const state = printTemplates[pageName];
+  if (data.length !== 0) {
+
+    data.forEach(({ isDefault, displayName }) => {
+      if (isDefault)
+        state.printer = displayName;
+    });
+
+  }
+  return state;
+}
 
 const Sidebar = props => {
   const {
@@ -63,40 +91,88 @@ const Sidebar = props => {
     onClose,
     onPrint,
     printers,
-    preview
+    initiateGeneration,
+    pageName
   } = props;
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initState(printers.data, pageName));
+
+  const [allPages, setAllPages] = useState(true);
+
+  const [rangeValid, setRangeValid] = useState(true);
+
+  const [copies, setCopies] = useState(1);
 
   useEffect(() => {
-    printers.data.forEach(({ isDefault, displayName }) => {
-      if (isDefault)
-        dispatch({ type: "setPrinter", printer: displayName });
-    });
-  }, [printers]);
-
-  useEffect(() => {
-    preview(state);
-  }, [state]);
+    initiateGeneration(state);
+  }, [state, initiateGeneration]);
 
   const onPrinterChange = (event) => {
     const target = event.target;
     dispatch({ type: "setPrinter", printer: target.value });
   }
 
-  const onPagesChange = (event) => {
+  const onAllPagesChange = (event) => {
     const target = event.target;
-    dispatch({ type: "setPages", pages: target.value });
+    setAllPages(target.value);
+
+    if (target.value === true)
+      dispatch({ type: "setRange", range: null });
   }
 
-  const onSizeChange = (event) => {
+  const onPageSizeChange = (event) => {
     const target = event.target;
-    dispatch({ type: "setSize", size: target.value });
+    dispatch({ type: "setPageSize", pageSize: target.value });
+  }
+
+  const onCopiesChange = (event) => {
+    const target = event.target;
+    setCopies(Number.parseInt(target.value));
   }
 
   const onRangeBlur = (event) => {
     const target = event.target;
+    const value = target.value;
+
+    const regex = new RegExp(rangeRegex);
+    const passed = regex.test(value);
+
+    let valid = true;
     const range = target.value.split("-");
-    dispatch({ type: "setRange", from: range[0], to: range[1] });
+
+    if (passed) {
+
+      // two values range
+      if (range.length === 2) {
+
+        if (range[0] > pdf.pageCount || range[1] > pdf.pageCount || range[0] > range[1])
+          valid = false;
+
+      }
+
+      // one value range, duplicate first value
+      // and push to the array
+      if (range.length === 1) {
+
+        if (range[0] > pdf.pageCount)
+          valid = false;
+        else {
+          range.push(range[0]);
+        }
+
+      }
+
+    }
+
+    if (!valid)
+      setRangeValid(false);
+    else {
+      if (rangeValid === false)
+        setRangeValid(true);
+
+      dispatch({ type: "setRange", range: { from: Number.parseInt(range[0]), to: Number.parseInt(range[1]) } });
+    }
+
+
   }
 
   const onLandscapeChange = (event) => {
@@ -110,10 +186,10 @@ const Sidebar = props => {
   }
 
   const onPrintClick = () => {
-    onPrint(state.printer, "black-white");
+    const newState = { ...state };
+    newState.copies = copies;
+    onPrint(state);
   }
-
-  const range = state.range.from !== "" & state.range.to !== "" ? `${state.range.from}-${state.range.to}` : "";
 
   return <form className={sidebar}>
 
@@ -148,32 +224,63 @@ const Sidebar = props => {
 
     <Row>
       <RightPane>
+        <Label>עותקים</Label>
+      </RightPane>
+
+      <LeftPane>
+        <Input
+          value={copies}
+          classes={{ root: select }}
+          onChange={onCopiesChange}
+          inputProps={{
+            className: input,
+            min: 1,
+            max: 10,
+            type: "number"
+          }}
+        />
+      </LeftPane>
+    </Row>
+
+    <Row>
+      <RightPane>
         <Label>עמודים</Label>
       </RightPane>
 
       <LeftPane>
         <WideSelect
-          name="pages"
-          value={state.pages}
-          onChange={onPagesChange}
+          name="allPages"
+          value={allPages}
+          onChange={onAllPagesChange}
         >
-          <MenuItem value="all">הכל</MenuItem>
-          <MenuItem value="custom">מותאם</MenuItem>
+          <MenuItem value={true}>הכל</MenuItem>
+          <MenuItem value={false}>מותאם</MenuItem>
         </WideSelect>
       </LeftPane>
     </Row>
 
-    <Collapse timeout={300} in={state.pages === "custom"}>
-      <div className={row}>
-        <RightPane>
-        </RightPane>
-        <LeftPane>
-          <Input
-            classes={{ root: select }}
-            inputProps={{ className: input, min: 0, max: pdf ? pdf.pageCount : 0, onBlur: onRangeBlur }}
-            placeholder="דוגמא: 1-5, 8, 11-13"
-          />
-        </LeftPane>
+    <Collapse timeout={300} in={!allPages}>
+      <div>
+        <div className={row}>
+          <RightPane>
+          </RightPane>
+          <LeftPane>
+            <Input
+              classes={{ root: select }}
+              inputProps={{
+                className: input,
+                min: 0,
+                max: pdf ? pdf.pageCount : 0,
+                onBlur: onRangeBlur
+              }}
+              placeholder="דוגמא: 1-5, 8, 11-13"
+            />
+          </LeftPane>
+        </div>
+
+        {!rangeValid ? <div className={rangeError}>
+          טווח עמודים לא תקין, דוגמא תקינה: 1-5, 8, 11-13
+        </div> : null}
       </div>
     </Collapse>
 
@@ -185,11 +292,15 @@ const Sidebar = props => {
       <LeftPane>
         <WideSelect
           name="pages"
-          value={state.size}
-          onChange={onSizeChange}
+          value={state.pageSize}
+          onChange={onPageSizeChange}
         >
+          <MenuItem value="A3">A3</MenuItem>
           <MenuItem value="A4">A4</MenuItem>
           <MenuItem value="A5">A5</MenuItem>
+          <MenuItem value="Legal">Legal</MenuItem>
+          <MenuItem value="Letter">Letter</MenuItem>
+          <MenuItem value="Tabloid">Tabloid</MenuItem>
         </WideSelect>
       </LeftPane>
     </Row>

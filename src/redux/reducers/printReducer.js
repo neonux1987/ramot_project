@@ -5,41 +5,6 @@ const initialState = {
   printers: {
     isFetching: true,
     data: []
-  },
-  templates: {
-    monthExpanses: {
-      printer: "",
-      size: "A4",
-      pages: "all",
-      landscape: false,
-      colors: true,
-      range: {
-        from: 0,
-        to: 0
-      }
-    },
-    budgetExecution: {
-      printer: "",
-      size: "A4",
-      pages: "all",
-      landscape: false,
-      colors: true,
-      range: {
-        from: 0,
-        to: 0
-      }
-    },
-    summarizedBudgets: {
-      printer: "",
-      size: "A4",
-      pages: "all",
-      landscape: false,
-      colors: true,
-      range: {
-        from: 0,
-        to: 0
-      }
-    }
   }
 }
 

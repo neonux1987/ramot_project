@@ -7,9 +7,8 @@ const _container = css`
 `;
 
 const _title = css`
-font-family: sans-serif;
-
-font-size: 24pt;
+  font-family: sans-serif;
+  font-size: 24pt;
 `;
 
 const _date = css`

@@ -1,8 +1,8 @@
 import { ipcRenderer } from 'electron';
 
-export const print = async () => {
+export const generatePreview = async (options) => {
 
-  ipcRenderer.send("print-pdf");
+  ipcRenderer.send("print-pdf", options);
 
   return new Promise((resolve, reject) => {
 
@@ -17,6 +17,21 @@ export const print = async () => {
         });
       }
 
+    });
+
+  });
+
+};
+
+export const print = async (options) => {
+
+  ipcRenderer.send("print", options);
+
+  return new Promise((resolve, reject) => {
+
+    ipcRenderer.on("printed", (event, { error }) => {
+      if (error)
+        reject(error);
     });
 
   });

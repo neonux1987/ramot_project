@@ -1,14 +1,7 @@
-const { RecordVoiceOver } = require('@material-ui/icons');
-
 const printerIpc = () => {
   const { ipcMain, BrowserWindow } = require('electron');
 
-  ipcMain.on('print-pdf', async (event, pageSetup) => {
-    /* const {
-      orientation,
-      size,
-      margin
-    } = pageSetup; */
+  ipcMain.on('print-pdf', async (event, pageSetup = {}) => {
 
     // Create the browser window.
     const win = BrowserWindow.getAllWindows()[0];
@@ -19,7 +12,8 @@ const printerIpc = () => {
       printBackground: true,
       printSelectionOnly: false,
       silent: true,
-      landscape: true
+      landscape: true,
+      ...pageSetup
     };
 
     const data = await win.webContents.printToPDF(options);
@@ -48,13 +42,23 @@ const printerIpc = () => {
 
   });
 
-  ipcMain.on('get-printers', async (event, pageSetup) => {
-    /* const {
-      orientation,
-      size,
-      margin
-    } = pageSetup; */
+  ipcMain.on('print', async (event, pageSetup = {}) => {
 
+    // Create the browser window.
+    const win = BrowserWindow.getAllWindows()[0];
+
+    const options = {
+      marginsType: 0,
+      pageSize: 'A4',
+      silent: true,
+      ...pageSetup
+    };
+
+    win.webContents.print(options);
+
+  });
+
+  ipcMain.on('get-printers', async (event, pageSetup) => {
     // Create the browser window.
     const win = BrowserWindow.getAllWindows()[0];
     const printers = win.webContents.getPrinters();

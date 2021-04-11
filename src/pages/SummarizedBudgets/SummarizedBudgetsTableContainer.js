@@ -219,7 +219,7 @@ const SummarizedBudgetsTableContainer = props => {
             date
           }}
           print={{
-            pageSetup: {}
+            pageName
           }}
           pageName={pageName}
         />} // end leftPane

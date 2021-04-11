@@ -10,16 +10,13 @@ import Container from './Container';
 const PrintModal = props => {
   const {
     onClose,
-    pageSetup,
     pageName
   } = props;
 
-  const { printers, templates } = useSelector(store => store.print);
-  const [generating, output, preview] = usePrint(templates[pageName]);
+  const { printers } = useSelector(store => store.print);
+  const [generating, output, initiateGeneration, print] = usePrint(pageName);
 
   const [open, setOpen] = useState(true);
-
-  const [pdf, setPdf] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -29,23 +26,17 @@ const PrintModal = props => {
   }
 
   useEffect(() => {
-    if (output !== null) {
-      setPdf(output);
-    }
-  }, [output]);
-
-  useEffect(() => {
-    if (!generating)
+    return () => {
       dispatch(setPrintMode(false));
-
-  }, [dispatch, generating]);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getPrinters());
   }, [dispatch]);
 
-  const onPrint = (printer, colors, orientation, pages) => {
-
+  const onPrint = (options) => {
+    print(options);
   }
 
   return <Modal
@@ -57,20 +48,22 @@ const PrintModal = props => {
 
     <Container>
       <Sidebar
-        pdf={pdf}
+        pageName={pageName}
+        pdf={output}
         onClose={onClick}
         onPrint={onPrint}
         printers={printers}
-        preview={preview}
+        initiateGeneration={initiateGeneration}
       />
 
       <Content
-        loading={generating || pdf === null}
-        blob={pdf !== null ? pdf.blobUrl : ""}
+        loading={generating || output === null}
+        blob={output !== null ? output.blobUrl : ""}
+        output={output}
       />
     </Container>
 
   </Modal >;
 }
 
-export default PrintModal;
+export default React.memo(PrintModal);
