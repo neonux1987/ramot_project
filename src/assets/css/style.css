@@ -307,10 +307,6 @@ apex charts override
   #printHeader{
     display: block;
   }
-  
-  body{
-    counter-reset: page;
-  }
 
   table{
     page-break-after: always !important;

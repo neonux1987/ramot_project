@@ -56,10 +56,20 @@ const input = css`
   width: 180px;
   background: #f5f5f5;
   margin: 0;
+  border: 1px solid #efecec;
 
-  '&:before'{
+  ::before {
     border-bottom: none;
-  }
+  } 
+
+`;
+
+const inputInner = css`
+  text-align: center;
+`;
+
+const rangeRow = css`
+  margin-top: -10px;
 `;
 
 const rangeError = css`
@@ -76,9 +86,9 @@ function initState(data, pageName) {
   const state = printTemplates[pageName];
   if (data.length !== 0) {
 
-    data.forEach(({ isDefault, displayName }) => {
+    data.forEach(({ isDefault, name }) => {
       if (isDefault)
-        state.printer = displayName;
+        state.printer = name;
     });
 
   }
@@ -105,29 +115,6 @@ const Sidebar = props => {
   useEffect(() => {
     initiateGeneration(state);
   }, [state, initiateGeneration]);
-
-  const onPrinterChange = (event) => {
-    const target = event.target;
-    dispatch({ type: "setPrinter", printer: target.value });
-  }
-
-  const onAllPagesChange = (event) => {
-    const target = event.target;
-    setAllPages(target.value);
-
-    if (target.value === true)
-      dispatch({ type: "setRange", range: null });
-  }
-
-  const onPageSizeChange = (event) => {
-    const target = event.target;
-    dispatch({ type: "setPageSize", pageSize: target.value });
-  }
-
-  const onCopiesChange = (event) => {
-    const target = event.target;
-    setCopies(Number.parseInt(target.value));
-  }
 
   const onRangeBlur = (event) => {
     const target = event.target;
@@ -175,14 +162,34 @@ const Sidebar = props => {
 
   }
 
-  const onLandscapeChange = (event) => {
+  const onChange = (event) => {
     const target = event.target;
-    dispatch({ type: "setLandscape", landscape: target.value });
-  }
 
-  const onColorsChange = (event) => {
-    const target = event.target;
-    dispatch({ type: "setColors", colors: target.value });
+    switch (target.name) {
+      case "printer":
+        dispatch({ type: "setPrinter", printer: target.value });
+        break;
+      case "copies":
+        setCopies(Number.parseInt(target.value));
+        break;
+      case "allPages": {
+        setAllPages(target.value);
+
+        if (target.value === true)
+          dispatch({ type: "setRange", range: null });
+      }
+        break;
+      case "pageSize":
+        dispatch({ type: "setPageSize", pageSize: target.value });
+        break;
+      case "landscape":
+        dispatch({ type: "setLandscape", landscape: target.value });
+        break;
+      case "colors":
+        dispatch({ type: "setColors", colors: target.value });
+        break;
+      default: return null;
+    }
   }
 
   const onPrintClick = () => {
@@ -210,13 +217,13 @@ const Sidebar = props => {
 
       <LeftPane>
         <WideSelect
-          name="printers"
+          name="printer"
           value={state.printer}
-          onChange={onPrinterChange}
+          onChange={onChange}
           loading={printers.isFetching}
         >
-          {printers.data.map(({ displayName, isDefault }) => {
-            return <MenuItem value={displayName} key={displayName}>{displayName}</MenuItem>;
+          {printers.data.map(({ name }) => {
+            return <MenuItem value={name} key={name}>{name}</MenuItem>;
           })}
         </WideSelect>
       </LeftPane>
@@ -229,11 +236,12 @@ const Sidebar = props => {
 
       <LeftPane>
         <Input
+          name="copies"
           value={copies}
-          classes={{ root: select }}
-          onChange={onCopiesChange}
+          className={input}
+          onChange={onChange}
           inputProps={{
-            className: input,
+            className: inputInner,
             min: 1,
             max: 10,
             type: "number"
@@ -251,7 +259,7 @@ const Sidebar = props => {
         <WideSelect
           name="allPages"
           value={allPages}
-          onChange={onAllPagesChange}
+          onChange={onChange}
         >
           <MenuItem value={true}>הכל</MenuItem>
           <MenuItem value={false}>מותאם</MenuItem>
@@ -261,14 +269,14 @@ const Sidebar = props => {
 
     <Collapse timeout={300} in={!allPages}>
       <div>
-        <div className={row}>
+        <div className={row + " " + rangeRow}>
           <RightPane>
           </RightPane>
           <LeftPane>
             <Input
-              classes={{ root: select }}
+              classes={{ root: input }}
               inputProps={{
-                className: input,
+                className: inputInner,
                 min: 0,
                 max: pdf ? pdf.pageCount : 0,
                 onBlur: onRangeBlur
@@ -286,14 +294,14 @@ const Sidebar = props => {
 
     <Row>
       <RightPane>
-        <Label>גודל</Label>
+        <Label>גודל דף</Label>
       </RightPane>
 
       <LeftPane>
         <WideSelect
-          name="pages"
+          name="pageSize"
           value={state.pageSize}
-          onChange={onPageSizeChange}
+          onChange={onChange}
         >
           <MenuItem value="A3">A3</MenuItem>
           <MenuItem value="A4">A4</MenuItem>
@@ -312,9 +320,9 @@ const Sidebar = props => {
 
       <LeftPane>
         <WideSelect
-          name="orientation"
+          name="landscape"
           value={state.landscape}
-          onChange={onLandscapeChange}
+          onChange={onChange}
         >
           <MenuItem value={false}>לאורך</MenuItem>
           <MenuItem value={true}>לרוחב</MenuItem>
@@ -331,7 +339,7 @@ const Sidebar = props => {
         <WideSelect
           name="colors"
           value={state.colors}
-          onChange={onColorsChange}
+          onChange={onChange}
         >
           <MenuItem value={true}>צבעוני</MenuItem>
           <MenuItem value={false}>שחור לבן</MenuItem>
