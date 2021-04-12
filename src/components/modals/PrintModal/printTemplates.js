@@ -1,27 +1,27 @@
 const templates = {
   monthExpanses: {
-    printer: "",
+    deviceName: "",
     pageSize: "A4",
     copies: 1,
     landscape: false,
     colors: true,
-    range: null
+    pageRanges: undefined
   },
   budgetExecutions: {
-    printer: "",
+    deviceName: "",
     pageSize: "A4",
     copies: 1,
     landscape: true,
     colors: true,
-    range: null
+    pageRanges: undefined
   },
   summarizedBudgets: {
-    printer: "",
+    deviceName: "",
     pageSize: "A4",
     copies: 1,
     landscape: true,
     colors: true,
-    range: null
+    pageRanges: undefined
   }
 
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { css } from 'emotion';
 import PrimaryButton from '../../../../buttons/PrimaryButton';
 import { Collapse, Input, MenuItem, Typography } from '@material-ui/core';
-import DefaultButton from '../../../../buttons/DefaultButton';
+import WhiteButton from '../../../../buttons/WhiteButton';
 import Select from '../../../../Select/Select';
 import { reducer } from './reducer';
 import printTemplates from "../../printTemplates";
@@ -86,9 +86,9 @@ function initState(data, pageName) {
   const state = printTemplates[pageName];
   if (data.length !== 0) {
 
-    data.forEach(({ isDefault, name }) => {
+    data.forEach(({ isDefault, deviceName }) => {
       if (isDefault)
-        state.printer = name;
+        state.deviceName = deviceName;
     });
 
   }
@@ -101,7 +101,7 @@ const Sidebar = props => {
     onClose,
     onPrint,
     printers,
-    initiateGeneration,
+    generate,
     pageName
   } = props;
   const [state, dispatch] = useReducer(reducer, initState(printers.data, pageName));
@@ -113,10 +113,10 @@ const Sidebar = props => {
   const [copies, setCopies] = useState(1);
 
   useEffect(() => {
-    initiateGeneration(state);
-  }, [state, initiateGeneration]);
+    generate(state);
+  }, [state, generate]);
 
-  const onRangeBlur = (event) => {
+  const onPageRangesBlur = (event) => {
     const target = event.target;
     const value = target.value;
 
@@ -156,7 +156,8 @@ const Sidebar = props => {
       if (rangeValid === false)
         setRangeValid(true);
 
-      dispatch({ type: "setRange", range: { from: Number.parseInt(range[0]), to: Number.parseInt(range[1]) } });
+      // subtract 1 from 'from' and 'to' because electron print options pageRanges is 0 based
+      dispatch({ type: "setPageRanges", pageRanges: { from: Number.parseInt(range[0]) - 1, to: Number.parseInt(range[1]) - 1 } });
     }
 
 
@@ -166,8 +167,8 @@ const Sidebar = props => {
     const target = event.target;
 
     switch (target.name) {
-      case "printer":
-        dispatch({ type: "setPrinter", printer: target.value });
+      case "deviceName":
+        dispatch({ type: "setDeviceName", deviceName: target.value });
         break;
       case "copies":
         setCopies(Number.parseInt(target.value));
@@ -176,7 +177,7 @@ const Sidebar = props => {
         setAllPages(target.value);
 
         if (target.value === true)
-          dispatch({ type: "setRange", range: null });
+          dispatch({ type: "setPageRanges", pageRanges: undefined });
       }
         break;
       case "pageSize":
@@ -196,6 +197,7 @@ const Sidebar = props => {
     const newState = { ...state };
     newState.copies = copies;
     onPrint(state);
+    onClose();
   }
 
   return <form className={sidebar}>
@@ -217,13 +219,13 @@ const Sidebar = props => {
 
       <LeftPane>
         <WideSelect
-          name="printer"
-          value={state.printer}
+          name="deviceName"
+          value={state.deviceName}
           onChange={onChange}
           loading={printers.isFetching}
         >
-          {printers.data.map(({ name }) => {
-            return <MenuItem value={name} key={name}>{name}</MenuItem>;
+          {printers.data.map(({ deviceName }) => {
+            return <MenuItem value={deviceName} key={deviceName}>{deviceName}</MenuItem>;
           })}
         </WideSelect>
       </LeftPane>
@@ -274,12 +276,13 @@ const Sidebar = props => {
           </RightPane>
           <LeftPane>
             <Input
+              name="pageRanges"
               classes={{ root: input }}
               inputProps={{
                 className: inputInner,
                 min: 0,
                 max: pdf ? pdf.pageCount : 0,
-                onBlur: onRangeBlur
+                onBlur: onPageRangesBlur
               }}
               placeholder="דוגמא: 1-5, 8, 11-13"
             />
@@ -348,7 +351,7 @@ const Sidebar = props => {
     </Row>
 
     <div className={buttonWrapper}>
-      <DefaultButton onClick={onClose}>סגור</DefaultButton>
+      <WhiteButton onClick={onClose}>בטל</WhiteButton>
       <PrimaryButton className={printbutton} onClick={onPrintClick}>
         הדפס
     </PrimaryButton>

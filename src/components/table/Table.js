@@ -24,7 +24,16 @@ const Table = ({
   const element = printMode ? document.getElementById("tableBody") : null;
   const printHeight = element ? element.style.height : "600px";
 
-  const table = <Virtuoso
+  const generate = () => {
+    const rows = [];
+    for (let i = 0; i < totalCount; i++) {
+      rows.push(Row(i));
+    }
+
+    return rows;
+  }
+
+  const table = printMode ? generate() : <Virtuoso
     style={{
       overflow: "overlay",
       direction: "rtl"
@@ -34,6 +43,8 @@ const Table = ({
     overscan={10}
     components={components}
   />;
+
+
 
   return <TableWrapper id="table" printMode={printMode}>
 

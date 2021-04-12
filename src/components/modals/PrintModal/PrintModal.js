@@ -14,7 +14,7 @@ const PrintModal = props => {
   } = props;
 
   const { printers } = useSelector(store => store.print);
-  const [generating, output, initiateGeneration, print] = usePrint(pageName);
+  const [generating, output, generate, print] = usePrint(pageName);
 
   const [open, setOpen] = useState(true);
 
@@ -35,10 +35,6 @@ const PrintModal = props => {
     dispatch(getPrinters());
   }, [dispatch]);
 
-  const onPrint = (options) => {
-    print(options);
-  }
-
   return <Modal
     onClose={onClick}
     open={open}
@@ -51,9 +47,9 @@ const PrintModal = props => {
         pageName={pageName}
         pdf={output}
         onClose={onClick}
-        onPrint={onPrint}
+        onPrint={print}
         printers={printers}
-        initiateGeneration={initiateGeneration}
+        generate={generate}
       />
 
       <Content

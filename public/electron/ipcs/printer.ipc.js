@@ -50,10 +50,11 @@ const printerIpc = () => {
     const options = {
       marginsType: 0,
       pageSize: 'A4',
-      silent: false,
+      printBackground: true,
+      silent: true,
       ...pageSetup
     };
-
+    console.log(options);
     win.webContents.print(options);
 
   });
@@ -66,7 +67,7 @@ const printerIpc = () => {
     const list = [];
     printers.forEach(({ name, isDefault }) => {
       list.push({
-        name,
+        deviceName: name,
         isDefault
       })
     })

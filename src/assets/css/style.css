@@ -266,9 +266,9 @@ apex charts override
     margin: 10px 10px 35px 10px;  /* this affects the margin in the printer settings */
   }
 
-  body{
+/*   body{
     -webkit-print-color-adjust: exact !important;
-  }
+  } */
 
   html,body,#mainContainer,#appWrapper{
     overflow: visible !important;
@@ -309,7 +309,7 @@ apex charts override
   }
 
   table{
-    page-break-after: always !important;
+    page-break-before: always !important;
     padding: 1px;
   }
   
@@ -339,6 +339,11 @@ apex charts override
   ._tableRow{
     border-bottom: thin solid #000 !important;
     border-left: thin solid #000 !important;
+    overflow: hidden !important;
+  }
+
+  ._tableColumn:last-child{
+    margin-left: 0 !important;
   }
 
   ._tableColumn:first-child{

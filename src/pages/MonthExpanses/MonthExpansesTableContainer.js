@@ -225,7 +225,7 @@ const MonthExpansesTableContainer = props => {
 
       <Column>{rowData["code"]}</Column>
       <Column>{rowData["codeName"]}</Column>
-      <Column >{rowData["section"]}</Column>
+      <Column>{rowData["section"]}</Column>
 
       {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}
       {editMode ? numberInput("sum", rowData["sum"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}

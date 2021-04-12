@@ -31,7 +31,9 @@ const PrintHeader = ({ printHeaderDetails = {
       <Typography className={_title} variant="h5">{pageTitle}</Typography>
     </div>
 
-    <div className={_date}>{date}</div>
+    <div>
+      <Typography className={_date} variant="h6">{date}</Typography>
+    </div>
   </div>;
 }
 

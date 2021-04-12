@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Column = ({ children, style, innerStyle, show = true, onDoubleClick, className }) => {
+const Column = ({ children, style, innerStyle, show = true, onDoubleClick, className = "" }) => {
   return (
     <div className={`_tableColumn ${className}`}
       style={{

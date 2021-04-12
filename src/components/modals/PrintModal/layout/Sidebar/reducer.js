@@ -1,9 +1,9 @@
 export function reducer(state, action) {
   switch (action.type) {
-    case 'setPrinter':
+    case 'setDeviceName':
       return {
         ...state,
-        printer: action.printer
+        deviceName: action.deviceName
       };
     case 'setPageSize':
       return {
@@ -20,10 +20,10 @@ export function reducer(state, action) {
         ...state,
         colors: action.colors
       };
-    case 'setRange':
+    case 'setPageRanges':
       return {
         ...state,
-        range: action.range
+        pageRanges: action.pageRanges
       };
     default:
       throw new Error();
