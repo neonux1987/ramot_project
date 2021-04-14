@@ -3,9 +3,11 @@ const { autoUpdater, CancellationToken } = require('electron-updater');
 const isDev = require('electron-is-dev');
 const logManager = require('../../backend/logger/LogManager');
 
-const updatesIpc = () => {
+const sendToWindow = (event, data) => {
   const currentWindow = BrowserWindow.getFocusedWindow();
-
+  currentWindow.webContents.send(event, data);
+}
+const updatesIpc = () => {
   // in production if we won't set the token
   // with the setFeedUrl programatically it won't
   // find the token even if it's in the electron-builder.yml
@@ -49,9 +51,9 @@ const updatesIpc = () => {
     }
 
     if (cancellationToken === undefined || cancellationToken._cancelled)
-      currentWindow.webContents.send('download_aborted', { data: {} });
+      sendToWindow('download_aborted', { data: {} });
     else
-      currentWindow.webContents.send('download_aborted', { error: "המערכת לא הצליחה לבטל את ההורדה" });
+      sendToWindow('download_aborted', { error: "המערכת לא הצליחה לבטל את ההורדה" });
   });
 
   autoUpdater.on('checking-for-update', () => {
@@ -59,28 +61,28 @@ const updatesIpc = () => {
   })
 
   autoUpdater.on('update-not-available', () => {
-    currentWindow.webContents.send('update_not_available', { data: {} });
+    sendToWindow('update_not_available', { data: {} });
   })
 
   autoUpdater.on('update-available', (updateInfo) => {
-    currentWindow.webContents.send('update_available', { data: updateInfo });
+    sendToWindow('update_available', { data: updateInfo });
   });
 
   autoUpdater.on('update-downloaded', (info) => {
-    currentWindow.webContents.send('update_downloaded', { data: info });
+    sendToWindow('update_downloaded', { data: info });
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
     let log_message = "Download speed: " + progressObj.bytesPerSecond;
     log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
     log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
-    currentWindow.webContents.send('download_progress', progressObj);
+    sendToWindow('download_progress', progressObj);
   })
 
   autoUpdater.on('error', (error) => {
     console.log("onerror", error);
     if (!cancellationToken._cancelled) cancellationToken.cancel();
-    currentWindow.webContents.send('updater_error', { error: error.message });
+    sendToWindow('updater_error', { error: error.message });
   });
 
   ipcMain.on('download-update', () => {
@@ -89,7 +91,7 @@ const updatesIpc = () => {
       // do nothing because most likely it was cancelled by user
       // plus need ti fix the problem 
       // "Cannot download differentially, fallback to full download: Error"
-      //currentWindow.webContents.send('updater_error', { error: error.message });
+      //sendToWindow('updater_error', { error: error.message });
       console.log("download-update", error);
     });
   });
@@ -98,10 +100,10 @@ const updatesIpc = () => {
     const fse = require('fs-extra');
 
     fse.remove(path).then(() => {
-      currentWindow.webContents.send('update_deleted', { data: {} });
+      sendToWindow('update_deleted', { data: {} });
     }).catch((error) => {
       console.log(error);
-      currentWindow.webContents.send('update_deleted', { error: "המערכת לא הצליחה למחוק את העידכון. אתחל את האפליקציה ולאחר מכן נסה שנית." });
+      sendToWindow('update_deleted', { error: "המערכת לא הצליחה למחוק את העידכון. אתחל את האפליקציה ולאחר מכן נסה שנית." });
     });
   });
 

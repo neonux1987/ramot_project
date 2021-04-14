@@ -34,7 +34,7 @@ class MainSystem {
     const emptyReportsGeneratorIpc = require('../../electron/ipcs/emptyReportsGenerator.ipc');
     const mainProcessIpc = require('../../electron/ipcs/mainProcess.ipc');
     const restoreDbIpc = require('../../electron/ipcs/restoreDb.ipc');
-    //const updatesIpc = require('../../electron/ipcs/updates.ipc');
+    const updatesIpc = require('../../electron/ipcs/updates.ipc');
     const printerIpc = require('../../electron/ipcs/printer.ipc');
     const buildingsIpc = require('../../electron/ipcs/buildings.ipc');
 
@@ -82,16 +82,11 @@ class MainSystem {
 
     restoreDbIpc();
 
-    //updatesIpc();
+    updatesIpc();
 
     printerIpc();
 
     buildingsIpc();
-  }
-
-  async initializeIpcsDelayed() {
-    const updatesIpc = require('../../electron/ipcs/updates.ipc');
-    updatesIpc();
   }
 
   async startSystem() {
