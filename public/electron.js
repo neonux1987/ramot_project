@@ -110,11 +110,17 @@ async function createWindow() {
       });
 
       mainWindow.webContents.once('dom-ready', () => {
-        console.log('main loaded')
-        mainWindow.show()
-        loading.hide()
-        loading.close()
+        mainWindow.show();
+        loading.hide();
+        loading.close();
       });
+
+      // some ipcs need to run after the main window
+      // creation and webcontetns
+      mainWindow.once('show', () => {
+        mainSystem.initializeIpcsDelayed();
+      });
+
       // long loading html
       mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
     });
