@@ -11,6 +11,8 @@ import { toastManager } from "../../../toasts/toastManager";
 import ToastRender from "../../../components/ToastRender/ToastRender";
 import { flushCache } from "../../../redux/actions/persistorActions";
 import { refreshView } from "../../../services/mainProcess.svc";
+import MoreMenuNavLinkItem from "../../../components/moreMenu/MoreMenuNavLinkItem";
+import MoreMenuItem from "../../../components/moreMenu/MoreMenuItem";
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {
 
@@ -68,11 +70,10 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
       className={styles.container}
     >
 
-      <ListItem
-        button
-        component={ButtonNavLinkWithSound}
+      <MoreMenuNavLinkItem
+        icon={<Description />}
+        label="הפקת דוחות"
         onClick={upgradedHandleClose}
-        className={styles.menuItemLink}
         to={{
           pathname: "/ניהול/הפקת דוחות",
           state: {
@@ -81,20 +82,12 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
             buildingNameEng: "management"
           }
         }}
-        exact
-      >
-        <ListItemIcon className={styles.listIcon}>
-          <Description />
-        </ListItemIcon>
-        <ListItemText primary="הפקת דוחות" />
-      </ListItem>
+      />
 
-
-      <ListItem
-        button
-        component={ButtonNavLinkWithSound}
+      <MoreMenuNavLinkItem
+        icon={<TableChart />}
+        label="ניהול קודי הנהלת חשבונות"
         onClick={upgradedHandleClose}
-        className={styles.menuItemLink}
         to={{
           pathname: "/ניהול/קודי הנהלת חשבונות",
           state: {
@@ -103,19 +96,12 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
             buildingNameEng: "management"
           }
         }}
-        exact
-      >
-        <ListItemIcon className={styles.listIcon}>
-          <TableChart />
-        </ListItemIcon>
-        <ListItemText primary="ניהול קודי הנהלת חשבונות" />
-      </ListItem>
+      />
 
-      <ListItem
-        button
-        component={ButtonNavLinkWithSound}
+      <MoreMenuNavLinkItem
+        icon={<TableChart />}
+        label="ניהול סעיפים מסכמים"
         onClick={upgradedHandleClose}
-        className={styles.menuItemLink}
         to={{
           pathname: "/ניהול/סעיפים מסכמים",
           state: {
@@ -124,39 +110,23 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
             buildingNameEng: "management"
           }
         }}
-        exact
-      >
-        <ListItemIcon className={styles.listIcon}>
-          <TableChart />
-        </ListItemIcon>
-        <ListItemText primary="ניהול סעיפים מסכמים" />
-      </ListItem>
+      />
 
-      <ListItem
-        component={ButtonWithSound}
+      <MoreMenuItem
+        icon={<ChangeHistory />}
+        label={`שינוי מע"מ`}
         onClick={taxClickHandler}
-        className={styles.menuItemLink}
-      >
-        <ListItemIcon className={styles.listIcon}>
-          <ChangeHistory />
-        </ListItemIcon>
-        <ListItemText primary={`שינוי מע"מ`} />
-      </ListItem>
+      />
 
       <Divider style={{ margin: "8px" }} />
 
-      <ListItem
-        button
-        component={ButtonWithSound}
+      <MoreMenuItem
+        icon={<Settings />}
+        label="עוד..."
         onClick={expandClick}
-        className={styles.menuItemLink}
       >
-        <ListItemIcon className={styles.listIcon}>
-          <Settings />
-        </ListItemIcon>
-        <ListItemText primary="עוד..." />
         {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
+      </MoreMenuItem>
 
       <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} flushCache={clearCache} />
 

@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { CSSTransition } from 'react-transition-group';
 import { useSelector, useDispatch } from "react-redux";
 import { css } from 'emotion';
-import '../../../cssTransitions/fade.css';
-import { hideSavedNotification } from "../../../redux/actions/savedNotificationActions";
-import { useSound } from "../../../soundManager/SoundManager";
+import '../../cssTransitions/fade.css';
+import { hideSavedNotification } from "../../redux/actions/savedNotificationActions";
+import { useSound } from "../../soundManager/SoundManager";
 
 const container = css`
   background: rgb(47, 53, 58);
