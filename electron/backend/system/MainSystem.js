@@ -87,6 +87,7 @@ class MainSystem {
     printerIpc();
 
     buildingsIpc();
+
   }
 
   async startSystem() {

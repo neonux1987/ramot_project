@@ -1,7 +1,6 @@
 // LIBRARIES
 import React from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
-import { Description } from "@material-ui/icons";
 import { css } from 'emotion';
 import ButtonWithSound from "../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 
@@ -13,7 +12,7 @@ const _listItem = css`
 
 const _listItemIcon = css`
   min-width: 36px;
-  color: #0365a2;
+  color: rgb(0,143,251);
 `;
 
 const MoreMenuItem = React.forwardRef(({
@@ -35,9 +34,9 @@ const MoreMenuItem = React.forwardRef(({
     ref={ref}
     {...extraProps}
   >
-    <ListItemIcon className={_listItemIcon}>
+    {icon ? <ListItemIcon className={_listItemIcon}>
       {icon}
-    </ListItemIcon>
+    </ListItemIcon> : null}
     <ListItemText primary={label} />
     {extraProps.children}
   </ListItem>;

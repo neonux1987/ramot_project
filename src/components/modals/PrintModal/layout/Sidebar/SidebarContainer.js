@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import Select from '../../../../Select/Select';
 import { reducer } from './reducer';
 import printTemplates from "../../printTemplates";
 import Sidebar from './Sidebar';
@@ -97,12 +96,10 @@ const SidebarContainer = props => {
       case "copies":
         setCopies(Number.parseInt(target.value));
         break;
-      case "allPages": {
+      case "allPages":
         setAllPages(target.value);
-
         if (target.value === true)
           dispatch({ type: "setPageRanges", pageRanges: undefined });
-      }
         break;
       case "pageSize":
         dispatch({ type: "setPageSize", pageSize: target.value });

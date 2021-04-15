@@ -17,6 +17,7 @@ import TopChartContainer from './charts/TopChartContainer';
 
 // ACTIONS
 import { updateSelectedChart } from '../../redux/actions/statisticsActions';
+import { exportChart } from '../../services/chart.svc';
 
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
@@ -45,7 +46,7 @@ const Statistics = props => {
   return <Page>
 
     <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
-
+    <button onClick={exportChart} >test</button>
     <StyledSection
       title={selectedChart}
       Icon={IoMdStats}

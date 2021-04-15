@@ -1,11 +1,9 @@
 // LIBRARIES
 import React from "react";
-import { Menu, Divider, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { Menu, Divider, SvgIcon } from "@material-ui/core";
 import styles from './MoreMenu.module.css';
-import { ExpandLess, ExpandMore, Description, TableChart, ChangeHistory, Settings } from "@material-ui/icons";
+import { ExpandLess, ExpandMore, Description, ListAlt } from "@material-ui/icons";
 import SubMenu from "./SubMenu/SubMenu";
-import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
-import ButtonNavLinkWithSound from "../../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound";
 import { initiateDbBackup } from '../../../services/dbBackup.svc';
 import { toastManager } from "../../../toasts/toastManager";
 import ToastRender from "../../../components/ToastRender/ToastRender";
@@ -13,6 +11,7 @@ import { flushCache } from "../../../redux/actions/persistorActions";
 import { refreshView } from "../../../services/mainProcess.svc";
 import MoreMenuNavLinkItem from "../../../components/moreMenu/MoreMenuNavLinkItem";
 import MoreMenuItem from "../../../components/moreMenu/MoreMenuItem";
+import { CgMathPercent } from 'react-icons/cg';
 
 const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler }) => {
 
@@ -85,7 +84,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
       />
 
       <MoreMenuNavLinkItem
-        icon={<TableChart />}
+        icon={<ListAlt />}
         label="ניהול קודי הנהלת חשבונות"
         onClick={upgradedHandleClose}
         to={{
@@ -99,7 +98,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
       />
 
       <MoreMenuNavLinkItem
-        icon={<TableChart />}
+        icon={<ListAlt style={{ color: "rgb(0,143,251)" }} />}
         label="ניהול סעיפים מסכמים"
         onClick={upgradedHandleClose}
         to={{
@@ -113,7 +112,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
       />
 
       <MoreMenuItem
-        icon={<ChangeHistory />}
+        icon={<SvgIcon component={CgMathPercent} />}
         label={`שינוי מע"מ`}
         onClick={taxClickHandler}
       />
@@ -121,7 +120,6 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
       <Divider style={{ margin: "8px" }} />
 
       <MoreMenuItem
-        icon={<Settings />}
         label="עוד..."
         onClick={expandClick}
       >
