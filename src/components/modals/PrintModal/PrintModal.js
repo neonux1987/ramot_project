@@ -3,7 +3,7 @@ import { Modal } from '@material-ui/core';
 import usePrint from '../../../customHooks/usePrint';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPrinters, setPrintMode } from '../../../redux/actions/printActions';
-import Sidebar from './layout/Sidebar/Sidebar';
+import SidebarContainer from './layout/Sidebar/SidebarContainer';
 import Content from './layout/Content/Content';
 import Container from './Container';
 
@@ -43,7 +43,7 @@ const PrintModal = props => {
   >
 
     <Container>
-      <Sidebar
+      <SidebarContainer
         pageName={pageName}
         pdf={output}
         onClose={onClick}

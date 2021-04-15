@@ -8,6 +8,11 @@ import { useSelector } from 'react-redux';
 import PrintHeader from './PrintHeader/PrintHeader';
 import useTableComponents from '../../customHooks/useTableComponents';
 
+/*
+  in print mode we must render table content without
+  the virtualized list since it causes problems with full height
+  when in print mode it's not capturing the render of all rows
+*/
 const Table = ({
   GroupComponent,
   HeaderComponent,
@@ -43,8 +48,6 @@ const Table = ({
     overscan={10}
     components={components}
   />;
-
-
 
   return <TableWrapper id="table" printMode={printMode}>
 

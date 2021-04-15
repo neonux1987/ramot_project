@@ -1,6 +1,6 @@
 import React from 'react';
 import useFullscreen from '../../customHooks/useFullscreen';
-import SavedNotification from '../../Main/Toolbar/SavedNotification/SavedNotification';
+import SavedNotification from '../SavedNotification/SavedNotification';
 import FullScreenButton from '../buttons/FullScreenButton';
 import StyledSection from './StyledSection';
 

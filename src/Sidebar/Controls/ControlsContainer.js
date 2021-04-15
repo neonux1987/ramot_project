@@ -1,7 +1,7 @@
 import React from 'react';
-import VolumeButton from '../../Main/Toolbar/VolumeButton/VolumeButton';
-import MoreButton from '../../Main/Toolbar/MoreButton/MoreButton';
-import MoreMenu from '../../Main/Toolbar/MoreMenu/MoreMenu';
+import VolumeButton from './VolumeButton/VolumeButton';
+import MoreButton from './MoreButton/MoreButton';
+import MoreMenu from './MoreMenu/MoreMenu';
 import EditVatModal from '../../components/modals/EditVatModal/EditVatModal';
 import useModalLogic from '../../customHooks/useModalLogic';
 import { restartApp } from '../../services/mainProcess.svc'
