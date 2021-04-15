@@ -54,11 +54,13 @@
     "appId": "com.my-website.ramot-group-income-outcome-management",
     "productName": "קבוצת רמות ניהול הוצאות והכנסות",
     "copyright": "Copyright © 2019 ${author}",
+    "extends": null,
     "files": [
       "build/**/*",
       "node_modules/**/*",
       "package.json",
-      "!dev-app-update.yml"
+      "!dev-app-update.yml",
+      "electron/**/*"
     ],
     "extraResources": [
       "./extraResources/**"
@@ -91,7 +93,7 @@
       "buildResources": "assets"
     }
   },
-  "main": "public/electron.js",
+  "main": "electron/main.js",
   "homepage": "./",
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
