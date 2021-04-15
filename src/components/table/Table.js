@@ -62,7 +62,7 @@ const Table = ({
 
     <Tbody printMode={printMode}>
 
-      <div className="_tableBody" style={{ minHeight: printHeight }}>
+      <div className="_tableBody" style={{ minHeight: "600px" }}>
         {/* SPINNER */}
         {isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : null}
 

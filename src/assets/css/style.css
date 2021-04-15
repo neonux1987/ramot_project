@@ -314,7 +314,7 @@ apex charts override
   }
   
   ._tableBody > div{
-    position: unset !important;
+    position: relative !important;
   }
 
   ._tableBody > div > div{
