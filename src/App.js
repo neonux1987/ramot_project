@@ -10,6 +10,7 @@ import ModalRoot from './components/modals/ModalRoot';
 
 // CSS
 import 'react-toastify/dist/ReactToastify.css';
+import './assets/css/style.css';
 
 // CONTAINERS
 import AppContainer from './AppContainer';

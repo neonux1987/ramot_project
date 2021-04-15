@@ -1,13 +1,12 @@
 //========================= Libraries =========================//
 require('v8-compile-cache');
-const { app, BrowserWindow, powerMonitor } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const os = require('os');
 const path = require('path');
 const isDev = require('electron-is-dev');
 const contextMenu = require('electron-context-menu');
 
 //========================= services =========================//
-const rendererotificationSvc = require('./backend/services/RendererNotificationSvc');
 const mainSystem = require('./backend/system/MainSystem');
 
 //token
@@ -104,11 +103,6 @@ async function createWindow() {
         event.preventDefault()
       });
 
-      powerMonitor.on('resume', () => {
-        console.log('The system is up');
-        //const generateReports = reportsGeneratorSvc.checkIfneedToGenerateReports();
-      });
-
       mainWindow.webContents.once('dom-ready', () => {
         mainWindow.show();
         loading.hide();
@@ -142,17 +136,6 @@ if (!gotTheLock) {
 
   app.on('ready', createWindow);
 
-  //
-  app.on('browser-window-created', (event, webContents) => {
-    //init the renderer notification service
-    rendererotificationSvc.setWebContents(webContents);
-  });
-
-  /* app.on('before-quit', async (event) => {
-    event.preventDefault();
-    app.exit(0);
-  }); */
-
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
       app.quit();
@@ -165,11 +148,6 @@ if (!gotTheLock) {
     }
   });
 }
-
-//-------------------------------------------------------------------
-// Start the system
-// loads ipc's listeners and all the backend,services etc...
-//-------------------------------------------------------------------
 
 
 

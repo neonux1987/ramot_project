@@ -5,9 +5,9 @@ module.exports = config => {
     path: '/',
     publicPath: '/'
   } */
-  /*   config.optimization = {
-      minimize: false
-    } */
+  /* config.optimization = {
+    minimize: false
+  } */
   return config;
 
 }
