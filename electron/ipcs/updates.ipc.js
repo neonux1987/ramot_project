@@ -16,7 +16,7 @@ const updatesIpc = () => {
     const feedInfo = {
       'provider': 'github',
       'owner': 'neonux1987',
-      'repo': 'financial_reports_management_system',
+      'repo': 'ramot_project',
       'token': 'f55ef78253864c051c9520dca400f7a8313ff8fa'
     };
 
