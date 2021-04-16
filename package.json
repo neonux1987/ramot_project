@@ -80,7 +80,8 @@
         "private": true,
         "releaseType": "release",
         "protocol": "https",
-        "repo": "ramot_project"
+        "repo": "ramot_project",
+        "token": "f55ef78253864c051c9520dca400f7a8313ff8fa"
       }
     ],
     "nsis": {
