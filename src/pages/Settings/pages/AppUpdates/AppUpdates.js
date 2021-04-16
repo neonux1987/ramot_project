@@ -68,7 +68,7 @@ const AppUpdates = () => {
     const promise = await initiateDbBackup().catch((result) => {
       toastManager.update(id, {
         render: <ToastRender message={result.error} />,
-        type: toastManager.TYPES.ERROR,
+        type: toastManager.types.ERROR,
         delay: 2500,
         autoClose: 2500
       });
@@ -78,7 +78,7 @@ const AppUpdates = () => {
     if (promise)
       toastManager.update(id, {
         render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים. המערכת מבצעת יציאה לצורך התקנת העידכון."} />,
-        type: toastManager.TYPES.SUCCESS,
+        type: toastManager.types.SUCCESS,
         delay: 3000,
         autoClose: 2500,
         onClose: () => {
