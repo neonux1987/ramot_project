@@ -20,8 +20,7 @@ const TopChartContainer = props => {
 
   const registeredYears = useSelector(store => store.registeredYears[buildingNameEng]);
   const { date, data, isFetching } = useSelector(store => store.topChart[buildingNameEng]);
-  const store = useSelector(store => store);
-  console.log(store);
+
   const [ready, setReady] = useState(false);
 
   const dispatch = useDispatch();
