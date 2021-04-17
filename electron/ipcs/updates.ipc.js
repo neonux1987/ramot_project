@@ -1,6 +1,6 @@
 const { ipcMain, BrowserWindow } = require('electron');
 const { autoUpdater } = require('electron-updater');
-const test = require('electron-updater');
+const { CancellationToken } = require('electron-updater/node_modules/builder-util-runtime/out/CancellationToken');
 const isDev = require('electron-is-dev');
 const logManager = require('../backend/logger/LogManager');
 
@@ -51,8 +51,8 @@ const updatesIpc = () => {
     const currentVersion = autoUpdater.currentVersion.version;
 
     autoUpdater.checkForUpdates().then((info) => {
-      const { version, releaseDate } = info.versionInfo;
-      cancellationToken = info.cancellationToken;
+      const { version, releaseDate } = info.updateInfo;
+
       if (version !== currentVersion)
         event.sender.send('checked_for_updates', { data: { version, releaseDate } });
       else
@@ -103,9 +103,11 @@ const updatesIpc = () => {
   });
 
   ipcMain.on('download-update', () => {
+    cancellationToken = new CancellationToken();
+
     autoUpdater.downloadUpdate(cancellationToken).catch((error) => {
       // do nothing because most likely it was cancelled by user
-      // plus need ti fix the problem 
+      // plus need to fix the problem 
       // "Cannot download differentially, fallback to full download: Error"
       //sendToWindow('updater_error', { error: error.message });
       console.log("download-update", error);
