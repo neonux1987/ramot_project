@@ -99,9 +99,12 @@ const AppUpdates = () => {
   const refreshHandler = async (event) => {
     event.stopPropagation();
 
-    if (!isCancelled.current) setIsChecking(true);
-    if (!isCancelled.current) setIsDownloading(false);
-    if (!isCancelled.current) setProgress(progressState());
+    if (!isCancelled.current) {
+      setIsChecking(true);
+      setIsDownloading(false);
+      setProgress(progressState());
+    }
+
 
     await abortDownloadHandler();
     await dispatch(checkForUpdates());

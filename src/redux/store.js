@@ -20,7 +20,6 @@ const persistConfig = {
     "registeredYears",
     "registeredQuarters",
     "settings",
-    "services",
     "registeredBackups",
     "monthlyStats",
     "quarterlyStats",

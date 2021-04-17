@@ -6,7 +6,6 @@ import registeredMonths from './registeredMonthsReducer';
 import registeredYears from './registeredYearsReducer';
 import registeredQuarters from './registeredQuartersReducer';
 import settings from './settingsReducer';
-import services from './servicesReducer';
 import registeredBackups from './registeredBackupsReducer';
 import monthlyStats from './monthlyStatsReducer';
 import quarterlyStats from './quarterlyStatsReducer';
@@ -42,7 +41,6 @@ const reducers = {
   registeredYears,
   registeredQuarters,
   settings,
-  services,
   registeredBackups,
   monthlyStats,
   quarterlyStats,

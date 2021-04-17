@@ -38,8 +38,7 @@ const mainTitle = css`
 const subContainer = css`
   display: flex;
   align-items: center;
-  
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid #f5f5f5;
 `;
 
 const PageHeader = ({ buildingName, buildingNameEng, date, page }) => {
