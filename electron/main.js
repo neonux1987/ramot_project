@@ -1,7 +1,7 @@
 //========================= Libraries =========================//
 require('v8-compile-cache');
 const { app, BrowserWindow } = require('electron');
-const os = require('os');
+//const os = require('os');
 const path = require('path');
 const isDev = require('electron-is-dev');
 const contextMenu = require('electron-context-menu');

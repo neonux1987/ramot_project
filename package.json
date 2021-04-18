@@ -1,6 +1,6 @@
 {
   "name": "ramot-group-income-outcome-management",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "private": true,
   "repository": {
     "type": "git",
@@ -87,7 +87,8 @@
       "allowToChangeInstallationDirectory": false,
       "oneClick": true,
       "createDesktopShortcut": true,
-      "differentialPackage": true
+      "differentialPackage": true,
+      "deleteAppDataOnUninstall": true
     },
     "directories": {
       "buildResources": "assets"

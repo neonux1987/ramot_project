@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Typography } from '@material-ui/core';
 
 const _container = css`
-  margin: 40px 20px 20px 20px;
+  margin: 30px 20px 20px 20px;
   background-color: #ffffff;
   box-shadow: 0 0 10px 4px rgb(0 0 0 / 2%);
   border-radius: 6px;

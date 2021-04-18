@@ -43,7 +43,7 @@ const updatesIpc = () => {
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = false;
   autoUpdater.logger = logManager.getLogger();
-
+  console.log(autoUpdater.logger);
   let cancellationToken = undefined;
 
   ipcMain.on('check-for-updates', (event) => {
@@ -52,7 +52,7 @@ const updatesIpc = () => {
 
     autoUpdater.checkForUpdates().then((info) => {
       const { version, releaseDate } = info.updateInfo;
-      console.log(info);
+
       if (version !== currentVersion)
         event.sender.send('checked_for_updates', { data: { version, releaseDate } });
       else
@@ -103,14 +103,14 @@ const updatesIpc = () => {
   });
 
   ipcMain.on('download-update', () => {
-    if (cancellationToken)
-      cancellationToken.cancel();
     cancellationToken = new CancellationToken();
+
     autoUpdater.downloadUpdate(cancellationToken).catch((error) => {
       // do nothing because most likely it was cancelled by user
       // plus need to fix the problem 
       // "Cannot download differentially, fallback to full download: Error"
       //sendToWindow('updater_error', { error: error.message });
+      console.log(cancellationToken)
       console.log("download-update", error);
     });
   });

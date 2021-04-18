@@ -14,7 +14,7 @@ const useServices = () => {
   const checkUpdates = async () => {
     const promise = await dispatch(checkForUpdates());
 
-    if (promise)
+    if (promise && promise.data !== null)
       toastManager.appUpdateNewVersion(promise.data.version);
   }
 
