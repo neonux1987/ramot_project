@@ -9,14 +9,14 @@ const useServices = () => {
 
   const start = useCallback(() => {
     checkUpdates();
-  }, []);
+  }, [checkUpdates]);
 
-  const checkUpdates = async () => {
+  const checkUpdates = useCallback(async () => {
     const promise = await dispatch(checkForUpdates());
 
     if (promise && promise.data !== null)
       toastManager.appUpdateNewVersion(promise.data.version);
-  }
+  }, [dispatch]);
 
   return [start];
 };

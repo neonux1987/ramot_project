@@ -43,7 +43,7 @@ const updatesIpc = () => {
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = false;
   autoUpdater.logger = logManager.getLogger();
-  console.log(autoUpdater.logger);
+
   let cancellationToken = undefined;
 
   ipcMain.on('check-for-updates', (event) => {
