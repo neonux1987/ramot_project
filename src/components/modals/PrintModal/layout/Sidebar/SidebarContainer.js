@@ -5,6 +5,8 @@ import Sidebar from './Sidebar';
 
 const rangeRegex = "^(\\s*\\d+\\s*\\-\\s*\\d+\\s*,?|\\d)+$";
 
+// this method is used for initial setng of
+// the default user printer in the list
 function initState(data, pageName) {
   const state = printTemplates[pageName];
   if (data.length !== 0) {
@@ -35,11 +37,24 @@ const SidebarContainer = props => {
 
   const [copies, setCopies] = useState(1);
 
+  const [initialNumOfPages, setInitialNumOfPages] = useState(0);
+
   useEffect(() => {
     generate(state);
   }, [state, generate]);
 
   const onPageRangesBlur = (event) => {
+    let pageCount = pdf.pageCount;
+
+    // we must keep the original page count
+    // for future use in range, otherwise it will
+    // compare with reduced page count which is not correct
+    if (initialNumOfPages === 0) {
+      setInitialNumOfPages(pdf.pageCount);
+    } else {
+      pageCount = initialNumOfPages;
+    }
+
     const target = event.target;
     const value = target.value;
 
@@ -54,7 +69,7 @@ const SidebarContainer = props => {
       // two values range
       if (range.length === 2) {
 
-        if (range[0] > pdf.pageCount || range[1] > pdf.pageCount || range[0] > range[1])
+        if (range[0] > pageCount || range[1] > pageCount || range[0] > range[1])
           valid = false;
 
       }
@@ -63,7 +78,7 @@ const SidebarContainer = props => {
       // and push to the array
       if (range.length === 1) {
 
-        if (range[0] > pdf.pageCount)
+        if (range[0] > pageCount)
           valid = false;
         else {
           range.push(range[0]);
@@ -132,6 +147,7 @@ const SidebarContainer = props => {
     copies={copies}
     rangeValid={rangeValid}
     pdf={pdf}
+    initialNumOfPages={initialNumOfPages}
   />;
 }
 
