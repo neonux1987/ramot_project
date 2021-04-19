@@ -52,6 +52,7 @@ const updatesIpc = () => {
 
     autoUpdater.checkForUpdates().then((info) => {
       const { version, releaseDate } = info.updateInfo;
+      cancellationToken = info.cancellationToken;
 
       if (version !== currentVersion)
         event.sender.send('checked_for_updates', { data: { version, releaseDate } });
@@ -63,6 +64,7 @@ const updatesIpc = () => {
   });
 
   ipcMain.on('abort-download', (event) => {
+
     if (cancellationToken) {
       cancellationToken.cancel();
     }
@@ -103,7 +105,7 @@ const updatesIpc = () => {
   });
 
   ipcMain.on('download-update', () => {
-    //cancellationToken = new CancellationToken();
+    cancellationToken = new CancellationToken();
 
     autoUpdater.downloadUpdate(cancellationToken).catch((error) => {
       // do nothing because most likely it was cancelled by user
