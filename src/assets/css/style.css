@@ -326,13 +326,13 @@ apex charts override
   }
 
   #groupRow{
-    background-color: #f5f5f5;
+    background-color: #f5f5f5 !important;
     border-top: thin solid #000 !important;
     border-bottom: none !important;
   }
 
   #headerRow{
-    background-color: #f5f5f5;
+    background-color: #f5f5f5 !important;
     border-top: thin solid #000 !important;
   }
 

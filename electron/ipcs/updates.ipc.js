@@ -103,14 +103,13 @@ const updatesIpc = () => {
   });
 
   ipcMain.on('download-update', () => {
-    cancellationToken = new CancellationToken();
+    //cancellationToken = new CancellationToken();
 
     autoUpdater.downloadUpdate(cancellationToken).catch((error) => {
       // do nothing because most likely it was cancelled by user
       // plus need to fix the problem 
       // "Cannot download differentially, fallback to full download: Error"
       //sendToWindow('updater_error', { error: error.message });
-      console.log(cancellationToken)
       console.log("download-update", error);
     });
   });
@@ -118,7 +117,7 @@ const updatesIpc = () => {
   ipcMain.on('delete-update', (event, path) => {
     const fse = require('fs-extra');
 
-    fse.remove(path).then(() => {
+    deleteUpdate(path).then(() => {
       sendToWindow('update_deleted', { data: {} });
     }).catch((error) => {
       console.log(error);
@@ -132,6 +131,11 @@ const updatesIpc = () => {
   });
 
 
+}
+
+function deleteUpdate(path) {
+  const fse = require('fs-extra');
+  return fse.remove(path);
 }
 
 module.exports = updatesIpc;

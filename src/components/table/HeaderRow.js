@@ -14,6 +14,7 @@ const HeaderRow = ({ gridTemplateColumns, style = {}, children, className }) => 
         //textShadow: "0px 0px 4px #00000012",
         //boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.07)",
         //boxShadow: "1px 3px 4px 0 rgb(0 0 0 / 4%)",
+        boxShadow: "0px 5px 6px 1px rgb(0 0 0 / 2%)",
         borderBottom: "1px solid #ececec",
         zIndex: "2",
         fontSize: "16px",
