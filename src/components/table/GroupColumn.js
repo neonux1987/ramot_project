@@ -11,7 +11,7 @@ const GroupColumn = ({ color = "#555555", span = 1, show = true, children }) => 
       fontWeight: "500",
       fontSize: "16px",
       //borderBottom: "1px solid",
-      //borderRight: "none"
+      borderRight: "none"
     }}
   >
     {children}

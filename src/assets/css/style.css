@@ -1,42 +1,3 @@
-/* @font-face {
-  font-family: "Rubik";
-  font-weight: 400;
-  src: url("../fonts/Rubik/Rubik-Regular.ttf");
-}
-
-
-@font-face {
-  font-family: "Rubik";
-  font-weight: 600;
-  src: url("../fonts/Rubik/Rubik-Medium.ttf");
-}
-
-@font-face {
-  font-family: "Heebo";
-  font-weight: 400;
-  src: url("../fonts/Heebo/Heebo-Regular.ttf");
-}
-
-
-@font-face {
-  font-family: "Heebo";
-  font-weight: 600;
-  src: url("../fonts/Heebo/Heebo-Bold.ttf");
-}
-
-@font-face {
-  font-family: "Open Sans Hebrew";
-  font-weight: 400;
-  src: url("../fonts/OpensSansHebrew/opensanshebrew-regular-webfont.ttf");
-}
-
-
-@font-face {
-  font-family: "Open Sans Hebrew";
-  font-weight: 600;
-  src: url("../fonts/OpensSansHebrew/opensanshebrew-bold-webfont.ttf");
-} */
-
 @font-face {
   font-family: "Assistant";
   font-weight: 400;
@@ -55,32 +16,6 @@
   src: url("../fonts/Assistant/Assistant-Bold.ttf");
 }
 
-/* @font-face {
-  font-family: "NotoSansHebrew";
-  font-weight: 400;
-  src: url("../fonts/NotoSansHebrew/NotoSansHebrew-Regular.ttf");
-}
-
-
-@font-face {
-  font-family: "NotoSansHebrew";
-  font-weight: 600;
-  src: url("../fonts/NotoSansHebrew/NotoSansHebrew-SemiBold.ttf");
-}
-
-@font-face {
-  font-family: "Heebo";
-  font-weight: 400;
-  src: url("../fonts/Heebo/Heebo-Regular.ttf");
-}
-
-
-@font-face {
-  font-family: "Heebo";
-  font-weight: 600;
-  src: url("../fonts/Heebo/Heebo-Bold.ttf");
-} */
-
 html,body{
     height: 100%;
     margin: 0;
@@ -94,15 +29,13 @@ html{
 }
 
 body{
-  /* background: #f3f4f8; */
   background: #fafafa;
-  /* background-color: #f7f8fd; */
 }
 
 #root{
   height: 100vh;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 textarea {
@@ -195,71 +128,6 @@ input,textarea{
   font-size: 16px;
 }
 
-/****************************************************
-apex charts override
-****************************************************/
-
-.apexcharts-legend-text {
-  margin-right: 3px;
-}
-
-.exportPNG{
-  visibility: hidden;
-  position: relative;
-}
-
-.exportPNG::after{
-  visibility: visible;
-  position: absolute;
-  top: 0;
-  right: 0;
-  content: "ייצא לתמונה PNG";
-  padding: 6px 7px;
-  width: 102px;
-}
-
-.exportPNG:hover::after{
-  background: #eee;
-}
-
-.exportSVG{
-  visibility: hidden;
-  position: relative;
-}
-
-.exportSVG:hover::after{
-  background: #eee;
-}
-
-.exportSVG::after{
-  visibility: visible;
-  position: absolute;
-  top: 0;
-  right: 0;
-  content: "ייצא לתמונה SVG";
-  padding: 6px 7px;
-  width: 102px;
-}
-
-.exportCSV{
-  visibility: hidden;
-  position: relative;
-}
-
-.exportCSV:hover::after{
-  background: #eee;
-}
-
-.exportCSV::after{
-  visibility: visible;
-  position: absolute;
-  top: 0;
-  right: 0;
-  content: "ייצא לקובץ CSV";
-  padding: 6px 7px;
-  width: 102px;
-}
-
 @media only print {
   @page {
     size: auto;   /* auto is the initial value */
@@ -321,8 +189,8 @@ apex charts override
     position: relative !important;
   }
 
-  #table{
-    position: unset !important;
+  thead{
+    position: relative !important;
   }
 
   #groupRow{

@@ -2,7 +2,7 @@ import React from 'react';
 import DoneIcon from '@material-ui/icons/Done';
 import Spinner from '../Spinner/Spinner';
 
-const ToastRender = ({ message = "", spinner = false, done = false, spinnerColor = "#ffffff" }) => {
+const ToastRender = ({ message = "", spinner = false, done = false, spinnerColor }) => {
   let renderSpinner = spinner ? <Spinner color={spinnerColor} size={24} /> : null;
   let renderDoneIcon = done ? <DoneIcon /> : null;
   return (<div style={{

@@ -62,32 +62,29 @@ async function createWindow() {
 
   loading.once('show', () => {
 
-    // Create the browser window.
-    // needs to be created outside the start system func
-    // to avoid mainWindow as null in ipc's
-    mainWindow = new BrowserWindow({
-      minWidth: 1280,
-      minHeight: 720,
-      width: 1280,
-      height: 720,
-      title: appName + " - " + companyName,
-      titleBarStyle: "hidden",
-      webPreferences: {
-        nodeIntegration: true,
-        enableRemoteModule: true
-      },
-
-      backgroundColor: "#eee",
-      icon,
-      frame: false,
-      resizeable: false,
-      show: false
-    });
-
-    mainWindow.uniqueId = "mainWindow";
-
     /* start system */
     mainSystem.startSystem().then(() => {
+
+      mainWindow = new BrowserWindow({
+        minWidth: 1280,
+        minHeight: 720,
+        width: 1280,
+        height: 720,
+        title: appName + " - " + companyName,
+        titleBarStyle: "hidden",
+        webPreferences: {
+          nodeIntegration: true,
+          enableRemoteModule: true
+        },
+
+        backgroundColor: "#eee",
+        icon,
+        frame: false,
+        resizeable: false,
+        show: false
+      });
+
+      mainWindow.uniqueId = "mainWindow";
 
       //const ses = mainWindow.webContents.session;
 

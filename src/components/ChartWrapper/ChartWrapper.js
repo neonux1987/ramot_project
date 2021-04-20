@@ -10,7 +10,6 @@ const container = css`
   background: #ffffff;
   margin: 5px 15px 0;
   min-height: 500px;
-  border-top: 1px solid #ececec;
   padding-top: 10px;
 `;
 

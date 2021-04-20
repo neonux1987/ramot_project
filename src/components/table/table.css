@@ -8,20 +8,19 @@
 th,td{
   padding: 0;
   margin: 0;
-  page-break-after: avoid;
 }
 
 tr{
-  page-break-after: avoid;
+  display: table-row;
 }
 
 table{
   border-collapse: collapse;
-  page-break-after: always !important;
+  display: table;
 }
 
 thead{
-  page-break-after: avoid;
+  display: table-header-group;
 }
 
 tfoot{
@@ -29,7 +28,6 @@ tfoot{
 }
 
 ._tableBody{
-  display: grid;
   direction: rtl;
   background: #fff;
   color: #000000;
@@ -40,7 +38,6 @@ tfoot{
 ._tableRow{
   display: grid;
   border-bottom: 1px solid #ececec;
-  page-break-after: avoid;
 }
 
 ._tableColumn:hover{

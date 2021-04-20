@@ -7,7 +7,7 @@ const Spinner = ({ wrapperClass, spinnerClass, color = "#000000", loadingText, s
     <div className={wrapperClass || ""}>
       <div className={spinnerClass || styles.spinner} style={{ color: color, fontWeight: 600 }}>
         <span style={{ margin: "0 5px", display: "flex", alignItems: "center" }}>{loadingText}</span>
-        <DotLoader style={{ color: color }} size={size} />
+        <DotLoader color={color} size={size} />
       </div>
     </div>
   )

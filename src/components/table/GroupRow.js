@@ -9,11 +9,11 @@ const GroupRow = ({ gridTemplateColumns, style = {}, children }) => {
         borderBottom: "none",
         borderTopRightRadius: "0px",
         borderTopLeftRadius: "0px",
-        borderTop: "1px solid #ececec",
+        //borderTop: "1px solid #ececec",
         position: "relative",
         //borderLeft: "1px solid #ececec",
         //borderRight: "1px solid #ececec",
-        backgroundColor: "#fafafa",
+        //backgroundColor: "#fafafa",
         fontSize: "15px",
         //boxShadow: "rgba(53, 64, 82, 0.05) 0px 0px 14px 0px",
         ...style

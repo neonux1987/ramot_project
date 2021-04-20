@@ -5,6 +5,7 @@ import CustomCloseButton from '../../components/buttons/CustomCloseButton/Custom
 
 const CustomToastContainer = () => {
 
+  const printMode = useSelector(store => store.print.printMode);
   const toastContainerProps = useSelector(store => store.settings.data.notifications.toastContainerProps);
 
   const {
@@ -21,7 +22,10 @@ const CustomToastContainer = () => {
 
   return (
     <ToastContainer
-      style={{ width }}
+      style={{
+        width,
+        display: printMode ? "none" : "block"
+      }}
       position={position}
       autoClose={autoClose}
       hideProgressBar={hideProgressBar}
