@@ -21,10 +21,14 @@ table{
 
 thead{
   display: table-header-group;
+  page-break-before: avoid;
+  break-inside:avoid;
 }
 
 tfoot{
   display: none;
+  page-break-before: avoid;
+  break-inside:avoid;
 }
 
 ._tableBody{
