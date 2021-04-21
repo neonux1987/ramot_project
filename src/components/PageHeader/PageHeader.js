@@ -38,7 +38,7 @@ const mainTitle = css`
 const subContainer = css`
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid #f1f1f1;
 `;
 
 const PageHeader = ({ buildingName, buildingNameEng, date, page }) => {

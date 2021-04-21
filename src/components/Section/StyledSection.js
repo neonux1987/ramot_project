@@ -13,7 +13,7 @@ const _container = css`
 const _header = css`
   height: 60px;
   display: flex;
-  /* border-bottom: 1px solid #ececec; */
+  border-bottom: 1px solid #f1f1f1;
 `;
 
 const _titleBox = css`

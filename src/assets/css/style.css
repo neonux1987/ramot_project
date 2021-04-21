@@ -142,6 +142,10 @@ input,textarea{
     overflow: visible !important;
   }
 
+  body{
+    background: #ffffff !important;
+  }
+
   #root{
     height: initial !important;
     display: block !important;

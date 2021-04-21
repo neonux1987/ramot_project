@@ -54,7 +54,7 @@ const printerIpc = () => {
       silent: true,
       ...pageSetup
     };
-    console.log(options);
+
     win.webContents.print(options);
 
   });

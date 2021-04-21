@@ -9,7 +9,7 @@ const _container = css`
 `;
 
 const _label = css`
-  color: #000000;
+  color: #555555;
   font-size: 16px;
   display: flex;
   align-items: center;
@@ -23,13 +23,16 @@ const _select = css`
   background-color: #ffffff;
   font-size: 15px;
   border-radius: 3px;
-  color: #000000;
+  color: #555555;
   font-weight: 400;
-  border: 1px solid #efecec;
+  border: 1px solid #f1f1f1;
 
   ::before {
     border-bottom: none;
-    border-width: 1px;
+  } 
+
+  ::after {
+    border-bottom: none;
   } 
 `;
 
