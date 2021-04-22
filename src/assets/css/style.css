@@ -180,6 +180,14 @@ input,textarea{
     display: block;
   }
 
+  #tableSection{
+    margin: 0 !important;
+  }
+
+  #table{
+    box-shadow: none !important;
+  }
+
   table{
     page-break-before: always !important;
     padding: 1px;
@@ -195,6 +203,13 @@ input,textarea{
 
   thead{
     position: relative !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  td{
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   #groupRow{

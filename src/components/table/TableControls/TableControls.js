@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFullScreenMode } from '../../../redux/actions/fullscreenActions';
+import FullScreenButton from '../../buttons/FullScreenButton';
 import styles from './TableControls.module.css';
 
 const TableControls = ({ style, rightPane, middlePane, leftPane }) => {
+
+  const dispatch = useDispatch();
+  const isFullscreen = useSelector(store => store.fullscreen.isFullscreen);
+
+  const onClick = useCallback(() => {
+    dispatch(setFullScreenMode());
+  }, [dispatch])
 
   return (
     <div className={styles.wrapper} style={style} id="tableControls">
@@ -12,6 +22,10 @@ const TableControls = ({ style, rightPane, middlePane, leftPane }) => {
         <div className={styles.middlePane}>{middlePane}</div>
 
         <div className={styles.leftPane}>{leftPane}</div>
+
+        <div className={styles.fullscreen}>
+          <FullScreenButton isFullscreen={isFullscreen} onClick={onClick} />
+        </div>
 
       </div>
     </div>

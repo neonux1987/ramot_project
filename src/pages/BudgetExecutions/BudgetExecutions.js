@@ -1,9 +1,7 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router';
-import { ListAlt } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { IoMdStats } from 'react-icons/io';
 
 // COMMON COMPONENTS
 import PageHeader from '../../components/PageHeader/PageHeader';
@@ -20,8 +18,6 @@ import { fetchBudgetExecutions } from '../../redux/actions/budgetExecutionsActio
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";
-const STATS_TITLE = "סיכום הוצאות והכנסות רבעוני";
-const TABLE_TITLE = "טבלת מעקב ביצוע מול תקציב";
 
 const BudgetExecutions = () => {
 
@@ -47,11 +43,7 @@ const BudgetExecutions = () => {
   return <Page>
     <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
 
-    <Section
-      title={STATS_TITLE}
-      TitleIcon={IoMdStats}
-      iconColor="rgb(255 0 82)"
-    >
+    <Section>
       <QuarterStatsContainer
         buildingName={buildingNameEng}
         date={date}
@@ -59,11 +51,7 @@ const BudgetExecutions = () => {
       />
     </Section>
 
-    <TableSection
-      title={TABLE_TITLE}
-      Icon={ListAlt}
-      bgColor="rgb(0, 143, 251)"
-    >
+    <TableSection>
       <BudgetExecutionsTableContainer
         buildingName={buildingName}
         buildingNameEng={buildingNameEng}

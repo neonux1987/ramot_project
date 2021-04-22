@@ -389,7 +389,7 @@ class InputExpansesField extends Component {
 
   render() {
     return (
-      <AddBoxContainer>
+      <AddBoxContainer show={this.props.show}>
         {this.renderForm()}
       </AddBoxContainer>
     );

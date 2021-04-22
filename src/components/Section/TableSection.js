@@ -1,21 +1,19 @@
 import React from 'react';
-import useFullscreen from '../../customHooks/useFullscreen';
 import SavedNotification from '../SavedNotification/SavedNotification';
-import FullScreenButton from '../buttons/FullScreenButton';
-import StyledSection from './StyledSection';
+import Section from './Section';
+import { useSelector } from 'react-redux';
 
 const TableSection = props => {
+  const isFullscreen = useSelector(store => store.fullscreen.isFullscreen);
 
-  const [isFullscreen, toggle] = useFullscreen();
-
-  return <StyledSection
+  return <Section
     {...props}
     isFullscreen={isFullscreen}
-    extraDetails={<FullScreenButton isFullscreen={isFullscreen} onClick={toggle} />}
+    id="tableSection"
   >
     {props.children}
     <SavedNotification />
-  </StyledSection>;
+  </Section>;
 }
 
 export default TableSection;

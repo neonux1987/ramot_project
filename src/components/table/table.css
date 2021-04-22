@@ -3,6 +3,8 @@
   background: #fff;
   width: 100%;
   position: relative;
+  box-shadow: 0 6px 10px 0px rgb(0 0 0 / 36%);
+  z-index: 6;
 }
 
 th,td{
@@ -32,6 +34,7 @@ tfoot{
 }
 
 ._tableBody{
+  display: grid;
   direction: rtl;
   background: #fff;
   color: #000000;
@@ -41,7 +44,7 @@ tfoot{
 
 ._tableRow{
   display: grid;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid #f1f1f1;
 }
 
 ._tableColumn:hover{
@@ -49,7 +52,7 @@ tfoot{
 }
 
 ._tableColumn{
-  border-right: 1px solid #ececec;
+  border-right: 1px solid #f1f1f1;
   font-size: 15px;
 }
 

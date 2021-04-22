@@ -255,8 +255,6 @@ const BudgetExecutionsTableContainer = props => {
     </Row>
   }
 
-  const addNewBox = addNewMode ? <AddNewContainer date={date} buildingNameEng={buildingNameEng} /> : null;
-
   return (
     <TableWrapper>
 
@@ -295,7 +293,7 @@ const BudgetExecutionsTableContainer = props => {
 
       /> {/* End TableControls */}
 
-      {addNewBox}
+      <AddNewContainer show={addNewMode} date={date} buildingNameEng={buildingNameEng} />
 
       <Table
         Row={TableRow}

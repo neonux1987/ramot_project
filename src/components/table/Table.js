@@ -22,7 +22,7 @@ const Table = ({
   printHeaderDetails
 }) => {
 
-  const printMode = true;
+  const printMode = useSelector(store => store.print.printMode);
 
   const [components] = useTableComponents();
 

@@ -20,7 +20,7 @@ import EditControls from '../../components/EditControls/EditControls';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Spinner from '../../components/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import AddBox from './AddBoxContainer';
+import AddNewContainer from './AddNewContainer';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import Table from '../../components/table/Table';
 import Row from '../../components/table/Row';
@@ -237,15 +237,6 @@ const MonthExpansesTableContainer = props => {
     return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב הוצאות חודשיות..."} /></AlignCenterMiddle>;
   }
 
-  //add new month expanse box
-  const addNewBox = addNewMode ?
-    <AddBox
-      data={data}
-      submitData={addNewExpanseSubmit}
-      findData={findExpanseIndex}
-    />
-    : null;
-
   return (
     <TableWrapper id={pageName}>
 
@@ -287,7 +278,12 @@ const MonthExpansesTableContainer = props => {
       /> {/* end TableControls */}
 
       {/* add new box */}
-      {addNewBox}
+      <AddNewContainer
+        data={data}
+        submitData={addNewExpanseSubmit}
+        findData={findExpanseIndex}
+        show={addNewMode}
+      />
 
       <Table
         Row={TableRow}

@@ -1,11 +1,11 @@
 // LIBRARIES
-import React, { useEffect } from "react";
-import { CSSTransition } from 'react-transition-group';
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { css } from 'emotion';
 import '../../cssTransitions/fade.css';
 import { hideSavedNotification } from "../../redux/actions/savedNotificationActions";
 import { useSound } from "../../soundManager/SoundManager";
+import { Fade } from "@material-ui/core";
 
 const container = css`
   background: rgb(47, 53, 58);
@@ -34,23 +34,20 @@ const SavedNotification = () => {
   if (show)
     play(types.action);
 
-  // clean 
-  useEffect(() => {
-    return () => dispatch(hideSavedNotification())
-  }, [dispatch]);
+  const onEntered = useCallback(() => {
+    dispatch(hideSavedNotification())
+  });
 
   return (
-    <CSSTransition
+    <Fade
       in={show}
       timeout={600}
-      classNames="fade"
-      unmountOnExit
-      onEntered={() => dispatch(hideSavedNotification())}
+      onEntered={onEntered}
     >
       <div className={container}>
         <span>נשמר!</span>
       </div>
-    </CSSTransition>
+    </Fade>
   );
 
 }
