@@ -4,7 +4,7 @@ import { setFullScreenMode } from '../../../redux/actions/fullscreenActions';
 import FullScreenButton from '../../buttons/FullScreenButton';
 import styles from './TableControls.module.css';
 
-const TableControls = ({ style, rightPane, middlePane, leftPane }) => {
+const TableControls = ({ style, rightPane, middlePane, leftPane, withFullscreen = true }) => {
 
   const dispatch = useDispatch();
   const isFullscreen = useSelector(store => store.fullscreen.isFullscreen);
@@ -24,7 +24,7 @@ const TableControls = ({ style, rightPane, middlePane, leftPane }) => {
         <div className={styles.leftPane}>{leftPane}</div>
 
         <div className={styles.fullscreen}>
-          <FullScreenButton isFullscreen={isFullscreen} onClick={onClick} />
+          {withFullscreen ? <FullScreenButton isFullscreen={isFullscreen} onClick={onClick} /> : null}
         </div>
 
       </div>

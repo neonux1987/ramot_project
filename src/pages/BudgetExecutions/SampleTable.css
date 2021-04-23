@@ -1,6 +1,7 @@
 .st-table{
   display: table !important;
   border-collapse: collapse;
+  width: 100%;
 }
 
 .st-head{
@@ -15,11 +16,12 @@
 
 .st-row{
   display: table-row !important;
-  border: 1px solid #ccc;
+  border-bottom: thin solid #000 !important;
   page-break-before: always;
 }
 
 .st-cell{
   display: table-cell !important;
   page-break-before: always;
+  border-right: thin solid #000 !important;
 }

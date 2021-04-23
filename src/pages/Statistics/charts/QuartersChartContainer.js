@@ -81,6 +81,7 @@ const QuartersChartContainer = props => {
   return <Tab>
 
     <TableControls
+      withFullscreen={false}
       middlePane={
         <YearOnlyDatePicker
           date={date}

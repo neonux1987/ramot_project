@@ -103,6 +103,7 @@ const YearsChartContainer = props => {
 
   return <Tab>
     <TableControls
+      withFullscreen={false}
       middlePane={<DateRangePicker
         years={registeredYears.data}
         date={date}

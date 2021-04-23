@@ -36,7 +36,7 @@ const SavedNotification = () => {
 
   const onEntered = useCallback(() => {
     dispatch(hideSavedNotification())
-  });
+  }, [dispatch]);
 
   return (
     <Fade

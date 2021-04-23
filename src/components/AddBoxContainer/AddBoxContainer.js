@@ -8,7 +8,7 @@ const style = css`
   z-index: 3;
   position: relative;
   display: flex;
-  background: #f5f5f5;
+  background: #ffffff;
   border: 1px solid #f1f1f1;
 `;
 

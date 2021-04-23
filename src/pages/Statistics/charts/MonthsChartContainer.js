@@ -82,6 +82,7 @@ const MonthsChartContainer = props => {
 
   return <Tab>
     <TableControls
+      withFullscreen={false}
       middlePane={
         <YearOnlyDatePicker
           date={date}
