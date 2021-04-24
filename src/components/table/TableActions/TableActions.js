@@ -1,7 +1,7 @@
 import React from 'react';
 import { DeleteForever } from '@material-ui/icons';
 import styles from './TableActions.module.css';
-import YesNoDialog from '../YesNoDialog/YesNoDialog';
+import YesNoDialog from './YesNoDialog/YesNoDialog';
 
 const TableActions = props => {
 

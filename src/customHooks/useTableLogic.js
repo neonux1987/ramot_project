@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import EditableInputColumn from '../components/table/TableCell/EditableInputColumn';
-import EditableTextareaColumn from '../components/table/TableCell/EditableTextareaColumn';
+import EditableInputColumn from '../components/table/components/EditableInputColumn';
+import EditableTextareaColumn from '../components/table/components/EditableTextareaColumn';
 
 const useTableLogic = () => {
 

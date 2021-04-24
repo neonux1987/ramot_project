@@ -1,5 +1,5 @@
 import React from 'react';
-import TableRow from './TableCell/TableRow';
+import TableRow from './TableRow';
 
 const GroupRow = ({ gridTemplateColumns, style, children }) => {
   return (

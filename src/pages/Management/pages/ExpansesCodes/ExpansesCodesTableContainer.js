@@ -13,9 +13,10 @@ import SelectDropDown from '../../../../components/SelectDropDown/SelectDropDown
 import TableActions from '../../../../components/table/TableActions/TableActions';
 import TableControls from '../../../../components/table/TableControls/TableControls';
 import TableWrapper from '../../../../components/table/TableWrapper/TableWrapper';
-import Column from '../../../../components/table/Column';
-import HeaderRow from '../../../../components/table/HeaderRow';
-import Row from '../../../../components/table/Row';
+import Cell from '../../../../components/table/components/Cell';
+import HeaderCell from '../../../../components/table/components/HeaderCell';
+import HeaderRow from '../../../../components/table/components/HeaderRow';
+import TableRow from '../../../../components/table/components/TableRow';
 import Table from '../../../../components/table/Table';
 
 // HOC
@@ -201,18 +202,18 @@ const ExpansesCodes = () => {
   }
 
   const HeadersRow = () => {
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}/*  style={{ backgroundColor: "#f5f6f9" }} */>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
 
-      {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
-      <Column style={defaultheaderStyle}>{"שורה"}</Column>
-      <Column style={defaultheaderStyle}>{"קוד הנהח\"ש"}</Column>
-      <Column style={defaultheaderStyle}>{"שם חשבון"}</Column>
-      <Column style={defaultheaderStyle}>{"מקושר לסעיף מסכם..."}</Column>
-      <Column style={defaultheaderStyle}>{`כולל מע"מ בביצוע`}</Column>
+      {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
+      <HeaderCell>{"שורה"}</HeaderCell>
+      <HeaderCell>{"קוד הנהח\"ש"}</HeaderCell>
+      <HeaderCell>{"שם חשבון"}</HeaderCell>
+      <HeaderCell>{"מקושר לסעיף מסכם..."}</HeaderCell>
+      <HeaderCell>{`כולל מע"מ בביצוע`}</HeaderCell>
     </HeaderRow>
   }
 
-  const TableRow = (index) => {
+  const Row = (index) => {
     // row data
     const rowData = getDataObject(index);
     // convert 1 or 0 (true or false) to text
@@ -222,11 +223,11 @@ const ExpansesCodes = () => {
 
     const odd = index % 2 === 0 ? "" : "";
 
-    return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
+    return <TableRow style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteCodeExpanseHandler(rowData, index)} /> : null}
-      <Column>{index + 1}</Column>
-      {editMode ? numberInput("code", rowData["code"], index, onBlurHandler) : <Column>{rowData["code"]}</Column>}
-      {editMode ? textInput("codeName", rowData["codeName"], index, onBlurHandler) : <Column>{rowData["codeName"]}</Column>}
+      <Cell>{index + 1}</Cell>
+      {editMode ? numberInput("code", rowData["code"], index, onBlurHandler) : <Cell>{rowData["code"]}</Cell>}
+      {editMode ? textInput("codeName", rowData["codeName"], index, onBlurHandler) : <Cell>{rowData["codeName"]}</Cell>}
       {editMode ?
         <SelectDropDown
           value={rowData["summarized_section_id"]}
@@ -235,9 +236,9 @@ const ExpansesCodes = () => {
           selectChangeHandler={onBlurSelectHandler}
           name={"summarized_section_id"}
         >{selectItems}</SelectDropDown> :
-        <Column style={{ color: section.status === "deleted" ? "red" : "initial" }}>
+        <Cell style={{ color: section.status === "deleted" ? "red" : "initial" }}>
           {section.section}
-        </Column>}
+        </Cell>}
 
       {editMode ?
         <SelectDropDown
@@ -250,9 +251,9 @@ const ExpansesCodes = () => {
           <MenuItem value={0} key={0}>לא</MenuItem>,
           <MenuItem value={1} key={1}>כן</MenuItem>
         ]}</SelectDropDown> :
-        <Column>{with_vat}</Column>}
+        <Cell>{with_vat}</Cell>}
 
-    </Row>
+    </TableRow>
   }
 
   //give the box a form functionality
@@ -265,7 +266,6 @@ const ExpansesCodes = () => {
     <TableWrapper>
 
       <TableControls
-        style={{ marginBottom: "7px" }}
         editMode={editMode}
         rightPane={
           <EditControls
@@ -281,7 +281,7 @@ const ExpansesCodes = () => {
       {renderAddNewExpanse}
 
       <Table
-        Row={TableRow}
+        Row={Row}
         HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
         totalCount={data.length}
@@ -301,11 +301,3 @@ function areEqual(prevProps, nextProps) {
   ) return true;
   else return false;
 }
-
-const defaultheaderStyle = {
-  color: "#000000",
-  fontWeight: "600",
-  justifyContent: "center",
-  height: "34px",
-  alignItems: "center"
-};

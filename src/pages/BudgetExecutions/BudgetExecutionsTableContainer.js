@@ -19,25 +19,25 @@ import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
 import EditControls from '../../components/EditControls/EditControls';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
-import GroupCell from '../../components/table/TableCell/GroupCell';
-import HeaderRow from '../../components/table/HeaderRow';
-import TableRow from '../../components/table/TableCell/TableRow';
-import NonZeroCell from '../../components/table/TableCell/NonZeroCell';
+import GroupCell from '../../components/table/components/GroupCell';
+import HeaderRow from '../../components/table/components/HeaderRow';
+import TableRow from '../../components/table/components/TableRow';
+import NonZeroCell from '../../components/table/components/NonZeroCell';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Table from '../../components/table/Table';
-import GroupRow from '../../components/table/GroupRow';
+import GroupRow from '../../components/table/components/GroupRow';
 import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution';
+import HeaderCell from '../../components/table/components/HeaderCell';
+import Cell from '../../components/table/components/Cell';
 
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
 import AddNewContainer from './AddNewContainer/AddNewContainer';
-import HeaderCell from '../../components/table/TableCell/HeaderCell';
 import useTableLogic from '../../customHooks/useTableLogic';
 import useDifferenceColor from '../../customHooks/useDifferenceColor';
 import BudgetExecutionsDatePicker from './BudgetExecutionsDatePicker';
 
 import SampleTable from './SampleTable'
-import Cell from '../../components/table/TableCell/Cell';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -298,7 +298,7 @@ const BudgetExecutionsTableContainer = props => {
         totalCount={data.length}
         printHeaderDetails={{
           pageTitle: pageTitle + " - " + buildingName,
-          date: `שנה ${date.year}\\רבעון ${date.quarter}`
+          date: `שנה ${date.year} / רבעון ${date.quarter}`
         }}
       />
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import Row from './Row';
-import TableRow from './TableCell/TableRow';
+import TableRow from './TableRow';
 
 const HeaderRow = ({ gridTemplateColumns, style, children }) => {
   return (

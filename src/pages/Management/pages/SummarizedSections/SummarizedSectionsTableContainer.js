@@ -16,9 +16,10 @@ import EditControls from '../../../../components/EditControls/EditControls';
 import TableActions from '../../../../components/table/TableActions/TableActions';
 import TableControls from '../../../../components/table/TableControls/TableControls';
 import TableWrapper from '../../../../components/table/TableWrapper/TableWrapper';
-import Column from '../../../../components/table/Column';
-import HeaderRow from '../../../../components/table/HeaderRow';
-import Row from '../../../../components/table/Row';
+import HeaderRow from '../../../../components/table/components/HeaderRow';
+import TableRow from '../../../../components/table/components/TableRow';
+import Cell from '../../../../components/table/components/Cell';
+import HeaderCell from '../../../../components/table/components/HeaderCell';
 import Table from '../../../../components/table/Table';
 
 // HOC
@@ -164,38 +165,35 @@ const SummarizedSectionsTableContainer = () => {
   }
 
   const HeadersRow = () => {
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}/*  style={{ backgroundColor: "#f5f6f9" }} */>
-
-      {editMode ? <Column style={defaultheaderStyle}>{"פעולות"}</Column> : null}
-      <Column style={defaultheaderStyle}>{"שורה"}</Column>
-      <Column style={defaultheaderStyle}>{"סעיף מסכם"}</Column>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
+      {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
+      <HeaderCell>{"שורה"}</HeaderCell>
+      <HeaderCell>{"סעיף מסכם"}</HeaderCell>
     </HeaderRow>
   }
 
-  const TableRow = (index) => {
+  const Row = (index) => {
     // row data
     const rowData = getDataObject(index);
 
     const odd = index % 2 === 0 ? "" : "";
 
-    return <Row style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
+    return <TableRow style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData, index)} /> : null}
-      <Column>{index + 1}</Column>
-      {editMode ? textInput("section", rowData["section"], index, onBlurHandler) : <Column>{rowData["section"]}</Column>}
-    </Row>
+      <Cell>{index + 1}</Cell>
+      {editMode ? textInput("section", rowData["section"], index, onBlurHandler) : <Cell>{rowData["section"]}</Cell>}
+    </TableRow>
   }
 
   //give the box a form functionality
   const WrappedAddNewBox = withFormFunctionality(AddSummarizedSectionContainer);
 
-  //show or hide based of the add new mode status
   const renderAddNewSummarizedSection = addNewMode ? <WrappedAddNewBox submitHandler={addNewSubmitHandler} /> : null;
 
   return (
     <TableWrapper>
 
       <TableControls
-        style={{ marginBottom: "7px" }}
         editMode={editMode}
         rightPane={
           <EditControls
@@ -211,7 +209,7 @@ const SummarizedSectionsTableContainer = () => {
       {renderAddNewSummarizedSection}
 
       <Table
-        Row={TableRow}
+        Row={Row}
         HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
         totalCount={data.length}
@@ -231,11 +229,3 @@ function areEqual(prevProps, nextProps) {
   ) return true;
   else return false;
 }
-
-const defaultheaderStyle = {
-  color: "#000000",
-  fontWeight: "600",
-  justifyContent: "center",
-  height: "34px",
-  alignItems: "center"
-};

@@ -19,17 +19,17 @@ import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
 import EditControls from '../../components/EditControls/EditControls';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
-import GroupColumn from '../../components/table/GroupColumn';
-import HeaderRow from '../../components/table/HeaderRow';
-import Column from '../../components/table/Column';
-import Row from '../../components/table/Row';
-import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
+import HeaderRow from '../../components/table/components/HeaderRow';
+import GroupCell from '../../components/table/components/GroupCell';
+import HeaderCell from '../../components/table/components/HeaderCell';
+import TableRow from '../../components/table/components/TableRow';
+import Cell from '../../components/table/components/Cell';
+import NonZeroCell from '../../components/table/components/NonZeroCell';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Table from '../../components/table/Table';
-import GroupRow from '../../components/table/GroupRow';
+import GroupRow from '../../components/table/components/GroupRow';
 
 // HOC 
-import HeaderColumn from '../../components/table/HeaderColumn';
 import useTableLogic from '../../customHooks/useTableLogic';
 import YearOnlyDatePicker from '../../components/DatePicker/YearOnlyDatePicker';
 
@@ -109,29 +109,25 @@ const SummarizedBudgetsTableContainer = props => {
 
     const quarters = Helper.getYearQuarters(quarter);
 
-    const defaultStyle = {
-
-    }
-
     const quarterColumns = quarters.map((quarter, i) => {
-      return <GroupColumn
+      return <GroupCell
         span={2}
         color={colorSet[i]}
         key={i}
-      >{quarter}</GroupColumn>;
+      >{quarter}</GroupCell>;
     });
 
     return <GroupRow
-      gridTemplateColumns={getGridTemplateColumns()} /* style={{ backgroundColor: "#f5f6f9" }} */>
-      {editMode ? <GroupColumn style={defaultStyle}></GroupColumn> : null}
-      <GroupColumn style={defaultStyle}></GroupColumn>
-      <GroupColumn style={defaultStyle}></GroupColumn>
+      gridTemplateColumns={getGridTemplateColumns()}>
+      {editMode ? <GroupCell></GroupCell> : null}
+      <GroupCell></GroupCell>
+      <GroupCell></GroupCell>
       {quarterColumns}
-      <GroupColumn
+      <GroupCell
         span={3}
         color={colorSet[4]}
-      >{`סוף שנת ${year}`}</GroupColumn>
-      <GroupColumn style={defaultStyle}></GroupColumn>
+      >{`סוף שנת ${year}`}</GroupCell>
+      <GroupCell></GroupCell>
     </GroupRow>
   }
 
@@ -141,32 +137,31 @@ const SummarizedBudgetsTableContainer = props => {
     const quarterColumns = [];
 
     for (let i = 0; i < 4; i++) {
-      quarterColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: colorSet[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderColumn>);
-      quarterColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: colorSet[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderColumn>);
+      quarterColumns.push(<HeaderCell style={{ color: colorSet[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderCell>);
+      quarterColumns.push(<HeaderCell style={{ color: colorSet[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderCell>);
     }
 
     const yearStyle = {
-      ...defaultheaderStyle,
       color: colorSet[4]
     }
 
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()} /* style={{ backgroundColor: "#f5f6f9" }} */>
+    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
 
-      {editMode ? <HeaderColumn style={defaultheaderStyle}>{"פעולות"}</HeaderColumn> : null}
-      <HeaderColumn style={defaultheaderStyle}>{"שורה"}</HeaderColumn>
-      <HeaderColumn style={defaultheaderStyle}>{"סעיף"}</HeaderColumn>
+      {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
+      <HeaderCell>{"שורה"}</HeaderCell>
+      <HeaderCell>{"סעיף"}</HeaderCell>
 
       {quarterColumns}
 
-      <HeaderColumn editMode={editMode} style={yearStyle}>{"הערכה"}</HeaderColumn>
-      <HeaderColumn style={yearStyle}>{"תקציב"}</HeaderColumn>
-      <HeaderColumn style={yearStyle}>{"ביצוע"}</HeaderColumn>
+      <HeaderCell editMode={editMode} style={yearStyle}>{"הערכה"}</HeaderCell>
+      <HeaderCell style={yearStyle}>{"תקציב"}</HeaderCell>
+      <HeaderCell style={yearStyle}>{"ביצוע"}</HeaderCell>
 
-      <HeaderColumn editMode={editMode} style={defaultheaderStyle}>{"הערות"}</HeaderColumn>
+      <HeaderCell editMode={editMode}>{"הערות"}</HeaderCell>
     </HeaderRow>
   }
 
-  const TableRow = (index) => {
+  const Row = (index) => {
 
     // row data
     const rowData = getDataObject(index);
@@ -175,20 +170,20 @@ const SummarizedBudgetsTableContainer = props => {
 
     // generate month columns
     for (let i = 1; i < 5; i++) {
-      quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_budget`}>{rowData[`quarter${i}_budget`]}</NonZeroNumberColumn>);
-      quarterColumns.push(<NonZeroNumberColumn key={`quarter${i}_execution`}>{rowData[`quarter${i}_execution`]}</NonZeroNumberColumn>);
+      quarterColumns.push(<NonZeroCell key={`quarter${i}_budget`}>{rowData[`quarter${i}_budget`]}</NonZeroCell>);
+      quarterColumns.push(<NonZeroCell key={`quarter${i}_execution`}>{rowData[`quarter${i}_execution`]}</NonZeroCell>);
     }
 
-    return <Row key={index} gridTemplateColumns={getGridTemplateColumns()}>
+    return <TableRow key={index} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData.id, index)} /> : null}
-      <Column>{index + 1}</Column>
-      <Column>{rowData["section"]}</Column>
+      <Cell>{index + 1}</Cell>
+      <Cell>{rowData["section"]}</Cell>
       {quarterColumns}
-      {editMode ? numberInput("evaluation", rowData["evaluation"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["evaluation"]}</NonZeroNumberColumn>}
-      <NonZeroNumberColumn>{rowData["year_total_budget"]}</NonZeroNumberColumn>
-      <NonZeroNumberColumn>{rowData["year_total_execution"]}</NonZeroNumberColumn>
-      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData["notes"]}</Column>}
-    </Row>
+      {editMode ? numberInput("evaluation", rowData["evaluation"], index, onBlurHandler) : <NonZeroCell>{rowData["evaluation"]}</NonZeroCell>}
+      <NonZeroCell>{rowData["year_total_budget"]}</NonZeroCell>
+      <NonZeroCell>{rowData["year_total_execution"]}</NonZeroCell>
+      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Cell style={{ paddingLeft: "10px" }}>{rowData["notes"]}</Cell>}
+    </TableRow>
   }
 
   return (
@@ -227,7 +222,7 @@ const SummarizedBudgetsTableContainer = props => {
       />  {/* End TableControls */}
 
       <Table
-        Row={TableRow}
+        Row={Row}
         GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
@@ -244,11 +239,3 @@ const SummarizedBudgetsTableContainer = props => {
 }
 
 export default SummarizedBudgetsTableContainer;
-
-const defaultheaderStyle = {
-  color: "#000000",
-  fontWeight: "500",
-  justifyContent: "center",
-  height: "34px",
-  alignItems: "center"
-};

@@ -23,16 +23,17 @@ const Table = ({
 }) => {
 
   const printMode = useSelector(store => store.print.printMode);
-
   const [components] = useTableComponents();
 
-  const element = printMode ? document.getElementById("tableBody") : null;
-  const printHeight = element ? element.style.height : "600px";
-
+  // since the virutalized list causing problems
+  // when ytrying to expand it to full height to
+  // show all the items for print mode, we need
+  // to generate the list of items regularely in
+  // print mode only
   const generate = () => {
     const rows = [];
     for (let i = 0; i < totalCount; i++) {
-      rows.push(Row(i));
+      rows.push(<tr key={i}><td>{Row(i)}</td></tr>);
     }
 
     return rows;
@@ -51,7 +52,6 @@ const Table = ({
 
   return <TableWrapper id="table" printMode={printMode}>
 
-    {/* TABLE HEADERS */}
     <Thead printMode={printMode}>
 
       {/* PRINT HEADER active only in print mode*/}
@@ -63,18 +63,19 @@ const Table = ({
 
     </Thead>
 
-    <Tbody printMode={printMode}>
+    <Tbody printMode={printMode} divProps={{
+      className: "_tableBody",
+      style: { minHeight: "600px" }
+    }}>
 
-      <div className="_tableBody" style={{ minHeight: "600px" }}>
-        {/* SPINNER */}
-        {isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : null}
+      {/* SPINNER */}
+      {isFetching ? <Spinner wrapperClass="spinnerWrapper" size={60} loadingText={"טוען נתונים..."} /> : null}
 
-        {/* NO DATA */}
-        {!isFetching && totalCount === 0 ? <div className="spinnerWrapper noDataText">לא נבחר תאריך.</div> : null}
+      {/* NO DATA */}
+      {!isFetching && totalCount === 0 ? <div className="spinnerWrapper noDataText">לא נבחר תאריך.</div> : null}
 
-        {/* TABLE */}
-        {totalCount > 0 && !isFetching ? table : null}
-      </div>
+      {/* TABLE */}
+      {totalCount > 0 && !isFetching ? table : null}
 
     </Tbody>
 
@@ -100,12 +101,8 @@ const Thead = ({ printMode, children }) => {
   </thead> : <div>{children}</div>;
 }
 
-const Tbody = ({ printMode, children }) => {
+const Tbody = ({ printMode, children, divProps }) => {
   return printMode ? <tbody>
-    <tr>
-      <td>
-        {children}
-      </td>
-    </tr>
-  </tbody> : <div>{children}</div>;
+    {children}
+  </tbody> : <div {...divProps}>{children}</div>;
 }

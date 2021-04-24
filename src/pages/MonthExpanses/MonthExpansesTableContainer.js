@@ -23,15 +23,14 @@ import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCente
 import AddNewContainer from './AddNewContainer';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import Table from '../../components/table/Table';
-import Cell from '../../components/table/TableCell/Cell';
-import NonZeroCell from '../../components/table/TableCell/NonZeroCell';
-import HeaderRow from '../../components/table/HeaderRow';
-import HeaderCell from '../../components/table/TableCell/HeaderCell';
-import TableRow from '../../components/table/TableCell/TableRow';
+import Cell from '../../components/table/components/Cell';
+import NonZeroCell from '../../components/table/components/NonZeroCell';
+import HeaderRow from '../../components/table/components/HeaderRow';
+import HeaderCell from '../../components/table/components/HeaderCell';
+import TableRow from '../../components/table/components/TableRow';
 
 // AUDIO
 import { toastManager } from '../../toasts/toastManager';
-import HeaderColumn from '../../components/table/HeaderColumn';
 import useTableLogic from '../../customHooks/useTableLogic';
 import MonthExpansesDatePicker from './MonthExpansesDatePicker';
 
@@ -231,7 +230,7 @@ const MonthExpansesTableContainer = props => {
 
       {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Cell>{rowData["supplierName"]}</Cell>}
       {editMode ? numberInput("sum", rowData["sum"], index, onBlurHandler) : <NonZeroCell>{rowData["sum"]}</NonZeroCell>}
-      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Cell style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Cell>}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Cell style={{ paddingLeft: "10px" }}>{rowData["notes"]}</Cell>}
     </TableRow>
   }
 
@@ -294,7 +293,7 @@ const MonthExpansesTableContainer = props => {
         totalCount={data.length}
         printHeaderDetails={{
           pageTitle: pageTitle + " - " + buildingName,
-          date: `שנה ${date.year}\\רבעון ${date.quarter}\\חודש ${date.monthHeb}`
+          date: `שנה ${date.year} / רבעון ${date.quarter} / חודש ${date.monthHeb}`
         }}
       />
 
