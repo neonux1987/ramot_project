@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import EditableInputColumn from '../components/table/components/EditableInputColumn';
-import EditableTextareaColumn from '../components/table/components/EditableTextareaColumn';
+import EditableInputCell from '../components/table/components/EditableInputCell';
+import EditableTextareaCell from '../components/table/components/EditableTextareaCell';
 
 const useTableLogic = () => {
 
@@ -34,7 +34,7 @@ const useTableLogic = () => {
   };
 
   const textAreaInput = (key, value, index, onBlurHandler) => {
-    return <EditableTextareaColumn
+    return <EditableTextareaCell
       value={value}
       key={key}
       data-key={key}
@@ -45,7 +45,7 @@ const useTableLogic = () => {
   };
 
   const textInput = (key, value, index, onBlurHandler, type = "text") => {
-    return <EditableInputColumn
+    return <EditableInputCell
       value={value}
       type={type}
       key={key}

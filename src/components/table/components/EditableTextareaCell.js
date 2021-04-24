@@ -1,5 +1,5 @@
 import React from 'react';
-import useColumnUpdate from '../../../customHooks/useColumnUpdate';
+import useCellUpdate from '../../../customHooks/useCellUpdate';
 import { css } from 'emotion';
 
 const wrapper = css`
@@ -29,9 +29,9 @@ const textarea = css`
   }
 `;
 
-const EditableTextareaColumn = props => {
+const EditableTextareaCell = props => {
 
-  const [newValue, onChange] = useColumnUpdate(props.value);
+  const [newValue, onChange] = useCellUpdate(props.value);
 
   return <div className={wrapper}>
     <div
@@ -48,4 +48,4 @@ const EditableTextareaColumn = props => {
 
 };
 
-export default React.memo(EditableTextareaColumn);
+export default React.memo(EditableTextareaCell);

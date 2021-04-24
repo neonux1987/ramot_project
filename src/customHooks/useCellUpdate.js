@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useColumnUpdate = (value) => {
+const useCellUpdate = (value) => {
   const [newValue, setNewValue] = useState(value);
 
   // have to use useEffect since the useState
@@ -20,4 +20,4 @@ const useColumnUpdate = (value) => {
   return [newValue, onChange, setNewValue];
 };
 
-export default useColumnUpdate;
+export default useCellUpdate;

@@ -128,7 +128,7 @@ input,textarea{
   font-size: 16px;
 }
 
-@media only print {
+@media only print{
   @page {
     size: auto;   /* auto is the initial value */
     margin: 10px 10px 35px 10px;  /* this affects the margin in the printer settings */
@@ -191,6 +191,8 @@ input,textarea{
   table{
     page-break-before: always !important;
     padding: 1px;
+    border-collapse: collapse;
+    display: table;
   }
   
   ._tableBody > div{
@@ -205,11 +207,27 @@ input,textarea{
     position: relative !important;
     page-break-inside: avoid;
     break-inside: avoid;
+    page-break-before: avoid;
+  }
+
+  th,td{
+    padding: 0;
+    margin: 0;
+  }
+  
+  tr{
+    display: table-row;
   }
 
   td{
     page-break-inside: avoid;
     break-inside: avoid;
+  }
+
+  tfoot{
+    display: none;
+    page-break-before: avoid;
+    break-inside:avoid;
   }
 
   .groupRow{

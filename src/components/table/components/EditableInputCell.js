@@ -1,5 +1,5 @@
 import React from 'react';
-import useColumnUpdate from '../../../customHooks/useColumnUpdate';
+import useCellUpdate from '../../../customHooks/useCellUpdate';
 import { css } from 'emotion';
 
 const wrapper = css`
@@ -26,9 +26,9 @@ const inputField = css`
   }
 `;
 
-const EditableInputColumn = props => {
+const EditableInputCell = props => {
   const { value, ...newProps } = props;
-  const [newValue, onChange] = useColumnUpdate(value);
+  const [newValue, onChange] = useCellUpdate(value);
 
   return <div className={wrapper}>
     <input
@@ -41,4 +41,4 @@ const EditableInputColumn = props => {
 
 };
 
-export default React.memo(EditableInputColumn);
+export default React.memo(EditableInputCell);
