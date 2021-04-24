@@ -1,27 +1,15 @@
 import React from 'react';
-import Row from './Row';
+import TableRow from './TableCell/TableRow';
 
-const GroupRow = ({ gridTemplateColumns, style = {}, children }) => {
+const GroupRow = ({ gridTemplateColumns, style, children }) => {
   return (
-    <Row
-      id="groupRow"
-      style={{
-        borderBottom: "none",
-        borderTopRightRadius: "0px",
-        borderTopLeftRadius: "0px",
-        borderTop: "1px solid #f1f1f1",
-        position: "relative",
-        //borderLeft: "1px solid #f1f1f1",
-        //borderRight: "1px solid #f1f1f1",
-        backgroundColor: "#fafafa",
-        fontSize: "15px",
-        //boxShadow: "rgba(53, 64, 82, 0.05) 0px 0px 14px 0px",
-        ...style
-      }}
+    <TableRow
+      className="groupRow"
+      style={style}
       gridTemplateColumns={gridTemplateColumns}
     >
       {children}
-    </Row>
+    </TableRow>
   );
 }
 

@@ -212,38 +212,37 @@ input,textarea{
     break-inside: avoid;
   }
 
-  #groupRow{
+  .groupRow{
     background-color: #f5f5f5 !important;
     border-top: thin solid #000 !important;
     border-bottom: none !important;
   }
 
-  #headerRow{
+  .headerRow{
     background-color: #f5f5f5 !important;
     border-top: thin solid #000 !important;
   }
 
-  ._tableRow{
+  .tableRow{
     border-bottom: thin solid #000 !important;
     border-left: thin solid #000 !important;
     overflow: hidden !important;
   }
 
-  ._tableColumn:last-child{
+  .tableCell:last-child{
     margin-left: 0 !important;
   }
 
-  ._tableColumn:first-child{
+  .tableCell:first-child{
     border-right: thin solid #000 !important;
   }
 
-  ._tableColumn:hover{
+  .tableCell:hover{
     background-color: initial;
   }
 
-  ._tableColumn{
+  .tableCell{
     border-right: thin solid #000 !important;
-    font-size: 15px;
   }
 
 }

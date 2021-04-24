@@ -21,7 +21,8 @@ const textarea = css`
   align-content: center;
   white-space: pre-wrap;
   word-break: break-word;
-
+  font-size: 16px;
+  
   :hover,:focus,:active{
     border: 1px solid #000;
     outline: none;

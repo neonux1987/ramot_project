@@ -23,16 +23,18 @@ import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCente
 import AddNewContainer from './AddNewContainer';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import Table from '../../components/table/Table';
-import Row from '../../components/table/Row';
-import Column from '../../components/table/Column';
-import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
+import Cell from '../../components/table/TableCell/Cell';
+import NonZeroCell from '../../components/table/TableCell/NonZeroCell';
 import HeaderRow from '../../components/table/HeaderRow';
+import HeaderCell from '../../components/table/TableCell/HeaderCell';
+import TableRow from '../../components/table/TableCell/TableRow';
 
 // AUDIO
 import { toastManager } from '../../toasts/toastManager';
 import HeaderColumn from '../../components/table/HeaderColumn';
 import useTableLogic from '../../customHooks/useTableLogic';
 import MonthExpansesDatePicker from './MonthExpansesDatePicker';
+
 
 const MonthExpansesTableContainer = props => {
 
@@ -201,36 +203,36 @@ const MonthExpansesTableContainer = props => {
 
     return <HeaderRow gridTemplateColumns={gridTemplateColumns} /* style={{borderBottom: "1px solid rgba(0, 0, 0, 0.22)"}} */>
 
-      {editMode ? <HeaderColumn style={headerStyle}>{"פעולות"}</HeaderColumn> : null}
-      <HeaderColumn style={headerStyle}>{"שורה"}</HeaderColumn>
-      <HeaderColumn style={headerStyle}>{`קוד הנהח"ש`}</HeaderColumn>
-      <HeaderColumn style={headerStyle}>{"שם חשבון"}</HeaderColumn>
-      <HeaderColumn style={headerStyle}>{"מקושר לסעיף מסכם..."}</HeaderColumn>
-      <HeaderColumn editMode={editMode} style={headerStyle}>{"ספק"}</HeaderColumn>
-      <HeaderColumn editMode={editMode} style={headerStyle}>{"סכום"}</HeaderColumn>
-      <HeaderColumn editMode={editMode} style={headerStyle}>{"הערות"}</HeaderColumn>
+      {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
+      <HeaderCell>{"שורה"}</HeaderCell>
+      <HeaderCell>{`קוד הנהח"ש`}</HeaderCell>
+      <HeaderCell>{"שם חשבון"}</HeaderCell>
+      <HeaderCell>{"מקושר לסעיף מסכם..."}</HeaderCell>
+      <HeaderCell editMode={editMode}>{"ספק"}</HeaderCell>
+      <HeaderCell editMode={editMode}>{"סכום"}</HeaderCell>
+      <HeaderCell editMode={editMode}>{"הערות"}</HeaderCell>
     </HeaderRow>
   }
 
-  const TableRow = (index) => {
+  const Row = (index) => {
     // row data
     const rowData = getDataObject(index);
     // column settings
     const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    return <Row key={index} gridTemplateColumns={gridTemplateColumns}>
+    return <TableRow key={index} gridTemplateColumns={gridTemplateColumns}>
       {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}
 
-      <Column>{index + 1}</Column>
+      <Cell>{index + 1}</Cell>
 
-      <Column>{rowData["code"]}</Column>
-      <Column>{rowData["codeName"]}</Column>
-      <Column>{rowData["section"]}</Column>
+      <Cell>{rowData["code"]}</Cell>
+      <Cell>{rowData["codeName"]}</Cell>
+      <Cell>{rowData["section"]}</Cell>
 
-      {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Column>{rowData["supplierName"]}</Column>}
-      {editMode ? numberInput("sum", rowData["sum"], index, onBlurHandler) : <NonZeroNumberColumn>{rowData["sum"]}</NonZeroNumberColumn>}
-      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Column style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Column>}
-    </Row>
+      {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Cell>{rowData["supplierName"]}</Cell>}
+      {editMode ? numberInput("sum", rowData["sum"], index, onBlurHandler) : <NonZeroCell>{rowData["sum"]}</NonZeroCell>}
+      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Cell style={{ whiteSpace: "pre-wrap", marginLeft: "10px" }}>{rowData["notes"]}</Cell>}
+    </TableRow>
   }
 
   if (generalSettings.isFetching) {
@@ -286,7 +288,7 @@ const MonthExpansesTableContainer = props => {
       />
 
       <Table
-        Row={TableRow}
+        Row={Row}
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
         totalCount={data.length}
@@ -302,11 +304,3 @@ const MonthExpansesTableContainer = props => {
 }
 
 export default MonthExpansesTableContainer;
-
-const headerStyle = {
-  color: "#000000",
-  fontWeight: "500",
-  justifyContent: "center",
-  height: "34px",
-  alignItems: "center"
-};

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { css } from 'emotion';
-import Column from './Column';
+import Cell from './Cell';
 
 const icon = css`
   width: 14px;
@@ -10,12 +10,15 @@ const icon = css`
   margin-top: -2px;
 `;
 
-const HeaderColumn = props => {
-  return <Column {...props} innerStyle={{ display: "flex", justifyConten: "center", alignItems: "center" }}>
+const HeaderCell = props => {
+  return <Cell
+    className="headerCell"
+    {...props}
+  >
     {props.editMode ?
       <FiEdit className={icon} /> : null}
-    <div>{props.children}</div>
-  </Column>;
+    {props.children}
+  </Cell>;
 };
 
-export default HeaderColumn;
+export default HeaderCell;

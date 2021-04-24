@@ -82,3 +82,58 @@ tfoot{
     align-items: center;
     justify-content: center;
 }
+
+
+
+.groupRow{
+  border-bottom: none !important;
+  border-top: 1px solid #f1f1f1;
+  position: relative;
+  background-color: #fafafa;
+}
+
+.headerRow{
+  grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
+  border-top: 1px solid #f1f1f1;
+  position: relative;
+  background-color: #fafafa;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 2px 2px 1px;
+  border-bottom: 1px solid #fafafa;
+  z-index: 2;
+}
+
+.tableRow{
+  min-height: 35px;
+  display: grid;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.groupCell{
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.headerCell{
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.tableCell{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: center;
+  overflow: hidden;
+  border-right: 1px solid #f1f1f1;
+  font-size: 16px;
+  min-height: 35px;
+}
+
+.tableCellInner{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: #000000;
+}

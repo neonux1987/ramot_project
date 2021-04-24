@@ -18,6 +18,7 @@ const inputField = css`
   text-align: center;
   height: 100%;
   width: 100%;
+  font-size: 16px;
 
   :hover,:focus,:active{
     border: 1px solid #000;

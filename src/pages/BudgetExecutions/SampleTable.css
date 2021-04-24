@@ -1,5 +1,5 @@
 .st-table{
-  display: table !important;
+  display: grid !important;
   border-collapse: collapse;
   width: 100%;
 }

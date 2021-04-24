@@ -19,11 +19,10 @@ import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
 import EditControls from '../../components/EditControls/EditControls';
 import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
-import GroupColumn from '../../components/table/GroupColumn';
+import GroupCell from '../../components/table/TableCell/GroupCell';
 import HeaderRow from '../../components/table/HeaderRow';
-import Column from '../../components/table/Column';
-import Row from '../../components/table/Row';
-import NonZeroNumberColumn from '../../components/table/NonZeroNumberColumn';
+import TableRow from '../../components/table/TableCell/TableRow';
+import NonZeroCell from '../../components/table/TableCell/NonZeroCell';
 import TableActions from '../../components/table/TableActions/TableActions';
 import Table from '../../components/table/Table';
 import GroupRow from '../../components/table/GroupRow';
@@ -32,12 +31,13 @@ import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteB
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
 import AddNewContainer from './AddNewContainer/AddNewContainer';
-import HeaderColumn from '../../components/table/HeaderColumn';
+import HeaderCell from '../../components/table/TableCell/HeaderCell';
 import useTableLogic from '../../customHooks/useTableLogic';
 import useDifferenceColor from '../../customHooks/useDifferenceColor';
 import BudgetExecutionsDatePicker from './BudgetExecutionsDatePicker';
 
 import SampleTable from './SampleTable'
+import Cell from '../../components/table/TableCell/Cell';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -171,21 +171,21 @@ const BudgetExecutionsTableContainer = props => {
     const months = Helper.getQuarterMonths(quarter);
 
     const monthColumns = months.map((month, i) => {
-      return <GroupColumn
+      return <GroupCell
         span={2}
         color={colorSet[i]}
         key={i}
-      >{month}</GroupColumn>;
+      >{month}</GroupCell>;
     });
 
     return <GroupRow gridTemplateColumns={getGridTemplateColumns()}>
-      {editMode ? <GroupColumn></GroupColumn> : null}
-      <GroupColumn></GroupColumn>
-      <GroupColumn></GroupColumn>
+      {editMode ? <GroupCell></GroupCell> : null}
+      <GroupCell></GroupCell>
+      <GroupCell></GroupCell>
       {monthColumns}
-      <GroupColumn span={3} color={colorSet[3]}>{`סוף רבעון ${quarter}`}</GroupColumn>
-      <GroupColumn></GroupColumn>
-      <GroupColumn></GroupColumn>
+      <GroupCell span={3} color={colorSet[3]}>{`סוף רבעון ${quarter}`}</GroupCell>
+      <GroupCell></GroupCell>
+      <GroupCell></GroupCell>
     </GroupRow>
   }
 
@@ -196,33 +196,28 @@ const BudgetExecutionsTableContainer = props => {
     const monthColumns = [];
 
     for (let i = 0; i < 3; i++) {
-      monthColumns.push(<HeaderColumn editMode={editMode} style={{ ...defaultheaderStyle, color: colorSet[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderColumn>);
-      monthColumns.push(<HeaderColumn style={{ ...defaultheaderStyle, color: colorSet[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderColumn>);
-    }
-
-    const quarterStyle = {
-      ...defaultheaderStyle,
-      color: colorSet[3]
+      monthColumns.push(<HeaderCell editMode={editMode} style={{ color: colorSet[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderCell>);
+      monthColumns.push(<HeaderCell style={{ color: colorSet[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderCell>);
     }
 
     return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
 
-      {editMode ? <HeaderColumn style={defaultheaderStyle}>{"פעולות"}</HeaderColumn> : null}
-      <HeaderColumn style={defaultheaderStyle}>{"שורה"}</HeaderColumn>
-      <HeaderColumn style={defaultheaderStyle}>{"סעיף"}</HeaderColumn>
+      {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
+      <HeaderCell>{"שורה"}</HeaderCell>
+      <HeaderCell>{"סעיף"}</HeaderCell>
 
       {monthColumns}
 
-      <HeaderColumn editMode={editMode} style={quarterStyle}>{"הערכה"}</HeaderColumn>
-      <HeaderColumn style={quarterStyle}>{"תקציב"}</HeaderColumn>
-      <HeaderColumn style={quarterStyle}>{"ביצוע"}</HeaderColumn>
+      <HeaderCell editMode={editMode} style={{ color: colorSet[3] }}>{"הערכה"}</HeaderCell>
+      <HeaderCell style={{ color: colorSet[3] }}>{"תקציב"}</HeaderCell>
+      <HeaderCell style={{ color: colorSet[3] }}>{"ביצוע"}</HeaderCell>
 
-      <HeaderColumn style={defaultheaderStyle}>{"הפרש"}</HeaderColumn>
-      <HeaderColumn editMode={editMode} style={defaultheaderStyle}>{"הערות"}</HeaderColumn>
+      <HeaderCell>{"הפרש"}</HeaderCell>
+      <HeaderCell editMode={editMode}>{"הערות"}</HeaderCell>
     </HeaderRow>
   }
 
-  const TableRow = (index) => {
+  const Row = (index) => {
     // row data
     const rowData = getDataObject(index);
 
@@ -235,24 +230,24 @@ const BudgetExecutionsTableContainer = props => {
       monthColumns.push(
         editMode ?
           numberInput(`${month}_budget`, rowData[`${month}_budget`], index, onBlurHandler) :
-          <NonZeroNumberColumn key={`${month}_budget${i}`}>{rowData[`${month}_budget`]}</NonZeroNumberColumn>
+          <NonZeroCell key={`${month}_budget${i}`}>{rowData[`${month}_budget`]}</NonZeroCell>
       );
-      monthColumns.push(<NonZeroNumberColumn key={`${month}_budget_execution${i + 1}`}>{rowData[`${month}_budget_execution`]}</NonZeroNumberColumn>);
+      monthColumns.push(<NonZeroCell key={`${month}_budget_execution${i + 1}`}>{rowData[`${month}_budget_execution`]}</NonZeroCell>);
     });
 
     const differenceColor = whichColor(rowData.difference);
 
-    return <Row key={index} gridTemplateColumns={getGridTemplateColumns()}>
+    return <TableRow key={index} gridTemplateColumns={getGridTemplateColumns()}>
       {editMode ? <TableActions deleteHandler={() => deleteHandler(index, rowData)} /> : null}
-      <Column>{index + 1}</Column>
-      <Column>{rowData.section}</Column>
+      <Cell>{index + 1}</Cell>
+      <Cell>{rowData.section}</Cell>
       {monthColumns}
-      {editMode ? numberInput("evaluation", rowData.evaluation, index, onBlurHandler) : <NonZeroNumberColumn>{rowData.evaluation}</NonZeroNumberColumn>}
-      <NonZeroNumberColumn>{rowData.total_budget}</NonZeroNumberColumn>
-      <NonZeroNumberColumn>{rowData.total_execution}</NonZeroNumberColumn>
-      <NonZeroNumberColumn style={{ direction: "ltr", ...differenceColor }}>{rowData.difference}</NonZeroNumberColumn>
-      {editMode ? textAreaInput("notes", rowData.notes, index, onBlurHandler) : <Column style={{ marginLeft: "10px" }}>{rowData.notes}</Column>}
-    </Row>
+      {editMode ? numberInput("evaluation", rowData.evaluation, index, onBlurHandler) : <NonZeroCell>{rowData.evaluation}</NonZeroCell>}
+      <NonZeroCell>{rowData.total_budget}</NonZeroCell>
+      <NonZeroCell>{rowData.total_execution}</NonZeroCell>
+      <NonZeroCell style={differenceColor}>{rowData.difference}</NonZeroCell>
+      {editMode ? textAreaInput("notes", rowData.notes, index, onBlurHandler) : <Cell style={{ paddingLeft: "10px" }}>{rowData.notes}</Cell>}
+    </TableRow>
   }
 
   return (
@@ -296,7 +291,7 @@ const BudgetExecutionsTableContainer = props => {
       <AddNewContainer show={addNewMode} date={date} buildingNameEng={buildingNameEng} />
 
       <Table
-        Row={TableRow}
+        Row={Row}
         GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
@@ -314,11 +309,3 @@ const BudgetExecutionsTableContainer = props => {
 }
 
 export default React.memo(BudgetExecutionsTableContainer);
-
-const defaultheaderStyle = {
-  color: "#000000",
-  fontWeight: "500",
-  justifyContent: "center",
-  height: "34px",
-  alignItems: "center"
-};
