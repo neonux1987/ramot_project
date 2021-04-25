@@ -9,7 +9,7 @@ const SampleTable = () => {
 
       <div className="st-row">
 
-        <div className="st-cell" style={{ backgroundColor: "yellow" }}>header</div>
+        <div className="st-cell">header</div>
         <div className="st-cell">header</div>
         <div className="st-cell">header</div>
         <div className="st-cell">header</div>

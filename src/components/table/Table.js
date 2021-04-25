@@ -25,7 +25,7 @@ const Table = ({
   printHeaderDetails
 }) => {
 
-  const printMode = useSelector(store => store.print.printMode);
+  const { printMode, colors } = useSelector(store => store.print);
   const [components] = useTableComponents();
 
   // since the virutalized list causing problems
@@ -51,14 +51,15 @@ const Table = ({
     itemContent={Row}
     overscan={10}
     components={components}
+  //useWindowScroll
   />;
 
-  return <TableWrapper id="table" printMode={printMode}>
+  return <TableWrapper id="table" printMode={printMode} colors={colors}>
 
     <Thead printMode={printMode}>
 
       {/* PRINT HEADER active only in print mode*/}
-      <PrintHeader printHeaderDetails={printHeaderDetails} />
+      {printMode ? <PrintHeader printHeaderDetails={printHeaderDetails} /> : null}
 
       {totalCount > 0 ? GroupComponent && GroupComponent() : null}
 
@@ -71,7 +72,8 @@ const Table = ({
       divProps={{
         className: "_tableBody",
         style: { minHeight: "600px" }
-      }}>
+      }}
+    >
 
       {/* SPINNER */}
       {isFetching ? <CenteredLoader /> : null}

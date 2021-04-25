@@ -2,6 +2,8 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { reducer } from './reducer';
 import printTemplates from "../../printTemplates";
 import Sidebar from './Sidebar';
+import { useDispatch } from 'react-redux';
+import { setColors } from '../../../../../redux/actions/printActions';
 
 const rangeRegex = "^(\\s*\\d+\\s*\\-\\s*\\d+\\s*,?|\\d)+$";
 
@@ -31,6 +33,8 @@ const SidebarContainer = props => {
   } = props;
   const [state, dispatch] = useReducer(reducer, initState(printers.data, pageName));
 
+  const reduxDispatch = useDispatch();
+
   const [allPages, setAllPages] = useState(true);
 
   const [rangeValid, setRangeValid] = useState(true);
@@ -41,6 +45,10 @@ const SidebarContainer = props => {
 
   useEffect(() => {
     generate(state);
+
+    /* return () => {
+      reduxDispatch(setColors(true));
+    } */
   }, [state, generate]);
 
   const onPageRangesBlur = (event) => {
@@ -109,7 +117,8 @@ const SidebarContainer = props => {
         dispatch({ type: "setDeviceName", deviceName: target.value });
         break;
       case "copies":
-        setCopies(Number.parseInt(target.value));
+        if (target.value !== "")
+          setCopies(Number.parseInt(target.value));
         break;
       case "allPages":
         setAllPages(target.value);
@@ -124,6 +133,7 @@ const SidebarContainer = props => {
         break;
       case "colors":
         dispatch({ type: "setColors", colors: target.value });
+        reduxDispatch(setColors(target.value));
         break;
       default: return null;
     }

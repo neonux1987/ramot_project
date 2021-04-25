@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from '@material-ui/core';
 import usePrint from '../../../customHooks/usePrint';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPrinters, setPrintMode } from '../../../redux/actions/printActions';
+import { getPrinters, setColors, setPrintMode } from '../../../redux/actions/printActions';
 import SidebarContainer from './layout/Sidebar/SidebarContainer';
 import Content from './layout/Content/Content';
 import Container from './Container';
@@ -33,6 +33,8 @@ const PrintModal = props => {
 
   useEffect(() => {
     dispatch(getPrinters());
+
+    return () => dispatch(setColors(true));
   }, [dispatch]);
 
   return <Modal

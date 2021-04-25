@@ -54,7 +54,8 @@ const Select = ({ label,
   displayEmpty = false,
   emptyLabel = "אנא בחר",
   children,
-  selectStyle
+  selectStyle,
+  labelColor = "#555555"
 }) => {
 
   const render = loading ? <Dummy selectStyle={selectStyle} /> : <Selec
@@ -72,7 +73,7 @@ const Select = ({ label,
 
   return (
     <div className={_container}>
-      <InputLabel className={_label} id="label">{label}</InputLabel>
+      <InputLabel className={classnames(_label, css`color: ${labelColor}`)} id="label">{label}</InputLabel>
       {render}
     </div>
   );

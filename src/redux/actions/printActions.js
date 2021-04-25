@@ -4,7 +4,8 @@ import { ipcRenderer } from "electron";
 export const TYPES = {
   SET_PRINT_MODE: "SET_PRINT_MODE",
   PRINT_REQUEST: "PRINT_REQUEST",
-  PRINT_RECEIVE: "PRINT_RECEIVE"
+  PRINT_RECEIVE: "PRINT_RECEIVE",
+  SET_COLORS: "SET_COLORS"
 }
 
 export const setPrintMode = function async(printMode) {
@@ -12,6 +13,15 @@ export const setPrintMode = function async(printMode) {
     dispatch({
       type: TYPES.SET_PRINT_MODE,
       printMode
+    });
+  }
+}
+
+export const setColors = function async(colors) {
+  return dispatch => {
+    dispatch({
+      type: TYPES.SET_COLORS,
+      colors
     });
   }
 }

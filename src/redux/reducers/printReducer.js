@@ -2,6 +2,7 @@ import { TYPES } from "../actions/printActions";
 
 const initialState = {
   printMode: false,
+  colors: true,
   printers: {
     isFetching: true,
     data: []
@@ -16,7 +17,12 @@ const printReducer = (state = initialState, action) => {
         printMode: action.printMode
       };
     }
-
+    case TYPES.SET_COLORS: {
+      return {
+        ...state,
+        colors: action.colors
+      };
+    }
     case TYPES.PRINT_REQUEST: {
       return {
         ...state,
