@@ -10,7 +10,7 @@ const wrapper = css`
   align-items: center;
   flex-grow: 1;
   width: 200px;
-  margin-top: -10px;
+  margin-top: -5px;
 
   @media (max-width: 1400px) {
     flex-direction: column-reverse;
@@ -58,12 +58,12 @@ const green = css`
   background-color: rgb(0, 227, 150);
 `;
 
-const DonutStatBox = ({ title, income, outcome, unicodeSymbol, titleColor = "#555555", loading = true, index = 1 }) => {
+const DonutStatBox = ({ title, income, outcome, unicodeSymbol, headerBgColor, loading = true, index = 1 }) => {
 
   const incomeText = `הכנסות ${income} ${unicodeSymbol}`;
   const outcomeText = `הוצאות ${outcome} ${unicodeSymbol}`;
 
-  return <StatBox title={title} titleColor={titleColor} loading={loading} index={index}>
+  return <StatBox title={title} headerBgColor={headerBgColor} loading={loading} index={index}>
     <div className={wrapper}>
 
       <div className={legend}>

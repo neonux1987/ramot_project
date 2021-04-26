@@ -32,6 +32,7 @@ import GroupRow from '../../components/table/components/GroupRow';
 // HOC 
 import useTableLogic from '../../customHooks/useTableLogic';
 import YearOnlyDatePicker from '../../components/DatePicker/YearOnlyDatePicker';
+import TableSection from '../../components/Section/TableSection';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -187,40 +188,41 @@ const SummarizedBudgetsTableContainer = props => {
   }
 
   return (
-    <TableWrapper>
-
-      <TableControls
-        rightPane={
-          <EditControls
-            editMode={editMode}
-            toggleEditMode={toggleEditMode}
+    <TableSection
+      header={
+        <TableControls
+          rightPane={
+            <EditControls
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
+              dataExist={data.length > 0}
+            />
+          } // end rightPane
+          middlePane={
+            <YearOnlyDatePicker
+              date={date}
+              buildingNameEng={buildingNameEng}
+              updateDate={updateDate}
+            />
+          } // end middlePane
+          leftPane={<PageControls
             dataExist={data.length > 0}
-          />
-        } // end rightPane
-        middlePane={
-          <YearOnlyDatePicker
-            date={date}
-            buildingNameEng={buildingNameEng}
-            updateDate={updateDate}
-          />
-        } // end middlePane
-        leftPane={<PageControls
-          dataExist={data.length > 0}
-          excel={{
-            data,
-            fileName: Helper.getSummarizedBudgetsFilename(buildingName, date),
-            buildingName,
-            buildingNameEng,
-            date
-          }}
-          print={{
-            pageName
-          }}
-          pageName={pageName}
-        />} // end leftPane
+            excel={{
+              data,
+              fileName: Helper.getSummarizedBudgetsFilename(buildingName, date),
+              buildingName,
+              buildingNameEng,
+              date
+            }}
+            print={{
+              pageName
+            }}
+            pageName={pageName}
+          />} // end leftPane
 
-      />  {/* End TableControls */}
-
+        />  //End TableControls
+      }
+    >
       <Table
         Row={Row}
         GroupComponent={HeaderGroups}
@@ -228,12 +230,12 @@ const SummarizedBudgetsTableContainer = props => {
         isFetching={isFetching}
         totalCount={data.length}
         printHeaderDetails={{
-          pageTitle: pageTitle + " - " + buildingName,
+          pageTitle: buildingName + " - " + pageTitle,
           date: `שנה ${date.year}`
         }}
       />
 
-    </TableWrapper>
+    </TableSection>
   );
 
 }

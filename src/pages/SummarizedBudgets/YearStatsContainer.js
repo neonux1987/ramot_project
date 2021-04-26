@@ -70,7 +70,7 @@ class YearStatsContainer extends React.PureComponent {
         outcome={outcome}
         income={income}
         unicodeSymbol={Helper.shekelUnicode}
-        titleColor={colors[i]}
+        headerBgColor={colors[i]}
         loading={isFetching}
         index={i + 1}
       />;
@@ -89,7 +89,7 @@ class YearStatsContainer extends React.PureComponent {
       outcome={outcome}
       income={income}
       unicodeSymbol={Helper.shekelUnicode}
-      titleColor={this.context.colorSet[4]}
+      headerBgColor={this.context.colorSet[4]}
       loading={isFetching}
       index={5}
     />;

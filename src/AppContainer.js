@@ -49,9 +49,9 @@ const AppContainer = () => {
     dispatch(generalSettingsActions.fetchGeneralSettings());
   }, [dispatch]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     start();
-  }, [start]);
+  }, [start]); */
 
   if (menu.isFetching || generalSettings.isFetching) {
     return <LogoLoader />;

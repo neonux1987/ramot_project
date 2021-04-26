@@ -73,7 +73,6 @@ const SystemContainer = () => {
     <SettingsExpandableSection
       title={"מערכת"}
       Icon={Android}
-      bgColor={"#0365a2"}
       onSaveClick={save}
     >
 

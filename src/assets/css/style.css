@@ -157,7 +157,8 @@ input,textarea{
   #tableControls,
   #section,
   #styledSection-header,
-  #printModal{
+  #printModal,
+  #section-header{
     display: none !important;
   }
 

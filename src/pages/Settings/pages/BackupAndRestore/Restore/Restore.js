@@ -155,7 +155,6 @@ const Restore = () => {
     <ExpandableSection
       title={"שיחזור בסיס נתונים"}
       Icon={Res}
-      bgColor={"#0365a2"}
     >
       {render}
     </ExpandableSection>

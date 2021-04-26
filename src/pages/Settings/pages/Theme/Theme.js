@@ -51,7 +51,6 @@ export const Theme = () => {
       <SettingsExpandableSection
         title={"עיצוב"}
         Icon={Style}
-        bgColor={"#0365a2"}
         onSaveClick={save}
       >
 

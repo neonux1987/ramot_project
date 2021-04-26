@@ -5,6 +5,8 @@ import classnames from 'classnames';
 
 const container = css`
   position: relative;
+  overflow: hidden;
+  border-radius: 3px;
 `;
 
 const fullscreenStyle = css`

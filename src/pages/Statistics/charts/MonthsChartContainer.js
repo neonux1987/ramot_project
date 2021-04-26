@@ -13,11 +13,12 @@ import ColumnChart from '../../../components/charts/ColumnChart';
 // HOOKS
 import { updateDate } from '../../../redux/actions/monthsChartAction';
 import YearOnlyDatePicker from '../../../components/DatePicker/YearOnlyDatePicker';
-import Tab from '../../../components/Tab/Tab';
+import ChartSelectorNav from '../../../components/charts/ChartSelectorNav';
+import SectionWithHeader from '../../../components/Section/SectionWithHeader';
 
 const MonthsChartContainer = props => {
   //building name
-  const { buildingNameEng, pageName } = props;
+  const { buildingNameEng, pageName, onChartChangeClick, selectedChart } = props;
 
   const { isFetching, data } = useSelector(store => store.monthlyStats[buildingNameEng].pages[pageName]);
   const date = useSelector(store => store.monthsChart[buildingNameEng].date);
@@ -80,18 +81,21 @@ const MonthsChartContainer = props => {
       fetchAndPrepareData();
   }, [dispatch, fetchAndPrepareData, date.year]);
 
-  return <Tab>
-    <TableControls
-      withFullscreen={false}
-      middlePane={
-        <YearOnlyDatePicker
-          date={date}
-          buildingNameEng={buildingNameEng}
-          updateDate={updateDate}
-        />
-      }
-    />
-
+  return <SectionWithHeader
+    header={
+      <TableControls
+        withFullscreen={false}
+        middlePane={
+          <YearOnlyDatePicker
+            date={date}
+            buildingNameEng={buildingNameEng}
+            updateDate={updateDate}
+          />
+        }
+        leftPane={<ChartSelectorNav onClick={onChartChangeClick} active={selectedChart} />}
+      />
+    }
+  >
     <ChartWrapper itemCount={data.length} isFetching={isFetching} >
       <ColumnChart
         title={date.year}
@@ -99,7 +103,7 @@ const MonthsChartContainer = props => {
         categories={chartData.labels}
       />
     </ChartWrapper>
-  </Tab >
+  </SectionWithHeader>
 
 }
 

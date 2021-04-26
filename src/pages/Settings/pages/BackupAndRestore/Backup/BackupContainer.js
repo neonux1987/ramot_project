@@ -177,7 +177,6 @@ const BackupContainer = () => {
       title={"גיבוי בסיס נתונים"}
       Icon={Backup}
       onSaveClick={save}
-      bgColor={"#0365a2"}
     >
 
       {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}

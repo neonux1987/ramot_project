@@ -6,18 +6,19 @@ const _header = css`
   display: flex; 
   align-items: center;
   border-bottom: 1px solid #ececec;
+  background-color: #333b3e;
 `;
 
 const _dialogTitle = css`
   padding-right: 12px;
   flex: initial;
-  color: #555555;
+  color: #ffffff;
 `;
 
 const ModalHeader = (props) => {
 
   const {
-    iconColor = "#555555",
+    iconColor = "#ffffff",
     title,
     Icon
   } = props;

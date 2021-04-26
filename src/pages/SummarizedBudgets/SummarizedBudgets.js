@@ -1,13 +1,11 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
 import { useLocation, withRouter } from 'react-router';
-import { ListAlt } from '@material-ui/icons';
 import { IoMdStats } from 'react-icons/io';
 
 // COMMON COMPONENTS
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
-import TableSection from '../../components/Section/TableSection';
 import Page from '../../components/Page/Page';
 
 // CONTAINERS
@@ -19,7 +17,6 @@ import { useDispatch, useSelector } from 'react-redux';
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
 const STATS_TITLE = "סיכום הוצאות והכנסות שנתי";
-const TABLE_TITLE = "טבלת מעקב שנתי";
 
 const SummarizedBudgets = () => {
 
@@ -52,23 +49,15 @@ const SummarizedBudgets = () => {
       />
     </Section>
 
-    <TableSection
-      title={TABLE_TITLE}
-      Icon={ListAlt}
-      bgColor="rgb(0, 143, 251)"
-    >
-
-      <SummarizedBudgetsTableContainer
-        buildingName={buildingName}
-        buildingNameEng={buildingNameEng}
-        date={date}
-        pageName={PAGE_NAME}
-        pageTitle={PAGE_TITLE}
-        data={data}
-        isFetching={isFetching}
-      />
-
-    </TableSection>
+    <SummarizedBudgetsTableContainer
+      buildingName={buildingName}
+      buildingNameEng={buildingNameEng}
+      date={date}
+      pageName={PAGE_NAME}
+      pageTitle={PAGE_TITLE}
+      data={data}
+      isFetching={isFetching}
+    />
   </Page>;
 
 }

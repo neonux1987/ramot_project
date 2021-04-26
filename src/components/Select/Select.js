@@ -9,7 +9,7 @@ const _container = css`
 `;
 
 const _label = css`
-  color: #555555;
+  color: #ffffff;
   font-size: 16px;
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@ const _select = css`
   font-size: 15px;
   border-radius: 3px;
   color: #555555;
-  font-weight: 400;
+  font-weight: 500;
   border: 1px solid #f1f1f1;
 
   ::before {
@@ -38,7 +38,7 @@ const _select = css`
 
 const _classesSelect = css`
   padding: 8px 0 6px 24px;
-  font-weight: 400;
+  font-weight: 500;
 
   focus {
     background: none;
@@ -55,7 +55,7 @@ const Select = ({ label,
   emptyLabel = "אנא בחר",
   children,
   selectStyle,
-  labelColor = "#555555"
+  labelColor = "#ffffff"
 }) => {
 
   const render = loading ? <Dummy selectStyle={selectStyle} /> : <Selec

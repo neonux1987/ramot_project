@@ -70,7 +70,6 @@ const UserContainer = () => {
     <SettingsExpandableSection
       title={"משתמש"}
       Icon={AccessibilityNew}
-      bgColor={"#0365a2"}
       onSaveClick={save}
     >
 

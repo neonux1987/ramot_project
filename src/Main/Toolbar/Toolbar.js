@@ -12,6 +12,7 @@ import BreadcrumbsContainer from "./Breadcrumbs/BreadcrumbsContainer";
 
 // ACTIONS
 import { toggleSidebar } from '../../redux/actions/toggleSidebarActions';
+import { Slide } from "@material-ui/core";
 
 const Toolbar = () => {
 
@@ -25,7 +26,7 @@ const Toolbar = () => {
 
   const noFollowRule = !themeSettings.sticky_toolbar ? styles.noFollow : "";
 
-  return (
+  return <Slide direction="down" in={true} mountOnEnter unmountOnExit timeout={500}>
     <div className={classnames(styles.wrapper, noFollowRule)} id="toolbar">
 
       <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
@@ -34,8 +35,7 @@ const Toolbar = () => {
       </div>
 
     </div>
-
-  );
+  </Slide>;
 
 }
 

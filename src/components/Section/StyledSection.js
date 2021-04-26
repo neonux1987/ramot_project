@@ -7,13 +7,15 @@ const _container = css`
   margin: 30px 20px 20px 20px;
   background-color: #ffffff;
   box-shadow: 0 0 10px 4px rgb(0 0 0 / 2%);
-  border-radius: 6px;
+  border-radius: 3px;
+  overflow: hidden;
 `;
 
 const _header = css`
   height: 60px;
   display: flex;
   border-bottom: 1px solid #f1f1f1;
+  background: #0e7ab9;
 `;
 
 const _titleBox = css`
@@ -35,7 +37,7 @@ const _iconWrapper = css`
 `;
 
 const _icon = css`
-  color: #444444;
+  color: #ffffff;
   font-size: 24px;
 `;
 
@@ -47,7 +49,7 @@ const _titleWrapper = css`
 `;
 
 const _titleTypography = css`
-  color: #555555;
+  color: #ffffff;
   font-weight: 400;
   font-size: 1.3em;
 `;
@@ -78,7 +80,7 @@ const fullscreenStyle = css`
 const StyledSection = ({
   title,
   Icon,
-  bgColor = "#555555",
+  bgColor = "#0e7ab9",
   extraDetails = null,
   children,
   isFullscreen = false
@@ -86,14 +88,14 @@ const StyledSection = ({
   return <div className={classnames(_container, isFullscreen ? fullscreenStyle : "")} id="styledSection">
 
     {/* header */}
-    <div className={_header} id="styledSection-header">
+    <div className={classnames(_header, css`background-color:${bgColor}`)} id="styledSection-header">
 
       {/* title box */}
       <div className={_titleBox}>
 
         {/* icon */}
         <div className={_iconWrapper}>
-          <Icon className={classnames(_icon, css`color:${bgColor}`)} />
+          <Icon className={_icon} />
         </div>
         {/* end icon */}
 

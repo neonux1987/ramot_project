@@ -236,7 +236,6 @@ const AppUpdates = () => {
       <ExpandableSection
         title={"עדכוני תוכנה"}
         Icon={SystemUpdateAlt}
-        bgColor={"#0365a2"}
         extraDetails={<PrimaryButton onClick={refreshHandler}>רענן</PrimaryButton>}
       >
 

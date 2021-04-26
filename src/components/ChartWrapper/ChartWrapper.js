@@ -5,12 +5,13 @@ import { css } from 'emotion';
 // COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
+import { Fade } from '@material-ui/core';
 
 const container = css`
   background: #ffffff;
-  margin: 5px 15px 0;
+  margin: 0;
   min-height: 500px;
-  padding-top: 10px;
+  margin: 20px 15px;
 `;
 
 const text = css`
@@ -24,10 +25,12 @@ const ChartWrapper = props => {
     {children}
   </div>;
 
-  return <div className={container}>
+  return <Fade in={true} mountOnEnter unmountOnExit timeout={500}>
+    <div className={container}>
 
-    {isFetching === false && itemCount === 0 ? <AlignCenterMiddle><span className={text}>לא נטענו נתונים.</span></AlignCenterMiddle> : Loading}
-  </div>
+      {isFetching === false && itemCount === 0 ? <AlignCenterMiddle><span className={text}>לא נטענו נתונים.</span></AlignCenterMiddle> : Loading}
+    </div>
+  </Fade>;
 
 }
 

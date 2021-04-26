@@ -21,7 +21,6 @@ import TableActions from '../../components/table/TableActions/TableActions';
 import Spinner from '../../components/Spinner/Spinner';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import AddNewContainer from './AddNewContainer';
-import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import Table from '../../components/table/Table';
 import Cell from '../../components/table/components/Cell';
 import NonZeroCell from '../../components/table/components/NonZeroCell';
@@ -33,6 +32,7 @@ import TableRow from '../../components/table/components/TableRow';
 import { toastManager } from '../../toasts/toastManager';
 import useTableLogic from '../../customHooks/useTableLogic';
 import MonthExpansesDatePicker from './MonthExpansesDatePicker';
+import TableSection from '../../components/Section/TableSection';
 
 
 const MonthExpansesTableContainer = props => {
@@ -239,45 +239,46 @@ const MonthExpansesTableContainer = props => {
   }
 
   return (
-    <TableWrapper id={pageName}>
+    <TableSection
+      header={
+        <TableControls
+          rightPane={
+            <EditControls
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
+              addNewMode={addNewMode}
+              toggleAddNewMode={toggleAddNewMode}
+              dataExist={data.length > 0}
+            />
+          } // end rightPane
+          middlePane={
+            <MonthExpansesDatePicker
+              date={date}
+              buildingNameEng={buildingNameEng}
 
-      <TableControls
-        rightPane={
-          <EditControls
-            editMode={editMode}
-            toggleEditMode={toggleEditMode}
-            addNewMode={addNewMode}
-            toggleAddNewMode={toggleAddNewMode}
-            dataExist={data.length > 0}
-          />
-        } // end rightPane
-        middlePane={
-          <MonthExpansesDatePicker
-            date={date}
-            buildingNameEng={buildingNameEng}
+            />
 
-          />
-
-        } // end middlePane
-        editMode={editMode}
-        leftPane={
-          <PageControls
-            excel={{
-              data,
-              fileName: Helper.getMonthExpansesFilename(buildingName, date),
-              buildingName,
-              buildingNameEng,
-              date
-            }}
-            print={{
-              pageName
-            }}
-            pageName={pageName}
-            dataExist={data.length > 0}
-          />
-        } // end leftPane
-      /> {/* end TableControls */}
-
+          } // end middlePane
+          editMode={editMode}
+          leftPane={
+            <PageControls
+              excel={{
+                data,
+                fileName: Helper.getMonthExpansesFilename(buildingName, date),
+                buildingName,
+                buildingNameEng,
+                date
+              }}
+              print={{
+                pageName
+              }}
+              pageName={pageName}
+              dataExist={data.length > 0}
+            />
+          } // end leftPane
+        /> //end TableControls
+      }
+    >
       {/* add new box */}
       <AddNewContainer
         data={data}
@@ -292,12 +293,12 @@ const MonthExpansesTableContainer = props => {
         isFetching={isFetching}
         totalCount={data.length}
         printHeaderDetails={{
-          pageTitle: pageTitle + " - " + buildingName,
+          pageTitle: buildingName + " - " + pageTitle,
           date: `שנה ${date.year} / רבעון ${date.quarter} / חודש ${date.monthHeb}`
         }}
       />
 
-    </TableWrapper>
+    </TableSection>
   );
 
 }

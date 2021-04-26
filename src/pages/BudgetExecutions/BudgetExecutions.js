@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 // COMMON COMPONENTS
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
-import TableSection from '../../components/Section/TableSection';
 
 // CONTAINERS
 import QuarterStatsContainer from './QuarterStatsContainer';
@@ -51,17 +50,15 @@ const BudgetExecutions = () => {
       />
     </Section>
 
-    <TableSection>
-      <BudgetExecutionsTableContainer
-        buildingName={buildingName}
-        buildingNameEng={buildingNameEng}
-        date={date}
-        pageName={PAGE_NAME}
-        pageTitle={PAGE_TITLE}
-        data={data}
-        isFetching={isFetching}
-      />
-    </TableSection>
+    <BudgetExecutionsTableContainer
+      buildingName={buildingName}
+      buildingNameEng={buildingNameEng}
+      date={date}
+      pageName={PAGE_NAME}
+      pageTitle={PAGE_TITLE}
+      data={data}
+      isFetching={isFetching}
+    />
   </Page>;
 }
 

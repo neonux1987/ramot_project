@@ -1,6 +1,6 @@
 .wrapper{
-  margin: 5px 0 20px;
-  /* box-shadow: 0 5px 4px -5px #000000a1; */
+  margin: 0 0 20px;
+  box-shadow: 0 5px 4px -5px #00000030;
   /* box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); */
   font-size: 14px;
   color: #ffffff;
@@ -11,7 +11,7 @@
   top: 0;
   display: flex;
   justify-content: stretch;
-  background: #fafafa;
+  background: #f7f7f7;
   /* border-left: 1px solid #dde1e2;
   border-right: 1px solid #dde1e2;
   border-bottom: 1px solid #dde1e2; */

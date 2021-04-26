@@ -13,7 +13,6 @@ const AboutDeveloper = () => {
       title={"אודות המפתח"}
       Icon={Code}
       padding={"30px 20px 60px"}
-      iconColor={"#0365a2"}
     >
 
       <BoldUnderlineLabel label={`שם:`}>

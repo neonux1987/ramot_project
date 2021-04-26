@@ -5,11 +5,10 @@ import { Collapse } from '@material-ui/core';
 const style = css`
   margin: 0px;
   padding: 10px 0 0;
-  z-index: 3;
+  z-index: 8;
   position: relative;
   display: flex;
   background: #ffffff;
-  border: 1px solid #f1f1f1;
 `;
 
 const AddBoxContainer = props => <Collapse in={props.show} mountOnEnter unmountOnExit timeout={400}>

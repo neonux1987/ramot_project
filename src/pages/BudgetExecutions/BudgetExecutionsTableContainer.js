@@ -18,7 +18,6 @@ import ThemeContext from '../../context/ThemeContext';
 import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
 import EditControls from '../../components/EditControls/EditControls';
-import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import GroupCell from '../../components/table/components/GroupCell';
 import HeaderRow from '../../components/table/components/HeaderRow';
 import TableRow from '../../components/table/components/TableRow';
@@ -38,6 +37,8 @@ import useDifferenceColor from '../../customHooks/useDifferenceColor';
 import BudgetExecutionsDatePicker from './BudgetExecutionsDatePicker';
 
 import SampleTable from './SampleTable'
+import SectionWithHeader from '../../components/Section/SectionWithHeader';
+import TableSection from '../../components/Section/TableSection';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -251,43 +252,44 @@ const BudgetExecutionsTableContainer = props => {
   }
 
   return (
-    <TableWrapper>
+    <TableSection
+      header={
+        <TableControls
+          rightPane={
+            <EditControls
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
+              addNewMode={addNewMode}
+              toggleAddNewMode={toggleAddNewMode}
+              dataExist={data.length > 0}
+            />
+          } // end rightPane
+          middlePane={
+            <BudgetExecutionsDatePicker
+              date={date}
+              buildingNameEng={buildingNameEng}
+            />
+          } // end middlePane
+          leftPane={
+            <PageControls
+              excel={{
+                data,
+                fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+                buildingName,
+                buildingNameEng,
+                date
+              }}
+              print={{
+                pageName
+              }}
+              pageName={pageName}
+              dataExist={data.length > 0}
+            />
+          } // end leftPane
 
-      <TableControls
-        rightPane={
-          <EditControls
-            editMode={editMode}
-            toggleEditMode={toggleEditMode}
-            addNewMode={addNewMode}
-            toggleAddNewMode={toggleAddNewMode}
-            dataExist={data.length > 0}
-          />
-        } // end rightPane
-        middlePane={
-          <BudgetExecutionsDatePicker
-            date={date}
-            buildingNameEng={buildingNameEng}
-          />
-        } // end middlePane
-        leftPane={
-          <PageControls
-            excel={{
-              data,
-              fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-              buildingName,
-              buildingNameEng,
-              date
-            }}
-            print={{
-              pageName
-            }}
-            pageName={pageName}
-            dataExist={data.length > 0}
-          />
-        } // end leftPane
-
-      /> {/* End TableControls */}
-
+        /> //End TableControls 
+      }
+    >
       <AddNewContainer show={addNewMode} date={date} buildingNameEng={buildingNameEng} />
 
       <Table
@@ -297,14 +299,14 @@ const BudgetExecutionsTableContainer = props => {
         isFetching={isFetching}
         totalCount={data.length}
         printHeaderDetails={{
-          pageTitle: pageTitle + " - " + buildingName,
+          pageTitle: buildingName + " - " + pageTitle,
           date: `שנה ${date.year} / רבעון ${date.quarter}`
         }}
       />
 
       {/* <SampleTable data={data} /> */}
 
-    </TableWrapper>
+    </TableSection>
   );
 }
 

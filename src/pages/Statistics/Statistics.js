@@ -17,6 +17,7 @@ import TopChartContainer from './charts/TopChartContainer';
 
 // ACTIONS
 import { updateSelectedChart } from '../../redux/actions/statisticsActions';
+import ChartSelectorNav from '../../components/charts/ChartSelectorNav';
 
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
@@ -47,7 +48,7 @@ const Statistics = props => {
     <StyledSection
       title={selectedChart}
       Icon={IoMdStats}
-      extraDetails={<SectionNav onClick={onClick} active={selectedChart} />}
+      extraDetails={<ChartSelectorNav onClick={onClick} active={selectedChart} />}
     >
       <Chart buildingNameEng={buildingNameEng} pageName={PAGE_NAME} />
     </StyledSection>
@@ -56,16 +57,6 @@ const Statistics = props => {
 }
 
 export default Statistics;
-
-const SectionNav = ({ active, onClick }) => {
-
-  return <div style={{ paddingLeft: "10px" }}>
-    <Button onClick={() => onClick(BY_MONTHS_TITLE)} className={active === BY_MONTHS_TITLE ? activeClass : ""}>חודשים</Button>
-    <Button onClick={() => onClick(BY_QUARTERS_TITLE)} className={active === BY_QUARTERS_TITLE ? activeClass : ""}>רבעונים</Button>
-    <Button onClick={() => onClick(BY_YEARS_TITLE)} className={active === BY_YEARS_TITLE ? activeClass : ""}>שנים</Button>
-    <Button onClick={() => onClick(TOP_EXPANSES_TITLE)} className={active === TOP_EXPANSES_TITLE ? activeClass : ""}>טופ</Button>
-  </div>
-}
 
 function whichChart(name) {
   switch (name) {

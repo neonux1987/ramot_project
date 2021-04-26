@@ -17,7 +17,6 @@ const AboutApp = () => {
     <ExpandableSection
       title={"אודות התוכנה"}
       Icon={LaptopMac}
-      bgColor={"#0365a2"}
     >
 
       <BoldUnderlineLabel label={`שם תוכנה:`}>
