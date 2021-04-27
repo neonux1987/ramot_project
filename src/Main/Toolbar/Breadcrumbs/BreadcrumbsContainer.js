@@ -1,12 +1,10 @@
 // LIBRARIES
 import React from "react";
-import { useLocation } from "react-router";
 import Breadcrumbs from "./Breadcrumbs";
 import Crumb from "./Crumb";
 
 
-const BreadcrumbsContainer = () => {
-  const { pathname } = useLocation();
+const BreadcrumbsContainer = ({ pathname }) => {
 
   const pathnames = pathname.split("/").filter(x => x);
 

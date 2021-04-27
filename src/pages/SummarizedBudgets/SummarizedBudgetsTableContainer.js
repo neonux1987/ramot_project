@@ -189,6 +189,7 @@ const SummarizedBudgetsTableContainer = props => {
 
   return (
     <TableSection
+      bgColor="#44515f"
       header={
         <TableControls
           rightPane={

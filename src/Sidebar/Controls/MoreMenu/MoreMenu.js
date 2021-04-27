@@ -98,7 +98,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
       />
 
       <MoreMenuNavLinkItem
-        icon={<ListAlt style={{ color: "rgb(0,143,251)" }} />}
+        icon={<ListAlt style={{ color: "#0e7ab9" }} />}
         label="ניהול סעיפים מסכמים"
         onClick={upgradedHandleClose}
         to={{

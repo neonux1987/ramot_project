@@ -14,10 +14,11 @@ import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker
 import BarChart from '../../../components/charts/BarChart';
 import ChartSelectorNav from '../../../components/charts/ChartSelectorNav';
 import SectionWithHeader from '../../../components/Section/SectionWithHeader';
+import Tab from '../../../components/Tab/Tab';
 
 const TopChartContainer = props => {
   //building name
-  const { buildingNameEng, pageName, onChartChangeClick, selectedChart } = props;
+  const { buildingNameEng, pageName } = props;
 
   const registeredYears = useSelector(store => store.registeredYears[buildingNameEng]);
   const { date, data, isFetching } = useSelector(store => store.topChart[buildingNameEng]);
@@ -93,20 +94,17 @@ const TopChartContainer = props => {
     }
   }
 
-  return <SectionWithHeader
-    header={
-      <TableControls
-        withFullscreen={false}
-        middlePane={<DateRangePicker
-          years={registeredYears.data}
-          date={date}
-          submit={submit}
-          loading={registeredYears.isFetching}
-        />}
-        leftPane={<ChartSelectorNav onClick={onChartChangeClick} active={selectedChart} />}
-      />
-    }
-  >
+  return <Tab>
+    <TableControls
+      withFullscreen={false}
+      middlePane={<DateRangePicker
+        years={registeredYears.data}
+        date={date}
+        submit={submit}
+        loading={registeredYears.isFetching}
+      />}
+    />
+
     <ChartWrapper itemCount={data.length} isFetching={isFetching && !ready} >
       <BarChart
         title={`טופ 10 הוצאות מ- ${date.fromYear} עד- ${date.toYear}`}
@@ -114,7 +112,7 @@ const TopChartContainer = props => {
         categories={chartData.labels}
       />
     </ChartWrapper>
-  </SectionWithHeader>
+  </Tab>
 
 }
 

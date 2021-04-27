@@ -12,7 +12,6 @@ import EditControls from '../../../../components/EditControls/EditControls';
 import SelectDropDown from '../../../../components/SelectDropDown/SelectDropDown';
 import TableActions from '../../../../components/table/TableActions/TableActions';
 import TableControls from '../../../../components/table/TableControls/TableControls';
-import TableWrapper from '../../../../components/table/TableWrapper/TableWrapper';
 import Cell from '../../../../components/table/components/Cell';
 import HeaderCell from '../../../../components/table/components/HeaderCell';
 import HeaderRow from '../../../../components/table/components/HeaderRow';
@@ -26,6 +25,7 @@ import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import { toastManager } from '../../../../toasts/toastManager';
 import useTableLogic from '../../../../customHooks/useTableLogic';
+import TableSection from '../../../../components/Section/TableSection';
 
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
@@ -259,26 +259,24 @@ const ExpansesCodes = () => {
   //give the box a form functionality
   const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
 
-  //show or hide based of the add new mode status
-  const renderAddNewExpanse = addNewMode ? <WrappedAddNewBox submitHandler={addNewSubmitHandler} summarizedSections={summarizedSections.data} /> : null;
-
   return (
-    <TableWrapper>
-
-      <TableControls
-        editMode={editMode}
-        rightPane={
-          <EditControls
-            editMode={editMode}
-            toggleEditMode={toggleEditMode}
-            addNewMode={addNewMode}
-            toggleAddNewMode={toggleAddNewMode}
-            dataExist={data.length > 0}
-          />
-        } // end rightPane
-      /> {/* end TableControls */}
-
-      {renderAddNewExpanse}
+    <TableSection
+      header={
+        <TableControls
+          editMode={editMode}
+          rightPane={
+            <EditControls
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
+              addNewMode={addNewMode}
+              toggleAddNewMode={toggleAddNewMode}
+              dataExist={data.length > 0}
+            />
+          } // end rightPane
+        /> //end TableControls
+      }
+    >
+      <WrappedAddNewBox submitHandler={addNewSubmitHandler} summarizedSections={summarizedSections.data} show={addNewMode} />
 
       <Table
         Row={Row}
@@ -287,7 +285,7 @@ const ExpansesCodes = () => {
         totalCount={data.length}
       />
 
-    </TableWrapper>
+    </TableSection>
   );
 
 }

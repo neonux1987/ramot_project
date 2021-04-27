@@ -4,7 +4,7 @@ import styles from './AddSummarizedSectionContainer.module.css'
 import ButtonWithSound from '../../../../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import AddBoxContainer from '../../../../../components/AddBoxContainer/AddBoxContainer';
 
-const AddSummarizedSectionContainer = (props) => {
+const AddSummarizedSectionContainer = ({ show, changeHandler, reset, submitHandler }) => {
 
   const [formInputs, setFormInput] = useState({
     section: ""
@@ -12,23 +12,23 @@ const AddSummarizedSectionContainer = (props) => {
 
   return (
 
-    <AddBoxContainer className={styles.boxWrapper}>
+    <AddBoxContainer className={styles.boxWrapper} show={show}>
       <div className={styles.boxWrapper}>
         <TextField
           name="section"
           label="הזן שם סעיף"
-          onChange={(event) => props.changeHandler(event, formInputs, setFormInput)}
+          onChange={(event) => changeHandler(event, formInputs, setFormInput)}
           className={styles.textField}
           type="text"
           value={formInputs.section}
           InputLabelProps={{ classes: { root: styles.inputLabel } }}
         />
 
-        <ButtonWithSound style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => props.reset({ section: "" }, setFormInput)} variant="contained" color="primary" className={styles.button}>
+        <ButtonWithSound style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => reset({ section: "" }, setFormInput)} variant="contained" color="primary" className={styles.button}>
           אפס
         </ButtonWithSound>
 
-        <ButtonWithSound style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={(event) => props.submitHandler(formInputs)} className={styles.button}>
+        <ButtonWithSound style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={() => submitHandler(formInputs)} className={styles.button}>
           הוסף
         </ButtonWithSound>
       </div>

@@ -2,21 +2,21 @@
 import React from 'react';
 
 // CONTAINERS
-import ExpansesCodesTableContainer from './ExpansesCodesTableContainer';
+import BuildingsTableContainer from './BuildingsTableContainer';
 import Page from '../../../../components/Page/Page';
 import SimplePageHeader from '../../../../components/PageHeader/SimplePageHeader';
 
-const TABLE_TITLE = "מעקב וניהול קודי הנהלת חשבונות";
+const TABLE_TITLE = "ניהול בניינים";
 
-const ExpansesCodes = () => {
+const Buildings = () => {
 
   return (
     <Page>
       <SimplePageHeader title={TABLE_TITLE} />
-      <ExpansesCodesTableContainer />
+      {/* <BuildingsTableContainer /> */}
     </Page>
   );
 
 }
 
-export default ExpansesCodes;
+export default Buildings;

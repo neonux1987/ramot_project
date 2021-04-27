@@ -5,7 +5,6 @@ import { css } from 'emotion';
 // COMPONENTS
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import Spinner from '../../components/Spinner/Spinner';
-import { Fade } from '@material-ui/core';
 
 const container = css`
   background: #ffffff;
@@ -25,12 +24,9 @@ const ChartWrapper = props => {
     {children}
   </div>;
 
-  return <Fade in={true} mountOnEnter unmountOnExit timeout={500}>
-    <div className={container}>
-
-      {isFetching === false && itemCount === 0 ? <AlignCenterMiddle><span className={text}>לא נטענו נתונים.</span></AlignCenterMiddle> : Loading}
-    </div>
-  </Fade>;
+  return <div className={container}>
+    {isFetching === false && itemCount === 0 ? <AlignCenterMiddle><span className={text}>לא נטענו נתונים.</span></AlignCenterMiddle> : Loading}
+  </div>;
 
 }
 

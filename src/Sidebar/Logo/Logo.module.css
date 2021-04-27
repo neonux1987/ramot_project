@@ -2,7 +2,8 @@
   width: 250px;
   position: relative;
   user-select: none;
-  background: #0e7ab9;
+  background: #0e7ab9b8;
+  /* background: linear-gradient(66deg, rgba(11,106,161,1) 0%, rgba(14,122,185,1) 100%); */
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
 }
@@ -24,6 +25,7 @@
   background-position-x: 110px;
   background-position-y: -45px;
   background-blend-mode: overlay;
+  filter: drop-shadow(16px 16px 20px rgba(0, 0, 0, 0.473));
 }
 
 .logoWrapper{

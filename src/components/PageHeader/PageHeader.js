@@ -41,7 +41,7 @@ const subContainer = css`
   border-bottom: 1px solid #f1f1f1;
 `;
 
-const PageHeader = ({ buildingName, buildingNameEng, date, page }) => {
+const PageHeader = ({ buildingName, buildingNameEng, page }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 

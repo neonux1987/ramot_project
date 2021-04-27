@@ -253,6 +253,7 @@ const BudgetExecutionsTableContainer = props => {
 
   return (
     <TableSection
+      bgColor="#44515f"
       header={
         <TableControls
           rightPane={

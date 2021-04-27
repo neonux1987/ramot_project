@@ -11,12 +11,11 @@ import TableControls from '../../../components/table/TableControls/TableControls
 import ColumnChart from '../../../components/charts/ColumnChart';
 import { updateDate } from '../../../redux/actions/quartersChartActions';
 import YearOnlyDatePicker from '../../../components/DatePicker/YearOnlyDatePicker';
-import ChartSelectorNav from '../../../components/charts/ChartSelectorNav';
-import SectionWithHeader from '../../../components/Section/SectionWithHeader';
+import Tab from '../../../components/Tab/Tab';
 
 const QuartersChartContainer = props => {
   //building name
-  const { buildingNameEng, pageName, onChartChangeClick, selectedChart } = props;
+  const { buildingNameEng, pageName } = props;
 
   const { isFetching, data } = useSelector(store => store.quarterlyStats[buildingNameEng].pages[pageName]);
   const date = useSelector(store => store.quartersChart[buildingNameEng].date);
@@ -79,20 +78,17 @@ const QuartersChartContainer = props => {
       fetchAndPrepareData();
   }, [dispatch, fetchAndPrepareData, date.year]);
 
-  return <SectionWithHeader
-    header={
-      <TableControls
-        withFullscreen={false}
-        middlePane={
-          <YearOnlyDatePicker
-            date={date}
-            buildingNameEng={buildingNameEng}
-            updateDate={updateDate}
-          />}
-        leftPane={<ChartSelectorNav onClick={onChartChangeClick} active={selectedChart} />}
-      />
-    }
-  >
+  return <Tab>
+    <TableControls
+      withFullscreen={false}
+      middlePane={
+        <YearOnlyDatePicker
+          date={date}
+          buildingNameEng={buildingNameEng}
+          updateDate={updateDate}
+          blackLabels={true}
+        />}
+    />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching} >
       <ColumnChart
@@ -101,7 +97,7 @@ const QuartersChartContainer = props => {
         categories={chartData.labels}
       />
     </ChartWrapper>
-  </SectionWithHeader>
+  </Tab>
 
 }
 

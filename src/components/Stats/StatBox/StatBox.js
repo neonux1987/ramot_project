@@ -17,7 +17,7 @@ const StatBox = ({ title, loading = true, children, index = 1, headerBgColor = "
     <Grow
       in={!loading}
       style={{ transformOrigin: '0 0 0' }}
-      timeout={(index) * 400}
+      timeout={(index) * 500}
     >
       <Paper className={paper} >
 

@@ -7,7 +7,14 @@ import AddBoxContainer from '../../../../../components/AddBoxContainer/AddBoxCon
 
 const keys = ["code", "codeName", "summarized_section_id", "submit"];
 
-const AddExpanseCode = (props) => {
+const AddExpanseCode = ({
+  show,
+  summarizedSections,
+  inputEnterPress,
+  changeHandler,
+  reset,
+  submitHandler
+}) => {
 
   const [formInputs, setFormInput] = useState({
     code: "",
@@ -16,7 +23,7 @@ const AddExpanseCode = (props) => {
     with_vat: 0
   });
 
-  const selectDataRender = props.summarizedSections ? props.summarizedSections.map((summarizedSection) => {
+  const selectDataRender = summarizedSections ? summarizedSections.map((summarizedSection) => {
     if (summarizedSection.status === "deleted")
       return null;
     else
@@ -24,14 +31,14 @@ const AddExpanseCode = (props) => {
   }) : "";
 
   return (
-    <AddBoxContainer>
+    <AddBoxContainer show={show}>
 
       <form
         className={styles.boxWrapper}
         noValidate
         autoComplete="off"
-        onKeyPress={(event) => props.inputEnterPress(event, keys)}
-        onChange={(event) => props.changeHandler(event, formInputs, setFormInput)}
+        onKeyPress={(event) => inputEnterPress(event, keys)}
+        onChange={(event) => changeHandler(event, formInputs, setFormInput)}
         onSubmit={(event) => event.preventDefault()}
       >
 
@@ -61,7 +68,7 @@ const AddExpanseCode = (props) => {
             name="summarized_section_id"
             id="summarized_section_id"
             value={formInputs.summarized_section_id}
-            onChange={(event) => props.changeHandler(event, formInputs, setFormInput)}
+            onChange={(event) => changeHandler(event, formInputs, setFormInput)}
           >
             <MenuItem value="">
               <em></em>
@@ -76,18 +83,18 @@ const AddExpanseCode = (props) => {
             name="with_vat"
             id="with_vat"
             value={formInputs.with_vat}
-            onChange={(event) => props.changeHandler(event, formInputs, setFormInput)}
+            onChange={(event) => changeHandler(event, formInputs, setFormInput)}
           >
             <MenuItem value={0} key={0}>לא</MenuItem>
             <MenuItem value={1} key={1}>כן</MenuItem>
           </Select>
         </FormControl>
 
-        <ButtonWithSound style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => props.reset({ code: "", codeName: "", summarized_section_id: "", with_vat: 0 }, setFormInput)} variant="contained" color="primary" className={styles.button}>
+        <ButtonWithSound style={{ backgroundColor: "#fd5050" }} type="reset" onClick={() => reset({ code: "", codeName: "", summarized_section_id: "", with_vat: 0 }, setFormInput)} variant="contained" color="primary" className={styles.button}>
           אפס
         </ButtonWithSound>
 
-        <ButtonWithSound style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={() => props.submitHandler(formInputs)} className={styles.button}>
+        <ButtonWithSound style={{ backgroundColor: "#439dd2" }} name="submit" variant="contained" color="primary" onClick={() => submitHandler(formInputs)} className={styles.button}>
           הוסף
         </ButtonWithSound>
 

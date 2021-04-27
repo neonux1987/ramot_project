@@ -6,7 +6,8 @@ import DatePicker from './DatePicker';
 const YearOnlyDatePicker = ({
   buildingNameEng,
   date,
-  updateDate
+  updateDate,
+  blackLabels
 }) => {
   const dispatch = useDispatch();
 
@@ -25,6 +26,7 @@ const YearOnlyDatePicker = ({
     yearsList={years.data}
     yearsLoading={years.isFetching}
     onChange={onChange}
+    blackLabels={blackLabels}
   />
 
 }

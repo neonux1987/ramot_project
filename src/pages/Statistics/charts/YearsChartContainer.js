@@ -13,12 +13,11 @@ import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import ColumnChart from '../../../components/charts/ColumnChart';
 import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
-import ChartSelectorNav from '../../../components/charts/ChartSelectorNav';
-import SectionWithHeader from '../../../components/Section/SectionWithHeader';
+import Tab from '../../../components/Tab/Tab';
 
 const YearsChartContainer = props => {
   //building name
-  const { buildingNameEng, pageName, onChartChangeClick, selectedChart } = props;
+  const { buildingNameEng, pageName } = props;
 
   const { isFetching, data } = useSelector(store => store.yearlyStats[buildingNameEng].pages[pageName]);
   const registeredYears = useSelector(store => store.registeredYears[buildingNameEng]);
@@ -102,22 +101,17 @@ const YearsChartContainer = props => {
     }
   }
 
-  return <SectionWithHeader
-    headerTitle={selectedChart}
-    header={
-      <TableControls
-        withFullscreen={false}
-        middlePane={<DateRangePicker
-          years={registeredYears.data}
-          date={date}
-          submit={submit}
-          loading={registeredYears.isFetching}
-        />}
-        leftPane={<ChartSelectorNav onClick={onChartChangeClick} active={selectedChart} />}
-      />
-    }
-  >
+  return <Tab>
 
+    <TableControls
+      withFullscreen={false}
+      middlePane={<DateRangePicker
+        years={registeredYears.data}
+        date={date}
+        submit={submit}
+        loading={registeredYears.isFetching}
+      />}
+    />
 
     <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
       <ColumnChart
@@ -126,7 +120,7 @@ const YearsChartContainer = props => {
         categories={chartData.labels}
       />
     </ChartWrapper>
-  </SectionWithHeader>;
+  </Tab>;
 
 }
 

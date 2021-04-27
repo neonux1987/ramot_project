@@ -41,6 +41,7 @@ const DateRangePicker = ({ years = [], date, submit, loading = false }) => {
       loading={loading}
       displayEmpty
       emptyLabel={"בחר שנה"}
+      blackLabels={true}
     >
       {list()}
     </Select>
@@ -52,6 +53,7 @@ const DateRangePicker = ({ years = [], date, submit, loading = false }) => {
       loading={loading}
       displayEmpty
       emptyLabel={"בחר שנה"}
+      blackLabels={true}
     >
       {list()}
     </Select>

@@ -15,7 +15,7 @@ import {
 import EditControls from '../../../../components/EditControls/EditControls';
 import TableActions from '../../../../components/table/TableActions/TableActions';
 import TableControls from '../../../../components/table/TableControls/TableControls';
-import TableWrapper from '../../../../components/table/TableWrapper/TableWrapper';
+import TableSection from '../../../../components/Section/TableSection';
 import HeaderRow from '../../../../components/table/components/HeaderRow';
 import TableRow from '../../../../components/table/components/TableRow';
 import Cell from '../../../../components/table/components/Cell';
@@ -188,25 +188,25 @@ const SummarizedSectionsTableContainer = () => {
   //give the box a form functionality
   const WrappedAddNewBox = withFormFunctionality(AddSummarizedSectionContainer);
 
-  const renderAddNewSummarizedSection = addNewMode ? <WrappedAddNewBox submitHandler={addNewSubmitHandler} /> : null;
-
   return (
-    <TableWrapper>
+    <TableSection
+      header={
+        <TableControls
+          editMode={editMode}
+          rightPane={
+            <EditControls
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
+              addNewMode={addNewMode}
+              toggleAddNewMode={toggleAddNewMode}
+              dataExist={data.length > 0}
+            />
+          } // end rightPane
+        /> //end TableControls
+      }
+    >
 
-      <TableControls
-        editMode={editMode}
-        rightPane={
-          <EditControls
-            editMode={editMode}
-            toggleEditMode={toggleEditMode}
-            addNewMode={addNewMode}
-            toggleAddNewMode={toggleAddNewMode}
-            dataExist={data.length > 0}
-          />
-        } // end rightPane
-      /> {/* end TableControls */}
-
-      {renderAddNewSummarizedSection}
+      <WrappedAddNewBox submitHandler={addNewSubmitHandler} show={addNewMode} />
 
       <Table
         Row={Row}
@@ -215,7 +215,7 @@ const SummarizedSectionsTableContainer = () => {
         totalCount={data.length}
       />
 
-    </TableWrapper>
+    </TableSection>
   );
 
 }

@@ -52,7 +52,6 @@ const EmptyReportsGeneratorContainer = (props) => {
     <StyledSection
       title={"הפקת דוחות חדשים (ריקים)"}
       Icon={Description}
-      bgColor="#0365a2"
     >
       <EmptyReportsGenerator
         selectDate={selectDate}

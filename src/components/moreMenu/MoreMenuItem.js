@@ -12,7 +12,7 @@ const _listItem = css`
 
 const _listItemIcon = css`
   min-width: 36px;
-  color: rgb(0,143,251);
+  color: #0e7ab9;
 `;
 
 const MoreMenuItem = React.forwardRef(({

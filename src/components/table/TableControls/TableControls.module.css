@@ -35,6 +35,10 @@
   flex: 1;
 }
 
+.titleWrapper{
+  flex: 1;
+}
+
 .editModeWrapper{
   flex: 1;
   display: flex;

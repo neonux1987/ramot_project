@@ -13,7 +13,8 @@ const DatePicker = ({
   onChange,
   yearsFetching = false,
   quartersFetching = false,
-  monthsFetching = false
+  monthsFetching = false,
+  blackLabels
 }) => {
 
   const [selectDate, setDate] = useState({
@@ -60,6 +61,7 @@ const DatePicker = ({
     loading={monthsFetching}
     displayEmpty={selectDate.month === ""}
     emptyLabel={"בחר חודש"}
+    blackLabels={blackLabels}
   >
     {monthsList.map((month) => {
       return <MenuItem value={month.month} key={month.id}>{month.monthHeb}</MenuItem>;
@@ -76,6 +78,7 @@ const DatePicker = ({
     displayEmpty={date.quarter === ""}
     emptyLabel={"בחר רבעון"}
     loading={quartersFetching}
+    blackLabels={blackLabels}
   >
     {quartersList.map((quarter) => {
       return <MenuItem value={quarter.quarter} key={quarter.id}>{quarter.quarterHeb}</MenuItem>;
@@ -91,6 +94,7 @@ const DatePicker = ({
     displayEmpty={selectDate.year === ""}
     emptyLabel={"בחר שנה"}
     loading={yearsFetching}
+    blackLabels={blackLabels}
   >
     {yearsList.map((year) => {
       return <MenuItem value={year.year} key={year.id}>{year.year}</MenuItem>;

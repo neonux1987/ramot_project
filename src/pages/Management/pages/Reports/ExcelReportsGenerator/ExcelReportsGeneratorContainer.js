@@ -91,7 +91,7 @@ const ExcelReportsGeneratorContainer = () => {
       title={"הפקת דוחות אקסל"}
       Icon={RiFileExcel2Line}
       padding={"30px 20px 50px"}
-      bgColor={"rgb(22, 156, 144)"}
+      bgColor={"rgb(12 155 167)"}
       loading={registeredReports.isFetching && registeredReports.data.length === 0}
     >
       <BuildingPicker

@@ -19,9 +19,9 @@ const _label = css`
 const _select = css`
   text-align: center;
   margin: 0 5px;
-  width: 100px;
+  width: 90px;
   background-color: #ffffff;
-  font-size: 15px;
+  font-size: 16px;
   border-radius: 3px;
   color: #555555;
   font-weight: 500;
@@ -55,7 +55,7 @@ const Select = ({ label,
   emptyLabel = "אנא בחר",
   children,
   selectStyle,
-  labelColor = "#ffffff"
+  blackLabels = false
 }) => {
 
   const render = loading ? <Dummy selectStyle={selectStyle} /> : <Selec
@@ -73,7 +73,7 @@ const Select = ({ label,
 
   return (
     <div className={_container}>
-      <InputLabel className={classnames(_label, css`color: ${labelColor}`)} id="label">{label}</InputLabel>
+      <InputLabel className={classnames(_label, css`color: ${blackLabels ? "#555555" : "#ffffff"}`)} id="label">{label}</InputLabel>
       {render}
     </div>
   );

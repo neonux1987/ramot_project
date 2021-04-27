@@ -4,7 +4,7 @@ import CheckboxWithLabel from './CheckboxWithLabel';
 const ExcelReportsCheckbox = (props) => {
   return <CheckboxWithLabel
     {...props}
-    color="rgb(22,156,144)"
+    color="rgb(12 155 167)"
   />;
 }
 
