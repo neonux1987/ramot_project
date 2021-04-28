@@ -1,13 +1,13 @@
 const { ipcMain } = require('electron');
-const MenuDao = require('../backend/dao/MenuDao');
+const MenuLogic = require('../backend/logic/MenuLogic');
 
-const sidearIpc = () => {
+const menuIpc = () => {
 
   //prepare renderer menu
-  const menuDao = new MenuDao();
+  const menuLogic = new MenuLogic();
 
   ipcMain.on("get-menu", (event, arg) => {
-    menuDao.getMenu().then((result) => {
+    menuLogic.getMenu().then((result) => {
       //converts the result to support nested array of objects
       //if an innerJoin is used
       event.sender.send("menu-data", { data: result });
@@ -18,4 +18,4 @@ const sidearIpc = () => {
 
 }
 
-module.exports = sidearIpc;
+module.exports = menuIpc;

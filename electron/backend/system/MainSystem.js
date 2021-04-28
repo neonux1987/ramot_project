@@ -15,7 +15,7 @@ class MainSystem {
     const monthExpansesIpc = require('../../ipcs/monthExpanses.ipc');
     const budgetExecutionIpc = require('../../ipcs/budgetExecution.ipc');
     const summarizedBudgetIpc = require('../../ipcs/SummarizedBudget.ipc');
-    const sidebarIpc = require('../../ipcs/sidebar.ipc');
+    const menuIpc = require('../../ipcs/menu.ipc');
     const summarizedSectionsIpc = require('../../ipcs/summarizedSections.ipc');
     const expansesCodesIpc = require('../../ipcs/expansesCodes.ipc');
     const generalSettingsIpc = require('../../ipcs/generalSettings.ipc');
@@ -40,7 +40,7 @@ class MainSystem {
 
     mainProcessIpc();
 
-    sidebarIpc();
+    menuIpc();
 
     monthExpansesIpc();
 
@@ -96,7 +96,7 @@ class MainSystem {
       const UpdatesLogic = require('../logic/UpdatesLogic');
       const connectionPool = require('../connection/ConnectionPool');
       const SettingsLogic = require('../logic/SettingsLogic');
-      const MenuDao = require('../dao/MenuDao');
+      const MenuLogic = require('../logic/MenuLogic');
 
       const setupLogic = new SetupLogic();
       const settingsLogic = new SettingsLogic();
@@ -112,8 +112,8 @@ class MainSystem {
       const settings = await settingsLogic.getSettings();
 
       //fetch menu data
-      const menuDao = new MenuDao();
-      const menu = await menuDao.getMenu();
+      const menuLogic = new MenuLogic();
+      const menu = await menuLogic.getMenu();
 
       // In the main process.
       global.sharedObject = {

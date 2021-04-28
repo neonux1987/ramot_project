@@ -19,10 +19,10 @@ class BuildingsDao {
       });
   }
 
-  addBuilding(buildingName = String, record = Object, trx = this.connection) {
+  addBuilding(record = Object, trx = this.connection) {
     return trx("buildings").insert(record)
       .catch((error) => {
-        const msg = `קרתה תקלה בזמן הוספת בניין חדש בשם ${buildingName}`;
+        const msg = `קרתה תקלה בזמן הוספת בניין חדש בשם ${record.buildingName}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

@@ -30,13 +30,13 @@ export const fetchBuildings = () => {
 
 const requestBuildings = function () {
   return {
-    type: TYPES.MENU_REQUEST
+    type: TYPES.BUILDINGS_REQUEST
   }
 };
 
 const receiveBuildings = function (data) {
   return {
-    type: TYPES.MENU_RECEIVE,
+    type: TYPES.BUILDINGS_RECEIVE,
     data: data
   }
 }

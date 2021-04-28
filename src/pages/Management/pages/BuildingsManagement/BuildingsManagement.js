@@ -2,7 +2,7 @@
 import React from 'react';
 
 // CONTAINERS
-//import BuildingsTableContainer from './BuildingsTableContainer';
+import BuildingsManagementTableContainer from './BuildingsManagementTableContainer';
 import Page from '../../../../components/Page/Page';
 import SimplePageHeader from '../../../../components/PageHeader/SimplePageHeader';
 
@@ -13,7 +13,7 @@ const BuildingsManagement = () => {
   return (
     <Page>
       <SimplePageHeader title={TABLE_TITLE} />
-      {/* <BuildingsTableContainer /> */}
+      <BuildingsManagementTableContainer />
     </Page>
   );
 

@@ -1,33 +1,35 @@
 const ConnectionPool = require('../connection/ConnectionPool');
 const BuildingsDao = require('../dao/BuildingsDao');
+const MenuLogic = require('../logic/MenuLogic');
 
 class BuildingsLogic {
 
   constructor(connection) {
     this.buildingsDao = new BuildingsDao(connection);
+    this.menuLogic = new MenuLogic(connection);
   }
 
   getBuildings(trx) {
     return this.buildingsDao.getBuidlings(trx);
   }
 
-  addBuilding(buildingName) {
+  async addBuilding(buildingName) {
     const { nanoid } = require('nanoid');
     const trx = await ConnectionPool.getTransaction();
 
     // tabe prefix will be used to name
     // the tables of the building in the database
-    const tablePrefix = nanoid();
+    const id = nanoid();
 
     const record = {
+      id,
       buildingName,
-      tablePrefix,
       visible: "כן",
       status: "active"
     };
 
     // add the building
-    await this.buildingsDao.addBuilding(buildingName, record, trx);
+    await this.buildingsDao.addBuilding(record, trx);
 
     // create all the tables
     await createMonthExpansesTable(tablePrefix, trx);
@@ -39,6 +41,8 @@ class BuildingsLogic {
     await createMonthlyStatsTable(tablePrefix, trx);
     await createQuarterlyStatsTable(tablePrefix, trx);
     await createYearlyStatsTable(tablePrefix, trx);
+
+    await this.menuLogic.addMenuItem(id, buildingName);
   }
 
   /**
@@ -51,6 +55,10 @@ class BuildingsLogic {
     }
 
     return this.buildingsDao.updateBuilding(id, buildingName, record, trx);
+  }
+
+  deleteBuildingPermanently(id, buildingName, trx) {
+    // write elogic here
   }
 
 }

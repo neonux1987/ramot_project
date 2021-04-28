@@ -22,11 +22,12 @@ import Table from '../../../../components/table/Table';
 import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 
 // CONTAINERS
-import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
+
 import { toastManager } from '../../../../toasts/toastManager';
 import useTableLogic from '../../../../customHooks/useTableLogic';
 import TableSection from '../../../../components/Section/TableSection';
 import { fetchBuildings } from '../../../../redux/actions/buildingsActions';
+import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
 
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
@@ -46,7 +47,7 @@ const BuildingsManagementTableContainer = () => {
 
 
   const { data, isFetching } = useSelector(store => store.buildings);
-
+  console.log(data);
   useEffect(() => {
     //get the building month expanses
     dispatch(fetchBuildings());
@@ -79,7 +80,24 @@ const BuildingsManagementTableContainer = () => {
   }
 
   return (
-    <TableSection>
+    <TableSection
+      header={
+        <TableControls
+          rightPane={
+            <EditControls
+              editMode={editMode}
+              toggleEditMode={toggleEditMode}
+              addNewMode={addNewMode}
+              toggleAddNewMode={toggleAddNewMode}
+              dataExist={data.length > 0}
+            />
+          } // end rightPane
+
+        /> //End TableControls 
+      }
+    >
+
+      <AddNewBuildingContainer show={addNewMode} />
 
       <Table
         Row={Row}
