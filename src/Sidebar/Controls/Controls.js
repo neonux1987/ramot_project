@@ -5,11 +5,12 @@ const container = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 10px;
-  border-bottom: 1px solid #00000029;
-  padding-bottom: 10px;
+  padding: 5px 0;
   z-index: 3;
   position: relative;
+  background: #02fb8830;
+  margin: 15px 30px 20px;
+  border-radius: 3px;
 `;
 
 const Controls = props => {

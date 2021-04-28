@@ -13,6 +13,8 @@ const _header = css`
   height: 60px;
   display: flex;
   align-items: center;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 `;
 
 const SectionWithHeader = ({ header = null, children, id, bgColor = "#0e7ab9" }) => {

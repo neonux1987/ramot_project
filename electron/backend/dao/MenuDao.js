@@ -57,6 +57,26 @@ class MenuDao {
     });
   }
 
+  addMenuItem(record = Object, trx = this.connection) {
+    return trx("menu").insert(record)
+      .catch((error) => {
+        const msg = `קרתה תקלה בזמן הוספת הוספת בניין ${record.buildingName} לתפריט`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
+  addSubMenuItem(record = Object, trx = this.connection) {
+    return trx("submenus").insert(record)
+      .catch((error) => {
+        const msg = `קרתה תקלה בזמן הוספת הוספת בניין ${record.buildingName} לתפריט משנה`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
 }
 
 module.exports = MenuDao;

@@ -29,6 +29,7 @@ import summarizedBudgets from './summarizedBudgetsReducer';
 import reports from './reportsReducer';
 import print from './printReducer';
 import fullscreen from './fullscreenReducer';
+import buildings from './buildingsReducer';
 
 const reducers = {
   menu,
@@ -61,7 +62,8 @@ const reducers = {
   topChart,
   reports,
   print,
-  fullscreen
+  fullscreen,
+  buildings
 };
 
 export default reducers;

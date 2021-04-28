@@ -2,7 +2,7 @@
 import React from "react";
 import { Menu, Divider, SvgIcon } from "@material-ui/core";
 import styles from './MoreMenu.module.css';
-import { ExpandLess, ExpandMore, Description, ListAlt } from "@material-ui/icons";
+import { ExpandLess, ExpandMore, Description, ListAlt, Home } from "@material-ui/icons";
 import SubMenu from "./SubMenu/SubMenu";
 import { initiateDbBackup } from '../../../services/dbBackup.svc';
 import { toastManager } from "../../../toasts/toastManager";
@@ -77,6 +77,20 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
           pathname: "/ניהול/הפקת דוחות",
           state: {
             page: "הפקת דוחות",
+            buildingName: "ניהול",
+            buildingNameEng: "management"
+          }
+        }}
+      />
+
+      <MoreMenuNavLinkItem
+        icon={<Home />}
+        label="ניהול בניינים"
+        onClick={upgradedHandleClose}
+        to={{
+          pathname: "/ניהול/ניהול בניינים",
+          state: {
+            page: "ניהול בניינים",
             buildingName: "ניהול",
             buildingNameEng: "management"
           }

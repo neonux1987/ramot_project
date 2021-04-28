@@ -2,13 +2,13 @@
 import React from 'react';
 
 // CONTAINERS
-import BuildingsTableContainer from './BuildingsTableContainer';
+//import BuildingsTableContainer from './BuildingsTableContainer';
 import Page from '../../../../components/Page/Page';
 import SimplePageHeader from '../../../../components/PageHeader/SimplePageHeader';
 
 const TABLE_TITLE = "ניהול בניינים";
 
-const Buildings = () => {
+const BuildingsManagement = () => {
 
   return (
     <Page>
@@ -19,4 +19,4 @@ const Buildings = () => {
 
 }
 
-export default Buildings;
+export default BuildingsManagement;

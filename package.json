@@ -21,6 +21,7 @@
     "highcharts-react-official": "^3.0.0",
     "jss-rtl": "^0.3.0",
     "knex": "^0.21.11",
+    "nanoid": "^3.1.22",
     "nesthydrationjs": "^2.0.0",
     "pdf-lib": "^1.16.0",
     "platform-folders": "^0.5.2",
