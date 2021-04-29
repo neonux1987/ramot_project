@@ -9,6 +9,10 @@ class BuildingsLogic {
     this.menuLogic = new MenuLogic(connection);
   }
 
+  getBuilding(id, trx) {
+    return this.buildingsDao.getBuilding(id, trx);
+  }
+
   getBuildings(trx) {
     return this.buildingsDao.getBuidlings(trx);
   }
@@ -43,6 +47,21 @@ class BuildingsLogic {
     await createYearlyStatsTable(tablePrefix, trx);
 
     await this.menuLogic.addMenuItem(id, buildingName);
+  }
+
+  async updateBuilding(params, trx) {
+    const { id, payload } = params;
+
+    const building = await this.getBuilding(id);
+
+    /*  if (payload.buildingName && payload.buildingName !== building.buildingName)
+       record.previousBuildingName = payload.buildingName;
+ 
+     const record = {
+       status: "deleted"
+     } */
+
+    //return this.buildingsDao.updateBuilding(id, buildingName, record, trx);
   }
 
   /**

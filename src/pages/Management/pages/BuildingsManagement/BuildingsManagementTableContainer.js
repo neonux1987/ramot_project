@@ -26,11 +26,11 @@ import withFormFunctionality from '../../../../HOC/withFormFunctionality';
 import { toastManager } from '../../../../toasts/toastManager';
 import useTableLogic from '../../../../customHooks/useTableLogic';
 import TableSection from '../../../../components/Section/TableSection';
-import { fetchBuildings } from '../../../../redux/actions/buildingsActions';
+import { fetchBuildings, updateBuilding } from '../../../../redux/actions/buildingsActions';
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
 
-const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
-const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
+const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(3,1fr)";
+const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(3,1fr)";
 
 const BuildingsManagementTableContainer = () => {
 
@@ -61,10 +61,27 @@ const BuildingsManagementTableContainer = () => {
     return data[index];
   }
 
+  const deleteBuilding = useCallback((rowData, index) => {
+
+  }, []);
+
+  const onBlurSelectHandler = useCallback(() => {
+
+  }, []);
+
+  const onBlurHandler = () => {
+    console.log("whyyyyy");
+    dispatch(updateBuilding(1, {}));
+  };
+
   const HeadersRow = () => {
     return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
 
-      <HeaderCell>asdsa</HeaderCell>
+      {editMode ? <HeaderCell>פעולות</HeaderCell> : null}
+      <HeaderCell>שורה</HeaderCell>
+      <HeaderCell>מזהה</HeaderCell>
+      <HeaderCell>שם בניין</HeaderCell>
+      <HeaderCell>מצב</HeaderCell>
     </HeaderRow>
   }
 
@@ -72,9 +89,28 @@ const BuildingsManagementTableContainer = () => {
     // row data
     const rowData = getDataObject(index);
 
-    return <TableRow>
+    return <TableRow gridTemplateColumns={getGridTemplateColumns()}>
 
-      <Cell>asd</Cell>
+      {editMode ? <TableActions deleteHandler={() => deleteBuilding(rowData, index)} /> : null}
+      <Cell>{index + 1}</Cell>
+      <Cell>{rowData.id}</Cell>
+      {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}
+
+      {editMode ?
+        <SelectDropDown
+          value={rowData.visibility}
+          valueName={rowData.visibility === 1 ? "פעיל" : "מושבת"}
+          index={index}
+          selectChangeHandler={onBlurSelectHandler}
+          name={"מצב"}
+        >
+          {[
+            <MenuItem value={0} key={0}>מושבת</MenuItem>,
+            <MenuItem value={1} key={1}>פעיל</MenuItem>,
+            <MenuItem value={2} key={2}>מחוק</MenuItem>
+          ]}
+        </SelectDropDown> :
+        <Cell>{rowData.visibility === 1 ? "פעיל" : "מושבת"}</Cell>}
 
     </TableRow>
   }

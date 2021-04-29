@@ -19,6 +19,16 @@ class BuildingsDao {
       });
   }
 
+  getBuidling(id, trx = connectionPool.getConnection()) {
+    console.log(id);
+    return trx.select("*").from('buildings').where({ id })
+      .catch((error) => {
+        const newError = new DbError(`המערכת לא התליחה לשלוף נתונים של בניין קוד מזהה ${id}`, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
   addBuilding(record = Object, trx = this.connection) {
     return trx("buildings").insert(record)
       .catch((error) => {

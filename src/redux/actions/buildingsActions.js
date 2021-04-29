@@ -28,6 +28,23 @@ export const fetchBuildings = () => {
   }
 };
 
+export const updateBuilding = (id, payload) => {
+
+  return dispatch => {
+
+    return ipcSendReceive({
+      send: {
+        channel: "update-building",
+        params: { id, payload }
+      },
+      receive: {
+        channel: "updated-bulding"
+      }
+    });
+
+  }
+};
+
 const requestBuildings = function () {
   return {
     type: TYPES.BUILDINGS_REQUEST
