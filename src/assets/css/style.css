@@ -247,7 +247,7 @@ input,textarea{
   }
 
   .tableCell:last-child{
-    margin-left: 0 !important;
+    padding-left: 0 !important;
   }
 
   .tableCell:first-child{
