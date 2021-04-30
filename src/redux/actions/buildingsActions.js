@@ -1,6 +1,7 @@
 import { ipcSendReceive } from './util/util';
 
 export const TYPES = {
+  BUILDINGS_UPDATE: "BUILDINGS_UPDATE",
   BUILDINGS_REQUEST: "BUILDINGS_REQUEST",
   BUILDINGS_RECEIVE: "BUILDINGS_RECEIVE",
   BUILDINGS_FETCHING_FAILED: "BUILDINGS_FETCHING_FAILED"
@@ -28,9 +29,11 @@ export const fetchBuildings = () => {
   }
 };
 
-export const updateBuilding = (id, payload) => {
+export const updateBuilding = (id, payload, oldCopy) => {
 
   return dispatch => {
+
+    updateBuildingsInStore(payload);
 
     return ipcSendReceive({
       send: {
@@ -42,6 +45,13 @@ export const updateBuilding = (id, payload) => {
       }
     });
 
+  }
+};
+
+const updateBuildingsInStore = function (data) {
+  return {
+    type: TYPES.BUILDINGS_UPDATE,
+    data
   }
 };
 

@@ -28,6 +28,7 @@ import GroupRow from '../../components/table/components/GroupRow';
 import ConfirmDeleteBudgetExecution from '../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution';
 import HeaderCell from '../../components/table/components/HeaderCell';
 import Cell from '../../components/table/components/Cell';
+import TableSection from '../../components/Section/TableSection';
 
 // HOOKS
 import useModalLogic from '../../customHooks/useModalLogic';
@@ -35,10 +36,6 @@ import AddNewContainer from './AddNewContainer/AddNewContainer';
 import useTableLogic from '../../customHooks/useTableLogic';
 import useDifferenceColor from '../../customHooks/useDifferenceColor';
 import BudgetExecutionsDatePicker from './BudgetExecutionsDatePicker';
-
-import SampleTable from './SampleTable'
-import SectionWithHeader from '../../components/Section/SectionWithHeader';
-import TableSection from '../../components/Section/TableSection';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -304,8 +301,6 @@ const BudgetExecutionsTableContainer = props => {
           date: `שנה ${date.year} / רבעון ${date.quarter}`
         }}
       />
-
-      {/* <SampleTable data={data} /> */}
 
     </TableSection>
   );

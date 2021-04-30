@@ -58,12 +58,12 @@ const green = css`
   background-color: rgb(0, 227, 150);
 `;
 
-const DonutStatBox = ({ title, income, outcome, unicodeSymbol, headerBgColor, loading = true, index = 1 }) => {
+const DonutStatBox = ({ title, income, outcome, unicodeSymbol, color, loading = true, index = 1, border }) => {
 
   const incomeText = `הכנסות ${income} ${unicodeSymbol}`;
   const outcomeText = `הוצאות ${outcome} ${unicodeSymbol}`;
 
-  return <StatBox title={title} headerBgColor={headerBgColor} loading={loading} index={index}>
+  return <StatBox title={title} color={color} loading={loading} index={index} border={border}>
     <div className={wrapper}>
 
       <div className={legend}>

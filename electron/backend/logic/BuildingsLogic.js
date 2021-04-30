@@ -9,8 +9,8 @@ class BuildingsLogic {
     this.menuLogic = new MenuLogic(connection);
   }
 
-  getBuilding(id, trx) {
-    return this.buildingsDao.getBuilding(id, trx);
+  getBuidlingById(id, trx) {
+    return this.buildingsDao.getBuidlingById(id, trx);
   }
 
   getBuildings(trx) {
@@ -21,6 +21,8 @@ class BuildingsLogic {
     const { nanoid } = require('nanoid');
     const trx = await ConnectionPool.getTransaction();
 
+    const buildings = await this.getBuildings(trx);
+
     // tabe prefix will be used to name
     // the tables of the building in the database
     const id = nanoid();
@@ -29,7 +31,9 @@ class BuildingsLogic {
       id,
       buildingName,
       visible: "כן",
-      status: "active"
+      status: "active",
+      order: buildings.length + 1,
+      previousBuildingName: buildingName
     };
 
     // add the building
@@ -49,31 +53,35 @@ class BuildingsLogic {
     await this.menuLogic.addMenuItem(id, buildingName);
   }
 
-  async updateBuilding(params, trx) {
-    const { id, payload } = params;
+  async updateBuilding({ id, payload }) {
+    const trx = await ConnectionPool.getTransaction();
 
-    const building = await this.getBuilding(id);
+    const record = { ...payload };
 
-    /*  if (payload.buildingName && payload.buildingName !== building.buildingName)
-       record.previousBuildingName = payload.buildingName;
- 
-     const record = {
-       status: "deleted"
-     } */
+    const building = (await this.getBuidlingById(id, trx))[0];
 
-    //return this.buildingsDao.updateBuilding(id, buildingName, record, trx);
+    if (payload.buildingName && payload.buildingName !== building.buildingName)
+      record.previousBuildingName = building.buildingName;
+
+    await this.menuLogic.updateMenuItem(id, record.buildingName, trx);
+
+    const updatedBuilding = await this.buildingsDao.updateBuilding(id, record, trx);
+
+    trx.commit();
+
+    return updatedBuilding;
   }
 
   /**
    * the building is not getting deleted immediately 
    * but moved to deleted status
    */
-  deleteBuilding(id, buildingName, trx) {
+  deleteBuilding(id, trx) {
     const record = {
-      status: "deleted"
+      status: "מחוק"
     }
 
-    return this.buildingsDao.updateBuilding(id, buildingName, record, trx);
+    return this.buildingsDao.updateBuilding(id, record, trx);
   }
 
   deleteBuildingPermanently(id, buildingName, trx) {

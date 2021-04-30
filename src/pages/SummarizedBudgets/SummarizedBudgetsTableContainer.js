@@ -18,7 +18,6 @@ import ThemeContext from '../../context/ThemeContext';
 import TableControls from '../../components/table/TableControls/TableControls';
 import PageControls from '../../components/PageControls/PageControls';
 import EditControls from '../../components/EditControls/EditControls';
-import TableWrapper from '../../components/table/TableWrapper/TableWrapper';
 import HeaderRow from '../../components/table/components/HeaderRow';
 import GroupCell from '../../components/table/components/GroupCell';
 import HeaderCell from '../../components/table/components/HeaderCell';

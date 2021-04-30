@@ -1,7 +1,6 @@
 // LIBRARIES
 import React from 'react';
 import { IoMdStats } from 'react-icons/io';
-import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 
 // COMPONENTS
@@ -26,8 +25,6 @@ const BY_MONTHS_TITLE = "הוצאות והכנסות לפי חודשים";
 const BY_QUARTERS_TITLE = "הוצאות והכנסות לפי רבעונים";
 const BY_YEARS_TITLE = "הוצאות והכנסות לפי שנים";
 const TOP_EXPANSES_TITLE = "טופ הוצאות";
-
-const activeClass = "activeExpandItem";
 
 const Statistics = props => {
   //building name

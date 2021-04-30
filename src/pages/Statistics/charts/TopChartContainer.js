@@ -12,8 +12,6 @@ import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
 import TableControls from '../../../components/table/TableControls/TableControls';
 import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
 import BarChart from '../../../components/charts/BarChart';
-import ChartSelectorNav from '../../../components/charts/ChartSelectorNav';
-import SectionWithHeader from '../../../components/Section/SectionWithHeader';
 import Tab from '../../../components/Tab/Tab';
 
 const TopChartContainer = props => {

@@ -11,7 +11,14 @@ import {
 } from './StatBox.module.css';
 
 
-const StatBox = ({ title, loading = true, children, index = 1, headerBgColor = "#0e7ab9" }) => {
+const StatBox = ({
+  title,
+  loading = true,
+  children,
+  index = 1,
+  color = "#0e7ab9",
+  border = false
+}) => {
 
   return <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
     <Grow
@@ -19,10 +26,10 @@ const StatBox = ({ title, loading = true, children, index = 1, headerBgColor = "
       style={{ transformOrigin: '0 0 0' }}
       timeout={(index) * 500}
     >
-      <Paper className={paper} >
+      <Paper className={paper} style={{ border: border ? `1px solid ${color}` : "none" }}>
 
         {/* start upper */}
-        <div className={upper} style={{ backgroundColor: headerBgColor }}>
+        <div className={upper} style={{ backgroundColor: color }}>
           <div className={titleWrapper}>
             <Typography variant="h6" className={titleText}>
               {title}

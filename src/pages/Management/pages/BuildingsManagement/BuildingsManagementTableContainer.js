@@ -1,11 +1,10 @@
 // LIBRARIES
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MenuItem } from '@material-ui/core';
 
 // ACTIONS
-import { fetchExpansesCodesByStatus, expansesCodesCleanup, updateExpanseCode, addExpanseCode, deleteExpanseCode } from '../../../../redux/actions/expansesCodesActions';
-import { fetchSummarizedSections } from '../../../../redux/actions/summarizedSectionsActions';
+import { fetchBuildings, updateBuilding } from '../../../../redux/actions/buildingsActions';
 
 // COMPONENTS
 import EditControls from '../../../../components/EditControls/EditControls';
@@ -17,20 +16,16 @@ import HeaderCell from '../../../../components/table/components/HeaderCell';
 import HeaderRow from '../../../../components/table/components/HeaderRow';
 import TableRow from '../../../../components/table/components/TableRow';
 import Table from '../../../../components/table/Table';
+import TableSection from '../../../../components/Section/TableSection';
 
-// HOC
-import withFormFunctionality from '../../../../HOC/withFormFunctionality';
+// HOOKS
+import useTableLogic from '../../../../customHooks/useTableLogic';
 
 // CONTAINERS
-
-import { toastManager } from '../../../../toasts/toastManager';
-import useTableLogic from '../../../../customHooks/useTableLogic';
-import TableSection from '../../../../components/Section/TableSection';
-import { fetchBuildings, updateBuilding } from '../../../../redux/actions/buildingsActions';
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
 
-const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(3,1fr)";
-const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(3,1fr)";
+const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
+const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
 const BuildingsManagementTableContainer = () => {
 
@@ -39,15 +34,13 @@ const BuildingsManagementTableContainer = () => {
     editMode,
     toggleAddNewMode,
     addNewMode,
-    textInput,
-    numberInput
+    textInput
   } = useTableLogic();
 
   const dispatch = useDispatch();
 
-
   const { data, isFetching } = useSelector(store => store.buildings);
-  console.log(data);
+
   useEffect(() => {
     //get the building month expanses
     dispatch(fetchBuildings());
@@ -69,9 +62,18 @@ const BuildingsManagementTableContainer = () => {
 
   }, []);
 
-  const onBlurHandler = () => {
-    console.log("whyyyyy");
-    dispatch(updateBuilding(1, {}));
+  const onBlurHandler = event => {
+    const target = event.target;
+    const { index } = target.dataset;
+    const { value } = target;
+
+    const rowData = getDataObject(index);
+    const oldCopy = { ...rowData };
+
+    const payload = {
+      buildingName: value
+    }
+    dispatch(updateBuilding(rowData.id, payload, oldCopy));
   };
 
   const HeadersRow = () => {
@@ -81,6 +83,7 @@ const BuildingsManagementTableContainer = () => {
       <HeaderCell>שורה</HeaderCell>
       <HeaderCell>מזהה</HeaderCell>
       <HeaderCell>שם בניין</HeaderCell>
+      <HeaderCell>שם קודם</HeaderCell>
       <HeaderCell>מצב</HeaderCell>
     </HeaderRow>
   }
@@ -95,22 +98,23 @@ const BuildingsManagementTableContainer = () => {
       <Cell>{index + 1}</Cell>
       <Cell>{rowData.id}</Cell>
       {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}
+      <Cell>{rowData.previousBuildingName}</Cell>
 
       {editMode ?
         <SelectDropDown
-          value={rowData.visibility}
-          valueName={rowData.visibility === 1 ? "פעיל" : "מושבת"}
+          value={rowData.status}
+          valueName={rowData.status}
           index={index}
           selectChangeHandler={onBlurSelectHandler}
           name={"מצב"}
         >
           {[
-            <MenuItem value={0} key={0}>מושבת</MenuItem>,
-            <MenuItem value={1} key={1}>פעיל</MenuItem>,
-            <MenuItem value={2} key={2}>מחוק</MenuItem>
+            <MenuItem value={"מושבת"} key={"מושבת"}>מושבת</MenuItem>,
+            <MenuItem value={"פעיל"} key={"פעיל"}>פעיל</MenuItem>,
+            <MenuItem value={"מחוק"} key={"מחוק"}>מחוק</MenuItem>
           ]}
         </SelectDropDown> :
-        <Cell>{rowData.visibility === 1 ? "פעיל" : "מושבת"}</Cell>}
+        <Cell>{rowData.status}</Cell>}
 
     </TableRow>
   }

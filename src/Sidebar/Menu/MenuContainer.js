@@ -14,6 +14,7 @@ import { updateRoute } from '../../redux/actions/routesActions';
 import useIcons from '../../customHooks/useIcons';
 import HomeButton from '../HomeButton/HomeButton';
 import Menu from './Menu';
+import pages from '../../helpers/pages';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
@@ -104,7 +105,7 @@ const MenuContainer = ({ routes, history }) => {
 
   const menuRender = data.map((item) => {
 
-    const { label, submenu, id, engLabel } = item;
+    const { label, id, engLabel } = item;
 
     return <ExpandableMenuItem
       label={label}
@@ -115,13 +116,13 @@ const MenuContainer = ({ routes, history }) => {
       active={routeState.buildingName === label}
     >
 
-      {submenu.map((subItem) => {
-        const { label, id, path } = subItem;
+      {pages.map((page) => {
+        const { label, path } = page;
 
         return <Menuitem
           label={label}
           Icon={generateIcon(label)}
-          key={id}
+          key={label}
           to={{
             pathname: `/${item.path}/${path}`,
             state: {

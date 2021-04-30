@@ -11,6 +11,7 @@ import SummarizedBudgets from '../pages/SummarizedBudgets/SummarizedBudgets';
 import Management from '../pages/Management/Management';
 import Statistics from '../pages/Statistics/Statistics';
 import Settings from '../pages/Settings/Settings';
+import pages from '../helpers/pages';
 
 const Routes = props => {
 
@@ -21,8 +22,8 @@ const Routes = props => {
     //generate menu routes and submenu routes
     let routes = [];
     menu.forEach(route => {
-      routes.push(route.submenu.map(subRoute => {
-        return (<Route path={"/" + route.path + "/" + subRoute.path} exact component={whichPageComponent(subRoute.label)} key={subRoute.id} />);
+      routes.push(pages.map(page => {
+        return (<Route path={"/" + route.path + "/" + page.path} exact component={whichPageComponent(page.label)} key={page.label} />);
       }));
     });
 

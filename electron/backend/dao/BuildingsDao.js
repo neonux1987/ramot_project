@@ -19,8 +19,7 @@ class BuildingsDao {
       });
   }
 
-  getBuidling(id, trx = connectionPool.getConnection()) {
-    console.log(id);
+  getBuidlingById(id, trx = connectionPool.getConnection()) {
     return trx.select("*").from('buildings').where({ id })
       .catch((error) => {
         const newError = new DbError(`המערכת לא התליחה לשלוף נתונים של בניין קוד מזהה ${id}`, FILENAME, error);
@@ -29,7 +28,7 @@ class BuildingsDao {
       });
   }
 
-  addBuilding(record = Object, trx = this.connection) {
+  addBuilding(record = Object, trx = connectionPool.getConnection()) {
     return trx("buildings").insert(record)
       .catch((error) => {
         const msg = `קרתה תקלה בזמן הוספת בניין חדש בשם ${record.buildingName}`;
@@ -39,12 +38,12 @@ class BuildingsDao {
       });
   }
 
-  updateBuilding(id = Number, buildingName = String, record = Object, trx) {
+  updateBuilding(id = Number, record = Object, trx = connectionPool.getConnection()) {
     return trx("buildings")
       .where({ id: id })
       .update(record)
       .catch((error) => {
-        const msg = `קרתה תקלה בזמן עדכון בניין בשם ${buildingName}`;
+        const msg = `קרתה תקלה בזמן עדכון רשומה עם קוד מזהה ${id}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -54,7 +53,7 @@ class BuildingsDao {
   deleteBuilding(
     buildingName = String,
     id = Number,
-    trx = this.connection
+    trx = connectionPool.getConnection()
   ) {
     return trx("buildings")
       .where({ id: id })

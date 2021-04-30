@@ -9,19 +9,14 @@ import { useDispatch } from "react-redux";
 
 // COMPONENTS
 
-// COMPONENTS WITH SOUND
-import ButtonWithSound from "../../../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
-
 // TOASTS
 import { toastManager } from "../../../../../toasts/toastManager";
-import AddBoxContainer from "../../../../../components/AddBoxContainer/AddBoxContainer";
-import { TextField } from "@material-ui/core";
 import AddNewBuilding from "./AddNewBuilding";
 
 
 const AddNewBuildingContainer = (props) => {
 
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   const [buildingName, setBuildingName] = useState("");
 
@@ -39,7 +34,7 @@ const AddNewBuildingContainer = (props) => {
     if (buildingName === "")
       toastManager.error("שם בניין לא יכול להיות ריק")
     /* else
-      dispatch(addBudgetExecution(params)); */
+      dispatch(addBudgetExecution({})); */
   }
 
   return (

@@ -19,6 +19,7 @@ const Toolbar = () => {
 
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const [path, setPath] = useState("");
 
   const [show, setShow] = useState(true);
 
@@ -33,6 +34,7 @@ const Toolbar = () => {
 
     setTimeout(() => {
       setShow(true);
+      setPath(() => pathname)
     }, 400);
   }, [pathname]);
 
@@ -45,7 +47,7 @@ const Toolbar = () => {
 
       <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
         <ToggleButton onClick={onClick} />
-        <BreadcrumbsContainer pathname={pathname} />
+        <BreadcrumbsContainer pathname={path} />
       </div>
 
     </div>

@@ -71,7 +71,7 @@ class QuarterStatsContainer extends React.PureComponent {
         outcome={outcome}
         income={income}
         unicodeSymbol={Helper.shekelUnicode}
-        headerBgColor={colors[i]}
+        color={colors[i]}
         loading={isFetching}
         index={i + 1}
       />;
@@ -91,9 +91,10 @@ class QuarterStatsContainer extends React.PureComponent {
       outcome={outcome}
       income={income}
       unicodeSymbol={Helper.shekelUnicode}
-      headerBgColor={this.context.colorSet[3]}
+      color={this.context.colorSet[3]}
       loading={isFetching}
       index={4}
+      border
     />;
   }
 

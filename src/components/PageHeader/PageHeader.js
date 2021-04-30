@@ -9,7 +9,7 @@ import useModalLogic from '../../customHooks/useModalLogic';
 import GenerateReportsModal from '../modals/GenerateReportsModal';
 
 const container = css`
-  margin: 20px 20px 30px;
+  margin: 20px 20px 20px;
 `;
 
 const mainContainer = css`

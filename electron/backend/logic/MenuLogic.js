@@ -12,7 +12,7 @@ class MenuLogic {
 
   async addMenuItem(id, buildingName, trx) {
 
-    const pathname = buildingName.replace(" ", "-");
+    const pathname = buildingName.replaceAll(" ", "-");
     const record = {
       buildingId: id,
       pathname
@@ -26,7 +26,7 @@ class MenuLogic {
       const record = {
         menuid: menuItemId,
         label: label,
-        path: label.replace(" ", "-"),
+        path: label.replaceAll(" ", "-"),
         order: i + 1
       }
 
@@ -34,15 +34,14 @@ class MenuLogic {
     }
   }
 
-  addSubMenuItem(id, buildingName, trx) {
+  updateMenuItem(buildingId, buildingName, trx) {
+    const path = buildingName.replaceAll(" ", "-");
 
-    const pathname = buildingName.replace(" ", "-");
     const record = {
-      buildingId: id,
-      pathname
+      path
     };
 
-    return this.menuDao.addMenuItem(record);
+    return this.menuDao.updateMenuItem(buildingId, record, trx);
   }
 
 

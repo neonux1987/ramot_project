@@ -5,7 +5,6 @@ import Crumb from "./Crumb";
 
 
 const BreadcrumbsContainer = ({ pathname }) => {
-
   const pathnames = pathname.split("/").filter(x => x);
 
   // if it's only 1, it means it's the home page
@@ -24,4 +23,4 @@ const BreadcrumbsContainer = ({ pathname }) => {
 
 }
 
-export default BreadcrumbsContainer;
+export default React.memo(BreadcrumbsContainer);
