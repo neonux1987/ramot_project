@@ -158,7 +158,8 @@ input,textarea{
   #section,
   #styledSection-header,
   #printModal,
-  #section-header{
+  #section-header,
+  hr{
     display: none !important;
   }
 

@@ -24,7 +24,7 @@ import SideBarContainer from './Sidebar/SideBarContainer';
 import useServices from './customHooks/useServices';
 
 // ACTIONS
-import { fetchMenu } from './redux/actions/menuActions';
+import { fetchBuildings } from './redux/actions/buildingsActions';
 
 // TOASTS
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
@@ -38,14 +38,11 @@ const AppContainer = () => {
 
   const generalSettings = useSelector(store => store.generalSettings);
 
-  const menu = useSelector(store => store.menu);
-
   const dispatch = useDispatch();
 
   const [start] = useServices();
 
   useEffect(() => {
-    dispatch(fetchMenu());
     dispatch(generalSettingsActions.fetchGeneralSettings());
   }, [dispatch]);
 
@@ -53,7 +50,7 @@ const AppContainer = () => {
     start();
   }, [start]); */
 
-  if (menu.isFetching || generalSettings.isFetching) {
+  if (generalSettings.isFetching) {
     return <LogoLoader />;
   }
 

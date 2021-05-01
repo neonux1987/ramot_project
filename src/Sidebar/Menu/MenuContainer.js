@@ -15,13 +15,12 @@ import useIcons from '../../customHooks/useIcons';
 import HomeButton from '../HomeButton/HomeButton';
 import Menu from './Menu';
 import pages from '../../helpers/pages';
+import { fetchMenu } from '../../redux/actions/menuActions';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
 
-const MenuContainer = ({ routes, history }) => {
-
-  const { data } = useSelector(store => store.menu);
+const MenuContainer = ({ routes, history, data }) => {
 
   const dispatch = useDispatch();
 
@@ -32,8 +31,8 @@ const MenuContainer = ({ routes, history }) => {
 
     data.forEach(item => {
       const buildings = routes.active.expanded;
-      newState[item.engLabel] = {
-        open: buildings[item.engLabel] === undefined ? false : buildings[item.engLabel].open
+      newState[item.buildingNameEng] = {
+        open: buildings[item.buildingNameEng] === undefined ? false : buildings[item.buildingNameEng].open
       }
 
     });
@@ -44,22 +43,22 @@ const MenuContainer = ({ routes, history }) => {
   const routeState = routes.active.state;
 
   const expandHandleClick = (item) => {
-    const { label, engLabel, path } = item;
+    const { buildingName, buildingNameEng, path } = item;
 
     const expanded = {
       ...state,
-      [engLabel]: {
-        open: !state[engLabel].open
+      [buildingNameEng]: {
+        open: !state[buildingNameEng].open
       }
     };
 
     // when expanding the menu item, set
     // what default page it will open
-    if (state[engLabel].open === false) {
+    if (state[buildingNameEng].open === false) {
       const newState = {
         page: DEFAULT_PAGE,
-        buildingName: label,
-        buildingNameEng: engLabel
+        buildingName: buildingName,
+        buildingNameEng: buildingNameEng
       }
 
       const pathname = `/${path}/הוצאות-חודשיות`;
@@ -105,15 +104,15 @@ const MenuContainer = ({ routes, history }) => {
 
   const menuRender = data.map((item) => {
 
-    const { label, id, engLabel } = item;
+    const { buildingName, id, buildingNameEng } = item;
 
     return <ExpandableMenuItem
-      label={label}
+      label={buildingName}
       Icon={generateIcon("home")}
       onClick={() => expandHandleClick(item)}
-      open={state[engLabel].open}
+      open={state[buildingNameEng].open}
       key={id}
-      active={routeState.buildingName === label}
+      active={routeState.buildingName === buildingName}
     >
 
       {pages.map((page) => {
@@ -127,11 +126,11 @@ const MenuContainer = ({ routes, history }) => {
             pathname: `/${item.path}/${path}`,
             state: {
               page: label,
-              buildingName: item.label,
-              buildingNameEng: item.engLabel
+              buildingName: item.buildingName,
+              buildingNameEng: item.buildingNameEng
             }
           }}
-          active={routeState.page === label && routeState.buildingName === item.label}
+          active={routeState.page === label && routeState.buildingName === item.buildingName}
         />;
       })}
 

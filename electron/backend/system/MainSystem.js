@@ -96,7 +96,7 @@ class MainSystem {
       const UpdatesLogic = require('../logic/UpdatesLogic');
       const connectionPool = require('../connection/ConnectionPool');
       const SettingsLogic = require('../logic/SettingsLogic');
-      const MenuLogic = require('../logic/MenuLogic');
+      const BuildingsLogic = require('../logic/BuildingsLogic');
 
       const setupLogic = new SetupLogic();
       const settingsLogic = new SettingsLogic();
@@ -112,12 +112,12 @@ class MainSystem {
       const settings = await settingsLogic.getSettings();
 
       //fetch menu data
-      const menuLogic = new MenuLogic();
-      const menu = await menuLogic.getMenu();
+      const buildingsLogic = new BuildingsLogic();
+      const buildings = await buildingsLogic.getBuildings();
 
       // In the main process.
       global.sharedObject = {
-        buildings: menu,
+        buildings,
         pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets", "statistics"],
         settings
       }

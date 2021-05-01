@@ -1,6 +1,7 @@
 import { ipcSendReceive } from './util/util';
 
 export const TYPES = {
+  MENU_UPDATE: "MENU_UPDATE",
   MENU_REQUEST: "MENU_REQUEST",
   MENU_RECEIVE: "MENU_RECEIVE",
   MENU_FETCHING_FAILED: "MENU_FETCHING_FAILED"
@@ -16,15 +17,23 @@ export const fetchMenu = () => {
 
     return ipcSendReceive({
       send: {
-        channel: "get-menu"
+        channel: "get-buildings"
       },
       receive: {
-        channel: "menu-data"
+        channel: "buildings-data"
       },
       onSuccess: result => dispatch(receiveMenu(result.data)),
       onError: result => dispatch(fetchingFailed(result.error))
     });
 
+  }
+};
+
+const updateMenuItem = function (buildingId, data) {
+  return {
+    type: TYPES.MENU_UPDATE,
+    buildingId,
+    data
   }
 };
 

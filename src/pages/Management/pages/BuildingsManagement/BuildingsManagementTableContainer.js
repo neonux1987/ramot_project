@@ -24,8 +24,8 @@ import useTableLogic from '../../../../customHooks/useTableLogic';
 // CONTAINERS
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
 
-const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
-const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
+const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(5,1fr)";
+const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(5,1fr)";
 
 const BuildingsManagementTableContainer = () => {
 
@@ -83,6 +83,7 @@ const BuildingsManagementTableContainer = () => {
       <HeaderCell>שורה</HeaderCell>
       <HeaderCell>מזהה</HeaderCell>
       <HeaderCell>שם בניין</HeaderCell>
+      <HeaderCell>שם בניין באנגלית</HeaderCell>
       <HeaderCell>שם קודם</HeaderCell>
       <HeaderCell>מצב</HeaderCell>
     </HeaderRow>
@@ -98,6 +99,8 @@ const BuildingsManagementTableContainer = () => {
       <Cell>{index + 1}</Cell>
       <Cell>{rowData.id}</Cell>
       {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}
+      {editMode ? textInput("buildingNameEng", rowData.buildingNameEng, index, onBlurHandler) : <Cell>{rowData.buildingNameEng.replaceAll("_", " ")}</Cell>}
+
       <Cell>{rowData.previousBuildingName}</Cell>
 
       {editMode ?

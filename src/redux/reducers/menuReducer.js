@@ -9,6 +9,16 @@ const initState = {
 
 const MenuReducer = (state = initState, action) => {
   switch (action.type) {
+    case TYPES.MENU_UPDATE:
+      const dataCopy = { ...state.data };
+      dataCopy.forEach((item, index) => {
+        if (item.building_id === action.buildingId)
+          dataCopy[index] = action.data;
+      });
+      return {
+        ...state,
+        data: dataCopy
+      }
     case TYPES.MENU_RECEIVE:
       return {
         ...state,

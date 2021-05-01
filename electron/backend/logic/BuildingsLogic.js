@@ -18,18 +18,18 @@ class BuildingsLogic {
   }
 
   async addBuilding(buildingName) {
-    const { nanoid } = require('nanoid');
     const trx = await ConnectionPool.getTransaction();
 
     const buildings = await this.getBuildings(trx);
 
     // tabe prefix will be used to name
     // the tables of the building in the database
-    const id = nanoid();
+    const id = lowercaseRandomString();
 
     const record = {
       id,
       buildingName,
+      buildingNameEng,
       visible: "כן",
       status: "active",
       order: buildings.length + 1,

@@ -11,7 +11,8 @@ const positive = {
 }
 
 const neutral = {
-  color: "#000000"
+  color: "#000000",
+  background: "rgb(251 255 9)"
 }
 
 const useDifferenceColor = () => {

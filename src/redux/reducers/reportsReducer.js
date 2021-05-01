@@ -6,11 +6,11 @@ const buildings = getBuildings();
 const checkedBuildings = []
 
 buildings.forEach(building => {
-  const { label, engLabel } = building;
+  const { buildingName, buildingNameEng } = building;
 
   checkedBuildings.push({
-    buildingName: label,
-    buildingNameEng: engLabel,
+    buildingName,
+    buildingNameEng,
     isChecked: true
   });
 });
