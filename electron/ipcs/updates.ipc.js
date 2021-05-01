@@ -53,7 +53,7 @@ const updatesIpc = () => {
     autoUpdater.checkForUpdates().then((info) => {
       const { version, releaseDate } = info.updateInfo;
       cancellationToken = info.cancellationToken;
-
+      console.log(info);
       if (version !== currentVersion)
         event.sender.send('checked_for_updates', { data: { version, releaseDate } });
       else
