@@ -26,6 +26,7 @@ const Table = ({
 }) => {
 
   const { printMode, colors } = useSelector(store => store.print);
+  const isFullscreen = useSelector(store => store.fullscreen.isFullscreen);
   const [components] = useTableComponents();
 
   // since the virutalized list causing problems
@@ -54,7 +55,10 @@ const Table = ({
   //useWindowScroll
   />;
 
-  return <TableWrapper id="table" printMode={printMode} colors={colors}>
+  const tableHeight = GroupComponent && isFullscreen ? "94vh" : "94vh";
+  const bodyHeight = GroupComponent && isFullscreen ? "80vh" : "85.7vh";
+
+  return <TableWrapper id="table" printMode={printMode} colors={colors} height={tableHeight}>
 
     <Thead printMode={printMode}>
 
@@ -71,7 +75,7 @@ const Table = ({
       printMode={printMode}
       divProps={{
         className: "_tableBody",
-        style: { minHeight: "600px" }
+        style: { minHeight: isFullscreen ? "initial" : "600px", height: bodyHeight }
       }}
     >
 
