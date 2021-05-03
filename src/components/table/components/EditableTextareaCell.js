@@ -26,6 +26,7 @@ const textarea = css`
   :hover,:focus,:active{
     border: 1px solid #000;
     outline: none;
+    overflow: hidden;
   }
 `;
 

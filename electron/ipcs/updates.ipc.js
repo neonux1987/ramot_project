@@ -34,7 +34,8 @@ const updatesIpc = () => {
       'provider': 'github',
       'owner': 'neonux1987',
       'repo': 'ramot_project',
-      'token': 'f55ef78253864c051c9520dca400f7a8313ff8fa'
+      'token': 'f55ef78253864c051c9520dca400f7a8313ff8fa',
+      'private': true
     };
 
     autoUpdater.setFeedURL(feedInfo);
@@ -53,7 +54,7 @@ const updatesIpc = () => {
     autoUpdater.checkForUpdates().then((info) => {
       const { version, releaseDate } = info.updateInfo;
       cancellationToken = info.cancellationToken;
-
+      //console.log(info.updateInfo);
       if (version !== currentVersion)
         event.sender.send('checked_for_updates', { data: { version, releaseDate } });
       else

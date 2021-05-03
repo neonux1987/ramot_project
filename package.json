@@ -70,10 +70,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "./Icon/ramot-group-icon.ico",
-      "publish": [
-        "github"
-      ]
+      "icon": "./Icon/ramot-group-icon.ico"
     },
     "publish": [
       {
@@ -89,7 +86,6 @@
       "allowToChangeInstallationDirectory": false,
       "oneClick": true,
       "createDesktopShortcut": true,
-      "differentialPackage": true,
       "deleteAppDataOnUninstall": true
     },
     "directories": {

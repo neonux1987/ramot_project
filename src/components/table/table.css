@@ -23,25 +23,25 @@ th,td{
 
 .groupRow{
   border-bottom: none !important;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #f1f1f1;
   position: relative;
-  background-color: #fafafa;
+  background-color: #f7f7f7;
 }
 
 .headerRow{
   grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #f1f1f1;
   position: relative;
-  background-color: #fafafa;
+  background-color: #f7f7f7;
   box-shadow: rgba(0, 0, 0, 0.02) 0px 2px 2px 1px;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #f1f1f1;
   z-index: 2;
 }
 
 .tableRow{
   min-height: 35px;
   display: grid;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #f1f1f1;
 }
 
 .groupCell{
@@ -64,7 +64,7 @@ th,td{
   word-break: break-word;
   text-align: center;
   overflow: hidden;
-  border-right: 1px solid #eaeaea;
+  border-right: 1px solid #f1f1f1;
   font-size: 16px;
   min-height: 35px;
 }

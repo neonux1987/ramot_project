@@ -51,7 +51,7 @@ const BudgetExecutions = () => {
       />
     </Section>
 
-    <CustomDivider mt={0} mr={20} mb={20} ml={20} />
+    <CustomDivider mt={0} mr={20} mb={40} ml={20} />
 
     <BudgetExecutionsTableContainer
       buildingName={buildingName}
