@@ -7,7 +7,7 @@ import { RiFileExcel2Line } from 'react-icons/ri';
 import Helper from '../../../../../helpers/Helper';
 
 // SERVICES
-import { exportToExcelBulk } from '../../../../../services/excel.svc';
+import { exportReports } from '../../../../../services/reports.svc';
 
 // ACTIONS
 import { fetchRegisteredReportsGroupedByYear, fetchRegisteredReportsByYear } from '../../../../../redux/actions/registeredReportsActions';
@@ -83,7 +83,7 @@ const ExcelReportsGeneratorContainer = () => {
     // keep only the selected buildings
     const filteredBuildings = checkedBuildings.filter(building => building.isChecked === true);
 
-    exportToExcelBulk(newDate, filteredBuildings);
+    exportReports(newDate, filteredBuildings);
   }
 
   return (

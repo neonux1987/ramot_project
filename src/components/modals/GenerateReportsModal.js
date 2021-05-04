@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Helper from '../../helpers/Helper';
 import ExcelReportsGenerator from '../../pages/Management/pages/Reports/ExcelReportsGenerator/ExcelReportsGenerator';
 import { fetchRegisteredReportsByYear, fetchRegisteredReportsGroupedByYear } from '../../redux/actions/registeredReportsActions';
-import { exportToExcelBulk } from '../../services/excel.svc';
+import { exportReports } from '../../services/reports.svc';
 import Section from '../Section/Section';
 
 import EditModal from './modalTypes/EditModal';
@@ -70,7 +70,7 @@ const GenerateReportsModal = ({ buildingName, buildingNameEng }) => {
       quarterEng: Helper.convertQuarterToEng(quarter)
     }
 
-    exportToExcelBulk(newDate, [{ buildingName, buildingNameEng }]);
+    exportReports(newDate, [{ buildingName, buildingNameEng }]);
   }
 
   return (

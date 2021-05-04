@@ -30,7 +30,7 @@ class MainSystem {
     const settingsIpc = require('../../ipcs/settings.ipc');
     const registeredBackupsIpc = require('../../ipcs/registeredBackups.ipc');
     const dbBackupIpc = require('../../ipcs/dbBackup.ipc');
-    const excelIpc = require('../../ipcs/excel.ipc');
+    const reportsIpc = require('../../ipcs/reports.ipc');
     const emptyReportsGeneratorIpc = require('../../ipcs/emptyReportsGenerator.ipc');
     const mainProcessIpc = require('../../ipcs/mainProcess.ipc');
     const restoreDbIpc = require('../../ipcs/restoreDb.ipc');
@@ -74,7 +74,7 @@ class MainSystem {
 
     dbBackupIpc();
 
-    excelIpc();
+    reportsIpc();
 
     emptyReportsGeneratorIpc();
 

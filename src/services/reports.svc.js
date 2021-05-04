@@ -18,25 +18,25 @@ export const exportToExcel = (excelData) => {
 
 };
 
-export const exportToExcelBulk = (date, buildings) => {
+export const exportReports = (date, buildings) => {
 
-  const toastId = toastManager.info(<ToastRender spinner={true} message={"מבצע ייצוא לקבצי אקסל..."} />, {
+  const toastId = toastManager.info(<ToastRender spinner={true} message={"מייצא דוחות..."} />, {
     autoClose: false
   });
 
   return ipcSendReceive({
     send: {
-      channel: "export-to-excel-bulk",
+      channel: "export-reports",
       params: {
         date,
         buildings
       }
     },
     receive: {
-      channel: "excel-bulk-exported"
+      channel: "reports-exported"
     },
     onSuccess: () => toastManager.update(toastId, {
-      render: <ToastRender done={true} message={"ייצוא לקבצי אקסל בוצע בהצלחה."} />,
+      render: <ToastRender done={true} message={"הייצוא בוצע בהצלחה"} />,
       type: toastManager.types.SUCCESS,
       delay: 2000,
       autoClose: 3000

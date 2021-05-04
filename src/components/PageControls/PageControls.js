@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 // SERVICES
 import { saveToFileDialog } from '../../services/electronDialogs.svc';
-import { exportToExcel } from '../../services/excel.svc';
+import { exportToExcel } from '../../services/reports.svc';
 import { toastManager } from '../../toasts/toastManager';
 import useModalLogic from '../../customHooks/useModalLogic';
 

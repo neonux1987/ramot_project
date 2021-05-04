@@ -18,6 +18,7 @@
     "file-type": "^16.0.0",
     "fs-extra": "^9.0.1",
     "highcharts": "^9.0.1",
+    "highcharts-export-server": "^2.1.0",
     "highcharts-react-official": "^3.0.0",
     "jss-rtl": "^0.3.0",
     "knex": "^0.21.11",
