@@ -15,8 +15,6 @@ const reportsIpc = () => {
 
   ipcMain.on('export-reports', (event, { date, buildings }) => {
     exportReports(date, buildings).then((result) => {
-
-      exportChart();
       event.sender.send("reports-exported", { data: result });
     }).catch((error) => {
       event.reply("reports-exported", { error: error.message });

@@ -21,21 +21,6 @@ function getPageWorkbook(buildingName, buildingNameEng, pageName, date, data) {
   }
 }
 
-const getMonthExpansesFilename = (monthHeb) => {
-  return `הוצאות חודש ${monthHeb}`;
-}
-
-const getBudgetExecutionFilename = (quarterHeb) => {
-  return `ביצוע מול תקציב ${quarterHeb}`;
-}
-
-const getSummarizedBudgetsFilename = (year) => {
-  return `סיכום שנתי ${year}`;
-}
-
 module.exports = {
-  exportExcel,
-  getMonthExpansesFilename,
-  getBudgetExecutionFilename,
-  getSummarizedBudgetsFilename
+  exportExcel
 };

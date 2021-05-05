@@ -38,7 +38,6 @@ export const exportReports = (date, buildings) => {
     onSuccess: () => toastManager.update(toastId, {
       render: <ToastRender done={true} message={"הייצוא בוצע בהצלחה"} />,
       type: toastManager.types.SUCCESS,
-      delay: 2000,
       autoClose: 3000
     })
   });

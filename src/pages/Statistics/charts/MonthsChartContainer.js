@@ -31,7 +31,7 @@ const MonthsChartContainer = props => {
 
   const fetchMonthsData = useCallback(() => {
     const params = {
-      buildingName: buildingNameEng,
+      buildingNameEng,
       pageName,
       year: date.year
     }

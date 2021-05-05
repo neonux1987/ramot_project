@@ -1,6 +1,6 @@
 import React from 'react';
 import ChartWithExporting from './ChartWithExporting';
-import { columnChart } from './templates';
+const { columnChart } = require('../../helpers/chartsTemplates');
 
 const ColumnChart = ({ title = "", categories = [], series }) => {
 

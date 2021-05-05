@@ -1,17 +1,17 @@
 
-const monthExpansesWorkbook = require('./excel/workbooks/monthExpansesWorkbook');
-const budgetExecutionWorkbook = require('./excel/workbooks/budgetExecutionWorkbook');
-const summarizedBudgetsWorkbook = require('./excel/workbooks/summarizedBudgetsWorkbook');
 const { exportExcel } = require("./excel/excelSvc")
 const { exportChart } = require('./highcharts/exporter');
+const { columnChart } = require("./highcharts/chartTemplates");
+const SystemPaths = require("../system/SystemPaths");
 
-const exportReports = async (date, buildings, chartTemplate) => {
+const exportReports = async (date, buildings) => {
   const chartExporter = require("highcharts-export-server");
   const fse = require('fs-extra');
   const path = require('path');
 
   const SettingsLogic = require('../logic/SettingsLogic');
   const MonthExpansesLogic = require('../logic/MonthExpansesLogic');
+  const MonthlyStatsLogic = require('../logic/MonthlyStatsLogic');
   const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
   const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
   const RegisteredMonths = require('../logic/RegisteredMonthsLogic');
@@ -26,9 +26,15 @@ const exportReports = async (date, buildings, chartTemplate) => {
   const monthExpansesLogic = new MonthExpansesLogic();
   const budgetExecutionLogic = new BudgetExecutionLogic();
   const registeredMonths = new RegisteredMonths();
+  const monthlyStatsLogic = new MonthlyStatsLogic();
 
   // Initialize the exporter
-  chartExporter.initPool();
+  chartExporter.initPool({
+    initialWorkers: 1,
+    maxWorkers: 1
+  });
+
+  chartExporter.enableFileLogging(SystemPaths.paths.logs_folder_path, "ramot-group-errors.log");
 
   const userSettings = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.USER);
 
@@ -96,13 +102,17 @@ const exportReports = async (date, buildings, chartTemplate) => {
 
     });
 
-    // export charts for each building
-    await exporfetchAndExporttChart({
-      chartExporter,
-      fse,
-      template: chartTemplate,
-      filename: yearFolder
-    });
+    const monthlyStatsData = await monthlyStatsLogic.getAllMonthsStatsByYear(buildingNameEng, year);
+
+    if (monthlyStatsData.length > 0)
+      // export charts for each building
+      await prepareAndExportChart({
+        chartExporter,
+        fse,
+        filename: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
+        data: monthlyStatsData,
+        title: `${buildingName} הוצאות והכנסות שנה ${year}`
+      });
 
   });
 
@@ -111,35 +121,51 @@ const exportReports = async (date, buildings, chartTemplate) => {
 
 }
 
-async function fetchAndExport(config) {
-  //exportChart()
+async function prepareAndExportChart(config) {
+
+  const categories = [];
+  const incomeData = [];
+  const outcomeData = [];
+
+  config.data.forEach((element) => {
+    categories.push(element.month);
+    incomeData.push(element.income);
+    outcomeData.push(element.outcome);
+  });
+
+  const chartData = {
+    categories,
+    series: [
+      {
+        name: "הוצאות",
+        data: outcomeData,
+        color: "#30a3fc"
+      },
+      {
+        name: "הכנסות",
+        data: incomeData,
+        color: "#30e8aa"
+      }
+    ]
+  };
+  config.template = columnChart(config.title, chartData.series, chartData.categories)
+
+  await exportChart(config);
 }
 
-function getPageWorkbook(buildingName, buildingNameEng, pageName, date, data) {
-  switch (pageName) {
-    case "monthExpanses": return monthExpansesWorkbook(buildingName, date, data);
-    case "budgetExecutions": return budgetExecutionWorkbook(buildingName, buildingNameEng, date, data);
-    case "summarizedBudgets": return summarizedBudgetsWorkbook(buildingName, buildingNameEng, date, data);
-    default: return null;
-  }
-}
-
-const getMonthExpansesFilename = (monthHeb) => {
+function getMonthExpansesFilename(monthHeb) {
   return `הוצאות חודש ${monthHeb}`;
 }
 
-const getBudgetExecutionFilename = (quarterHeb) => {
+function getBudgetExecutionFilename(quarterHeb) {
   return `ביצוע מול תקציב ${quarterHeb}`;
 }
 
-const getSummarizedBudgetsFilename = (year) => {
+function getSummarizedBudgetsFilename(year) {
   return `סיכום שנתי ${year}`;
 }
 
 module.exports = {
   exportExcel,
-  exportReports,
-  getMonthExpansesFilename,
-  getBudgetExecutionFilename,
-  getSummarizedBudgetsFilename
+  exportReports
 };

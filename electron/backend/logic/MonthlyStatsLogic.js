@@ -7,31 +7,31 @@ class MonthlyStatsLogic {
     this.monthlyStatsDao = new MonthlyStatsDao(connection);
   }
 
-  getMonthStatsTrx(buildingName = String, date = Object, trx) {
-    return this.monthlyStatsDao.getMonthStatsTrx(buildingName, date, trx);
+  getMonthStatsTrx(buildingNameEng = String, date = Object, trx) {
+    return this.monthlyStatsDao.getMonthStatsTrx(buildingNameEng, date, trx);
   }
 
   getAllMonthsStatsByQuarterTrx({ buildingName = String, date = Object, trx }) {
     return this.monthlyStatsDao.getAllMonthsStatsByQuarterTrx(buildingName, date, trx);
   }
 
-  getAllMonthsStatsByYear(buildingName, year, trx) {
-    return this.monthlyStatsDao.getAllMonthsStatsByYear(buildingName, year, trx);
+  getAllMonthsStatsByYear(buildingNameEng, year, trx) {
+    return this.monthlyStatsDao.getAllMonthsStatsByYear(buildingNameEng, year, trx);
   }
 
-  updateMonthStatsTrx(buildingName = String, date = Object, budgetExpanse = null, trx) {
+  updateMonthStatsTrx(buildingNameEng = String, date = Object, budgetExpanse = null, trx) {
     date.monthHeb = Helper.convertEngToHebMonth(date.month);
     date.monthNum = Helper.hebToMonthNum(date.monthHeb);
 
-    return this.monthlyStatsDao.updateMonthStatsTrx(buildingName, date, budgetExpanse, trx);
+    return this.monthlyStatsDao.updateMonthStatsTrx(buildingNameEng, date, budgetExpanse, trx);
   }
 
-  insertMonthStats(buildingName, data, trx) {
-    return this.monthlyStatsDao.insertMonthStats(buildingName, data, trx);
+  insertMonthStats(buildingNameEng, data, trx) {
+    return this.monthlyStatsDao.insertMonthStats(buildingNameEng, data, trx);
   }
 
-  batchInsert(buildingName, rows, trx) {
-    return this.monthlyStatsDao.batchInsert(buildingName, rows, trx);
+  batchInsert(buildingNameEng, rows, trx) {
+    return this.monthlyStatsDao.batchInsert(buildingNameEng, rows, trx);
   }
 
 

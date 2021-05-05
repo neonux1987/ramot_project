@@ -1,4 +1,4 @@
-async function exportChart(chartExporter, fse, options, filename) {
+async function exportChart({ chartExporter, fse, template, filename }) {
   return new Promise((resolve, reject) => {
     // Export chart using these options
     chartExporter.export({
@@ -6,19 +6,22 @@ async function exportChart(chartExporter, fse, options, filename) {
       // By default the width of the chart images is of 600
       // In this case, we want a big image
       width: 1200,
-      options
+      options: template
     }, async (err, res) => {
+      if (err)
+        reject();
+
       // Get the image data (base64)
       let imageb64 = res.data;
 
-      // Save the image data to a file
-      const result = await fse.writeFile(filename, imageb64, "base64");
-
-      console.log(result);
-      if (err)
-        reject();
-      else
+      try {
+        const fileContents = Buffer.from(imageb64, 'base64');
+        await fse.writeFile(filename, fileContents);
         resolve();
+      } catch (e) {
+        console.log(e);
+        reject();
+      }
 
     });
   })
