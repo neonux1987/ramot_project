@@ -107,7 +107,8 @@ async function createWindow() {
       mainWindow.webContents.once('dom-ready', () => {
         mainWindow.show();
         loading.hide();
-        loading.close();
+        loading.destroy();
+        loading = null;
       });
       // long loading html
       mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);

@@ -1,4 +1,3 @@
-
 const { exportExcel } = require("./excel/excelSvc")
 const { exportChart } = require('./highcharts/exporter');
 const { columnChart } = require("./highcharts/chartTemplates");
