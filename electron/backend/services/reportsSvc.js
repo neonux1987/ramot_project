@@ -28,10 +28,7 @@ const exportReports = async (date, buildings) => {
   const monthlyStatsLogic = new MonthlyStatsLogic();
 
   // Initialize the exporter
-  chartExporter.initPool({
-    initialWorkers: 1,
-    maxWorkers: 1
-  });
+  chartExporter.initPool();
 
   chartExporter.enableFileLogging(SystemPaths.paths.logs_folder_path, "ramot-group-errors.log");
 
