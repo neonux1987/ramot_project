@@ -57,6 +57,7 @@
     "productName": "קבוצת רמות ניהול הוצאות והכנסות",
     "copyright": "Copyright © 2019 ${author}",
     "extends": null,
+    "asar": false,
     "files": [
       "build/**/*",
       "node_modules/**/*",
