@@ -97,7 +97,7 @@ const exportReports = async (date, buildings) => {
     if (monthlyStatsData.length > 0) {
       // export charts for each building
       const exportConfig = prepareAndExportChart({
-        filename: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
+        filepath: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
         data: monthlyStatsData,
         title: `${buildingName} הוצאות והכנסות שנה ${year}`
       });
