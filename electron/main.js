@@ -89,6 +89,7 @@ async function createWindow() {
       //const ses = mainWindow.webContents.session;
 
       if (isDev) {
+        process.env.NODE_ENV = "development";
         // Open the DevTools.
         mainWindow.webContents.openDevTools();
 
@@ -96,6 +97,8 @@ async function createWindow() {
         //ses.loadExtension(
         //    path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
         //);
+      } else {
+        process.env.NODE_ENV = "production";
       }
 
       mainWindow.on('closed', () => mainWindow = null);
