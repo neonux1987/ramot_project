@@ -1,10 +1,6 @@
-const { exportExcel } = require("./excel/excelSvc")
-const { exportChart } = require('./highcharts/exporter');
-const { columnChart } = require("./highcharts/chartTemplates");
-const SystemPaths = require("../system/SystemPaths");
-
 const exportReports = async (date, buildings) => {
-  const chartExporter = require("highcharts-export-server");
+  const { exportExcel } = require("./excel/excelSvc");
+  const chartExporter = require('./highcharts/exporter');
   const fse = require('fs-extra');
   const path = require('path');
 
@@ -27,14 +23,8 @@ const exportReports = async (date, buildings) => {
   const registeredMonths = new RegisteredMonths();
   const monthlyStatsLogic = new MonthlyStatsLogic();
 
-  // Initialize the exporter
-  chartExporter.initPool({
-    initialWorkers: 1,
-    maxWorkers: 1
-  });
+  chartExporter.initPool();
 
-  chartExporter.enableFileLogging(SystemPaths.paths.logs_folder_path, "ramot-group-errors.log");
-  chartExporter.logLevel(4)
 
   const userSettings = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.USER);
 
@@ -104,15 +94,16 @@ const exportReports = async (date, buildings) => {
 
     const monthlyStatsData = await monthlyStatsLogic.getAllMonthsStatsByYear(buildingNameEng, year);
 
-    if (monthlyStatsData.length > 0)
+    if (monthlyStatsData.length > 0) {
       // export charts for each building
-      await prepareAndExportChart({
-        chartExporter,
-        fse,
+      const exportConfig = prepareAndExportChart({
         filename: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
         data: monthlyStatsData,
         title: `${buildingName} הוצאות והכנסות שנה ${year}`
       });
+
+      await chartExporter.exportChart(exportConfig)
+    }
 
   });
 
@@ -121,7 +112,8 @@ const exportReports = async (date, buildings) => {
 
 }
 
-async function prepareAndExportChart(config) {
+function prepareAndExportChart(config) {
+  const { columnChart } = require("./highcharts/chartTemplates");
 
   const categories = [];
   const incomeData = [];
@@ -148,9 +140,11 @@ async function prepareAndExportChart(config) {
       }
     ]
   };
-  config.template = columnChart(config.title, chartData.series, chartData.categories)
+  config.template = {
+    options: columnChart(config.title, chartData.series, chartData.categories)
+  }
 
-  await exportChart(config);
+  return config;
 }
 
 function getMonthExpansesFilename(monthHeb) {
@@ -166,6 +160,5 @@ function getSummarizedBudgetsFilename(year) {
 }
 
 module.exports = {
-  exportExcel,
   exportReports
 };

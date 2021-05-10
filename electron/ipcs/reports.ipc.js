@@ -1,11 +1,10 @@
 const { ipcMain } = require('electron');
-const { exportReports } = require('../backend/services/reportsSvc');
-const { exportExcel } = require('../backend/services/excel/excelSvc');
-const { exportChart } = require('../backend/services/highcharts/exporter');
 
 const reportsIpc = () => {
 
   ipcMain.on('export-to-excel', (event, { buildingName, buildingNameEng, pageName, fileName, date, data }) => {
+    const { exportExcel } = require('../backend/services/excel/excelSvc');
+
     exportExcel(buildingName, buildingNameEng, pageName, fileName, date, data).then((result) => {
       event.sender.send("excel-exported", { data: result });
     }).catch((error) => {
@@ -14,10 +13,22 @@ const reportsIpc = () => {
   });
 
   ipcMain.on('export-reports', (event, { date, buildings }) => {
+    const { exportReports } = require('../backend/services/reportsSvc');
+
     exportReports(date, buildings).then((result) => {
       event.sender.send("reports-exported", { data: result });
     }).catch((error) => {
       event.reply("reports-exported", { error: error.message });
+    });
+  });
+
+  ipcMain.on('export-chart', (event, params) => {
+    const chartExporter = require('../backend/services/highcharts/exporter');
+
+    chartExporter(params).then((result) => {
+      event.sender.send("chart-exported", { data: result });
+    }).catch((error) => {
+      event.reply("chart-exported", { error: error.message });
     });
   });
 

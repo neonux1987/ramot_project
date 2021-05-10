@@ -1,12 +1,35 @@
-async function exportChart({ chartExporter, fse, template, filename }) {
+const chartExporter = require("highcharts-export-server");
+const fse = require('fs-extra');
+const SystemPaths = require("../../system/SystemPaths");
+
+chartExporter.enableFileLogging(SystemPaths.paths.logs_folder_path, "ramot-group-errors.log")
+
+const DEFAULT_TEMPLATE = {
+  type: "png",
+  // By default the width of the chart images is of 600
+  // In this case, we want a big image
+  width: 1200
+}
+
+function initPool() {
+  // init phantom workers
+  chartExporter.initPool({
+    initialWorkers: 1,
+    maxWorkers: 1
+  });
+}
+
+function killPool() {
+  // stop exporter
+  chartExporter.killPool();
+}
+
+async function exportChart({ template = {}, filepath }) {
   return new Promise((resolve, reject) => {
     // Export chart using these options
     chartExporter.export({
-      type: "png",
-      // By default the width of the chart images is of 600
-      // In this case, we want a big image
-      width: 1200,
-      options: template
+      ...DEFAULT_TEMPLATE,
+      ...template
     }, async (err, res) => {
       if (err)
         reject();
@@ -16,7 +39,7 @@ async function exportChart({ chartExporter, fse, template, filename }) {
 
       try {
         const fileContents = Buffer.from(imageb64, 'base64');
-        await fse.writeFile(filename, fileContents);
+        await fse.writeFile(filepath, fileContents);
         resolve();
       } catch (e) {
         console.log(e);
@@ -29,5 +52,7 @@ async function exportChart({ chartExporter, fse, template, filename }) {
 }
 
 module.exports = {
-  exportChart
+  exportChart,
+  initPool,
+  killPool
 }

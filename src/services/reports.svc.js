@@ -18,6 +18,21 @@ export const exportToExcel = (excelData) => {
 
 };
 
+export const exportChart = (params) => {
+
+  return ipcSendReceive({
+    send: {
+      channel: "export-chart",
+      params
+    },
+    receive: {
+      channel: "chart-exported"
+    },
+    onSuccess: () => toastManager.success("ייצוא לקובץ אקסל בוצע בהצלחה.")
+  });
+
+};
+
 export const exportReports = (date, buildings) => {
 
   const toastId = toastManager.info(<ToastRender spinner={true} message={"מייצא דוחות..."} />, {

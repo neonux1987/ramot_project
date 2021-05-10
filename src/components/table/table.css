@@ -75,3 +75,7 @@ th,td{
   display: flex;
   color: #000000;
 }
+
+.tableCell:first-child{
+  border-right: 0;
+}
