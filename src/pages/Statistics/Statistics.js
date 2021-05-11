@@ -17,6 +17,7 @@ import TopChartContainer from './charts/TopChartContainer';
 // ACTIONS
 import { updateSelectedChart } from '../../redux/actions/statisticsActions';
 import ChartSelectorNav from '../../components/charts/ChartSelectorNav';
+import { Box } from '@material-ui/core';
 
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
@@ -40,12 +41,16 @@ const Statistics = props => {
 
   const Chart = whichChart(selectedChart);
 
+  const ExtraDetails = () => <Box display="flex">
+    <ChartSelectorNav onClick={onClick} active={selectedChart} />
+  </Box>
+
   return <Page>
     <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
     <StyledSection
       title={selectedChart}
       Icon={IoMdStats}
-      extraDetails={<ChartSelectorNav onClick={onClick} active={selectedChart} />}
+      extraDetails={<ExtraDetails />}
     >
       <Chart buildingNameEng={buildingNameEng} pageName={PAGE_NAME} />
     </StyledSection>
