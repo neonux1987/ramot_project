@@ -1,0 +1,28 @@
+go to node_modules\phantomjs-prebuilt\lib\phantomjs.js
+
+in the beginning of the file find the current line:
+exports.path = path.resolve(__dirname, location.location)
+
+and change it to:
+const newDirName = process.env.NODE_ENV==="production"?path.join(process.env.APP_ROOT_PATH, "../", "app.asar.unpacked/node_modules/phantomjs-prebuil/lib"):__dirname;
+exports.path = path.resolve(newDirName, location.location)
+
+explanation:
+// i am manually editing the node module file because 
+// when electron is packaged into asar archive, highcharts-export-server module
+// is unable to execute phantomjs.exe from the asar archive so for that we need to 
+// show him the path to the app.asar.unpacked folder instead where the phantomjs-prebuil is unpacked
+
+go to node_modules\highcharts-export-server\lib\phantompool.js
+
+in the beginning of the file add this:
+const newDirName = process.env.NODE_ENV === "production" ? path.join(process.env.APP_ROOT_PATH, "../", "app.asar.unpacked/node_modules/highcharts-export-server/lib") : __dirname;
+
+find all the lines with the __dirname and replace them with newDirName
+
+explanation:
+// i am manually editing the node module file because 
+// when phantomjs.exe trying to execute a worker from a location
+// as an argument it unable's too because the location is directed
+// to asar archive and phantomjs.exe can't access it so we need to direct him
+// to the app.asar.unpacked highcharts-export-server module instead

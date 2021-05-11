@@ -26,6 +26,9 @@
     "extraResources": [
       "./extraResources/**"
     ],
+    "asarUnpack": [
+      "node_modules/highcharts-export-server/**/*"
+    ],
     "win": {
       "target": [
         "nsis"
@@ -60,10 +63,10 @@
     "build": "rescripts build",
     "test": "rescripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"cross-env NODE_ENV=development BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\"",
+    "dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "npm run build",
-    "electron-pack": "NODE_ENV=production electron-builder --win --publish never",
+    "electron-pack": "electron-builder --win --publish never",
     "electron-deploy": "npm run build && electron-builder --win --publish always"
   },
   "eslintConfig": {
@@ -78,8 +81,8 @@
     "development": []
   },
   "dependencies": {
+    "dotenv": "^9.0.2",
     "electron-context-menu": "^2.3.0",
-    "electron-is-dev": "^1.2.0",
     "electron-log": "^4.3.4",
     "electron-updater": "^4.3.8",
     "exceljs": "^4.2.0",

@@ -1,16 +1,15 @@
 //========================= Libraries =========================//
 require('v8-compile-cache');
+require('dotenv').config();
 const { app, BrowserWindow } = require('electron');
-//const os = require('os');
 const path = require('path');
-const isDev = require('electron-is-dev');
 const contextMenu = require('electron-context-menu');
 
 //========================= services =========================//
 const mainSystem = require('./backend/system/MainSystem');
 
-//token
-process.env.GH_TOKEN = "f55ef78253864c051c9520dca400f7a8313ff8fa";
+const isDev = !app.isPackaged;
+process.env.APP_ROOT_PATH = app.getAppPath();
 
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
@@ -89,7 +88,6 @@ async function createWindow() {
       //const ses = mainWindow.webContents.session;
 
       if (isDev) {
-        process.env.NODE_ENV = "development";
         // Open the DevTools.
         mainWindow.webContents.openDevTools();
 
