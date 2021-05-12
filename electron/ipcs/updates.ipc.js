@@ -35,7 +35,8 @@ const updatesIpc = () => {
       'owner': 'neonux1987',
       'repo': 'ramot_project',
       'token': 'f55ef78253864c051c9520dca400f7a8313ff8fa',
-      'private': true
+      'private': true,
+      'releaseType': 'release'
     };
 
     autoUpdater.setFeedURL(feedInfo);
