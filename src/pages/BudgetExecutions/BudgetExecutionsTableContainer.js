@@ -215,9 +215,9 @@ const BudgetExecutionsTableContainer = props => {
     </HeaderRow>
   }
 
-  const Row = (index) => {
+  const Row = (index, row) => {
     // row data
-    const rowData = getDataObject(index);
+    const rowData = row ? row : getDataObject(index);
 
     // list of months of specific quarter
     const months = Helper.getQuarterMonthsEng(date.quarter);
@@ -247,6 +247,61 @@ const BudgetExecutionsTableContainer = props => {
       {editMode ? textAreaInput("notes", rowData.notes, index, onBlurHandler) : <Cell style={{ paddingLeft: "10px" }}>{rowData.notes}</Cell>}
     </TableRow>
   }
+
+  /**
+  * only used in print mode
+  * generates 2 extra rows on total income and outcome
+  */
+  const generateIncomeOutcomeData = useCallback(() => {
+    if (data.length === 0)
+      return;
+
+    // list of months of specific quarter
+    const months = Helper.getQuarterMonthsEng(date.quarter);
+
+    const row = { ...getDataObject(0) };
+
+    const keys = Object.keys(row);
+
+    keys.forEach(key => {
+      if (key !== "notes" || key !== "section") {
+        row[key] = 0;
+      } else {
+        row[key] = "";
+      }
+    });
+
+    const incomeRow = {
+      ...row
+    };
+    incomeRow.section = "הכנסות";
+    incomeRow.notes = "";
+
+    const outcomeRow = {
+      ...row
+    };
+    outcomeRow.section = "הוצאות";
+    outcomeRow.notes = "";
+
+    data.forEach(row => {
+
+      months.forEach((month) => {
+        incomeRow[`${month}_budget`] += row[`${month}_budget`];
+        incomeRow[`${month}_budget_execution`] = 0;
+
+        outcomeRow[`${month}_budget`] = 0;
+        outcomeRow[`${month}_budget_execution`] += row[`${month}_budget_execution`];
+      });
+
+      incomeRow.total_budget += row.total_budget;
+      outcomeRow.total_execution += row.total_execution;
+    });
+
+    return {
+      incomeRow,
+      outcomeRow
+    }
+  }, [getDataObject, data, date.quarter]);
 
   return (
     <TableSection
@@ -300,6 +355,7 @@ const BudgetExecutionsTableContainer = props => {
           pageTitle: buildingName + " - " + pageTitle,
           date: `שנה ${date.year} / רבעון ${date.quarter}`
         }}
+        generateIncomeOutcomeData={generateIncomeOutcomeData}
       />
 
     </TableSection>

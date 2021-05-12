@@ -1,7 +1,7 @@
 // LIBRARIES
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
 
 // COMPONENTS
@@ -15,7 +15,6 @@ import useIcons from '../../customHooks/useIcons';
 import HomeButton from '../HomeButton/HomeButton';
 import Menu from './Menu';
 import pages from '../../helpers/pages';
-import { fetchMenu } from '../../redux/actions/menuActions';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";

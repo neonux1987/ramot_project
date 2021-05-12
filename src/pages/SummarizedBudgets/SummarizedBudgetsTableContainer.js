@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
 // ACTIONS
@@ -93,14 +93,14 @@ const SummarizedBudgetsTableContainer = props => {
 
   }
 
-  const getGridTemplateColumns = () => {
+  const getGridTemplateColumns = useCallback(() => {
     return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
-  }
+  }, [editMode]);
 
 
-  const getDataObject = (index) => {
+  const getDataObject = useCallback(index => {
     return data[index];
-  }
+  }, [data]);
 
   const HeaderGroups = () => {
 
@@ -161,10 +161,10 @@ const SummarizedBudgetsTableContainer = props => {
     </HeaderRow>
   }
 
-  const Row = (index) => {
+  const Row = (index, row) => {
 
     // row data
-    const rowData = getDataObject(index);
+    const rowData = row ? row : getDataObject(index);
 
     const quarterColumns = [];
 
@@ -185,6 +185,58 @@ const SummarizedBudgetsTableContainer = props => {
       {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Cell style={{ paddingLeft: "10px" }}>{rowData["notes"]}</Cell>}
     </TableRow>
   }
+
+  /**
+   * only used in print mode
+   * generates 2 extra rows on total income and outcome
+   */
+  const generateIncomeOutcomeData = useCallback(() => {
+    if (data.length === 0)
+      return;
+
+    const row = { ...getDataObject(0) };
+
+    const keys = Object.keys(row);
+
+    keys.forEach(key => {
+      if (key !== "notes" || key !== "section") {
+        row[key] = 0;
+      } else {
+        row[key] = "";
+      }
+    });
+
+    const incomeRow = {
+      ...row
+    };
+    incomeRow.section = "הכנסות";
+    incomeRow.notes = "";
+
+    const outcomeRow = {
+      ...row
+    };
+    outcomeRow.section = "הוצאות";
+    outcomeRow.notes = "";
+
+    data.forEach(row => {
+
+      for (let i = 1; i < 5; i++) {
+        incomeRow[`quarter${i}_budget`] += row[`quarter${i}_budget`];
+        incomeRow[`quarter${i}_execution`] = 0;
+
+        outcomeRow[`quarter${i}_budget`] = 0;
+        outcomeRow[`quarter${i}_execution`] += row[`quarter${i}_execution`];
+      }
+
+      incomeRow.year_total_budget += row.year_total_budget;
+      outcomeRow.year_total_execution += row.year_total_execution;
+    });
+
+    return {
+      incomeRow,
+      outcomeRow
+    }
+  }, [getDataObject, data]);
 
   return (
     <TableSection
@@ -233,6 +285,7 @@ const SummarizedBudgetsTableContainer = props => {
           pageTitle: buildingName + " - " + pageTitle,
           date: `שנה ${date.year}`
         }}
+        generateIncomeOutcomeData={generateIncomeOutcomeData}
       />
 
     </TableSection>
