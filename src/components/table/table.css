@@ -21,39 +21,10 @@ th,td{
   position: relative;
 }
 
-.groupRow{
-  border-bottom: none !important;
-  border-top: 1px solid #f1f1f1;
-  position: relative;
-  background-color: #f7f7f7;
-}
-
-.headerRow{
-  grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
-  border-top: 1px solid #f1f1f1;
-  position: relative;
-  background-color: #f7f7f7;
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 2px 2px 1px;
-  border-bottom: 1px solid #f1f1f1;
-  z-index: 2;
-}
-
 .tableRow{
   min-height: 35px;
   display: grid;
   border-bottom: 1px solid #f1f1f1;
-}
-
-.groupCell{
-  font-weight: 500;
-  font-size: 16px;
-  height: 40px !important;
-}
-
-.headerCell{
-  font-weight: 500;
-  font-size: 16px;
-  height: 40px !important;
 }
 
 .tableCell{
@@ -78,4 +49,33 @@ th,td{
 
 .tableCell:first-child{
   border-right: 0;
+}
+
+.groupRow{
+  border-bottom: none !important;
+  border-top: 1px solid #f1f1f1;
+  position: relative;
+  background-color: #f7f7f7;
+}
+
+.headerRow{
+  grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
+  border-top: 1px solid #f1f1f1;
+  position: relative;
+  background-color: #f7f7f7;
+  box-shadow: rgb(0 0 0 / 8%) 0px 2px 2px 1px;
+  border-bottom: 1px solid #ddd;
+  z-index: 2;
+}
+
+.groupCell{
+  font-weight: 500;
+  font-size: 16px;
+  height: 40px !important;
+}
+
+.headerCell{
+  font-weight: 500;
+  font-size: 16px;
+  height: 40px !important;
 }
