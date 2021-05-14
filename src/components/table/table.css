@@ -63,7 +63,7 @@ th,td{
   border-top: 1px solid #f1f1f1;
   position: relative;
   background-color: #f7f7f7;
-  box-shadow: rgb(0 0 0 / 8%) 0px 2px 2px 1px;
+  box-shadow: rgb(0 0 0 / 4%) 0px 4px 4px 1px;
   border-bottom: 1px solid #ddd;
   z-index: 2;
 }
