@@ -1,7 +1,10 @@
+import { toastManager } from '../../toasts/toastManager';
 import { ipcSendReceive } from './util/util';
+import { showSavedNotification } from './savedNotificationActions';
 
 export const TYPES = {
   BUILDINGS_UPDATE: "BUILDINGS_UPDATE",
+  BUILDINGS_ADD: "BUILDINGS_ADD",
   BUILDINGS_REQUEST: "BUILDINGS_REQUEST",
   BUILDINGS_RECEIVE: "BUILDINGS_RECEIVE",
   BUILDINGS_FETCHING_FAILED: "BUILDINGS_FETCHING_FAILED"
@@ -29,11 +32,15 @@ export const fetchBuildings = () => {
   }
 };
 
-export const updateBuilding = (id, payload, oldCopy) => {
+export const updateBuilding = (id, payload, oldCopy, index) => {
 
   return dispatch => {
 
-    updateBuildingsInStore(payload);
+    // save previous name
+    if (payload.buildingName && payload.buildingName !== oldCopy.buildingName)
+      payload.previousBuildingName = oldCopy.buildingName;
+
+    dispatch(updateBuildingsInStore(index, payload));
 
     return ipcSendReceive({
       send: {
@@ -41,17 +48,49 @@ export const updateBuilding = (id, payload, oldCopy) => {
         params: { id, payload }
       },
       receive: {
-        channel: "updated-bulding"
+        channel: "updated-building"
+      },
+      onSuccess: () => dispatch(showSavedNotification()),
+      onError: result => {
+        dispatch(updateBuildingsInStore(oldCopy));
+        toastManager.error(result.error);
       }
     });
 
   }
 };
 
-const updateBuildingsInStore = function (data) {
+export const addBuilding = (payload) => {
+  return dispatch => {
+    return ipcSendReceive({
+      send: {
+        channel: "add-building",
+        params: payload
+      },
+      receive: {
+        channel: "added-building"
+      },
+      onSuccess: result => dispatch(addBuildingsInStore(result.data)),
+      onError: result => {
+        toastManager.error(result.error);
+      }
+    });
+
+  }
+};
+
+const updateBuildingsInStore = function (index, payload) {
   return {
     type: TYPES.BUILDINGS_UPDATE,
-    data
+    index,
+    payload
+  }
+};
+
+const addBuildingsInStore = function (index, payload) {
+  return {
+    type: TYPES.BUILDINGS_ADD,
+    payload
   }
 };
 

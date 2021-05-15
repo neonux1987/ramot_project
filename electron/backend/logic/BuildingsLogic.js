@@ -1,12 +1,10 @@
 const ConnectionPool = require('../connection/ConnectionPool');
 const BuildingsDao = require('../dao/BuildingsDao');
-const MenuLogic = require('../logic/MenuLogic');
 
 class BuildingsLogic {
 
   constructor(connection) {
-    this.buildingsDao = new BuildingsDao(connection);
-    this.menuLogic = new MenuLogic(connection);
+    this.buildingsDao = new BuildingsDao();
   }
 
   getBuidlingById(id, trx) {
@@ -17,7 +15,11 @@ class BuildingsLogic {
     return this.buildingsDao.getBuidlings(trx);
   }
 
-  async addBuilding(buildingName) {
+  async addBuilding({ buildingName }) {
+    const { customAlphabet } = require('nanoid');
+    const { lowercase } = require('nanoid-dictionary');
+    const lowercaseRandomString = customAlphabet(lowercase, 10);
+
     const trx = await ConnectionPool.getTransaction();
 
     const buildings = await this.getBuildings(trx);
@@ -29,14 +31,16 @@ class BuildingsLogic {
     const record = {
       id,
       buildingName,
-      buildingNameEng,
       visible: "כן",
       status: "active",
       order: buildings.length + 1,
       previousBuildingName: buildingName
     };
 
-    // add the building
+    // create path string
+    record.path = buildingName.replaceAll(" ", "-");
+    console.log(record);
+    /* // add the building
     await this.buildingsDao.addBuilding(record, trx);
 
     // create all the tables
@@ -48,22 +52,14 @@ class BuildingsLogic {
     await createRegisteredYearsTable(tablePrefix, trx);
     await createMonthlyStatsTable(tablePrefix, trx);
     await createQuarterlyStatsTable(tablePrefix, trx);
-    await createYearlyStatsTable(tablePrefix, trx);
+    await createYearlyStatsTable(tablePrefix, trx); */
 
-    await this.menuLogic.addMenuItem(id, buildingName);
   }
 
   async updateBuilding({ id, payload }) {
     const trx = await ConnectionPool.getTransaction();
 
     const record = { ...payload };
-
-    const building = (await this.getBuidlingById(id, trx))[0];
-
-    if (payload.buildingName && payload.buildingName !== building.buildingName)
-      record.previousBuildingName = building.buildingName;
-
-    await this.menuLogic.updateMenuItem(id, record.buildingName, trx);
 
     const updatedBuilding = await this.buildingsDao.updateBuilding(id, record, trx);
 

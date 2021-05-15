@@ -24,8 +24,8 @@ import useTableLogic from '../../../../customHooks/useTableLogic';
 // CONTAINERS
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
 
-const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(5,1fr)";
-const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(5,1fr)";
+const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
+const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
 const BuildingsManagementTableContainer = () => {
 
@@ -50,31 +50,44 @@ const BuildingsManagementTableContainer = () => {
     return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }
 
-  const getDataObject = (index) => {
+  const getDataObject = useCallback((index) => {
     return data[index];
-  }
+  }, [data]);
+
+  const updateAction = useCallback((name, value, index) => {
+    const rowData = getDataObject(index);
+    const oldCopy = { ...rowData };
+
+    const payload = {
+      [name]: value
+    }
+
+    if (name === "buildingName")
+      payload.path = value.replaceAll(" ", "-");
+
+    dispatch(updateBuilding(rowData.id, payload, oldCopy, index));
+  }, [dispatch, getDataObject]);
 
   const deleteBuilding = useCallback((rowData, index) => {
 
   }, []);
 
-  const onBlurSelectHandler = useCallback(() => {
+  const isBuildingExist = useCallback(buildingName => {
+    let exist = false;
+    data.map(building => {
+      if (building.buildingName === buildingName)
+        exist = true;
+    })
+    return exist;
+  }, [data]);
 
-  }, []);
-
-  const onBlurHandler = event => {
+  const onBlurHandler = useCallback(event => {
     const target = event.target;
-    const { index } = target.dataset;
+    const { index, key } = target.dataset;
     const { value } = target;
 
-    const rowData = getDataObject(index);
-    const oldCopy = { ...rowData };
-
-    const payload = {
-      buildingName: value
-    }
-    dispatch(updateBuilding(rowData.id, payload, oldCopy));
-  };
+    updateAction(key, value, index);
+  }, [updateAction]);
 
   const HeadersRow = () => {
     return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
@@ -83,7 +96,6 @@ const BuildingsManagementTableContainer = () => {
       <HeaderCell>שורה</HeaderCell>
       <HeaderCell>מזהה</HeaderCell>
       <HeaderCell>שם בניין</HeaderCell>
-      <HeaderCell>שם בניין באנגלית</HeaderCell>
       <HeaderCell>שם קודם</HeaderCell>
       <HeaderCell>מצב</HeaderCell>
     </HeaderRow>
@@ -99,7 +111,6 @@ const BuildingsManagementTableContainer = () => {
       <Cell>{index + 1}</Cell>
       <Cell>{rowData.id}</Cell>
       {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}
-      {editMode ? textInput("buildingNameEng", rowData.buildingNameEng, index, onBlurHandler) : <Cell>{rowData.buildingNameEng.replaceAll("_", " ")}</Cell>}
 
       <Cell>{rowData.previousBuildingName}</Cell>
 
@@ -108,8 +119,8 @@ const BuildingsManagementTableContainer = () => {
           value={rowData.status}
           valueName={rowData.status}
           index={index}
-          selectChangeHandler={onBlurSelectHandler}
-          name={"מצב"}
+          selectChangeHandler={updateAction}
+          name={"status"}
         >
           {[
             <MenuItem value={"מושבת"} key={"מושבת"}>מושבת</MenuItem>,
@@ -140,7 +151,7 @@ const BuildingsManagementTableContainer = () => {
       }
     >
 
-      <AddNewBuildingContainer show={addNewMode} />
+      <AddNewBuildingContainer show={addNewMode} isBuildingExist={isBuildingExist} />
 
       <Table
         Row={Row}

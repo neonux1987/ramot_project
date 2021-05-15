@@ -14,6 +14,14 @@ const buildingsIpc = () => {
     });
   });
 
+  ipcMain.on('add-building', (event, params) => {
+    buildingsLogic.addBuilding(params).then((result) => {
+      event.reply("added-building", { data: result });
+    }).catch((error) => {
+      event.reply("added-building", { error: error.message });
+    });
+  });
+
   ipcMain.on('update-building', (event, params) => {
     buildingsLogic.updateBuilding(params).then((result) => {
       event.reply("updated-building", { data: result });

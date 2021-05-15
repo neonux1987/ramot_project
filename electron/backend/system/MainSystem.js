@@ -15,7 +15,6 @@ class MainSystem {
     const monthExpansesIpc = require('../../ipcs/monthExpanses.ipc');
     const budgetExecutionIpc = require('../../ipcs/budgetExecution.ipc');
     const summarizedBudgetIpc = require('../../ipcs/SummarizedBudget.ipc');
-    const menuIpc = require('../../ipcs/menu.ipc');
     const summarizedSectionsIpc = require('../../ipcs/summarizedSections.ipc');
     const expansesCodesIpc = require('../../ipcs/expansesCodes.ipc');
     const generalSettingsIpc = require('../../ipcs/generalSettings.ipc');
@@ -39,8 +38,6 @@ class MainSystem {
     const buildingsIpc = require('../../ipcs/buildings.ipc');
 
     mainProcessIpc();
-
-    menuIpc();
 
     monthExpansesIpc();
 

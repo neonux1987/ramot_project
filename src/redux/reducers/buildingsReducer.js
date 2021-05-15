@@ -9,6 +9,20 @@ const initState = {
 
 const buildingsReducer = (state = initState, action) => {
   switch (action.type) {
+    case TYPES.BUILDINGS_ADD: {
+      const stateCopy = { ...state };
+      stateCopy.data.push(action.payload);
+      return stateCopy;
+    }
+    case TYPES.BUILDINGS_UPDATE:
+      const { index, payload } = action;
+      const stateCopy = { ...state };
+      stateCopy.data[index] = {
+        ...stateCopy.data[index],
+        ...payload
+      };
+
+      return stateCopy;
     case TYPES.BUILDINGS_RECEIVE:
       return {
         ...state,

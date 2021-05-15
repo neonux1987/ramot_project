@@ -1,27 +1,23 @@
 // LIBRARIES
 import React, { useState } from "react";
-//import { useDispatch } from "react-redux";
-
-// CSS
-
-// ACTIONS
-
-
-// COMPONENTS
+import { addBuilding } from "../../../../../redux/actions/buildingsActions";
+import { useDispatch } from "react-redux";
 
 // TOASTS
 import { toastManager } from "../../../../../toasts/toastManager";
-import AddNewBuilding from "./AddNewBuilding";
 
+// COMPONENTS
+import AddNewBuilding from "./AddNewBuilding";
 
 const AddNewBuildingContainer = (props) => {
 
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [buildingName, setBuildingName] = useState("");
 
   const {
-    show
+    show,
+    isBuildingExist
   } = props;
 
   const onChangeHandler = event => {
@@ -33,8 +29,11 @@ const AddNewBuildingContainer = (props) => {
   const add = async () => {
     if (buildingName === "")
       toastManager.error("שם בניין לא יכול להיות ריק")
-    /* else
-      dispatch(addBudgetExecution({})); */
+    else {
+      if (!isBuildingExist(buildingName))
+        dispatch(addBuilding({ buildingName }));
+    }
+
   }
 
   return (
