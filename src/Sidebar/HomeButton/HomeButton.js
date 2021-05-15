@@ -17,7 +17,7 @@ const HomeButton = props => {
         state: {
           page: HOME_BUTTON_LABEL,
           buildingName: "",
-          buildingNameEng: ""
+          buildingId: ""
         }
       }}
       active={props.active}

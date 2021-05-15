@@ -13,8 +13,8 @@ const monthlyStatsIpc = (connection) => {
     });
   });
 
-  ipcMain.on('get-all-months-stats-by-year', (event, { buildingNameEng, year }) => {
-    monthlyStatsLogic.getAllMonthsStatsByYear(buildingNameEng, year).then((result) => {
+  ipcMain.on('get-all-months-stats-by-year', (event, { buildingId, year }) => {
+    monthlyStatsLogic.getAllMonthsStatsByYear(buildingId, year).then((result) => {
       event.sender.send("all-months-stats-by-year", { data: result });
     }).catch((error) => {
       event.reply("all-months-stats-by-year", { error: error.message });

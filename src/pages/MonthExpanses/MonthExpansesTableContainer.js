@@ -42,7 +42,7 @@ const MonthExpansesTableContainer = props => {
     pageName,
     pageTitle,
     buildingName,
-    buildingNameEng,
+    buildingId,
     data,
     isFetching
   } = props;
@@ -94,7 +94,7 @@ const MonthExpansesTableContainer = props => {
     const parsedFormInputs = parseFormInputs(copiedFormInputs);
 
     const params = {
-      buildingNameEng,
+      buildingId,
       expanse: parsedFormInputs,
       date: date
     }
@@ -172,7 +172,7 @@ const MonthExpansesTableContainer = props => {
     //prepare the params
     let params = {
       expanse: expanse,
-      buildingNameEng,
+      buildingId,
       date
     };
 
@@ -186,7 +186,7 @@ const MonthExpansesTableContainer = props => {
     //prepare the params
     let params = {
       id,
-      buildingNameEng,
+      buildingId,
       date
     };
     dispatch(deleteMonthExpanse(params, index));
@@ -254,7 +254,7 @@ const MonthExpansesTableContainer = props => {
           middlePane={
             <MonthExpansesDatePicker
               date={date}
-              buildingNameEng={buildingNameEng}
+              buildingId={buildingId}
 
             />
 
@@ -266,7 +266,7 @@ const MonthExpansesTableContainer = props => {
                 data,
                 fileName: Helper.getMonthExpansesFilename(buildingName, date),
                 buildingName,
-                buildingNameEng,
+                buildingId,
                 date
               }}
               print={{

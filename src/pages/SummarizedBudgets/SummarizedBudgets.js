@@ -23,20 +23,20 @@ const SummarizedBudgets = () => {
 
   const dispatch = useDispatch();
 
-  const { buildingName, buildingNameEng } = useLocation().state;
+  const { buildingName, buildingId } = useLocation().state;
 
-  const { date, data, isFetching } = useSelector(store => store.summarizedBudgets[buildingNameEng]);
+  const { date, data, isFetching } = useSelector(store => store.summarizedBudgets[buildingId]);
 
   useEffect(() => {
     // fetch only when date is not empty strings
     // that means a date was selected
     if (date.year !== "" && date.month !== "") {
-      dispatch(fetchSummarizedBudgets({ buildingNameEng, date }));
+      dispatch(fetchSummarizedBudgets({ buildingId, date }));
     }
-  }, [buildingNameEng, dispatch, date]);
+  }, [buildingId, dispatch, date]);
 
   return <Page>
-    <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
+    <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
 
     <Section
       title={STATS_TITLE}
@@ -44,7 +44,7 @@ const SummarizedBudgets = () => {
       iconColor="rgb(255 0 82)"
     >
       <YearStatsContainer
-        buildingName={buildingNameEng}
+        buildingName={buildingId}
         date={date}
         pageName={PAGE_NAME}
       />
@@ -54,7 +54,7 @@ const SummarizedBudgets = () => {
 
     <SummarizedBudgetsTableContainer
       buildingName={buildingName}
-      buildingNameEng={buildingNameEng}
+      buildingId={buildingId}
       date={date}
       pageName={PAGE_NAME}
       pageTitle={PAGE_TITLE}

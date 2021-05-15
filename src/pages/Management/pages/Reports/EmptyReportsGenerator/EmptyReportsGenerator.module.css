@@ -1,5 +1,5 @@
 .container{
-  padding: 40px 20px 60px;
+  padding: 20px 20px 60px;
 }
 
 .paddingLeft{
@@ -12,8 +12,4 @@
 
 .createBtn,.createBtn:hover{
   background-color: rgb(3, 101, 162);
-}
-
-.subtitle{
-  margin-bottom: 10px;
 }

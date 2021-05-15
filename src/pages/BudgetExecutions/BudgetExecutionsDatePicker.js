@@ -6,26 +6,26 @@ import DatePicker from '../../components/DatePicker/DatePicker';
 import { fetchRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
 
 const BudgetExecutionsDatePicker = ({
-  buildingNameEng,
+  buildingId,
   date
 }) => {
   const dispatch = useDispatch();
 
   const [localYear, setLocalYear] = useState(date.year);
 
-  const quarters = useSelector(store => store.registeredQuarters[buildingNameEng]);
-  const years = useSelector(store => store.registeredYears[buildingNameEng]);
+  const quarters = useSelector(store => store.registeredQuarters[buildingId]);
+  const years = useSelector(store => store.registeredYears[buildingId]);
 
   // initial fetch of years
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ buildingNameEng }));
-  }, [buildingNameEng, dispatch]);
+    dispatch(fetchRegisteredYears({ buildingId }));
+  }, [buildingId, dispatch]);
 
   // initial fetch of quarters if year is not empty
   useEffect(() => {
     if (date.year !== "")
       dispatch(fetchRegisteredQuarters({
-        buildingNameEng,
+        buildingId,
         date: {
           year: date.year
         }
@@ -48,7 +48,7 @@ const BudgetExecutionsDatePicker = ({
       setLocalYear(value);
 
       dispatch(fetchRegisteredQuarters({
-        buildingNameEng,
+        buildingId,
         date: {
           year: value
         }
@@ -56,11 +56,11 @@ const BudgetExecutionsDatePicker = ({
         // load the same quarter of the previous year if exist in the chosen year
         // if not load just the first quarter availble in the list
         const quarter = quarterExist(date.quarter, data) ? date.quarter : data[0].quarter;
-        dispatch(updateDate(buildingNameEng, { year: value, quarter }));
+        dispatch(updateDate(buildingId, { year: value, quarter }));
       });
     }
     else {
-      dispatch(updateDate(buildingNameEng, { year: localYear, quarter: value }));
+      dispatch(updateDate(buildingId, { year: localYear, quarter: value }));
     }
   };
 

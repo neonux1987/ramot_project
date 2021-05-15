@@ -6,7 +6,7 @@ const RegisteredYearsIpc = (connection) => {
   const registeredYearsLogic = new RegisteredYearsLogic(connection);
 
   ipcMain.on('get-registered-years', (event, arg) => {
-    registeredYearsLogic.getAllRegisteredYears(arg.buildingNameEng).then((result) => {
+    registeredYearsLogic.getAllRegisteredYears(arg.buildingId).then((result) => {
       event.sender.send("registered-years-data", { data: result });
     }).catch((error) => {
       event.reply("registered-years-data", { error: error.message });

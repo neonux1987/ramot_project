@@ -78,7 +78,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
           state: {
             page: "הפקת דוחות",
             buildingName: "ניהול",
-            buildingNameEng: "management"
+            buildingId: "management"
           }
         }}
       />
@@ -92,7 +92,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
           state: {
             page: "ניהול בניינים",
             buildingName: "ניהול",
-            buildingNameEng: "management"
+            buildingId: "management"
           }
         }}
       />
@@ -106,7 +106,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
           state: {
             page: "קודי הנהלת חשבונות",
             buildingName: "ניהול",
-            buildingNameEng: "management"
+            buildingId: "management"
           }
         }}
       />
@@ -120,7 +120,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
           state: {
             page: "סעיפים מסכמים",
             buildingName: "ניהול",
-            buildingNameEng: "management"
+            buildingId: "management"
           }
         }}
       />

@@ -4,21 +4,21 @@ import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions
 import DatePicker from './DatePicker';
 
 const YearOnlyDatePicker = ({
-  buildingNameEng,
+  buildingId,
   date,
   updateDate,
   blackLabels
 }) => {
   const dispatch = useDispatch();
 
-  const years = useSelector(store => store.registeredYears[buildingNameEng]);
+  const years = useSelector(store => store.registeredYears[buildingId]);
 
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ buildingNameEng }));
-  }, [buildingNameEng, dispatch]);
+    dispatch(fetchRegisteredYears({ buildingId }));
+  }, [buildingId, dispatch]);
 
   const onChange = (name, value) => {
-    dispatch(updateDate(buildingNameEng, { [name]: value }));
+    dispatch(updateDate(buildingId, { [name]: value }));
   };
 
   return <DatePicker

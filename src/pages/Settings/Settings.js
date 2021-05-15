@@ -31,7 +31,7 @@ const Settings = ({ match }) => {
               state: {
                 page: "כללי",
                 buildingName: "הגדרות",
-                buildingNameEng: "settings"
+                buildingId: "settings"
               }
             }}
           />

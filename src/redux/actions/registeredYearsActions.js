@@ -11,10 +11,10 @@ export const TYPES = {
 
 export const fetchRegisteredYears = (params = Object) => {
   return dispatch => {
-    const { buildingNameEng } = params;
+    const { buildingId } = params;
 
     //let react know that the fetching is started
-    dispatch(requestRegisteredYears(buildingNameEng));
+    dispatch(requestRegisteredYears(buildingId));
 
     return ipcSendReceive({
       send: {
@@ -24,33 +24,33 @@ export const fetchRegisteredYears = (params = Object) => {
       receive: {
         channel: "registered-years-data"
       },
-      onSuccess: result => dispatch(receiveRegisteredYears(result.data, buildingNameEng)),
-      onError: result => dispatch(fetchingFailed(result.error, buildingNameEng))
+      onSuccess: result => dispatch(receiveRegisteredYears(result.data, buildingId)),
+      onError: result => dispatch(fetchingFailed(result.error, buildingId))
     });
 
   }
 };
 
-const requestRegisteredYears = function (buildingNameEng) {
+const requestRegisteredYears = function (buildingId) {
   return {
     type: TYPES.REGISTERED_YEARS_REQUEST,
-    buildingNameEng
+    buildingId
   }
 };
 
-const receiveRegisteredYears = function (data, buildingNameEng) {
+const receiveRegisteredYears = function (data, buildingId) {
   return {
     type: TYPES.REGISTERED_YEARS_RECEIVE,
     data,
-    buildingNameEng
+    buildingId
   }
 }
 
-const fetchingFailed = function (error, buildingNameEng) {
+const fetchingFailed = function (error, buildingId) {
   return {
     type: TYPES.REGISTERED_YEARS_FETCHING_FAILED,
     error,
-    buildingNameEng
+    buildingId
   }
 };
 
@@ -63,9 +63,9 @@ export const registeredYearsUpdateDataCount = (dataCount) => {
   }
 }
 
-export const cleanupYears = (buildingNameEng) => {
+export const cleanupYears = (buildingId) => {
   return {
     type: TYPES.REGISTERED_YEARS_CLEANUP,
-    buildingNameEng
+    buildingId
   }
 }

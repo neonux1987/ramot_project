@@ -2,10 +2,10 @@ const { ipcMain } = require('electron');
 
 const reportsIpc = () => {
 
-  ipcMain.on('export-to-excel', (event, { buildingName, buildingNameEng, pageName, fileName, date, data }) => {
+  ipcMain.on('export-to-excel', (event, { buildingName, buildingId, pageName, fileName, date, data }) => {
     const { exportExcel } = require('../backend/services/excel/excelSvc');
 
-    exportExcel(buildingName, buildingNameEng, pageName, fileName, date, data).then((result) => {
+    exportExcel(buildingName, buildingId, pageName, fileName, date, data).then((result) => {
       event.sender.send("excel-exported", { data: result });
     }).catch((error) => {
       event.reply("excel-exported", { error: error.message });

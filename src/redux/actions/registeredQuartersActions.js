@@ -12,10 +12,10 @@ export const TYPES = {
 
 export const fetchRegisteredQuarters = (params = Object) => {
   return dispatch => {
-    const { pageName, buildingNameEng } = params;
+    const { pageName, buildingId } = params;
 
     //let react know that the fetching is started
-    dispatch(requestRegisteredQuarters(pageName, buildingNameEng));
+    dispatch(requestRegisteredQuarters(pageName, buildingId));
 
     return ipcSendReceive({
       send: {
@@ -25,32 +25,32 @@ export const fetchRegisteredQuarters = (params = Object) => {
       receive: {
         channel: "registered-quarters-data"
       },
-      onSuccess: result => dispatch(receiveRegisteredQuarters(result.data, buildingNameEng)),
-      onError: result => dispatch(fetchingFailed(result.error, buildingNameEng))
+      onSuccess: result => dispatch(receiveRegisteredQuarters(result.data, buildingId)),
+      onError: result => dispatch(fetchingFailed(result.error, buildingId))
     });
   }
 };
 
-const requestRegisteredQuarters = function (buildingNameEng) {
+const requestRegisteredQuarters = function (buildingId) {
   return {
     type: TYPES.REGISTERED_QUARTERS_REQUEST,
-    buildingNameEng
+    buildingId
   }
 };
 
-const receiveRegisteredQuarters = function (data, buildingNameEng) {
+const receiveRegisteredQuarters = function (data, buildingId) {
   return {
     type: TYPES.REGISTERED_QUARTERS_RECEIVE,
     data,
-    buildingNameEng
+    buildingId
   }
 }
 
-const fetchingFailed = function (error, buildingNameEng) {
+const fetchingFailed = function (error, buildingId) {
   return {
     type: TYPES.REGISTERED_QUARTERS_FETCHING_FAILED,
     error,
-    buildingNameEng
+    buildingId
   }
 };
 
@@ -63,9 +63,9 @@ export const registeredQuartersUpdateDataCount = (dataCount) => {
   }
 }
 
-export const cleanupQuarters = (buildingNameEng) => {
+export const cleanupQuarters = (buildingId) => {
   return {
     type: TYPES.REGISTERED_QUARTERS_CLEANUP,
-    buildingNameEng
+    buildingId
   }
 }

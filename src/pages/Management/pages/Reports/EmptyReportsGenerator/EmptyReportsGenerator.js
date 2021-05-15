@@ -2,15 +2,11 @@
 import React from 'react';
 import { Select, Button, MenuItem } from '@material-ui/core';
 
-// COMPONENTS
-import SubtitleBoldTypography from '../../../../../components/Typographies/SubtitleBoldTypography';
-
 // UTILS
 import classnames from 'classnames';
 
 //CSS
 import {
-  subtitle,
   paddingLeft,
   select,
   createBtn,
@@ -21,12 +17,6 @@ import {
 const EmptyReportsGenerator = ({ selectDate, onChangeHandler, onClickHandler, years, quarters }) => {
   return (
     <div className={container}>
-
-      <div className={subtitle}>
-        <SubtitleBoldTypography>
-          הפקת דוחות ריקים לכל הבניינים:
-          </SubtitleBoldTypography>
-      </div>
 
       <Select
         name="quarter"

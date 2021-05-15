@@ -6,7 +6,7 @@ const emptyReportsGeneratorIpc = () => {
   const emptyReportsGeneratorLogic = new EmptyReportsGeneratorLogic();
 
   ipcMain.on('generate-empty-reports', (event, params) => {
-    emptyReportsGeneratorLogic.generateEmptyReports(params.date).then((result) => {
+    emptyReportsGeneratorLogic.generateEmptyReports(params).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("empty-reports-generated", { data: result });
     }).catch((error) => {

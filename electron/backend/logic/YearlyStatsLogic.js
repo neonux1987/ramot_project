@@ -37,12 +37,12 @@ class YearlyStatsLogic {
 
     const buildings = await buildingsDao.getBuidlings(trx);
 
-    await asyncForEach(buildings, async ({ buildingName, buildingNameEng }) => {
+    await asyncForEach(buildings, async ({ buildingName, buildingId }) => {
       const stat = {
         label: buildingName,
-        data: await this.getYearStatsTrx(buildingNameEng, date, trx)
+        data: await this.getYearStatsTrx(buildingId, date, trx)
       };
-      stats[buildingNameEng] = stat;
+      stats[buildingId] = stat;
     });
 
     trx.commit();

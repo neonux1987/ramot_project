@@ -20,7 +20,7 @@ class EmptyReportsGeneratorLogic {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  async generateEmptyReports(date) {
+  async generateEmptyReports({ date, buildings }) {
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
 
@@ -33,8 +33,6 @@ class EmptyReportsGeneratorLogic {
 
       throw new LogicError("הפעולה נכשלה. הדוחות לתאריכים שנבחרו כבר קיימים בבסיס נתונים.");
     }
-
-    const buildings = await this.buildingsDao.getBuidlings(trx);
 
     for (let i = 0; i < months.length; i++) {
       const dateCopy = { ...date };
@@ -57,7 +55,7 @@ class EmptyReportsGeneratorLogic {
   async createEmptyReportsByMonth(buildings, date, trx) {
     // create reports for each bulding
     for (let i = 0; i < buildings.length; i++) {
-      await this.monthExpansesLogic.createEmptyReport(buildings[i].buildingNameEng, date, trx);
+      await this.monthExpansesLogic.createEmptyReport(buildings[i].buildingId, date, trx);
     }
   }
 

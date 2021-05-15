@@ -17,10 +17,10 @@ import Tab from '../../../components/Tab/Tab';
 
 const MonthsChartContainer = props => {
   //building name
-  const { buildingNameEng, pageName } = props;
+  const { buildingId, pageName } = props;
 
-  const { isFetching, data } = useSelector(store => store.monthlyStats[buildingNameEng].pages[pageName]);
-  const date = useSelector(store => store.monthsChart[buildingNameEng].date);
+  const { isFetching, data } = useSelector(store => store.monthlyStats[buildingId].pages[pageName]);
+  const date = useSelector(store => store.monthsChart[buildingId].date);
 
   const dispatch = useDispatch();
 
@@ -31,12 +31,12 @@ const MonthsChartContainer = props => {
 
   const fetchMonthsData = useCallback(() => {
     const params = {
-      buildingNameEng,
+      buildingId,
       pageName,
       year: date.year
     }
     return dispatch(fetchAllMonthsStatsByYear(params));
-  }, [dispatch, buildingNameEng, pageName, date.year]);
+  }, [dispatch, buildingId, pageName, date.year]);
 
   const fetchAndPrepareData = useCallback(async () => {
     const promise = await fetchMonthsData();
@@ -86,7 +86,7 @@ const MonthsChartContainer = props => {
       middlePane={
         <YearOnlyDatePicker
           date={date}
-          buildingNameEng={buildingNameEng}
+          buildingId={buildingId}
           updateDate={updateDate}
           blackLabels={true}
         />

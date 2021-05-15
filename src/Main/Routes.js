@@ -54,7 +54,7 @@ const Routes = props => {
       <Route exact path="/" component={Home} history={{
         page: "דף-הבית",
         buildingName: "דף הבית",
-        buildingNameEng: "home"
+        buildingId: "home"
       }} />
     </Switch>
   );

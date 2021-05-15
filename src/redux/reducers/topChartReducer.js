@@ -23,28 +23,28 @@ const setState = (buildingName, state, newState) => {
 }
 
 const topChartReducer = (state = initState, action) => {
-  const { buildingNameEng } = action;
+  const { buildingId } = action;
 
   switch (action.type) {
     case TYPES.TOP_CHART_RECEIVE:
-      return setState(buildingNameEng, state, {
+      return setState(buildingId, state, {
         isFetching: false,
         status: "success",
         data: action.data
       });
     case TYPES.TOP_CHART_REQUEST:
-      return setState(buildingNameEng, state, {
+      return setState(buildingId, state, {
         isFetching: true
       });
     case TYPES.TOP_CHART_FETCHING_FAILED:
-      return setState(buildingNameEng, state, {
+      return setState(buildingId, state, {
         status: "error",
         error: action.error
       });
     case TYPES.TOP_CHART_UPDATE_DATE: {
       const { date } = action;
 
-      return setState(buildingNameEng, state, {
+      return setState(buildingId, state, {
         date: {
           ...date
         }

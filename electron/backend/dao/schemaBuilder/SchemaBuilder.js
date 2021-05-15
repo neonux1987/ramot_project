@@ -18,7 +18,7 @@ class SchemaBuilder {
     // for each building in the database
     await asyncForEach(buildings, async building => {
 
-      const tableName = `${building.buildingNameEng}_registered_months`;
+      const tableName = `${building.buildingId}_registered_months`;
       const columnName = 'quarter';
 
       const hasColumn = await connection.schema.hasColumn(tableName, columnName);

@@ -19,10 +19,10 @@ export const TYPES = {
 
 export const fetchBudgetExecutions = (buildingInfo, date) => {
   return dispatch => {
-    const { buildingNameEng } = buildingInfo;
+    const { buildingId } = buildingInfo;
 
     //let react know that the fetching is started
-    dispatch(requestBudgetExecutions(buildingNameEng));
+    dispatch(requestBudgetExecutions(buildingId));
 
     return ipcSendReceive({
       send: {
@@ -34,79 +34,79 @@ export const fetchBudgetExecutions = (buildingInfo, date) => {
       },
       onSuccess: (result) => {
         //success store the data
-        dispatch(receiveBudgetExecutions(result.data, buildingNameEng));
+        dispatch(receiveBudgetExecutions(result.data, buildingId));
       },
       onError: (result) => {
-        dispatch(budgetExecutionsFetchingFailed(result.error, buildingNameEng));
+        dispatch(budgetExecutionsFetchingFailed(result.error, buildingId));
       }
     });
 
   }
 };
 
-const requestBudgetExecutions = function (buildingNameEng) {
+const requestBudgetExecutions = function (buildingId) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_REQUEST,
-    buildingNameEng
+    buildingId
   }
 };
 
-const receiveBudgetExecutions = function (data, buildingNameEng) {
+const receiveBudgetExecutions = function (data, buildingId) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_RECEIVE,
     data,
-    buildingNameEng
+    buildingId
   }
 }
 
-const budgetExecutionsFetchingFailed = function (error, buildingNameEng) {
+const budgetExecutionsFetchingFailed = function (error, buildingId) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_FETCHING_FAILED,
     error,
-    buildingNameEng
+    buildingId
   }
 };
 
-export const budgetExecutionsCleanup = function (buildingNameEng) {
+export const budgetExecutionsCleanup = function (buildingId) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_CLEANUP,
-    buildingNameEng
+    buildingId
   }
 }
 
-const removeBudgetExecutionInStore = (buildingNameEng, index) => {
+const removeBudgetExecutionInStore = (buildingId, index) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_DELETE,
-    buildingNameEng,
+    buildingId,
     index
   }
 }
 
-export const deleteBudgetExecution = (buildingNameEng, date, index, rollbackData) => {
+export const deleteBudgetExecution = (buildingId, date, index, rollbackData) => {
   return dispatch => {
     const rollbackDataCopy = { ...rollbackData };
-    dispatch(removeBudgetExecutionInStore(buildingNameEng, index));
+    dispatch(removeBudgetExecutionInStore(buildingId, index));
 
     return ipcSendReceive({
       send: {
         channel: "delete-budget-execution",
-        params: { buildingNameEng, date, id: rollbackData.id }
+        params: { buildingId, date, id: rollbackData.id }
       },
       receive: {
         channel: "budget-execution-deleted"
       },
       onSuccess: () => toastManager.success("השורה נמחקה בהצלחה."),
       onError: (result) => {
-        dispatch(addBudgetExecutionInStore(buildingNameEng, rollbackDataCopy, sortByCode));
+        dispatch(addBudgetExecutionInStore(buildingId, rollbackDataCopy, sortByCode));
       }
     });
   }
 };
 
-const addBudgetExecutionInStore = (buildingNameEng, payload, compareFunc) => {
+const addBudgetExecutionInStore = (buildingId, payload, compareFunc) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_ADD,
-    buildingNameEng,
+    buildingId,
     payload,
     compareFunc
   }
@@ -123,8 +123,8 @@ export const addBudgetExecution = (params = Object) => {
         channel: "budget-execution-added"
       },
       onSuccess: (result) => {
-        const { buildingNameEng } = params;
-        dispatch(addBudgetExecutionInStore(buildingNameEng, result.data, sortByCode));
+        const { buildingId } = params;
+        dispatch(addBudgetExecutionInStore(buildingId, result.data, sortByCode));
 
         toastManager.success("השורה נוספה בהצלחה.");
       }
@@ -132,12 +132,12 @@ export const addBudgetExecution = (params = Object) => {
   }
 };
 
-export const updateBudgetExecutionStoreOnly = (payload, index, buildingNameEng) => {
+export const updateBudgetExecutionStoreOnly = (payload, index, buildingId) => {
   return {
     type: TYPES.BUDGET_EXECUTIONS_UPDATE,
     payload,
     index,
-    buildingNameEng
+    buildingId
   }
 }
 
@@ -145,18 +145,18 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
   return (dispatch, getState) => {
     const {
       pageName,
-      buildingNameEng
+      buildingId
     } = params;
     //get te state
     const state = getState();
 
     //stats of all months
-    const monthlyStatsArr = [...state.monthlyStats[buildingNameEng].pages[pageName].data];
+    const monthlyStatsArr = [...state.monthlyStats[buildingId].pages[pageName].data];
 
     let monthStatsIndex = null;
 
     //quarter total stats
-    const quarterlyStatsData = { ...state.quarterlyStats[buildingNameEng].pages[pageName].data[0] };
+    const quarterlyStatsData = { ...state.quarterlyStats[buildingId].pages[pageName].data[0] };
 
     //copy for rollback
     const quarterStatsOld = { ...quarterlyStatsData };
@@ -181,10 +181,10 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
       quarterlyStatsData.income = quarterlyStatsData.income - oldBudgetExec["total_budget"] + newBudgetExec["total_budget"];
 
       //update month total
-      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(buildingNameEng, pageName, monthStatsObject, monthStatsIndex));
+      dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(buildingId, pageName, monthStatsObject, monthStatsIndex));
 
       //update quarter total
-      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(buildingNameEng, pageName, quarterlyStatsData));
+      dispatch(quarterlyStatsActions.updateQuarterStatsStoreOnly(buildingId, pageName, quarterlyStatsData));
     }
 
     //copy of the un-modified month total object for rollback
@@ -199,7 +199,7 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
 
     //update the new data in the store first for
     //better and fast user experience
-    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingNameEng));
+    dispatch(updateBudgetExecutionStoreOnly(budgetExecStoreObj, index, params.buildingId));
 
     return ipcSendReceive({
       send: {
@@ -212,7 +212,7 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
       onSuccess: () => dispatch(showSavedNotification()),
       onError: () => {
         //rollback to the old budget execution object
-        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingNameEng));
+        dispatch(updateBudgetExecutionStoreOnly(oldBudgetExec, index, params.buildingId));
 
         //rollback to the old month total stats
         dispatch(monthlyStatsActions.updateMonthStatsStoreOnly(oldMonthStatsObj, monthStatsIndex));
@@ -226,10 +226,10 @@ export const updateBudgetExecution = (params = Object, oldBudgetExec = Object, n
   };
 };
 
-export const updateDate = function (buildingNameEng, date) {
+export const updateDate = function (buildingId, date) {
   return {
     type: TYPES.BUDGET_EXECUTIONS_UPDATE_DATE,
-    buildingNameEng,
+    buildingId,
     date
   }
 }

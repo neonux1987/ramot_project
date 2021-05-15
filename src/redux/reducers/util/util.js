@@ -174,7 +174,7 @@ export const initBuildingState = (initState) => {
   const buildingsState = {};
 
   buildings.forEach((building) => {
-    const singleBuildingState = buildingsState[building.buildingNameEng] = {};
+    const singleBuildingState = buildingsState[building.buildingId] = {};
     const pagesState = singleBuildingState.pages = {};
 
     pages.forEach((page) => {
@@ -193,7 +193,7 @@ export const initState = (initState) => {
   const state = {};
 
   buildings.forEach((building) => {
-    state[building.buildingNameEng] = {
+    state[building.buildingId] = {
       ...initState
     };
   });

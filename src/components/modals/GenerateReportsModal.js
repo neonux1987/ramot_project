@@ -9,7 +9,7 @@ import Section from '../Section/Section';
 
 import EditModal from './modalTypes/EditModal';
 
-const GenerateReportsModal = ({ buildingName, buildingNameEng }) => {
+const GenerateReportsModal = ({ buildingName, buildingId }) => {
   const date = new Date();//current date
 
   const [year, setYear] = useState(date.getFullYear());
@@ -70,7 +70,7 @@ const GenerateReportsModal = ({ buildingName, buildingNameEng }) => {
       quarterEng: Helper.convertQuarterToEng(quarter)
     }
 
-    exportReports(newDate, [{ buildingName, buildingNameEng }]);
+    exportReports(newDate, [{ buildingName, buildingId }]);
   }
 
   return (

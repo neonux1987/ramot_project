@@ -305,17 +305,17 @@ class Helper {
     return true;
   }
 
-  static findIndexOfPage(buildingNameEng, array) {
+  static findIndexOfPage(buildingId, array) {
     for (let i = 0; i < array.length; i++) {
-      if (buildingNameEng === array[i].buildingNameEng) {
+      if (buildingId === array[i].buildingId) {
         return i;
       }
     }
   }
 
-  static removePageFromArray(buildingNameEng, array) {
+  static removePageFromArray(buildingId, array) {
     for (let i = 0; i < array.length; i++) {
-      if (buildingNameEng === array[i].buildingNameEng) {
+      if (buildingId === array[i].buildingId) {
         array.splice(i, 1);
       }
     }

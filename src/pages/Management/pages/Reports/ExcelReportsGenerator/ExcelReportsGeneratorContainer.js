@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RiFileExcel2Line } from 'react-icons/ri';
 
@@ -11,6 +11,9 @@ import { exportReports } from '../../../../../services/reports.svc';
 
 // ACTIONS
 import { fetchRegisteredReportsGroupedByYear, fetchRegisteredReportsByYear } from '../../../../../redux/actions/registeredReportsActions';
+import { checkBuilding, setAllChecked } from '../../../../../redux/actions/reportsActions';
+
+// COMPONENTS
 import StyledSection from '../../../../../components/Section/StyledSection';
 import ExcelReportsGenerator from './ExcelReportsGenerator';
 import BuildingPicker from './BuildingPicker/BuildingPicker';
@@ -47,13 +50,9 @@ const ExcelReportsGeneratorContainer = () => {
 
       } // end if
 
-
     }); // end dispatch
 
-
   }, [dispatch]);
-
-
 
   const onYearChangeHandler = (event) => {
     const { value } = event.target;
@@ -86,17 +85,26 @@ const ExcelReportsGeneratorContainer = () => {
     exportReports(newDate, filteredBuildings);
   }
 
+  const setAllCheckedHandler = useCallback((checked, checkedBuildings) => {
+    dispatch(setAllChecked("excel", checked, checkedBuildings));
+  }, [dispatch]);
+
+  const checkBuildingHandler = useCallback((name, checked, checkedBuildings) => {
+    dispatch(checkBuilding("excel", name, checked, checkedBuildings));
+  }, [dispatch]);
+
   return (
     <StyledSection
       title={"הפקת דוחות אקסל"}
       Icon={RiFileExcel2Line}
       padding={"30px 20px 50px"}
-      bgColor={"rgb(12 155 167)"}
       loading={registeredReports.isFetching && registeredReports.data.length === 0}
     >
       <BuildingPicker
         checkedBuildings={checkedBuildings}
         isAllChecked={isAllChecked}
+        setAllChecked={setAllCheckedHandler}
+        checkBuilding={checkBuildingHandler}
       />
       <Section marginBottom="50px">
         <ExcelReportsGenerator

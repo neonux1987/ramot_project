@@ -7,27 +7,27 @@ import DatePicker from '../../components/DatePicker/DatePicker';
 import Helper from '../../helpers/Helper';
 
 const MonthExpansesDatePicker = ({
-  buildingNameEng,
+  buildingId,
   date
 }) => {
   const dispatch = useDispatch();
 
   const [localYear, setLocalYear] = useState(date.year);
 
-  const months = useSelector(store => store.registeredMonths[buildingNameEng]);
-  const years = useSelector(store => store.registeredYears[buildingNameEng]);
+  const months = useSelector(store => store.registeredMonths[buildingId]);
+  const years = useSelector(store => store.registeredYears[buildingId]);
 
   // initial fetch of years
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ buildingNameEng }));
-  }, [buildingNameEng, dispatch]);
+    dispatch(fetchRegisteredYears({ buildingId }));
+  }, [buildingId, dispatch]);
 
   // initial fetch of months if year is not empty
   useEffect(() => {
     const fetchMonths = () => {
       if (date.year !== "")
         dispatch(fetchRegisteredMonths({
-          buildingNameEng,
+          buildingId,
           date: {
             year: date.year
           }
@@ -53,7 +53,7 @@ const MonthExpansesDatePicker = ({
       setLocalYear(value);
 
       dispatch(fetchRegisteredMonths({
-        buildingNameEng,
+        buildingId,
         date: {
           year: value
         }
@@ -61,7 +61,7 @@ const MonthExpansesDatePicker = ({
         // load the same month of the previous year if exist in the chosen year
         // if not load just the first month availble in the list
         const month = monthExist(date.month, data) ? date.month : data[0].month;
-        dispatch(updateDate(buildingNameEng, {
+        dispatch(updateDate(buildingId, {
           year: value,
           month,
           monthHeb: Helper.convertEngToHebMonth(month),
@@ -71,7 +71,7 @@ const MonthExpansesDatePicker = ({
       });
     }
     else {
-      dispatch(updateDate(buildingNameEng, {
+      dispatch(updateDate(buildingId, {
         year: localYear,
         month: value,
         monthHeb: Helper.convertEngToHebMonth(value),

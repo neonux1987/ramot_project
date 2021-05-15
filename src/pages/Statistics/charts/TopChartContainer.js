@@ -16,10 +16,10 @@ import Tab from '../../../components/Tab/Tab';
 
 const TopChartContainer = props => {
   //building name
-  const { buildingNameEng, pageName } = props;
+  const { buildingId, pageName } = props;
 
-  const registeredYears = useSelector(store => store.registeredYears[buildingNameEng]);
-  const { date, data, isFetching } = useSelector(store => store.topChart[buildingNameEng]);
+  const registeredYears = useSelector(store => store.registeredYears[buildingId]);
+  const { date, data, isFetching } = useSelector(store => store.topChart[buildingId]);
 
   const [ready, setReady] = useState(false);
 
@@ -32,7 +32,7 @@ const TopChartContainer = props => {
 
   const fetchData = useCallback(() => {
     const params = {
-      buildingNameEng,
+      buildingId,
       date: {
         fromYear: date.fromYear,
         toYear: date.toYear
@@ -41,7 +41,7 @@ const TopChartContainer = props => {
     }
 
     return dispatch(fetchTopIncomeOutcome(params));
-  }, [dispatch, buildingNameEng, date.fromYear, date.toYear]);
+  }, [dispatch, buildingId, date.fromYear, date.toYear]);
 
   const fetchAndPrepareData = useCallback(async () => {
     const promise = await fetchData(date);
@@ -74,8 +74,8 @@ const TopChartContainer = props => {
   }, [fetchData, date]);
 
   useEffect(() => {
-    dispatch(fetchRegisteredYears({ buildingNameEng }));
-  }, [dispatch, pageName, buildingNameEng]);
+    dispatch(fetchRegisteredYears({ buildingId }));
+  }, [dispatch, pageName, buildingId]);
 
 
   // load on start the previous selected data
@@ -88,7 +88,7 @@ const TopChartContainer = props => {
     if (date.fromYear > date.toYear)
       toastManager.error("תאריך התחלה לא יכול להיות יותר גדול מתאריך סוף.");
     else {
-      dispatch(updateDate(buildingNameEng, date));
+      dispatch(updateDate(buildingId, date));
     }
   }
 

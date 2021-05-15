@@ -17,7 +17,7 @@ const AppUpdateNewVersionToast = ({ version, closeToast }) => {
           state: {
             page: "עדכוני תוכנה",
             buildingName: "הגדרות",
-            buildingNameEng: "settings"
+            buildingId: "settings"
           }
         }}
         onClick={() => {

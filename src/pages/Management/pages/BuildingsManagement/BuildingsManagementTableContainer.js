@@ -65,7 +65,7 @@ const BuildingsManagementTableContainer = () => {
     if (name === "buildingName")
       payload.path = value.replaceAll(" ", "-");
 
-    dispatch(updateBuilding(rowData.id, payload, oldCopy, index));
+    dispatch(updateBuilding(rowData.buildingId, payload, oldCopy, index));
   }, [dispatch, getDataObject]);
 
   const deleteBuilding = useCallback((rowData, index) => {
@@ -74,7 +74,7 @@ const BuildingsManagementTableContainer = () => {
 
   const isBuildingExist = useCallback(buildingName => {
     let exist = false;
-    data.map(building => {
+    data.forEach(building => {
       if (building.buildingName === buildingName)
         exist = true;
     })
@@ -109,7 +109,7 @@ const BuildingsManagementTableContainer = () => {
 
       {editMode ? <TableActions deleteHandler={() => deleteBuilding(rowData, index)} /> : null}
       <Cell>{index + 1}</Cell>
-      <Cell>{rowData.id}</Cell>
+      <Cell>{rowData.buildingId}</Cell>
       {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}
 
       <Cell>{rowData.previousBuildingName}</Cell>

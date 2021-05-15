@@ -29,14 +29,14 @@ const TOP_EXPANSES_TITLE = "טופ הוצאות";
 
 const Statistics = props => {
   //building name
-  const { buildingName, buildingNameEng } = props.location.state;
+  const { buildingName, buildingId } = props.location.state;
 
-  const { selectedChart } = useSelector(store => store.statistics[buildingNameEng]);
+  const { selectedChart } = useSelector(store => store.statistics[buildingId]);
 
   const dispatch = useDispatch();
 
   const onClick = (name) => {
-    dispatch(updateSelectedChart(buildingNameEng, name));
+    dispatch(updateSelectedChart(buildingId, name));
   }
 
   const Chart = whichChart(selectedChart);
@@ -46,13 +46,13 @@ const Statistics = props => {
   </Box>
 
   return <Page>
-    <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
+    <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
     <StyledSection
       title={selectedChart}
       Icon={IoMdStats}
       extraDetails={<ExtraDetails />}
     >
-      <Chart buildingNameEng={buildingNameEng} pageName={PAGE_NAME} />
+      <Chart buildingId={buildingId} pageName={PAGE_NAME} />
     </StyledSection>
   </Page>;
 

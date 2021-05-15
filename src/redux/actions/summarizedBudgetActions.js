@@ -18,7 +18,7 @@ export const fetchSummarizedBudgets = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestSummarizedBudgets(params.buildingNameEng));
+    dispatch(requestSummarizedBudgets(params.buildingId));
 
     return ipcSendReceive({
       send: {
@@ -28,8 +28,8 @@ export const fetchSummarizedBudgets = (params = Object) => {
       receive: {
         channel: "summarized-budgets"
       },
-      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data, params.date, params.buildingNameEng)),
-      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingNameEng))
+      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data, params.date, params.buildingId)),
+      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingId))
     });
 
   }
@@ -39,7 +39,7 @@ export const fetchSummarizedBudgetsByRange = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestSummarizedBudgets(params.buildingNameEng));
+    dispatch(requestSummarizedBudgets(params.buildingId));
 
     return ipcSendReceive({
       send: {
@@ -49,8 +49,8 @@ export const fetchSummarizedBudgetsByRange = (params = Object) => {
       receive: {
         channel: "summarized-budgets-by-range-data"
       },
-      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data, params.date, params.buildingNameEng)),
-      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingNameEng))
+      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data, params.date, params.buildingId)),
+      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingId))
     });
 
   }
@@ -60,7 +60,7 @@ export const fetchSummarizedBudgetsTopIncomeOutcome = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(requestSummarizedBudgets(params.buildingNameEng));
+    dispatch(requestSummarizedBudgets(params.buildingId));
 
     return ipcSendReceive({
       send: {
@@ -70,32 +70,32 @@ export const fetchSummarizedBudgetsTopIncomeOutcome = (params = Object) => {
       receive: {
         channel: "summarized-budgets-top-income-outcome-data"
       },
-      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data, params.date, params.buildingNameEng)),
-      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingNameEng))
+      onSuccess: result => dispatch(receiveSummarizedBudgets(result.data, params.date, params.buildingId)),
+      onError: result => dispatch(summarizedBudgetsFetchingFailed(result.error, params.buildingId))
     });
 
   }
 };
 
-const requestSummarizedBudgets = function (buildingNameEng) {
+const requestSummarizedBudgets = function (buildingId) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_REQUEST,
-    buildingNameEng
+    buildingId
   }
 };
 
-const receiveSummarizedBudgets = function (data, date, buildingNameEng) {
+const receiveSummarizedBudgets = function (data, date, buildingId) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_RECEIVE,
     data,
     date,
-    buildingNameEng
+    buildingId
   }
 }
 
 export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
   return dispatch => {
-    const buildingNameEng = params.buildingNameEng;
+    const buildingId = params.buildingId;
 
     const fullSummarizedBudget = {
       ...oldCopy,
@@ -103,7 +103,7 @@ export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
     }
 
     // first update the store for fast user response
-    dispatch(updateSummarizedBudgetInStore(buildingNameEng, fullSummarizedBudget, index));
+    dispatch(updateSummarizedBudgetInStore(buildingId, fullSummarizedBudget, index));
 
     return ipcSendReceive({
       send: {
@@ -114,40 +114,40 @@ export const updateSummarizedBudget = (params, oldCopy, newCopy, index) => {
         channel: "summarized-budget-updated"
       },
       onSuccess: () => dispatch(showSavedNotification()),
-      onError: () => updateSummarizedBudgetInStore(buildingNameEng, oldCopy, index)
+      onError: () => updateSummarizedBudgetInStore(buildingId, oldCopy, index)
     });
 
   }
 };
 
-const updateSummarizedBudgetInStore = (buildingNameEng, payload, index) => {
+const updateSummarizedBudgetInStore = (buildingId, payload, index) => {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_UPDATE,
     index,
     payload,
-    buildingNameEng
+    buildingId
   };
 }
 
-export const summarizedBudgetsCleanup = function (buildingNameEng) {
+export const summarizedBudgetsCleanup = function (buildingId) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_CLEANUP,
-    buildingNameEng
+    buildingId
   }
 }
 
-export const updateDate = function (buildingNameEng, date) {
+export const updateDate = function (buildingId, date) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_UPDATE_DATE,
-    buildingNameEng,
+    buildingId,
     date
   }
 }
 
-const summarizedBudgetsFetchingFailed = function (error, buildingNameEng) {
+const summarizedBudgetsFetchingFailed = function (error, buildingId) {
   return {
     type: TYPES.SUMMARIZED_BUDGETS_FETCHING_FAILED,
     payload: error,
-    buildingNameEng
+    buildingId
   }
 };

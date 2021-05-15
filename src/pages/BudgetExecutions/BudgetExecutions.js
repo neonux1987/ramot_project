@@ -23,29 +23,29 @@ const BudgetExecutions = () => {
 
   const dispatch = useDispatch();
 
-  const { buildingName, buildingNameEng } = useLocation().state;
+  const { buildingName, buildingId } = useLocation().state;
 
-  const { date, data, isFetching } = useSelector(store => store.budgetExecutions[buildingNameEng]);
+  const { date, data, isFetching } = useSelector(store => store.budgetExecutions[buildingId]);
 
   useEffect(() => {
     // fetch only when date is not empty strings
     // that means a date was selected
     if (date.year !== "" && date.quarter !== "") {
       const buildingInfo = {
-        buildingNameEng,
+        buildingId,
         buildingName
       };
 
       dispatch(fetchBudgetExecutions(buildingInfo, date));
     }
-  }, [dispatch, buildingNameEng, buildingName, date]);
+  }, [dispatch, buildingId, buildingName, date]);
 
   return <Page>
-    <PageHeader buildingName={buildingName} buildingNameEng={buildingNameEng} page={PAGE_TITLE} />
+    <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
 
     <Section>
       <QuarterStatsContainer
-        buildingName={buildingNameEng}
+        buildingName={buildingId}
         date={date}
         pageName={PAGE_NAME}
       />
@@ -55,7 +55,7 @@ const BudgetExecutions = () => {
 
     <BudgetExecutionsTableContainer
       buildingName={buildingName}
-      buildingNameEng={buildingNameEng}
+      buildingId={buildingId}
       date={date}
       pageName={PAGE_NAME}
       pageTitle={PAGE_TITLE}

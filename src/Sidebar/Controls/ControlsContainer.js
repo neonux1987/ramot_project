@@ -75,7 +75,7 @@ const ControlsContainer = ({ routes }) => {
         state: {
           page: "כללי",
           buildingName: "הגדרות",
-          buildingNameEng: "settings"
+          buildingId: "settings"
         }
       }}
       active={routes.active.state.buildingName === "הגדרות"}

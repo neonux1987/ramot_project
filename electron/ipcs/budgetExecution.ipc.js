@@ -7,7 +7,7 @@ const budgetExecutionIpc = () => {
   const budgetExecutionLogic = new BudgetExecutionLogic();
 
   ipcMain.on('get-budget-executions', (event, { buildingInfo, date }) => {
-    budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingInfo.buildingNameEng, date).then((result) => {
+    budgetExecutionLogic.getAllBudgetExecutionsTrx(buildingInfo.buildingId, date).then((result) => {
       event.sender.send("budget-executions", { data: result });
     }).catch((error) => {
       event.reply("budget-executions", { error: error.message });

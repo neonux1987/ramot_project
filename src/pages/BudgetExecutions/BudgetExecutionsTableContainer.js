@@ -45,7 +45,7 @@ const BudgetExecutionsTableContainer = props => {
   const {
     date,
     buildingName,
-    buildingNameEng,
+    buildingId,
     pageName,
     pageTitle,
     data,
@@ -95,7 +95,7 @@ const BudgetExecutionsTableContainer = props => {
 
     //prepare the params object
     let params = {
-      buildingNameEng,
+      buildingId,
       pageName,
       date,
       budgetExec: newBudgetExecutionObj,
@@ -116,13 +116,13 @@ const BudgetExecutionsTableContainer = props => {
   }
 
 
-  const onAgreeHandler = async (buildingNameEng, date, index, rowData) => {
-    dispatch(deleteBudgetExecution(buildingNameEng, date, index, rowData));
+  const onAgreeHandler = async (buildingId, date, index, rowData) => {
+    dispatch(deleteBudgetExecution(buildingId, date, index, rowData));
   }
 
   const deleteHandler = (index, rowData) => {
     showModal(ConfirmDeleteBudgetExecution, {
-      onAgreeHandler: () => onAgreeHandler(buildingNameEng, date, index, rowData)
+      onAgreeHandler: () => onAgreeHandler(buildingId, date, index, rowData)
     });
   }
 
@@ -320,7 +320,7 @@ const BudgetExecutionsTableContainer = props => {
           middlePane={
             <BudgetExecutionsDatePicker
               date={date}
-              buildingNameEng={buildingNameEng}
+              buildingId={buildingId}
             />
           } // end middlePane
           leftPane={
@@ -329,7 +329,7 @@ const BudgetExecutionsTableContainer = props => {
                 data,
                 fileName: Helper.getBudgetExecutionFilename(buildingName, date),
                 buildingName,
-                buildingNameEng,
+                buildingId,
                 date
               }}
               print={{
@@ -343,7 +343,7 @@ const BudgetExecutionsTableContainer = props => {
         /> //End TableControls 
       }
     >
-      <AddNewContainer show={addNewMode} date={date} buildingNameEng={buildingNameEng} />
+      <AddNewContainer show={addNewMode} date={date} buildingId={buildingId} />
 
       <Table
         Row={Row}

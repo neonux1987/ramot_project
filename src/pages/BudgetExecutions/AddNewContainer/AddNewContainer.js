@@ -38,7 +38,7 @@ const AddNewContainer = (props) => {
   } = summarizedSections;
 
   const {
-    buildingNameEng,
+    buildingId,
     date,
     show
   } = props;
@@ -57,7 +57,7 @@ const AddNewContainer = (props) => {
 
   const add = async () => {
     const params = {
-      buildingNameEng,
+      buildingId,
       date,
       payload: formInputs
     }

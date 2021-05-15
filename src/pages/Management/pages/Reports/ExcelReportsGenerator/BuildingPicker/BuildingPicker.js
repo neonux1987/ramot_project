@@ -1,23 +1,19 @@
 // LIBRARIES
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import ExcelReportsCheckbox from '../../../../../../components/Checkboxes/ExcelReportsCheckbox';
 import VerticalDivider from '../../../../../../components/Divider/VerticalDivider';
-import { setAllChecked, checkBuilding } from '../../../../../../redux/actions/reportsActions';
 import BuildingPickerWrapper from './BuildingPickerWrapper';
 
-const BuildingPicker = ({ checkedBuildings, isAllChecked }) => {
-
-  const dispatch = useDispatch();
+const BuildingPicker = ({ checkedBuildings, isAllChecked, setAllChecked, checkBuilding, checkboxColor }) => {
 
   const onChange = (event) => {
     const target = event.target;
     const { name, checked } = target;
 
     if (name === "all")
-      dispatch(setAllChecked(checked, checkedBuildings));
+      setAllChecked(checked, checkedBuildings);
     else
-      dispatch(checkBuilding(name, checked, checkedBuildings));
+      checkBuilding(name, checked, checkedBuildings);
   }
 
   return (
@@ -30,13 +26,14 @@ const BuildingPicker = ({ checkedBuildings, isAllChecked }) => {
       />
       <VerticalDivider />
       {
-        checkedBuildings.map(({ buildingName, buildingNameEng, isChecked }) => {
+        checkedBuildings.map(({ buildingName, buildingId, isChecked }) => {
           return <ExcelReportsCheckbox
             label={buildingName}
-            key={buildingNameEng}
+            key={buildingId}
             checked={isChecked}
-            name={buildingNameEng}
+            name={buildingId}
             onChange={onChange}
+            color={checkboxColor}
           />;
         })
       }

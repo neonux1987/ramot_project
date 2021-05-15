@@ -57,7 +57,7 @@ const headerStyle = {
 
 module.exports = async (
   buildingName,
-  buildingNameEng,
+  buildingId,
   date,
   data
 ) => {
@@ -65,7 +65,7 @@ module.exports = async (
   const sheetTitle = `שנה ${date.year}`;
   const header = `${buildingName} / סיכום שנתי / ${date.year}`;
 
-  await addIncomeOutcome(data, date, buildingNameEng);
+  await addIncomeOutcome(data, date, buildingId);
 
   //create new empty workbook
   const workbook = new Excel.Workbook();
@@ -332,11 +332,11 @@ module.exports = async (
 
 };
 
-async function addIncomeOutcome(data, date, buildingNameEng) {
+async function addIncomeOutcome(data, date, buildingId) {
   const quarterlyStatsLogic = new QuarterlyStatsLogic();
   const yearlyStatsLogic = new YearlyStatsLogic();
 
-  const quarterlyStats = await quarterlyStatsLogic.getAllQuartersStatsByYearTrx({ buildingName: buildingNameEng, date });
+  const quarterlyStats = await quarterlyStatsLogic.getAllQuartersStatsByYearTrx({ buildingName: buildingId, date });
 
   const incomeRow = {
     section: "הכנסות",
@@ -359,7 +359,7 @@ async function addIncomeOutcome(data, date, buildingNameEng) {
     outcomeRow[`quarter${quarter}_execution`] = item.outcome;
   })
 
-  const yearlyStats = await yearlyStatsLogic.getYearStatsTrx(buildingNameEng, date);
+  const yearlyStats = await yearlyStatsLogic.getYearStatsTrx(buildingId, date);
 
   incomeRow.year_total_budget = yearlyStats[0].income;
   incomeRow.year_total_execution = "";

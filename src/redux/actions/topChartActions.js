@@ -11,7 +11,7 @@ export const fetchTopIncomeOutcome = (params = Object) => {
   return dispatch => {
 
     //let react know that the fetching is started
-    dispatch(request(params.buildingNameEng));
+    dispatch(request(params.buildingId));
 
     return ipcSendReceive({
       send: {
@@ -21,41 +21,41 @@ export const fetchTopIncomeOutcome = (params = Object) => {
       receive: {
         channel: "summarized-budgets-top-income-outcome-data"
       },
-      onSuccess: result => dispatch(receive(result.data, params.date, params.buildingNameEng)),
-      onError: result => dispatch(fetchingFailed(result.error, params.buildingNameEng))
+      onSuccess: result => dispatch(receive(result.data, params.date, params.buildingId)),
+      onError: result => dispatch(fetchingFailed(result.error, params.buildingId))
     });
 
   }
 };
 
-const request = function (buildingNameEng) {
+const request = function (buildingId) {
   return {
     type: TYPES.TOP_CHART_REQUEST,
-    buildingNameEng
+    buildingId
   }
 };
 
-const receive = function (data, date, buildingNameEng) {
+const receive = function (data, date, buildingId) {
   return {
     type: TYPES.TOP_CHART_RECEIVE,
     data,
     date,
-    buildingNameEng
+    buildingId
   }
 }
 
-const fetchingFailed = function (error, buildingNameEng) {
+const fetchingFailed = function (error, buildingId) {
   return {
     type: TYPES.TOP_CHART_FETCHING_FAILED,
     payload: error,
-    buildingNameEng
+    buildingId
   }
 };
 
-export const updateDate = (buildingNameEng, date) => {
+export const updateDate = (buildingId, date) => {
   return {
     type: TYPES.TOP_CHART_UPDATE_DATE,
-    buildingNameEng,
+    buildingId,
     date
   }
 }

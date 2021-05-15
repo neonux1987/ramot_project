@@ -31,9 +31,9 @@ export const fetchAllMonthsStatsByQuarter = (params = Object) => {
 
 export const fetchAllMonthsStatsByYear = (params = Object) => {
   return dispatch => {
-    const { buildingNameEng, pageName } = params;
+    const { buildingId, pageName } = params;
     //let react know that the fetching is started
-    dispatch(requestMonthlyStats(buildingNameEng, pageName));
+    dispatch(requestMonthlyStats(buildingId, pageName));
 
     return ipcSendReceive({
       send: {
@@ -43,8 +43,8 @@ export const fetchAllMonthsStatsByYear = (params = Object) => {
       receive: {
         channel: "all-months-stats-by-year"
       },
-      onSuccess: (result) => dispatch(receiveMonthlyStats(buildingNameEng, pageName, result.data)),
-      onError: (result) => dispatch(fetchingFailed(buildingNameEng, pageName, result.error))
+      onSuccess: (result) => dispatch(receiveMonthlyStats(buildingId, pageName, result.data)),
+      onError: (result) => dispatch(fetchingFailed(buildingId, pageName, result.error))
     });
 
   }

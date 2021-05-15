@@ -45,7 +45,7 @@ const SummarizedBudgetsTableContainer = props => {
     pageName,
     pageTitle,
     buildingName,
-    buildingNameEng
+    buildingId
   } = props;
 
   const {
@@ -79,7 +79,7 @@ const SummarizedBudgetsTableContainer = props => {
 
     //prepare the params object
     let params = {
-      buildingNameEng,
+      buildingId,
       date,
       summarizedBudget: newCopy,
       summarized_section_id: oldCopy.summarized_section_id
@@ -253,7 +253,7 @@ const SummarizedBudgetsTableContainer = props => {
           middlePane={
             <YearOnlyDatePicker
               date={date}
-              buildingNameEng={buildingNameEng}
+              buildingId={buildingId}
               updateDate={updateDate}
             />
           } // end middlePane
@@ -263,7 +263,7 @@ const SummarizedBudgetsTableContainer = props => {
               data,
               fileName: Helper.getSummarizedBudgetsFilename(buildingName, date),
               buildingName,
-              buildingNameEng,
+              buildingId,
               date
             }}
             print={{

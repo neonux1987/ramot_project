@@ -30,8 +30,8 @@ const MenuContainer = ({ routes, history, data }) => {
 
     data.forEach(item => {
       const buildings = routes.active.expanded;
-      newState[item.buildingNameEng] = {
-        open: buildings[item.buildingNameEng] === undefined ? false : buildings[item.buildingNameEng].open
+      newState[item.buildingId] = {
+        open: buildings[item.buildingId] === undefined ? false : buildings[item.buildingId].open
       }
 
     });
@@ -42,22 +42,22 @@ const MenuContainer = ({ routes, history, data }) => {
   const routeState = routes.active.state;
 
   const expandHandleClick = (item) => {
-    const { buildingName, buildingNameEng, path } = item;
+    const { buildingName, buildingId, path } = item;
 
     const expanded = {
       ...state,
-      [buildingNameEng]: {
-        open: !state[buildingNameEng].open
+      [buildingId]: {
+        open: !state[buildingId].open
       }
     };
 
     // when expanding the menu item, set
     // what default page it will open
-    if (state[buildingNameEng].open === false) {
+    if (state[buildingId].open === false) {
       const newState = {
         page: DEFAULT_PAGE,
         buildingName: buildingName,
-        buildingNameEng: buildingNameEng
+        buildingId: buildingId
       }
 
       const pathname = `/${path}/הוצאות-חודשיות`;
@@ -84,16 +84,16 @@ const MenuContainer = ({ routes, history, data }) => {
    * set initial open state for last saved path
    */
   useEffect(() => {
-    const { buildingNameEng } = routeState;
+    const { buildingId } = routeState;
 
     // if the building name is empty that means
     // that it's the home page, in that case don't set
     // open state
-    if (buildingNameEng !== "")
+    if (buildingId !== "")
       setState(prevState => {
         return {
           ...prevState,
-          [buildingNameEng]: {
+          [buildingId]: {
             open: true
           }
         };
@@ -103,14 +103,14 @@ const MenuContainer = ({ routes, history, data }) => {
 
   const menuRender = data.map((item) => {
 
-    const { buildingName, id, buildingNameEng } = item;
+    const { buildingName, buildingId } = item;
 
     return <ExpandableMenuItem
       label={buildingName}
       Icon={generateIcon("home")}
       onClick={() => expandHandleClick(item)}
-      open={state[buildingNameEng].open}
-      key={id}
+      open={state[buildingId].open}
+      key={buildingId}
       active={routeState.buildingName === buildingName}
     >
 
@@ -126,7 +126,7 @@ const MenuContainer = ({ routes, history, data }) => {
             state: {
               page: label,
               buildingName: item.buildingName,
-              buildingNameEng: item.buildingNameEng
+              buildingId: item.buildingId
             }
           }}
           active={routeState.page === label && routeState.buildingName === item.buildingName}

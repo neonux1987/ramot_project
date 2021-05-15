@@ -1,10 +1,10 @@
 import React from 'react';
 import CheckboxWithLabel from './CheckboxWithLabel';
 
-const ExcelReportsCheckbox = (props) => {
+const ExcelReportsCheckbox = ({ color, ...otherProps }) => {
   return <CheckboxWithLabel
-    {...props}
-    color="rgb(12 155 167)"
+    color="#0066a2"
+    {...otherProps}
   />;
 }
 

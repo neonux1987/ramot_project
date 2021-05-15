@@ -6,7 +6,7 @@ const initState = {
     state: {
       page: "דף הבית",
       buildingName: "",
-      buildingNameEng: ""
+      buildingId: ""
     },
     expanded: {}
   }

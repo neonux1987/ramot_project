@@ -21,9 +21,9 @@ export const TYPES = {
  */
 export const fetchMonthExpanses = (params) => {
   return async dispatch => {
-    const { buildingNameEng } = params;
+    const { buildingId } = params;
     // let react know that the fetching is started
-    dispatch(requestMonthExpanses(buildingNameEng));
+    dispatch(requestMonthExpanses(buildingId));
 
     return ipcSendReceive({
       send: {
@@ -35,44 +35,44 @@ export const fetchMonthExpanses = (params) => {
       },
       onSuccess: (result) => {
         // store the data
-        dispatch(receiveMonthExpanses(result.data, buildingNameEng));
+        dispatch(receiveMonthExpanses(result.data, buildingId));
       },
       onError: (result) => {
         // let react know that an erro occured while trying to fetch
-        dispatch(monthExpansesFetchingFailed(result.error, buildingNameEng));
+        dispatch(monthExpansesFetchingFailed(result.error, buildingId));
       }
     });//end ipc send receive
 
   } // end return
 };
 
-const requestMonthExpanses = function (buildingNameEng) {
+const requestMonthExpanses = function (buildingId) {
   return {
     type: TYPES.MONTH_EXPANSES_REQUEST,
-    buildingNameEng
+    buildingId
   }
 };
 
-const receiveMonthExpanses = function (data, buildingNameEng) {
+const receiveMonthExpanses = function (data, buildingId) {
   return {
     type: TYPES.MONTH_EXPANSES_RECEIVE,
     data,
-    buildingNameEng
+    buildingId
   }
 }
 
-export const monthExpansesCleanup = function (buildingNameEng) {
+export const monthExpansesCleanup = function (buildingId) {
   return {
     type: TYPES.MONTH_EXPANSES_CLEANUP,
-    buildingNameEng
+    buildingId
   }
 }
 
-const monthExpansesFetchingFailed = function (error, buildingNameEng) {
+const monthExpansesFetchingFailed = function (error, buildingId) {
   return {
     type: TYPES.MONTH_EXPANSES_FETCHING_FAILED,
     error,
-    buildingNameEng
+    buildingId
   }
 };
 
@@ -92,7 +92,7 @@ export const addMonthExpanse = (params = Object, expanse = Object) => {
         expanse.id = result.data;
 
         //success store the data
-        dispatch(addMonthExpanseInStore(expanse, params.buildingNameEng, sortByCode));
+        dispatch(addMonthExpanseInStore(expanse, params.buildingId, sortByCode));
 
         toastManager.success("השורה נוספה בהצלחה.");
       },
@@ -106,11 +106,11 @@ export const addMonthExpanse = (params = Object, expanse = Object) => {
 
 }
 
-const addMonthExpanseInStore = (payload, buildingNameEng, sortByCode) => {
+const addMonthExpanseInStore = (payload, buildingId, sortByCode) => {
   return {
     type: TYPES.MONTH_EXPANSES_ADD,
     payload,
-    buildingNameEng,
+    buildingId,
     compareFunc: sortByCode
   }
 }
@@ -118,7 +118,7 @@ const addMonthExpanseInStore = (payload, buildingNameEng, sortByCode) => {
 export const updateMonthExpanse = (params, oldExpanse, index) => {
   return dispatch => {
     // first update the store for fast user response
-    dispatch(updateMonthExpanseInStore(params.buildingNameEng, params.expanse, index));
+    dispatch(updateMonthExpanseInStore(params.buildingId, params.expanse, index));
 
     return ipcSendReceive({
       send: {
@@ -135,7 +135,7 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
           type: TYPES.MONTH_EXPANSES_UPDATE,
           index,
           payload: oldExpanse,
-          buildingNameEng: params.buildingNameEng
+          buildingId: params.buildingId
         });
       }
     });
@@ -143,12 +143,12 @@ export const updateMonthExpanse = (params, oldExpanse, index) => {
   }
 };
 
-const updateMonthExpanseInStore = (buildingNameEng, payload, index) => {
+const updateMonthExpanseInStore = (buildingId, payload, index) => {
   return {
     type: TYPES.MONTH_EXPANSES_UPDATE,
     index,
     payload,
-    buildingNameEng
+    buildingId
   };
 }
 
@@ -164,7 +164,7 @@ export const deleteMonthExpanse = (params = Object, index = Number) => {
         channel: "month-expanse-deleted"
       },
       onSuccess: () => {
-        dispatch(deleteMonthExpanseInStore(index, params.buildingNameEng));
+        dispatch(deleteMonthExpanseInStore(index, params.buildingId));
 
         toastManager.success("השורה נמחקה בהצלחה.");
       }
@@ -173,19 +173,19 @@ export const deleteMonthExpanse = (params = Object, index = Number) => {
   }
 };
 
-export const updateDate = function (buildingNameEng, date) {
+export const updateDate = function (buildingId, date) {
   return {
     type: TYPES.MONTH_EXPANSES_UPDATE_DATE,
-    buildingNameEng,
+    buildingId,
     date
   }
 }
 
-const deleteMonthExpanseInStore = (index, buildingNameEng) => {
+const deleteMonthExpanseInStore = (index, buildingId) => {
   return {
     type: TYPES.MONTH_EXPANSES_DELETE,
     index,
-    buildingNameEng
+    buildingId
   }
 }
 

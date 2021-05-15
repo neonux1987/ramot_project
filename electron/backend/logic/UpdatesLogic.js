@@ -30,9 +30,9 @@ class UpdatesLogic {
 
         const buildings = await buildingsDao.getBuidlings(trx);
 
-        await asyncForEach(buildings, async ({ buildingNameEng }) => {
+        await asyncForEach(buildings, async ({ buildingId }) => {
 
-          const tableName = `${buildingNameEng}_monthly_stats`;
+          const tableName = `${buildingId}_monthly_stats`;
 
           await trx.schema.table(tableName, async (table) => {
 
@@ -42,7 +42,7 @@ class UpdatesLogic {
 
               //table.integer("monthNum")
 
-              const stats = await monthlyStatsDao.getAllBuildingStats(buildingNameEng, trx);
+              const stats = await monthlyStatsDao.getAllBuildingStats(buildingId, trx);
 
               await asyncForEach(stats, async (row) => {
 
@@ -55,7 +55,7 @@ class UpdatesLogic {
 
                 const data = { monthNum }
 
-                //await monthlyStatsDao.updateMonthStatsTrx(buildingNameEng, date, data, trx);
+                //await monthlyStatsDao.updateMonthStatsTrx(buildingId, date, data, trx);
 
               });
 

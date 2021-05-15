@@ -19,45 +19,45 @@ class SummarizedBudgetLogic {
     this.summarizedSectionsLogic = new SummarizedSectionsLogic();
   }
 
-  getBuildingSummarizedBudgetTrx(buildingNameEng, date, trx) {
-    return this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingNameEng, date, trx);
+  getBuildingSummarizedBudgetTrx(buildingId, date, trx) {
+    return this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingId, date, trx);
   }
 
-  getAll(buildingNameEng, date) {
-    return this.summarizedBudgetDao.getAll(buildingNameEng, date);
+  getAll(buildingId, date) {
+    return this.summarizedBudgetDao.getAll(buildingId, date);
   }
 
-  async getSummarizedBudgetsByRange(buildingNameEng, fromYear, toYear) {
-    return this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingNameEng, fromYear, toYear);
+  async getSummarizedBudgetsByRange(buildingId, fromYear, toYear) {
+    return this.summarizedBudgetDao.getSummarizedBudgetsByRange(buildingId, fromYear, toYear);
   }
 
-  getSummarizedBudgetTopIncomeOutcome(buildingNameEng, fromYear, toYear, limit) {
-    return this.summarizedBudgetDao.getSummarizedBudgetTopIncomeOutcome(buildingNameEng, fromYear, toYear, limit);
+  getSummarizedBudgetTopIncomeOutcome(buildingId, fromYear, toYear, limit) {
+    return this.summarizedBudgetDao.getSummarizedBudgetTopIncomeOutcome(buildingId, fromYear, toYear, limit);
   }
 
-  getSummarizedBudgetByIdTrx(summarized_section_id, buildingNameEng, date, trx) {
-    return this.summarizedBudgetDao.getSummarizedBudgetByIdTrx(summarized_section_id, buildingNameEng, date, trx);
+  getSummarizedBudgetByIdTrx(summarized_section_id, buildingId, date, trx) {
+    return this.summarizedBudgetDao.getSummarizedBudgetByIdTrx(summarized_section_id, buildingId, date, trx);
   }
 
   addSummarizedBudgetTrx(buildingName = String, payload = Object, trx) {
-    return this.summarizedBudgetDao.addSummarizedBudgetTrx(buildingNameEng, payload, trx);
+    return this.summarizedBudgetDao.addSummarizedBudgetTrx(buildingId, payload, trx);
   }
 
-  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingNameEng = String, date = Object, special = false }, trx) {
+  async updateSummarizedBudgetTrx({ summarized_section_id, summarizedBudget = Object, buildingId = String, date = Object, special = false }, trx) {
 
     if (trx === undefined) {
       trx = await connectionPool.getTransaction();
     }
 
-    await this.summarizedBudgetDao.updateSummarizedBudgetTrx(summarized_section_id, buildingNameEng, summarizedBudget, date, trx);
+    await this.summarizedBudgetDao.updateSummarizedBudgetTrx(summarized_section_id, buildingId, summarizedBudget, date, trx);
 
-    const allSummarizedBudgets = await this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingNameEng, date, trx);
+    const allSummarizedBudgets = await this.summarizedBudgetDao.getBuildingSummarizedBudgetTrx(buildingId, date, trx);
 
     if (!special) {
       const yearStats = this.prepareYearStats(allSummarizedBudgets);
 
       //update year stats
-      await this.yearlyStatsLogic.updateYearStatsTrx(buildingNameEng, date, {
+      await this.yearlyStatsLogic.updateYearStatsTrx(buildingId, date, {
         outcome: yearStats.year_total_execution,
         income: yearStats.year_total_budget
       }, trx);
@@ -91,8 +91,8 @@ class SummarizedBudgetLogic {
 
   }
 
-  batchInsert(buildingNameEng, rows, trx) {
-    return this.summarizedBudgetDao.batchInsert(buildingNameEng, rows, trx);
+  batchInsert(buildingId, rows, trx) {
+    return this.summarizedBudgetDao.batchInsert(buildingId, rows, trx);
   }
 
   prepareDefaultBatchInsertion(data, date) {
@@ -119,12 +119,12 @@ class SummarizedBudgetLogic {
 
   /**
    * creates empty report for the new month
-   * @param {*} buildingNameEng 
+   * @param {*} buildingId 
    * @param {*} date 
    */
-  async createEmptyReport(buildingNameEng, date, trx) {
+  async createEmptyReport(buildingId, date, trx) {
 
-    const registeredYear = await this.registeredYearsLogic.getRegisteredYearTrx(buildingNameEng, date.year, trx);
+    const registeredYear = await this.registeredYearsLogic.getRegisteredYearTrx(buildingId, date.year, trx);
 
     //if the year is already registered
     //return empty promise
@@ -137,29 +137,29 @@ class SummarizedBudgetLogic {
     }
 
     //get all the budgets of the previous year if exists
-    const sumBudgets = await this.getBuildingSummarizedBudgetTrx(buildingNameEng, newDate, trx);
+    const sumBudgets = await this.getBuildingSummarizedBudgetTrx(buildingId, newDate, trx);
 
     if (sumBudgets.length === 0) {
       const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
       //prepare the data for insertion
       const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
       //insert the batch
-      await this.batchInsert(buildingNameEng, preparedDefaultSections, trx);
+      await this.batchInsert(buildingId, preparedDefaultSections, trx);
     } else {
       //prepare the data for insertion
       const preparedSections = this.prepareBatchInsertion(sumBudgets, date);
       //insert the batch
-      await this.batchInsert(buildingNameEng, preparedSections, trx);
+      await this.batchInsert(buildingId, preparedSections, trx);
     }
 
     //generate empty quarterly stats (4 quarters)
     const quarterlyStatsArr = this.generateEmptyQuarterlyStats(date);
 
     // batch insert the quarters
-    await this.quarterlyStatsLogic.batchInsert(buildingNameEng, quarterlyStatsArr, trx);
+    await this.quarterlyStatsLogic.batchInsert(buildingId, quarterlyStatsArr, trx);
 
     //insert empty month total row
-    await this.yearlyStatsLogic.insertYearStatsTrx(buildingNameEng, {
+    await this.yearlyStatsLogic.insertYearStatsTrx(buildingId, {
       year: date.year,
       income: 0,
       outcome: 0
@@ -167,7 +167,7 @@ class SummarizedBudgetLogic {
       trx);
 
     //register the new year
-    await this.registeredYearsLogic.registerNewYear(buildingNameEng, { year: date.year }, trx);
+    await this.registeredYearsLogic.registerNewYear(buildingId, { year: date.year }, trx);
   }
 
   generateEmptyQuarterlyStats(date) {

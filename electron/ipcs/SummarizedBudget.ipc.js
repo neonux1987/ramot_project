@@ -6,8 +6,8 @@ const summarizedBudgetIpc = (connection) => {
   //fetch month expanses data
   const summarizedBudgetLogic = new SummarizedBudgetLogic(connection);
 
-  ipcMain.on('get-summarized-budgets', (event, { buildingNameEng, date }) => {
-    summarizedBudgetLogic.getBuildingSummarizedBudgetTrx(buildingNameEng, date).then((result) => {
+  ipcMain.on('get-summarized-budgets', (event, { buildingId, date }) => {
+    summarizedBudgetLogic.getBuildingSummarizedBudgetTrx(buildingId, date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.sender.send("summarized-budgets", { data: result });
     }).catch((error) => {
@@ -15,9 +15,9 @@ const summarizedBudgetIpc = (connection) => {
     });
   });
 
-  ipcMain.on('get-summarized-budgets-top-income-outcome', (event, { buildingNameEng, date, limit }) => {
+  ipcMain.on('get-summarized-budgets-top-income-outcome', (event, { buildingId, date, limit }) => {
     const { fromYear, toYear } = date;
-    summarizedBudgetLogic.getSummarizedBudgetTopIncomeOutcome(buildingNameEng, fromYear, toYear, limit).then((result) => {
+    summarizedBudgetLogic.getSummarizedBudgetTopIncomeOutcome(buildingId, fromYear, toYear, limit).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.sender.send("summarized-budgets-top-income-outcome-data", { data: result });
     }).catch((error) => {
@@ -25,9 +25,9 @@ const summarizedBudgetIpc = (connection) => {
     });
   });
 
-  ipcMain.on('get-summarized-budgets-by-range', (event, { buildingNameEng, date }) => {
+  ipcMain.on('get-summarized-budgets-by-range', (event, { buildingId, date }) => {
     const { fromYear, toYear } = date;
-    summarizedBudgetLogic.getSummarizedBudgetsByRange(buildingNameEng, fromYear, toYear).then((result) => {
+    summarizedBudgetLogic.getSummarizedBudgetsByRange(buildingId, fromYear, toYear).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.sender.send("summarized-budgets-by-range-data", { data: result });
     }).catch((error) => {
@@ -44,8 +44,8 @@ const summarizedBudgetIpc = (connection) => {
     });
   });
 
-  ipcMain.on('generate-empty-summarized-budget-report', (event, { buildingNameEng, date }) => {
-    summarizedBudgetLogic.createEmptyReport(buildingNameEng, date).then((result) => {
+  ipcMain.on('generate-empty-summarized-budget-report', (event, { buildingId, date }) => {
+    summarizedBudgetLogic.createEmptyReport(buildingId, date).then((result) => {
       //let data = nestHydrationJS.nest(result, DEFINITION);
       event.reply("generated-empty-summarized-budget-data", { data: result });
     }).catch((error) => {

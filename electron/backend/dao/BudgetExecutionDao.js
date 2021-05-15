@@ -122,7 +122,7 @@ class BudgetExecutionDao {
     trx = this.connection
   ) {
     const { quarter, year } = date;
-    const { buildingNameEng, buildingName } = buildingInfo;
+    const { buildingId, buildingName } = buildingInfo;
     const { pageSize, startElement } = range;
 
     return trx
@@ -139,7 +139,7 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingNameEng + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      ).from(buildingId + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
       .limit(pageSize).offset(startElement)
       .orderBy("section")
       .catch((error) => {

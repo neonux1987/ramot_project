@@ -6,18 +6,22 @@ const buildings = getBuildings();
 const checkedBuildings = []
 
 buildings.forEach(building => {
-  const { buildingName, buildingNameEng } = building;
+  const { buildingName, buildingId } = building;
 
   checkedBuildings.push({
     buildingName,
-    buildingNameEng,
+    buildingId,
     isChecked: true
   });
 });
 
 const initState = {
   excelReports: {
-    checkedBuildings,
+    checkedBuildings: { ...checkedBuildings },
+    isAllChecked: true
+  },
+  emptyReports: {
+    checkedBuildings: { ...checkedBuildings },
     isAllChecked: true
   }
 };
@@ -39,6 +43,26 @@ const reportsReducer = (state = initState, action) => {
       return {
         ...state,
         excelReports: {
+          checkedBuildings,
+          isAllChecked
+        }
+      }
+    }
+    case TYPES.EMPTY_REPORTS_CHECK_BUILDING: {
+      const { isAllChecked, checkedBuildings } = action;
+      return {
+        ...state,
+        emptyReports: {
+          checkedBuildings,
+          isAllChecked
+        }
+      };
+    }
+    case TYPES.EMPTY_REPORTS_SET_ALL_CHECKED: {
+      const { isAllChecked, checkedBuildings } = action;
+      return {
+        ...state,
+        emptyReports: {
           checkedBuildings,
           isAllChecked
         }
