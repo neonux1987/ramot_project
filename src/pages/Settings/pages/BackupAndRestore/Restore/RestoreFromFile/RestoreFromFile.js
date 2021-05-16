@@ -1,15 +1,13 @@
 import React from 'react';
-import { Button, Checkbox } from '@material-ui/core';
 import { MdClose } from 'react-icons/md';
 
 import {
   container,
   chooseFileWrapper,
-  chosenfile,
-  chooseFileButton,
-  closeButton
+  chosenfile
 } from './RestoreFromFile.module.css';
-import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
+import WhiteButton from '../../../../../../components/buttons/WhiteButton';
+import CheckboxWithLabel from '../../../../../../components/Checkboxes/CheckboxWithLabel';
 
 const RestoreFromFile = props => {
 
@@ -25,24 +23,16 @@ const RestoreFromFile = props => {
     <div className={container}>
 
       <div className={chooseFileWrapper}>
-        <Checkbox
-          checked={byFile}
-          onChange={onCheckBoxChangeHandler}
-          name="byFile"
-          color="primary"
-        />
 
-        <SubtitleBoldTypography>
-          מתוך קובץ גיבוי שנמצא במחשבך:
-        </SubtitleBoldTypography>
+        <CheckboxWithLabel label="מתוך קובץ גיבוי שנמצא במחשבך:" checked={byFile} onChange={onCheckBoxChangeHandler} name="byFile" />
 
-        <Button disabled={!byFile} className={chooseFileButton} variant="contained" color="primary" onClick={selectDbFileHandler}>בחר קובץ גיבוי</Button>
+        <WhiteButton disabled={!byFile} onClick={selectDbFileHandler}>בחר קובץ גיבוי</WhiteButton>
       </div>
 
       {selectedFile && <div className={chosenfile}>
-        <Button className={closeButton} onClick={initSelectedFile}>
+        <WhiteButton onClick={initSelectedFile}>
           <MdClose />
-        </Button>
+        </WhiteButton>
         {`נבחר קובץ ${selectedFile}`}
       </div>}
 

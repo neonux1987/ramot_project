@@ -3,20 +3,24 @@ import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWit
 import { css } from 'emotion';
 
 const style = css`
-  margin: 8px;
-  background-color: #fbfbfb;
-  border-color: #343a40;
+  margin: 0 8px;
+  background-color: #f9f9f9;
   border: 1px solid #dedede;
-  color: #000;
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(248, 248, 249) 100%);
+  color: #555555;
   box-shadow: none;
   font-weight: 600;
   font-size: 13px;
+
+  :hover{
+    box-shadow: none;
+    background: #0000000a;
+  }
 `;
 
-const WhiteButton = (props) => {
-  return <ButtonWithSound onClick={props.onClick} variant="contained" color="primary" className={style}>
-    {props.children}
+const WhiteButton = ({ onClick, children, margin = "0 8px;", ...otherProps }) => {
+  const marginStyle = css`margin:${margin}`;
+  return <ButtonWithSound onClick={onClick} variant="contained" color="primary" className={`${style} ${marginStyle}`} {...otherProps}>
+    {children}
   </ButtonWithSound>
 }
 

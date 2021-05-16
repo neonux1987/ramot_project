@@ -30,6 +30,7 @@ import { toastManager } from '../../../../../toasts/toastManager';
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
 import PrimaryButton from '../../../../../components/buttons/PrimaryButton';
+import WhiteButton from '../../../../../components/buttons/WhiteButton';
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
@@ -147,7 +148,7 @@ const Restore = () => {
         *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה חירום.
     </Typography>
 
-      <PrimaryButton className={restoreButton} onClick={restoreHandler}>בצע שיחזור</PrimaryButton>
+      <WhiteButton margin="8px 0 0" onClick={restoreHandler}>בצע שיחזור</WhiteButton>
     </Fragment>
 
   return (

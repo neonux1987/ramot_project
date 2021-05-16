@@ -20,10 +20,10 @@ export const fetchBuildings = () => {
 
     return ipcSendReceive({
       send: {
-        channel: "get-buildings"
+        channel: "get-all-buildings"
       },
       receive: {
-        channel: "buildings-data"
+        channel: "all-buildings-data"
       },
       onSuccess: result => dispatch(receiveBuildings(result.data)),
       onError: result => dispatch(fetchingFailed(result.error))

@@ -10,11 +10,11 @@ import {
   selectsWrapper,
   paddingLeft,
   select,
-  createBtn,
   description,
   descriptionText,
   error
 } from './ExcelReportsGenerator.module.css';
+import WhiteButton from '../../../../../components/buttons/WhiteButton';
 
 const ExcelReportsGenerator = ({
   year,
@@ -53,13 +53,9 @@ const ExcelReportsGenerator = ({
           })}
         </Select>
 
-        <Button
-          className={createBtn}
-          onClick={onClickHandler}
-          variant="contained"
-          color="secondary">
+        <WhiteButton onClick={onClickHandler}>
           צור
-      </Button>
+      </WhiteButton>
       </div>
 
       <div className={description}>

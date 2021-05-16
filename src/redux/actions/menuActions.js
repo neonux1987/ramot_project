@@ -17,10 +17,11 @@ export const fetchMenu = () => {
 
     return ipcSendReceive({
       send: {
-        channel: "get-buildings"
+        channel: "get-buildings-by-status",
+        params: { status: "פעיל" }
       },
       receive: {
-        channel: "buildings-data"
+        channel: "by-status-buildings-data"
       },
       onSuccess: result => dispatch(receiveMenu(result.data)),
       onError: result => dispatch(fetchingFailed(result.error))

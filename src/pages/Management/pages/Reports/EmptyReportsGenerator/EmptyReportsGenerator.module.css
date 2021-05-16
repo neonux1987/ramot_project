@@ -1,5 +1,6 @@
 .container{
-  padding: 20px 20px 60px;
+  display: flex;
+  padding-top: 20px;
 }
 
 .paddingLeft{
@@ -10,6 +11,11 @@
   width: 150px;
 }
 
-.createBtn,.createBtn:hover{
-  background-color: rgb(3, 101, 162);
+.description{
+  margin-top: 20px;
+}
+
+.descriptionText{
+  font-size: 14px;
+  font-weight: 400;
 }

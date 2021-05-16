@@ -17,11 +17,8 @@ const CheckboxWithLabel = (props) => {
     name = "",
     checked = false,
     onChange,
-    color = "#0066a2",
     disabled = false
   } = props;
-
-  const colorCss = css`color: ${color}`;
 
   return (
     <div className={container}>
@@ -31,10 +28,6 @@ const CheckboxWithLabel = (props) => {
         onChange={onChange}
         name={name}
         color="default"
-        classes={{
-          root: colorCss,
-          checked: colorCss
-        }}
         disabled={disabled}
       />
 

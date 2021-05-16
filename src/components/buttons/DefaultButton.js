@@ -3,7 +3,7 @@ import { css } from 'emotion';
 import { Button } from '@material-ui/core';
 
 const DefaultButton = (props) => {
-  return <Button {...props} className={`${props.className} ${css`transition: none`}`} />
+  return <Button {...props} className={`${props.className} ${css`transition: none;`}`} />
 }
 
 export default DefaultButton;

@@ -19,13 +19,13 @@ import ExcelReportsGenerator from './ExcelReportsGenerator';
 import BuildingPicker from './BuildingPicker/BuildingPicker';
 import Section from '../../../../../components/Section/Section';
 
-const ExcelReportsGeneratorContainer = () => {
+const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   const date = new Date();//current date
 
   const [year, setYear] = useState(date.getFullYear());
   const [quarter, setQuarter] = useState(Helper.getCurrentQuarter(date.getMonth()));
 
-  const { checkedBuildings, isAllChecked } = useSelector(store => store.reports.excelReports);
+  const { checkedBuildings, isAllChecked } = excelReports;
 
   const dispatch = useDispatch();
 
@@ -97,8 +97,9 @@ const ExcelReportsGeneratorContainer = () => {
     <StyledSection
       title={"הפקת דוחות אקסל"}
       Icon={RiFileExcel2Line}
+      bgColor="#17b17c"
       padding={"30px 20px 50px"}
-      loading={registeredReports.isFetching && registeredReports.data.length === 0}
+      loading={isFetching || (registeredReports.isFetching && registeredReports.data.length === 0)}
     >
       <BuildingPicker
         checkedBuildings={checkedBuildings}

@@ -9,7 +9,6 @@ import { fetchBuildings, updateBuilding } from '../../../../redux/actions/buildi
 // COMPONENTS
 import EditControls from '../../../../components/EditControls/EditControls';
 import SelectDropDown from '../../../../components/SelectDropDown/SelectDropDown';
-import TableActions from '../../../../components/table/TableActions/TableActions';
 import TableControls from '../../../../components/table/TableControls/TableControls';
 import Cell from '../../../../components/table/components/Cell';
 import HeaderCell from '../../../../components/table/components/HeaderCell';
@@ -24,7 +23,6 @@ import useTableLogic from '../../../../customHooks/useTableLogic';
 // CONTAINERS
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
 
-const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
 const BuildingsManagementTableContainer = () => {
@@ -45,10 +43,6 @@ const BuildingsManagementTableContainer = () => {
     //get the building month expanses
     dispatch(fetchBuildings());
   }, [dispatch]);
-
-  const getGridTemplateColumns = () => {
-    return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
-  }
 
   const getDataObject = useCallback((index) => {
     return data[index];
@@ -90,14 +84,13 @@ const BuildingsManagementTableContainer = () => {
   }, [updateAction]);
 
   const HeadersRow = () => {
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
+    return <HeaderRow gridTemplateColumns={DEFAULT_TEMPLATE}>
 
-      {editMode ? <HeaderCell>פעולות</HeaderCell> : null}
       <HeaderCell>שורה</HeaderCell>
       <HeaderCell>מזהה</HeaderCell>
-      <HeaderCell>שם בניין</HeaderCell>
+      <HeaderCell editMode={editMode}>שם בניין</HeaderCell>
       <HeaderCell>שם קודם</HeaderCell>
-      <HeaderCell>מצב</HeaderCell>
+      <HeaderCell editMode={editMode}>מצב</HeaderCell>
     </HeaderRow>
   }
 
@@ -105,9 +98,8 @@ const BuildingsManagementTableContainer = () => {
     // row data
     const rowData = getDataObject(index);
 
-    return <TableRow gridTemplateColumns={getGridTemplateColumns()}>
+    return <TableRow gridTemplateColumns={DEFAULT_TEMPLATE}>
 
-      {editMode ? <TableActions deleteHandler={() => deleteBuilding(rowData, index)} /> : null}
       <Cell>{index + 1}</Cell>
       <Cell>{rowData.buildingId}</Cell>
       {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}

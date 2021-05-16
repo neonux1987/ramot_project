@@ -6,11 +6,19 @@ const buildingsIpc = () => {
   //fetch month expanses data
   const buildingsLogic = new BuildingsLogic();
 
-  ipcMain.on('get-buildings', (event) => {
-    buildingsLogic.getBuildings().then((result) => {
-      event.reply("buildings-data", { data: result });
+  ipcMain.on('get-all-buildings', (event) => {
+    buildingsLogic.getAllBuildings().then((result) => {
+      event.reply("all-buildings-data", { data: result });
     }).catch((error) => {
-      event.reply("buildings-data", { error: error.message });
+      event.reply("all-buildings-data", { error: error.message });
+    });
+  });
+
+  ipcMain.on('get-buildings-by-status', (event, { status }) => {
+    buildingsLogic.getBuildingsByStatus(status).then((result) => {
+      event.reply("by-status-buildings-data", { data: result });
+    }).catch((error) => {
+      event.reply("by-status-buildings-data", { error: error.message });
     });
   });
 

@@ -10,7 +10,25 @@ class BuildingsDao {
     this.logger = logManager.getLogger();
   }
 
-  getBuidlings(trx = connectionPool.getConnection()) {
+  getBuildingsByStatus(status = "פעיל", trx = connectionPool.getConnection()) {
+    return trx.select(
+      "id AS buildingId",
+      "buildingName",
+      "buildingNameEng",
+      "previousBuildingName",
+      "path",
+      "order",
+      "status"
+    ).from('buildings')
+      .where({ status })
+      .catch((error) => {
+        const newError = new DbError("המערכת לא הצליחה לשלוף את הנתונים של הבניינים", FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
+  getAllBuildings(trx = connectionPool.getConnection()) {
     return trx.select(
       "id AS buildingId",
       "buildingName",
@@ -27,7 +45,7 @@ class BuildingsDao {
       });
   }
 
-  getBuidlingById(id, trx = connectionPool.getConnection()) {
+  getBuildingById(id, trx = connectionPool.getConnection()) {
     return trx.select("*").from('buildings').where({ id })
       .catch((error) => {
         const newError = new DbError(`המערכת לא התליחה לשלוף נתונים של בניין קוד מזהה ${id}`, FILENAME, error);

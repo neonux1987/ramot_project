@@ -1,7 +1,7 @@
 import React from 'react';
 import SubtitleBoldTypography from "../../../../../../components/Typographies/SubtitleBoldTypography";
 import styles from './ManualBackupSelector.module.css';
-import PrimaryButton from '../../../../../../components/buttons/PrimaryButton';
+import WhiteButton from '../../../../../../components/buttons/WhiteButton';
 
 const ManualBackupSelector = (props) => {
 
@@ -14,11 +14,8 @@ const ManualBackupSelector = (props) => {
       <SubtitleBoldTypography className={styles.subtitle}>
         לייצוא בסיס הנתונים לקובץ לחץ
           </SubtitleBoldTypography>
-      <PrimaryButton
-        className={styles.backupButton}
-        onClick={onClick}
-      >ייצא בסיס נתונים
-      </PrimaryButton>
+      <WhiteButton margin="0 8px 0 0" onClick={onClick}>ייצא בסיס נתונים
+      </WhiteButton>
     </div>
   );
 }

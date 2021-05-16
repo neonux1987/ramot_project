@@ -1,11 +1,10 @@
 import React from 'react';
-import { FormControl, Select, Checkbox } from '@material-ui/core';
+import { FormControl, Select } from '@material-ui/core';
 import {
   restoreDateSelect,
-  subtitle,
   container
 } from './RestoreFromList.module.css';
-import SubtitleBoldTypography from '../../../../../../components/Typographies/SubtitleBoldTypography';
+import CheckboxWithLabel from '../../../../../../components/Checkboxes/CheckboxWithLabel';
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
@@ -22,16 +21,7 @@ const RestoreFromList = props => {
   return (
     <div className={container}>
 
-      <Checkbox
-        checked={byList}
-        onChange={onCheckBoxChangeHandler}
-        name="byList"
-        color="primary"
-      />
-
-      <SubtitleBoldTypography className={subtitle}>
-        גיבוי מהרשימה:
-        </SubtitleBoldTypography>
+      <CheckboxWithLabel label="גיבוי מהרשימה:" checked={byList} onChange={onCheckBoxChangeHandler} name="byList" />
 
       <FormControl className={restoreDateSelect}>
         <Select

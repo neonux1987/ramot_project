@@ -28,7 +28,7 @@ class UpdatesLogic {
 
         const trx = await connectionPool.getTransaction();
 
-        const buildings = await buildingsDao.getBuidlings(trx);
+        const buildings = await buildingsDao.getAllBuildings(trx);
 
         await asyncForEach(buildings, async ({ buildingId }) => {
 

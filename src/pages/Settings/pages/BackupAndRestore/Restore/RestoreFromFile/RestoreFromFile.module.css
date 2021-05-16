@@ -5,7 +5,6 @@
 .chooseFileWrapper{
   display: flex;
   align-items: center;
-  margin-right: -11px;
 }
 
 .chosenfile{
@@ -18,11 +17,4 @@
 
 .chooseFileButton{
   margin-right: 20px;
-}
-
-.closeButton{
-  font-size: 18px;
-  margin-left: 10px;
-  padding: 0;
-  min-width: 0;
 }

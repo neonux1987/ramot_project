@@ -1,6 +1,6 @@
 // LIBRARIES
-import React from 'react';
-import { Select, Button, MenuItem } from '@material-ui/core';
+import React, { Fragment } from 'react';
+import { Select, MenuItem, Typography } from '@material-ui/core';
 
 // UTILS
 import classnames from 'classnames';
@@ -9,13 +9,16 @@ import classnames from 'classnames';
 import {
   paddingLeft,
   select,
-  createBtn,
-  container
+  container,
+  description,
+  descriptionText
 } from './EmptyReportsGenerator.module.css';
 
+// COMPONENTS
+import WhiteButton from '../../../../../components/buttons/WhiteButton';
 
 const EmptyReportsGenerator = ({ selectDate, onChangeHandler, onClickHandler, years, quarters }) => {
-  return (
+  return <Fragment>
     <div className={container}>
 
       <Select
@@ -40,15 +43,17 @@ const EmptyReportsGenerator = ({ selectDate, onChangeHandler, onClickHandler, ye
         })}
       </Select>
 
-      <Button
-        className={createBtn}
-        onClick={onClickHandler}
-        variant="contained"
-        color="secondary">
+      <WhiteButton onClick={onClickHandler}>
         צור
-      </Button>
+      </WhiteButton>
     </div>
-  )
+
+    <div className={description}>
+      <Typography className={descriptionText} variant="h6">
+        *לתשומת ליבך: המערכת יוצרת דוחות רבעוניים ריקים לכלל הבניינים הפעילים
+    </Typography>
+    </div>
+  </Fragment>
 };
 
 export default EmptyReportsGenerator;

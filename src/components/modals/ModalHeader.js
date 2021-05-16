@@ -5,20 +5,20 @@ import { css } from 'emotion';
 const _header = css`
   display: flex; 
   align-items: center;
-  border-bottom: 1px solid #ececec;
-  background-color: #333b3e;
+  border-bottom: 1px solid #dddddd;
+  background-color: #fdfdfd;
 `;
 
 const _dialogTitle = css`
   padding-right: 12px;
   flex: initial;
-  color: #ffffff;
+  color: #555555;
 `;
 
 const ModalHeader = (props) => {
 
   const {
-    iconColor = "#ffffff",
+    iconColor = "#555555",
     title,
     Icon
   } = props;

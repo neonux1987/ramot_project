@@ -12,7 +12,7 @@ class SchemaBuilder {
 
     const connection = connectionPool.getConnection("test");
 
-    const buildings = await this.buildingsDao.getBuidlings();
+    const buildings = await this.buildingsDao.getAllBuildings();
 
     // creates the quarter column in registered months
     // for each building in the database

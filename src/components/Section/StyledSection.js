@@ -2,6 +2,7 @@ import React from 'react';
 import { css } from 'emotion';
 import classnames from 'classnames';
 import { Typography } from '@material-ui/core';
+import CenteredLoader from '../AnimatedLoaders/CenteredLoader';
 
 const _container = css`
   margin: 30px 20px 20px 20px;
@@ -84,7 +85,8 @@ const StyledSection = ({
   bgColor = "#0e7ab9",
   extraDetails = null,
   children,
-  isFullscreen = false
+  isFullscreen = false,
+  loading = false
 }) => {
   return <div className={classnames(_container, isFullscreen ? fullscreenStyle : "")} id="styledSection">
 
@@ -120,7 +122,7 @@ const StyledSection = ({
 
     {/* content */}
     <div className={_content} id="styledSection-content">
-      {children}
+      {loading ? <CenteredLoader /> : children}
     </div>
     {/* end content */}
 

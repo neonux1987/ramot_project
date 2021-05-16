@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,6 +13,7 @@ import Credits from './Credits/Credits';
 import MenuContainer from './Menu/MenuContainer';
 import { fetchMenu } from '../redux/actions/menuActions';
 import CenteredLoader from '../components/AnimatedLoaders/CenteredLoader';
+import { ipcRenderer } from 'electron';
 
 const SidebarContainer = () => {
 
@@ -22,9 +23,26 @@ const SidebarContainer = () => {
   const routes = useSelector(store => store.routes);
   const { data, isFetching } = useSelector(store => store.menu);
 
-  useEffect(() => {
+  const fetchListener = useCallback(() => {
     dispatch(fetchMenu());
-  }, [dispatch]);
+  }, [dispatch])
+
+  useEffect(() => {
+    fetchListener();
+  }, [fetchListener]);
+
+  // when a new building is added or
+  // exisiting building is updated, fetch
+  // the menu again to get the updated state
+  useEffect(() => {
+    ipcRenderer.on("updated-building", fetchListener)
+    ipcRenderer.on("added-building", fetchListener)
+
+    return () => {
+      ipcRenderer.removeListener("updated-building", fetchListener);
+      ipcRenderer.removeListener("added-building", fetchListener);
+    }
+  }, [fetchListener]);
 
   return <Sidebar show={showSidebar}>
     <Logo>

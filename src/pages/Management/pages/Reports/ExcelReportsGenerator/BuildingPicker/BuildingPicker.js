@@ -1,6 +1,6 @@
 // LIBRARIES
 import React from 'react';
-import ExcelReportsCheckbox from '../../../../../../components/Checkboxes/ExcelReportsCheckbox';
+import CheckboxWithLabel from '../../../../../../components/Checkboxes/CheckboxWithLabel';
 import VerticalDivider from '../../../../../../components/Divider/VerticalDivider';
 import BuildingPickerWrapper from './BuildingPickerWrapper';
 
@@ -18,7 +18,7 @@ const BuildingPicker = ({ checkedBuildings, isAllChecked, setAllChecked, checkBu
 
   return (
     <BuildingPickerWrapper>
-      <ExcelReportsCheckbox
+      <CheckboxWithLabel
         label="בחר הכל"
         name="all"
         checked={isAllChecked}
@@ -27,13 +27,12 @@ const BuildingPicker = ({ checkedBuildings, isAllChecked, setAllChecked, checkBu
       <VerticalDivider />
       {
         checkedBuildings.map(({ buildingName, buildingId, isChecked }) => {
-          return <ExcelReportsCheckbox
+          return <CheckboxWithLabel
             label={buildingName}
             key={buildingId}
             checked={isChecked}
             name={buildingId}
             onChange={onChange}
-            color={checkboxColor}
           />;
         })
       }

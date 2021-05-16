@@ -4,7 +4,7 @@ import { css } from 'emotion';
 import { TextField } from '@material-ui/core';
 
 // COMPONENTS
-import PrimaryButton from '../buttons/PrimaryButton';
+import WhiteButton from '../buttons/WhiteButton';
 
 const textFieldRoot = css`
 margin-top: 0px;
@@ -15,10 +15,6 @@ margin-top: 0px;
 const textFieldInput = css`
 padding: 9px 14px;
 direction: ltr;
-`;
-
-const buttonStyle = css`
-  margin-left:6px;
 `;
 
 const FileSelector = ({
@@ -32,8 +28,8 @@ const FileSelector = ({
 
   return (
     <div className={className}>
-      {onOpenClick ? <PrimaryButton className={buttonStyle} onClick={onOpenClick}>{onOpenButtonLabel}</PrimaryButton> : null}
-      {onChangeClick ? <PrimaryButton className={buttonStyle} onClick={onChangeClick}>{onChangebuttonLabel}</PrimaryButton> : null}
+      {onOpenClick ? <WhiteButton margin="0 0 0 8px" onClick={onOpenClick}>{onOpenButtonLabel}</WhiteButton> : null}
+      {onChangeClick ? <WhiteButton margin="0 0 0 8px" onClick={onChangeClick}>{onChangebuttonLabel}</WhiteButton> : null}
 
       <TextField
         id="outlined-bare"

@@ -27,13 +27,14 @@ class RegisteredReportsDao {
   }
 
   getRegisteredReportsByYearAndQuarter(
+    buildingId,
     year,
     quarter,
     trx = connectionPool.getConnection()
   ) {
     return trx.select()
       .from("registered_reports")
-      .where({ year, quarter })
+      .where({ year, quarter, buildingId })
       .groupBy("quarter")
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לפי רבעון ${date.quarter} שנה ${date.year}`;

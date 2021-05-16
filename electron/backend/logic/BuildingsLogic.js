@@ -7,12 +7,16 @@ class BuildingsLogic {
     this.buildingsDao = new BuildingsDao();
   }
 
-  getBuidlingById(id, trx) {
-    return this.buildingsDao.getBuidlingById(id, trx);
+  getBuildingById(id, trx) {
+    return this.buildingsDao.getBuildingById(id, trx);
   }
 
-  getBuildings(trx) {
-    return this.buildingsDao.getBuidlings(trx);
+  getBuildingsByStatus(status, trx) {
+    return this.buildingsDao.getBuildingsByStatus(status, trx);
+  }
+
+  getAllBuildings(trx) {
+    return this.buildingsDao.getAllBuildings(trx);
   }
 
   async addBuilding({ buildingName }) {
@@ -22,7 +26,7 @@ class BuildingsLogic {
 
     const trx = await ConnectionPool.getTransaction();
 
-    const buildings = await this.getBuildings(trx);
+    const buildings = await this.getAllBuildings(trx);
 
     // tabe prefix will be used to name
     // the tables of the building in the database

@@ -6,6 +6,7 @@
   /* background: linear-gradient(66deg, rgba(11,106,161,1) 0%, rgba(14,122,185,1) 100%); */
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
+  height: 160px;
 }
 
 .container:before {

@@ -1,8 +1,6 @@
 // LIBRARIES
 const { dialog, app } = require('electron');
 
-//const SchemaBuilder = require('../dao/schemaBuilder/SchemaBuilder');
-
 const { openLogFile } = require('../../helpers/utils');
 
 const SystemPaths = require('./SystemPaths');
@@ -30,7 +28,6 @@ class MainSystem {
     const registeredBackupsIpc = require('../../ipcs/registeredBackups.ipc');
     const dbBackupIpc = require('../../ipcs/dbBackup.ipc');
     const reportsIpc = require('../../ipcs/reports.ipc');
-    const emptyReportsGeneratorIpc = require('../../ipcs/emptyReportsGenerator.ipc');
     const mainProcessIpc = require('../../ipcs/mainProcess.ipc');
     const restoreDbIpc = require('../../ipcs/restoreDb.ipc');
     const updatesIpc = require('../../ipcs/updates.ipc');
@@ -73,8 +70,6 @@ class MainSystem {
 
     reportsIpc();
 
-    emptyReportsGeneratorIpc();
-
     registeredReportsIpc();
 
     restoreDbIpc();
@@ -110,7 +105,7 @@ class MainSystem {
 
       //fetch menu data
       const buildingsLogic = new BuildingsLogic();
-      const buildings = await buildingsLogic.getBuildings();
+      const buildings = await buildingsLogic.getBuildingsByStatus("פעיל");
 
       // In the main process.
       global.sharedObject = {
