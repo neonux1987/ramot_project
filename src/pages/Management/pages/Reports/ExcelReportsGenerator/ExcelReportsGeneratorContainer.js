@@ -97,7 +97,7 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
     <StyledSection
       title={"הפקת דוחות אקסל"}
       Icon={RiFileExcel2Line}
-      bgColor="#17b17c"
+      bgColor="#1ead82"
       padding={"30px 20px 50px"}
       loading={isFetching || (registeredReports.isFetching && registeredReports.data.length === 0)}
     >

@@ -19,6 +19,8 @@ const MonthExpanses = () => {
   const dispatch = useDispatch();
 
   const { buildingName, buildingId } = useLocation().state;
+  const monthExpanses = useSelector(store => store.monthExpanses);
+  console.log(monthExpanses);
 
   const { date, data, isFetching } = useSelector(store => store.monthExpanses[buildingId]);
 

@@ -74,7 +74,8 @@ function createReducer(asyncReducers) {
 
 const persistor = persistStore(store);
 store.persistor = persistor;
-
+persistor.flush();
+persistor.purge();
 export {
   store,
   persistor

@@ -55,7 +55,6 @@ const EmptyReportsGeneratorContainer = () => {
     <StyledSection
       title={"הפקת דוחות ריקים - רבעוניים"}
       Icon={Description}
-      bgColor="#fb4e12"
     >
       <Section marginBottom="50px">
         <EmptyReportsGenerator

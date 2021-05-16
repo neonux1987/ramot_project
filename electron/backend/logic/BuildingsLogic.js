@@ -35,29 +35,31 @@ class BuildingsLogic {
     const record = {
       id,
       buildingName,
-      visible: "כן",
-      status: "active",
+      status: "פעיל",
       order: buildings.length + 1,
       previousBuildingName: buildingName
     };
 
     // create path string
     record.path = buildingName.replaceAll(" ", "-");
-    console.log(record);
-    /* // add the building
-    await this.buildingsDao.addBuilding(record, trx);
+
+    // add the building
+    const addedBuilding = await this.buildingsDao.addBuilding(record, trx);
 
     // create all the tables
-    await createMonthExpansesTable(tablePrefix, trx);
-    await createBudgetExecutionTables(tablePrefix, trx);
-    await createSummarizedBudgetTable(tablePrefix, trx);
-    await createRegisteredMonthsTable(tablePrefix, trx);
-    await createRegisteredQuartersTable(tablePrefix, trx);
-    await createRegisteredYearsTable(tablePrefix, trx);
-    await createMonthlyStatsTable(tablePrefix, trx);
-    await createQuarterlyStatsTable(tablePrefix, trx);
-    await createYearlyStatsTable(tablePrefix, trx); */
+    await createMonthExpansesTable(id, trx);
+    await createBudgetExecutionTables(id, trx);
+    await createSummarizedBudgetTable(id, trx);
+    await createRegisteredMonthsTable(id, trx);
+    await createRegisteredQuartersTable(id, trx);
+    await createRegisteredYearsTable(id, trx);
+    await createMonthlyStatsTable(id, trx);
+    await createQuarterlyStatsTable(id, trx);
+    await createYearlyStatsTable(id, trx);
 
+    trx.commit();
+
+    return addedBuilding;
   }
 
   async updateBuilding({ id, payload }) {
@@ -106,6 +108,8 @@ async function createMonthExpansesTable(tablePrefix, trx) {
 }
 
 async function createBudgetExecutionTables(tablePrefix, trx) {
+  const Helper = require('../../helpers/Helper');
+
   for (let i = 1; i < 5; i++) {
     // months of specific quarter
     const months = Helper.getQuarterMonths(i);
