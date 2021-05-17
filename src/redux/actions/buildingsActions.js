@@ -85,7 +85,6 @@ export const addBuilding = (payload) => {
         channel: "added-building"
       },
       onSuccess: result => {
-        console.log(result);
         dispatch(addBuildingsInStore(result.data));
         const { buildingId } = result.data;
 

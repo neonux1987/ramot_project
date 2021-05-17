@@ -29,6 +29,7 @@ import reports from './reportsReducer';
 import print from './printReducer';
 import fullscreen from './fullscreenReducer';
 import buildings from './buildingsReducer';
+import home from './homeReducer';
 
 const reducers = {
   menu,
@@ -61,7 +62,8 @@ const reducers = {
   reports,
   print,
   fullscreen,
-  buildings
+  buildings,
+  home
 };
 
 export default reducers;

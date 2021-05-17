@@ -6,13 +6,11 @@ import Stats from '../../components/Stats/Stats';
 import DonutStatBox from '../../components/Stats/DonutStatBox';
 
 // ACTIONS
-import { fetchAllBuildingsStatsByYear } from '../../redux/actions/yearlyStatsActions';
+import { fetchAllBuildingsStatsByYear } from '../../redux/actions/homeActions';
 
 const BuildingsStatsContainer = () => {
 
-  const yearlyStats = useSelector(store => store.yearlyStats);
-  console.log(yearlyStats)
-  const { data, isFetching } = useSelector(store => store.yearlyStats.all);
+  const { data, isFetching } = useSelector(store => store.home.yearlyStats);
 
   const dispatch = useDispatch();
 
@@ -23,12 +21,17 @@ const BuildingsStatsContainer = () => {
   const generateBuildingsStats = (data, isFetching) => {
 
     const keys = Object.keys(data);
+    const statsList = [];
 
-    const stats = keys.map((building, index) => {
+    keys.forEach((building, index) => {
+
+      if (data[building].data.length === 0)
+        return;
+
       const label = data[building].label;
       const { income, outcome } = data[building].data[0];
 
-      return <DonutStatBox
+      statsList.push(<DonutStatBox
         key={label}
         title={label}
         outcome={outcome}
@@ -36,10 +39,10 @@ const BuildingsStatsContainer = () => {
         unicodeSymbol={Helper.shekelUnicode}
         loading={isFetching}
         index={index + 1}
-      />;
+      />);
     });
 
-    return stats;
+    return statsList;
   }
 
   return (
