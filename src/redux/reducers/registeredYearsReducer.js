@@ -50,6 +50,18 @@ const registeredYears = (state = initialState, action) => {
         data: []
       });
     }
+    case TYPES.REGISTERED_YEARS_ADD_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        stateCopy[buildingId] = {
+          isFetching: true,
+          status: "",
+          error: "",
+          data: []
+        };
+
+        return stateCopy;
+      }
     default: return state;
   }
 }

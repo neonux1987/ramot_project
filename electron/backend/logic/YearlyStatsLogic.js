@@ -8,20 +8,20 @@ class YearlyStatsLogic {
     this.yearlyStatsDao = new YearlyStatsDao();
   }
 
-  getYearStatsByYearRange(buildingName, fromYear, toYear) {
-    return this.yearlyStatsDao.getYearStatsByYearRange(buildingName, fromYear, toYear);
+  getYearStatsByYearRange(buildingId, fromYear, toYear) {
+    return this.yearlyStatsDao.getYearStatsByYearRange(buildingId, fromYear, toYear);
   }
 
-  getYearStatsTrx(buildingName = String, date = Object, trx) {
-    return this.yearlyStatsDao.getYearStatsTrx(buildingName, date, trx);
+  getYearStatsTrx(buildingId = String, date = Object, trx) {
+    return this.yearlyStatsDao.getYearStatsTrx(buildingId, date, trx);
   }
 
-  updateYearStatsTrx(buildingName = String, date = Object, budgetExpanse, trx) {
-    return this.yearlyStatsDao.updateYearStatsTrx(buildingName, date, budgetExpanse, trx);
+  updateYearStatsTrx(buildingId = String, date = Object, budgetExpanse, trx) {
+    return this.yearlyStatsDao.updateYearStatsTrx(buildingId, date, budgetExpanse, trx);
   }
 
-  insertYearStatsTrx(buildingName, data, trx) {
-    return this.yearlyStatsDao.insertYearStatsTrx(buildingName, data, trx);
+  insertYearStatsTrx(buildingId, data, trx) {
+    return this.yearlyStatsDao.insertYearStatsTrx(buildingId, data, trx);
   }
 
   async getAllBuildingsStatsByYear(year) {

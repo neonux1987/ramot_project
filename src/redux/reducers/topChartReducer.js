@@ -50,6 +50,22 @@ const topChartReducer = (state = initState, action) => {
         }
       });
     }
+    case TYPES.TOP_CHART_ADD_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        stateCopy[buildingId] = {
+          date: {
+            fromYear: "",
+            toYear: ""
+          },
+          isFetching: false,
+          status: "",
+          error: "",
+          data: [],
+        };
+
+        return stateCopy;
+      }
     default: return state;
   }
 }

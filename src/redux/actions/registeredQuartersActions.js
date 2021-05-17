@@ -6,8 +6,7 @@ export const TYPES = {
   REGISTERED_QUARTERS_FETCHING_FAILED: "REGISTERED_QUARTERS_FETCHING_FAILED",
   REGISTERED_QUARTERS_UPDATE_DATA_COUNT: "REGISTERED_QUARTERS_UPDATE_DATA_COUNT",
   REGISTERED_QUARTERS_CLEANUP: "REGISTERED_QUARTERS_CLEANUP",
-  REGISTERED_QUARTERS_INIT_PAGE: "REGISTERED_QUARTERS_INIT_PAGE",
-  REGISTERED_QUARTERS_INIT_BUILDING: "REGISTERED_QUARTERS_INIT_BUILDING"
+  REGISTERED_QUARTERS_ADD_BUILDING_STATE: "REGISTERED_QUARTERS_ADD_BUILDING_STATE"
 }
 
 export const fetchRegisteredQuarters = (params = Object) => {
@@ -66,6 +65,13 @@ export const registeredQuartersUpdateDataCount = (dataCount) => {
 export const cleanupQuarters = (buildingId) => {
   return {
     type: TYPES.REGISTERED_QUARTERS_CLEANUP,
+    buildingId
+  }
+}
+
+export const addBuildingState = (buildingId) => {
+  return {
+    type: TYPES.REGISTERED_QUARTERS_ADD_BUILDING_STATE,
     buildingId
   }
 }

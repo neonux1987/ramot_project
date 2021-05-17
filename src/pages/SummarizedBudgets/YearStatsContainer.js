@@ -33,7 +33,7 @@ class YearStatsContainer extends React.PureComponent {
 
   fetchData = () => {
     const params = {
-      buildingName: this.props.buildingName,
+      buildingId: this.props.buildingId,
       pageName: this.props.pageName,
       date: this.props.date
     }
@@ -46,10 +46,10 @@ class YearStatsContainer extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    const { buildingName, pageName } = this.props;
+    const { buildingId, pageName } = this.props;
     //cleanup
-    this.props.cleanupQuarterlyStats(buildingName, pageName);
-    this.props.cleanupYearlyStats(buildingName, pageName);
+    this.props.cleanupQuarterlyStats(buildingId, pageName);
+    this.props.cleanupYearlyStats(buildingId, pageName);
   }
 
   generateQuarterlyStats(quarterlyStats, isFetching) {
@@ -101,12 +101,12 @@ class YearStatsContainer extends React.PureComponent {
     const {
       quarterlyStats,
       yearlyStats,
-      buildingName,
+      buildingId,
       pageName
     } = this.props;
 
-    const quarterlyStatsState = quarterlyStats[buildingName].pages[pageName];
-    const yearlyStatsState = yearlyStats[buildingName].pages[pageName];
+    const quarterlyStatsState = quarterlyStats[buildingId].pages[pageName];
+    const yearlyStatsState = yearlyStats[buildingId].pages[pageName];
 
     if (quarterlyStatsState.data.length === 0 || yearlyStatsState.data.length === 0)
       return <AlignCenterMiddle style={{ height: "202px", fontSize: "18px" }}>לא נטענו נתונים.</AlignCenterMiddle>;
@@ -131,14 +131,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchAllQuartersStatsByYear: (params) => dispatch(quarterlyStatsActions.fetchAllQuartersStatsByYear(params)),
-  cleanupQuarterlyStats: (buildingName, pageName) => dispatch(quarterlyStatsActions.cleanupQuarterlyStats(buildingName, pageName)),
+  cleanupQuarterlyStats: (buildingId, pageName) => dispatch(quarterlyStatsActions.cleanupQuarterlyStats(buildingId, pageName)),
   fetchYearStats: (params) => dispatch(yearlyStatsActions.fetchYearStats(params)),
-  cleanupYearlyStats: (buildingName, pageName) => dispatch(yearlyStatsActions.cleanupYearlyStats(buildingName, pageName))
+  cleanupYearlyStats: (buildingId, pageName) => dispatch(yearlyStatsActions.cleanupYearlyStats(buildingId, pageName))
 });
 
 TotalStatsFetcher.propTypes = {
   pageName: propTypes.string.isRequired,
-  buildingName: propTypes.string.isRequired,
+  buildingId: propTypes.string.isRequired,
   date: propTypes.object.isRequired
 }
 

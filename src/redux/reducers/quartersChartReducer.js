@@ -10,18 +10,30 @@ const initState = is({
 const quartersChartReducer = (state = initState, action) => {
   switch (action.type) {
     case TYPES.QUARTERS_CHART_UPDATE_DATE: {
-      const { buildingName, date } = action;
+      const { buildingId, date } = action;
 
       return {
         ...state,
-        [buildingName]: {
-          ...state.buildingName,
+        [buildingId]: {
+          ...state.buildingId,
           date: {
             ...date
           }
         }
       }
     }
+    case TYPES.QUARTERS_CHART_ADD_BUILDING_STATE:
+      {
+        const { buildingId } = action;
+        let stateCopy = { ...state };
+        stateCopy[buildingId] = {
+          date: {
+            year: ""
+          }
+        };
+
+        return stateCopy;
+      }
     default: return state;
   }
 }

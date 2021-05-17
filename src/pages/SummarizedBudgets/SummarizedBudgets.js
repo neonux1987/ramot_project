@@ -44,7 +44,7 @@ const SummarizedBudgets = () => {
       iconColor="rgb(255 0 82)"
     >
       <YearStatsContainer
-        buildingName={buildingId}
+        buildingId={buildingId}
         date={date}
         pageName={PAGE_NAME}
       />

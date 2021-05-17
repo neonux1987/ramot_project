@@ -10,6 +10,8 @@ import { fetchAllBuildingsStatsByYear } from '../../redux/actions/yearlyStatsAct
 
 const BuildingsStatsContainer = () => {
 
+  const yearlyStats = useSelector(store => store.yearlyStats);
+  console.log(yearlyStats)
   const { data, isFetching } = useSelector(store => store.yearlyStats.all);
 
   const dispatch = useDispatch();

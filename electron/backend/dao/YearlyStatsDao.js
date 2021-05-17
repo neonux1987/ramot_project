@@ -12,15 +12,15 @@ class YearlyStatsDao {
   }
 
   getYearStatsTrx(
-    buildingName = String,
+    buildingId = String,
     date = Object,
     trx = this.connection
   ) {
     return trx("*")
       .where({ year: date.year })
-      .from(`${buildingName}_yearly_stats`)
+      .from(`${buildingId}_yearly_stats`)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה שנתית לבניין ${buildingName} לפי שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה שנתית לבניין ${buildingId} לפי שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -28,17 +28,17 @@ class YearlyStatsDao {
   }
 
   getYearStatsByYearRange(
-    buildingName = String,
+    buildingId = String,
     fromYear,
     toYear,
     trx = this.connection
   ) {
     return trx("*")
       .whereBetween('year', [fromYear, toYear])
-      .from(`${buildingName}_yearly_stats`)
+      .from(`${buildingId}_yearly_stats`)
       .orderBy("year", "desc")
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה שנתית לבניין ${buildingName} משנה ${fromYear} עד שנה ${toYear}`;
+        const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה שנתית לבניין ${buildingId} משנה ${fromYear} עד שנה ${toYear}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -46,16 +46,16 @@ class YearlyStatsDao {
   }
 
   updateYearStatsTrx(
-    buildingName = String,
+    buildingId = String,
     date = Object,
     data = Object,
     trx = this.connection
   ) {
-    return trx(`${buildingName}_yearly_stats`)
+    return trx(`${buildingId}_yearly_stats`)
       .where({ year: date.year })
       .update(data)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לעדכן רשומה בנתוני סטטיסטיקה שנתית לבניין ${buildingName} לשנה ${date.year}`;
+        const msg = `המערכת לא הצליחה לעדכן רשומה בנתוני סטטיסטיקה שנתית לבניין ${buildingId} לשנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -63,13 +63,13 @@ class YearlyStatsDao {
   }
 
   insertYearStatsTrx(
-    buildingName = String,
+    buildingId = String,
     data = Object,
     trx = this.connection
   ) {
-    return trx(buildingName + "_yearly_stats").insert(data)
+    return trx(buildingId + "_yearly_stats").insert(data)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה להוסי רשומה לנתוני סטטיסטיקה שנתית לבניין ${buildingName} לשנה ${date.year}`;
+        const msg = `המערכת לא הצליחה להוסי רשומה לנתוני סטטיסטיקה שנתית לבניין ${buildingId} לשנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

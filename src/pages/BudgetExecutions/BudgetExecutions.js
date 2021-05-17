@@ -45,7 +45,7 @@ const BudgetExecutions = () => {
 
     <Section>
       <QuarterStatsContainer
-        buildingName={buildingId}
+        buildingId={buildingId}
         date={date}
         pageName={PAGE_NAME}
       />

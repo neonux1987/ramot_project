@@ -13,7 +13,6 @@ import yearlyStats from './yearlyStatsReducer';
 import tableSettings from './tableSettingsReducer';
 import registeredReports from './registeredReportsReducer';
 import routes from './routesReducer';
-import date from './dateReducer';
 import modal from './modalReducer';
 import savedNotification from './savedNotificationReducer';
 import goodBye from './goodByeReducer';
@@ -48,7 +47,6 @@ const reducers = {
   quarterlyStats,
   yearlyStats,
   tableSettings,
-  date,
   modal,
   registeredReports,
   routes,

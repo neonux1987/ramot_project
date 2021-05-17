@@ -5,7 +5,8 @@ export const TYPES = {
   REGISTERED_MONTHS_RECEIVE: "REGISTERED_MONTHS_RECEIVE",
   REGISTERED_MONTHS_FETCHING_FAILED: "REGISTERED_MONTHS_FETCHING_FAILED",
   REGISTERED_MONTHS_UPDATE_DATA_COUNT: "REGISTERED_MONTHS_UPDATE_DATA_COUNT",
-  REGISTERED_MONTHS_CLEANUP: "REGISTERED_MONTHS_CLEANUP"
+  REGISTERED_MONTHS_CLEANUP: "REGISTERED_MONTHS_CLEANUP",
+  REGISTERED_MONTHS_ADD_BUILDING_STATE: "REGISTERED_MONTHS_ADD_BUILDING_STATE"
 }
 
 export const fetchRegisteredMonths = (params = Object) => {
@@ -64,6 +65,13 @@ export const registeredMonthsUpdateDataCount = (dataCount) => {
 export const cleanupMonths = (buildingId) => {
   return {
     type: TYPES.REGISTERED_MONTHS_CLEANUP,
+    buildingId
+  }
+}
+
+export const addBuildingState = (buildingId) => {
+  return {
+    type: TYPES.REGISTERED_MONTHS_ADD_BUILDING_STATE,
     buildingId
   }
 }

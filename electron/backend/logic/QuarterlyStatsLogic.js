@@ -6,24 +6,24 @@ class QuarterlyStatsLogic {
     this.quarterlyStatsDao = new QuarterlyStatsDao(connection);
   }
 
-  getQuarterStatsTrx({ buildingName = String, date = Object }, trx) {
-    return this.quarterlyStatsDao.getQuarterStatsTrx(buildingName, date, trx);
+  getQuarterStatsTrx({ buildingId = String, date = Object }, trx) {
+    return this.quarterlyStatsDao.getQuarterStatsTrx(buildingId, date, trx);
   }
 
-  getAllQuartersStatsByYearTrx({ buildingName = String, date = Object }, trx) {
-    return this.quarterlyStatsDao.getAllQuartersStatsByYearTrx(buildingName, date, trx);
+  getAllQuartersStatsByYearTrx({ buildingId = String, date = Object }, trx) {
+    return this.quarterlyStatsDao.getAllQuartersStatsByYearTrx(buildingId, date, trx);
   }
 
-  updateQuarterStatsTrx(buildingName = String, date = Object, budgetExpanse = null, trx) {
-    return this.quarterlyStatsDao.updateQuarterStatsTrx(buildingName, date, budgetExpanse, trx);
+  updateQuarterStatsTrx(buildingId = String, date = Object, budgetExpanse = null, trx) {
+    return this.quarterlyStatsDao.updateQuarterStatsTrx(buildingId, date, budgetExpanse, trx);
   }
 
-  insertQuarterStats(buildingName, data, trx) {
-    return this.quarterlyStatsDao.insertQuarterStats(buildingName, data, trx);
+  insertQuarterStats(buildingId, data, trx) {
+    return this.quarterlyStatsDao.insertQuarterStats(buildingId, data, trx);
   }
 
-  batchInsert(buildingName, rows, trx) {
-    return this.quarterlyStatsDao.batchInsert(buildingName, rows, trx);
+  batchInsert(buildingId, rows, trx) {
+    return this.quarterlyStatsDao.batchInsert(buildingId, rows, trx);
   }
 
 }

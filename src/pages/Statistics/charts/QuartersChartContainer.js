@@ -28,7 +28,7 @@ const QuartersChartContainer = props => {
 
   const fetchMonthsData = useCallback(() => {
     const params = {
-      buildingName: buildingId,
+      buildingId,
       pageName,
       date
     }

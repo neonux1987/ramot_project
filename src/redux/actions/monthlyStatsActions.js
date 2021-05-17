@@ -5,14 +5,15 @@ export const TYPES = {
   RECEIVE_MONTHLY_STATS: "RECEIVE_MONTHLY_STATS",
   MONTHLY_STATS_FETCHING_FAILED: "MONTHLY_STATS_FETCHING_FAILED",
   CLEANUP_MONTHLY_STATS: "CLEANUP_MONTHLY_STATS",
-  UPDATE_MONTH_STATS_STORE_ONLY: "UPDATE_MONTH_STATS_STORE_ONLY"
+  UPDATE_MONTH_STATS_STORE_ONLY: "UPDATE_MONTH_STATS_STORE_ONLY",
+  MONTHLY_STATS_ADD_BUILDING_STATE: "MONTHLY_STATS_ADD_BUILDING_STATE:"
 }
 
 export const fetchAllMonthsStatsByQuarter = (params = Object) => {
   return dispatch => {
-    const { buildingName, pageName } = params;
+    const { buildingId, pageName } = params;
     //let react know that the fetching is started
-    dispatch(requestMonthlyStats(buildingName, pageName));
+    dispatch(requestMonthlyStats(buildingId, pageName));
 
     return ipcSendReceive({
       send: {
@@ -22,8 +23,8 @@ export const fetchAllMonthsStatsByQuarter = (params = Object) => {
       receive: {
         channel: "all-months-stats-by-quarter"
       },
-      onSuccess: (result) => dispatch(receiveMonthlyStats(buildingName, pageName, result.data)),
-      onError: (result) => dispatch(fetchingFailed(buildingName, pageName, result.error))
+      onSuccess: (result) => dispatch(receiveMonthlyStats(buildingId, pageName, result.data)),
+      onError: (result) => dispatch(fetchingFailed(buildingId, pageName, result.error))
     });
 
   }
@@ -50,48 +51,55 @@ export const fetchAllMonthsStatsByYear = (params = Object) => {
   }
 };
 
-export const updateMonthStatsStoreOnly = (buildingName, pageName, monthStatsObj, index) => {
+export const updateMonthStatsStoreOnly = (buildingId, pageName, monthStatsObj, index) => {
   return dispatch => {
     dispatch({
       type: TYPES.UPDATE_MONTH_STATS_STORE_ONLY,
       monthStatsObj,
       index,
-      buildingName,
+      buildingId,
       pageName
     });
   }
 }
 
-const requestMonthlyStats = function (buildingName, pageName) {
+const requestMonthlyStats = function (buildingId, pageName) {
   return {
     type: TYPES.REQUEST_MONTHLY_STATS,
-    buildingName,
+    buildingId,
     pageName
   }
 };
 
-const receiveMonthlyStats = function (buildingName, pageName, data) {
+const receiveMonthlyStats = function (buildingId, pageName, data) {
   return {
     type: TYPES.RECEIVE_MONTHLY_STATS,
     data,
-    buildingName,
+    buildingId,
     pageName
   }
 }
 
-const fetchingFailed = function (buildingName, pageName, error) {
+const fetchingFailed = function (buildingId, pageName, error) {
   return {
     type: TYPES.MONTHLY_STATS_FETCHING_FAILED,
     payload: error,
-    buildingName,
+    buildingId,
     pageName
   }
 };
 
-export const cleanupMonthlyStats = (buildingName, pageName) => {
+export const cleanupMonthlyStats = (buildingId, pageName) => {
   return {
     type: TYPES.CLEANUP_MONTHLY_STATS,
-    buildingName,
+    buildingId,
     pageName
+  }
+}
+
+export const addBuildingState = (buildingId) => {
+  return {
+    type: TYPES.MONTHLY_STATS_ADD_BUILDING_STATE,
+    buildingId
   }
 }

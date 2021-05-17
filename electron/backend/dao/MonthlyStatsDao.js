@@ -12,15 +12,15 @@ class MonthlyStatsDao {
   }
 
   getMonthStatsTrx(
-    buildingName = String,
+    buildingId = String,
     date = Object,
     trx = this.connection
   ) {
     return trx("*")
       .where({ year: date.year, month: date.month })
-      .from(`${buildingName}_monthly_stats`)
+      .from(`${buildingId}_monthly_stats`)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף סטטיסטיקה חודשית לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה לשלוף סטטיסטיקה חודשית לבניין ${buildingId} לחודש ${date.month} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -28,15 +28,15 @@ class MonthlyStatsDao {
   }
 
   getAllMonthsStatsByQuarterTrx(
-    buildingName = String,
+    buildingId = String,
     date = Object,
     trx = this.connection
   ) {
     return trx("*")
       .where({ year: date.year, quarter: date.quarter })
-      .from(`${buildingName}_monthly_stats`)
+      .from(`${buildingId}_monthly_stats`)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף סטטיסטיקה לחודשים של רבעון ${date.quarter} לבניין ${buildingName} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה לשלוף סטטיסטיקה לחודשים של רבעון ${date.quarter} לבניין ${buildingId} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -44,16 +44,16 @@ class MonthlyStatsDao {
   }
 
   getAllMonthsStatsByYear(
-    buildingName = String,
+    buildingId = String,
     year = Object,
     trx = this.connection
   ) {
     return trx("*")
       .where({ year })
-      .from(`${buildingName}_monthly_stats`)
+      .from(`${buildingId}_monthly_stats`)
       .orderBy('quarter', 'desc')
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף סטטיסטיקה לחודשים לבניין ${buildingName} של שנה ${year}`;
+        const msg = `המערכת לא הצליחה לשלוף סטטיסטיקה לחודשים לבניין ${buildingId} של שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -61,14 +61,14 @@ class MonthlyStatsDao {
   }
 
   getAllBuildingStats(
-    buildingName = String,
+    buildingId = String,
     trx = this.connection
   ) {
     return trx("*")
-      .from(`${buildingName}_monthly_stats`)
+      .from(`${buildingId}_monthly_stats`)
       .orderBy('year', 'desc')
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף את כל הסטטיסטיקה לבניין ${buildingName}`;
+        const msg = `המערכת לא הצליחה לשלוף את כל הסטטיסטיקה לבניין ${buildingId}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -76,16 +76,16 @@ class MonthlyStatsDao {
   }
 
   updateMonthStatsTrx(
-    buildingName = String,
+    buildingId = String,
     date = Object,
     data = Object,
     trx = this.connection
   ) {
-    return trx(`${buildingName}_monthly_stats`)
+    return trx(`${buildingId}_monthly_stats`)
       .where({ year: date.year, month: date.monthHeb })
       .update(data)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לעדכן רשומה בסטטיסטיקת חודש לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה לעדכן רשומה בסטטיסטיקת חודש לבניין ${buildingId} לחודש ${date.month} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -93,13 +93,13 @@ class MonthlyStatsDao {
   }
 
   insertMonthStats(
-    buildingName = String,
+    buildingId = String,
     data = Object,
     trx = this.connection
   ) {
-    return trx(buildingName + "_monthly_stats").insert(data)
+    return trx(buildingId + "_monthly_stats").insert(data)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה להוסיף רשומה לסטטיסטיקת חודש לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה להוסיף רשומה לסטטיסטיקת חודש לבניין ${buildingId} לחודש ${date.month} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
@@ -107,13 +107,13 @@ class MonthlyStatsDao {
   }
 
   batchInsert(
-    buildingName = String,
+    buildingId = String,
     rows,
     trx
   ) {
-    return trx.batchInsert(`${buildingName}_monthly_stats`, rows, rows.length)
+    return trx.batchInsert(`${buildingId}_monthly_stats`, rows, rows.length)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה להוסיף רשומות לסטטיסטיקת חודש לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה להוסיף רשומות לסטטיסטיקת חודש לבניין ${buildingId} לחודש ${date.month} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

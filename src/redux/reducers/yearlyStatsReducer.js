@@ -19,25 +19,25 @@ const initState = {
 };
 
 const YearlyStatsReducer = (state = initState, action) => {
-  const { buildingName, pageName } = action;
+  const { buildingId, pageName } = action;
   switch (action.type) {
     case TYPES.YEARLY_STATS_RECEIVE:
-      return setBuildingState(buildingName, pageName, state, {
+      return setBuildingState(buildingId, pageName, state, {
         isFetching: false,
         status: "success",
         data: action.data
       });
     case TYPES.YEARLY_STATS_REQUEST:
-      return setBuildingState(buildingName, pageName, state, {
+      return setBuildingState(buildingId, pageName, state, {
         isFetching: true
       });
     case TYPES.YEARLY_STATS_FETCHING_FAILED:
-      return setBuildingState(buildingName, pageName, state, {
+      return setBuildingState(buildingId, pageName, state, {
         status: "error",
         error: action.payload
       });
     case TYPES.YEARLY_STATS_CLEANUP:
-      return setBuildingState(buildingName, pageName, state, {
+      return setBuildingState(buildingId, pageName, state, {
         isFetching: false,
         status: "",
         error: "",
@@ -80,6 +80,19 @@ const YearlyStatsReducer = (state = initState, action) => {
           error: "",
           data: []
         }
+      }
+    case TYPES.YEARLY_STATS_ADD_BUILDING_STATE:
+      {
+        const { buildingId } = action;
+        let stateCopy = { ...state };
+        stateCopy[buildingId] = {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: []
+        };
+
+        return stateCopy;
       }
     default: return state;
   }

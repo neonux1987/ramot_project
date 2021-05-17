@@ -95,6 +95,22 @@ const summarizedBudgetsRedcuer = (state = initialState, action) => {
 
         return stateCopy;
       }
+    case TYPES.SUMMARIZED_BUDGETS_ADD_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        stateCopy[buildingId] = {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: [],
+          date: {
+            month: "",
+            year: ""
+          }
+        };
+
+        return stateCopy;
+      }
     default: return state;
   }
 }

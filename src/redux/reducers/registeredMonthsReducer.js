@@ -50,6 +50,18 @@ const registeredMonthsReducer = (state = initialState, action) => {
         data: []
       });
     }
+    case TYPES.REGISTERED_MONTHS_ADD_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        stateCopy[buildingId] = {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: []
+        };
+
+        return stateCopy;
+      }
     default: return state;
   }
 }

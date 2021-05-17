@@ -8,15 +8,16 @@ export const TYPES = {
   All_BUILDINGS_STATS_REQUEST: "All_BUILDINGS_STATS_REQUEST",
   All_BUILDINGS_STATS_RECEIVE: "All_BUILDINGS_STATS_RECEIVE",
   All_BUILDINGS_STATS_FETCHING_FAILED: "All_BUILDINGS_STATS_FETCHING_FAILED",
-  All_BUILDINGS_STATS_CLEANUP: "All_BUILDINGS_STATS_CLEANUP"
+  All_BUILDINGS_STATS_CLEANUP: "All_BUILDINGS_STATS_CLEANUP",
+  YEARLY_STATS_ADD_BUILDING_STATE: "YEARLY_STATS_ADD_BUILDING_STATE"
 }
 
 export const fetchYearStats = (params = Object) => {
   return dispatch => {
-    const { buildingName, pageName } = params;
+    const { buildingId, pageName } = params;
 
     //let react know that the fetching is started
-    dispatch(requestYearlyStats(buildingName, pageName));
+    dispatch(requestYearlyStats(buildingId, pageName));
 
     return ipcSendReceive({
       send: {
@@ -26,8 +27,8 @@ export const fetchYearStats = (params = Object) => {
       receive: {
         channel: "year-stats"
       },
-      onSuccess: result => dispatch(receiveYearlyStats(buildingName, pageName, result.data)),
-      onError: result => dispatch(fetchingFailed(buildingName, pageName, result.error))
+      onSuccess: result => dispatch(receiveYearlyStats(buildingId, pageName, result.data)),
+      onError: result => dispatch(fetchingFailed(buildingId, pageName, result.error))
     });
 
   }
@@ -35,10 +36,10 @@ export const fetchYearStats = (params = Object) => {
 
 export const fetchYearStatsByYearRange = (params = Object) => {
   return dispatch => {
-    const { buildingName, pageName } = params;
+    const { buildingId, pageName } = params;
 
     //let react know that the fetching is started
-    dispatch(requestYearlyStats(buildingName, pageName));
+    dispatch(requestYearlyStats(buildingId, pageName));
 
     return ipcSendReceive({
       send: {
@@ -48,45 +49,45 @@ export const fetchYearStatsByYearRange = (params = Object) => {
       receive: {
         channel: "yearly-stats-by-year-range"
       },
-      onSuccess: result => dispatch(receiveYearlyStats(buildingName, pageName, result.data)),
-      onError: result => dispatch(fetchingFailed(buildingName, pageName, result.error))
+      onSuccess: result => dispatch(receiveYearlyStats(buildingId, pageName, result.data)),
+      onError: result => dispatch(fetchingFailed(buildingId, pageName, result.error))
     });
 
   }
 };
 
-const requestYearlyStats = function (buildingName, pageName) {
+const requestYearlyStats = function (buildingId, pageName) {
   return {
     type: TYPES.YEARLY_STATS_REQUEST,
-    buildingName,
+    buildingId,
     pageName
   }
 };
 
 
 
-const receiveYearlyStats = function (buildingName, pageName, data) {
+const receiveYearlyStats = function (buildingId, pageName, data) {
   return {
     type: TYPES.YEARLY_STATS_RECEIVE,
     data,
-    buildingName,
+    buildingId,
     pageName
   }
 }
 
-const fetchingFailed = function (buildingName, pageName, error) {
+const fetchingFailed = function (buildingId, pageName, error) {
   return {
     type: TYPES.YEARLY_STATS_FETCHING_FAILED,
     payload: error,
-    buildingName,
+    buildingId,
     pageName
   }
 };
 
-export const cleanupYearlyStats = (buildingName, pageName) => {
+export const cleanupYearlyStats = (buildingId, pageName) => {
   return {
     type: TYPES.YEARLY_STATS_CLEANUP,
-    buildingName,
+    buildingId,
     pageName
   }
 }
@@ -137,3 +138,10 @@ export const fetchAllBuildingsStatsByYear = (year) => {
 
   }
 };
+
+export const addBuildingState = (buildingId) => {
+  return {
+    type: TYPES.YEARLY_STATS_ADD_BUILDING_STATE,
+    buildingId
+  }
+}

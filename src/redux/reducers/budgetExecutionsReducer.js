@@ -107,6 +107,22 @@ const budgetExecutionsReducer = (state = initialState, action) => {
 
         return stateCopy;
       }
+    case TYPES.BUDGET_EXECUTIONS_ADD_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        stateCopy[buildingId] = {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: [],
+          date: {
+            quarter: "",
+            year: ""
+          }
+        };
+
+        return stateCopy;
+      }
     default: return state;
   }
 }

@@ -10,7 +10,7 @@ export const TYPES = {
   MONTH_EXPANSES_UPDATE: "MONTH_EXPANSES_UPDATE",
   MONTH_EXPANSES_ADD: "MONTH_EXPANSES_ADD",
   MONTH_EXPANSES_DELETE: "MONTH_EXPANSES_DELETE",
-  MONTH_EXPANSES_INIT_STATE: "MONTH_EXPANSES_INIT_STATE",
+  MONTH_EXPANSES_ADD_BUILDING_STATE: "MONTH_EXPANSES_ADD_BUILDING_STATE",
   MONTH_EXPANSES_CLEANUP: "MONTH_EXPANSES_CLEANUP",
   MONTH_EXPANSES_UPDATE_DATE: "MONTH_EXPANSES_UPDATE_DATE"
 }
@@ -22,6 +22,7 @@ export const TYPES = {
 export const fetchMonthExpanses = (params) => {
   return async dispatch => {
     const { buildingId } = params;
+
     // let react know that the fetching is started
     dispatch(requestMonthExpanses(buildingId));
 
@@ -185,6 +186,13 @@ const deleteMonthExpanseInStore = (index, buildingId) => {
   return {
     type: TYPES.MONTH_EXPANSES_DELETE,
     index,
+    buildingId
+  }
+}
+
+export const addBuildingState = (buildingId) => {
+  return {
+    type: TYPES.MONTH_EXPANSES_ADD_BUILDING_STATE,
     buildingId
   }
 }

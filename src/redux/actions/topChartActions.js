@@ -4,7 +4,8 @@ export const TYPES = {
   TOP_CHART_REQUEST: "TOP_CHART_REQUEST",
   TOP_CHART_RECEIVE: "TOP_CHART_RECEIVE",
   TOP_CHART_FETCHING_FAILED: "TOP_CHART_FETCHING_FAILED",
-  TOP_CHART_UPDATE_DATE: "TOP_CHART_UPDATE_DATE"
+  TOP_CHART_UPDATE_DATE: "TOP_CHART_UPDATE_DATE",
+  TOP_CHART_ADD_BUILDING_STATE: "TOP_CHART_ADD_BUILDING_STATE"
 }
 
 export const fetchTopIncomeOutcome = (params = Object) => {
@@ -60,3 +61,9 @@ export const updateDate = (buildingId, date) => {
   }
 }
 
+export const addBuildingState = (buildingId) => {
+  return {
+    type: TYPES.TOP_CHART_ADD_BUILDING_STATE,
+    buildingId
+  }
+}

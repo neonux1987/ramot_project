@@ -110,6 +110,25 @@ const monthExpansesRedcuer = (state = initialState, action) => {
 
         return stateCopy;
       }
+    case TYPES.MONTH_EXPANSES_ADD_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        stateCopy[buildingId] = {
+          isFetching: false,
+          status: "",
+          error: "",
+          data: [],
+          date: {
+            year: "",
+            month: "",
+            monthHeb: "",
+            monthNum: "",
+            quarter: ""
+          }
+        };
+
+        return stateCopy;
+      }
     default: return state;
   }
 }
