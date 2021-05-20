@@ -50,7 +50,7 @@ const EmptyReportsGenerator = ({ selectDate, onChangeHandler, onClickHandler, ye
 
     <div className={description}>
       <Typography className={descriptionText} variant="h6">
-        *לתשומת ליבך: המערכת יוצרת דוחות רבעוניים ריקים לכלל הבניינים הפעילים
+        *לתשומת ליבך: במידה ודוחות לבניין ותאריך מסויים קיימים כבר, המערכת לא תיצור חדשים ולא תדרוס את הנוכחים במקום
     </Typography>
     </div>
   </Fragment>

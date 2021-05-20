@@ -86,11 +86,11 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   }
 
   const setAllCheckedHandler = useCallback((checked, checkedBuildings) => {
-    dispatch(setAllChecked("excel", checked, checkedBuildings));
+    dispatch(setAllChecked("excelReports", checked, checkedBuildings));
   }, [dispatch]);
 
   const checkBuildingHandler = useCallback((name, checked, checkedBuildings) => {
-    dispatch(checkBuilding("excel", name, checked, checkedBuildings));
+    dispatch(checkBuilding("excelReports", name, checked, checkedBuildings));
   }, [dispatch]);
 
   return (
@@ -100,6 +100,8 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
       bgColor="#1ead82"
       padding={"30px 20px 50px"}
       loading={isFetching || (registeredReports.isFetching && registeredReports.data.length === 0)}
+      noData={!isFetching & checkedBuildings.length === 0}
+      noDataText="לא קיימים בניינים"
     >
       <BuildingPicker
         checkedBuildings={checkedBuildings}

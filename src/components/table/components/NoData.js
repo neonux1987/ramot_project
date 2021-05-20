@@ -7,9 +7,9 @@ const style = css`
   font-weight: 500;
 `;
 
-const NoData = () => {
+const NoData = ({ text = "לא נבחר תאריך" }) => {
   return <AlignCenterMiddle>
-    <span className={style}>לא נבחר תאריך.</span>
+    <span className={style}>{text}</span>
   </AlignCenterMiddle>;
 }
 

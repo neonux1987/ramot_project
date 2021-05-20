@@ -113,7 +113,7 @@ class MonthlyStatsDao {
   ) {
     return trx.batchInsert(`${buildingId}_monthly_stats`, rows, rows.length)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה להוסיף רשומות לסטטיסטיקת חודש לבניין ${buildingId} לחודש ${date.month} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה להוסיף רשומות לסטטיסטיקת חודש לבניין ${buildingId}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

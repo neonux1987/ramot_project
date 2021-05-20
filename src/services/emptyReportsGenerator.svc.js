@@ -1,12 +1,12 @@
 import { ipcSendReceive } from '../redux/actions/util/util';
 import { toastManager } from '../toasts/toastManager';
 
-export const generateEmptyReports = (date) => {
+export const generateEmptyReports = (params) => {
 
   return ipcSendReceive({
     send: {
       channel: "generate-empty-reports",
-      params: { date }
+      params
     },
     receive: {
       channel: "empty-reports-generated"

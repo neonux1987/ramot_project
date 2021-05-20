@@ -32,12 +32,12 @@ class RegisteredReportsDao {
     quarter,
     trx = connectionPool.getConnection()
   ) {
-    return trx.select()
+    return trx.select("*")
       .from("registered_reports")
       .where({ year, quarter, buildingId })
       .groupBy("quarter")
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לפי רבעון ${date.quarter} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לפי רבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

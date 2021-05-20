@@ -3,6 +3,7 @@ import { css } from 'emotion';
 import classnames from 'classnames';
 import { Typography } from '@material-ui/core';
 import CenteredLoader from '../AnimatedLoaders/CenteredLoader';
+import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
 
 const _container = css`
   margin: 30px 20px 20px 20px;
@@ -79,6 +80,15 @@ const fullscreenStyle = css`
   height: 100%;
 `;
 
+const noDataStyle = css`
+  font-size: 16px;
+  color: #484747;
+  font-size: 18px;
+  justify-content: center;
+  display: flex;
+  padding: 50px 0;
+`;
+
 const StyledSection = ({
   title,
   Icon,
@@ -86,8 +96,13 @@ const StyledSection = ({
   extraDetails = null,
   children,
   isFullscreen = false,
-  loading = false
+  loading = false,
+  noData = false,
+  noDataText = "אין נתונים"
 }) => {
+  const content = loading ? <CenteredLoader /> : children;
+  const render = noData ? <AlignCenterMiddle className={noDataStyle}>{noDataText}</AlignCenterMiddle> : content;
+
   return <div className={classnames(_container, isFullscreen ? fullscreenStyle : "")} id="styledSection">
 
     {/* header */}
@@ -122,7 +137,7 @@ const StyledSection = ({
 
     {/* content */}
     <div className={_content} id="styledSection-content">
-      {loading ? <CenteredLoader /> : children}
+      {render}
     </div>
     {/* end content */}
 

@@ -38,7 +38,7 @@ const BuildingsManagementTableContainer = () => {
   const dispatch = useDispatch();
 
   const { data, isFetching } = useSelector(store => store.buildings);
-
+  console.log(data)
   useEffect(() => {
     //get the building month expanses
     dispatch(fetchBuildings());
@@ -135,7 +135,7 @@ const BuildingsManagementTableContainer = () => {
               toggleEditMode={toggleEditMode}
               addNewMode={addNewMode}
               toggleAddNewMode={toggleAddNewMode}
-              dataExist={data.length > 0}
+              dataExist={true}
             />
           } // end rightPane
 
@@ -148,8 +148,9 @@ const BuildingsManagementTableContainer = () => {
       <Table
         Row={Row}
         HeaderComponent={HeadersRow}
-        isFetching={isFetching || data.length === 0}
+        isFetching={isFetching}
         totalCount={data.length}
+        noDataText="לא קיימים בניינים במערכת"
       />
 
     </TableSection>

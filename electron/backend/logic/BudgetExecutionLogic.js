@@ -11,6 +11,7 @@ const LogicError = require('../customErrors/LogicError');
 const { asyncForEach } = require('../../helpers/utils');
 const logManager = require('../logger/LogManager');
 const connectionPool = require('../connection/ConnectionPool');
+const { Help } = require('@material-ui/icons');
 
 class BudgetExecutionLogic {
 
@@ -351,6 +352,7 @@ class BudgetExecutionLogic {
         year: date.year,
         quarter: date.quarter,
         month: months[i],
+        monthNum: Helper.hebToMonthNum(months[i]),
         income: 0,
         outcome: 0
       });

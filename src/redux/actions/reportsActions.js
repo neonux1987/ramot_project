@@ -2,10 +2,7 @@ import { ipcSendReceive } from "./util/util";
 
 // TYPES
 export const TYPES = {
-  EXCEL_REPORTS_CHECK_BUILDING: "EXCEL_REPORTS_CHECK_BUILDING",
-  EXCEL_REPORTS_SET_ALL_CHECKED: "EXCEL_REPORTS_SET_ALL_CHECKED",
-  EMPTY_REPORTS_CHECK_BUILDING: "EMPTY_REPORTS_CHECK_BUILDING",
-  EMPTY_REPORTS_SET_ALL_CHECKED: "EMPTY_REPORTS_SET_ALL_CHECKED",
+  SET_CHECKED: "SET_CHECKED",
   REPORTS_BUILDINGS_REQUEST: "REPORTS_BUILDINGS_REQUEST",
   REPORTS_BUILDINGS_RECEIVE: "REPORTS_BUILDINGS_RECEIVE",
   REPORTS_BUILDINGS_FETCHING_FAILED: "REPORTS_BUILDINGS_FETCHING_FAILED"
@@ -47,11 +44,12 @@ export const fetchBuildings = () => {
   }
 };
 
-export const checkBuilding = (type, buildingId, checked, checkedBuildings) => {
-
+export const checkBuilding = (reportsType, buildingId, checked, checkedBuildings) => {
   let isAllChecked = true;
 
-  checkedBuildings.forEach(building => {
+  const copyArr = [...checkedBuildings];
+
+  copyArr.forEach(building => {
     if (building.buildingId === buildingId)
       building.isChecked = checked;
 
@@ -59,19 +57,19 @@ export const checkBuilding = (type, buildingId, checked, checkedBuildings) => {
       isAllChecked = false;
   })
 
-  return {
-    type: type === "excel" ? TYPES.EXCEL_REPORTS_CHECK_BUILDING : TYPES.EMPTY_REPORTS_CHECK_BUILDING,
-    buildingId,
-    checkedBuildings,
-    isAllChecked
-  };
+  return setChecked(reportsType, isAllChecked, copyArr);
 }
 
-export const setAllChecked = (type, isAllChecked, checkedBuildings) => {
+export const setAllChecked = (reportsType, isAllChecked, checkedBuildings) => {
   checkedBuildings.forEach(building => building.isChecked = isAllChecked);
 
+  return setChecked(reportsType, isAllChecked, checkedBuildings);
+}
+
+const setChecked = (reportsType, isAllChecked, checkedBuildings) => {
   return {
-    type: type === "excel" ? TYPES.EXCEL_REPORTS_SET_ALL_CHECKED : TYPES.EMPTY_REPORTS_SET_ALL_CHECKED,
+    type: TYPES.SET_CHECKED,
+    reportsType,
     isAllChecked,
     checkedBuildings
   };

@@ -5,6 +5,10 @@ const initState = {
     checkedBuildings: [],
     isAllChecked: true
   },
+  emptyReports: {
+    checkedBuildings: [],
+    isAllChecked: true
+  },
   isFetching: true,
   status: "",
   error: ""
@@ -19,7 +23,11 @@ const reportsReducer = (state = initState, action) => {
         status: "success",
         excelReports: {
           ...state.excelReports,
-          checkedBuildings: action.data
+          checkedBuildings: action.data.map(a => Object.assign({}, a))
+        },
+        emptyReports: {
+          ...state.emptyReports,
+          checkedBuildings: [...action.data]
         }
       }
     case TYPES.REPORTS_BUILDINGS_REQUEST:
@@ -33,21 +41,11 @@ const reportsReducer = (state = initState, action) => {
         status: "error",
         error: action.error
       }
-    case TYPES.EXCEL_REPORTS_CHECK_BUILDING: {
-      const { isAllChecked, checkedBuildings } = action;
+    case TYPES.SET_CHECKED: {
+      const { isAllChecked, checkedBuildings, reportsType } = action;
       return {
         ...state,
-        excelReports: {
-          checkedBuildings,
-          isAllChecked
-        }
-      };
-    }
-    case TYPES.EXCEL_REPORTS_SET_ALL_CHECKED: {
-      const { isAllChecked, checkedBuildings } = action;
-      return {
-        ...state,
-        excelReports: {
+        [reportsType]: {
           checkedBuildings,
           isAllChecked
         }

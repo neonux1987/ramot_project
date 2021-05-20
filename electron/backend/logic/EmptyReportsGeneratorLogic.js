@@ -5,6 +5,7 @@ const BuildingsDao = require('../dao/BuildingsDao');
 const Helper = require('../../helpers/Helper');
 const LogicError = require('../customErrors/LogicError');
 const connectionPool = require('../connection/ConnectionPool');
+const { asyncForEach } = require('../../helpers/utils');
 
 class EmptyReportsGeneratorLogic {
 
@@ -20,21 +21,12 @@ class EmptyReportsGeneratorLogic {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  async generateEmptyReports({ date }) {
+  async generateEmptyReports({ buildings, date }) {
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
 
     // all the months of the chosen quarter
     const months = Helper.getQuarterMonthsNum(date.quarter);
-
-    let reports = await this.registeredReportsLogic.getRegisteredReportsByYearAndQuarter(date.year, date.quarter, trx);
-    if (reports.length > 0) {
-      await trx.rollback();
-
-      throw new LogicError("הפעולה נכשלה. הדוחות לתאריכים שנבחרו כבר קיימים בבסיס נתונים.");
-    }
-
-    const buildings = await this.buildingsDao.getBuildingsByStatus("פעיל", trx);
 
     for (let i = 0; i < months.length; i++) {
       const dateCopy = { ...date };
@@ -46,9 +38,6 @@ class EmptyReportsGeneratorLogic {
 
       // create empty reports for the specific month
       await this.createEmptyReportsByMonth(buildings, dateCopy, trx);
-
-      // register new report
-      await this.registereNewReport(dateCopy, trx);
     }
 
     await trx.commit();
@@ -56,14 +45,24 @@ class EmptyReportsGeneratorLogic {
 
   async createEmptyReportsByMonth(buildings, date, trx) {
     // create reports for each bulding
-    for (let i = 0; i < buildings.length; i++) {
-      await this.monthExpansesLogic.createEmptyReport(buildings[i].buildingId, date, trx);
-    }
+    await asyncForEach(buildings, async ({ buildingId }) => {
+      let reports = await this.registeredReportsLogic.getRegisteredReportsByYearAndQuarter(buildingId, date.year, date.quarter, trx);
+
+      // only reports for unregistered dates allowed
+      if (reports.length === 0) {
+        await this.monthExpansesLogic.createEmptyReport(buildingId, date, trx);
+
+        // register new report
+        await this.registereNewReport(buildingId, date, trx);
+      }
+
+    });
   }
 
-  async registereNewReport(date, trx) {
+  async registereNewReport(buildingId, date, trx) {
     // register the date of the new reports
     await this.registeredReportsLogic.addNewReport({
+      buildingId,
       year: date.year,
       month: date.monthNum,
       quarter: date.quarter

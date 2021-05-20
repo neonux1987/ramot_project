@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Description } from '@material-ui/icons';
 import { withRouter } from 'react-router';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import EmptyReportsGenerator from './EmptyReportsGenerator';
 import StyledSection from '../../../../../components/Section/StyledSection';
 import Section from '../../../../../components/Section/Section';
+import BuildingPicker from '../ExcelReportsGenerator/BuildingPicker/BuildingPicker';
 
 // UTILS
 import Helper from '../../../../../helpers/Helper';
@@ -15,11 +16,16 @@ import Helper from '../../../../../helpers/Helper';
 // SERVICES
 import { generateEmptyReports } from '../../../../../services/emptyReportsGenerator.svc';
 
+// ACTIONS
+import { checkBuilding, setAllChecked } from '../../../../../redux/actions/reportsActions';
+
 const years = generateYears(new Date().getFullYear());
 const quarters = Helper.getYearQuarters();
 
-const EmptyReportsGeneratorContainer = () => {
+const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
   const date = new Date();//current date
+
+  const { checkedBuildings, isAllChecked } = emptyReports;
 
   const dispatch = useDispatch();
 
@@ -48,14 +54,34 @@ const EmptyReportsGeneratorContainer = () => {
       quarterEng: Helper.convertQuarterToEng(selectDate.quarter)
     }
 
-    generateEmptyReports(newDate);
+    // keep only the selected buildings
+    const filteredBuildings = checkedBuildings.filter(building => building.isChecked === true);
+
+    generateEmptyReports({ date: newDate, buildings: filteredBuildings });
   }
+
+  const setAllCheckedHandler = useCallback((checked, checkedBuildings) => {
+    dispatch(setAllChecked("emptyReports", checked, checkedBuildings));
+  }, [dispatch]);
+
+  const checkBuildingHandler = useCallback((name, checked, checkedBuildings) => {
+    dispatch(checkBuilding("emptyReports", name, checked, checkedBuildings));
+  }, [dispatch]);
 
   return (
     <StyledSection
       title={"הפקת דוחות ריקים - רבעוניים"}
       Icon={Description}
+      loading={isFetching}
+      noData={!isFetching & checkedBuildings.length === 0}
+      noDataText="לא קיימים בניינים"
     >
+      <BuildingPicker
+        checkedBuildings={checkedBuildings}
+        isAllChecked={isAllChecked}
+        setAllChecked={setAllCheckedHandler}
+        checkBuilding={checkBuildingHandler}
+      />
       <Section marginBottom="50px">
         <EmptyReportsGenerator
           selectDate={selectDate}

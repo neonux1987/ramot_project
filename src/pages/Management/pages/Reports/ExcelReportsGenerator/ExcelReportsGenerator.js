@@ -67,7 +67,7 @@ const ExcelReportsGenerator = ({
   }
 
   const renderContent = registeredReports.data.length === 0 ?
-    <span className={error}>לא קיימים דוחות בבסיס נתונים ולכן לא ניתן להפיק דוחות אקסל.</span>
+    <span className={error}>לא קיימים דוחות בבסיס נתונים לפחות לאחד מהבניינים ולכן לא ניתן להפיק דוחות אקסל.</span>
     : content();
 
   return (

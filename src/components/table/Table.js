@@ -23,7 +23,8 @@ const Table = ({
   isFetching,
   totalCount,
   printHeaderDetails,
-  generateIncomeOutcomeData
+  generateIncomeOutcomeData,
+  noDataText
 }) => {
 
   const { printMode, colors } = useSelector(store => store.print);
@@ -94,7 +95,7 @@ const Table = ({
       {isFetching ? <CenteredLoader /> : null}
 
       {/* NO DATA */}
-      {!isFetching && totalCount === 0 ? <NoData /> : null}
+      {!isFetching && totalCount === 0 ? <NoData text={noDataText} /> : null}
 
       {/* TABLE */}
       {totalCount > 0 && !isFetching ? table : null}

@@ -45,7 +45,7 @@ class BuildingsLogic {
 
     // add the building
     const addedBuilding = await this.buildingsDao.addBuilding(record, trx);
-
+    console.log(addedBuilding);
     // create all the tables
     await createMonthExpansesTable(id, trx);
     await createBudgetExecutionTables(id, trx);

@@ -4,7 +4,7 @@ import CheckboxWithLabel from '../../../../../../components/Checkboxes/CheckboxW
 import VerticalDivider from '../../../../../../components/Divider/VerticalDivider';
 import BuildingPickerWrapper from './BuildingPickerWrapper';
 
-const BuildingPicker = ({ checkedBuildings, isAllChecked, setAllChecked, checkBuilding, checkboxColor }) => {
+const BuildingPicker = ({ checkedBuildings, isAllChecked, setAllChecked, checkBuilding }) => {
 
   const onChange = (event) => {
     const target = event.target;

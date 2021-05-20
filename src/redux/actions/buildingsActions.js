@@ -86,6 +86,7 @@ export const addBuilding = (payload) => {
       },
       onSuccess: result => {
         dispatch(addBuildingsInStore(result.data));
+        console.log("actions", result.data);
         const { buildingId } = result.data;
 
         // init state

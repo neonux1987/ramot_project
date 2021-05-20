@@ -34,7 +34,7 @@ const updatesIpc = () => {
       'provider': 'github',
       'owner': 'neonux1987',
       'repo': 'ramot_project',
-      'token': 'f55ef78253864c051c9520dca400f7a8313ff8fa',
+      'token': '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',
       'private': true,
       'releaseType': 'release'
     };

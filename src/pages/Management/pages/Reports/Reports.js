@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const Reports = () => {
   const dispatch = useDispatch();
 
-  const { excelReports, isFetching } = useSelector(store => store.reports);
+  const { excelReports, emptyReports, isFetching } = useSelector(store => store.reports);
 
   useEffect(() => {
     dispatch(fetchBuildings());
@@ -16,7 +16,7 @@ const Reports = () => {
 
   return (
     <Page>
-      <EmptyReportsGeneratorContainer />
+      <EmptyReportsGeneratorContainer emptyReports={emptyReports} isFetching={isFetching} />
       <ExcelReportsGeneratorContainer excelReports={excelReports} isFetching={isFetching} />
     </Page>
   );
