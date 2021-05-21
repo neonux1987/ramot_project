@@ -259,27 +259,11 @@ class BudgetExecutionLogic {
     };
   }
 
-  batchInsert(buildingId, date, rows, trx) {
-    return this.budgetExecutionDao.batchInsert(buildingId, date, rows, trx);
-  }
-
   prepareDefaultBatchInsertion(data, date) {
     const newData = [];
     for (let i = 0; i < data.length; i++) {
       newData.push({
         summarized_section_id: data[i].id,
-        year: date.year,
-        quarter: date.quarter
-      })
-    }
-    return newData;
-  }
-
-  prepareBatchInsertion(data, date) {
-    const newData = [];
-    for (let i = 0; i < data.length; i++) {
-      newData.push({
-        summarized_section_id: data[i].summarized_section_id,
         year: date.year,
         quarter: date.quarter
       })
@@ -311,22 +295,10 @@ class BudgetExecutionLogic {
       year: year
     };
 
-    //get all the budget executions of the previous quarter if exists
-    const budgetExec = await this.getAllBudgetExecutionsTrx(buildingId, newDate, trx);
-
-    //0 means no budget execuion exist of previous quarter
-    if (budgetExec.length === 0) {
-      const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
-      //prepare the data for insertion
-      const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
-      //insert the batch
-      await this.batchInsert(buildingId, date, preparedDefaultSections, trx);
-    } else {
-      //prepare the data for insertion
-      const preparedSections = this.prepareBatchInsertion(budgetExec, date);
-      //insert the batch
-      await this.batchInsert(buildingId, date, preparedSections, trx);
-    }
+    // populate the budget execution table with sections data
+    const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
+    const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
+    await this.budgetExecutionDao.batchInsert(buildingId, date, preparedDefaultSections, trx);
 
     //all the months of a specific quarter
     const months = Helper.getQuarterMonthsHeb(date.quarter);

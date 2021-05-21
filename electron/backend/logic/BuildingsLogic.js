@@ -43,9 +43,8 @@ class BuildingsLogic {
     // create path string
     record.path = buildingName.replaceAll(" ", "-");
 
-    // add the building
-    const addedBuilding = await this.buildingsDao.addBuilding(record, trx);
-    console.log(addedBuilding);
+    await this.buildingsDao.addBuilding(record, trx);
+
     // create all the tables
     await createMonthExpansesTable(id, trx);
     await createBudgetExecutionTables(id, trx);
@@ -57,9 +56,11 @@ class BuildingsLogic {
     await createQuarterlyStatsTable(id, trx);
     await createYearlyStatsTable(id, trx);
 
+    const addedBuilding = await this.buildingsDao.getBuildingByBuildingName(buildingName, trx);
+
     trx.commit();
 
-    return addedBuilding;
+    return addedBuilding[0];
   }
 
   async updateBuilding({ id, payload }) {

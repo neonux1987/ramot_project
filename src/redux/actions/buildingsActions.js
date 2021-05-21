@@ -86,23 +86,22 @@ export const addBuilding = (payload) => {
       },
       onSuccess: result => {
         dispatch(addBuildingsInStore(result.data));
-        console.log("actions", result.data);
-        const { buildingId } = result.data;
+        const { id } = result.data;
 
         // init state
-        dispatch(me_ADD(buildingId));
-        dispatch(be_ADD(buildingId));
-        dispatch(sb_ADD(buildingId));
-        dispatch(ms_ADD(buildingId));
-        dispatch(qs_ADD(buildingId));
-        dispatch(ys_ADD(buildingId));
-        dispatch(rm_ADD(buildingId));
-        dispatch(rq_ADD(buildingId));
-        dispatch(ry_ADD(buildingId));
-        dispatch(mc_ADD(buildingId));
-        dispatch(qc_ADD(buildingId));
-        dispatch(yc_ADD(buildingId));
-        dispatch(tc_ADD(buildingId));
+        dispatch(me_ADD(id));
+        dispatch(be_ADD(id));
+        dispatch(sb_ADD(id));
+        dispatch(ms_ADD(id));
+        dispatch(qs_ADD(id));
+        dispatch(ys_ADD(id));
+        dispatch(rm_ADD(id));
+        dispatch(rq_ADD(id));
+        dispatch(ry_ADD(id));
+        dispatch(mc_ADD(id));
+        dispatch(qc_ADD(id));
+        dispatch(yc_ADD(id));
+        dispatch(tc_ADD(id));
 
       },
       onError: result => {
@@ -121,7 +120,7 @@ const updateBuildingsInStore = function (index, payload) {
   }
 };
 
-const addBuildingsInStore = function (index, payload) {
+const addBuildingsInStore = function (payload) {
   return {
     type: TYPES.BUILDINGS_ADD,
     payload

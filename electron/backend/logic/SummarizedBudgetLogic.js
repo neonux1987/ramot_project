@@ -132,25 +132,10 @@ class SummarizedBudgetLogic {
       return Promise.resolve([]);
     }
 
-    const newDate = {
-      year: date.year - 1
-    }
-
-    //get all the budgets of the previous year if exists
-    const sumBudgets = await this.getBuildingSummarizedBudgetTrx(buildingId, newDate, trx);
-
-    if (sumBudgets.length === 0) {
-      const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
-      //prepare the data for insertion
-      const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
-      //insert the batch
-      await this.batchInsert(buildingId, preparedDefaultSections, trx);
-    } else {
-      //prepare the data for insertion
-      const preparedSections = this.prepareBatchInsertion(sumBudgets, date);
-      //insert the batch
-      await this.batchInsert(buildingId, preparedSections, trx);
-    }
+    //popoluate summarized budget table with data
+    const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
+    const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
+    await this.summarizedBudgetDao.batchInsert(buildingId, preparedDefaultSections, trx);
 
     //generate empty quarterly stats (4 quarters)
     const quarterlyStatsArr = this.generateEmptyQuarterlyStats(date);

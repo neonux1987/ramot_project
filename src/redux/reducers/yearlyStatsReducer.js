@@ -1,5 +1,5 @@
 import { TYPES } from '../actions/yearlyStatsActions';
-import { initBuildingState, setBuildingState } from '../reducers/util/util';
+import { initBuildingState, setBuildingState, getPages } from '../reducers/util/util';
 
 const initState = initBuildingState({
   isFetching: false,
@@ -35,14 +35,20 @@ const YearlyStatsReducer = (state = initState, action) => {
       });
     case TYPES.YEARLY_STATS_ADD_BUILDING_STATE:
       {
-        const { buildingId } = action;
         let stateCopy = { ...state };
-        stateCopy[buildingId] = {
-          isFetching: false,
-          status: "",
-          error: "",
-          data: []
-        };
+        stateCopy[buildingId] = {};
+        stateCopy[buildingId].pages = {};
+
+        getPages().forEach(page => {
+
+          stateCopy[buildingId].pages[page] = {
+            isFetching: false,
+            status: "",
+            error: "",
+            data: []
+          };
+
+        });
 
         return stateCopy;
       }

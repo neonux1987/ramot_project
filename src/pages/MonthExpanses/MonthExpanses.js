@@ -19,7 +19,8 @@ const MonthExpanses = () => {
   const dispatch = useDispatch();
 
   const { buildingName, buildingId } = useLocation().state;
-
+  const store = useSelector(store => store);
+  console.log(store)
   const { date, data, isFetching } = useSelector(store => store.monthExpanses[buildingId]);
 
   useEffect(() => {

@@ -4,6 +4,10 @@ export function getBuildings() {
   return buildings;
 }
 
+export function getPages() {
+  return pages;
+}
+
 export const setPageState = (state, buildingName, target) => {
   return {
     ...state,

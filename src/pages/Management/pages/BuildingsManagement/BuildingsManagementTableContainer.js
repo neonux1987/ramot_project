@@ -38,7 +38,7 @@ const BuildingsManagementTableContainer = () => {
   const dispatch = useDispatch();
 
   const { data, isFetching } = useSelector(store => store.buildings);
-  console.log(data)
+
   useEffect(() => {
     //get the building month expanses
     dispatch(fetchBuildings());
@@ -59,7 +59,7 @@ const BuildingsManagementTableContainer = () => {
     if (name === "buildingName")
       payload.path = value.replaceAll(" ", "-");
 
-    dispatch(updateBuilding(rowData.buildingId, payload, oldCopy, index));
+    dispatch(updateBuilding(rowData.id, payload, oldCopy, index));
   }, [dispatch, getDataObject]);
 
   const deleteBuilding = useCallback((rowData, index) => {
@@ -87,7 +87,7 @@ const BuildingsManagementTableContainer = () => {
     return <HeaderRow gridTemplateColumns={DEFAULT_TEMPLATE}>
 
       <HeaderCell>שורה</HeaderCell>
-      <HeaderCell>מזהה</HeaderCell>
+      <HeaderCell>קוד מזהה</HeaderCell>
       <HeaderCell editMode={editMode}>שם בניין</HeaderCell>
       <HeaderCell>שם קודם</HeaderCell>
       <HeaderCell editMode={editMode}>מצב</HeaderCell>
@@ -101,7 +101,7 @@ const BuildingsManagementTableContainer = () => {
     return <TableRow gridTemplateColumns={DEFAULT_TEMPLATE}>
 
       <Cell>{index + 1}</Cell>
-      <Cell>{rowData.buildingId}</Cell>
+      <Cell>{rowData.id}</Cell>
       {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}
 
       <Cell>{rowData.previousBuildingName}</Cell>

@@ -30,7 +30,7 @@ class BuildingsDao {
 
   getAllBuildings(trx = connectionPool.getConnection()) {
     return trx.select(
-      "id AS buildingId",
+      "id",
       "buildingName",
       "buildingNameEng",
       "previousBuildingName",
@@ -49,6 +49,15 @@ class BuildingsDao {
     return trx.select("*").from('buildings').where({ id })
       .catch((error) => {
         const newError = new DbError(`המערכת לא התליחה לשלוף נתונים של בניין קוד מזהה ${id}`, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
+  getBuildingByBuildingName(buildingName, trx = connectionPool.getConnection()) {
+    return trx.select("*").from('buildings').where({ buildingName })
+      .catch((error) => {
+        const newError = new DbError(`המערכת לא התליחה לשלוף נתונים של בניין ${buildingName}`, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;
       });
