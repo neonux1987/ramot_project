@@ -261,12 +261,26 @@ class BudgetExecutionLogic {
 
   prepareDefaultBatchInsertion(data, date) {
     const newData = [];
+    const months = Helper.getQuarterMonths(date.quarter);
+
+    const initial = {
+      year: date.year,
+      quarter: date.quarter,
+      evaluation: 0.0,
+      total_budget: 0.0,
+      total_execution: 0.0,
+      difference: 0.0
+    }
+
+    // add initial cmonth columns budget and execution
+    months.forEach(month => {
+      initial[`${month}_budget`] = 0.0;
+      initial[`${month}_budget_execution`] = 0.0;
+    });
+
     for (let i = 0; i < data.length; i++) {
-      newData.push({
-        summarized_section_id: data[i].id,
-        year: date.year,
-        quarter: date.quarter
-      })
+      initial.summarized_section_id = data[i].id;
+      newData.push({ ...initial });
     }
     return newData;
   }

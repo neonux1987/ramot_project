@@ -18,6 +18,10 @@ class RegisteredReportsLogic {
     return this.registeredReportsDao.getRegisteredReportsByYear(year, trx);
   }
 
+  getRegisteredReportsByBuildingId(buildingId, trx) {
+    return this.registeredReportsDao.getRegisteredReportsByBuildingId(buildingId, trx);
+  }
+
   getRegisteredReportsGroupedByYear(trx) {
     return this.registeredReportsDao.getRegisteredReportsGroupedByYear(trx);
   }

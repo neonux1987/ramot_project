@@ -1,7 +1,7 @@
 // LIBRARIES
 const { dialog, app } = require('electron');
 
-const { openLogFile } = require('../../helpers/utils');
+const { openLogFile, sendToWindow } = require('../../helpers/utils');
 
 const SystemPaths = require('./SystemPaths');
 
@@ -105,7 +105,7 @@ class MainSystem {
 
       //fetch menu data
       const buildingsLogic = new BuildingsLogic();
-      const buildings = await buildingsLogic.getBuildingsByStatus("פעיל");
+      const buildings = await buildingsLogic.getAllBuildings();
 
       // In the main process.
       global.sharedObject = {
@@ -149,8 +149,51 @@ class MainSystem {
 
   }
 
-  async stopSystem() {
-    await connectionPool.destroy();
+  async scheduledTasks() {
+    await this.deleteBuildingScheduleTask();
+  }
+
+  /**
+   * if 30 days or more passed since the user changed
+   * the status of the buildings to deleted, notify the renderer 
+   * to delete the buildings
+   */
+  async deleteBuildingScheduleTask() {
+    const BuildingsLogic = require('../logic/BuildingsLogic');
+    const buildingsLogic = new BuildingsLogic();
+
+    const currentDateTime = (new Date()).getTime();
+
+    const buildings = await buildingsLogic.getAllBuildings();
+
+    const buildingsForDeletion = [];
+
+    buildings.forEach(({ buildingName, status, deletionDate, id }) => {
+
+      if (status === "מחוק") {
+
+        const deletionDateTime = Date.parse(deletionDate);
+
+        const differenceTime = deletionDateTime - currentDateTime;
+
+        // To calculate the no. of days between two dates
+        const differenceDays = differenceTime / (1000 * 3600 * 24);
+
+        if (differenceDays < 30) {
+          buildingsForDeletion.push({
+            id,
+            buildingName
+          })
+
+        }
+
+      }
+
+    });
+
+    if (buildingsForDeletion.length > 0)
+      sendToWindow("deletion", buildingsForDeletion);
+
   }
 
 }

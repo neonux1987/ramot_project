@@ -40,15 +40,19 @@ const AppContainer = () => {
 
   const dispatch = useDispatch();
 
-  const [start] = useServices();
+  const [start, stop] = useServices();
 
   useEffect(() => {
     dispatch(generalSettingsActions.fetchGeneralSettings());
   }, [dispatch]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     start();
-  }, [start]); */
+
+    return () => {
+      stop();
+    }
+  }, [start, stop]);
 
   if (generalSettings.isFetching) {
     return <LogoLoader />;

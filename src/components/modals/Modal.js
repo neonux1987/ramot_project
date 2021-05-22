@@ -59,7 +59,7 @@ const Modal = (props) => {
     }
   }
 
-  const content = !contentText ? children : <DialogContentText id="alert-dialog-slide-description">
+  const content = !contentText ? children : <DialogContentText id="alert-dialog-slide-description" style={{ whiteSpace: "pre-line" }}>
     {contentText}
   </DialogContentText>;
 

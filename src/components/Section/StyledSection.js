@@ -11,7 +11,6 @@ const _container = css`
   box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
   border-radius: 3px;
   overflow: hidden;
-  border: 1px solid #dddddd !important;
 `;
 
 const _header = css`

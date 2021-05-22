@@ -427,7 +427,7 @@ async function addIncomeOutcome(data, date, buildingId) {
   const monthlyStatsLogic = new MonthlyStatsLogic();
   const quarterlyStatsLogic = new QuarterlyStatsLogic();
 
-  const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({ buildingName: buildingId, date });
+  const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({ buildingId, date });
 
   const incomeRow = {
     section: "הכנסות",
@@ -452,7 +452,7 @@ async function addIncomeOutcome(data, date, buildingId) {
     outcomeRow[`${engMonth}_budget_execution`] = item.outcome;
   })
 
-  const quarterlyStats = await quarterlyStatsLogic.getQuarterStatsTrx({ buildingName: buildingId, date });
+  const quarterlyStats = await quarterlyStatsLogic.getQuarterStatsTrx({ buildingId, date });
 
   incomeRow.total_budget = quarterlyStats[0].income;
   incomeRow.total_execution = "";

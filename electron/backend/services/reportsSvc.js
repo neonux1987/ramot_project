@@ -10,6 +10,7 @@ const exportReports = async (date, buildings) => {
   const BudgetExecutionLogic = require('../logic/BudgetExecutionLogic');
   const SummarizedBudgetLogic = require('../logic/SummarizedBudgetLogic');
   const RegisteredMonths = require('../logic/RegisteredMonthsLogic');
+  const RegisteredReportsLogic = require('../logic/RegisteredReportsLogic');
   const ServiceError = require('../customErrors/ServiceError');
 
   const { asyncForEach } = require('../../helpers/utils');
@@ -22,6 +23,7 @@ const exportReports = async (date, buildings) => {
   const budgetExecutionLogic = new BudgetExecutionLogic();
   const registeredMonths = new RegisteredMonths();
   const monthlyStatsLogic = new MonthlyStatsLogic();
+  const registeredReportsLogic = new RegisteredReportsLogic();
 
   chartExporter.initPool();
 
@@ -40,6 +42,12 @@ const exportReports = async (date, buildings) => {
   // that folder create the budget execution excel file
   await asyncForEach(buildings, async (building) => {
     const { buildingName, buildingId } = building;
+
+    const reports = await registeredReportsLogic.getRegisteredReportsByBuildingId(buildingId);
+
+    if (reports.length === 0) {
+      return;
+    }
 
     const buildingFolder = path.join(reports_folder_path, buildingName);
     const yearFolder = path.join(buildingFolder, `שנה ${year}`);

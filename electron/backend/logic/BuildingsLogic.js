@@ -68,6 +68,16 @@ class BuildingsLogic {
 
     const record = { ...payload };
 
+    if (payload.status === "מחוק") {
+      const deletionDate = new Date();
+      deletionDate.setDate(deletionDate.getDate() + 30)
+      record.deletionDate = deletionDate.toDateString();
+    } else {
+      if (payload.deletionDate !== null)
+        payload.deletionDate = null;
+    }
+
+
     const updatedBuilding = await this.buildingsDao.updateBuilding(id, record, trx);
 
     trx.commit();

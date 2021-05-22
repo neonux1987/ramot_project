@@ -14,6 +14,7 @@ import { addBuildingState as mc_ADD } from './monthsChartAction';
 import { addBuildingState as qc_ADD } from './quartersChartActions';
 import { addBuildingState as yc_ADD } from './yearsChartActions';
 import { addBuildingState as tc_ADD } from './topChartActions';
+import { addBuildingState as s_ADD } from './statisticsActions';
 
 
 export const TYPES = {
@@ -102,6 +103,7 @@ export const addBuilding = (payload) => {
         dispatch(qc_ADD(id));
         dispatch(yc_ADD(id));
         dispatch(tc_ADD(id));
+        dispatch(s_ADD(id));
 
       },
       onError: result => {

@@ -30,8 +30,13 @@ const AddNewBuildingContainer = (props) => {
     if (buildingName === "")
       toastManager.error("שם בניין לא יכול להיות ריק")
     else {
-      if (!isBuildingExist(buildingName))
+      if (isBuildingExist(buildingName))
+        toastManager.error(`בניין עם השם ${buildingName} כבר קיים`)
+      else {
         dispatch(addBuilding({ buildingName }));
+        setBuildingName("");
+      }
+
     }
 
   }

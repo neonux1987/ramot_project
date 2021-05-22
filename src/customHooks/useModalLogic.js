@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { show, hide } from '../redux/actions/modalActions';
 
@@ -5,16 +6,16 @@ const useModalLogic = () => {
 
   const dispatch = useDispatch();
 
-  const showModal = (modelComponent, props) => {
+  const showModal = useCallback((modelComponent, props) => {
     dispatch(show(modelComponent, props))
-  }
+  }, [dispatch]);
 
-  const hideModal = () => {
+  const hideModal = useCallback(() => {
     setTimeout(() => {
       dispatch(hide());
     }, 300);
 
-  }
+  }, [dispatch])
 
   return {
     showModal,

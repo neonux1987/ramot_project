@@ -1,11 +1,15 @@
+import { ipcRenderer } from 'electron';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import ConfirmBuildingsDeletion from '../components/modals/ConfirmBuildingsDeletion/ConfirmBuildingsDeletion';
 import { checkForUpdates } from '../services/updates.svc';
 import { toastManager } from '../toasts/toastManager';
+import useModalLogic from './useModalLogic';
 
 const useServices = () => {
 
   const dispatch = useDispatch();
+  const { showModal } = useModalLogic();
 
   const checkUpdates = useCallback(async () => {
     const promise = await dispatch(checkForUpdates());
@@ -14,11 +18,32 @@ const useServices = () => {
       toastManager.appUpdateNewVersion(promise.data.version);
   }, [dispatch]);
 
-  const start = useCallback(() => {
-    checkUpdates();
-  }, [checkUpdates]);
+  const startListeners = useCallback(async () => {
+    ipcRenderer.once("deletion", (event, buildingsForDeletion) => {
 
-  return [start];
+      showModal(ConfirmBuildingsDeletion, {
+        onAgreeHandler: () => {
+          console.log("agree");
+        },
+        onCancelHandler: () => {
+          console.log("cancel");
+        },
+        buildingsForDeletion
+      });
+
+    });
+  }, [showModal]);
+
+  const start = useCallback(() => {
+    //checkUpdates();
+    startListeners();
+  }, [checkUpdates, startListeners]);
+
+  const stop = useCallback(async () => {
+
+  }, []);
+
+  return [start, stop];
 };
 
 export default useServices;

@@ -25,6 +25,24 @@ class EmptyReportsGeneratorLogic {
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
 
+    const existingReportsBuidlings = [];
+
+    await asyncForEach(buildings, async ({ buildingId, buildingName }) => {
+      let reports = await this.registeredReportsLogic.getRegisteredReportsByYearAndQuarter(buildingId, date.year, date.quarter, trx);
+
+      // only reports for unregistered dates allowed
+      if (reports.length === 0)
+        await this.createEmptyReportsByMonth(buildingId, date, trx);
+      else
+        existingReportsBuidlings.push(buildingName);
+    });
+
+    await trx.commit();
+
+    return existingReportsBuidlings;
+  }
+
+  async createEmptyReportsByMonth(buildingId, date, trx) {
     // all the months of the chosen quarter
     const months = Helper.getQuarterMonthsNum(date.quarter);
 
@@ -37,26 +55,12 @@ class EmptyReportsGeneratorLogic {
       dateCopy.monthHeb = Helper.getCurrentMonthHeb(months[i]);
 
       // create empty reports for the specific month
-      await this.createEmptyReportsByMonth(buildings, dateCopy, trx);
+      await this.monthExpansesLogic.createEmptyReport(buildingId, dateCopy, trx);
+
+      // register new report
+      await this.registereNewReport(buildingId, dateCopy, trx);
     }
 
-    await trx.commit();
-  }
-
-  async createEmptyReportsByMonth(buildings, date, trx) {
-    // create reports for each bulding
-    await asyncForEach(buildings, async ({ buildingId }) => {
-      let reports = await this.registeredReportsLogic.getRegisteredReportsByYearAndQuarter(buildingId, date.year, date.quarter, trx);
-
-      // only reports for unregistered dates allowed
-      if (reports.length === 0) {
-        await this.monthExpansesLogic.createEmptyReport(buildingId, date, trx);
-
-        // register new report
-        await this.registereNewReport(buildingId, date, trx);
-      }
-
-    });
   }
 
   async registereNewReport(buildingId, date, trx) {

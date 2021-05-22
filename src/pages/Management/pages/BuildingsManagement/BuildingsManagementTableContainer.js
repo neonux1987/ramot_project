@@ -62,10 +62,6 @@ const BuildingsManagementTableContainer = () => {
     dispatch(updateBuilding(rowData.id, payload, oldCopy, index));
   }, [dispatch, getDataObject]);
 
-  const deleteBuilding = useCallback((rowData, index) => {
-
-  }, []);
-
   const isBuildingExist = useCallback(buildingName => {
     let exist = false;
     data.forEach(building => {
@@ -115,7 +111,7 @@ const BuildingsManagementTableContainer = () => {
           name={"status"}
         >
           {[
-            <MenuItem value={"מושבת"} key={"מושבת"}>מושבת</MenuItem>,
+            <MenuItem value={"מוסתר"} key={"מוסתר"}>מוסתר</MenuItem>,
             <MenuItem value={"פעיל"} key={"פעיל"}>פעיל</MenuItem>,
             <MenuItem value={"מחוק"} key={"מחוק"}>מחוק</MenuItem>
           ]}

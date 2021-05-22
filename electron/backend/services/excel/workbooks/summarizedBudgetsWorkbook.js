@@ -336,7 +336,7 @@ async function addIncomeOutcome(data, date, buildingId) {
   const quarterlyStatsLogic = new QuarterlyStatsLogic();
   const yearlyStatsLogic = new YearlyStatsLogic();
 
-  const quarterlyStats = await quarterlyStatsLogic.getAllQuartersStatsByYearTrx({ buildingName: buildingId, date });
+  const quarterlyStats = await quarterlyStatsLogic.getAllQuartersStatsByYearTrx({ buildingId, date });
 
   const incomeRow = {
     section: "הכנסות",

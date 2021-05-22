@@ -75,7 +75,6 @@ async function createWindow() {
           nodeIntegration: true,
           enableRemoteModule: true
         },
-
         backgroundColor: "#eee",
         icon,
         frame: false,
@@ -110,9 +109,12 @@ async function createWindow() {
         loading.hide();
         loading.destroy();
         loading = null;
+
+        mainSystem.scheduledTasks();
       });
       // long loading html
       mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+
     });
     /* end start system */
 

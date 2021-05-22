@@ -17,17 +17,3 @@
   display: flex;
   justify-self: left;
 }
-
-.addButton{
-  margin: 8px 0 8px 8px;
-  color: #000;
-  background: none;
-  box-shadow: none;
-  font-weight: bold;
-}
-
-.addButton:hover {
-  background: rgb(243, 243, 243);
-  box-shadow: none;
-  border: 1px solid #dedede;
-}

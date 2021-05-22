@@ -12,8 +12,8 @@ import * as expansesCodesActions from '../../redux/actions/expansesCodesActions'
 import { toastManager } from '../../toasts/toastManager';
 
 // COMPONENTS
-import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import AddBoxContainer from '../../components/AddBoxContainer/AddBoxContainer';
+import WhiteButton from '../../components/buttons/WhiteButton';
 
 const styles = theme => ({
   container: {
@@ -56,18 +56,6 @@ const styles = theme => ({
   buttonWrapper: {
     alignItems: "center",
     display: "flex",
-  },
-  button: {
-    margin: "8px 0 8px 8px",
-    color: "#000",
-    background: "none",
-    boxShadow: "none",
-    fontWeight: "bold",
-    "&:hover": {
-      background: "rgb(243, 243, 243)",
-      boxShadow: "none",
-      border: "1px solid #dedede"
-    }
   },
   inputUnderline: {
     borderBottom: "none"
@@ -356,31 +344,29 @@ class InputExpansesField extends Component {
       />
 
       <div className={classes.buttonWrapper}>
-        <ButtonWithSound
+        <WhiteButton
           name="reset"
           type="reset"
           onClick={this.reset}
           variant="contained"
           color="primary"
-          className={classes.button}
           disabled={combinedFetching}
         >
           אפס
-      </ButtonWithSound>
+      </WhiteButton>
       </div>
 
       <div className={classes.buttonWrapper}>
-        <ButtonWithSound
+        <WhiteButton
           data-order="7"
           name="submit"
           variant="contained"
           color="primary"
           onClick={this.submit}
-          className={classes.button}
           disabled={combinedFetching}
         >
-          שמור
-        </ButtonWithSound>
+          הוסף
+        </WhiteButton>
       </div>
 
 

@@ -35,7 +35,7 @@ class QuarterlyStatsDao {
     return trx("*")
       .where({ year: date.year })
       .from(`${buildingId}_quarterly_stats`)
-      .orderBy('quarter', 'desc')
+      .orderBy('quarter', 'asc')
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה רבעונית לבניין ${buildingId} לפי רבעון ${date.quarter} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);

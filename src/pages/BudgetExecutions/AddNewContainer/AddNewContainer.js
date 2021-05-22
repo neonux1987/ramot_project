@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 // CSS
 import {
   buttonWrapper,
-  addButton,
   reactSelectStyle
 } from './AddNewContainer.module.css'
 
@@ -15,14 +14,11 @@ import { addBudgetExecution } from "../../../redux/actions/budgetExecutionsActio
 
 // COMPONENTS
 import ReactSelect from "../../../components/ReactSelect/ReactSelect";
-
-// COMPONENTS WITH SOUND
-import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
+import WhiteButton from "../../../components/buttons/WhiteButton";
 
 // TOASTS
 import { toastManager } from "../../../toasts/toastManager";
 import AddBoxContainer from "../../../components/AddBoxContainer/AddBoxContainer";
-
 
 const AddNewContainer = (props) => {
 
@@ -90,16 +86,15 @@ const AddNewContainer = (props) => {
       />
 
       <div className={buttonWrapper}>
-        <ButtonWithSound
+        <WhiteButton
           name="submit"
           variant="contained"
           color="primary"
           onClick={add}
-          className={addButton}
           disabled={isFetching}
         >
           הוסף
-        </ButtonWithSound>
+        </WhiteButton>
       </div>
 
     </AddBoxContainer>

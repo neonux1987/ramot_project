@@ -97,23 +97,25 @@ class SummarizedBudgetLogic {
 
   prepareDefaultBatchInsertion(data, date) {
     const newData = [];
-    for (let i = 0; i < data.length; i++) {
-      newData.push({
-        summarized_section_id: data[i].id,
-        year: date.year
-      })
-    }
-    return newData;
-  }
 
-  prepareBatchInsertion(data, date) {
-    const newData = [];
-    for (let i = 0; i < data.length; i++) {
-      newData.push({
-        summarized_section_id: data[i].summarized_section_id,
-        year: date.year
-      })
+    const initial = {
+      year: date.year,
+      evaluation: 0.0,
+      year_total_budget: 0.0,
+      year_total_execution: 0.0
     }
+
+    // add quarter columns budget and execution
+    for (let i = 1; i < 5; i++) {
+      initial[`quarter${i}_budget`] = 0.0;
+      initial[`quarter${i}_execution`] = 0.0;
+    }
+
+    for (let i = 0; i < data.length; i++) {
+      initial.summarized_section_id = data[i].id;
+      newData.push({ ...initial });
+    }
+
     return newData;
   }
 

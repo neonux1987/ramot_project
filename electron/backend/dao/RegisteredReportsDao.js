@@ -60,6 +60,22 @@ class RegisteredReportsDao {
       });
   }
 
+  getRegisteredReportsByBuildingId(
+    buildingId,
+    trx = connectionPool.getConnection()
+  ) {
+    return trx.select()
+      .from("registered_reports")
+      .where({ buildingId })
+      .groupBy("quarter")
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לבניין ${buildingId}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
   getRegisteredReportsGroupedByYear(trx = connectionPool.getConnection()) {
     return trx.select()
       .from("registered_reports")

@@ -14,7 +14,7 @@ class BuildingsDao {
     return trx.select(
       "id AS buildingId",
       "buildingName",
-      "buildingNameEng",
+      "deletionDate",
       "previousBuildingName",
       "path",
       "order",
@@ -32,7 +32,7 @@ class BuildingsDao {
     return trx.select(
       "id",
       "buildingName",
-      "buildingNameEng",
+      "deletionDate",
       "previousBuildingName",
       "path",
       "order",

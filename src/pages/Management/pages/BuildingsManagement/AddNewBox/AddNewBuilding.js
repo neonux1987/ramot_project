@@ -34,6 +34,7 @@ const AddNewBuilding = (props) => {
           type="text"
           onChange={onChangeHandler}
           value={buildingName}
+          autoFocus
         />
 
         <DefaultButton
