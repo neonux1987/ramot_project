@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import ConfirmBuildingsDeletion from '../components/modals/ConfirmBuildingsDeletion/ConfirmBuildingsDeletion';
+import { removeBuildings } from '../redux/actions/buildingsActions';
 import { checkForUpdates } from '../services/updates.svc';
 import { toastManager } from '../toasts/toastManager';
 import useModalLogic from './useModalLogic';
@@ -23,10 +24,7 @@ const useServices = () => {
 
       showModal(ConfirmBuildingsDeletion, {
         onAgreeHandler: () => {
-          console.log("agree");
-        },
-        onCancelHandler: () => {
-          console.log("cancel");
+          dispatch(removeBuildings(buildingsForDeletion))
         },
         buildingsForDeletion
       });

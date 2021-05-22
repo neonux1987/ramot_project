@@ -6,7 +6,8 @@ export const TYPES = {
   MONTHLY_STATS_FETCHING_FAILED: "MONTHLY_STATS_FETCHING_FAILED",
   CLEANUP_MONTHLY_STATS: "CLEANUP_MONTHLY_STATS",
   UPDATE_MONTH_STATS_STORE_ONLY: "UPDATE_MONTH_STATS_STORE_ONLY",
-  MONTHLY_STATS_ADD_BUILDING_STATE: "MONTHLY_STATS_ADD_BUILDING_STATE:"
+  MONTHLY_STATS_ADD_BUILDING_STATE: "MONTHLY_STATS_ADD_BUILDING_STATE",
+  MONTHLY_STATS_REMOVE_BUILDING_STATE: "MONTHLY_STATS_REMOVE_BUILDING_STATE"
 }
 
 export const fetchAllMonthsStatsByQuarter = (params = Object) => {
@@ -97,9 +98,16 @@ export const cleanupMonthlyStats = (buildingId, pageName) => {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.MONTHLY_STATS_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
+}
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.MONTHLY_STATS_REMOVE_BUILDING_STATE,
+    buildingId
+  });
 }

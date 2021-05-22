@@ -10,6 +10,7 @@ export const TYPES = {
   SUMMARIZED_BUDGETS_UPDATE: "SUMMARIZED_BUDGETS_UPDATE",
   SUMMARIZED_BUDGETS_DELETE: "SUMMARIZED_BUDGETS_DELETE",
   SUMMARIZED_BUDGETS_ADD_BUILDING_STATE: "SUMMARIZED_BUDGETS_ADD_BUILDING_STATE",
+  SUMMARIZED_BUDGETS_REMOVE_BUILDING_STATE: "SUMMARIZED_BUDGETS_REMOVE_BUILDING_STATE",
   SUMMARIZED_BUDGETS_CLEANUP: "SUMMARIZED_BUDGETS_CLEANUP",
   SUMMARIZED_BUDGETS_UPDATE_DATE: "SUMMARIZED_BUDGETS_UPDATE_DATE"
 }
@@ -144,11 +145,18 @@ export const updateDate = function (buildingId, date) {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.SUMMARIZED_BUDGETS_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
+}
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.SUMMARIZED_BUDGETS_REMOVE_BUILDING_STATE,
+    buildingId
+  });
 }
 
 const summarizedBudgetsFetchingFailed = function (error, buildingId) {

@@ -6,7 +6,8 @@ export const TYPES = {
   UPDATE_QUARTER_STATS_STORE_ONLY: "UPDATE_QUARTER_STATS_STORE_ONLY",
   QUARTERLY_STATS_FETCHING_FAILED: "QUARTERLY_STATS_FETCHING_FAILED",
   CLEANUP_QUARTERLY_STATS: "CLEANUP_QUARTERLY_STATS",
-  QUARTERLY_STATS_ADD_BUILDING_STATE: "QUARTERLY_STATS_ADD_BUILDING_STATE"
+  QUARTERLY_STATS_ADD_BUILDING_STATE: "QUARTERLY_STATS_ADD_BUILDING_STATE",
+  QUARTERLY_STATS_REMOVE_BUILDING_STATE: "QUARTERLY_STATS_REMOVE_BUILDING_STATE"
 }
 
 export const fetchQuarterStats = (params = Object) => {
@@ -96,9 +97,16 @@ export const cleanupQuarterlyStats = (buildingId, pageName) => {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.QUARTERLY_STATS_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
+}
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.QUARTERLY_STATS_REMOVE_BUILDING_STATE,
+    buildingId
+  });
 }

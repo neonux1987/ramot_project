@@ -62,6 +62,12 @@ const registeredMonthsReducer = (state = initialState, action) => {
 
         return stateCopy;
       }
+    case TYPES.REGISTERED_MONTHS_REMOVE_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
+        return stateCopy;
+      }
     default: return state;
   }
 }

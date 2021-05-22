@@ -34,6 +34,13 @@ const quartersChartReducer = (state = initState, action) => {
 
         return stateCopy;
       }
+    case TYPES.QUARTERS_CHART_REMOVE_BUILDING_STATE:
+      {
+        const { buildingId } = action;
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
+        return stateCopy;
+      }
     default: return state;
   }
 }

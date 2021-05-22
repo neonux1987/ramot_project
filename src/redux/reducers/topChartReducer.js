@@ -66,6 +66,12 @@ const topChartReducer = (state = initState, action) => {
 
         return stateCopy;
       }
+    case TYPES.TOP_CHART_REMOVE_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
+        return stateCopy;
+      }
     default: return state;
   }
 }

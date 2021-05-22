@@ -52,6 +52,12 @@ const YearlyStatsReducer = (state = initState, action) => {
 
         return stateCopy;
       }
+    case TYPES.YEARLY_STATS_REMOVE_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
+        return stateCopy;
+      }
     default: return state;
   }
 }

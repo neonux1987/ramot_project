@@ -85,16 +85,15 @@ class BuildingsDao {
       });
   }
 
-  deleteBuilding(
-    buildingName = String,
+  removeBuilding(
     id = Number,
     trx = connectionPool.getConnection()
   ) {
     return trx("buildings")
-      .where({ id: id })
+      .where({ id })
       .del()
       .catch((error) => {
-        const msg = `קרתה תקלה, המערכת לא הצליחה למחוק את הבניין ${buildingName}`;
+        const msg = `קרתה תקלה, המערכת לא הצליחה למחוק את הבניין עם קוד מזהה ${id}`;
         const newError = new DbError(msg, FILENAME, error);
         this.logger.error(newError.toString())
         throw newError;

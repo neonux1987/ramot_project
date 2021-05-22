@@ -108,6 +108,21 @@ class RegisteredReportsDao {
       });
   }
 
+  removeReports(
+    buildingId,
+    trx = connectionPool.getConnection()
+  ) {
+    return trx("registered_reports")
+      .where({ buildingId })
+      .del()
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה למחוק רשומות לקוד מזהה ${buildingId}`;
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString())
+        throw newError;
+      });
+  }
+
 }
 
 module.exports = RegisteredReportsDao;

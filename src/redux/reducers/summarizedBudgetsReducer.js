@@ -111,6 +111,12 @@ const summarizedBudgetsRedcuer = (state = initialState, action) => {
 
         return stateCopy;
       }
+    case TYPES.SUMMARIZED_BUDGETS_REMOVE_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
+        return stateCopy;
+      }
     default: return state;
   }
 }

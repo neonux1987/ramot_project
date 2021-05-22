@@ -5,7 +5,8 @@ export const TYPES = {
   TOP_CHART_RECEIVE: "TOP_CHART_RECEIVE",
   TOP_CHART_FETCHING_FAILED: "TOP_CHART_FETCHING_FAILED",
   TOP_CHART_UPDATE_DATE: "TOP_CHART_UPDATE_DATE",
-  TOP_CHART_ADD_BUILDING_STATE: "TOP_CHART_ADD_BUILDING_STATE"
+  TOP_CHART_ADD_BUILDING_STATE: "TOP_CHART_ADD_BUILDING_STATE",
+  TOP_CHART_REMOVE_BUILDING_STATE: "TOP_CHART_REMOVE_BUILDING_STATE"
 }
 
 export const fetchTopIncomeOutcome = (params = Object) => {
@@ -61,9 +62,16 @@ export const updateDate = (buildingId, date) => {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.TOP_CHART_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
+}
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.TOP_CHART_REMOVE_BUILDING_STATE,
+    buildingId
+  });
 }

@@ -30,6 +30,14 @@ const buildingsIpc = () => {
     });
   });
 
+  ipcMain.on('remove-buildings', (event, params) => {
+    buildingsLogic.removeBuildings(params).then((result) => {
+      event.reply("buildings-removed", { data: result });
+    }).catch((error) => {
+      event.reply("buildings-removed", { error: error.message });
+    });
+  });
+
   ipcMain.on('update-building', (event, params) => {
     buildingsLogic.updateBuilding(params).then((result) => {
       event.reply("updated-building", { data: result });

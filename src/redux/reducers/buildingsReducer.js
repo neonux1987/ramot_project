@@ -14,6 +14,16 @@ const buildingsReducer = (state = initState, action) => {
       stateCopy.data.push(action.payload);
       return stateCopy;
     }
+    case TYPES.BUILDINGS_REMOVE: {
+      const stateCopy = { ...state };
+
+      stateCopy.data.forEach(({ id }, i) => {
+        if (id === action.id)
+          delete stateCopy.data[i];
+      })
+
+      return stateCopy;
+    }
     case TYPES.BUILDINGS_UPDATE:
       const { index, payload } = action;
       const stateCopy = { ...state };

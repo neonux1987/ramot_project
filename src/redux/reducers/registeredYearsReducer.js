@@ -62,6 +62,12 @@ const registeredYears = (state = initialState, action) => {
 
         return stateCopy;
       }
+    case TYPES.REGISTERED_YEARS_REMOVE_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
+        return stateCopy;
+      }
     default: return state;
   }
 }

@@ -13,6 +13,7 @@ export const TYPES = {
   BUDGET_EXECUTIONS_ADD: "BUDGET_EXECUTIONS_ADD",
   BUDGET_EXECUTIONS_DELETE: "BUDGET_EXECUTIONS_DELETE",
   BUDGET_EXECUTIONS_ADD_BUILDING_STATE: "BUDGET_EXECUTIONS_ADD_BUILDING_STATE",
+  BUDGET_EXECUTIONS_REMOVE_BUILDING_STATE: "BUDGET_EXECUTIONS_REMOVE_BUILDING_STATE",
   BUDGET_EXECUTIONS_CLEANUP: "BUDGET_EXECUTIONS_CLEANUP",
   BUDGET_EXECUTIONS_UPDATE_DATE: "BUDGET_EXECUTIONS_UPDATE_DATE"
 }
@@ -234,11 +235,18 @@ export const updateDate = function (buildingId, date) {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.BUDGET_EXECUTIONS_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
+}
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.BUDGET_EXECUTIONS_REMOVE_BUILDING_STATE,
+    buildingId
+  });
 }
 
 export function sortByCode(a, b) {

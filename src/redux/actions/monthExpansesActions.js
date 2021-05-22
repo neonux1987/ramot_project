@@ -11,6 +11,7 @@ export const TYPES = {
   MONTH_EXPANSES_ADD: "MONTH_EXPANSES_ADD",
   MONTH_EXPANSES_DELETE: "MONTH_EXPANSES_DELETE",
   MONTH_EXPANSES_ADD_BUILDING_STATE: "MONTH_EXPANSES_ADD_BUILDING_STATE",
+  MONTH_EXPANSES_REMOVE_BUILDING_STATE: "MONTH_EXPANSES_REMOVE_BUILDING_STATE",
   MONTH_EXPANSES_CLEANUP: "MONTH_EXPANSES_CLEANUP",
   MONTH_EXPANSES_UPDATE_DATE: "MONTH_EXPANSES_UPDATE_DATE"
 }
@@ -190,11 +191,18 @@ const deleteMonthExpanseInStore = (index, buildingId) => {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.MONTH_EXPANSES_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
+}
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.MONTH_EXPANSES_REMOVE_BUILDING_STATE,
+    buildingId
+  });
 }
 
 export function sortByCode(a, b) {

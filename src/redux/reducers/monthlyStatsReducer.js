@@ -62,6 +62,12 @@ const monthlyStatsReducer = (state = initState, action) => {
 
         return stateCopy;
       }
+    case TYPES.MONTHLY_STATS_REMOVE_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
+        return stateCopy;
+      }
     default: return state;
   }
 }

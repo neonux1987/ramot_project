@@ -7,7 +7,8 @@ export const TYPES = {
   REGISTERED_YEARS_FETCHING_FAILED: "REGISTERED_YEARS_FETCHING_FAILED",
   REGISTERED_YEARS_UPDATE_DATA_COUNT: "REGISTERED_YEARS_UPDATE_DATA_COUNT",
   REGISTERED_YEARS_CLEANUP: "REGISTERED_YEARS_CLEANUP",
-  REGISTERED_YEARS_ADD_BUILDING_STATE: "REGISTERED_YEARS_ADD_BUILDING_STATE"
+  REGISTERED_YEARS_ADD_BUILDING_STATE: "REGISTERED_YEARS_ADD_BUILDING_STATE",
+  REGISTERED_YEARS_REMOVE_BUILDING_STATE: "REGISTERED_YEARS_REMOVE_BUILDING_STATE"
 }
 
 export const fetchRegisteredYears = (params = Object) => {
@@ -71,9 +72,16 @@ export const cleanupYears = (buildingId) => {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.REGISTERED_YEARS_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
+}
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.REGISTERED_YEARS_REMOVE_BUILDING_STATE,
+    buildingId
+  });
 }

@@ -1,9 +1,10 @@
+const { asyncForEach } = require('../../helpers/utils');
 const ConnectionPool = require('../connection/ConnectionPool');
 const BuildingsDao = require('../dao/BuildingsDao');
 
 class BuildingsLogic {
 
-  constructor(connection) {
+  constructor() {
     this.buildingsDao = new BuildingsDao();
   }
 
@@ -85,20 +86,31 @@ class BuildingsLogic {
     return updatedBuilding;
   }
 
-  /**
-   * the building is not getting deleted immediately 
-   * but moved to deleted status
-   */
-  deleteBuilding(id, trx) {
-    const record = {
-      status: "מחוק"
-    }
+  async removeBuildings(buildingsForDeletion) {
+    const RegisteredReportsDao = require('../dao/RegisteredReportsDao');
+    const registeredReportsDao = new RegisteredReportsDao();
 
-    return this.buildingsDao.updateBuilding(id, record, trx);
-  }
+    const trx = await ConnectionPool.getTransaction();
 
-  deleteBuildingPermanently(id, buildingName, trx) {
-    // write elogic here
+    await asyncForEach(buildingsForDeletion, async ({ id }) => {
+      await trx.schema.dropTable(`${id}_budget_execution_quarter1`);
+      await trx.schema.dropTable(`${id}_budget_execution_quarter2`);
+      await trx.schema.dropTable(`${id}_budget_execution_quarter3`);
+      await trx.schema.dropTable(`${id}_budget_execution_quarter4`);
+      await trx.schema.dropTable(`${id}_month_expanses`);
+      await trx.schema.dropTable(`${id}_monthly_stats`);
+      await trx.schema.dropTable(`${id}_quarterly_stats`);
+      await trx.schema.dropTable(`${id}_registered_months`);
+      await trx.schema.dropTable(`${id}_registered_quarters`);
+      await trx.schema.dropTable(`${id}_registered_years`);
+      await trx.schema.dropTable(`${id}_summarized_budget`);
+      await trx.schema.dropTable(`${id}_yearly_stats`);
+
+      await this.buildingsDao.removeBuilding(id, trx);
+      await registeredReportsDao.removeReports(id, trx);
+    });
+
+    trx.commit();
   }
 
 }
@@ -188,15 +200,6 @@ async function createRegisteredQuartersTable(tablePrefix, trx) {
     table.integer('year').notNullable();
     table.integer('quarter').notNullable();
     table.text('quarterHeb').notNullable();
-
-  });
-}
-
-async function createRegisteredYearsTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_registered_years`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('year').notNullable();
 
   });
 }

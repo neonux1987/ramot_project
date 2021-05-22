@@ -5,7 +5,8 @@ export const TYPES = {
   YEARLY_STATS_RECEIVE: "YEARLY_STATS_RECEIVE",
   YEARLY_STATS_FETCHING_FAILED: "YEARLY_STATS_FETCHING_FAILED",
   YEARLY_STATS_CLEANUP: "YEARLY_STATS_CLEANUP",
-  YEARLY_STATS_ADD_BUILDING_STATE: "YEARLY_STATS_ADD_BUILDING_STATE"
+  YEARLY_STATS_ADD_BUILDING_STATE: "YEARLY_STATS_ADD_BUILDING_STATE",
+  YEARLY_STATS_REMOVE_BUILDING_STATE: "YEARLY_STATS_REMOVE_BUILDING_STATE"
 }
 
 export const fetchYearStats = (params = Object) => {
@@ -88,9 +89,17 @@ export const cleanupYearlyStats = (buildingId, pageName) => {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.YEARLY_STATS_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
 }
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.YEARLY_STATS_REMOVE_BUILDING_STATE,
+    buildingId
+  });
+}
+

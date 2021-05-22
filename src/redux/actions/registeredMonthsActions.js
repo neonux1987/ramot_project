@@ -6,7 +6,8 @@ export const TYPES = {
   REGISTERED_MONTHS_FETCHING_FAILED: "REGISTERED_MONTHS_FETCHING_FAILED",
   REGISTERED_MONTHS_UPDATE_DATA_COUNT: "REGISTERED_MONTHS_UPDATE_DATA_COUNT",
   REGISTERED_MONTHS_CLEANUP: "REGISTERED_MONTHS_CLEANUP",
-  REGISTERED_MONTHS_ADD_BUILDING_STATE: "REGISTERED_MONTHS_ADD_BUILDING_STATE"
+  REGISTERED_MONTHS_ADD_BUILDING_STATE: "REGISTERED_MONTHS_ADD_BUILDING_STATE",
+  REGISTERED_MONTHS_REMOVE_BUILDING_STATE: "REGISTERED_MONTHS_REMOVE_BUILDING_STATE"
 }
 
 export const fetchRegisteredMonths = (params = Object) => {
@@ -69,9 +70,16 @@ export const cleanupMonths = (buildingId) => {
   }
 }
 
-export const addBuildingState = (buildingId) => {
-  return {
+export const addBuilding = (buildingId) => {
+  return dispatch => dispatch({
     type: TYPES.REGISTERED_MONTHS_ADD_BUILDING_STATE,
     buildingId
-  }
+  });
+}
+
+export const removeBuilding = (buildingId) => {
+  return dispatch => dispatch({
+    type: TYPES.REGISTERED_MONTHS_REMOVE_BUILDING_STATE,
+    buildingId
+  });
 }

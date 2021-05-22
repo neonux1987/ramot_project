@@ -59,6 +59,12 @@ const quarterlyStatsReducer = (state = initState, action) => {
 
         return stateCopy;
       }
+    case TYPES.QUARTERLY_STATS_REMOVE_BUILDING_STATE:
+      {
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
+        return stateCopy;
+      }
     default: return state;
   }
 }
