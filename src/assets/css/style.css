@@ -159,7 +159,8 @@ input,textarea{
   #styledSection-header,
   #printModal,
   #section-header,
-  hr{
+  hr,
+  .addBoxContainer{
     display: none !important;
   }
 

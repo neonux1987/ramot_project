@@ -11,7 +11,7 @@ const style = css`
   background: #ffffff;
 `;
 
-const AddBoxContainer = props => <Collapse in={props.show} mountOnEnter unmountOnExit timeout={400}>
+const AddBoxContainer = props => <Collapse in={props.show} mountOnEnter unmountOnExit timeout={400} className="addBoxContainer">
   <div className={style}>{props.show ? props.children : null}</div>
 </Collapse>
 
