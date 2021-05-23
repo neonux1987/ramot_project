@@ -46,14 +46,6 @@ class QuarterStatsContainer extends React.PureComponent {
     this.props.fetchQuarterStats(params);
   }
 
-  componentWillUnmount() {
-    const { buildingId, pageName } = this.props;
-
-    //cleanup
-    this.props.cleanupMonthlyStats(buildingId, pageName);
-    this.props.cleanupQuarterlyStats(buildingId, pageName);
-  }
-
   generateMonthlyStats = (monthStats, quarter, isFetching) => {
     const colors = this.context.colorSet;
     // list of strings of qurter months
@@ -135,9 +127,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   fetchAllMonthsStatsByQuarter: (params) => dispatch(monthlyStatsActions.fetchAllMonthsStatsByQuarter(params)),
-  cleanupMonthlyStats: (buildingId, pageName) => dispatch(monthlyStatsActions.cleanupMonthlyStats(buildingId, pageName)),
-  fetchQuarterStats: (params) => dispatch(quarterlyStatsActions.fetchQuarterStats(params)),
-  cleanupQuarterlyStats: (buildingId, pageName) => dispatch(quarterlyStatsActions.cleanupQuarterlyStats(buildingId, pageName))
+  fetchQuarterStats: (params) => dispatch(quarterlyStatsActions.fetchQuarterStats(params))
 });
 
 TotalStatsFetcher.propTypes = {

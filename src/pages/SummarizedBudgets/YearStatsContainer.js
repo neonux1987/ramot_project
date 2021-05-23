@@ -45,13 +45,6 @@ class YearStatsContainer extends React.PureComponent {
     this.props.fetchYearStats(params);
   }
 
-  componentWillUnmount() {
-    const { buildingId, pageName } = this.props;
-    //cleanup
-    this.props.cleanupQuarterlyStats(buildingId, pageName);
-    this.props.cleanupYearlyStats(buildingId, pageName);
-  }
-
   generateQuarterlyStats(quarterlyStats, isFetching) {
     const colors = this.context.colorSet;
 
@@ -131,9 +124,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchAllQuartersStatsByYear: (params) => dispatch(quarterlyStatsActions.fetchAllQuartersStatsByYear(params)),
-  cleanupQuarterlyStats: (buildingId, pageName) => dispatch(quarterlyStatsActions.cleanupQuarterlyStats(buildingId, pageName)),
   fetchYearStats: (params) => dispatch(yearlyStatsActions.fetchYearStats(params)),
-  cleanupYearlyStats: (buildingId, pageName) => dispatch(yearlyStatsActions.cleanupYearlyStats(buildingId, pageName))
 });
 
 TotalStatsFetcher.propTypes = {

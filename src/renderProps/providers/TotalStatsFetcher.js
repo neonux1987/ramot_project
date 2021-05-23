@@ -32,13 +32,6 @@ class TotalStatsFetcher extends React.Component {
 
   }
 
-  componentWillUnmount() {
-    //cleanup
-    this.props.cleanupMonthlyStats();
-    this.props.cleanupQuarterlyStats();
-    this.props.cleanupYearlyStats();
-  }
-
   render() {
     const { monthlyStats } = this.props.monthlyStats;
     const { quarterlyStats } = this.props.quarterlyStats;
@@ -63,12 +56,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   fetchAllMonthsStatsByQuarter: (params) => dispatch(monthlyStatsActions.fetchAllMonthsStatsByQuarter(params)),
-  cleanupMonthlyStats: () => dispatch(monthlyStatsActions.cleanupMonthlyStats()),
   fetchQuarterStats: (params) => dispatch(quarterlyStatsActions.fetchQuarterStats(params)),
   fetchAllQuartersStatsByYear: (params) => dispatch(quarterlyStatsActions.fetchAllQuartersStatsByYear(params)),
-  cleanupQuarterlyStats: () => dispatch(quarterlyStatsActions.cleanupQuarterlyStats()),
-  fetchYearStats: (params) => dispatch(yearlyStatsActions.fetchYearStats(params)),
-  cleanupYearlyStats: () => dispatch(yearlyStatsActions.cleanupYearlyStats())
+  fetchYearStats: (params) => dispatch(yearlyStatsActions.fetchYearStats(params))
 });
 
 TotalStatsFetcher.defaultProps = {
