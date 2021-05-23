@@ -45,10 +45,6 @@ const SidebarContainer = props => {
 
   useEffect(() => {
     generate(state);
-
-    /* return () => {
-      reduxDispatch(setColors(true));
-    } */
   }, [state, generate]);
 
   const onPageRangesBlur = (event) => {
@@ -106,7 +102,12 @@ const SidebarContainer = props => {
       dispatch({ type: "setPageRanges", pageRanges: { from: Number.parseInt(range[0]) - 1, to: Number.parseInt(range[1]) - 1 } });
     }
 
+  }
 
+  const onScaleFactorBlur = event => {
+    const value = Number.parseInt(event.target.getAttribute("aria-valuenow"));
+
+    dispatch({ type: "setScaleFactor", scaleFactor: value });
   }
 
   const onChange = (event) => {
@@ -153,6 +154,7 @@ const SidebarContainer = props => {
     printers={printers}
     onChange={onChange}
     onPageRangesBlur={onPageRangesBlur}
+    onScaleFactorBlur={onScaleFactorBlur}
     allPages={allPages}
     copies={copies}
     rangeValid={rangeValid}

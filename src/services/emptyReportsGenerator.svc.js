@@ -12,8 +12,8 @@ export const generateEmptyReports = (params) => {
       channel: "empty-reports-generated"
     },
     onSuccess: ({ data }) => {
-      if (data)
-        toastManager.info(`לבניינים ${data.toString()} קיימים כבר דוחות במערכת`)
+      if (data.length > 0)
+        toastManager.info(`לבניינים '${data.toString()}' קיימים כבר דוחות במערכת`)
       else
         toastManager.success("דוחות ריקים נוצרו בהצלחה לתאריך שבחרת.")
     }

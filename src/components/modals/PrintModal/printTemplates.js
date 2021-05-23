@@ -5,7 +5,8 @@ const templates = {
     copies: 1,
     landscape: false,
     colors: true,
-    pageRanges: undefined
+    pageRanges: undefined,
+    scaleFactor: 100
   },
   budgetExecutions: {
     deviceName: "",
@@ -13,7 +14,8 @@ const templates = {
     copies: 1,
     landscape: true,
     colors: true,
-    pageRanges: undefined
+    pageRanges: undefined,
+    scaleFactor: 100
   },
   summarizedBudgets: {
     deviceName: "",
@@ -21,7 +23,8 @@ const templates = {
     copies: 1,
     landscape: true,
     colors: true,
-    pageRanges: undefined
+    pageRanges: undefined,
+    scaleFactor: 100
   }
 
 };

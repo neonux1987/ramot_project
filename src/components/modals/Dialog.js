@@ -25,8 +25,6 @@ const Dialog = (props) => {
     onBackdropClick={onBackdropClick}
     aria-labelledby="alert-dialog-slide-title"
     aria-describedby="alert-dialog-slide-description"
-    fullWidth
-    maxWidth="xs"
   >
     {children}
   </Dlg>;

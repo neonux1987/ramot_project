@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'emotion';
 import PrimaryButton from '../../../../buttons/PrimaryButton';
-import { Collapse, Input, MenuItem, Typography } from '@material-ui/core';
+import { Collapse, Input, MenuItem, Slider, Typography } from '@material-ui/core';
 import WhiteButton from '../../../../buttons/WhiteButton';
 import Select from '../../../../Select/Select';
 
@@ -12,6 +12,8 @@ const sidebar = css`
   border-left: 1px solid #ececec;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const printbutton = css`margin-right: 10px`;
@@ -59,7 +61,6 @@ const input = css`
   ::before {
     border-bottom: none;
   } 
-
 `;
 
 const inputInner = css`
@@ -78,6 +79,23 @@ const rangeError = css`
   padding-left: 20px;
 `;
 
+const slider = css`
+  width: 180px;
+  margin: 0;
+  display: flex;
+`;
+
+const sliderMarks = [
+  {
+    value: 0,
+    label: '0'
+  },
+  {
+    value: 100,
+    label: '100'
+  },
+];
+
 const Sidebar = props => {
   const {
     pdf,
@@ -87,6 +105,7 @@ const Sidebar = props => {
     state,
     onChange,
     onPageRangesBlur,
+    onScaleFactorBlur,
     allPages,
     copies,
     rangeValid
@@ -239,6 +258,25 @@ const Sidebar = props => {
           <MenuItem value={true}>צבעוני</MenuItem>
           <MenuItem value={false}>שחור לבן</MenuItem>
         </WideSelect>
+      </LeftPane>
+    </Row>
+
+    <Row>
+      <RightPane>
+        <Label>קנה מידה</Label>
+      </RightPane>
+
+      <LeftPane>
+        <Slider
+          className={slider}
+          defaultValue={100}
+          onBlur={onScaleFactorBlur}
+          step={1}
+          min={0}
+          max={100}
+          marks={sliderMarks}
+          valueLabelDisplay="auto"
+        />
       </LeftPane>
     </Row>
 

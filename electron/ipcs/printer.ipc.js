@@ -13,6 +13,7 @@ const printerIpc = () => {
       printSelectionOnly: false,
       silent: true,
       landscape: true,
+      scaleFactor: 100,
       ...pageSetup
     };
 

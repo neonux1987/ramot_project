@@ -25,6 +25,11 @@ export function reducer(state, action) {
         ...state,
         pageRanges: action.pageRanges
       };
+    case 'setScaleFactor':
+      return {
+        ...state,
+        scaleFactor: action.scaleFactor
+      };
     default:
       throw new Error();
   }

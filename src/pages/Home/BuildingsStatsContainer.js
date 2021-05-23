@@ -39,6 +39,7 @@ const BuildingsStatsContainer = () => {
         unicodeSymbol={Helper.shekelUnicode}
         loading={isFetching}
         index={index + 1}
+        xs={3}
       />);
     });
 

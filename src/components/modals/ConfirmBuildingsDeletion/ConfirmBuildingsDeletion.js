@@ -12,7 +12,7 @@ const ConfirmBuildingsDeletion = props => {
   return (
     <WarningModal
       contentText={`
-      הבניינים ${buildingNames} הועברו לססטוס מחיקה לפני 30 או יותר יום.
+      הבניינים '${buildingNames}' הועברו לססטוס מחיקה לפני 30 יום או יותר.
       האם למחוק אותם לצמיתות?
       `}
       {...props}

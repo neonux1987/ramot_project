@@ -17,10 +17,11 @@ const StatBox = ({
   children,
   index = 1,
   color = "#0e7ab9",
-  border = false
+  border = false,
+  xs = "auto"
 }) => {
 
-  return <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
+  return <Grid item xs={xs} style={{ flexGrow: 1 }}>
     <Grow
       in={!loading}
       style={{ transformOrigin: '0 0 0' }}
