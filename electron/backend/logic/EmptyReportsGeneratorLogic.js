@@ -42,7 +42,7 @@ class EmptyReportsGeneratorLogic {
     return existingReportsBuidlings;
   }
 
-  async createEmptyReportsByMonth(buildingId, date, trx) {
+  async createEmptyReportsByMonth(buildingId, date, fromPreviousReports, trx) {
     // all the months of the chosen quarter
     const months = Helper.getQuarterMonthsNum(date.quarter);
 

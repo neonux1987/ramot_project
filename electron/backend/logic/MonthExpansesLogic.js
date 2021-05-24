@@ -258,7 +258,7 @@ class MonthExpansesLogic {
       this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
 
       //insert the batch
-      await this.batchInsert(buildingNameEng, expanses, trx);
+      await this.batchInsert(buildingId, expanses, trx);
 
     } else {
       // create from default expanse codes
