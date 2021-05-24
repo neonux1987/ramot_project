@@ -12,12 +12,12 @@ const _listItem = css`
 
 const _listItemIcon = css`
   min-width: 36px;
-  color: #0e7ab9;
 `;
 
 const MoreMenuItem = React.forwardRef(({
   component = ButtonWithSound,
   icon = null,
+  iconColor = "#0e7ab9",
   label = "",
   onClick,
   listItemClass = "",
@@ -34,7 +34,7 @@ const MoreMenuItem = React.forwardRef(({
     ref={ref}
     {...extraProps}
   >
-    {icon ? <ListItemIcon className={_listItemIcon}>
+    {icon ? <ListItemIcon className={`${_listItemIcon} ${css`color: ${iconColor}`}`}>
       {icon}
     </ListItemIcon> : null}
     <ListItemText primary={label} />

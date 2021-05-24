@@ -21,7 +21,7 @@ class EmptyReportsGeneratorLogic {
    * @param {*} buildingName 
    * @param {*} date 
    */
-  async generateEmptyReports({ buildings, date }) {
+  async generateEmptyReports({ buildings, date, fromPreviousReports }) {
     // Using trx as a transaction object:
     const trx = await connectionPool.getTransaction();
 
@@ -32,7 +32,7 @@ class EmptyReportsGeneratorLogic {
 
       // only reports for unregistered dates allowed
       if (reports.length === 0)
-        await this.createEmptyReportsByMonth(buildingId, date, trx);
+        await this.createEmptyReportsByMonth(buildingId, date, fromPreviousReports, trx);
       else
         existingReportsBuidlings.push(buildingName);
     });
@@ -55,7 +55,7 @@ class EmptyReportsGeneratorLogic {
       dateCopy.monthHeb = Helper.getCurrentMonthHeb(months[i]);
 
       // create empty reports for the specific month
-      await this.monthExpansesLogic.createEmptyReport(buildingId, dateCopy, trx);
+      await this.monthExpansesLogic.createEmptyReport(buildingId, dateCopy, fromPreviousReports, trx);
 
       // register new report
       await this.registereNewReport(buildingId, dateCopy, trx);

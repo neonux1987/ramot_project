@@ -82,7 +82,7 @@ class Helper {
       case "ספטמבר": return 8
       case "אוקטובר": return 9
       case "נובמבר": return 10
-      case "דצמבר": return 1
+      case "דצמבר": return 11
       default: return null
     }
   }

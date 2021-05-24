@@ -6,7 +6,7 @@ import MoreButton from './MoreBuildingMenu/MoreButton';
 import Subtitle from './Subtitle';
 import MoreBuildingMenu from './MoreBuildingMenu/MoreBuildingMenu';
 import useModalLogic from '../../customHooks/useModalLogic';
-import GenerateReportsModal from '../modals/GenerateReportsModal';
+import GenerateExcelReportsModal from '../modals/GenerateExcelReportsModal';
 
 const container = css`
   margin: 20px 20px 20px;
@@ -55,11 +55,15 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
     setAnchorEl(null);
   };
 
-  const generateReports = () => {
-    showModal(GenerateReportsModal, {
+  const onExcelReportsHandler = () => {
+    showModal(GenerateExcelReportsModal, {
       buildingName,
       buildingId
     });
+  }
+
+  const onEmptyReportsHandler = () => {
+
   }
 
   return <div className={container} id="pageHeader">
@@ -86,7 +90,8 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
       <MoreBuildingMenu
         anchorEl={anchorEl}
         handleClose={handleClose}
-        generateReports={generateReports}
+        onExcelReportsHandler={onExcelReportsHandler}
+        onEmptyReportsHandler={onEmptyReportsHandler}
       />
       {/* end more */}
     </div>

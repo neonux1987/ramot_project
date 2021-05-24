@@ -9,7 +9,7 @@ import Section from '../Section/Section';
 
 import EditModal from './modalTypes/EditModal';
 
-const GenerateReportsModal = ({ buildingName, buildingId }) => {
+const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
   const date = new Date();//current date
 
   const [year, setYear] = useState(date.getFullYear());
@@ -75,7 +75,7 @@ const GenerateReportsModal = ({ buildingName, buildingId }) => {
 
   return (
     <EditModal
-      title={`הפקת דוחות לבניין ${buildingName}`}
+      title={`הפקת דוחות אקסל לבניין ${buildingName}`}
       hideAgreeButton={true}
       cancelBtnText="סגור"
     >
@@ -94,4 +94,4 @@ const GenerateReportsModal = ({ buildingName, buildingId }) => {
   );
 }
 
-export default GenerateReportsModal;
+export default GenerateExcelReportsModal;

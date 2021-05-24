@@ -11,7 +11,6 @@ const LogicError = require('../customErrors/LogicError');
 const { asyncForEach } = require('../../helpers/utils');
 const logManager = require('../logger/LogManager');
 const connectionPool = require('../connection/ConnectionPool');
-const { Help } = require('@material-ui/icons');
 
 class BudgetExecutionLogic {
 
@@ -259,7 +258,7 @@ class BudgetExecutionLogic {
     };
   }
 
-  prepareDefaultBatchInsertion(data, date) {
+  prepareBatchInsertion(data, date, isDefault = false) {
     const newData = [];
     const months = Helper.getQuarterMonths(date.quarter);
 
@@ -279,7 +278,7 @@ class BudgetExecutionLogic {
     });
 
     for (let i = 0; i < data.length; i++) {
-      initial.summarized_section_id = data[i].id;
+      initial.summarized_section_id = isDefault ? data[i].id : data[i].summarized_section_id;
       newData.push({ ...initial });
     }
     return newData;
@@ -290,7 +289,7 @@ class BudgetExecutionLogic {
    * @param {*} buildingId 
    * @param {*} date 
    */
-  async createEmptyReport(buildingId, date, trx) {
+  async createEmptyReport(buildingId, date, fromPreviousReports, trx) {
 
     const registeredQuarter = await this.registeredQuartersLogic.getRegisteredQuarterTrx(buildingId, date.quarter, date.year, trx);
 
@@ -309,10 +308,20 @@ class BudgetExecutionLogic {
       year: year
     };
 
-    // populate the budget execution table with sections data
-    const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
-    const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
-    await this.budgetExecutionDao.batchInsert(buildingId, date, preparedDefaultSections, trx);
+    //get all the budget executions of the previous quarter if exists
+    const budgetExec = await this.getAllBudgetExecutionsTrx(buildingId, newDate, trx);
+
+    if (fromPreviousReports && budgetExec.length > 0) {
+      //prepare the data for insertion
+      const preparedSections = this.prepareBatchInsertion(budgetExec, date);
+      //insert the batch
+      await this.batchInsert(buildingId, date, preparedSections, trx);
+    } else {
+      // populate the budget execution table with sections data
+      const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
+      const preparedDefaultSections = this.prepareBatchInsertion(defaultSections, date, true);
+      await this.budgetExecutionDao.batchInsert(buildingId, date, preparedDefaultSections, trx);
+    }
 
     //all the months of a specific quarter
     const months = Helper.getQuarterMonthsHeb(date.quarter);
@@ -327,7 +336,7 @@ class BudgetExecutionLogic {
     await this.registeredQuartersLogic.registerNewQuarter(buildingId, { quarter: date.quarter, quarterHeb: date.quarterHeb, year: date.year }, trx);
 
     //call to create summarized budget report data
-    await this.summarizedBudgetLogic.createEmptyReport(buildingId, date, trx);
+    await this.summarizedBudgetLogic.createEmptyReport(buildingId, date, fromPreviousReports, trx);
   }
 
   generateEmptyMonthlyStats(months, date) {

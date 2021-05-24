@@ -30,12 +30,12 @@ const useServices = () => {
       });
 
     });
-  }, [showModal]);
+  }, [dispatch, showModal]);
 
   const start = useCallback(() => {
     //checkUpdates();
     startListeners();
-  }, [checkUpdates, startListeners]);
+  }, [startListeners]);
 
   const stop = useCallback(async () => {
 

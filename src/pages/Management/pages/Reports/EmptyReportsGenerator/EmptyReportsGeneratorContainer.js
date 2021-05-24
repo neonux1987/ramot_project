@@ -18,6 +18,7 @@ import { generateEmptyReports } from '../../../../../services/emptyReportsGenera
 
 // ACTIONS
 import { checkBuilding, setAllChecked } from '../../../../../redux/actions/reportsActions';
+import CheckboxWithLabel from '../../../../../components/Checkboxes/CheckboxWithLabel';
 
 const years = generateYears(new Date().getFullYear());
 const quarters = Helper.getYearQuarters();
@@ -34,6 +35,8 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
     month: date.getMonth(),
     quarter: Helper.getCurrentQuarter()
   });
+
+  const [fromPreviousReports, setFromPreviousReports] = useState(true);
 
   // default on change handler
   // for months and quarters
@@ -57,7 +60,7 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
     // keep only the selected buildings
     const filteredBuildings = checkedBuildings.filter(building => building.isChecked === true);
 
-    generateEmptyReports({ date: newDate, buildings: filteredBuildings });
+    generateEmptyReports({ date: newDate, buildings: filteredBuildings, fromPreviousReports });
   }
 
   const setAllCheckedHandler = useCallback((checked, checkedBuildings) => {
@@ -66,6 +69,10 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
 
   const checkBuildingHandler = useCallback((name, checked, checkedBuildings) => {
     dispatch(checkBuilding("emptyReports", name, checked, checkedBuildings));
+  }, [dispatch]);
+
+  const onCheckedHandler = useCallback(event => {
+    setFromPreviousReports(event.target.checked);
   }, [dispatch]);
 
   return (
@@ -82,7 +89,17 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
         setAllChecked={setAllCheckedHandler}
         checkBuilding={checkBuildingHandler}
       />
-      <Section marginBottom="50px">
+
+      <CheckboxWithLabel
+        label="צור מדוחות קודמים?"
+        name="fromPreviousReports"
+        checked={fromPreviousReports}
+        onChange={onCheckedHandler}
+        mr="9px"
+        mt="10px"
+      />
+
+      <Section marginBottom="50px" marginTop="0">
         <EmptyReportsGenerator
           selectDate={selectDate}
           years={years}
@@ -104,4 +121,4 @@ function generateYears(currentYear) {
   return arr;
 }
 
-export default withRouter(EmptyReportsGeneratorContainer);
+export default React.memo(EmptyReportsGeneratorContainer);

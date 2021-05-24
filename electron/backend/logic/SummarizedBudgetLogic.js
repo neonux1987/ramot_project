@@ -95,7 +95,7 @@ class SummarizedBudgetLogic {
     return this.summarizedBudgetDao.batchInsert(buildingId, rows, trx);
   }
 
-  prepareDefaultBatchInsertion(data, date) {
+  prepareBatchInsertion(data, date, isDefault = false) {
     const newData = [];
 
     const initial = {
@@ -112,7 +112,7 @@ class SummarizedBudgetLogic {
     }
 
     for (let i = 0; i < data.length; i++) {
-      initial.summarized_section_id = data[i].id;
+      initial.summarized_section_id = isDefault ? data[i].id : data[i].summarized_section_id;
       newData.push({ ...initial });
     }
 
@@ -124,7 +124,7 @@ class SummarizedBudgetLogic {
    * @param {*} buildingId 
    * @param {*} date 
    */
-  async createEmptyReport(buildingId, date, trx) {
+  async createEmptyReport(buildingId, date, fromPreviousReports, trx) {
 
     const registeredYear = await this.registeredYearsLogic.getRegisteredYearTrx(buildingId, date.year, trx);
 
@@ -134,10 +134,25 @@ class SummarizedBudgetLogic {
       return Promise.resolve([]);
     }
 
-    //popoluate summarized budget table with data
-    const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
-    const preparedDefaultSections = this.prepareDefaultBatchInsertion(defaultSections, date);
-    await this.summarizedBudgetDao.batchInsert(buildingId, preparedDefaultSections, trx);
+    const newDate = {
+      year: date.year - 1
+    }
+
+    //get all the budgets of the previous year if exists
+    const sumBudgets = await this.getBuildingSummarizedBudgetTrx(buildingId, newDate, trx);
+
+    if (fromPreviousReports && sumBudgets.length > 0) {
+      const preparedSections = this.prepareBatchInsertion(sumBudgets, date);
+      //insert the batch
+      await this.batchInsert(buildingId, preparedSections, trx);
+    } else {
+      //popoluate summarized budget table with data
+      const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
+      const preparedDefaultSections = this.prepareBatchInsertion(defaultSections, date, true);
+      await this.summarizedBudgetDao.batchInsert(buildingId, preparedDefaultSections, trx);
+    }
+
+
 
     //generate empty quarterly stats (4 quarters)
     const quarterlyStatsArr = this.generateEmptyQuarterlyStats(date);

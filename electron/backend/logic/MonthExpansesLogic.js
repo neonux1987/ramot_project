@@ -226,7 +226,7 @@ class MonthExpansesLogic {
    * @param {*} buildingId 
    * @param {*} date 
    */
-  async createEmptyReport(buildingId, date, trx) {
+  async createEmptyReport(buildingId, date, fromPreviousReports = true, trx) {
 
     // Using trx as a transaction object:
     if (trx === undefined) {
@@ -241,14 +241,31 @@ class MonthExpansesLogic {
       return Promise.resolve([]);
     }
 
-    //get the default codes
-    const defaultCodes = await this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx);
+    const monthNum = date.monthNum > 0 ? date.monthNum - 1 : 11;//if the month is 0 january, then go to month 11 december of previous year
+    const year = monthNum === 11 ? date.year - 1 : date.year;//if the month is 11 december, go to previous year
 
-    //prepare the data for insertion
-    this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
+    //previous date
+    const newDate = {
+      month: Helper.getCurrentMonthEng(monthNum),
+      year: year
+    }
 
-    //insert the batch
-    await this.batchInsert(buildingId, defaultCodes, trx);
+    //get all the expanses of the previous month if exists
+    const expanses = await this.getAllMonthExpansesTrx(buildingId, newDate, trx);
+
+    if (fromPreviousReports && expanses.length > 0) {
+      //prepare the data for insertion
+      this.defaultExpansesCodesLogic.prepareBatchInsertion(expanses, date);
+
+      //insert the batch
+      await this.batchInsert(buildingNameEng, expanses, trx);
+
+    } else {
+      // create from default expanse codes
+      const defaultCodes = await this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx);
+      this.defaultExpansesCodesLogic.prepareDefaultBatchInsertion(defaultCodes, date);
+      await this.batchInsert(buildingId, defaultCodes, trx);
+    }
 
     //can safely register new year, it's not registered from other reports
     await this.registeredMonthsLogic.registerNewMonth(buildingId, {
@@ -261,7 +278,7 @@ class MonthExpansesLogic {
       trx);
 
     //call to create budget execution empty report data
-    await this.budgetExecutionLogic.createEmptyReport(buildingId, date, trx);
+    await this.budgetExecutionLogic.createEmptyReport(buildingId, date, fromPreviousReports, trx);
   }
 
 }

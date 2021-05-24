@@ -4,10 +4,15 @@ import { Menu } from "@material-ui/core";
 import { Description } from "@material-ui/icons";
 import MoreMenuItem from "../../moreMenu/MoreMenuItem";
 
-const MoreBuildingMenu = ({ anchorEl, handleClose, generateReports }) => {
+const MoreBuildingMenu = ({ anchorEl, handleClose, onExcelReportsHandler, onEmptyReportsHandler }) => {
 
-  const onClick = () => {
-    generateReports();
+  const onEmptyReportsClick = () => {
+    onEmptyReportsHandler();
+    handleClose();
+  }
+
+  const onExcelReportsClick = () => {
+    onExcelReportsHandler();
     handleClose();
   }
 
@@ -21,8 +26,15 @@ const MoreBuildingMenu = ({ anchorEl, handleClose, generateReports }) => {
 
       <MoreMenuItem
         icon={<Description />}
-        label="הפק דוחות"
-        onClick={onClick}
+        label="הפקת דוחות ריקים"
+        onClick={onEmptyReportsClick}
+      />
+
+      <MoreMenuItem
+        icon={<Description />}
+        iconColor="#1ead82"
+        label="הפקת דוחות אקסל"
+        onClick={onExcelReportsClick}
       />
 
     </Menu>

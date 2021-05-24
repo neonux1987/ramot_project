@@ -2,6 +2,7 @@ import React from 'react';
 import SubtitleBoldTypography from "../Typographies/SubtitleBoldTypography";
 import CheckBoxWithSound from '../../componentsWithSound/CheckBoxWithSound/CheckBoxWithSound'
 import { css } from 'emotion';
+import classnames from 'classnames';
 
 const container = css`
   display: flex;
@@ -17,11 +18,15 @@ const CheckboxWithLabel = (props) => {
     name = "",
     checked = false,
     onChange,
-    disabled = false
+    disabled = false,
+    mt = "0",
+    mr = "-11px",
+    mb = "0",
+    ml = "21px",
   } = props;
 
   return (
-    <div className={container}>
+    <div className={classnames(container, css`margin: ${mt} ${mr} ${mb} ${ml};`)}>
 
       <CheckBoxWithSound
         checked={checked}
