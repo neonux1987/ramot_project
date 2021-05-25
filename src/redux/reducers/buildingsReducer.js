@@ -17,10 +17,9 @@ const buildingsReducer = (state = initState, action) => {
     case TYPES.BUILDINGS_REMOVE: {
       const stateCopy = { ...state };
 
-      stateCopy.data.forEach(({ id }, i) => {
-        if (id === action.id)
-          delete stateCopy.data[i];
-      })
+      stateCopy.data = stateCopy.data.filter(({ id }) => {
+        return id !== action.id;
+      });
 
       return stateCopy;
     }

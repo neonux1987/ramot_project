@@ -127,6 +127,7 @@ const budgetExecutionsReducer = (state = initialState, action) => {
       {
         let stateCopy = { ...state };
         delete stateCopy[buildingId];
+        console.log(stateCopy);
         return stateCopy;
       }
     default: return state;
