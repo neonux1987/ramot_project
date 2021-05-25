@@ -5,12 +5,15 @@ import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions
 import { fetchRegisteredMonths } from '../../redux/actions/registeredMonthsActions';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import Helper from '../../helpers/Helper';
+import useRefresh from '../../customHooks/useRefresh';
 
 const MonthExpansesDatePicker = ({
   buildingId,
   date
 }) => {
   const dispatch = useDispatch();
+
+  const [refresh, setRefresh] = useRefresh();
 
   const [localYear, setLocalYear] = useState(date.year);
 
@@ -35,8 +38,11 @@ const MonthExpansesDatePicker = ({
     }
 
     fetchMonths();
+
+    if (refresh === true)
+      setRefresh(false);
     //eslint-disable-next-line
-  }, []);
+  }, [refresh, setRefresh]);
 
   const monthExist = (month, data) => {
     let exist = false;

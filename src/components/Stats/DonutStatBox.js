@@ -37,17 +37,17 @@ const row = css`
 
 const text = css`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   color: #555555;
 `;
 
 
 const marker = css`
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   background-color: red;
   margin-left: 3px;
-  border-radius: 12px;
+  border-radius: 3px;
 `;
 
 const blue = css`

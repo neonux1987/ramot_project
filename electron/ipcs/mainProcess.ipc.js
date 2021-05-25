@@ -22,6 +22,10 @@ const mainProcessIpc = () => {
     }
   });
 
+  ipcMain.on('refresh-renderer', (event) => {
+    event.reply("refresh");
+  });
+
   process.on("uncaughtException", async (error, origin) => {
     const fs = require('fs');
 

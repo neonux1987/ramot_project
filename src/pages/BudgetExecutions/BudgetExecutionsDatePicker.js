@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import DatePicker from '../../components/DatePicker/DatePicker';
 import { fetchRegisteredQuarters } from '../../redux/actions/registeredQuartersActions';
+import useRefresh from '../../customHooks/useRefresh';
 
 const BudgetExecutionsDatePicker = ({
   buildingId,
   date
 }) => {
   const dispatch = useDispatch();
+
+  const [refresh, setRefresh] = useRefresh();
 
   const [localYear, setLocalYear] = useState(date.year);
 
@@ -30,8 +33,11 @@ const BudgetExecutionsDatePicker = ({
           year: date.year
         }
       }));
+
+    if (refresh === true)
+      setRefresh(false);
     //eslint-disable-next-line
-  }, []);
+  }, [refresh, setRefresh]);
 
   const quarterExist = (month, data) => {
     let exist = false;

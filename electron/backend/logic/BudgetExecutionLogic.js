@@ -315,7 +315,7 @@ class BudgetExecutionLogic {
       //prepare the data for insertion
       const preparedSections = this.prepareBatchInsertion(budgetExec, date);
       //insert the batch
-      await this.batchInsert(buildingId, date, preparedSections, trx);
+      await this.budgetExecutionDao.batchInsert(buildingId, date, preparedSections, trx);
     } else {
       // populate the budget execution table with sections data
       const defaultSections = await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);

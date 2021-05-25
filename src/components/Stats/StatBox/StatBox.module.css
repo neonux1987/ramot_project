@@ -1,22 +1,26 @@
 .paper{
   background-color: #ffffff;
-  border-radius: 3px;
+  border-radius: 6px;
   min-height: 280px;
-  overflow: hidden;
+  /* overflow: hidden; */
+  /* box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); */
   /* box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%); */
-  /* box-shadow: 0 0 10px 4px rgb(0 0 0 / 2%); */
-  box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   border: 1px solid #dddddd;
+  margin-top: 30px;
 }
 
 .upper{
   display: flex;
-  border-bottom: 1px solid #f1f1f1;
-  height: 60px;
+  /* border-bottom: 1px solid #f1f1f1; */
+  height: 87px;
   align-items: center;
   padding: 0 15px;
+  margin: -30px 15px 0;
+  box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 14%);
+  border-radius: 3px;
 }
 
 .titleWrapper{

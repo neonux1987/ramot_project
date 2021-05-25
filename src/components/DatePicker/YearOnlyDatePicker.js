@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRegisteredYears } from '../../redux/actions/registeredYearsActions';
 import DatePicker from './DatePicker';
+import useRefresh from '../../customHooks/useRefresh';
 
 const YearOnlyDatePicker = ({
   buildingId,
@@ -11,11 +12,16 @@ const YearOnlyDatePicker = ({
 }) => {
   const dispatch = useDispatch();
 
+  const [refresh, setRefresh] = useRefresh();
+
   const years = useSelector(store => store.registeredYears[buildingId]);
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingId }));
-  }, [buildingId, dispatch]);
+
+    if (refresh === true)
+      setRefresh(() => false);
+  }, [buildingId, dispatch, refresh, setRefresh]);
 
   const onChange = (name, value) => {
     dispatch(updateDate(buildingId, { [name]: value }));

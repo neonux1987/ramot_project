@@ -1,7 +1,6 @@
 // LIBRARIES
 import React, { useCallback, useState } from 'react';
 import { Description } from '@material-ui/icons';
-import { withRouter } from 'react-router';
 import { useDispatch } from 'react-redux';
 
 // COMPONENTS
@@ -73,7 +72,7 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
 
   const onCheckedHandler = useCallback(event => {
     setFromPreviousReports(event.target.checked);
-  }, [dispatch]);
+  }, []);
 
   return (
     <StyledSection

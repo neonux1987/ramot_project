@@ -7,6 +7,7 @@ import Subtitle from './Subtitle';
 import MoreBuildingMenu from './MoreBuildingMenu/MoreBuildingMenu';
 import useModalLogic from '../../customHooks/useModalLogic';
 import GenerateExcelReportsModal from '../modals/GenerateExcelReportsModal';
+import GenerateEmptyReportsModal from '../modals/GenerateEmptyReportsModal';
 
 const container = css`
   margin: 20px 20px 20px;
@@ -38,7 +39,7 @@ const mainTitle = css`
 const subContainer = css`
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #f1f1f1;
+  /* border-bottom: 1px solid #f1f1f1; */
 `;
 
 const PageHeader = ({ buildingName, buildingId, page }) => {
@@ -63,7 +64,10 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
   }
 
   const onEmptyReportsHandler = () => {
-
+    showModal(GenerateEmptyReportsModal, {
+      buildingName,
+      buildingId
+    });
   }
 
   return <div className={container} id="pageHeader">

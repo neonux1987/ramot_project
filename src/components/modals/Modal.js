@@ -71,7 +71,7 @@ const Modal = (props) => {
   >
     <ModalHeader title={title} Icon={Icon} iconColor={iconColor} />
 
-    <DialogContent>
+    <DialogContent style={{ padding: "24px" }}>
       {content}
     </DialogContent>
     <DialogActions>
