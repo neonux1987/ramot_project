@@ -21,6 +21,7 @@ const statisticsReducer = (state = initState, action) => {
     case TYPES.STATISTICS_ADD_BUILDING_STATE:
       {
         const { buildingId } = action;
+        console.log("statistics", buildingId);
         let stateCopy = { ...state };
         stateCopy[buildingId] = {
           date: {
@@ -29,6 +30,13 @@ const statisticsReducer = (state = initState, action) => {
           }
         };
 
+        return stateCopy;
+      }
+    case TYPES.STATISTICS_REMOVE_BUILDING_STATE:
+      {
+        const { buildingId } = action;
+        let stateCopy = { ...state };
+        delete stateCopy[buildingId];
         return stateCopy;
       }
     default: return state;

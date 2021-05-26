@@ -113,6 +113,7 @@ const monthExpansesRedcuer = (state = initialState, action) => {
     case TYPES.MONTH_EXPANSES_ADD_BUILDING_STATE:
       {
         let stateCopy = { ...state };
+        console.log("monthExpanses", buildingId);
         stateCopy[buildingId] = {
           isFetching: false,
           status: "",

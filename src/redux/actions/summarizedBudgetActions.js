@@ -146,10 +146,10 @@ export const updateDate = function (buildingId, date) {
 }
 
 export const addBuilding = (buildingId) => {
-  return dispatch => dispatch({
+  return {
     type: TYPES.SUMMARIZED_BUDGETS_ADD_BUILDING_STATE,
     buildingId
-  });
+  };
 }
 
 export const removeBuilding = (buildingId) => {

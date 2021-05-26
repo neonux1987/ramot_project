@@ -192,10 +192,10 @@ const deleteMonthExpanseInStore = (index, buildingId) => {
 }
 
 export const addBuilding = (buildingId) => {
-  return dispatch => dispatch({
+  return {
     type: TYPES.MONTH_EXPANSES_ADD_BUILDING_STATE,
     buildingId
-  });
+  };
 }
 
 export const removeBuilding = (buildingId) => {

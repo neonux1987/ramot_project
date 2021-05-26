@@ -71,10 +71,10 @@ export const cleanupQuarters = (buildingId) => {
 }
 
 export const addBuilding = (buildingId) => {
-  return dispatch => dispatch({
+  return {
     type: TYPES.REGISTERED_QUARTERS_ADD_BUILDING_STATE,
     buildingId
-  });
+  };
 }
 
 export const removeBuilding = (buildingId) => {

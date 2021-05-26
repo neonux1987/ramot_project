@@ -90,10 +90,10 @@ export const cleanupYearlyStats = (buildingId, pageName) => {
 }
 
 export const addBuilding = (buildingId) => {
-  return dispatch => dispatch({
+  return {
     type: TYPES.YEARLY_STATS_ADD_BUILDING_STATE,
     buildingId
-  });
+  };
 }
 
 export const removeBuilding = (buildingId) => {

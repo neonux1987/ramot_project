@@ -73,10 +73,10 @@ export const cleanupYears = (buildingId) => {
 }
 
 export const addBuilding = (buildingId) => {
-  return dispatch => dispatch({
+  return {
     type: TYPES.REGISTERED_YEARS_ADD_BUILDING_STATE,
     buildingId
-  });
+  };
 }
 
 export const removeBuilding = (buildingId) => {

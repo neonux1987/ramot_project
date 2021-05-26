@@ -98,6 +98,7 @@ const summarizedBudgetsRedcuer = (state = initialState, action) => {
     case TYPES.SUMMARIZED_BUDGETS_ADD_BUILDING_STATE:
       {
         let stateCopy = { ...state };
+        console.log("summarizedBudgets", buildingId);
         stateCopy[buildingId] = {
           isFetching: false,
           status: "",

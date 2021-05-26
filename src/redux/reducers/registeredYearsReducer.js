@@ -53,6 +53,7 @@ const registeredYears = (state = initialState, action) => {
     case TYPES.REGISTERED_YEARS_ADD_BUILDING_STATE:
       {
         let stateCopy = { ...state };
+        console.log("registeredYears", buildingId);
         stateCopy[buildingId] = {
           isFetching: true,
           status: "",

@@ -110,6 +110,7 @@ const budgetExecutionsReducer = (state = initialState, action) => {
     case TYPES.BUDGET_EXECUTIONS_ADD_BUILDING_STATE:
       {
         let stateCopy = { ...state };
+        console.log("budgetExecutions", buildingId);
         stateCopy[buildingId] = {
           isFetching: false,
           status: "",
@@ -127,7 +128,6 @@ const budgetExecutionsReducer = (state = initialState, action) => {
       {
         let stateCopy = { ...state };
         delete stateCopy[buildingId];
-        console.log(stateCopy);
         return stateCopy;
       }
     default: return state;
