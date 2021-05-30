@@ -38,7 +38,7 @@ const YearlyStatsReducer = (state = initState, action) => {
         let stateCopy = { ...state };
         stateCopy[buildingId] = {};
         stateCopy[buildingId].pages = {};
-        console.log("yearlyStats", buildingId);
+
         getPages().forEach(page => {
 
           stateCopy[buildingId].pages[page] = {

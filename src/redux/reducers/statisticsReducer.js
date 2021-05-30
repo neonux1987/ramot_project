@@ -21,7 +21,7 @@ const statisticsReducer = (state = initState, action) => {
     case TYPES.STATISTICS_ADD_BUILDING_STATE:
       {
         const { buildingId } = action;
-        console.log("statistics", buildingId);
+
         let stateCopy = { ...state };
         stateCopy[buildingId] = {
           date: {

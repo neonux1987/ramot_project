@@ -27,7 +27,7 @@ const yearsChartReducer = (state = initState, action) => {
       {
         const { buildingId } = action;
         let stateCopy = { ...state };
-        console.log("yearsChart", buildingId);
+
         stateCopy[buildingId] = {
           date: {
             fromYear: "",

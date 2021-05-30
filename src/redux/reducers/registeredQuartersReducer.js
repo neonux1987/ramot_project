@@ -52,7 +52,7 @@ const registeredQuarters = (state = initialState, action) => {
     case TYPES.REGISTERED_QUARTERS_ADD_BUILDING_STATE:
       {
         let stateCopy = { ...state };
-        console.log("registeredQuarters", buildingId);
+
         stateCopy[buildingId] = {
           isFetching: true,
           status: "",

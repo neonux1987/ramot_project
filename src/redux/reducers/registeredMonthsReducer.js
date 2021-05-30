@@ -53,7 +53,7 @@ const registeredMonthsReducer = (state = initialState, action) => {
     case TYPES.REGISTERED_MONTHS_ADD_BUILDING_STATE:
       {
         let stateCopy = { ...state };
-        console.log("registeredMonths", buildingId);
+
         stateCopy[buildingId] = {
           isFetching: false,
           status: "",

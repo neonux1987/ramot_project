@@ -10,7 +10,7 @@ const nested = css`
   font-size: 16px;
 `;
 
-const SubMenu = ({ open, restartAppHandler, dbBackupHandler, flushCache }) => {
+const SubMenu = ({ open, restartAppHandler, dbBackupHandler, purgeCache }) => {
   return <Collapse in={open} timeout="auto" unmountOnExit>
     <List component="div" disablePadding>
 
@@ -24,7 +24,7 @@ const SubMenu = ({ open, restartAppHandler, dbBackupHandler, flushCache }) => {
       <MoreMenuItem
         icon={<SvgIcon component={RiFolderHistoryLine} />}
         label="מחק היסטוריית מטמון"
-        onClick={flushCache}
+        onClick={purgeCache}
         listItemClass={nested}
       />
 

@@ -16,7 +16,7 @@ import { addBuilding as qc_ADD, removeBuilding as qc_REMOVE } from './quartersCh
 import { addBuilding as yc_ADD, removeBuilding as yc_REMOVE } from './yearsChartActions';
 import { addBuilding as tc_ADD, removeBuilding as tc_REMOVE } from './topChartActions';
 import { addBuilding as s_ADD, removeBuilding as s_REMOVE } from './statisticsActions';
-
+import { ipcRenderer, remote } from 'electron';
 
 export const TYPES = {
   BUILDINGS_UPDATE: "BUILDINGS_UPDATE",
@@ -107,8 +107,15 @@ export const addBuilding = (payload) => {
           dispatch(yc_ADD(id));
           dispatch(tc_ADD(id));
           dispatch(s_ADD(id));
+
         });
 
+        // we also need to add the new building to the global
+        // shared object, otherwise on refresh it will use the
+        // global shared object of previous data
+        const buildings = remote.getGlobal('sharedObject').buildings;
+        buildings.push(result.data);
+        ipcRenderer.send("set-global-variable", { key: "buildings", value: buildings });
       },
       onError: result => {
         toastManager.error(result.error);
@@ -129,6 +136,8 @@ export const removeBuildings = (buildingsToRemove) => {
         channel: "buildings-removed"
       },
       onSuccess: () => {
+        const buildings = remote.getGlobal('sharedObject').buildings;
+
         buildingsToRemove.forEach(({ id }) => {
           dispatch(removeBuildingInStore(id));
 
@@ -149,8 +158,18 @@ export const removeBuildings = (buildingsToRemove) => {
             dispatch(tc_REMOVE(id));
             dispatch(s_REMOVE(id));
           });
+
+          // we also need to remove the buildings from the global
+          // shared object, otherwise on refresh it will use the
+          // global shared object of previous data
+          buildings.forEach((building, index) => {
+            if (id === building.id)
+              buildings.splice(index, 1);
+          });
+
         });
 
+        ipcRenderer.send("set-global-variable", { key: "buildings", value: buildings });
       },
       onError: result => {
         toastManager.error(result.error);

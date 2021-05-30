@@ -1,5 +1,5 @@
 import { persistor } from "../store"
 
-export const flushCache = () => {
+export const purgeCache = () => {
   return persistor.purge();
 }

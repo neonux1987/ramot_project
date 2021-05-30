@@ -45,7 +45,7 @@ const quarterlyStatsReducer = (state = initState, action) => {
         let stateCopy = { ...state };
         stateCopy[buildingId] = {};
         stateCopy[buildingId].pages = {};
-        console.log("quartelyStats", buildingId);
+
         getPages().forEach(page => {
 
           stateCopy[buildingId].pages[page] = {

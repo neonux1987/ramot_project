@@ -53,7 +53,7 @@ const topChartReducer = (state = initState, action) => {
     case TYPES.TOP_CHART_ADD_BUILDING_STATE:
       {
         let stateCopy = { ...state };
-        console.log("topChart", buildingId);
+
         stateCopy[buildingId] = {
           date: {
             fromYear: "",

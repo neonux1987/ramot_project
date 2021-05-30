@@ -7,7 +7,7 @@ import SubMenu from "./SubMenu/SubMenu";
 import { initiateDbBackup } from '../../../services/dbBackup.svc';
 import { toastManager } from "../../../toasts/toastManager";
 import ToastRender from "../../../components/ToastRender/ToastRender";
-import { flushCache } from "../../../redux/actions/persistorActions";
+import { purgeCache } from "../../../redux/actions/persistorActions";
 import { refreshView } from "../../../services/mainProcess.svc";
 import MoreMenuNavLinkItem from "../../../components/moreMenu/MoreMenuNavLinkItem";
 import MoreMenuItem from "../../../components/moreMenu/MoreMenuItem";
@@ -27,7 +27,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
   }
 
   const clearCache = () => {
-    flushCache().then(() => {
+    purgeCache().then(() => {
       toastManager.success("ניקוי היסטוריית מטמון בוצע בהצלחה. המערכת תרענן את העמוד.", {
         autoClose: 2500,
         onClose: () => refreshView()
@@ -140,7 +140,7 @@ const MoreMenu = ({ anchorEl, handleClose, restartAppHandler, taxClickHandler })
         {open ? <ExpandLess /> : <ExpandMore />}
       </MoreMenuItem>
 
-      <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} flushCache={clearCache} />
+      <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} purgeCache={clearCache} />
 
     </Menu>
   );
