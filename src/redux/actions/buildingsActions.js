@@ -1,3 +1,4 @@
+import { batch } from 'react-redux';
 import { toastManager } from '../../toasts/toastManager';
 import { ipcSendReceive } from './util/util';
 import { showSavedNotification } from './savedNotificationActions';
@@ -90,21 +91,23 @@ export const addBuilding = (payload) => {
         dispatch(addBuildingsInStore(result.data));
         const { id } = result.data;
 
-        // init state
-        dispatch(me_ADD(id));
-        dispatch(be_ADD(id));
-        dispatch(sb_ADD(id));
-        dispatch(ms_ADD(id));
-        dispatch(qs_ADD(id));
-        dispatch(ys_ADD(id));
-        dispatch(rm_ADD(id));
-        dispatch(rq_ADD(id));
-        dispatch(ry_ADD(id));
-        dispatch(mc_ADD(id));
-        dispatch(qc_ADD(id));
-        dispatch(yc_ADD(id));
-        dispatch(tc_ADD(id));
-        dispatch(s_ADD(id));
+        batch(() => {
+          // init state
+          dispatch(me_ADD(id));
+          dispatch(be_ADD(id));
+          dispatch(sb_ADD(id));
+          dispatch(ms_ADD(id));
+          dispatch(qs_ADD(id));
+          dispatch(ys_ADD(id));
+          dispatch(rm_ADD(id));
+          dispatch(rq_ADD(id));
+          dispatch(ry_ADD(id));
+          dispatch(mc_ADD(id));
+          dispatch(qc_ADD(id));
+          dispatch(yc_ADD(id));
+          dispatch(tc_ADD(id));
+          dispatch(s_ADD(id));
+        });
 
       },
       onError: result => {
@@ -129,21 +132,23 @@ export const removeBuildings = (buildingsToRemove) => {
         buildingsToRemove.forEach(({ id }) => {
           dispatch(removeBuildingInStore(id));
 
-          // init state
-          dispatch(me_REMOVE(id));
-          dispatch(be_REMOVE(id));
-          dispatch(sb_REMOVE(id));
-          dispatch(ms_REMOVE(id));
-          dispatch(qs_REMOVE(id));
-          dispatch(ys_REMOVE(id));
-          dispatch(rm_REMOVE(id));
-          dispatch(rq_REMOVE(id));
-          dispatch(ry_REMOVE(id));
-          dispatch(mc_REMOVE(id));
-          dispatch(qc_REMOVE(id));
-          dispatch(yc_REMOVE(id));
-          dispatch(tc_REMOVE(id));
-          dispatch(s_REMOVE(id));
+          batch(() => {
+            // remove state
+            dispatch(me_REMOVE(id));
+            dispatch(be_REMOVE(id));
+            dispatch(sb_REMOVE(id));
+            dispatch(ms_REMOVE(id));
+            dispatch(qs_REMOVE(id));
+            dispatch(ys_REMOVE(id));
+            dispatch(rm_REMOVE(id));
+            dispatch(rq_REMOVE(id));
+            dispatch(ry_REMOVE(id));
+            dispatch(mc_REMOVE(id));
+            dispatch(qc_REMOVE(id));
+            dispatch(yc_REMOVE(id));
+            dispatch(tc_REMOVE(id));
+            dispatch(s_REMOVE(id));
+          });
         });
 
       },

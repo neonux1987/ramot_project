@@ -9,8 +9,7 @@ import DonutStatBox from '../../components/Stats/DonutStatBox';
 import { fetchAllBuildingsStatsByYear } from '../../redux/actions/homeActions';
 
 const BuildingsStatsContainer = () => {
-  const store = useSelector(store => store);
-  console.log(store)
+
   const { data, isFetching } = useSelector(store => store.home.yearlyStats);
 
   const dispatch = useDispatch();
