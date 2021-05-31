@@ -11,13 +11,15 @@ const DonutChart = props => {
       chart: {
         type: "pie",
         width: 150,
-        height: 150
+        height: 150,
+        backgroundColor: "transparent"
       },
       exporting: {
         enabled: false
       },
       plotOptions: {
         pie: {
+          fillColor: "#eee",
           showInLegend: false,
           innerSize: "60%",
           dataLabels: {

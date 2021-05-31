@@ -29,6 +29,11 @@ const SelectDropDown = React.memo(({ value, valueName, selectChangeHandler, inde
       onChange={onChangeHandler}
       onClose={() => setDummy(true)}
       open={!showDummy}// use the same state to save up on creating a separate state
+      MenuProps={{
+        variant: "menu",
+        autoFocus: false,
+        getContentAnchorEl: () => null
+      }}
     >
       {children}
     </Select>;

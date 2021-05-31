@@ -1,3 +1,13 @@
+import { css } from 'emotion';
+
+const menuClassName = css`
+  direction: rtl;
+
+  ul li {
+    text-align: right;
+  }
+`;
+
 export const columnChart = (title, series, categories) => ({
   chart: {
     type: "column",
@@ -5,6 +15,27 @@ export const columnChart = (title, series, categories) => ({
       fontFamily: "Assistant, sans-serif"
     },
     height: "450px"
+  },
+  lang: {
+    downloadCSV: `שמור כקובץ נתונים CSV`,
+    downloadPNG: `שמור כתמונת PNG`,
+    downloadPDF: `שמור כקובץ PDF`,
+    printChart: `הדפס גרף`,
+    viewFullscreen: `מסך מלא`,
+    exitFullscreen: `יציאה ממסך מלא`
+  },
+  exporting: {
+    enabled: true,
+    sourceWidth: 1280,
+    sourceHeight: 720,
+    buttons: {
+      contextButton: {
+        enabled: true,
+        align: "left",
+        menuClassName,
+        menuItems: ["viewFullscreen", "printChart", "separator", "downloadPNG", "downloadPDF"]
+      }
+    }
   },
   legend: {
     rtl: true,

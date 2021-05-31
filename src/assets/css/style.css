@@ -173,6 +173,10 @@ input,textarea{
     position: unset;
   }
 
+  #tableSection{
+    box-shadow: none;
+  }
+
   #styledSection-content{
     overflow: visible !important;
     position: unset !important;
