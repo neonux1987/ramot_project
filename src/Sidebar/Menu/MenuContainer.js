@@ -20,6 +20,7 @@ const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
 
 const MenuContainer = ({ routes, history, data }) => {
+  let counter = 1;
 
   const dispatch = useDispatch();
 
@@ -116,11 +117,13 @@ const MenuContainer = ({ routes, history, data }) => {
 
       {pages.map((page) => {
         const { label, path } = page;
+        const active = routeState.page === label && routeState.buildingName === item.buildingName;
 
         return <Menuitem
           label={label}
           Icon={generateIcon(label)}
           key={label}
+          tabIndex={counter++}
           to={{
             pathname: `/${item.path}/${path}`,
             state: {
@@ -129,7 +132,8 @@ const MenuContainer = ({ routes, history, data }) => {
               buildingId: item.buildingId
             }
           }}
-          active={routeState.page === label && routeState.buildingName === item.buildingName}
+          active={active}
+          autoFocus={active}
         />;
       })}
 

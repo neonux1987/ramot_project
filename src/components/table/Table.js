@@ -10,6 +10,7 @@ import NoData from './components/NoData';
 import Thead from './components/Thead';
 import Tbody from './components/Tbody';
 import TableWrapper from './components/TableWrapper';
+import Tfoot from './components/Tfoot';
 
 /*
   in print mode we must render table content without
@@ -82,6 +83,10 @@ const Table = ({
       {totalCount > 0 ? HeaderComponent && HeaderComponent() : null}
 
     </Thead>
+
+    <Tfoot printMode={printMode}>
+      <div className="page-number"></div>
+    </Tfoot>
 
     <Tbody
       printMode={printMode}

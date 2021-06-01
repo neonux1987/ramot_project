@@ -134,6 +134,10 @@ input,textarea{
   @page {
     size: auto;   /* auto is the initial value */
     margin: 10px 10px 35px 10px;  /* this affects the margin in the printer settings */
+
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+    }
   }
 
   html,body,#mainContainer,#appWrapper{
@@ -143,6 +147,11 @@ input,textarea{
   body{
     background: #ffffff !important;
     -webkit-print-color-adjust: exact !important;
+  }
+
+  .page-number:before{
+    counter-increment: page;
+    content: "Page " counter(page);
   }
 
   #root{
@@ -200,6 +209,7 @@ input,textarea{
     padding: 1px;
     border-collapse: collapse;
     display: table;
+    counter-reset: page;
   }
   
   ._tableBody > div{
