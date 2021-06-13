@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { useDispatch } from 'react-redux';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
@@ -102,6 +102,18 @@ const MenuContainer = ({ routes, history, data }) => {
 
   }, [routeState]);
 
+  useEffect(() => {
+    const element = document.querySelector('.activeButton');
+
+    if (element !== null) {
+      element.focus();
+
+      setTimeout(() => {
+        element.blur();
+      }, 0);
+    }
+  }, []);
+
   const menuRender = data.map((item) => {
 
     const { buildingName, buildingId } = item;
@@ -133,7 +145,6 @@ const MenuContainer = ({ routes, history, data }) => {
             }
           }}
           active={active}
-          autoFocus={active}
         />;
       })}
 

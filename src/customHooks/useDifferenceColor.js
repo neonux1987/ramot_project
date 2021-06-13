@@ -1,18 +1,15 @@
 import { useCallback } from "react";
 
 const negative = {
-  color: "#ffffff",
-  background: "#FF0947"
+  color: "#ff0000"
 }
 
 const positive = {
-  color: "#ffffff",
-  background: "#07BB7E"
+  color: "#10b110"
 }
 
 const neutral = {
-  color: "#000000",
-  background: "rgb(251 255 9)"
+  color: "#000000"
 }
 
 const useDifferenceColor = () => {

@@ -18,8 +18,7 @@ const Menuitem = (props) => {
     active,
     to,
     className,
-    tabIndex,
-    autoFocus = false
+    tabIndex
   } = props;
 
   return (
@@ -30,7 +29,6 @@ const Menuitem = (props) => {
       to={to}
       selected={false}
       draggable={false}
-      autoFocus={autoFocus}
     >
       <ListItemIcon className={listItemIcon} style={{ color: active ? "#fafafa" : "#d0d0d0" }}>
         {Icon && <Icon />}
