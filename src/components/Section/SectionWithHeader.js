@@ -15,6 +15,7 @@ const _header = css`
   align-items: center;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
+  border-bottom: 1px solid #00000038;
 `;
 
 const SectionWithHeader = ({ header = null, children, id, bgColor = "#0e7ab9" }) => {

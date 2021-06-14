@@ -27,7 +27,7 @@ class ConnectionPool {
       });
 
       // in order to test knex to see if the connection was successful
-      // we must query, and if te query will retrn error then connection was unsuccessful
+      // we must query, and if te query will return error then connection was unsuccessful
       this.knex('buildings').count()
         .then(() => {
           resolve();

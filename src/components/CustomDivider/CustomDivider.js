@@ -9,7 +9,7 @@ const CustomDivider = ({ mt = 0, mr = 0, mb = 0, ml = 0 }) => {
     marginRight: mr + "px",
     marginBottom: mb + "px",
     marginLeft: ml + "px",
-    backgroundColor: "#f1f1f1"
+    backgroundColor: "#dddddd"
   }} />);
 }
 

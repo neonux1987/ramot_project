@@ -16,7 +16,7 @@ const container = css`
 const mainContainer = css`
   display: flex;
   align-items: center;
-  padding: 0 5px;
+  padding: 0;
 `;
 
 const mainIcon = css`
@@ -33,7 +33,8 @@ const mainTitle = css`
   /* color: #6b6b6b; */
   color: #555555;
   font-weight: 500;
-  font-size: 2.4rem;
+  font-size: 2.8rem;
+  padding-bottom: 20px;
 `;
 
 const subContainer = css`

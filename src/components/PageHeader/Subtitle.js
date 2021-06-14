@@ -7,11 +7,16 @@ const subTitleContainer = css`
   display: flex;
   align-items: center;
   flex-grow: 1;
+  border-bottom: 1px solid #dddddd;
 `;
 
 const subIconWrapper = css`
   display: flex;
   align-items: center;
+  background-color: #dddddd;
+  width: 28px;
+  height: 28px;
+  justify-content: center;
 `;
 
 const subIcon = css`
@@ -22,6 +27,7 @@ const subIcon = css`
 const subTitle = css`
   color: #555555;
   font-weight: 400;
+  margin-right: 5px;
 `;
 
 const Subtitle = ({ page }) => {

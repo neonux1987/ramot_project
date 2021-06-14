@@ -7,6 +7,7 @@ import { persistor, store } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import LoadingCircle from './components/LoadingCircle';
 import LoadingPage from './LoadingPage/LoadingPage';
+import RestoreWizard from './RestoreWizard/RestoreWizard';
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -22,15 +23,18 @@ ReactDOM.render(<Component />, document.getElementById('root'));
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-
+function storeWrapper(Component) {
+  return () => <Provider store={store} >
+    <PersistGate loading={<LoadingCircle />} persistor={persistor}>
+      <Component />
+    </PersistGate>
+  </Provider>;
+};
 
 function whichComponent(page) {
   switch (page) {
-    case "loadingPage": return LoadingPage;
-    default: return () => <Provider store={store} >
-      <PersistGate loading={<LoadingCircle />} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>;
+    case "loading": return LoadingPage;
+    case "restoreDB": return storeWrapper(RestoreWizard);
+    default: return storeWrapper(App);
   }
 }

@@ -7,6 +7,7 @@ const contextMenu = require('electron-context-menu');
 
 //========================= services =========================//
 const mainSystem = require('./backend/system/MainSystem');
+const { AppErrorDialog } = require('./helpers/utils');
 
 const isDev = !app.isPackaged;
 process.env.APP_ROOT_PATH = app.getAppPath();
@@ -62,6 +63,7 @@ async function createWindow() {
       enableRemoteModule: true
     },
   });
+  loading.uniqueId = "loadingWindow";
 
   loading.once('show', () => {
 
@@ -119,12 +121,14 @@ async function createWindow() {
       // long loading html
       mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
 
+    }).catch(async () => {
+      await AppErrorDialog();
     });
     /* end start system */
 
   });
 
-  loading.loadURL(isDev ? 'http://localhost:3000/?page=loadingPage' : `file://${path.join(__dirname, '../build/index.html?page=loadingPage')}`)
+  loading.loadURL(isDev ? 'http://localhost:3000/?page=loading' : `file://${path.join(__dirname, '../build/index.html?page=loading')}`)
   loading.show();
 
 }

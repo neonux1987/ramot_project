@@ -1,7 +1,7 @@
 // LIBRARIES
-const { dialog, app } = require('electron');
+const { dialog, app, BrowserWindow } = require('electron');
 
-const { openLogFile, sendToWindow } = require('../../helpers/utils');
+const { openLogFile, sendToWindow, getWindow, AppErrorDialog } = require('../../helpers/utils');
 
 const SystemPaths = require('./SystemPaths');
 
@@ -125,26 +125,7 @@ class MainSystem {
 
       logger.error(error.toString());
 
-      const title = "שגיאת הפעלה";
-      const message = `
-      המערכת נכשלה בעת ההפעלה עקב תקלה.\n
-      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
-      ${SystemPaths.paths.logs_folder_path}
-      `;
-
-      const dialogData = await dialog.showMessageBox({
-        title,
-        message,
-        type: "error",
-        buttons: ["סגור את האפליקציה", "פתח יומן אירועים"]
-      });
-
-      if (dialogData.response === 1) {
-        openLogFile();
-        app.quit(0);
-      }
-      else app.quit(0);
-
+      throw error;
     }
 
   }
