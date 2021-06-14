@@ -2,7 +2,7 @@ const { ipcMain, dialog, shell } = require('electron');
 const MainProcessLogic = require('../backend/logic/MainProcessLogic');
 const SystemPaths = require('../backend/system/SystemPaths');
 const LoggerError = require('../backend/customErrors/LoggerError');
-const { openLogFile } = require('../helpers/utils');
+const { openLogFile, AppErrorDialog } = require('../helpers/utils');
 
 const mainProcessIpc = () => {
 
@@ -40,24 +40,7 @@ const mainProcessIpc = () => {
     });
     logger.error(loggerError.toString())
 
-    const title = "שגיאה";
-    const message = `
-      קרתה תקלה לא ידועה: 
-      ${error.message}
-      לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
-      ${SystemPaths.paths.logs_folder_path}
-      `;
-
-    const dialogData = await dialog.showMessageBox({
-      title,
-      message,
-      type: "error",
-      buttons: ["סגור", "פתח יומן אירועים"]
-    });
-
-    if (dialogData.response === 1) {
-      openLogFile();
-    }
+    AppErrorDialog();
 
     fs.writeSync(
       process.stderr.fd,

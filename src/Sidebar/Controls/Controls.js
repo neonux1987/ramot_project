@@ -8,7 +8,7 @@ const container = css`
   padding: 5px 0;
   z-index: 3;
   position: relative;
-  background: #02fb8830;
+  background: #ffffff1c;
   margin: 15px 30px 26px;
   border-radius: 3px;
 `;

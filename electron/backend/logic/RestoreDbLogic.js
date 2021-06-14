@@ -16,8 +16,8 @@ class RestoreDbLogic {
 
     const backupsFolder = backupSettings.db_backups_folder_path;
     const fullFilePath = path.join(backupsFolder, fileName);
-    //throw new Error("yes")
-    //return await this.restore(fullFilePath);
+
+    return await this.restore(fullFilePath);
   }
 
   async restoreFromFile(filePath) {

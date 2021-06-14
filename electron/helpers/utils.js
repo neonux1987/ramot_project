@@ -97,9 +97,13 @@ exports.AppErrorDialog = async () => {
     if (mainWindow) mainWindow.close();
 
     const registeredBackupsIpc = require('../ipcs/registeredBackups.ipc');
+    const restoreDbIpc = require('../ipcs/restoreDb.ipc');
+    const mainProcessIpc = require('../ipcs/mainProcess.ipc');
     // need the registered backups ipc in order for the restore 
     // renderer be able to fetch backups from the backend
     registeredBackupsIpc();
+    restoreDbIpc();
+    mainProcessIpc();
     createRestoreDbWindow();
 
     // after the restore db window loaded only
