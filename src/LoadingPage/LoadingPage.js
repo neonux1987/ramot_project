@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+import React from 'react';
+import './style.css';
+import logo from './ramot group.png';
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css">
-</head>
+const LoadingPage = () => {
 
-<body dir="rtl">
-  <div class="wrapper">
+  return <div class="wrapper">
 
     <div class="logo">
-      <img src="./ramot group.png" width="60px" height="60px" alt="logo" />
+      <img src={logo} width="60px" height="60px" alt="logo" />
     </div>
 
     <div class="mainTitle">
@@ -28,6 +24,7 @@
     <div class="gif"></div>
 
   </div>
-</body>
 
-</html>
+}
+
+export default LoadingPage;

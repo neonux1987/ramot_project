@@ -27,12 +27,15 @@ const StatBox = ({
       style={{ transformOrigin: '0 0 0' }}
       timeout={(index) * 500}
     >
-      <Paper className={paper} style={{ border: border ? `1px solid ${color}` : "none" }}>
+      <Paper className={paper} style={{
+        border: border ? `1px solid ${color}` : "1px solid #dddddd",
+        boxShadow: border ? "0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 14%)" : "none"
+      }}>
 
         {/* start upper */}
-        <div className={upper} style={{ backgroundColor: color }}>
+        <div className={upper} style={{ backgroundColor: border ? color : "#f5f5f5" }}>
           <div className={titleWrapper}>
-            <Typography variant="h6" className={titleText}>
+            <Typography variant="h6" className={titleText} style={{ color: border ? "#ffffff" : "#555555" }}>
               {title}
             </Typography>
           </div>

@@ -57,6 +57,10 @@ async function createWindow() {
     minHeight: 380,
     transparent: true,
     icon,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    },
   });
 
   loading.once('show', () => {
@@ -119,7 +123,8 @@ async function createWindow() {
     /* end start system */
 
   });
-  loading.loadURL(isDev ? 'http://localhost:3000/loader/loader.html' : `file://${path.join(__dirname, '../build/loader/loader.html')}`)
+
+  loading.loadURL(isDev ? 'http://localhost:3000/?page=loadingPage' : `file://${path.join(__dirname, '../build/index.html?page=loadingPage')}`)
   loading.show();
 
 }
