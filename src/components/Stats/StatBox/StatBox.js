@@ -16,7 +16,7 @@ const StatBox = ({
   loading = true,
   children,
   index = 1,
-  color = "#0e7ab9",
+  color = "#555555",
   border = false,
   xs = "auto"
 }) => {
@@ -35,7 +35,7 @@ const StatBox = ({
         {/* start upper */}
         <div className={upper} style={{ backgroundColor: border ? color : "#f5f5f5" }}>
           <div className={titleWrapper}>
-            <Typography variant="h6" className={titleText} style={{ color: border ? "#ffffff" : "#555555" }}>
+            <Typography variant="h6" className={titleText} style={{ color: border ? "#ffffff" : color }}>
               {title}
             </Typography>
           </div>

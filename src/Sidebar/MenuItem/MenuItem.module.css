@@ -4,10 +4,6 @@
   margin: 0 10px;
 }
 
-.listItem:focus{
-  background: rgb(28 102 165 / 48%);
-}
-
 .listItem,.listItemIcon,.listItemText{
   color: #d0d0d0;
 }
