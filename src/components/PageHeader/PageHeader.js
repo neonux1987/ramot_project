@@ -22,19 +22,18 @@ const mainContainer = css`
 `;
 
 const mainIcon = css`
-  font-size: 32px;
+  font-size: 42px;
   display: flex;
   align-items: center;
-  color: #f5f5f5;
+  color: #555555;
   padding-top: 0px;
   margin-bottom: 18px;
   margin-left: 5px;
-  padding: 5px;
   border-radius: 3px;
 `;
 
 const mainTitle = css`
-  margin-right: 10px;
+  margin-right: 5px;
   /* color: #6b6b6b; */
   color: #555555;
   font-weight: 500;
@@ -48,7 +47,7 @@ const subContainer = css`
   /* border-bottom: 1px solid #f1f1f1; */
 `;
 
-const PageHeader = ({ buildingName, buildingId, page, color }) => {
+const PageHeader = ({ buildingName, buildingId, page }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -82,7 +81,7 @@ const PageHeader = ({ buildingName, buildingId, page, color }) => {
 
     {/* main container */}
     <div className={mainContainer}>
-      <div className={classnames(mainIcon, css`background-color:${getBuildingColor(buildingId)}`)}>
+      <div className={classnames(mainIcon, css`color:${getBuildingColor(buildingId)}`)}>
         <RiBuilding2Fill />
       </div>
 
