@@ -1,7 +1,6 @@
 import { ipcSendReceive } from './util/util';
 
 export const TYPES = {
-  MENU_UPDATE: "MENU_UPDATE",
   MENU_REQUEST: "MENU_REQUEST",
   MENU_RECEIVE: "MENU_RECEIVE",
   MENU_FETCHING_FAILED: "MENU_FETCHING_FAILED"
@@ -27,14 +26,6 @@ export const fetchMenu = () => {
       onError: result => dispatch(fetchingFailed(result.error))
     });
 
-  }
-};
-
-const updateMenuItem = function (buildingId, data) {
-  return {
-    type: TYPES.MENU_UPDATE,
-    buildingId,
-    data
   }
 };
 

@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { Fragment } from 'react';
-import { Button, MenuItem, Typography, Select, } from '@material-ui/core';
+import { MenuItem, Typography, Select, } from '@material-ui/core';
 
 // UTILS
 import classnames from 'classnames';

@@ -4,11 +4,6 @@ import { Typography, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { Restore as Res } from '@material-ui/icons';
 
-// CSS
-import {
-  restoreButton
-} from './Restore.module.css';
-
 // COMPONENTS
 import ExpandableSection from '../../../../../components/Section/ExpandableSection';
 import Separator from '../../../../../components/Seperator/Separator';
@@ -29,7 +24,7 @@ import { restore } from '../../../../../services/restoreDbService';
 import { toastManager } from '../../../../../toasts/toastManager';
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
-import PrimaryButton from '../../../../../components/buttons/PrimaryButton';
+
 import WhiteButton from '../../../../../components/buttons/WhiteButton';
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";

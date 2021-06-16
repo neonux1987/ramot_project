@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useState } from 'react';
+import React from 'react';
 import ColorPreviewBox from '../../../../components/ColorPicker/ColorPreviewBox';
 import { css } from 'emotion';
 
