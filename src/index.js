@@ -15,14 +15,6 @@ const page = urlParams.get('page');
 
 const Component = whichComponent(page);
 
-//after the reducers injected, render the app
-ReactDOM.render(<Component />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
-
 function storeWrapper(Component) {
   return () => <Provider store={store} >
     <PersistGate loading={<LoadingCircle />} persistor={persistor}>
@@ -38,3 +30,11 @@ function whichComponent(page) {
     default: return storeWrapper(App);
   }
 }
+
+//after the reducers injected, render the app
+ReactDOM.render(<Component />, document.getElementById('root'));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();

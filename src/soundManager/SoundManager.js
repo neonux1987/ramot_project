@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 
 const remote = require('electron').remote;
-
+const sharedObject = remote.getGlobal("sharedObject");
 const TYPES = {
   action: "action",
   error: "error",
@@ -19,17 +19,23 @@ const TYPES = {
 class SoundManager {
 
   constructor() {
-    this.systemSettings = remote.getGlobal("sharedObject").settings.system;
+    this.systemSettings = sharedObject ? sharedObject.settings.system : {};
     this.systemSound = null;
   }
 
   types = TYPES;
 
   reload = () => {
-    this.systemSettings = remote.getGlobal("sharedObject").settings.system;
+    if (sharedObject === undefined)
+      return;
+
+    this.systemSettings = sharedObject.settings.system;
   }
 
   play = (type) => {
+    if (sharedObject === undefined)
+      return;
+
     const { soundEnabled, soundVolume } = this.systemSettings;
     if (soundEnabled === false)
       return;

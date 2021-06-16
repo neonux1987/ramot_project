@@ -1,9 +1,5 @@
 // LIBRARIES
-const { dialog, app, BrowserWindow } = require('electron');
-
-const { openLogFile, sendToWindow, getWindow, AppErrorDialog } = require('../../helpers/utils');
-
-const SystemPaths = require('./SystemPaths');
+const { sendToWindow } = require('../../helpers/utils');
 
 class MainSystem {
 
@@ -124,6 +120,24 @@ class MainSystem {
       const logger = logManager.getLogger();
 
       logger.error(error.toString());
+
+      // in case of an app error that prevents 
+      // the initialization of the global object
+      // lets load the default config in the app
+      if (global.sharedObject === undefined) {
+        const { app } = require('electron');
+        const fse = require('fs-extra');
+        const path = require('path');
+
+        // load the default config
+        const defaultConfig = await fse.readJson(path.join(app.getAppPath(), 'extraResources/config/config.json'));
+
+        global.sharedObject = {
+          buildings: [],
+          pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets", "statistics"],
+          settings: defaultConfig
+        }
+      }
 
       throw error;
     }
