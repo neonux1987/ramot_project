@@ -36,6 +36,7 @@ class BuildingsLogic {
     const record = {
       id,
       buildingName,
+      color: "#555555",
       status: "פעיל",
       order: buildings.length + 1,
       previousBuildingName: buildingName

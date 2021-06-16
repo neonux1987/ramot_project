@@ -1,8 +1,7 @@
-const { ipcMain, dialog, shell } = require('electron');
+const { ipcMain, shell } = require('electron');
 const MainProcessLogic = require('../backend/logic/MainProcessLogic');
-const SystemPaths = require('../backend/system/SystemPaths');
 const LoggerError = require('../backend/customErrors/LoggerError');
-const { openLogFile, AppErrorDialog } = require('../helpers/utils');
+const { AppErrorDialog } = require('../helpers/utils');
 
 const mainProcessIpc = () => {
 

@@ -16,6 +16,7 @@ class BuildingsDao {
       "buildingName",
       "deletionDate",
       "previousBuildingName",
+      "color",
       "path",
       "order",
       "status"
@@ -34,6 +35,7 @@ class BuildingsDao {
       "buildingName",
       "deletionDate",
       "previousBuildingName",
+      "color",
       "path",
       "order",
       "status"

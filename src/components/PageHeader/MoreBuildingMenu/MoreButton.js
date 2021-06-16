@@ -11,8 +11,8 @@ const wrapper = css`
 `;
 
 const button = css`
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   padding: 0;
   min-width: 0;
   margin-left: 5px;
@@ -24,7 +24,7 @@ const button = css`
 const MoreButton = ({ onClick, active }) => {
   return <div className={wrapper}>
     <ButtonWithSound onClick={onClick} className={classnames(button, active ? "activeExpandItem" : "")}>
-      <SvgIcon Icon={IoMdSettings} color="#555555" size="32px" />
+      <SvgIcon Icon={IoMdSettings} color="#555555" size="42px" />
     </ButtonWithSound>
   </div>
 

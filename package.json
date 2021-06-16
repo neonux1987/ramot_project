@@ -113,6 +113,7 @@
     "jss-rtl": "^0.3.0",
     "nodemon": "^2.0.6",
     "react": "^17.0.1",
+    "react-color": "^2.19.3",
     "react-dom": "^17.0.1",
     "react-goodbye": "^0.4.0",
     "react-icons": "^4.2.0",

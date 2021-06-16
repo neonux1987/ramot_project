@@ -39,6 +39,7 @@ const BuildingsStatsContainer = () => {
         loading={isFetching}
         index={index + 1}
         xs={3}
+        color={data[building].color}
       />);
     });
 

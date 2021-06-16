@@ -160,7 +160,7 @@ class MainSystem {
         // To calculate the no. of days between two dates
         const differenceDays = differenceTime / (1000 * 3600 * 24);
 
-        if (differenceDays < 30) {
+        if (differenceDays > 30) {
           buildingsForDeletion.push({
             id,
             buildingName

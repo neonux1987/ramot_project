@@ -8,6 +8,8 @@ import MoreBuildingMenu from './MoreBuildingMenu/MoreBuildingMenu';
 import useModalLogic from '../../customHooks/useModalLogic';
 import GenerateExcelReportsModal from '../modals/GenerateExcelReportsModal';
 import GenerateEmptyReportsModal from '../modals/GenerateEmptyReportsModal';
+import classnames from 'classnames';
+import useBuildingColor from '../../customHooks/useBuildingColor';
 
 const container = css`
   margin: 20px 20px 20px;
@@ -20,16 +22,19 @@ const mainContainer = css`
 `;
 
 const mainIcon = css`
-  font-size: 48px;
+  font-size: 32px;
   display: flex;
   align-items: center;
-  color: #555555;
+  color: #f5f5f5;
   padding-top: 0px;
-  display: none;
+  margin-bottom: 18px;
+  margin-left: 5px;
+  padding: 5px;
+  border-radius: 3px;
 `;
 
 const mainTitle = css`
-  margin-right: 0px;
+  margin-right: 10px;
   /* color: #6b6b6b; */
   color: #555555;
   font-weight: 500;
@@ -43,9 +48,11 @@ const subContainer = css`
   /* border-bottom: 1px solid #f1f1f1; */
 `;
 
-const PageHeader = ({ buildingName, buildingId, page }) => {
+const PageHeader = ({ buildingName, buildingId, page, color }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [getBuildingColor] = useBuildingColor();
 
   const { showModal } = useModalLogic();
 
@@ -75,7 +82,7 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
 
     {/* main container */}
     <div className={mainContainer}>
-      <div className={mainIcon}>
+      <div className={classnames(mainIcon, css`background-color:${getBuildingColor(buildingId)}`)}>
         <RiBuilding2Fill />
       </div>
 

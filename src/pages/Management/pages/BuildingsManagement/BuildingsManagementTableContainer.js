@@ -22,8 +22,10 @@ import useTableLogic from '../../../../customHooks/useTableLogic';
 
 // CONTAINERS
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
+import ColorPicker from '../../../../components/ColorPicker/ColorPicker';
+import ColorPreviewBox from '../../../../components/ColorPicker/ColorPreviewBox';
 
-const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
+const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(5,1fr)";
 
 const BuildingsManagementTableContainer = () => {
 
@@ -86,6 +88,7 @@ const BuildingsManagementTableContainer = () => {
       <HeaderCell>קוד מזהה</HeaderCell>
       <HeaderCell editMode={editMode}>שם בניין</HeaderCell>
       <HeaderCell>שם קודם</HeaderCell>
+      <HeaderCell>צבע</HeaderCell>
       <HeaderCell editMode={editMode}>מצב</HeaderCell>
     </HeaderRow>
   }
@@ -101,6 +104,19 @@ const BuildingsManagementTableContainer = () => {
       {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}
 
       <Cell>{rowData.previousBuildingName}</Cell>
+
+      {editMode ?
+        <Cell style={{ display: "block", overflow: "initial" }}>
+          <ColorPicker
+            value={rowData.color}
+            action={color => updateAction("color", color, index)}
+          />
+        </Cell>
+        :
+        <Cell style={{ color: rowData.color }}>
+          <ColorPreviewBox color={rowData.color} />
+        </Cell>
+      }
 
       {editMode ?
         <SelectDropDown
@@ -121,36 +137,34 @@ const BuildingsManagementTableContainer = () => {
     </TableRow>
   }
 
-  return (
-    <TableSection
-      header={
-        <TableControls
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              addNewMode={addNewMode}
-              toggleAddNewMode={toggleAddNewMode}
-              dataExist={true}
-            />
-          } // end rightPane
+  return <TableSection
+    header={
+      <TableControls
+        rightPane={
+          <EditControls
+            editMode={editMode}
+            toggleEditMode={toggleEditMode}
+            addNewMode={addNewMode}
+            toggleAddNewMode={toggleAddNewMode}
+            dataExist={true}
+          />
+        } // end rightPane
 
-        /> //End TableControls 
-      }
-    >
+      /> //End TableControls 
+    }
+  >
 
-      <AddNewBuildingContainer show={addNewMode} isBuildingExist={isBuildingExist} />
+    <AddNewBuildingContainer show={addNewMode} isBuildingExist={isBuildingExist} />
 
-      <Table
-        Row={Row}
-        HeaderComponent={HeadersRow}
-        isFetching={isFetching}
-        totalCount={data.length}
-        noDataText="לא קיימים בניינים במערכת"
-      />
+    <Table
+      Row={Row}
+      HeaderComponent={HeadersRow}
+      isFetching={isFetching}
+      totalCount={data.length}
+      noDataText="לא קיימים בניינים במערכת"
+    />
 
-    </TableSection>
-  );
+  </TableSection>;
 
 }
 

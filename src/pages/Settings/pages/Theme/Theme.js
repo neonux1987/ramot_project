@@ -8,11 +8,13 @@ import SettingsExpandableSection from '../../../../components/Section/SettingsEx
 import CheckboxWithLabel from '../../../../components/Checkboxes/CheckboxWithLabel';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 import TitleTypography from '../../../../components/Typographies/TitleTypography';
+import Page from '../../../../components/Page/Page';
+import ColorSeries from './ColorSeries';
+import Note from '../../../../components/Note/Note';
 
 // ACTIONS
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 import { setDirty } from '../../../../redux/actions/goodByeActions';
-import Page from '../../../../components/Page/Page';
 
 const SETTINGS_NAME = "theme";
 
@@ -55,10 +57,12 @@ export const Theme = () => {
       >
 
         <TitleTypography>
-          כללי:
+          סדרת צבעים:
         </TitleTypography>
 
-        <CheckboxWithLabel label="סרגל כלים דביק" name="sticky_toolbar" checked={data.sticky_toolbar} onChange={onCheckChange} />
+        <Note margin="0 0 20px" text="סדרת הצבעים משמשת את צביעת החודשים והרבעונים מימין לשמאל" important />
+
+        <ColorSeries colorSet={data.colorSet} setDirty={setDirty} />
 
       </SettingsExpandableSection >
 

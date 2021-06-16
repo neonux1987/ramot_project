@@ -17,6 +17,7 @@ import { addBuilding as yc_ADD, removeBuilding as yc_REMOVE } from './yearsChart
 import { addBuilding as tc_ADD, removeBuilding as tc_REMOVE } from './topChartActions';
 import { addBuilding as s_ADD, removeBuilding as s_REMOVE } from './statisticsActions';
 import { ipcRenderer, remote } from 'electron';
+import { updateGlobalBuilding } from '../reducers/util/util';
 
 export const TYPES = {
   BUILDINGS_UPDATE: "BUILDINGS_UPDATE",
@@ -58,6 +59,8 @@ export const updateBuilding = (id, payload, oldCopy, index) => {
       payload.previousBuildingName = oldCopy.buildingName;
 
     dispatch(updateBuildingsInStore(index, payload));
+    const updatedBuildings = updateGlobalBuilding(id, payload);
+    ipcRenderer.send("set-global-variable", { key: "buildings", value: updatedBuildings });
 
     return ipcSendReceive({
       send: {
@@ -70,6 +73,10 @@ export const updateBuilding = (id, payload, oldCopy, index) => {
       onSuccess: () => dispatch(showSavedNotification()),
       onError: result => {
         dispatch(updateBuildingsInStore(oldCopy));
+
+        const updatedBuildings = updateGlobalBuilding(id, payload);
+        ipcRenderer.send("set-global-variable", { key: "buildings", value: updatedBuildings });
+
         toastManager.error(result.error);
       }
     });
