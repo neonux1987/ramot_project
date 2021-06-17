@@ -14,15 +14,6 @@ const _colorPickerWrapper = css`
   top: 0;
 `;
 
-const _buttonWrapper = css`
-  display: flex;
-`;
-
-const _button = css`
-  background: #f5f5f5 !important;
-  border: 1px solid #dddddd;
-`;
-
 const _previewWrapper = css`
   display: flex;
   align-items: center;
@@ -43,13 +34,23 @@ const ColorPicker = ({ value, action, withField = true, editModeInput = false })
   }
 
   const onClose = () => {
+    setEditMode(false);
+  }
+
+  const onAccept = () => {
     action(color);
     setEditMode(false);
   }
 
   return <div className={_wrapper}>
     {editMode ?
-      <SimpleColorPicker color={color} onChange={onChange} onClose={onClose} /> : null}
+      <SimpleColorPicker
+        color={color}
+        onChange={onChange}
+        onClose={onClose}
+        onAccept={onAccept}
+        className={_colorPickerWrapper}
+      /> : null}
 
     <div className={_previewWrapper} onClick={() => setEditMode(true)}>
       {withField ?

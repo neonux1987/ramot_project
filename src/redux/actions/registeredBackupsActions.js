@@ -8,7 +8,7 @@ export const TYPES = {
 }
 
 export const fetchRegisteredBackups = () => {
-  console.log("yes");
+
   return dispatch => {
 
     //let react know that the fetching is started

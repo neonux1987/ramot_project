@@ -7,7 +7,8 @@ const ColorPreviewBox = ({ color, className = "", ...otherProps }) => {
   const style = css`
   width: 32px;
   height: 32px;
-  background-color: ${color}
+  background-color: ${color};
+  border-radius: 3px;
   `;
 
   return <div

@@ -38,13 +38,12 @@ export const Theme = () => {
     });
   }
 
-  const onCheckChange = (event) => {
-    const { name, checked } = event.target;
+  const onColorSetChange = (colorSet) => {
     setData({
       ...data,
-      [name]: checked
+      colorSet
     });
-    dispatch(setDirty());
+    dispatch(setDirty(true));
   }
 
   return (
@@ -62,7 +61,7 @@ export const Theme = () => {
 
         <Note margin="0 0 20px" text="סדרת הצבעים משמשת את צביעת החודשים והרבעונים מימין לשמאל" important />
 
-        <ColorSeries colorSet={data.colorSet} setDirty={setDirty} />
+        <ColorSeries colorSet={data.colorSet} defaultColorSet={data.defaultColorSet} action={onColorSetChange} />
 
       </SettingsExpandableSection >
 

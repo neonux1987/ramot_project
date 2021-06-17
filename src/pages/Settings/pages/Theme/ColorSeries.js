@@ -1,8 +1,8 @@
 // LIBRARIES
-import React from 'react';
+import React, { useState } from 'react';
 import ColorPreviewBox from '../../../../components/ColorPicker/ColorPreviewBox';
 import { css } from 'emotion';
-import { SketchPicker } from 'react-color';
+import WhiteButton from '../../../../components/buttons/WhiteButton';
 import SimpleColorPicker from '../../../../components/ColorPicker/SimpleColorPicker';
 
 const _wrapper = css`
@@ -14,27 +14,76 @@ display: flex;
 align-items: center;
 `;
 
+const _colorPickeStyle = css`
+margin-top: 20px;
+`;
+
 const _colorPreviewBox = css`
   margin-left: 10px;
 `;
 
-export const ColorSeries = ({ setDirty, colorSet }) => {
+export const ColorSeries = ({ action, colorSet, defaultColorSet }) => {
 
   const keys = Object.keys(colorSet);
+
+  const [colors, setColors] = useState(colorSet);
+
+  const [editMode, setEditMode] = useState(false);
+
+  const [key, setKey] = useState(null);
+
+  const onClose = () => {
+    setEditMode(false);
+    setKey(null);
+  }
+
+  const onAccept = () => {
+    action(colors);
+    setEditMode(false);
+    setKey(null);
+  }
+
+  const onClick = (key) => {
+    setEditMode(true);
+    setKey(key);
+  }
+
+  const onChange = event => {
+    setColors({
+      ...colors,
+      [key]: event.hex
+    });
+  }
+
+  const restoreDefault = () => {
+    setColors(defaultColorSet);
+    action(defaultColorSet);
+  }
 
   return <div className={_wrapper}>
 
     <div className={_colorSeriesWrapper}>
-      {keys.map(key => {
-        return <ColorPreviewBox color={colorSet[key]} key={colorSet[key]} className={_colorPreviewBox} />
+      {keys.map(innerKey => {
+        return <ColorPreviewBox
+          color={colors[innerKey]}
+          key={colors[innerKey]}
+          className={_colorPreviewBox}
+          onClick={() => onClick(innerKey)}
+          style={{ border: colors[innerKey] === colors[key] ? "2px solid #ddd" : "none" }}
+        />
       })}
+
+      <WhiteButton onClick={restoreDefault}>שחזר לברירת מחדל</WhiteButton>
     </div>
 
-    <SimpleColorPicker
-      color={"#555"}
-      onChange={() => { }}
-      onClose={() => { }}
-    />
+    {editMode ? <SimpleColorPicker
+      color={colors[key]}
+      onChange={onChange}
+      onClose={onClose}
+      onAccept={onAccept}
+      className={_colorPickeStyle}
+    /> : null}
+
   </div>
 
 }

@@ -2,13 +2,7 @@ import React from 'react';
 import { css } from 'emotion';
 import { SketchPicker } from 'react-color';
 import SquareButton from '../buttons/SquareButton';
-import { Close } from '@material-ui/icons';
-
-const _colorPickerWrapper = css`
-  position: absolute;
-  z-index: 2;
-  top: 0;
-`;
+import { Close, Check } from '@material-ui/icons';
 
 const _buttonWrapper = css`
   display: flex;
@@ -19,11 +13,13 @@ const _button = css`
   border: 1px solid #dddddd;
 `;
 
-const SimpleColorPicker = ({ color, onChange, onClose }) => {
+const SimpleColorPicker = ({ color, onChange, onClose, onAccept, className }) => {
 
-  return <div className={_colorPickerWrapper}>
+  return <div className={className}>
     <div className={_buttonWrapper}>
-      <SquareButton Icon={Close} className={_button} onClick={onClose} />
+      <SquareButton Icon={Close} className={_button} iconColor="red" onClick={onClose} />
+      <SquareButton Icon={Check} className={_button} iconColor="green" onClick={onAccept} />
+
     </div>
 
     <SketchPicker
