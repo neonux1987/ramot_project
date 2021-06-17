@@ -3,8 +3,8 @@
     "reports_folder_path": ""
   },
   "system": {
-    "soundEnabled": true,
-    "soundVolume": 0.24,
+    "soundEnabled": false,
+    "soundVolume": 0.08,
     "config_folder_path": "",
     "config_file_path": "",
     "services_file_path": "",

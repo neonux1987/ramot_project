@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Input } from '@material-ui/core';
 import { css } from 'emotion';
-import { SketchPicker } from 'react-color';
-import SquareButton from '../buttons/SquareButton';
-import { Close } from '@material-ui/icons';
+import SimpleColorPicker from './SimpleColorPicker';
 import ColorPreviewBox from './ColorPreviewBox';
 
 const _wrapper = css`
@@ -31,10 +29,10 @@ const _previewWrapper = css`
   justify-content: center;
 `;
 
-const ColorPicker = ({ value, action, withField = true }) => {
+const ColorPicker = ({ value, action, withField = true, editModeInput = false }) => {
 
   const [color, setColor] = useState(value);
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(editModeInput);
 
   useEffect(() => {
     setColor(value);
@@ -51,17 +49,7 @@ const ColorPicker = ({ value, action, withField = true }) => {
 
   return <div className={_wrapper}>
     {editMode ?
-      <div className={_colorPickerWrapper}>
-        <div className={_buttonWrapper}>
-          <SquareButton Icon={Close} className={_button} onClick={onClose} />
-        </div>
-
-        <SketchPicker
-          name='color'
-          color={color}
-          onChange={onChange}
-        />
-      </div> : null}
+      <SimpleColorPicker color={color} onChange={onChange} onClose={onClose} /> : null}
 
     <div className={_previewWrapper} onClick={() => setEditMode(true)}>
       {withField ?

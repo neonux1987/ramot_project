@@ -23,6 +23,6 @@ find all the lines with the __dirname and replace them with newDirName
 explanation:
 // i am manually editing the node module file because 
 // when phantomjs.exe trying to execute a worker from a location
-// as an argument it unable's too because the location is directed
-// to asar archive and phantomjs.exe can't access it so we need to direct him
+// as an argument it unable's to because the location is directed
+// to the asar archive and phantomjs.exe can't access it so we need to direct him
 // to the app.asar.unpacked highcharts-export-server module instead

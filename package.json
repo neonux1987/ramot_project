@@ -18,7 +18,6 @@
     "extends": null,
     "files": [
       "build/**/*",
-      "node_modules/**/*",
       "package.json",
       "!dev-app-update.yml",
       "electron/**/*"

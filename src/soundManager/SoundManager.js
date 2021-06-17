@@ -19,16 +19,13 @@ const TYPES = {
 class SoundManager {
 
   constructor() {
-    this.systemSettings = sharedObject ? sharedObject.settings.system : {};
+    this.systemSettings = sharedObject.settings.system;
     this.systemSound = null;
   }
 
   types = TYPES;
 
   reload = () => {
-    if (sharedObject === undefined)
-      return;
-
     this.systemSettings = sharedObject.settings.system;
   }
 
@@ -77,7 +74,7 @@ class SoundManager {
 export const soundManager = new SoundManager();
 
 export const useSound = (url, options) => {
-  const { soundEnabled, soundVolume } = remote.getGlobal("sharedObject").settings.system;
+  const { soundEnabled, soundVolume } = sharedObject.settings.system;
 
   let audio = null;
 
