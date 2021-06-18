@@ -34,6 +34,7 @@ const ColorPicker = ({ value, action, withField = true, editModeInput = false })
   }
 
   const onClose = () => {
+    setColor(value);
     setEditMode(false);
   }
 

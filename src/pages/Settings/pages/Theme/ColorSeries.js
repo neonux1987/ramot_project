@@ -33,6 +33,10 @@ export const ColorSeries = ({ action, colorSet, defaultColorSet }) => {
   const [key, setKey] = useState(null);
 
   const onClose = () => {
+    setColors({
+      ...colors,
+      [key]: colorSet[key]
+    });
     setEditMode(false);
     setKey(null);
   }
@@ -66,10 +70,10 @@ export const ColorSeries = ({ action, colorSet, defaultColorSet }) => {
       {keys.map(innerKey => {
         return <ColorPreviewBox
           color={colors[innerKey]}
-          key={colors[innerKey]}
+          key={innerKey}
           className={_colorPreviewBox}
           onClick={() => onClick(innerKey)}
-          style={{ border: colors[innerKey] === colors[key] ? "2px solid #ddd" : "none" }}
+          style={{ border: innerKey === key ? "2px solid #ddd" : "none" }}
         />
       })}
 
