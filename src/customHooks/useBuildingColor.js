@@ -13,7 +13,7 @@ const useBuildingColor = () => {
     });
 
     return finalColor;
-  }, []);
+  }, [data]);
 
   return [getBuildingColor];
 };
