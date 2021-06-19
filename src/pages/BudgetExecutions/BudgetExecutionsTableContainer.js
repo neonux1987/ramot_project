@@ -67,6 +67,9 @@ const BudgetExecutionsTableContainer = props => {
 
   const [whichColor] = useDifferenceColor();
 
+  // list of months of specific quarter
+  const months = Helper.getQuarterMonthsEng(date.quarter);
+
   const onBlurHandler = (e) => {
 
     const target = e.target;
@@ -219,9 +222,6 @@ const BudgetExecutionsTableContainer = props => {
     // row data
     const rowData = row ? row : getDataObject(index);
 
-    // list of months of specific quarter
-    const months = Helper.getQuarterMonthsEng(date.quarter);
-
     const monthColumns = [];
 
     months.forEach((month, i) => {
@@ -250,7 +250,7 @@ const BudgetExecutionsTableContainer = props => {
 
   /**
   * only used in print mode
-  * generates 2 extra rows on total income and outcome
+  * generates 2 extra rows of total income and outcome
   */
   const generateIncomeOutcomeData = useCallback(() => {
     if (data.length === 0)

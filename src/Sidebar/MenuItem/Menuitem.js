@@ -25,7 +25,8 @@ const Menuitem = (props) => {
     <ListItem
       tabIndex={tabIndex}
       component={ButtonNavLink}
-      className={classnames(listItem, className, active ? "activeButton" : "")}
+      className={classnames(listItem, className)}
+      activeClassName={active ? "activeButton" : ""}
       to={to}
       selected={false}
       draggable={false}

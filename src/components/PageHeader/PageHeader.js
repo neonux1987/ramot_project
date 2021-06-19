@@ -22,14 +22,19 @@ const mainContainer = css`
 `;
 
 const mainIcon = css`
-  font-size: 42px;
+  font-size: 32px;
   display: flex;
   align-items: center;
-  color: #555555;
+  color: #ffffff;
   padding-top: 0px;
   margin-bottom: 18px;
   margin-left: 5px;
   border-radius: 3px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const mainTitle = css`
@@ -77,15 +82,17 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
     });
   }
 
+  const buildingColor = getBuildingColor(buildingId);
+
   return <div className={container} id="pageHeader">
 
     {/* main container */}
     <div className={mainContainer}>
-      <div className={classnames(mainIcon, css`color:${getBuildingColor(buildingId)}`)}>
+      <div className={mainIcon} className={mainIcon} style={{ backgroundColor: buildingColor }}>
         <RiBuilding2Fill />
       </div>
 
-      <Typography className={mainTitle} variant="h3">{buildingName}</Typography>
+      <Typography className={mainTitle} style={{ color: buildingColor }} variant="h3">{buildingName}</Typography>
     </div>
     {/* endmain container */}
 

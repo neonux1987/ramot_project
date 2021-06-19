@@ -188,7 +188,7 @@ const SummarizedBudgetsTableContainer = props => {
 
   /**
    * only used in print mode
-   * generates 2 extra rows on total income and outcome
+   * generates 2 extra rows of total income and outcome
    */
   const generateIncomeOutcomeData = useCallback(() => {
     if (data.length === 0)

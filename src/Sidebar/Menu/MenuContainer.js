@@ -107,10 +107,7 @@ const MenuContainer = ({ routes, history, data }) => {
 
     if (element !== null) {
       element.focus();
-
-      setTimeout(() => {
-        element.blur();
-      }, 0);
+      element.blur();
     }
   }, []);
 
