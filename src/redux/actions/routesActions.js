@@ -4,9 +4,9 @@ export const TYPES = {
 }
 
 export const updateRoute = (active) => {
-  return {
+  return dispatch => dispatch({
     type: TYPES.ROUTES_UPDATE,
     active
-  };
+  });
 }
 

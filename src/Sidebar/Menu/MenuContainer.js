@@ -107,7 +107,7 @@ const MenuContainer = ({ routes, history, data }) => {
 
     if (element !== null) {
       element.focus();
-      element.blur();
+      window.focus();
     }
   }, []);
 

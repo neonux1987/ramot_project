@@ -92,7 +92,7 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
         <RiBuilding2Fill />
       </div>
 
-      <Typography className={mainTitle} style={{ color: buildingColor }} variant="h3">{buildingName}</Typography>
+      <Typography className={mainTitle} variant="h3">{buildingName}</Typography>
     </div>
     {/* endmain container */}
 

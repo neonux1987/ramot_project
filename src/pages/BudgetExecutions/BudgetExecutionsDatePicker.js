@@ -59,8 +59,8 @@ const BudgetExecutionsDatePicker = ({
           year: value
         }
       })).then(({ data }) => {
-        // load the same quarter of the previous year if exist in the chosen year
-        // if not load just the first quarter availble in the list
+        // if exist, load the same quarter of the previous year in the chosen year
+        // if not, load just the first quarter availble in the list
         const quarter = quarterExist(date.quarter, data) ? date.quarter : data[0].quarter;
         dispatch(updateDate(buildingId, { year: value, quarter }));
       });

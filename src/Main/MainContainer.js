@@ -1,15 +1,12 @@
 // LIBRARIES
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router';
 import { Route } from 'react-router-dom';
 import { css } from 'emotion';
-
-// ACTIONS
-import * as routesActions from '../redux/actions/routesActions';
+import { updateRoute } from '../redux/actions/routesActions';
 import Toolbar from './Toolbar/Toolbar';
 import Routes from './Routes';
-
 
 const mainStyle = css`
   height: 100%;
@@ -21,57 +18,49 @@ const _main = css`
   flex-grow: 1;
 `;
 
-class MainContainer extends Component {
+const MainContainer = ({ mainContainer }) => {
 
-  componentDidMount() {
-    const { history } = this.props;
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const routes = useSelector(store => store.routes);
 
-    const { state, pathname } = this.props.routes.active;
+  useEffect(() => {
+    const { state, pathname } = routes.active;
     history.replace(pathname, state);
-  }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      const { pathname, state } = this.props.location;
+    //eslint-disable-next-line
+  }, []);
 
+  useEffect(() => {
+
+    const { pathname, state = {} } = location;
+
+    if (routes.pathname !== pathname) {
       const active = {
         pathname,
         state
       };
 
-      this.props.updateRoute(active)
+      dispatch(updateRoute(active));
     }
-  }
 
-  render() {
-    return <main id="mainContainer" ref={this.props.mainContainer} className={_main}>
+  }, [location, routes.pathname, dispatch]);
 
-      <Toolbar />
+  return <main id="mainContainer" ref={mainContainer} className={_main}>
 
-      <div className={mainStyle}>
+    <Toolbar />
 
-        <Route render={({ location }) => (
-          <Routes location={location} />
-        )} />
+    <div className={mainStyle}>
 
-      </div>
+      <Route render={({ location }) => (
+        <Routes location={location} />
+      )} />
 
-    </main>
+    </div>
 
-
-  }
+  </main>
 
 }
 
-const mapStateToProps = state => ({
-  generalSettings: state.generalSettings,
-  routes: state.routes
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateRoute: (active) => dispatch(routesActions.updateRoute(active))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(MainContainer)
-);
+export default MainContainer;
