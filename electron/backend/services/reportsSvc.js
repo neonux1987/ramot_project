@@ -25,8 +25,9 @@ const exportReports = async (date, buildings) => {
   const monthlyStatsLogic = new MonthlyStatsLogic();
   const registeredReportsLogic = new RegisteredReportsLogic();
 
-  chartExporter.initPool();
+  const colorSet = global.sharedObject.settings.theme.colorSet;
 
+  chartExporter.initPool();
 
   const userSettings = await settingsLogic.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.USER);
 
@@ -67,7 +68,7 @@ const exportReports = async (date, buildings) => {
     await fse.ensureDir(yearFolder);//ensure the year folder exist, if not create it
     const summarizedBudgetsFileName = getSummarizedBudgetsFilename(year);
     const summarizedBudgetsFilePath = path.join(yearFolder, summarizedBudgetsFileName);
-    await exportExcel(buildingName, buildingId, "summarizedBudgets", summarizedBudgetsFilePath, date, summarizedBudgetData);
+    await exportExcel(buildingName, buildingId, "summarizedBudgets", summarizedBudgetsFilePath, date, summarizedBudgetData, colorSet);
 
     const budgetExecutionData = await budgetExecutionLogic.getAllByQuarter({
       buildingName: buildingId,
@@ -79,7 +80,7 @@ const exportReports = async (date, buildings) => {
     await fse.ensureDir(quarterFolder);
     const budgetExecutionFileName = getBudgetExecutionFilename(quarterHeb);
     const budgetExecutionFilePath = path.join(quarterFolder, budgetExecutionFileName);
-    await exportExcel(buildingName, buildingId, "budgetExecutions", budgetExecutionFilePath, date, budgetExecutionData);
+    await exportExcel(buildingName, buildingId, "budgetExecutions", budgetExecutionFilePath, date, budgetExecutionData, colorSet);
 
     //create reports for the registered months
     const registeredMonthsData = await registeredMonths.getAllByQuarter(buildingId, { year, quarter });
@@ -96,7 +97,7 @@ const exportReports = async (date, buildings) => {
       const monthExpansesFilePath = path.join(quarterFolder, monthExpansesFileName);
       // add the month properties to date
       const newDate = { ...date, monthHeb };
-      await exportExcel(buildingName, buildingId, "monthExpanses", monthExpansesFilePath, newDate, monthExpansesData);
+      await exportExcel(buildingName, buildingId, "monthExpanses", monthExpansesFilePath, newDate, monthExpansesData, colorSet);
 
     });
 
