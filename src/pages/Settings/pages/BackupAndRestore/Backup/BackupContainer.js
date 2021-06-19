@@ -1,14 +1,13 @@
 // LIBRARIES
 import React, { useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem, Typography } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
 
 // COMPONENTS
 import SettingsExpandableSection from '../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
 import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
-import SelectWithLabel from '../../../../../components/SelectWithLabel/SelectWithLabel';
 import CheckboxWithLabel from '../../../../../components/Checkboxes/CheckboxWithLabel';
 import Divider from '../../../../../components/Divider/Divider';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
@@ -28,6 +27,7 @@ import { toastManager } from '../../../../../toasts/toastManager';
 
 // HOOKS
 import useModalLogic from '../../../../../customHooks/useModalLogic';
+import Note from '../../../../../components/Note/Note';
 
 const SETTINGS_NAME = "db_backup";
 
@@ -62,53 +62,6 @@ const BackupContainer = () => {
     setData({
       ...data,
       backup_on_exit: checked
-    });
-    dispatch(setDirty());
-  }
-
-  const onByTimeChange = (event) => {
-    const { checked } = event.target;
-    setData({
-      ...data,
-      byTime: {
-        ...data.byTime,
-        enabled: checked
-      }
-    });
-    dispatch(setDirty());
-  }
-
-  const onHourChange = (event) => {
-    const { value } = event.target;
-    setData({
-      ...data,
-      byTime: {
-        ...data.byTime,
-        every_x_hours: Number.parseInt(value)
-      }
-    });
-    dispatch(setDirty());
-  }
-
-  const onDayMaxAllowedBackups = (event) => {
-    const { value } = event.target;
-    setData({
-      ...data,
-      byTime: {
-        ...data.byTime,
-        day_max_allowed_backups: value
-      }
-    });
-    dispatch(setDirty());
-  }
-
-  const backupsToSaveChangeHandler = (event) => {
-    const { value } = event.target;
-    const backups_to_save = value;
-
-    setData({
-      ...data,
-      backups_to_save
     });
     dispatch(setDirty());
   }
@@ -159,9 +112,9 @@ const BackupContainer = () => {
   }
 
   //to render the last update of the backup
-  //const BackupDateTime = new Date(data.last_update);
-  //const backupDateRender = `${BackupDateTime.getDate()}/${BackupDateTime.getMonth() + 1}/${BackupDateTime.getFullYear()}`;
-  //const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
+  const BackupDateTime = new Date(data.last_update);
+  const backupDateRender = `${BackupDateTime.getDate()}/${BackupDateTime.getMonth() + 1}/${BackupDateTime.getFullYear()}`;
+  const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
 
   let backups_to_save = [];
   for (let i = 1; i <= data.max_num_of_history_backups; i++) {
@@ -179,7 +132,7 @@ const BackupContainer = () => {
       onSaveClick={save}
     >
 
-      {/* <Typography className={styles.dbLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`}</Typography> */}
+      <Note text={`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`} margin="0 0 20px 0" />
 
       <TitleTypography>
         כללי:
@@ -194,42 +147,6 @@ const BackupContainer = () => {
       <FileSelector onChangeClick={dbSelectFolderHandler} value={data.db_backups_folder_path} />
 
       <Divider margin="40px 0 20px" />
-
-      <TitleTypography>
-        הגדרות גיבוי:
-        </TitleTypography>
-
-      <CheckboxWithLabel label="גיבוי לפי זמן" checked={data.byTime.enabled} onChange={onByTimeChange} />
-
-      <SelectWithLabel
-        label="כל כמה שעות לבצע בדיקה:"
-        value={data.byTime.every_x_hours}
-        onChange={onHourChange}
-        disabled={!data.byTime.enabled}
-      >
-        {renderHourItems}
-      </SelectWithLabel>
-
-      <SelectWithLabel
-        label="כמות גיבויים ליום:"
-        value={data.byTime.day_max_allowed_backups}
-        onChange={onDayMaxAllowedBackups}
-        disabled={!data.byTime.enabled}
-      >
-        {/* use the same list*/}
-        {renderHourItems}
-      </SelectWithLabel>
-
-      <SelectWithLabel
-        label="כמות גיבויים לשמירה:"
-        onChange={backupsToSaveChangeHandler}
-        value={data.backups_to_save}
-        disabled={!data.byTime.enabled}
-      >
-        {backups_to_save}
-      </SelectWithLabel>
-
-      <Divider />
 
       <TitleTypography>
         אחר:

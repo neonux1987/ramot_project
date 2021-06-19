@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'emotion';
 import { Typography } from '@material-ui/core';
-import { RiBuilding2Fill } from 'react-icons/ri';
+import { BiBuildingHouse } from 'react-icons/bi';
 import MoreButton from './MoreBuildingMenu/MoreButton';
 import Subtitle from './Subtitle';
 import MoreBuildingMenu from './MoreBuildingMenu/MoreBuildingMenu';
@@ -38,7 +38,7 @@ const mainIcon = css`
 `;
 
 const mainTitle = css`
-  margin-right: 5px;
+  margin-right: 15px;
   /* color: #6b6b6b; */
   color: #555555;
   font-weight: 500;
@@ -89,7 +89,7 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
     {/* main container */}
     <div className={mainContainer}>
       <div className={mainIcon} className={mainIcon} style={{ backgroundColor: buildingColor }}>
-        <RiBuilding2Fill />
+        <BiBuildingHouse />
       </div>
 
       <Typography className={mainTitle} variant="h3">{buildingName}</Typography>

@@ -9,7 +9,7 @@ const container = css`
   font-family: Assistant,sans-serif;
 `;
 
-const Note = ({ text = "", important = false, margin = "0" }) => <div className={container} style={{ margin }}>
+const Note = ({ text = "", important = false, margin = "0", className = "" }) => <div className={`${container} ${className}`} style={{ margin }}>
   <span className={css`color: ${important ? "red" : "inherit"}`}>*</span>
   <span>{text}</span>
 </div>;
