@@ -18,6 +18,7 @@ import TopChartContainer from './charts/TopChartContainer';
 import { updateSelectedChart } from '../../redux/actions/statisticsActions';
 import ChartSelectorNav from '../../components/charts/ChartSelectorNav';
 import { Box } from '@material-ui/core';
+import useBuildingColor from '../../customHooks/useBuildingColor';
 
 const PAGE_NAME = "statistics";
 const PAGE_TITLE = "סטטיסטיקה";
@@ -34,6 +35,7 @@ const Statistics = props => {
   const { selectedChart } = useSelector(store => store.statistics[buildingId]);
 
   const dispatch = useDispatch();
+  const [getBuildingColor] = useBuildingColor();
 
   const onClick = (name) => {
     dispatch(updateSelectedChart(buildingId, name));
@@ -48,6 +50,7 @@ const Statistics = props => {
   return <Page>
     <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
     <StyledSection
+      bgColor={getBuildingColor(buildingId)}
       title={selectedChart}
       Icon={IoMdStats}
       extraDetails={<ExtraDetails />}

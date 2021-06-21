@@ -9,6 +9,7 @@ import { css } from 'emotion';
 import SpinningButton from '../../components/buttons/SpinningButton/SpinningButton';
 import { Settings } from '@material-ui/icons';
 import Controls from './Controls';
+import useBuildingColor from '../../customHooks/useBuildingColor';
 
 const volumeBtn = css`
   display: flex;
@@ -42,9 +43,10 @@ const settingsBtn = css`
   margin: 0 10px;
 `;
 
-const ControlsContainer = ({ routes }) => {
+const ControlsContainer = ({ routes, buildingId }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [getBuildingColor] = useBuildingColor();
 
   const { showModal } = useModalLogic();
 
@@ -65,7 +67,7 @@ const ControlsContainer = ({ routes }) => {
     restartApp();
   }
 
-  return <Controls>
+  return <Controls bgColor={getBuildingColor(buildingId)}>
 
     <SpinningButton
       className={settingsBtn}

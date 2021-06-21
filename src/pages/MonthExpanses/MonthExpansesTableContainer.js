@@ -33,6 +33,7 @@ import { toastManager } from '../../toasts/toastManager';
 import useTableLogic from '../../customHooks/useTableLogic';
 import MonthExpansesDatePicker from './MonthExpansesDatePicker';
 import TableSection from '../../components/Section/TableSection';
+import useBuildingColor from '../../customHooks/useBuildingColor';
 
 
 const MonthExpansesTableContainer = props => {
@@ -57,6 +58,7 @@ const MonthExpansesTableContainer = props => {
   } = useTableLogic();
 
   const dispatch = useDispatch();
+  const [getBuildingColor] = useBuildingColor();
 
   // page data
   const generalSettings = useSelector(store => store.generalSettings);
@@ -240,6 +242,7 @@ const MonthExpansesTableContainer = props => {
 
   return (
     <TableSection
+      bgColor={getBuildingColor(buildingId)}
       header={
         <TableControls
           rightPane={

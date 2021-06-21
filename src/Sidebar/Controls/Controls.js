@@ -14,7 +14,7 @@ const container = css`
 `;
 
 const Controls = props => {
-  return <div className={container}>
+  return <div className={container} style={{ background: props.bgColor }}>
     {props.children}
   </div>;
 }

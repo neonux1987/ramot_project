@@ -14,7 +14,7 @@ import {
 
 const Logo = props => {
   return (
-    <div className={container} >
+    <div className={container}>
 
       {/* wrapper */}
       <div>

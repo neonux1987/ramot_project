@@ -1,53 +1,38 @@
 // LIBRARIES IMPORTS
-import React from 'react';
-import propTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as monthlyStatsActions from '../../redux/actions/monthlyStatsActions';
-import * as quarterlyStatsActions from '../../redux/actions/quarterlyStatsActions';
-
+import React, { useCallback, useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Helper from '../../helpers/Helper';
-
 import Stats from '../../components/Stats/Stats';
 import DonutStatBox from '../../components/Stats/DonutStatBox';
-
-import TotalStatsFetcher from '../../renderProps/providers/TotalStatsFetcher';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
+import { fetchAllMonthsStatsByQuarter } from '../../redux/actions/monthlyStatsActions';
+import { fetchQuarterStats } from '../../redux/actions/quarterlyStatsActions';
+import useBuildingColor from '../../customHooks/useBuildingColor';
 
-import ThemeContext from '../../context/ThemeContext';
 
-class QuarterStatsContainer extends React.PureComponent {
-  static contextType = ThemeContext;
+const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
 
-  componentDidMount() {
-    if (this.props.date.year !== "")
-      this.fetchData();
-  }
+  const dispatch = useDispatch();
+  const [getBuildingColor] = useBuildingColor();
 
-  componentDidUpdate(prevProps) {
-    if (
-      (this.props.date.year !== prevProps.date.year ||
-        this.props.date.quarter !== prevProps.date.quarter)
-      && (this.props.date.year !== undefined)
-    )
-      this.fetchData();
-  }
+  const monthlyStats = useSelector(store => store.monthlyStats[buildingId].pages[pageName]);
+  const quarterlyStats = useSelector(store => store.quarterlyStats[buildingId].pages[pageName]);
 
-  fetchData = () => {
+  const fetchData = useCallback(() => {
     const params = {
-      buildingId: this.props.buildingId,
-      pageName: this.props.pageName,
-      date: this.props.date
+      buildingId,
+      pageName,
+      date
     }
 
     //fetch quarter months stats
-    this.props.fetchAllMonthsStatsByQuarter(params);
+    dispatch(fetchAllMonthsStatsByQuarter(params));
 
     //fetch quarter stats
-    this.props.fetchQuarterStats(params);
-  }
+    dispatch(fetchQuarterStats(params));
+  }, [buildingId, pageName, date, dispatch]);
 
-  generateMonthlyStats = (monthStats, quarter, isFetching) => {
-    const colors = this.context.colorSet;
+  const generateMonthlyStats = (monthStats, quarter, isFetching) => {
     // list of strings of qurter months
     const quarterMonths = Helper.getQuarterMonths(quarter);
 
@@ -63,7 +48,7 @@ class QuarterStatsContainer extends React.PureComponent {
         outcome={outcome}
         income={income}
         unicodeSymbol={Helper.shekelUnicode}
-        color={colors[i]}
+        //color={colors[i]}
         loading={isFetching}
         index={i + 1}
       />;
@@ -74,7 +59,7 @@ class QuarterStatsContainer extends React.PureComponent {
 
   }
 
-  generateQuarterStats = (quarterStat, isFetching) => {
+  const generateQuarterStats = (quarterStat, isFetching) => {
     const { quarter, outcome, income } = quarterStat;
 
     return <DonutStatBox
@@ -83,57 +68,30 @@ class QuarterStatsContainer extends React.PureComponent {
       outcome={outcome}
       income={income}
       unicodeSymbol={Helper.shekelUnicode}
-      color={this.context.colorSet[3]}
+      color={getBuildingColor(buildingId)}
       loading={isFetching}
       index={4}
       border
     />;
   }
 
-  render() {
-    const {
-      date,
-      monthlyStats,
-      quarterlyStats,
-      buildingId,
-      pageName
-    } = this.props;
+  useEffect(() => {
+    if (date.year !== "" && date.year !== undefined)
+      fetchData()
+  }, [date.year, date.quarter, date.month, fetchData]);
 
-    const monthlyStatsState = monthlyStats[buildingId].pages[pageName];
-    const quarterlyStatsState = quarterlyStats[buildingId].pages[pageName];
+  if ((monthlyStats.data.length === 0) || quarterlyStats.data.length === 0)
+    return <AlignCenterMiddle style={{ height: "256px", fontSize: "18px" }}>לא נטענו נתונים.</AlignCenterMiddle>;
+  else {
 
-    if ((monthlyStatsState.data.length === 0) || quarterlyStatsState.data.length === 0)
-      return <AlignCenterMiddle style={{ height: "256px", fontSize: "18px" }}>לא נטענו נתונים.</AlignCenterMiddle>;
-    else {
+    //generate quarter months stats
+    const stats = generateMonthlyStats(monthlyStats.data, date.quarter, monthlyStats.isFetching);
+    //generate quarter total stats
+    stats.push(generateQuarterStats(quarterlyStats.data[0], quarterlyStats.isFetching))
 
-      //generate quarter months stats
-      const stats = this.generateMonthlyStats(monthlyStatsState.data, date.quarter, monthlyStatsState.isFetching);
-      //generate quarter total stats
-      stats.push(this.generateQuarterStats(quarterlyStatsState.data[0], quarterlyStatsState.isFetching))
+    return (<Stats stats={stats} columns={4} />);
 
-      return (<Stats stats={stats} columns={4} />);
-
-    }
   }
-
 }
 
-const mapStateToProps = (state) => {
-  return ({
-    monthlyStats: state.monthlyStats,
-    quarterlyStats: state.quarterlyStats
-  });
-}
-
-const mapDispatchToProps = dispatch => ({
-  fetchAllMonthsStatsByQuarter: (params) => dispatch(monthlyStatsActions.fetchAllMonthsStatsByQuarter(params)),
-  fetchQuarterStats: (params) => dispatch(quarterlyStatsActions.fetchQuarterStats(params))
-});
-
-TotalStatsFetcher.propTypes = {
-  pageName: propTypes.string.isRequired,
-  buildingId: propTypes.string.isRequired,
-  date: propTypes.object.isRequired
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(QuarterStatsContainer));
+export default React.memo(QuarterStatsContainer);

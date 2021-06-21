@@ -26,7 +26,7 @@ const MainContainer = ({ mainContainer }) => {
   const routes = useSelector(store => store.routes);
 
   useEffect(() => {
-    const { state, pathname } = routes.active;
+    const { state = {}, pathname } = routes.active;
     history.replace(pathname, state);
 
     //eslint-disable-next-line

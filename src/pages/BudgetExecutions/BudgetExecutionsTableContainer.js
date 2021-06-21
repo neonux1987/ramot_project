@@ -36,6 +36,7 @@ import AddNewContainer from './AddNewContainer/AddNewContainer';
 import useTableLogic from '../../customHooks/useTableLogic';
 import useDifferenceColor from '../../customHooks/useDifferenceColor';
 import BudgetExecutionsDatePicker from './BudgetExecutionsDatePicker';
+import useBuildingColor from '../../customHooks/useBuildingColor';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -66,6 +67,7 @@ const BudgetExecutionsTableContainer = props => {
   const dispatch = useDispatch();
 
   const [whichColor] = useDifferenceColor();
+  const [getBuildingColor] = useBuildingColor();
 
   // list of months of specific quarter
   const months = Helper.getQuarterMonthsEng(date.quarter);
@@ -305,6 +307,7 @@ const BudgetExecutionsTableContainer = props => {
 
   return (
     <TableSection
+      bgColor={getBuildingColor(buildingId)}
       header={
         <TableControls
           rightPane={

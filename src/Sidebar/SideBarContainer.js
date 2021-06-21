@@ -15,7 +15,9 @@ import { fetchMenu } from '../redux/actions/menuActions';
 import CenteredLoader from '../components/AnimatedLoaders/CenteredLoader';
 import { ipcRenderer } from 'electron';
 
-const SidebarContainer = () => {
+const SidebarContainer = ({ location }) => {
+  const { state = {} } = location;
+  const { buildingId } = state;
 
   const dispatch = useDispatch();
 
@@ -46,7 +48,7 @@ const SidebarContainer = () => {
 
   return <Sidebar show={showSidebar}>
     <Logo>
-      <ControlsContainer routes={routes} />
+      <ControlsContainer routes={routes} buildingId={buildingId} />
     </Logo>
 
     {isFetching ? <CenteredLoader text="טוען תפריט" color="#ffffff" /> : <MenuContainer routes={routes} data={data} />}
