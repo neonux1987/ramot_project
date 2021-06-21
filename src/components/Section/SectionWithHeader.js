@@ -24,7 +24,7 @@ const SectionWithHeader = ({ header = null, children, id, bgColor = "#0e7ab9" })
   return <Section
     isFullscreen={isFullscreen}
     id={id}
-    className={_section}
+    className={`${_section} ${css`border-color:${bgColor}`}`}
   >
     <div className={classnames(_header, css`background-color: ${bgColor}`)} id="section-header">{header}</div>
     {children}
