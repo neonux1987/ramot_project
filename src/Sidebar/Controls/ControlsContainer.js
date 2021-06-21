@@ -21,7 +21,7 @@ const volumeBtn = css`
   outline: none;
   cursor: pointer;
   background: none;
-  color: #d0d0d0;
+  color: #dddddd;
   min-width: 0;
   margin: 0 10px;
 `;
@@ -31,7 +31,7 @@ const moreBtn = css`
   align-items: center;
   justify-content: center;
   background: none;
-  color: #d0d0d0;
+  color: #dddddd;
   border: none;
   outline: none;
   cursor: pointer;

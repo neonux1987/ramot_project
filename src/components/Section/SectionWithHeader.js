@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 
 const _section = css`
-box-shadow: rgba(0, 0, 0, 0.14) 0px 4px 20px 0px, rgba(0, 0, 0, 0.14) 0px 7px 10px -5px;
 background-color: #ffffff;
 border: 1px solid #dddddd;
 `;

@@ -13,7 +13,7 @@ const _button = css`
   border: 1px solid #dddddd;
 `;
 
-const SimpleColorPicker = ({ color, onChange, onClose, onAccept, className }) => {
+const SimpleColorPicker = ({ color, onChange, onClose, onAccept, className, pickerStyle, Picker = SketchPicker }) => {
 
   return <div className={className}>
     <div className={_buttonWrapper}>
@@ -22,7 +22,8 @@ const SimpleColorPicker = ({ color, onChange, onClose, onAccept, className }) =>
 
     </div>
 
-    <SketchPicker
+    <Picker
+      className={pickerStyle}
       color={color}
       onChange={onChange}
     />

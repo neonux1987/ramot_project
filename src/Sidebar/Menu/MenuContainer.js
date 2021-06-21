@@ -106,7 +106,6 @@ const MenuContainer = ({ routes, history, data }) => {
     const element = document.querySelector('.activeButton');
 
     if (element !== null) {
-      element.focus();
       window.focus();
     }
   }, []);
