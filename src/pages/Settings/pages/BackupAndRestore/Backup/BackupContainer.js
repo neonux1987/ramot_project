@@ -112,9 +112,9 @@ const BackupContainer = () => {
   }
 
   //to render the last update of the backup
-  const BackupDateTime = new Date(data.last_update);
-  const backupDateRender = `${BackupDateTime.getDate()}/${BackupDateTime.getMonth() + 1}/${BackupDateTime.getFullYear()}`;
-  const backupTimeRender = `${BackupDateTime.getHours()}:${BackupDateTime.getMinutes()}`;
+  const date = new Date(data.last_update);
+  const locale = date.toLocaleString();
+  const backupDateTime = locale.slice(0, locale.length - 3);
 
   let backups_to_save = [];
   for (let i = 1; i <= data.max_num_of_history_backups; i++) {
@@ -132,17 +132,17 @@ const BackupContainer = () => {
       onSaveClick={save}
     >
 
-      <Note text={`גיבוי אחרון בוצע בתאריך ${backupDateRender} ובשעה ${backupTimeRender}`} margin="0 0 20px 0" />
+      <Note text={`גיבוי אחרון בוצע ב- ${backupDateTime}`} margin="0 0 20px 0" />
 
       <TitleTypography>
         כללי:
-        </TitleTypography>
+      </TitleTypography>
 
       <CheckboxWithLabel label="גיבוי ביציאה" checked={data.backup_on_exit} onChange={onBackupOnExitChange} />
 
       <TitleTypography underline={false} gutterBottom="10px">
         תיקיית גיבויים:
-        </TitleTypography>
+      </TitleTypography>
 
       <FileSelector onChangeClick={dbSelectFolderHandler} value={data.db_backups_folder_path} />
 
@@ -150,7 +150,7 @@ const BackupContainer = () => {
 
       <TitleTypography>
         אחר:
-        </TitleTypography>
+      </TitleTypography>
 
       <ManualBackupSelector onClick={dbIndependentBackupHandler} />
 

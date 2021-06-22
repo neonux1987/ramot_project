@@ -1,8 +1,7 @@
 // LIBRARIES
 import React from "react";
 import { Menu } from "@material-ui/core";
-import { Description } from "@material-ui/icons";
-import { HiColorSwatch } from 'react-icons/hi';
+import { MdColorLens, MdDescription } from 'react-icons/md';
 
 import MoreMenuItem from "../../moreMenu/MoreMenuItem";
 import SvgIcon from "../../SvgIcon/SvgIcon";
@@ -39,20 +38,20 @@ const MoreBuildingMenu = ({
     >
 
       <MoreMenuItem
-        icon={<Description />}
+        icon={<SvgIcon Icon={MdDescription} color="#0e7ab9" />}
         label="הפקת דוחות ריקים"
         onClick={onEmptyReportsClick}
       />
 
       <MoreMenuItem
-        icon={<Description />}
+        icon={<SvgIcon Icon={MdDescription} color="#1ead82" />}
         iconColor="#1ead82"
         label="הפקת דוחות אקסל"
         onClick={onExcelReportsClick}
       />
 
       <MoreMenuItem
-        icon={<SvgIcon Icon={HiColorSwatch} color="#c934ef" />}
+        icon={<SvgIcon Icon={MdColorLens} color="#c934ef" />}
         iconColor="#c934ef"
         label="שנה צבע בניין"
         onClick={onChangeBuildingColorClick}

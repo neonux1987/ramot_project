@@ -9,7 +9,7 @@ const container = css`
   z-index: 3;
   position: relative;
   background: #ffffff1c;
-  margin: 15px 30px 26px;
+  margin: 15px 20px 0;
   border-radius: 3px;
 `;
 

@@ -11,20 +11,23 @@ const wrapper = css`
 `;
 
 const button = css`
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   padding: 0;
   min-width: 0;
-  margin-left: 5px;
+  margin-left: 20px;
   position: absolute;
-  bottom: 0;
+  bottom: 15px;
   left: 0;
+  background: #222A45;
+  border-radius: 100%;
+  box-shadow: 0px 7px 8px -4px rgb(0 0 0 / 6%), 0px 12px 17px 2px rgb(0 0 0 / 4%), 0px 5px 22px 4px rgb(0 0 0 / 4%);
 `;
 
 const MoreButton = ({ onClick, active }) => {
   return <div className={wrapper}>
     <ButtonWithSound onClick={onClick} className={classnames(button, active ? "activeExpandItem" : "")}>
-      <SvgIcon Icon={IoMdSettings} color="#555555" size="42px" />
+      <SvgIcon Icon={IoMdSettings} color="#ffffff" size="32px" />
     </ButtonWithSound>
   </div>
 

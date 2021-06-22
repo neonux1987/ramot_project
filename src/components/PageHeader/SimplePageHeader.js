@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 
 const container = css`
   margin: 20px 20px 20px;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid #dddddd;
 `;
 
 const mainContainer = css`

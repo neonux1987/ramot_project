@@ -121,7 +121,7 @@ module.exports = async (
   workbook.modified = new Date();
   workbook.lastPrinted = new Date();
 
-  //add a worksheet
+  //add and config a worksheet
   var sheet = workbook.addWorksheet(sheetTitle,
     {
       properties: {

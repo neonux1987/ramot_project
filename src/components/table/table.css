@@ -24,7 +24,7 @@ th,td{
 .tableRow{
   min-height: 35px;
   display: grid;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .tableCell{
@@ -35,7 +35,7 @@ th,td{
   word-break: break-word;
   text-align: center;
   overflow: hidden;
-  border-right: 1px solid #dddddd;
+  border-right: 1px solid #eeeeee;
   font-size: 16px;
   min-height: 35px;
 }
