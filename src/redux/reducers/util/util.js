@@ -1,4 +1,4 @@
-const { buildings, pages } = require('electron').remote.getGlobal('sharedObject');
+const { buildings = [], pages = [] } = require('electron').remote.getGlobal('sharedObject');
 
 export function updateGlobalBuilding(buildingId, payload) {
   buildings.forEach(({ id }, index) => {
@@ -14,6 +14,10 @@ export function updateGlobalBuilding(buildingId, payload) {
 
 export function getPages() {
   return pages;
+}
+
+export function getBuildings() {
+  return buildings;
 }
 
 export const setState = (state, pageName, buildingName, target) => {

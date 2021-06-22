@@ -1,10 +1,11 @@
 import { TYPES } from '../actions/buildingsActions';
+import { getBuildings } from './util/util';
 
 const initState = {
   isFetching: true,
   status: "",
   error: "",
-  data: []
+  data: getBuildings()
 }
 
 const buildingsReducer = (state = initState, action) => {

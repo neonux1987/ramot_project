@@ -2,9 +2,18 @@
 import React from "react";
 import { Menu } from "@material-ui/core";
 import { Description } from "@material-ui/icons";
-import MoreMenuItem from "../../moreMenu/MoreMenuItem";
+import { HiColorSwatch } from 'react-icons/hi';
 
-const MoreBuildingMenu = ({ anchorEl, handleClose, onExcelReportsHandler, onEmptyReportsHandler }) => {
+import MoreMenuItem from "../../moreMenu/MoreMenuItem";
+import SvgIcon from "../../SvgIcon/SvgIcon";
+
+const MoreBuildingMenu = ({
+  anchorEl,
+  handleClose,
+  onExcelReportsHandler,
+  onEmptyReportsHandler,
+  onChangeBuildingColorHandler
+}) => {
 
   const onEmptyReportsClick = () => {
     onEmptyReportsHandler();
@@ -13,6 +22,11 @@ const MoreBuildingMenu = ({ anchorEl, handleClose, onExcelReportsHandler, onEmpt
 
   const onExcelReportsClick = () => {
     onExcelReportsHandler();
+    handleClose();
+  }
+
+  const onChangeBuildingColorClick = () => {
+    onChangeBuildingColorHandler();
     handleClose();
   }
 
@@ -35,6 +49,13 @@ const MoreBuildingMenu = ({ anchorEl, handleClose, onExcelReportsHandler, onEmpt
         iconColor="#1ead82"
         label="הפקת דוחות אקסל"
         onClick={onExcelReportsClick}
+      />
+
+      <MoreMenuItem
+        icon={<SvgIcon Icon={HiColorSwatch} color="#c934ef" />}
+        iconColor="#c934ef"
+        label="שנה צבע בניין"
+        onClick={onChangeBuildingColorClick}
       />
 
     </Menu>

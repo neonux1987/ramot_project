@@ -29,7 +29,7 @@ const _previewWrapper = css`
   justify-content: center;
 `;
 
-const ColorPicker = ({ value, action, withField = true, editModeInput = false }) => {
+const ColorPicker = ({ value, action, withField = true, editModeInput = false, className = "" }) => {
 
   const [color, setColor] = useState(value);
   const [editMode, setEditMode] = useState(editModeInput);
@@ -52,7 +52,7 @@ const ColorPicker = ({ value, action, withField = true, editModeInput = false })
     setEditMode(false);
   }
 
-  return <div className={_wrapper}>
+  return <div className={`${_wrapper} ${className}`}>
     {editMode ?
       <SimpleColorPicker
         Picker={CirclePicker}

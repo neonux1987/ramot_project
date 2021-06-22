@@ -21,7 +21,8 @@ const Modal = (props) => {
     title,
     contentText,
     Icon,
-    children
+    children,
+    invisibleBackdrop
   } = props;
 
   const [open, setOpen] = React.useState(true);
@@ -68,6 +69,7 @@ const Modal = (props) => {
     onEscapeKeyDown={onEscapeKeyDown}
     onKeyPress={onKeyPressHandler}
     onBackdropClick={onBackdropClick}
+    invisibleBackdrop={invisibleBackdrop}
   >
     <ModalHeader title={title} Icon={Icon} iconColor={iconColor} />
 

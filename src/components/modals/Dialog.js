@@ -13,10 +13,14 @@ const Dialog = (props) => {
     children,
     onEscapeKeyDown,
     onKeyPressHandler,
-    onBackdropClick
+    onBackdropClick,
+    invisibleBackdrop = false
   } = props;
 
   return <Dlg
+    BackdropProps={{
+      invisible: invisibleBackdrop
+    }}
     open={open}
     TransitionComponent={Transition}
     keepMounted
