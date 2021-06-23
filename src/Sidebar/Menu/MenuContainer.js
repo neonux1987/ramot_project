@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useCallback, useEffect } from 'react';
-import { withRouter } from 'react-router';
+import { useHistory, withRouter } from 'react-router';
 import { useDispatch } from 'react-redux';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
 
@@ -19,10 +19,11 @@ import pages from '../../helpers/pages';
 const DEFAULT_PAGE = "הוצאות חודשיות";
 const HOME_BUTTON_LABEL = "דף הבית";
 
-const MenuContainer = ({ routes, history, data }) => {
+const MenuContainer = ({ routes, data }) => {
   let counter = 1;
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [generateIcon] = useIcons();
 
@@ -156,4 +157,4 @@ const MenuContainer = ({ routes, history, data }) => {
 
 };
 
-export default withRouter(React.memo(MenuContainer));
+export default React.memo(MenuContainer);

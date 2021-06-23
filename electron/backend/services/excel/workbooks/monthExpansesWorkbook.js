@@ -5,11 +5,11 @@ const headerStyle = {
   fill: {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: '000000' }
+    fgColor: { argb: 'f5f5f5' }
   },
   font: {
     name: 'Arial',
-    color: { argb: 'FFFFFF' },
+    color: { argb: '000000' },
     family: 2,
     size: 11
   }

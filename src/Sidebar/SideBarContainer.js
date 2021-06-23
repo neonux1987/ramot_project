@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useCallback, useEffect } from 'react';
-import { withRouter } from 'react-router';
+import { useLocation, withRouter } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 // COMPONENTS
@@ -15,8 +15,8 @@ import { fetchMenu } from '../redux/actions/menuActions';
 import CenteredLoader from '../components/AnimatedLoaders/CenteredLoader';
 import { ipcRenderer } from 'electron';
 
-const SidebarContainer = ({ location }) => {
-  const { state = {} } = location;
+const SidebarContainer = () => {
+  const { state = {} } = useLocation();
   const { buildingId } = state;
 
   const dispatch = useDispatch();
@@ -57,5 +57,5 @@ const SidebarContainer = ({ location }) => {
 
 }
 
-export default withRouter(SidebarContainer);
+export default SidebarContainer;
 
