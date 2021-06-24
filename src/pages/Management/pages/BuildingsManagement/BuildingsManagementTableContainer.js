@@ -22,11 +22,9 @@ import useTableLogic from '../../../../customHooks/useTableLogic';
 
 // CONTAINERS
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
-import ColorPicker from '../../../../components/ColorPicker/ColorPicker';
-import ColorPreviewBox from '../../../../components/ColorPicker/ColorPreviewBox';
 import { updateColor } from '../../../../redux/actions/buildingsColorsActions';
 
-const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(5,1fr)";
+const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
 const BuildingsManagementTableContainer = () => {
 
@@ -82,11 +80,6 @@ const BuildingsManagementTableContainer = () => {
     updateAction(key, value, index);
   }, [updateAction]);
 
-  const colorPickerAction = useCallback((buildingId, key, value, index) => {
-    updateAction(key, value, index);
-    dispatch(updateColor(buildingId, value));
-  }, [updateAction]);
-
   const HeadersRow = () => {
     return <HeaderRow gridTemplateColumns={DEFAULT_TEMPLATE}>
 
@@ -94,7 +87,6 @@ const BuildingsManagementTableContainer = () => {
       <HeaderCell>קוד מזהה</HeaderCell>
       <HeaderCell editMode={editMode}>שם בניין</HeaderCell>
       <HeaderCell>שם קודם</HeaderCell>
-      <HeaderCell>צבע</HeaderCell>
       <HeaderCell editMode={editMode}>מצב</HeaderCell>
     </HeaderRow>
   }
@@ -110,19 +102,6 @@ const BuildingsManagementTableContainer = () => {
       {editMode ? textInput("buildingName", rowData.buildingName, index, onBlurHandler) : <Cell>{rowData.buildingName}</Cell>}
 
       <Cell>{rowData.previousBuildingName}</Cell>
-
-      {editMode ?
-        <Cell style={{ display: "block", overflow: "initial" }}>
-          <ColorPicker
-            value={rowData.color}
-            action={color => colorPickerAction(rowData.id, "color", color, index)}
-          />
-        </Cell>
-        :
-        <Cell style={{ color: rowData.color }}>
-          <ColorPreviewBox color={rowData.color} />
-        </Cell>
-      }
 
       {editMode ?
         <SelectDropDown
