@@ -107,7 +107,7 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
 
     {/* main container */}
     <div className={mainContainer}>
-      <div className={mainIcon} className={mainIcon}>
+      <div className={mainIcon}>
         <BiBuildingHouse />
       </div>
 

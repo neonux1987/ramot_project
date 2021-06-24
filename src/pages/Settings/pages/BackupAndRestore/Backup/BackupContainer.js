@@ -1,7 +1,7 @@
 // LIBRARIES
 import React, { useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MenuItem, Typography } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
 
 // COMPONENTS
@@ -30,8 +30,6 @@ import useModalLogic from '../../../../../customHooks/useModalLogic';
 import Note from '../../../../../components/Note/Note';
 
 const SETTINGS_NAME = "db_backup";
-
-const HOURS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const BackupContainer = () => {
 
@@ -120,10 +118,6 @@ const BackupContainer = () => {
   for (let i = 1; i <= data.max_num_of_history_backups; i++) {
     backups_to_save.push(<MenuItem value={i} key={i}>{i}</MenuItem>)
   }
-
-  const renderHourItems = HOURS.map((value, index) => {
-    return <MenuItem value={value} key={index}>{value}</MenuItem>
-  });
 
   return (
     <SettingsExpandableSection

@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // COMPONENTS
 import SettingsExpandableSection from '../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
-import CheckboxWithLabel from '../../../../components/Checkboxes/CheckboxWithLabel';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 import TitleTypography from '../../../../components/Typographies/TitleTypography';
 import Page from '../../../../components/Page/Page';

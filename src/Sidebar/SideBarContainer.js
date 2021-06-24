@@ -1,6 +1,6 @@
 // LIBRARIES
 import React, { useCallback, useEffect } from 'react';
-import { useLocation, withRouter } from 'react-router';
+import { useLocation } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 // COMPONENTS

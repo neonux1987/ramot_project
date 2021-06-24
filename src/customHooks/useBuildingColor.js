@@ -21,7 +21,7 @@ const useBuildingColor = (buildingId) => {
 
     });
 
-  }, [dispatch, data]);
+  }, [dispatch, data, buildingId]);
 
   const changeBuildingColor = useCallback((buildingId, colorValue) => {
 

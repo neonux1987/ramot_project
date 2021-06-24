@@ -1,6 +1,4 @@
 import React, { useCallback, useState } from 'react';
-
-import { useDispatch } from 'react-redux';
 import Helper from '../../helpers/Helper';
 import EmptyReportsGenerator from '../../pages/Management/pages/Reports/EmptyReportsGenerator/EmptyReportsGenerator';
 import { generateEmptyReports } from '../../services/emptyReportsGenerator.svc';
@@ -13,8 +11,6 @@ const quarters = Helper.getYearQuarters();
 
 const GenerateEmptyReportsModal = ({ buildingName, buildingId }) => {
   const date = new Date();//current date
-
-  const dispatch = useDispatch();
 
   const [selectDate, setSelectDate] = useState({
     year: date.getFullYear(),

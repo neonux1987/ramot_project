@@ -23,9 +23,6 @@ import SideBarContainer from './Sidebar/SideBarContainer';
 // HOOKS
 import useServices from './customHooks/useServices';
 
-// ACTIONS
-import { fetchBuildings } from './redux/actions/buildingsActions';
-
 // TOASTS
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import generalSettingsActions from './redux/actions/generalSettingsActions';

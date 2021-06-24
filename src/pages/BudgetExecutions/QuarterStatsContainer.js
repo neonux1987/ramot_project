@@ -1,5 +1,5 @@
 // LIBRARIES IMPORTS
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Helper from '../../helpers/Helper';
 import Stats from '../../components/Stats/Stats';

@@ -1,6 +1,6 @@
 // LIBRARIES
-import React, { useCallback, useEffect } from 'react';
-import { useHistory, withRouter } from 'react-router';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import ExpandableMenuItem from '../ExpandableMenuItem/ExpandableMenuItem';
 

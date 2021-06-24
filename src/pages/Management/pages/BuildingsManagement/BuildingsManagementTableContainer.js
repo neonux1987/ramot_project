@@ -22,7 +22,6 @@ import useTableLogic from '../../../../customHooks/useTableLogic';
 
 // CONTAINERS
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
-import { updateColor } from '../../../../redux/actions/buildingsColorsActions';
 
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
