@@ -46,7 +46,7 @@ const settingsBtn = css`
 const ControlsContainer = ({ routes, buildingId }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [getBuildingColor] = useBuildingColor();
+  const [buildingColor] = useBuildingColor(buildingId);
 
   const { showModal } = useModalLogic();
 
@@ -67,7 +67,7 @@ const ControlsContainer = ({ routes, buildingId }) => {
     restartApp();
   }
 
-  return <Controls bgColor={getBuildingColor(buildingId)}>
+  return <Controls bgColor={buildingColor}>
 
     <SpinningButton
       className={settingsBtn}

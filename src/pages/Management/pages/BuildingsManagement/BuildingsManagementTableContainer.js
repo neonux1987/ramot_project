@@ -24,6 +24,7 @@ import useTableLogic from '../../../../customHooks/useTableLogic';
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
 import ColorPicker from '../../../../components/ColorPicker/ColorPicker';
 import ColorPreviewBox from '../../../../components/ColorPicker/ColorPreviewBox';
+import { updateColor } from '../../../../redux/actions/buildingsColorsActions';
 
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(5,1fr)";
 
@@ -81,6 +82,11 @@ const BuildingsManagementTableContainer = () => {
     updateAction(key, value, index);
   }, [updateAction]);
 
+  const colorPickerAction = useCallback((buildingId, key, value, index) => {
+    updateAction(key, value, index);
+    dispatch(updateColor(buildingId, value));
+  }, [updateAction]);
+
   const HeadersRow = () => {
     return <HeaderRow gridTemplateColumns={DEFAULT_TEMPLATE}>
 
@@ -109,7 +115,7 @@ const BuildingsManagementTableContainer = () => {
         <Cell style={{ display: "block", overflow: "initial" }}>
           <ColorPicker
             value={rowData.color}
-            action={color => updateAction("color", color, index)}
+            action={color => colorPickerAction(rowData.id, "color", color, index)}
           />
         </Cell>
         :

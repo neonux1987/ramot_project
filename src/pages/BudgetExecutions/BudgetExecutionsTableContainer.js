@@ -67,7 +67,7 @@ const BudgetExecutionsTableContainer = props => {
   const dispatch = useDispatch();
 
   const [whichColor] = useDifferenceColor();
-  const [getBuildingColor] = useBuildingColor();
+  const [buildingColor] = useBuildingColor(buildingId);
 
   // list of months of specific quarter
   const months = Helper.getQuarterMonthsEng(date.quarter);
@@ -307,7 +307,7 @@ const BudgetExecutionsTableContainer = props => {
 
   return (
     <TableSection
-      bgColor={getBuildingColor(buildingId)}
+      bgColor={buildingColor}
       header={
         <TableControls
           rightPane={

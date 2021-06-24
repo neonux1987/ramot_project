@@ -13,7 +13,7 @@ import useBuildingColor from '../../customHooks/useBuildingColor';
 const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
 
   const dispatch = useDispatch();
-  const [getBuildingColor] = useBuildingColor();
+  const [buildingColor] = useBuildingColor(buildingId);
 
   const monthlyStats = useSelector(store => store.monthlyStats[buildingId].pages[pageName]);
   const quarterlyStats = useSelector(store => store.quarterlyStats[buildingId].pages[pageName]);
@@ -68,7 +68,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
       outcome={outcome}
       income={income}
       unicodeSymbol={Helper.shekelUnicode}
-      color={getBuildingColor(buildingId)}
+      color={buildingColor}
       loading={isFetching}
       index={4}
       border

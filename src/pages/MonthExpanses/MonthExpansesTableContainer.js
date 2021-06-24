@@ -58,7 +58,7 @@ const MonthExpansesTableContainer = props => {
   } = useTableLogic();
 
   const dispatch = useDispatch();
-  const [getBuildingColor] = useBuildingColor();
+  const [buildingColor] = useBuildingColor(buildingId);
 
   // page data
   const generalSettings = useSelector(store => store.generalSettings);
@@ -242,7 +242,7 @@ const MonthExpansesTableContainer = props => {
 
   return (
     <TableSection
-      bgColor={getBuildingColor(buildingId)}
+      bgColor={buildingColor}
       header={
         <TableControls
           rightPane={

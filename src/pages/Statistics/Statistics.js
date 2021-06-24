@@ -35,7 +35,7 @@ const Statistics = props => {
   const { selectedChart } = useSelector(store => store.statistics[buildingId]);
 
   const dispatch = useDispatch();
-  const [getBuildingColor] = useBuildingColor();
+  const [buildingColor] = useBuildingColor(buildingId);
 
   const onClick = (name) => {
     dispatch(updateSelectedChart(buildingId, name));
@@ -50,7 +50,7 @@ const Statistics = props => {
   return <Page>
     <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
     <StyledSection
-      bgColor={getBuildingColor(buildingId)}
+      bgColor={buildingColor}
       title={selectedChart}
       Icon={IoMdStats}
       extraDetails={<ExtraDetails />}

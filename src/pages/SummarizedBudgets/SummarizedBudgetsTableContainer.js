@@ -57,7 +57,7 @@ const SummarizedBudgetsTableContainer = props => {
   } = useTableLogic();
 
   const themeContext = useContext(ThemeContext);
-  const [getBuildingColor] = useBuildingColor();
+  const [buildingColor] = useBuildingColor(buildingId);
   const dispatch = useDispatch();
 
   const onBlurHandler = (e) => {
@@ -241,7 +241,7 @@ const SummarizedBudgetsTableContainer = props => {
 
   return (
     <TableSection
-      bgColor={getBuildingColor(buildingId)}
+      bgColor={buildingColor}
       header={
         <TableControls
           rightPane={

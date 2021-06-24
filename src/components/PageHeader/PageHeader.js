@@ -40,7 +40,7 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const [getBuildingColor] = useBuildingColor();
+  const [buildingColor] = useBuildingColor(buildingId);
 
   const { showModal } = useModalLogic();
 
@@ -72,8 +72,6 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
       buildingId
     });
   }
-
-  const buildingColor = getBuildingColor(buildingId);
 
   const mainIcon = css`
   font-size: 32px;

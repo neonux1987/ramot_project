@@ -30,6 +30,7 @@ import print from './printReducer';
 import fullscreen from './fullscreenReducer';
 import buildings from './buildingsReducer';
 import home from './homeReducer';
+import buildingsColors from './buildingsColorsReducer';
 
 const reducers = {
   menu,
@@ -63,7 +64,8 @@ const reducers = {
   print,
   fullscreen,
   buildings,
-  home
+  home,
+  buildingsColors
 };
 
 export default reducers;

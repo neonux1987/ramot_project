@@ -12,7 +12,7 @@ import { fetchYearStats } from '../../redux/actions/yearlyStatsActions';
 const YearStatsContainer = ({ buildingId, pageName, date }) => {
 
   const dispatch = useDispatch();
-  const [getBuildingColor] = useBuildingColor();
+  const [buildingColor] = useBuildingColor(buildingId);
 
   const quarterlyStats = useSelector(store => store.quarterlyStats[buildingId].pages[pageName]);
   const yearlyStats = useSelector(store => store.yearlyStats[buildingId].pages[pageName]);
@@ -67,7 +67,7 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
       outcome={outcome}
       income={income}
       unicodeSymbol={Helper.shekelUnicode}
-      color={getBuildingColor(buildingId)}
+      color={buildingColor}
       border
       loading={isFetching}
       index={5}

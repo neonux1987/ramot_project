@@ -3,7 +3,7 @@ import { Input } from '@material-ui/core';
 import { css } from 'emotion';
 import SimpleColorPicker from './SimpleColorPicker';
 import ColorPreviewBox from './ColorPreviewBox';
-import { CirclePicker } from 'react-color';
+import { SketchPicker } from 'react-color';
 
 const _wrapper = css`
   position: relative;
@@ -29,7 +29,7 @@ const _previewWrapper = css`
   justify-content: center;
 `;
 
-const ColorPicker = ({ value, action, withField = true, editModeInput = false, className = "" }) => {
+const ColorPicker = ({ value, action, withField = true, editModeInput = false, className = "", onCompleteHandler }) => {
 
   const [color, setColor] = useState(value);
   const [editMode, setEditMode] = useState(editModeInput);
@@ -55,13 +55,14 @@ const ColorPicker = ({ value, action, withField = true, editModeInput = false, c
   return <div className={`${_wrapper} ${className}`}>
     {editMode ?
       <SimpleColorPicker
-        Picker={CirclePicker}
+        Picker={SketchPicker}
         color={color}
         onChange={onChange}
         onClose={onClose}
         onAccept={onAccept}
         className={_colorPickerWrapper}
         pickerStyle={_pickerStyle}
+        onCompleteHandler={onCompleteHandler}
       /> : null}
 
     <div className={_previewWrapper} onClick={() => setEditMode(true)}>
