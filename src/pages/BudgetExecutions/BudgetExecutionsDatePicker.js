@@ -21,6 +21,7 @@ const BudgetExecutionsDatePicker = ({
 
   // initial fetch of years
   useEffect(() => {
+
     dispatch(fetchRegisteredYears({ buildingId }));
   }, [buildingId, dispatch]);
 
@@ -37,7 +38,7 @@ const BudgetExecutionsDatePicker = ({
     if (refresh === true)
       setRefresh(false);
     //eslint-disable-next-line
-  }, [refresh, setRefresh]);
+  }, [refresh, setRefresh, date]);
 
   const quarterExist = (month, data) => {
     let exist = false;
