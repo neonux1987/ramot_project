@@ -55,16 +55,16 @@ th,td{
   border-bottom: none !important;
   border-top: 1px solid #eeeeee;
   position: relative;
-  background-color: #f5f5f5;
+  background-color: #00000005;
 }
 
 .headerRow{
   grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
   border-top: 1px solid #eeeeee;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #eeeeee;
   position: relative;
-  background-color: #f5f5f5;
-  box-shadow: rgb(0 0 0 / 2%) 0px 4px 4px 1px;
+  background-color: #00000005;
+  box-shadow: rgb(0 0 0 / 6%) 0px 4px 4px 1px;
   z-index: 2;
 }
 
