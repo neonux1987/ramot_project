@@ -1,7 +1,7 @@
 //========================= Libraries =========================//
 require('v8-compile-cache');
 require('dotenv').config();
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, powerMonitor } = require('electron');
 const path = require('path');
 const contextMenu = require('electron-context-menu');
 
@@ -120,6 +120,12 @@ async function createWindow() {
       });
       // long loading html
       mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+
+      powerMonitor.on("resume", () => {
+        // we want to cover more ways to run up the task 
+        // of deleting buildings except the start of the app
+        mainSystem.deleteBuildingsInQueue();
+      });
 
     }).catch(async () => {
       await AppErrorDialog();

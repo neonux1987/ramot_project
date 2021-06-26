@@ -145,7 +145,7 @@ class MainSystem {
   }
 
   async scheduledTasks() {
-    await this.deleteBuildingScheduleTask();
+    await this.deleteBuildingsInQueue();
   }
 
   /**
@@ -153,7 +153,7 @@ class MainSystem {
    * the status of the buildings to deleted, notify the renderer 
    * to delete the buildings
    */
-  async deleteBuildingScheduleTask() {
+  async deleteBuildingsInQueue() {
     const BuildingsLogic = require('../logic/BuildingsLogic');
     const buildingsLogic = new BuildingsLogic();
 
