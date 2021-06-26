@@ -26,20 +26,27 @@ class EmptyReportsGeneratorLogic {
     const trx = await connectionPool.getTransaction();
 
     const existingReportsBuidlings = [];
+    const createdReportsBuidlings = [];
 
     await asyncForEach(buildings, async ({ buildingId, buildingName }) => {
       let reports = await this.registeredReportsLogic.getRegisteredReportsByYearAndQuarter(buildingId, date.year, date.quarter, trx);
 
       // only reports for unregistered dates allowed
-      if (reports.length === 0)
+      if (reports.length === 0) {
         await this.createEmptyReportsByMonth(buildingId, date, fromPreviousReports, trx);
+        createdReportsBuidlings.push(buildingName);
+      }
+
       else
         existingReportsBuidlings.push(buildingName);
     });
 
     await trx.commit();
 
-    return existingReportsBuidlings;
+    return {
+      existingReportsBuidlings,
+      createdReportsBuidlings
+    };
   }
 
   async createEmptyReportsByMonth(buildingId, date, fromPreviousReports, trx) {

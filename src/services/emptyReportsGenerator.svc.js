@@ -13,10 +13,16 @@ export const generateEmptyReports = (params) => {
       channel: "empty-reports-generated"
     },
     onSuccess: ({ data }) => {
-      if (data.length > 0)
-        toastManager.info(`לבניינים '${data.toString()}' לא נוצרו דוחות לתאריך הנבחר מאחר וקיימים כבר במערכת`)
-      else {
-        toastManager.success("דוחות ריקים נוצרו בהצלחה לתאריך שבחרת.");
+      const {
+        existingReportsBuidlings,
+        createdReportsBuidlings
+      } = data;
+
+      if (existingReportsBuidlings.length > 0)
+        toastManager.warning(`לבניינים '${existingReportsBuidlings.toString()}' לא נוצרו דוחות לתאריך הנבחר מאחר וקיימים כבר במערכת`);
+
+      if (createdReportsBuidlings.length > 0) {
+        toastManager.info(`דוחות ריקים נוצרו בהצלחה לבניינים ${createdReportsBuidlings.toString()}`);
         ipcRenderer.send("refresh-renderer");
       }
 
