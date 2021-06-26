@@ -16,12 +16,12 @@ const SelectDropDown = React.memo(({ value, valueName, selectChangeHandler, inde
   // displayed we use a fake dummy for presentatation, only when the dummy is
   // clicked it displays the real select list
   const display = showDummy ?
-    <div
+    <button
       className={dummy}
       onClick={() => setDummy(false)}>
       <ArrowDropDown className={icon} />
       {valueName}
-    </div> :
+    </button> :
     <Select
       className={select}
       name={name}

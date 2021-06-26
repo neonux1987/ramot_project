@@ -110,11 +110,9 @@ const BuildingsManagementTableContainer = () => {
           selectChangeHandler={updateAction}
           name={"status"}
         >
-          {[
-            <MenuItem value={"מוסתר"} key={"מוסתר"}>מוסתר</MenuItem>,
-            <MenuItem value={"פעיל"} key={"פעיל"}>פעיל</MenuItem>,
-            <MenuItem value={"מחוק"} key={"מחוק"}>מחוק</MenuItem>
-          ]}
+          <MenuItem value={"מוסתר"} key={"מוסתר"}>מוסתר</MenuItem>,
+          <MenuItem value={"פעיל"} key={"פעיל"}>פעיל</MenuItem>,
+          <MenuItem value={"מחוק"} key={"מחוק"}>מחוק</MenuItem>
         </SelectDropDown> :
         <Cell>{rowData.status}</Cell>}
 

@@ -26,8 +26,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
   border-bottom: 1px solid #8e8e8e;
   padding-left: 24px;
+  background-color: #ffffff;
+}
+
+.dummy:active,.dummy:focus{
+  outline: none;
 }
 
 .icon{
