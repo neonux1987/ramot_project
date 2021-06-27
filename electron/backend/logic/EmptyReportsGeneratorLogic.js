@@ -17,12 +17,12 @@ class EmptyReportsGeneratorLogic {
   }
 
   /**
-   * creates empty report for the new month
+   * Creates empty report for the new month
    * @param {*} buildingName 
    * @param {*} date 
    */
   async generateEmptyReports({ buildings, date, fromPreviousReports }) {
-    // Using trx as a transaction object:
+    // start transaction
     const trx = await connectionPool.getTransaction();
 
     const existingReportsBuidlings = [];
@@ -49,6 +49,13 @@ class EmptyReportsGeneratorLogic {
     };
   }
 
+  /**
+   * Creates empty reports by month
+   * @param {*} buildingId 
+   * @param {*} date 
+   * @param {*} fromPreviousReports 
+   * @param {*} trx transaction object
+   */
   async createEmptyReportsByMonth(buildingId, date, fromPreviousReports, trx) {
     // all the months of the chosen quarter
     const months = Helper.getQuarterMonthsNum(date.quarter);
@@ -70,6 +77,12 @@ class EmptyReportsGeneratorLogic {
 
   }
 
+  /**
+   * Regiser new report
+   * @param {*} buildingId 
+   * @param {*} date 
+   * @param {*} trx transaction object
+   */
   async registereNewReport(buildingId, date, trx) {
     // register the date of the new reports
     await this.registeredReportsLogic.addNewReport({

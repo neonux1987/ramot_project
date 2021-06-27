@@ -8,31 +8,56 @@ class BuildingsLogic {
     this.buildingsDao = new BuildingsDao();
   }
 
+  /**
+   * Get building by id
+   * @param {*} id the id of the building
+   * @param {*} trx transaction object
+   * @returns building
+   */
   getBuildingById(id, trx) {
     return this.buildingsDao.getBuildingById(id, trx);
   }
 
+  /**
+   * Get building by status
+   * @param {*} status the status of building
+   * @param {*} trx transaction object
+   * @returns building
+   */
   getBuildingsByStatus(status, trx) {
     return this.buildingsDao.getBuildingsByStatus(status, trx);
   }
 
+  /**
+   * Get all buildings
+   * @param {*} trx transaction object
+   * @returns all buildings
+   */
   getAllBuildings(trx) {
     return this.buildingsDao.getAllBuildings(trx);
   }
 
+  /**
+   * add a building
+   * @param {*} params buildingName of the building to create 
+   * @returns 
+   */
   async addBuilding({ buildingName }) {
+    // start transaction
+    const trx = await ConnectionPool.getTransaction();
+
     const { customAlphabet } = require('nanoid');
     const { lowercase } = require('nanoid-dictionary');
     const lowercaseRandomString = customAlphabet(lowercase, 10);
-
-    const trx = await ConnectionPool.getTransaction();
 
     const buildings = await this.getAllBuildings(trx);
 
     // tabe prefix will be used to name
     // the tables of the building in the database
+    // only letters and numbers limited to 10 characters
     const id = lowercaseRandomString();
 
+    // new building object
     const record = {
       id,
       buildingName,
@@ -47,7 +72,7 @@ class BuildingsLogic {
 
     await this.buildingsDao.addBuilding(record, trx);
 
-    // create all the tables
+    // create all the tables in the database
     await createMonthExpansesTable(id, trx);
     await createBudgetExecutionTables(id, trx);
     await createSummarizedBudgetTable(id, trx);
@@ -60,16 +85,25 @@ class BuildingsLogic {
 
     const addedBuilding = await this.buildingsDao.getBuildingByBuildingName(buildingName, trx);
 
+    // end transaction
     trx.commit();
 
     return addedBuilding[0];
   }
 
+  /**
+   * update building
+   * @param {*} params id and the payload to update 
+   * @returns the updated building
+   */
   async updateBuilding({ id, payload }) {
+    // start transaction
     const trx = await ConnectionPool.getTransaction();
 
     const record = { ...payload };
 
+    // for deleted status מחוק added deletion date
+    // otherwise init it to null
     if (payload.status === "מחוק") {
       const deletionDate = new Date();
       deletionDate.setDate(deletionDate.getDate() + 30)
@@ -79,20 +113,26 @@ class BuildingsLogic {
         payload.deletionDate = null;
     }
 
-
     const updatedBuilding = await this.buildingsDao.updateBuilding(id, record, trx);
 
+    // end transaction
     trx.commit();
 
     return updatedBuilding;
   }
 
+  /**
+   * remove list of buildings
+   * @param {*} buildingsForDeletion list of buildings to delete
+   */
   async removeBuildings(buildingsForDeletion) {
+    // start transaction
+    const trx = await ConnectionPool.getTransaction();
+
     const RegisteredReportsDao = require('../dao/RegisteredReportsDao');
     const registeredReportsDao = new RegisteredReportsDao();
 
-    const trx = await ConnectionPool.getTransaction();
-
+    // drop all the tables of the specific building
     await asyncForEach(buildingsForDeletion, async ({ id }) => {
       await trx.schema.dropTable(`${id}_budget_execution_quarter1`);
       await trx.schema.dropTable(`${id}_budget_execution_quarter2`);
@@ -111,6 +151,7 @@ class BuildingsLogic {
       await registeredReportsDao.removeReports(id, trx);
     });
 
+    // end transaction
     trx.commit();
   }
 
@@ -134,6 +175,7 @@ async function createMonthExpansesTable(tablePrefix, trx) {
 async function createBudgetExecutionTables(tablePrefix, trx) {
   const Helper = require('../../helpers/Helper');
 
+  // create table for each quarter
   for (let i = 1; i < 5; i++) {
     // months of specific quarter
     const months = Helper.getQuarterMonths(i);

@@ -6,10 +6,20 @@ class DefaultExpansesCodesLogic {
     this.dec = new DefaultExpansesCodesDao(connection);
   }
 
+  /**
+   * get default expanses codes
+   * @param {*} trx transaction object
+   * @returns default expanses codes
+   */
   getDefaultExpansesCodesTrx(trx,) {
     return this.dec.getDefaultExpansesCodesTrx(trx);
   }
 
+  /**
+   * preapre default batch for insertion
+   * @param {*} data the data the will be mutated
+   * @param {*} date for the date properties
+   */
   prepareDefaultBatchInsertion(data, date) {
     for (let i = 0; i < data.length; i++) {
       data[i].month = date.month;
@@ -22,6 +32,11 @@ class DefaultExpansesCodesLogic {
 
   }
 
+  /**
+   * prepare batch for insertion
+   * @param {*} data the data the will be mutated
+   * @param {*} date for the date properties
+   */
   prepareBatchInsertion(data, date) {
     for (let i = 0; i < data.length; i++) {
       delete data[i].id;
@@ -40,7 +55,5 @@ class DefaultExpansesCodesLogic {
   }
 
 }
-
-
 
 module.exports = DefaultExpansesCodesLogic;
