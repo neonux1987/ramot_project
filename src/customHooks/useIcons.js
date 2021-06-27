@@ -2,6 +2,9 @@ import { Home, AttachMoney, AssignmentTurnedIn, Receipt, Label, Dashboard } from
 import { BiStats } from 'react-icons/bi';
 import SvgIcon from '../components/SvgIcon/SvgIcon';
 
+/* 
+  this hook generates icons
+*/
 const useIcons = () => {
 
   const generateIcon = (iconName) => {

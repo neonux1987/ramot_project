@@ -19,9 +19,9 @@ class BackupLogic {
   }
 
   /****************************************************
-   * check if the database is working, if the file
-   * is not corrupt, if it's corrupt or not working
-   * dont back it up
+   * checks if the database is working and not corrupt, 
+   * if it's corrupt or not working dont back it up.
+   * simple query to the database does the job
   *****************************************************/
   async checkDbHealth() {
     const connectionPool = require('../connection/ConnectionPool');
@@ -38,61 +38,63 @@ class BackupLogic {
       });
   }
 
-  async initiateBackup(settings) {
+  /**
+   * Backups the database
+   */
+  async initiateBackup() {
     await this.checkDbHealth();
 
-    if (settings === undefined)
-      //fetch db backup settings
-      settings = await this.settingsLogic.getSettings();
-
+    const settings = await this.settingsLogic.getSettings();
     const { db_backup, system } = settings;
-
-    //fetch db backup settings
     const registeredBackups = await this.registeredBackupsLogic.getRegisteredBackups();
 
-    //current date
+    // current date
     let date = new Date();
-    //convert date to local date he-il to
-    //get the correct time
+    // convert date to local date he-il to
+    // get the correct time
     const dateLocalString = date.toLocaleString();
-    //set the curret time in the new date
+    // set the curret time in the new date
     date = new Date(dateLocalString);
 
-    //filename of the file to save
+    // filename of the file to save
     const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.sqlite`;
     const path = `${db_backup.db_backups_folder_path}/${fileName}`;
 
+    // limit up to number of backups_to_save
     if (registeredBackups.length >= db_backup.backups_to_save) {
 
-      //filename of the file to remove, the first and oldest in the array
+      // filename of the file to remove, the first
+      // which is oldest in the array
       const removedFileName = registeredBackups[0].fileName;
 
-      //remove the file physically from the drive
+      // remove the file physically from the drive
       await fse.remove(`${db_backup.db_backups_folder_path}/${removedFileName}`);
 
-      //remove the filename from the array
+      // remove the filename from the array
       registeredBackups.shift();
 
     }
 
-    //write the file physically to the drive
+    // write the file physically to the drive
     await fse.copy(system.db_file_path, path);
 
-    //push the new file to the array
+    // store the new backup details
     registeredBackups.push({ backupDateTime: date, fileName: fileName });
 
-    //save it to the settings obj
+    // update settings
     settings.db_backup.last_update = date.toJSON();
-
     settings.db_backup.byTime.executed_backups++;
-
-    //write the new settings
     await this.settingsLogic.updateSettings(settings);
 
+    // update registered backups
     await this.registeredBackupsLogic.updateRegisteredBackups(registeredBackups);
   }
 
-
+  /**
+ * manually backup the database, save it to a location
+ * that the user specified
+ * @param {*} fullPath the path to where to save the backup to
+ */
   async independentBackup(fullPath) {
     await this.checkDbHealth();
 
@@ -102,13 +104,12 @@ class BackupLogic {
       throw newError;
     }
 
-    //fetch db backup settings
     let systemSettings = await this.settingsLogic.getSystemSettings();
 
-    //fetch db backup settings
+    // read the database file
     let fileToBackup = await fse.readFile(systemSettings.db_file_path);
 
-    //write the file physically to the drive
+    // save the databse to a location
     await fse.writeFile(fullPath, fileToBackup);
   }
 

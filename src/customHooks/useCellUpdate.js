@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 
+/* 
+  this hook provides update logic for a cell
+  of a table
+*/
 const useCellUpdate = (value) => {
   const [newValue, setNewValue] = useState(value);
 

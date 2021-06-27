@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateBuilding } from "../redux/actions/buildingsActions";
 import { updateColor } from "../redux/actions/buildingsColorsActions";
 
+/* 
+  this hooks provides a color based on building id
+  used for themeing, displaying components in the 
+  building specific color
+*/
 const useBuildingColor = (buildingId) => {
 
   const dispatch = useDispatch();

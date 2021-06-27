@@ -7,6 +7,11 @@ import { checkForUpdates } from '../services/updates.svc';
 import { toastManager } from '../toasts/toastManager';
 import useModalLogic from './useModalLogic';
 
+/* 
+  this hook is responsible for all the services
+  that needed to be started in the initialization
+  of the app
+*/
 const useServices = () => {
 
   const dispatch = useDispatch();

@@ -12,6 +12,11 @@ const neutral = {
   color: "#000000"
 }
 
+/* 
+  this hook provides generation of color
+  based on negative,neutral or positive values
+  used for generation colors for difference columns in a table
+*/
 const useDifferenceColor = () => {
 
   const whichColor = useCallback((value) => {

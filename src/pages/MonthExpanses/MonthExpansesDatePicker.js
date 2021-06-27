@@ -42,7 +42,7 @@ const MonthExpansesDatePicker = ({
     if (refresh === true)
       setRefresh(false);
     //eslint-disable-next-line
-  }, [refresh, setRefresh]);
+  }, [refresh, setRefresh, date]);
 
   const monthExist = (month, data) => {
     let exist = false;

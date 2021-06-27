@@ -1,6 +1,10 @@
 import { useState, useCallback } from 'react';
 import { generatePreview, print } from '../services/print.svc';
 
+/* 
+  this hook manages the state and outpute
+  of generating a print preview
+*/
 const usePrint = () => {
 
   const [generating, setGenerating] = useState(true);

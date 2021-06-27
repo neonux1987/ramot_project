@@ -2,6 +2,9 @@ import { useState } from 'react';
 import EditableInputCell from '../components/table/components/EditableInputCell';
 import EditableTextareaCell from '../components/table/components/EditableTextareaCell';
 
+/* 
+  this hooks provides multiple table components and logic
+*/
 const useTableLogic = () => {
 
   const [editMode, setEditMode] = useState(false);
