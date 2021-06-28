@@ -26,7 +26,7 @@ class MainSystem {
     const reportsIpc = require('../../ipcs/reports.ipc');
     const mainProcessIpc = require('../../ipcs/mainProcess.ipc');
     const restoreDbIpc = require('../../ipcs/restoreDb.ipc');
-    //const updatesIpc = require('../../ipcs/updates.ipc');
+    const updatesIpc = require('../../ipcs/updates.ipc');
     const printerIpc = require('../../ipcs/printer.ipc');
     const buildingsIpc = require('../../ipcs/buildings.ipc');
 
@@ -70,7 +70,7 @@ class MainSystem {
 
     restoreDbIpc();
 
-    //updatesIpc();
+    updatesIpc();
 
     printerIpc();
 

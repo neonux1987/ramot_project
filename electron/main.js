@@ -60,7 +60,8 @@ async function createWindow() {
     icon,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      contextIsolation: false
     },
   });
   loading.uniqueId = "loadingWindow";
@@ -79,7 +80,8 @@ async function createWindow() {
         titleBarStyle: "hidden",
         webPreferences: {
           nodeIntegration: true,
-          enableRemoteModule: true
+          enableRemoteModule: true,
+          contextIsolation: false
         },
         backgroundColor: "#eee",
         icon,
