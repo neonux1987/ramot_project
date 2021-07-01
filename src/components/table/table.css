@@ -64,7 +64,7 @@ th,td{
   border-bottom: 1px solid #eeeeee;
   position: relative;
   background-color: #00000005;
-  box-shadow: rgb(0 0 0 / 6%) 0px 4px 4px 1px;
+  box-shadow: rgb(0 0 0 / 4%) 0px 8px 12px 0px;
   z-index: 2;
 }
 

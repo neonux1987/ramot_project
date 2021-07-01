@@ -19,7 +19,7 @@ const updatesIpc = () => {
       'releaseType': 'release'
     };
 
-    autoUpdater.setFeedURL(feedInfo);
+    //autoUpdater.setFeedURL(feedInfo);
   }
 
   autoUpdater.autoDownload = false;

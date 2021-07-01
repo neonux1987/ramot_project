@@ -33,7 +33,7 @@ const Table = ({
   const [components] = useTableComponents();
 
   // since the virutalized list causing problems
-  // when ytrying to expand it to full height to
+  // when trying to expand it to full height to
   // show all the items for print mode, we need
   // to generate the list of items regularely in
   // print mode only
