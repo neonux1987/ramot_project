@@ -48,7 +48,8 @@
       "allowToChangeInstallationDirectory": false,
       "oneClick": true,
       "createDesktopShortcut": true,
-      "deleteAppDataOnUninstall": true
+      "deleteAppDataOnUninstall": true,
+      "differentialPackage": false
     },
     "directories": {
       "buildResources": "assets"
