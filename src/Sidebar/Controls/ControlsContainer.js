@@ -21,9 +21,11 @@ const volumeBtn = css`
   outline: none;
   cursor: pointer;
   background: none;
-  color: #dddddd;
+  color: #ffffff;
   min-width: 0;
   margin: 0 10px;
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
 `;
 
 const moreBtn = css`
@@ -31,16 +33,20 @@ const moreBtn = css`
   align-items: center;
   justify-content: center;
   background: none;
-  color: #dddddd;
+  color: #ffffff;
   border: none;
   outline: none;
   cursor: pointer;
   min-width: 0;
   margin: 0 10px;
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
 `;
 
 const settingsBtn = css`
   margin: 0 10px;
+  -webkit-app-region: no-drag;
+  color: #ffffff !important;
 `;
 
 const ControlsContainer = ({ routes, buildingId }) => {

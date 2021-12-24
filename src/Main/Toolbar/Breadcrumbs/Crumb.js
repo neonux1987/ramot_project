@@ -8,11 +8,11 @@ const icon = css`
 
 const text = css`
   margin-left: 6px;
-  color: #7d7d7d;
+  color: #ffffff;
 `;
 
 const lastStyle = css`
-  color: #555555;
+  color: #ffffff;
   font-weight: 500;
 `
 

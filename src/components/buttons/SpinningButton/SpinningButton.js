@@ -15,6 +15,7 @@ const SpinnerButton = props => {
     <ButtonNavLink
       className={classnames(className, navLink, active ? "activeExpandItem" : "", css`min-width:0`)}
       to={to}
+      draggable={false}
     >
       <Icon className={classnames(icon, spinner)} />
     </ButtonNavLink>

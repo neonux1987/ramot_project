@@ -1,5 +1,5 @@
 .wrapper{
-  margin: 0 0 20px;
+  margin: 20px;
   /* box-shadow: 0 5px 4px -5px #00000030; */
   font-size: 14px;
   color: #ffffff;
@@ -10,8 +10,10 @@
   top: 0;
   display: flex;
   justify-content: stretch;
-  /* background: #f7f7f7; */
   padding:10px 20px;
+  background-color: #2196f3;
+  border-radius: 6px;
+  -webkit-app-region: drag;
 }
 
 .noFollow{

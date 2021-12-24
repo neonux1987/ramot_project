@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppWrapper from './components/AppWrapper/AppWrapper';
 
 // COMPONENTS
-import AppFrame from './AppFrame/AppFrameContainer';
 import ScrollToTop from './containers/ScrollToTop/ScrollToTop';
 import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
 
@@ -26,6 +25,7 @@ import useServices from './customHooks/useServices';
 // TOASTS
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
+import Toolbar from './Main/Toolbar/Toolbar';
 
 const AppContainer = () => {
 
@@ -60,7 +60,7 @@ const AppContainer = () => {
 
       <ScrollToTop mainContainer={mainContainer} />
 
-      <AppFrame settings={settings} />
+      <Toolbar settings={settings} />
 
       <AppWrapper>
 

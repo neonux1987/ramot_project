@@ -122,6 +122,7 @@ const MenuContainer = ({ routes, data }) => {
       open={state[buildingId].open}
       key={buildingId}
       active={routeState.buildingName === buildingName}
+      buildingId={buildingId}
     >
 
       {pages.map((page) => {

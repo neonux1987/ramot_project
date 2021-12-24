@@ -47,9 +47,7 @@ const SidebarContainer = () => {
   }, [fetchListener]);
 
   return <Sidebar show={showSidebar}>
-    <Logo>
-      <ControlsContainer routes={routes} buildingId={buildingId} />
-    </Logo>
+    <Logo />
 
     {isFetching ? <CenteredLoader text="טוען תפריט" color="#ffffff" /> : <MenuContainer routes={routes} data={data} />}
     <Credits />

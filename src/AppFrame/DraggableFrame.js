@@ -18,4 +18,6 @@ const DraggableFrame = props => {
   </div>;
 }
 
-export default DraggableFrame;
+export default React.forwardRef((props, ref) =>
+  <DraggableFrame innerRef={ref} {...props} />
+);

@@ -1,9 +1,9 @@
 .listItem{
   padding-right: 16px;
-  width: 230px;
-  margin: 0 10px;
+  width: 220px;
+  margin: 0 20px;
 }
 
 .listItem,.listItemIcon,.listItemText{
-  color: #d0d0d0;
+  color: #555555;
 }

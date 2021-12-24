@@ -16,6 +16,7 @@ import {
   collapse,
   listItem
 } from './ExpandableMenuItem.module.css';
+import useBuildingColor from '../../customHooks/useBuildingColor';
 
 const ExpandableMenuItem = props => {
 
@@ -25,8 +26,11 @@ const ExpandableMenuItem = props => {
     open = false,
     onClick,
     children,
-    active = false
+    active = false,
+    buildingId
   } = props
+
+  const [buildingColor] = useBuildingColor(buildingId);
 
   return (
     <Fragment>
@@ -37,7 +41,7 @@ const ExpandableMenuItem = props => {
         button
       >
         <ListItemIcon className={listItemIcon}>
-          {Icon && <Icon />}
+          {Icon && <Icon style={{ color: buildingColor }} />}
         </ListItemIcon>
         <ListItemText className={listItemText} primary={label} />
         {open ? <ExpandLess className={expandIcon} /> : <ExpandMore className={expandIcon} />}

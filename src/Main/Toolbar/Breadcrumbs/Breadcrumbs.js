@@ -8,7 +8,7 @@ const wrapper = css`
   align-items: center;
   margin-right: 10px;
   font-size: 16px;
-  color: #555555;
+  color: #f1f1f1;
   /* padding: 10px 20px; */
   font-weight: 400;
   /* box-shadow: 0px 0px 4px 0px rgb(0 0 0 / 7%); */

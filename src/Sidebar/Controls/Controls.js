@@ -5,16 +5,14 @@ const container = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 0;
   z-index: 3;
   position: relative;
-  background: #ffffff1c;
-  margin: 15px 20px 0;
-  border-radius: 3px;
+  border-left: 1px solid #0000001a;
+  margin-left: 15px;
 `;
 
 const Controls = props => {
-  return <div className={container} style={{ background: props.bgColor }}>
+  return <div className={container}>
     {props.children}
   </div>;
 }

@@ -26,7 +26,7 @@ const style = css`
 const iconStyle = css`
   width: 24px;
   height: 24px;
-  color: #999999;
+  color: #f1f1f1;
 `;
 
 const ToggleButton = () => {

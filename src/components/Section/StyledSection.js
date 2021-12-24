@@ -6,9 +6,8 @@ import CenteredLoader from '../AnimatedLoaders/CenteredLoader';
 import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
 
 const _container = css`
-  margin: 30px 20px 20px 20px;
+  margin: 30px 15px 20px 20px;
   background-color: #ffffff;
-  box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
   border-radius: 3px;
   overflow: hidden;
 `;

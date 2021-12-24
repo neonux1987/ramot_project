@@ -5,7 +5,7 @@ import { css } from 'emotion';
 
 const style = css`
   display: flex;
-  width: 100%;
+  /* width: 100%; */
   justify-content: flex-end;
 `;
 
@@ -21,6 +21,7 @@ const button = css`
   border-radius: 0;
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
+  color: #ffffff;
 
   :hover{
     background-color: rgba(0, 0, 0, 0.06);

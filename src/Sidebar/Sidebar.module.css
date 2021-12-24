@@ -1,22 +1,18 @@
 .drawer {
-  width: 250px;
+  width: 260px;
   flex-shrink: 0;
   z-index: 2;
   box-shadow: none;
-  box-shadow: 0 10px 30px -12px rgb(0 0 0 / 42%), 0 4px 25px 0px rgb(0 0 0 / 12%), 0 8px 10px -5px rgb(0 0 0 / 20%);
-  background: url('../assets/images/mountains.jpg') no-repeat;
   background-size: cover;
   overflow: hidden;
 }
 
 .drawerPaper {
-  width: 250px;
-  /* background: linear-gradient(315deg, rgba(33, 39, 49, 0.96) 0%, rgba(46, 55, 62, 0.84) 100%); */
-  background: linear-gradient(315deg, rgb(30 42 62 / 96%) 0%, rgb(30 59 82 / 84%) 100%);
+  width: 260px;
   overflow: initial;
   position: relative;
   border: none;
-
+  background: none;
 }
 
 .hideSidebar{

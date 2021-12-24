@@ -12,7 +12,7 @@ import useBuildingColor from '../../customHooks/useBuildingColor';
 import ChangeBuildingColorModal from '../modals/ChangeBuildingColorModal';
 
 const container = css`
-  margin: 20px 20px 20px;
+  margin: 20px 10px 20px;
 `;
 
 const mainContainer = css`
@@ -74,10 +74,10 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
   }
 
   const mainIcon = css`
-  font-size: 32px;
+  font-size: 42px;
   display: flex;
   align-items: center;
-  color: #ffffff;
+  color: ${buildingColor};
   padding-top: 0px;
   margin-bottom: 18px;
   margin-left: 5px;
@@ -88,7 +88,6 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
   align-items: center;
   justify-content: center;
   position: relative;
-  background-color: ${buildingColor};
 
   :after{
     content: "";
@@ -98,7 +97,7 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
     width: 0;
     height: 0;
     border-top: 10px solid transparent;
-    border-right: 10px solid ${buildingColor};
+    border-right: 10px solid #555555;
     border-bottom: 10px solid transparent;
   }
 `;

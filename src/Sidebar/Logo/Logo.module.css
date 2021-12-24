@@ -6,7 +6,6 @@
   /* background: linear-gradient(66deg, rgba(11,106,161,1) 0%, rgba(14,122,185,1) 100%); */
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
-  height: 160px;
 }
 
 .container:before {
@@ -33,6 +32,7 @@
   margin-top: 15px;
   position: relative;
   z-index: 3;
+  margin-right: 10px;
 }
 
 .mainContainer{
@@ -45,7 +45,7 @@
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color: #dedede;
+  color: #555555;
   font-style: normal;
   font-size: 32px;
   letter-spacing: -1px;
@@ -62,7 +62,7 @@
 .subtitle {
   text-align: center;
   font-size: 14px;
-  color: #dedede; /* #1fcca5 */
+  color: #555555; /* #1fcca5 */
   font-weight: 500;
   font-style: normal;
   letter-spacing: 0.08rem;

@@ -5,7 +5,6 @@ import { useHistory, useLocation } from 'react-router';
 import { Route } from 'react-router-dom';
 import { css } from 'emotion';
 import { updateRoute } from '../redux/actions/routesActions';
-import Toolbar from './Toolbar/Toolbar';
 import Routes from './Routes';
 
 const mainStyle = css`
@@ -48,8 +47,6 @@ const MainContainer = ({ mainContainer }) => {
   }, [location, routes.pathname, dispatch]);
 
   return <main id="mainContainer" ref={mainContainer} className={_main}>
-
-    <Toolbar />
 
     <div className={mainStyle}>
 
