@@ -45,7 +45,7 @@
   text-align: right;
   font-weight: 600;
   margin: 0;
-  color: #555555;
+  color: #1e65bd;
   font-style: normal;
   font-size: 32px;
   letter-spacing: -1px;
@@ -62,7 +62,7 @@
 .subtitle {
   text-align: center;
   font-size: 14px;
-  color: #555555; /* #1fcca5 */
+  color: #148a3d; /* #1fcca5 */
   font-weight: 500;
   font-style: normal;
   letter-spacing: 0.08rem;

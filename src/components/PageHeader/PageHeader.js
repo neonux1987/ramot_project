@@ -22,7 +22,7 @@ const mainContainer = css`
 `;
 
 const mainTitle = css`
-  margin-right: 15px;
+  margin-right: 0px;
   /* color: #6b6b6b; */
   color: #555555;
   font-weight: 500;
@@ -88,6 +88,7 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
   align-items: center;
   justify-content: center;
   position: relative;
+  display: none;
 
   :after{
     content: "";
