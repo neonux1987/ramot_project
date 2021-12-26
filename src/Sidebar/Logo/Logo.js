@@ -9,7 +9,8 @@ import {
   subtitle,
   container,
   logoWrapper,
-  subContainer
+  subContainer,
+  wrapper
 } from './Logo.module.css';
 
 const Logo = props => {
@@ -17,7 +18,7 @@ const Logo = props => {
     <div className={container}>
 
       {/* wrapper */}
-      <div>
+      <div className={wrapper}>
 
         {/* logo wrapper */}
         <div className={logoWrapper}>
@@ -25,13 +26,13 @@ const Logo = props => {
           <div className={mainContainer}>
             <Typography className={mainTitle} variant="h4">
               קבוצת רמות
-        </Typography>
+            </Typography>
           </div>
 
           <div className={subContainer}>
             <Typography className={subtitle} variant="subtitle1">
               ניהול הוצאות והכנסות
-        </Typography>
+            </Typography>
           </div>
 
         </div>

@@ -12,7 +12,7 @@ import useBuildingColor from '../../customHooks/useBuildingColor';
 import ChangeBuildingColorModal from '../modals/ChangeBuildingColorModal';
 
 const container = css`
-  margin: 20px 10px 20px;
+  margin: 10px 10px 20px;
 `;
 
 const mainContainer = css`
