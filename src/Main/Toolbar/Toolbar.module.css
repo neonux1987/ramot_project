@@ -1,18 +1,18 @@
 .wrapper{
-  margin: 20px;
-  /* box-shadow: 0 5px 4px -5px #00000030; */
+  /* box-shadow: 0 5px 4px -5px #000000bf; */
+  /* box-shadow: 0 0px 4px 1px #0000007d;
+  border-bottom: 1px solid #33383c; */
   font-size: 14px;
   color: #ffffff;
   font-weight: 600;
   position: sticky;
-  z-index: 1;
+  z-index: 4;
   left: 0;
   top: 0;
   display: flex;
   justify-content: stretch;
   padding:10px 20px;
-  background-color: #2196f3;
-  border-radius: 6px;
+  background-color: #494f54;
   -webkit-app-region: drag;
 }
 

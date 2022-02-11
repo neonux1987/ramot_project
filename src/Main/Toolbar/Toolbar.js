@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { css } from 'emotion';
@@ -14,20 +14,18 @@ import styles from './Toolbar.module.css';
 
 // COMPONENTS
 import ToggleButton from "./ToggleButton/ToggleButton";
-import BreadcrumbsContainer from "./Breadcrumbs/BreadcrumbsContainer";
 import BackupOnExitModal from "../../components/modals/BackupOnExitModal/BackupOnExitModal";
 import ToastRender from "../../components/ToastRender/ToastRender";
 import FrameControls from "../../AppFrame/FrameControls";
 
 // ACTIONS
 import { toggleSidebar } from '../../redux/actions/toggleSidebarActions';
-import { Slide } from "@material-ui/core";
 
 // HOOKS
 import useModalLogic from "../../customHooks/useModalLogic";
 import { useLocation } from "react-router";
-import useBuildingColor from "../../customHooks/useBuildingColor";
 import ControlsContainer from "../../Sidebar/Controls/ControlsContainer";
+import Logo from "../../Sidebar/Logo/Logo";
 
 const remote = require('electron').remote;
 
@@ -35,14 +33,10 @@ const Toolbar = ({ settings }) => {
 
   const dispatch = useDispatch();
   const { pathname, state = {} } = useLocation();
-  const [path, setPath] = useState("");
   const routes = useSelector(store => store.routes);
 
-  const [show, setShow] = useState(true);
   const { showModal } = useModalLogic();
   const { buildingId } = state;
-
-  const [buildingColor] = useBuildingColor(buildingId);
 
   const onClick = () => {
     dispatch(toggleSidebar());
@@ -122,35 +116,23 @@ const Toolbar = ({ settings }) => {
     }
   }
 
-  // make the tool bar hide and re-appear on page change
-  // to create a cool animation :D
-  useEffect(() => {
-    setShow(false);
-
-    setTimeout(() => {
-      setShow(true);
-      setPath(() => pathname)
-    }, 400);
-  }, [pathname]);
-
   const themeSettings = useSelector(store => store.settings.data.theme);
 
   const noFollowRule = !themeSettings.sticky_toolbar ? styles.noFollow : "";
 
-  return <Slide direction="down" in={show} timeout={400}>
-    <div className={classnames(styles.wrapper, noFollowRule, css`background-color: ${buildingColor} !important`)} id="toolbar">
+  return <div className={classnames(styles.wrapper, noFollowRule)} id="toolbar">
 
-      <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
-        <ToggleButton onClick={onClick} />
-        <BreadcrumbsContainer pathname={path} />
-      </div>
-
-      <ControlsContainer routes={routes} buildingId={buildingId} />
-
-      <FrameControls onMinimize={onMinimize} onMaximize={onMaximize} onClose={onClose} />
-
+    <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
+      <Logo />
+      <ToggleButton onClick={onClick} />
+      {/* <BreadcrumbsContainer pathname={path} /> */}
     </div>
-  </Slide>;
+
+    <ControlsContainer routes={routes} buildingId={buildingId} />
+
+    <FrameControls onMinimize={onMinimize} onMaximize={onMaximize} onClose={onClose} />
+
+  </div>;
 
 }
 

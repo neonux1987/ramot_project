@@ -7,13 +7,11 @@ const subTitleContainer = css`
   display: flex;
   align-items: center;
   flex-grow: 1;
-  border-bottom: 1px solid #dddddd;
 `;
 
 const subIconWrapper = css`
   display: flex;
   align-items: center;
-  background-color: #dddddd;
   width: 28px;
   height: 28px;
   justify-content: center;

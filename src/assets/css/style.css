@@ -1,19 +1,26 @@
 @font-face {
   font-family: "Assistant";
   font-weight: 400;
-  src: url("../fonts/Assistant/Assistant-Regular.ttf");
+  src: url("../fonts/OpensSansHebrew/opensanshebrew-regular-webfont.ttf");
 }
 
 @font-face {
   font-family: "Assistant";
   font-weight: 500;
-  src: url("../fonts/Assistant/Assistant-SemiBold.ttf");
+  src: url("../fonts/OpensSansHebrew/opensanshebrew-bold-webfont.ttf");
 }
 
 @font-face {
   font-family: "Assistant";
   font-weight: 600;
-  src: url("../fonts/Assistant/Assistant-Bold.ttf");
+  src: url("../fonts/OpensSansHebrew/opensanshebrew-extrabold-webfont.ttf");
+}
+
+/**
+fixes Uncaught ReferenceError: process is not defined
+**/
+iframe {
+  display: none !important;
 }
 
 html,body{
@@ -31,7 +38,7 @@ html{
 
 body{
   background: #fafafa;
-  background: #eee;
+  background: #f5f5f5;
 }
 
 #root{

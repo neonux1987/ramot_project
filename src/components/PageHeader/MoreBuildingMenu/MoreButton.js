@@ -7,20 +7,15 @@ import classnames from 'classnames';
 import SvgIcon from "../../SvgIcon/SvgIcon";
 
 const wrapper = css`
-  position: relative;
+  flex-grow: 1;
+  justify-content: flex-end;
 `;
 
 const button = css`
-  width: 52px;
-  height: 52px;
   padding: 0;
   min-width: 0;
-  margin-left: 20px;
-  position: absolute;
-  bottom: 15px;
-  left: 0;
+  margin-left: 10px;
   border-radius: 100%;
-  background: #ffffff66;
 `;
 
 const MoreButton = ({ onClick, active }) => {

@@ -3,27 +3,29 @@ import React from "react";
 import { css } from 'emotion';
 
 const icon = css`
-  margin-left: 6px;
+  margin: 0 15px;
 `;
 
 const text = css`
   margin-left: 6px;
-  color: #ffffff;
+  color: #555555;
 `;
 
 const lastStyle = css`
-  color: #ffffff;
+  color: #555555;
   font-weight: 500;
 `
 
 const Crumb = ({ last = false, location, separator = true }) => {
 
   return <div>
-    {separator ? <span className={icon}>{"/"}</span> : null}
+
 
     <span className={last ? lastStyle : text}>
       {location}
     </span>
+
+    {!last ? <span className={icon}>{">"}</span> : null}
   </div>;
 
 }

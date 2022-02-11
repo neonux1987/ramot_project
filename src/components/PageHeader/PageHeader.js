@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { css } from 'emotion';
 import { Typography } from '@material-ui/core';
-import { BiBuildingHouse } from 'react-icons/bi';
+import { MdHome } from 'react-icons/md';
 import MoreButton from './MoreBuildingMenu/MoreButton';
 import Subtitle from './Subtitle';
 import MoreBuildingMenu from './MoreBuildingMenu/MoreBuildingMenu';
@@ -10,24 +10,17 @@ import GenerateExcelReportsModal from '../modals/GenerateExcelReportsModal';
 import GenerateEmptyReportsModal from '../modals/GenerateEmptyReportsModal';
 import useBuildingColor from '../../customHooks/useBuildingColor';
 import ChangeBuildingColorModal from '../modals/ChangeBuildingColorModal';
+import BreadcrumbsContainer from '../../Main/Toolbar/Breadcrumbs/BreadcrumbsContainer';
+import { useLocation } from 'react-router';
 
 const container = css`
-  margin: 10px 10px 20px;
+  margin: 20px 10px 20px;
 `;
 
 const mainContainer = css`
   display: flex;
   align-items: center;
   padding: 0;
-`;
-
-const mainTitle = css`
-  margin-right: 0px;
-  /* color: #6b6b6b; */
-  color: #555555;
-  font-weight: 500;
-  font-size: 2.8rem;
-  padding-bottom: 20px;
 `;
 
 const subContainer = css`
@@ -41,6 +34,9 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [buildingColor] = useBuildingColor(buildingId);
+
+  const { pathname, state = {} } = useLocation();
+  const [path, setPath] = useState("");
 
   const { showModal } = useModalLogic();
 
@@ -73,52 +69,42 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
     });
   }
 
+  // make the tool bar hide and re-appear on page change
+  // to create a cool animation :D
+  useEffect(() => {
+    setTimeout(() => {
+      setPath(() => pathname)
+    }, 400);
+  }, [pathname]);
+
+  const mainTitle = css`
+  margin-right: 10px;
+  color: ${buildingColor};
+  font-weight: 500;
+  font-size: 28px;
+`;
+
   const mainIcon = css`
-  font-size: 42px;
+  font-size: 32px;
   display: flex;
   align-items: center;
-  color: ${buildingColor};
+  color: #555555;
   padding-top: 0px;
   margin-bottom: 18px;
-  margin-left: 5px;
   border-radius: 3px;
-  width: 52px;
+  width: 42px;
   height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   display: none;
-
-  :after{
-    content: "";
-    position: absolute;
-    top: 16px;
-    left: -10px;
-    width: 0;
-    height: 0;
-    border-top: 10px solid transparent;
-    border-right: 10px solid #555555;
-    border-bottom: 10px solid transparent;
-  }
 `;
 
   return <div className={container} id="pageHeader">
 
     {/* main container */}
     <div className={mainContainer}>
-      <div className={mainIcon}>
-        <BiBuildingHouse />
-      </div>
-
-      <Typography className={mainTitle} variant="h3">{buildingName}</Typography>
-    </div>
-    {/* endmain container */}
-
-    {/* sub container */}
-    <div className={subContainer}>
-
-      <Subtitle page={page} />
 
       {/* more */}
       <MoreButton
@@ -133,6 +119,8 @@ const PageHeader = ({ buildingName, buildingId, page }) => {
       />
       {/* end more */}
     </div>
+    {/* endmain container */}
+
     {/* end sub container */}
 
   </div>

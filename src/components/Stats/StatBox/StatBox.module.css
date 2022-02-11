@@ -5,12 +5,11 @@
   /* overflow: hidden; */
   /* box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); */
   /* box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%); */
-  box-shadow: none;
   display: flex;
   flex-direction: column;
-  /* border: 1px solid #dddddd; */
-  /* margin-top: 30px; */
   overflow: hidden;
+  box-shadow: none;
+  /* border: 1px solid #dddddd; */
 }
 
 .upper{
@@ -19,9 +18,7 @@
   align-items: center;
   padding: 0 15px;
   /* margin: -30px 15px 0; */
-  background: #f5f5f5;
   /* border-radius: 3px; */
-  border-bottom: 1px solid #dddddd;
 }
 
 .titleWrapper{

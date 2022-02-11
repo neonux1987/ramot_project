@@ -91,7 +91,7 @@
     "highcharts": "^9.0.1",
     "highcharts-export-server": "^2.1.0",
     "knex": "^0.21.11",
-    "nanoid": "^3.1.22",
+    "nanoid": "^3.2.0",
     "nanoid-dictionary": "^4.3.0",
     "nesthydrationjs": "^2.0.0",
     "pdf-lib": "^1.16.0",

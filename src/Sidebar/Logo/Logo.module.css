@@ -37,10 +37,8 @@
   margin-top: 0px;
     position: relative;
     z-index: 3;
-    margin-right: 20px;
     width: 220px;
     border-radius: 6px;
-    padding: 10px 0;
 }
 
 .mainContainer{
@@ -51,14 +49,12 @@
 
 .mainTitle{
   text-align: right;
-  font-weight: 600;
+  font-weight: 500;
   margin: 0;
-  color: #1e65bd;
+  color: #fafafa;
   font-style: normal;
-  font-size: 32px;
+  font-size: 26px;
   letter-spacing: -1px;
-  text-shadow: 0px 0px 6px #0000001a;
-  text-shadow: 3px 2px 2px #0000001c;
 }
 
 .subContainer{
@@ -69,14 +65,12 @@
 
 .subtitle {
   text-align: center;
-  font-size: 14px;
-  color: #148a3d; /* #1fcca5 */
-  font-weight: 500;
+  font-size: 10px;
+  color: #fafafa; /* #1fcca5 */
+  font-weight: 400;
   font-style: normal;
-  letter-spacing: 0.08rem;
+  letter-spacing: 0.12rem;
   position: relative;
-  text-shadow: 0px 0px 6px #0000001a;
-  text-shadow: 3px 2px 2px #0000001c;
 }
 
 .appVersionWrapper{

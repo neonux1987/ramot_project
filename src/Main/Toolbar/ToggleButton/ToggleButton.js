@@ -21,6 +21,7 @@ const style = css`
   /* border-radius: 30px; */
   width: 40px;
   height: 40px;
+  background-color: rgb(95,160,103);  
 `;
 
 const iconStyle = css`
