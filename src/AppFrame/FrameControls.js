@@ -7,6 +7,7 @@ const style = css`
   display: flex;
   /* width: 100%; */
   justify-content: flex-end;
+  align-items: center;
 `;
 
 const button = css`

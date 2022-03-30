@@ -30,9 +30,9 @@ const StatBox = ({
       <Paper className={paper}>
 
         {/* start upper */}
-        <div className={upper} style={{ backgroundColor: border ? color : "#ffffff" }}>
+        <div className={upper} style={{ backgroundColor: "#ffffff" }}>
           <div className={titleWrapper}>
-            <Typography variant="h6" className={titleText} style={{ color: border ? "#ffffff" : color }}>
+            <Typography variant="h6" className={titleText} style={{ color }}>
               {title}
             </Typography>
           </div>

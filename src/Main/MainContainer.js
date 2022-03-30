@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom';
 import { css } from 'emotion';
 import { updateRoute } from '../redux/actions/routesActions';
 import Routes from './Routes';
-import BreadcrumbsContainer from './Toolbar/Breadcrumbs/BreadcrumbsContainer';
+//import BreadcrumbsContainer from './Toolbar/Breadcrumbs/BreadcrumbsContainer';
 
 const mainStyle = css`
   height: 100%;
@@ -24,7 +24,7 @@ const MainContainer = ({ mainContainer }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const routes = useSelector(store => store.routes);
-  const [path, setPath] = useState("");
+  //const [path, setPath] = useState("");
 
   useEffect(() => {
     const { state = {}, pathname } = routes.active;
@@ -50,16 +50,13 @@ const MainContainer = ({ mainContainer }) => {
 
   // make the tool bar hide and re-appear on page change
   // to create a cool animation :D
-  useEffect(() => {
-
-    setTimeout(() => {
-      setPath(() => location.pathname)
-    }, 400);
-  }, [location.pathname]);
+  /* useEffect(() => {
+    setPath(() => location.pathname)
+  }, [location.pathname]); */
 
   return <main id="mainContainer" ref={mainContainer} className={_main}>
 
-    <BreadcrumbsContainer pathname={path} />
+    {/* <BreadcrumbsContainer pathname={path} /> */}
 
     <div className={mainStyle}>
 

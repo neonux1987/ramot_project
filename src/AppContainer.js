@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import AppWrapper from './components/AppWrapper/AppWrapper';
@@ -26,6 +26,8 @@ import useServices from './customHooks/useServices';
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
 import Toolbar from './Main/Toolbar/Toolbar';
+import BreadcrumbsContainer from './Main/Toolbar/Breadcrumbs/BreadcrumbsContainer';
+import { useLocation } from 'react-router';
 
 const AppContainer = () => {
 
@@ -39,6 +41,9 @@ const AppContainer = () => {
 
   const [start, stop] = useServices();
 
+  const location = useLocation();
+  const [path, setPath] = useState("");
+
   useEffect(() => {
     dispatch(generalSettingsActions.fetchGeneralSettings());
   }, [dispatch]);
@@ -51,6 +56,10 @@ const AppContainer = () => {
     }
   }, [start, stop]);
 
+  useEffect(() => {
+    setPath(() => location.pathname)
+  }, [location.pathname]);
+
   if (generalSettings.isFetching) {
     return <LogoLoader />;
   }
@@ -61,6 +70,8 @@ const AppContainer = () => {
       <ScrollToTop mainContainer={mainContainer} />
 
       <Toolbar settings={settings} />
+
+      <BreadcrumbsContainer pathname={path} />
 
       <AppWrapper>
 

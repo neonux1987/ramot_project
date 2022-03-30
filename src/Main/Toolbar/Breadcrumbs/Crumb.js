@@ -7,7 +7,6 @@ const icon = css`
 `;
 
 const text = css`
-  margin-left: 6px;
   color: #555555;
 `;
 
