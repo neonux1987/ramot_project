@@ -40,13 +40,13 @@
 }
 
 .logo {
-  background-image: url('../../assets/images/eng_ramot_logo2.png');
+  background-image: url('../../assets/images/Untitled-1.png');
   background-repeat: no-repeat;
   height: 90px;
-  background-size: cover;
-  width: 260px;
+  width: 230px;
   background-position-x: -10px;
   background-position-y: 10px;
+  filter: drop-shadow(2px 2px 2px #00000034);
 }
 
 .mainTitle {
@@ -75,6 +75,7 @@
   font-weight: 500;
   font-style: normal;
   position: relative;
+  text-shadow: 2px 6px 12px #0000002e;
 }
 
 .appVersionWrapper {
