@@ -10,18 +10,19 @@ import SpinningButton from '../../components/buttons/SpinningButton/SpinningButt
 import { Settings } from '@material-ui/icons';
 import Controls from './Controls';
 import useBuildingColor from '../../customHooks/useBuildingColor';
+import { Icon } from '@iconify/react';
 
 const volumeBtn = css`
   display: flex;
   align-items: center;
   justify-content: center;
   /* background: #8c49d6;
-  color: #fff; */
+  color: #000000; */
   border: none;
   outline: none;
   cursor: pointer;
   background: none;
-  color: #ffffff;
+  color: #00000;
   min-width: 0;
   margin: 0 10px;
   -webkit-app-region: no-drag;
@@ -33,7 +34,7 @@ const moreBtn = css`
   align-items: center;
   justify-content: center;
   background: none;
-  color: #ffffff;
+  color: #00000;
   border: none;
   outline: none;
   cursor: pointer;
@@ -46,8 +47,10 @@ const moreBtn = css`
 const settingsBtn = css`
   margin: 0 10px;
   -webkit-app-region: no-drag;
-  color: #ffffff !important;
+  color: #000000 !important;
 `;
+
+const SettingsIcon = () => <Icon icon="akar-icons:settings-vertical" width="24" height="24" />;
 
 const ControlsContainer = ({ routes, buildingId }) => {
 
@@ -77,7 +80,7 @@ const ControlsContainer = ({ routes, buildingId }) => {
 
     <SpinningButton
       className={settingsBtn}
-      Icon={Settings}
+      Icon={SettingsIcon}
       to={{
         pathname: `/הגדרות`,
         state: {

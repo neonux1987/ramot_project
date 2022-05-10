@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
   /* box-shadow: 0 5px 4px -5px #000000bf; */
   /* box-shadow: 0 0px 4px 1px #0000007d;
   border-bottom: 1px solid #33383c; */
@@ -11,95 +11,93 @@
   top: 0;
   display: flex;
   justify-content: stretch;
-  padding:10px 20px;
-  background-color: #494f54;
-  background-color: #2c618c;
-  border-bottom: 1px solid #1e456d;
+  padding: 10px 20px;
   -webkit-app-region: drag;
+  margin-right: 52px;
 }
 
-.noFollow{
+.noFollow {
   position: relative;
 }
 
-.spinner{
+.spinner {
   margin: 0;
   display: flex
 }
 
-.section{
+.section {
   flex-grow: 1;
-    display: flex;
-    flex-basis: 0;
-    align-items: center;
+  display: flex;
+  flex-basis: 0;
+  align-items: center;
 }
 
-.alignCenter{
+.alignCenter {
   text-align: center;
 }
 
-.alignLeft{
+.alignLeft {
   text-align: left;
 }
 
-.flex{
+.flex {
   display: flex;
   align-items: center;
 }
 
-.flexAlignRight{
+.flexAlignRight {
   justify-content: flex-start;
 }
 
-.flexAlignLeft{
+.flexAlignLeft {
   justify-content: flex-end;
 }
 
-.volumeBtn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* background: #8c49d6;
+.volumeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: #8c49d6;
     color: #fff; */
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background: none;
-    color: #ffffff;
-    min-width: 0;
-    margin-left: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  color: #ffffff;
+  min-width: 0;
+  margin-left: 10px;
 }
 
-.moreBtn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    color: #ffffff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    min-width: 0;
-    margin-left: 15px;
+.moreBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  color: #ffffff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  min-width: 0;
+  margin-left: 15px;
 }
 
-.notificationBtn svg:hover{
+.notificationBtn svg:hover {
   color: #e2e2e2;
 }
 
-.vatWrapper{
-    font-size: 15px;
-    font-weight: 600;
-    margin-left: 30px;
-    /* background: #0365a2; */
-    padding: 2px 16px;
-    border-radius: 6px;
-    color: #ffffff;
-    font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+.vatWrapper {
+  font-size: 15px;
+  font-weight: 600;
+  margin-left: 30px;
+  /* background: #0365a2; */
+  padding: 2px 16px;
+  border-radius: 6px;
+  color: #ffffff;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.toggleBtn{
+.toggleBtn {
   padding: 4px 6px;
   border-radius: 6px;
   outline: none;
@@ -114,13 +112,13 @@
   color: #ffffff;
 }
 
-.breadcrumbs{
+.breadcrumbs {
   margin-right: 20px;
   font-weight: 400;
   font-size: 1.200em;
 }
 
-.middleSection{
+.middleSection {
   flex-grow: 0.4;
   display: flex;
   justify-content: center;

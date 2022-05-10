@@ -12,12 +12,10 @@ import { updateRoute } from '../../redux/actions/routesActions';
 
 // HOOKS
 import useIcons from '../../customHooks/useIcons';
-import HomeButton from '../HomeButton/HomeButton';
 import Menu from './Menu';
 import pages from '../../helpers/pages';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
-const HOME_BUTTON_LABEL = "דף הבית";
 
 const MenuContainer = ({ routes, data }) => {
   let counter = 1;
@@ -151,7 +149,6 @@ const MenuContainer = ({ routes, data }) => {
 
   return (
     <Menu>
-      <HomeButton active={routeState.page === HOME_BUTTON_LABEL} />
       {menuRender}
     </Menu>
   );

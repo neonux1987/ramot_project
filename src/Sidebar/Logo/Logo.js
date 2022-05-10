@@ -1,14 +1,15 @@
 // LIBRARIES
 import React from 'react';
 import { Typography } from '@material-ui/core';
+import logoImg from '../../assets/images/eng_ramot_logo3.png';
 
 // CSS
 import {
-  mainContainer,
+  logoImgContainer,
   mainTitle,
   subtitle,
   container,
-  logoWrapper,
+  logo,
   subContainer,
   wrapper
 } from './Logo.module.css';
@@ -20,23 +21,15 @@ const Logo = props => {
       {/* wrapper */}
       <div className={wrapper}>
 
-        {/* logo wrapper */}
-        <div className={logoWrapper}>
-
-          <div className={mainContainer}>
-            <Typography className={mainTitle} variant="h4">
-              קבוצת רמות
-            </Typography>
-          </div>
-
-          <div className={subContainer}>
-            <Typography className={subtitle} variant="subtitle1">
-              ניהול הוצאות והכנסות
-            </Typography>
-          </div>
-
+        <div className={logoImgContainer}>
+          <div className={logo} />
         </div>
-        {/* end logo wrapper */}
+
+        <div className={subContainer}>
+          <Typography className={subtitle} variant="subtitle1">
+            ניהול הוצאות והכנסות
+          </Typography>
+        </div>
 
       </div>
       {/* end wrapper */}

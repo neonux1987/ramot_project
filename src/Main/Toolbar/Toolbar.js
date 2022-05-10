@@ -1,8 +1,7 @@
 // LIBRARIES
-import React, { useEffect } from "react";
+import React from "react";
 import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { css } from 'emotion';
 
 // SERVICES
 import { initiateDbBackup } from '../../services/dbBackup.svc';
@@ -18,14 +17,11 @@ import BackupOnExitModal from "../../components/modals/BackupOnExitModal/BackupO
 import ToastRender from "../../components/ToastRender/ToastRender";
 import FrameControls from "../../AppFrame/FrameControls";
 
-// ACTIONS
-import { toggleSidebar } from '../../redux/actions/toggleSidebarActions';
-
 // HOOKS
 import useModalLogic from "../../customHooks/useModalLogic";
 import { useLocation } from "react-router";
 import ControlsContainer from "../../Sidebar/Controls/ControlsContainer";
-import Logo from "../../Sidebar/Logo/Logo";
+import BreadcrumbsContainer from "./Breadcrumbs/BreadcrumbsContainer";
 
 const remote = require('electron').remote;
 
@@ -37,10 +33,6 @@ const Toolbar = ({ settings }) => {
 
   const { showModal } = useModalLogic();
   const { buildingId } = state;
-
-  const onClick = () => {
-    dispatch(toggleSidebar());
-  };
 
   const onClose = async () => {
     const { isFetching, data } = settings;
@@ -123,9 +115,7 @@ const Toolbar = ({ settings }) => {
   return <div className={classnames(styles.wrapper, noFollowRule)} id="toolbar">
 
     <div className={classnames(styles.section, styles.flex, styles.flexAlignRight)}>
-      <Logo />
-      <ToggleButton onClick={onClick} />
-      {/* <BreadcrumbsContainer pathname={path} /> */}
+      <BreadcrumbsContainer pathname={pathname} />
     </div>
 
     <ControlsContainer routes={routes} buildingId={buildingId} />

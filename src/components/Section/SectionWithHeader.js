@@ -5,8 +5,9 @@ import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 
 const _section = css`
-background-color: #ffffff;
-border: 1px solid #dddddd;
+  background-color: #ffffff;
+  padding: 15px;
+  box-shadow: 0px 0px 20px 0px rgb(44 101 144 / 10%);
 `;
 
 const _header = css`
@@ -25,7 +26,7 @@ const SectionWithHeader = ({ header = null, children, id, bgColor = "#0e7ab9" })
     id={id}
     className={`${_section}`}
   >
-    <div className={classnames(_header, css`background-color: ${bgColor}`)} id="section-header">{header}</div>
+    <div className={_header} id="section-header">{header}</div>
     {children}
 
   </Section>;

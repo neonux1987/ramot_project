@@ -13,7 +13,6 @@ import YearStatsContainer from './YearStatsContainer';
 import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
 import { fetchSummarizedBudgets } from '../../redux/actions/summarizedBudgetActions';
 import { useDispatch, useSelector } from 'react-redux';
-import CustomDivider from '../../components/CustomDivider/CustomDivider';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -49,8 +48,6 @@ const SummarizedBudgets = () => {
         pageName={PAGE_NAME}
       />
     </Section>
-
-    <CustomDivider mt={0} mr={20} ml={20} />
 
     <SummarizedBudgetsTableContainer
       buildingName={buildingName}

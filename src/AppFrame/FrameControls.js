@@ -8,6 +8,10 @@ const style = css`
   /* width: 100%; */
   justify-content: flex-end;
   align-items: center;
+  background: #1d73de;
+  border-radius: 14px;
+  padding: 0 8px;
+  overflow: hidden;
 `;
 
 const button = css`

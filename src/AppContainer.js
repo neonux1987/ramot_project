@@ -28,6 +28,8 @@ import generalSettingsActions from './redux/actions/generalSettingsActions';
 import Toolbar from './Main/Toolbar/Toolbar';
 import BreadcrumbsContainer from './Main/Toolbar/Breadcrumbs/BreadcrumbsContainer';
 import { useLocation } from 'react-router';
+import ToggleButton from './Main/Toolbar/ToggleButton/ToggleButton';
+import { toggleSidebar } from './redux/actions/toggleSidebarActions';
 
 const AppContainer = () => {
 
@@ -60,6 +62,10 @@ const AppContainer = () => {
     setPath(() => location.pathname)
   }, [location.pathname]);
 
+  const onClick = () => {
+    dispatch(toggleSidebar());
+  };
+
   if (generalSettings.isFetching) {
     return <LogoLoader />;
   }
@@ -69,9 +75,9 @@ const AppContainer = () => {
 
       <ScrollToTop mainContainer={mainContainer} />
 
-      <Toolbar settings={settings} />
+      <ToggleButton onClick={onClick} />
 
-      <BreadcrumbsContainer pathname={path} />
+      {/* <BreadcrumbsContainer pathname={path} /> */}
 
       <AppWrapper>
 
@@ -79,7 +85,7 @@ const AppContainer = () => {
 
         <SideBarContainer />
 
-        <MainContainer mainContainer={mainContainer} />
+        <MainContainer mainContainer={mainContainer} settings={settings} />
 
       </AppWrapper>
 

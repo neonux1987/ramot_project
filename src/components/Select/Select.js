@@ -9,7 +9,7 @@ const _container = css`
 `;
 
 const _label = css`
-  color: #ffffff;
+  color: #000000;
   font-size: 16px;
   display: flex;
   align-items: center;
@@ -23,7 +23,7 @@ const _select = css`
   background-color: #ffffff;
   font-size: 16px;
   border-radius: 3px;
-  color: #555555;
+  color: #000000;
   font-weight: 500;
   border: 1px solid #f1f1f1;
 
@@ -73,7 +73,7 @@ const Select = ({ label,
 
   return (
     <div className={_container}>
-      <InputLabel className={classnames(_label, css`color: ${blackLabels ? "#555555" : "#ffffff"}`)} id="label">{label}</InputLabel>
+      <InputLabel className={classnames(_label, css`color: ${blackLabels ? "#000000" : "#000000"}`)} id="label">{label}</InputLabel>
       {render}
     </div>
   );

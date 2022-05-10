@@ -23,32 +23,34 @@ iframe {
   display: none !important;
 }
 
-html,body{
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Assistant, sans-serif;
-    overflow: hidden;
-    color: black;
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Assistant, sans-serif;
+  overflow: hidden;
+  color: black;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
-body{
-  background: #fafafa;
+body {
+  /* background: #fafafa; */
   /* background: #f5f5f5; */
+  background: #ffffff;
 }
 
-#root{
+#root {
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 textarea {
-  resize:vertical;
+  resize: vertical;
 }
 
 a {
@@ -66,12 +68,12 @@ a {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
   /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
 
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
   /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -80,16 +82,19 @@ a {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(46, 55, 62); 
+  background: rgb(46, 55, 62);
 }
 
-.activeExpandItem,.activeExpandItem:hover{
+.activeExpandItem,
+.activeExpandItem:hover {
   background: #0000001f;
   border-radius: 3px;
 }
 
-.activeButton,.activeButton:hover{
-  background: rgb(0 0 0 / 30%);
+.activeButton,
+.activeButton:hover,
+.activeButton:focus {
+  background: rgb(42 127 214);
   margin: 0 20px;
   width: 220px;
   border-radius: 0px;
@@ -97,7 +102,7 @@ a {
   border-radius: 3px;
 }
 
-.activeButton2{
+.activeButton2 {
   border-radius: initial;
   border-bottom: 3px solid rgb(3, 101, 162);
 }
@@ -112,7 +117,8 @@ a {
   -moz-appearance: textfield;
 } */
 
-input,textarea{
+input,
+textarea {
   font-family: 'Assistant', sans-serif;
 }
 
@@ -137,31 +143,36 @@ input,textarea{
   font-size: 16px;
 }
 
-@media only print{
+@media only print {
   @page {
-    size: auto;   /* auto is the initial value */
-    margin: 10px 10px 35px 10px;  /* this affects the margin in the printer settings */
+    size: auto;
+    /* auto is the initial value */
+    margin: 10px 10px 35px 10px;
+    /* this affects the margin in the printer settings */
 
-    @bottom-center {
-      content: "Page " counter(page) " of " counter(pages);
-    }
+    /* @bottom-center {
+      content: "Page "counter(page) " of "counter(pages);
+    } */
   }
 
-  html,body,#mainContainer,#appWrapper{
+  html,
+  body,
+  #mainContainer,
+  #appWrapper {
     overflow: visible !important;
   }
 
-  body{
+  body {
     background: #ffffff !important;
     -webkit-print-color-adjust: exact !important;
   }
 
-  .page-number:before{
+  .page-number:before {
     counter-increment: page;
-    content: "Page " counter(page);
+    /* content: "Page "counter(page); */
   }
 
-  #root{
+  #root {
     height: initial !important;
     display: block !important;
     flex-direction: unset !important;
@@ -177,115 +188,116 @@ input,textarea{
   #printModal,
   #section-header,
   hr,
-  .addBoxContainer{
+  .addBoxContainer {
     display: none !important;
   }
 
-  #styledSection{
-    margin:0;
+  #styledSection {
+    margin: 0;
     padding: 0;
     box-shadow: none;
     height: 100vh;
     position: unset;
   }
 
-  #tableSection{
+  #tableSection {
     box-shadow: none;
   }
 
-  #styledSection-content{
+  #styledSection-content {
     overflow: visible !important;
     position: unset !important;
   }
 
-  #printHeader{
+  #printHeader {
     display: block;
   }
 
-  #tableSection{
+  #tableSection {
     margin: 0 !important;
     border: none !important;
   }
 
-  #table{
+  #table {
     box-shadow: none !important;
     border: none !important;
   }
 
-  table{
+  table {
     page-break-before: always !important;
     padding: 1px;
     border-collapse: collapse;
     display: table;
     counter-reset: page;
   }
-  
-  ._tableBody > div{
+
+  ._tableBody>div {
     position: relative !important;
   }
 
-  ._tableBody > div > div{
+  ._tableBody>div>div {
     position: relative !important;
   }
 
-  thead{
+  thead {
     position: relative !important;
     page-break-inside: avoid;
     break-inside: avoid;
     page-break-before: avoid;
   }
 
-  th,td{
+  th,
+  td {
     padding: 0;
     margin: 0;
   }
-  
-  tr{
+
+  tr {
     display: table-row;
   }
 
-  td{
+  td {
     page-break-inside: avoid;
     break-inside: avoid;
   }
 
-  tfoot{
+  tfoot {
     display: none;
     page-break-before: avoid;
-    break-inside:avoid;
+    break-inside: avoid;
   }
 
-  .groupRow{
+  .groupRow {
     background-color: #f9f9f9 !important;
     border-top: thin solid black !important;
     border-bottom: none !important;
   }
 
-  .headerRow{
+  .headerRow {
     background-color: #f9f9f9 !important;
     border-top: thin solid black !important;
     box-shadow: none !important;
   }
 
-  .tableRow{
+  .tableRow {
     border-bottom: thin solid black !important;
     border-left: thin solid black !important;
     overflow: hidden !important;
   }
 
-  .tableCell:last-child{
+  .tableCell:last-child {
     padding-left: 0 !important;
   }
 
-  .tableCell:first-child{
+  .tableCell:first-child {
     border-right: thin solid black !important;
   }
 
-  .tableCell:hover{
+  .tableCell:hover {
     background-color: initial;
   }
 
-  .tableCell{
+  .tableCell {
     border-right: thin solid black !important;
   }
 

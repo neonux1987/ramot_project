@@ -18,9 +18,9 @@ const EditControls = ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, 
   }
 
   return <div className={classnames(styles.wrapper, show)} style={style}>
-    <EditButton on={editMode} onClick={clickWithScroll} iconColor="#ffffff" />
+    <EditButton on={editMode} onClick={clickWithScroll} iconColor="#000000" />
     {
-      toggleAddNewMode && <AddNewButton on={addNewMode} onClick={toggleAddNewMode} iconColor="#ffffff" />
+      toggleAddNewMode && <AddNewButton on={addNewMode} onClick={toggleAddNewMode} iconColor="#000000" />
     }
   </div>;
 

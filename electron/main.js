@@ -83,7 +83,6 @@ async function createWindow() {
           enableRemoteModule: true,
           contextIsolation: false
         },
-        backgroundColor: "#eee",
         icon,
         frame: false,
         resizeable: false,

@@ -1,40 +1,36 @@
-.paper{
+.paper {
   background-color: #ffffff;
-  border-radius: 6px;
+  border-radius: 14px;
   min-height: 300px;
   /* overflow: hidden; */
   box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
-  /* box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%); */
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: none;
-  border: 1px solid #ececec;
 }
 
-.upper{
+.upper {
   display: flex;
   height: 87px;
   align-items: center;
   padding: 0 15px;
-  /* margin: -30px 15px 0; */
-  /* border-radius: 3px; */
+  border-bottom: 1px solid #ececec;
 }
 
-.titleWrapper{
+.titleWrapper {
   border-radius: 3px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
 }
 
-.titleText{
-  color: #555555;
-  font-size: 32px;
-  font-weight: 500;
+.titleText {
+  color: #000000;
+  font-size: 36px;
+  font-weight: 400;
 }
 
-.bottom{
+.bottom {
   display: flex;
   justify-content: center;
   align-items: center;

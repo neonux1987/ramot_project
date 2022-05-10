@@ -1,4 +1,4 @@
-#table{
+#table {
   border-radius: 0px;
   background: #fff;
   width: 100%;
@@ -7,12 +7,13 @@
   border-collapse: collapse;
 }
 
-th,td{
+th,
+td {
   padding: 0;
   margin: 0;
 }
 
-._tableBody{
+._tableBody {
   display: grid;
   direction: rtl;
   background: #fff;
@@ -21,13 +22,13 @@ th,td{
   position: relative;
 }
 
-.tableRow{
+.tableRow {
   min-height: 35px;
   display: grid;
   border-bottom: 1px solid #eeeeee;
 }
 
-.tableCell{
+.tableCell {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,42 +41,39 @@ th,td{
   min-height: 35px;
 }
 
-.tableCellInner{
+.tableCellInner {
   justify-content: center;
   align-items: center;
   display: flex;
   color: #000000;
 }
 
-.tableCell:first-child{
+.tableCell:first-child {
   border-right: 0;
 }
 
-.groupRow{
+.groupRow {
   border-bottom: none !important;
-  border-top: 1px solid #eeeeee;
   position: relative;
-  background-color: #00000005;
 }
 
-.headerRow{
+.headerRow {
   grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #eeeeee;
   position: relative;
-  background-color: #00000005;
   box-shadow: rgb(0 0 0 / 4%) 0px 8px 12px 0px;
   z-index: 2;
 }
 
-.groupCell{
+.groupCell {
   font-weight: 500;
   font-size: 16px;
   height: 40px !important;
   border-right: 1px solid #eeeeee;
 }
 
-.headerCell{
+.headerCell {
   font-weight: 500;
   font-size: 16px;
   height: 40px !important;

@@ -16,7 +16,7 @@ const StatBox = ({
   loading = true,
   children,
   index = 1,
-  color = "#555555",
+  color = "#000000",
   border = false,
   xs = "auto"
 }) => {

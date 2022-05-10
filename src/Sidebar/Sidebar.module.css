@@ -5,6 +5,8 @@
   box-shadow: none;
   background-size: cover;
   overflow: hidden;
+  box-shadow: -2px 0px 4px 4px #00000005;
+  background: #ffffff;
 }
 
 .drawerPaper {
@@ -15,28 +17,30 @@
   background: none;
 }
 
-.hideSidebar{
+.hideSidebar {
   animation: hide 0.2s linear forwards;
 }
 
-.showSidebar{
+.showSidebar {
   animation: show 0.2s linear backwards;
 }
 
-@keyframes hide{
+@keyframes hide {
   0% {
     width: 250px;
   }
+
   100% {
     width: 0;
   }
 }
 
-@keyframes show{
+@keyframes show {
   0% {
     width: 0px;
     margin-right: -250px;
   }
+
   100% {
     width: 250px;
     margin-right: 0;

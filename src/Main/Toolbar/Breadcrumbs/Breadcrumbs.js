@@ -11,9 +11,8 @@ const wrapper = css`
   color: #555555;
   font-weight: 400;
   border-top: none;
-  box-shadow: 0 5px 4px 0px #00000012;
-  border-bottom: 1px solid #e0e0e0;
-  background: #f5f5f5;
+  margin-right: -62px;
+  user-select: none;
 `;
 
 const Breadcrumbs = ({ children = [] }) => {

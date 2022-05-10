@@ -7,7 +7,6 @@ const container = css`
   align-items: center;
   z-index: 3;
   position: relative;
-  border-left: 1px solid #0000001a;
   margin-left: 15px;
 `;
 

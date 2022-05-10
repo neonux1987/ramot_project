@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // COMPONENTS
 import Logo from './Logo/Logo';
-import ControlsContainer from './Controls/ControlsContainer';
 
 // ACTIONS
 import Sidebar from './Sidebar';
@@ -14,11 +13,11 @@ import MenuContainer from './Menu/MenuContainer';
 import { fetchMenu } from '../redux/actions/menuActions';
 import CenteredLoader from '../components/AnimatedLoaders/CenteredLoader';
 import { ipcRenderer } from 'electron';
+import HomeButton from './HomeButton/HomeButton';
+
+const HOME_BUTTON_LABEL = "דף הבית";
 
 const SidebarContainer = () => {
-  const { state = {} } = useLocation();
-  const { buildingId } = state;
-
   const dispatch = useDispatch();
 
   const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
@@ -47,6 +46,8 @@ const SidebarContainer = () => {
   }, [fetchListener]);
 
   return <Sidebar show={showSidebar}>
+    <Logo />
+    <HomeButton active={routes.active.state.page} />
     {isFetching ? <CenteredLoader text="טוען תפריט" color="#ffffff" /> : <MenuContainer routes={routes} data={data} />}
     <Credits />
   </Sidebar>

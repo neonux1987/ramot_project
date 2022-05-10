@@ -14,7 +14,6 @@ import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 // ACTIONS
 import Page from '../../components/Page/Page';
 import { fetchBudgetExecutions } from '../../redux/actions/budgetExecutionsActions';
-import CustomDivider from '../../components/CustomDivider/CustomDivider';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";
@@ -50,8 +49,6 @@ const BudgetExecutions = () => {
         pageName={PAGE_NAME}
       />
     </Section>
-
-    <CustomDivider mt={0} mr={20} ml={20} />
 
     <BudgetExecutionsTableContainer
       buildingName={buildingName}

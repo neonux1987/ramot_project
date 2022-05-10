@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
   padding: 10px 5px;
   /* border-bottom: 1px solid #f1f1f1; */
   /* box-shadow: 0 0px 10px 0px rgb(0 0 0 / 8%); */
@@ -9,48 +9,48 @@
   flex-grow: 1;
 }
 
-.controls{
+.controls {
   display: flex;
   align-items: center;
 }
 
-.fullscrenn{
+.fullscrenn {
   justify-content: flex-end;
   display: flex;
 }
 
-.leftPane{
+.leftPane {
   flex: 1;
   justify-content: flex-end;
   display: flex;
 }
 
-.middlePane{
+.middlePane {
   flex: 1;
   display: flex;
   justify-content: center;
 }
 
-.rightPane{
+.rightPane {
   flex: 1;
 }
 
-.titleWrapper{
+.titleWrapper {
   flex: 1;
 }
 
-.editModeWrapper{
+.editModeWrapper {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(46, 55, 62);
+  color: #000000;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-.show{
+.show {
   display: block;
 }

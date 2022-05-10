@@ -1,5 +1,4 @@
 .container {
-  width: 250px;
   position: relative;
   user-select: none;
   /* background: #0e7ab9b8; */
@@ -20,7 +19,7 @@
   opacity: 0.8;
   /* background-image: url('../../assets/images/ramot\ group.png'); */
   background-repeat: no-repeat;
-  background-size:  220px;
+  background-size: 220px;
   background-position: right;
   background-position-x: 110px;
   background-position-y: -45px;
@@ -28,26 +27,29 @@
   filter: drop-shadow(16px 16px 20px rgba(0, 0, 0, 0.473));
 }
 
-.wraper{
+.wraper {
   display: flex;
   justify-content: center;
 }
 
-.logoWrapper{
-  margin-top: 0px;
-    position: relative;
-    z-index: 3;
-    width: 220px;
-    border-radius: 6px;
-}
-
-.mainContainer{
+.logoImgContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100px;
 }
 
-.mainTitle{
+.logo {
+  background-image: url('../../assets/images/eng_ramot_logo2.png');
+  background-repeat: no-repeat;
+  height: 90px;
+  background-size: cover;
+  width: 260px;
+  background-position-x: -10px;
+  background-position-y: 10px;
+}
+
+.mainTitle {
   text-align: right;
   font-weight: 500;
   margin: 0;
@@ -57,23 +59,25 @@
   letter-spacing: -1px;
 }
 
-.subContainer{
+.subContainer {
   text-align: right;
   margin-top: -5px;
   z-index: 3;
+  border-bottom: 1px solid #f5f5f5;
+  padding-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .subtitle {
   text-align: center;
-  font-size: 10px;
-  color: #fafafa; /* #1fcca5 */
-  font-weight: 400;
+  font-size: 14px;
+  color: #000000;
+  font-weight: 500;
   font-style: normal;
-  letter-spacing: 0.12rem;
   position: relative;
 }
 
-.appVersionWrapper{
+.appVersionWrapper {
   color: #7a8492;
   position: absolute;
   bottom: 5px;
