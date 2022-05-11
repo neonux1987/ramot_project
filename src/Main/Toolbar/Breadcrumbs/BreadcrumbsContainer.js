@@ -3,7 +3,6 @@ import React from "react";
 import Breadcrumbs from "./Breadcrumbs";
 import Crumb from "./Crumb";
 
-
 const BreadcrumbsContainer = ({ pathname }) => {
   const pathnames = pathname.split("/").filter(x => x);
 

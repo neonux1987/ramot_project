@@ -6,6 +6,8 @@ const style = css`
   padding: 0;
   flex: 1;
   overflow: hidden;
+  position: relative;
+  z-index: 886;
 `
 
 const AppWrapper = ({ children }) => <div className={style} id="appWrapper">

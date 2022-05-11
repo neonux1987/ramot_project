@@ -1,4 +1,21 @@
-.container{
+.container {
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
+  user-select: none;
+}
+
+.moreBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  color: #000000;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  min-width: 0;
+  margin: 0 10px;
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
+  user-select: none;
 }

@@ -18,15 +18,12 @@ const lastStyle = css`
 const Crumb = ({ last = false, location, separator = true }) => {
 
   return <div>
-
-
     <span className={last ? lastStyle : text}>
       {location}
     </span>
 
     {!last ? <span className={icon}>{"/"}</span> : null}
   </div>;
-
 }
 
-export default React.memo(Crumb);
+export default Crumb;

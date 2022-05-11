@@ -30,6 +30,9 @@ import BreadcrumbsContainer from './Main/Toolbar/Breadcrumbs/BreadcrumbsContaine
 import { useLocation } from 'react-router';
 import ToggleButton from './Main/Toolbar/ToggleButton/ToggleButton';
 import { toggleSidebar } from './redux/actions/toggleSidebarActions';
+import AppBarContainer from './layout/AppBar/AppBarContainer';
+import Sidebar from './layout/Sidebar/Sidebar';
+import Main from './layout/Main/Main';
 
 const AppContainer = () => {
 
@@ -59,7 +62,7 @@ const AppContainer = () => {
   }, [start, stop]);
 
   useEffect(() => {
-    setPath(() => location.pathname)
+    setPath(() => location.pathname);
   }, [location.pathname]);
 
   const onClick = () => {
@@ -83,9 +86,13 @@ const AppContainer = () => {
 
         <CssBaseline />
 
-        <SideBarContainer />
+        <AppBarContainer />
+        <Sidebar />
+        <Main mainContainer={mainContainer} settings={settings} />
 
-        <MainContainer mainContainer={mainContainer} settings={settings} />
+        {/*         <SideBarContainer />
+
+        <MainContainer mainContainer={mainContainer} settings={settings} /> */}
 
       </AppWrapper>
 

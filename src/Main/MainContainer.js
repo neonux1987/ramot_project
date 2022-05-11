@@ -21,7 +21,7 @@ const _main = css`
   flex-grow: 1;
 `;
 
-const MainContainer = ({ mainContainer, settings }) => {
+const MainContainer = ({ mainContainer }) => {
 
   const history = useHistory();
   const location = useLocation();
@@ -58,10 +58,6 @@ const MainContainer = ({ mainContainer, settings }) => {
   }, [location.pathname]);
 
   return <main id="mainContainer" ref={mainContainer} className={_main}>
-
-    {/* <BreadcrumbsContainer pathname={path} /> */}
-
-    <Toolbar settings={settings} />
 
     <div className={mainStyle}>
 

@@ -6,13 +6,12 @@ const wrapper = css`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 4px 15px;
   font-size: 14px;
   color: #555555;
   font-weight: 400;
   border-top: none;
-  margin-right: -62px;
   user-select: none;
+  flex-grow: 1;
 `;
 
 const Breadcrumbs = ({ children = [] }) => {
@@ -25,4 +24,4 @@ const Breadcrumbs = ({ children = [] }) => {
 
 }
 
-export default React.memo(Breadcrumbs);
+export default Breadcrumbs;

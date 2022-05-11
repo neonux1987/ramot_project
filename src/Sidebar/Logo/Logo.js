@@ -27,7 +27,7 @@ const Logo = props => {
 
         <div className={subContainer}>
           <Typography className={subtitle} variant="subtitle1">
-            ניהול הוצאות והכנסות
+            INCOME OUTCOME MANAGEMENT
           </Typography>
         </div>
 
