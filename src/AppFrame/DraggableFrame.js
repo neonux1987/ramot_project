@@ -27,21 +27,8 @@ const style = css`
   }
 `;
 
-const nonClickable = css`
-  border-top: 50px solid transparent;
-  border-right: 50px solid transparent;
-  content: "";
-  z-index: 999;
-  position: absolute;
-  transform: skew(45deg);
-  top: 0px;
-  right: 25px;
-  -webkit-app-region: drag;
-`;
-
 const DraggableFrame = props => {
   return <div className={style}>
-    <div className={nonClickable}></div>
     {props.children}
   </div>;
 }

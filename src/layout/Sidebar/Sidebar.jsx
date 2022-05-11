@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    boxShadow: "-2px 0px 4px 4px #00000005"
+    boxShadow: "-2px 0px 4px 4px #00000005",
+    zIndex: 5
   },
   drawerPaper: {
     width: drawerWidth,

@@ -15,18 +15,12 @@ import ThemeContext from './context/ThemeContext';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/css/style.css';
 
-// CONTAINERS
-import MainContainer from './Main/MainContainer';
-import SideBarContainer from './Sidebar/SideBarContainer';
-
 // HOOKS
 import useServices from './customHooks/useServices';
 
 // TOASTS
 import CustomToastContainer from './toasts/CustomToastContainer/CustomToastContainer';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
-import Toolbar from './Main/Toolbar/Toolbar';
-import BreadcrumbsContainer from './Main/Toolbar/Breadcrumbs/BreadcrumbsContainer';
 import { useLocation } from 'react-router';
 import ToggleButton from './Main/Toolbar/ToggleButton/ToggleButton';
 import { toggleSidebar } from './redux/actions/toggleSidebarActions';
@@ -75,25 +69,14 @@ const AppContainer = () => {
 
   return (
     <ThemeContext.Provider value={settings.data.theme}>
-
       <ScrollToTop mainContainer={mainContainer} />
 
-      <ToggleButton onClick={onClick} />
-
-      {/* <BreadcrumbsContainer pathname={path} /> */}
-
       <AppWrapper>
-
         <CssBaseline />
-
+        <ToggleButton onClick={onClick} />
         <AppBarContainer />
         <Sidebar />
         <Main mainContainer={mainContainer} settings={settings} />
-
-        {/*         <SideBarContainer />
-
-        <MainContainer mainContainer={mainContainer} settings={settings} /> */}
-
       </AppWrapper>
 
       <CustomToastContainer />

@@ -6,6 +6,7 @@ import FrameControls from '../../AppFrame/FrameControls';
 import ControlsContainer from '../../Sidebar/Controls/ControlsContainer';
 import BreadcrumbsContainer from '../../Main/Toolbar/Breadcrumbs/BreadcrumbsContainer';
 import MoreMenu from '../../Sidebar/Controls/MoreMenu/MoreMenu';
+import DraggableFrame from '../../AppFrame/DraggableFrame';
 
 const drawerWidth = 225;
 
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     display: "flex",
     flexDirection: "row",
-    zIndex: 4,
+    zIndex: 6,
     padding: "15px"
   },
   appBar: {
@@ -53,25 +54,27 @@ const AppBar = ({
   const classes = useStyles();
 
   return (
-    <AppBar_
-      position="fixed"
-      className={clsx(classes.appBar, {
-        [classes.appBarShift]: showSidebar,
-      },
-        classes.root
-      )}
-    >
+    <DraggableFrame>
+      <AppBar_
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: showSidebar,
+        },
+          classes.root
+        )}
+      >
 
-      <MoreMenu
-        active={routes.active.state.buildingName === "ניהול"}
-      />
+        <MoreMenu
+          active={routes.active.state.buildingName === "ניהול"}
+        />
 
-      <BreadcrumbsContainer pathname={pathname} />
+        <BreadcrumbsContainer pathname={pathname} />
 
-      <ControlsContainer routes={routes} buildingId={buildingId} />
+        <ControlsContainer routes={routes} buildingId={buildingId} />
 
-      <FrameControls onMinimize={onMinimize} onMaximize={onMaximize} onClose={onClose} />
-    </AppBar_>
+        <FrameControls onMinimize={onMinimize} onMaximize={onMaximize} onClose={onClose} />
+      </AppBar_>
+    </DraggableFrame>
   );
 }
 
