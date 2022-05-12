@@ -65,7 +65,6 @@ const Table = ({
     itemContent={Row}
     overscan={10}
     components={components}
-  //useWindowScroll
   />;
 
   const tableHeight = GroupComponent && isFullscreen ? "94vh" : "94vh";

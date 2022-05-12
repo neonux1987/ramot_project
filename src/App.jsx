@@ -23,10 +23,10 @@ const App = ({
   sidebarToggleHandler,
   mainContainerRef
 }) => {
+
   return (
     <RTL>
       <MuiThemeProvider theme={theme}>
-
         <EnhancedRouter>
           <ThemeContext.Provider value={settings.data.theme}>
             <ScrollToTop mainContainer={mainContainerRef} />
@@ -43,7 +43,6 @@ const App = ({
           </ThemeContext.Provider>
           <ModalRoot />
         </EnhancedRouter>
-
       </MuiThemeProvider>
     </RTL>
 

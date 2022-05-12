@@ -1,12 +1,11 @@
 // LIBRARIES
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { heIL } from '@material-ui/core/locale';
 import { createMuiTheme } from '@material-ui/core/styles';
 import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
 import useServices from './customHooks/useServices';
 import generalSettingsActions from './redux/actions/generalSettingsActions';
-import { useLocation } from 'react-router';
 import { toggleSidebar } from './redux/actions/toggleSidebarActions';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/css/style.css';
@@ -64,7 +63,7 @@ const AppContainer = () => {
   if (generalSettings.isFetching) {
     return <LogoLoader />;
   }
-  console.log(settings);
+
   return (
     <App
       theme={theme}

@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { css } from 'emotion';
 import { toggleSidebar } from '../../redux/actions/toggleSidebarActions';
 import ButtonWithSound from "../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 import { ArrowForwardIos, ArrowBackIos } from "@material-ui/icons";

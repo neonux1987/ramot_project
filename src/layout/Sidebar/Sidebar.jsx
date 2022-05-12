@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     zIndex: 5,
-    overflow: "none"
+    overflow: "unset"
   },
   drawerPaper: {
     width: drawerWidth,
