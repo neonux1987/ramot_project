@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import AppContainer from './AppContainer';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { persistor, store } from './redux/store';
@@ -30,7 +30,7 @@ function whichComponent(page) {
   switch (page) {
     case "loading": return LoadingPage;
     case "restoreDB": return storeWrapper(RestoreWizard);
-    default: return storeWrapper(App);
+    default: return storeWrapper(AppContainer);
   }
 }
 

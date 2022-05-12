@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     top: 0,
     right: 0,
-    zIndex: 991,
+    zIndex: 992,
     flip: false
   },
   button: {
@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   iconStyle: {
     width: "24px",
     height: "24px",
-    color: "#f1f1f1",
+    color: "#ffffff",
     right: 0,
     top: "-8px",
     position: "absolute",
@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     transform: "skew(50deg)",
     top: "0px",
-    left: "30px",
+    right: "30px",
     flip: false
   }
 }));
