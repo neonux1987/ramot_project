@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import { useSelector } from 'react-redux';
-import MainContainer from '../../Main/MainContainer';
+import { Route } from 'react-router';
+import Routes from './Routes';
 
 const drawerWidth = 240;
 
@@ -16,35 +16,49 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
-  content: {
+  main: {
     flexGrow: 1,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
+    display: "block",
+    zIndex: 990,
+    position: "relative"
   },
-  contentShift: {
+  mainShift: {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0
+  },
+  content: {
+    height: "100%",
+    overflow: "overlay"
   }
 }));
 
-const Main = ({ settings, mainContainer }) => {
+const Main = ({ mainContainerRef }) => {
   const classes = useStyles();
   const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
 
   return (
     <main
-      className={clsx(classes.content, {
-        [classes.contentShift]: showSidebar,
+      id="mainContainer"
+      className={clsx(classes.main, {
+        [classes.mainShift]: showSidebar,
       })}
     >
+      {/* top margin space */}
       <div className={classes.drawerHeader} />
-      <MainContainer mainContainer={mainContainer} settings={settings} />
+
+      <div className={classes.content} ref={mainContainerRef}>
+        <Route render={({ location }) => (
+          <Routes location={location} />
+        )} />
+      </div>
     </main>
   );
 }

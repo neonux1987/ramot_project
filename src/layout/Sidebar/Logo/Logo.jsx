@@ -1,28 +1,56 @@
 import React from 'react';
-import { Box, IconButton, styled, Typography } from '@mui/material';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
+// CSS
+import {
+  logoImgContainer,
+  subtitle,
+  container,
+  logo,
+  subContainer,
+  wrapper
+} from './Logo.module.css';
+
+const useStyles = makeStyles((theme) => ({
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+    minHeight: "unset !important"
+  }
 }));
 
-const Logo = ({ handleDrawerClose }) => {
+const Logo = ({ children }) => {
+  const classes = useStyles();
+
   return (
-    <DrawerHeader>
-      <Box style={{ flexGrow: 1, paddingRight: "15px" }}>
-        <Typography variant='h5' >
-          GuardBro
-        </Typography>
-      </Box>
-      <IconButton onClick={handleDrawerClose}>
-        <ChevronRightIcon />
-      </IconButton>
-    </DrawerHeader>
+    <div className={classes.drawerHeader}>
+      <div className={container}>
+
+        {/* wrapper */}
+        <div className={wrapper}>
+
+          <div className={logoImgContainer}>
+            <div className={logo} />
+          </div>
+
+          <div className={subContainer}>
+            <Typography className={subtitle} variant="subtitle1">
+              INCOME OUTCOME MANAGEMENT
+            </Typography>
+          </div>
+
+        </div>
+        {/* end wrapper */}
+
+        {children}
+
+      </div>
+    </div>
   );
 }
 

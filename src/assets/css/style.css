@@ -88,18 +88,14 @@ a {
 .activeExpandItem,
 .activeExpandItem:hover {
   background: #0000001f;
-  border-radius: 3px;
 }
 
 .activeButton,
 .activeButton:hover,
 .activeButton:focus {
   background: rgb(42 127 214);
-  margin: 0 20px;
-  width: 220px;
   border-radius: 0px;
   padding-right: 16px;
-  border-radius: 3px;
 }
 
 .activeButton2 {

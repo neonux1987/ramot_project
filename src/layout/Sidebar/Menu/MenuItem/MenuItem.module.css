@@ -1,0 +1,9 @@
+.listItem {
+  padding-right: 16px;
+}
+
+.listItem,
+.listItemIcon,
+.listItemText {
+  color: #000000;
+}

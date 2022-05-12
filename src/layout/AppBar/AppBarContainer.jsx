@@ -13,7 +13,7 @@ const remote = require('electron').remote;
 
 const AppBarContainer = () => {
   const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
-  const settings = useSelector(store => store.generalSettings);
+  const settings = useSelector(store => store.settings);
   const routes = useSelector(store => store.routes);
 
   const { pathname, state = {} } = useLocation();

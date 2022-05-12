@@ -1,18 +1,13 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import { useSelector } from 'react-redux';
-import Logo from '../../Sidebar/Logo/Logo';
+import Logo from './Logo/Logo';
+import Credits from './Credits/Credits';
+import MenuContainer from './Menu/MenuContainer';
+import CenteredLoader from '../../components/AnimatedLoaders/CenteredLoader';
+import HomeButton from './HomeButton/HomeButton';
 
 const drawerWidth = 240;
 
@@ -20,12 +15,13 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    boxShadow: "-2px 0px 4px 4px #00000005",
-    zIndex: 5
+    zIndex: 5,
+    overflow: "none"
   },
   drawerPaper: {
     width: drawerWidth,
-    borderLeft: "none"
+    borderRight: "none",
+    boxShadow: "-2px 0px 4px 4px #00000005",
   },
   drawerHeader: {
     display: 'flex',
@@ -37,9 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Sidebar = () => {
+const Sidebar = ({ routes, isFetching, data }) => {
   const classes = useStyles();
-  const theme = useTheme();
   const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
 
   return (
@@ -52,27 +47,12 @@ const Sidebar = () => {
         paper: classes.drawerPaper,
       }}
     >
-      <div className={classes.drawerHeader}>
-        <Logo />
-      </div>
+      <Logo />
       <Divider />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      <HomeButton active={routes.active.state.page} />
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      {isFetching ? <CenteredLoader text="טוען תפריט" color="#ffffff" /> : <MenuContainer routes={routes} data={data} />}
+      <Credits />
     </Drawer>
   );
 }

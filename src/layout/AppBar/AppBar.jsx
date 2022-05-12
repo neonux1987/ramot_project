@@ -1,12 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar_ from '@material-ui/core/AppBar';
-import FrameControls from '../../AppFrame/FrameControls';
-import ControlsContainer from '../../Sidebar/Controls/ControlsContainer';
-import BreadcrumbsContainer from '../../Main/Toolbar/Breadcrumbs/BreadcrumbsContainer';
-import MoreMenu from '../../Sidebar/Controls/MoreMenu/MoreMenu';
-import DraggableFrame from '../../AppFrame/DraggableFrame';
+import MuiAppBar from '@material-ui/core/AppBar';
+import ControlsContainer from './Controls/ControlsContainer';
+import BreadcrumbsContainer from './Breadcrumbs/BreadcrumbsContainer';
+import DraggableFrame from '../../components/DraggableFrame/DraggableFrame';
+import MoreMenu from './Controls/MoreMenu/MoreMenu';
+import FrameControls from './FrameControls/FrameControls';
 
 const drawerWidth = 225;
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     display: "flex",
     flexDirection: "row",
-    zIndex: 6,
+    zIndex: 991,
     padding: "15px"
   },
   appBar: {
@@ -55,7 +55,7 @@ const AppBar = ({
 
   return (
     <DraggableFrame>
-      <AppBar_
+      <MuiAppBar
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: showSidebar,
@@ -73,7 +73,7 @@ const AppBar = ({
         <ControlsContainer routes={routes} buildingId={buildingId} />
 
         <FrameControls onMinimize={onMinimize} onMaximize={onMaximize} onClose={onClose} />
-      </AppBar_>
+      </MuiAppBar>
     </DraggableFrame>
   );
 }
