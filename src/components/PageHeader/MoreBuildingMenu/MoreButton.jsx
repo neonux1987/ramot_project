@@ -5,6 +5,7 @@ import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/Button
 import { css } from 'emotion';
 import classnames from 'classnames';
 import SvgIcon from "../../SvgIcon/SvgIcon";
+import useIconWrapper from "../../../customHooks/useIconWrapper";
 
 const wrapper = css`
   flex-grow: 1;
@@ -19,9 +20,12 @@ const button = css`
 `;
 
 const MoreButton = ({ onClick, active }) => {
+
+  const [getIcon] = useIconWrapper();
+
   return <div className={wrapper}>
     <ButtonWithSound onClick={onClick} className={classnames(button, active ? "activeExpandItem" : "")}>
-      <SvgIcon Icon={IoMdSettings} color="#000000" size="32px" />
+      <SvgIcon Icon={getIcon({ iconName: "ci:settings-future" })} color="#000000" size="32px" />
     </ButtonWithSound>
   </div>
 

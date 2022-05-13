@@ -10,12 +10,12 @@ const useIcons = () => {
 
   const generateIcon = (iconName, style) => {
     switch (iconName) {
-      case "הוצאות חודשיות": return getIcon({ iconName: "ant-design:dollar-twotone", style });
+      case "הוצאות חודשיות": return getIcon({ iconName: "twemoji:heavy-dollar-sign", style });
       case "ביצוע מול תקציב": return getIcon({ iconName: "bi:list-check", style });
       case "סיכום תקציבי": return getIcon({ iconName: "fluent:autosum-24-filled", style });
       case "סטטיסטיקה": return getIcon({ iconName: "nimbus:stats", style });
-      case "home": return getIcon({ iconName: "fa6-solid:house-chimney", style });
-      case "dashboard": return getIcon({ iconName: "ic:round-space-dashboard", style });
+      case "home": return getIcon({ iconName: "iconoir:home", style });
+      case "dashboard": return getIcon({ iconName: "lucide:layout-dashboard", style });
       case "receipt": return Receipt;
       default: return Label
     };
