@@ -8,14 +8,6 @@ import Routes from './Routes';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
   main: {
     flexGrow: 1,
     transition: theme.transitions.create('margin', {
@@ -25,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: -drawerWidth,
     display: "block",
     zIndex: 990,
-    position: "relative"
+    position: "relative",
+    marginTop: "64px"
   },
   mainShift: {
     transition: theme.transitions.create('margin', {
@@ -36,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     height: "100%",
-    overflow: "overlay"
+    width: "100%",
+    overflow: "overlay",
+    position: "absolute"
   }
 }));
 
@@ -51,9 +46,6 @@ const Main = ({ mainContainerRef }) => {
         [classes.mainShift]: showSidebar,
       })}
     >
-      {/* top margin space */}
-      <div className={classes.drawerHeader} />
-
       <div className={classes.content} ref={mainContainerRef}>
         <Route render={({ location }) => (
           <Routes location={location} />

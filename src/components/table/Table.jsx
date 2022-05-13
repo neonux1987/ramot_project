@@ -67,7 +67,7 @@ const Table = ({
     components={components}
   />;
 
-  const tableHeight = GroupComponent && isFullscreen ? "94vh" : "94vh";
+  const tableHeight = GroupComponent && isFullscreen ? "100vh" : "100vh";
   const bodyHeight = GroupComponent && isFullscreen ? "80vh" : "85.7vh";
 
   return <TableWrapper id="table" printMode={printMode} colors={colors} height={tableHeight}>
