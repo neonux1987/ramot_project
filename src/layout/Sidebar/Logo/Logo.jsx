@@ -56,7 +56,7 @@ const Logo = ({ children }) => {
 
             <div className={appVersionWrapper}>
               <Typography className={versionText} variant="subtitle1">
-                {`v${appVersion}`}
+                {`Version: ${appVersion}`}
               </Typography>
             </div>
           </div>

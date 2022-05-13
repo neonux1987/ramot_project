@@ -8,14 +8,14 @@ const useIcons = () => {
 
   const [getIcon] = useIconWrapper();
 
-  const generateIcon = (iconName) => {
+  const generateIcon = (iconName, style) => {
     switch (iconName) {
-      case "הוצאות חודשיות": return getIcon({ iconName: "ant-design:dollar-twotone" });
-      case "ביצוע מול תקציב": return getIcon({ iconName: "bi:list-check" });
-      case "סיכום תקציבי": return getIcon({ iconName: "fluent:autosum-24-filled" });
-      case "סטטיסטיקה": return getIcon({ iconName: "nimbus:stats" });
-      case "home": return getIcon({ iconName: "fa6-solid:house-chimney" });
-      case "dashboard": return getIcon({ iconName: "ic:round-space-dashboard" });
+      case "הוצאות חודשיות": return getIcon({ iconName: "ant-design:dollar-twotone", style });
+      case "ביצוע מול תקציב": return getIcon({ iconName: "bi:list-check", style });
+      case "סיכום תקציבי": return getIcon({ iconName: "fluent:autosum-24-filled", style });
+      case "סטטיסטיקה": return getIcon({ iconName: "nimbus:stats", style });
+      case "home": return getIcon({ iconName: "fa6-solid:house-chimney", style });
+      case "dashboard": return getIcon({ iconName: "ic:round-space-dashboard", style });
       case "receipt": return Receipt;
       default: return Label
     };

@@ -17,7 +17,6 @@ const HOME_BUTTON_LABEL = "דף הבית";
 const HOME_BUTTON_PATH = "/דף-הבית";
 
 const HomeButton = props => {
-
   const [generateIcon] = useIcons();
 
   return (
@@ -41,4 +40,4 @@ const HomeButton = props => {
   );
 };
 
-export default HomeButton;
+export default React.memo(HomeButton);
