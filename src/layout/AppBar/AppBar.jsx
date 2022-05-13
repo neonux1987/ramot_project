@@ -16,8 +16,9 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     display: "flex",
     flexDirection: "row",
-    zIndex: 991,
-    padding: "15px"
+    zIndex: 998,
+    padding: "15px",
+    position: "fixed"
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {

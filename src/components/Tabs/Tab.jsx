@@ -9,7 +9,8 @@ import ButtonNavLinkWithSound from '../../componentsWithSound/ButtonNavLinkWithS
 const style = css`
   font-size: 16px;
   color: #000000;
-  font-weight: 600;
+  font-weight: 500;
+  opacity: 1;
 `;
 
 const Tab = props => {

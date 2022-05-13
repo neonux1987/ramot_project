@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 import { css } from 'emotion';
 
 const TitleTypography = ({
-  fontWeight = "600",
+  fontWeight = "500",
   underline = true,
   gutterBottom = "20px",
   variant = "subtitle1",
