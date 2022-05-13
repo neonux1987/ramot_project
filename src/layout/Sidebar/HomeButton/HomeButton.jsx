@@ -2,7 +2,7 @@
 import React from 'react';
 import Menuitem from '../Menu/MenuItem/Menuitem';
 import { css } from 'emotion';
-import useIconWrapper from '../../../customHooks/useIconWrapper';
+import useIcons from '../../../customHooks/useIcons';
 
 const style = css`
   border-radius: 0;
@@ -10,7 +10,7 @@ const style = css`
 `;
 
 const labelStyle = css`
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 const HOME_BUTTON_LABEL = "דף הבית";
@@ -18,7 +18,7 @@ const HOME_BUTTON_PATH = "/דף-הבית";
 
 const HomeButton = props => {
 
-  const [getIcon] = useIconWrapper();
+  const [generateIcon] = useIcons();
 
   return (
     <div>
@@ -26,7 +26,7 @@ const HomeButton = props => {
         className={style}
         labelClassName={labelStyle}
         label={HOME_BUTTON_LABEL}
-        Icon={getIcon({ iconName: "ic:round-space-dashboard" })}
+        Icon={generateIcon("dashboard")}
         to={{
           pathname: HOME_BUTTON_PATH,
           state: {

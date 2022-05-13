@@ -9,17 +9,20 @@ import {
   container,
   logo,
   subContainer,
-  wrapper
+  wrapper,
+  subtitle1Wrapper,
+  subtitle2Wrapper,
+  appVersionWrapper,
+  versionText
 } from './Logo.module.css';
+
+//ELECTRON
+const appVersion = require("electron").remote.app.getVersion();
 
 const useStyles = makeStyles((theme) => ({
   drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
     minHeight: "unset !important"
   }
 }));
@@ -39,15 +42,27 @@ const Logo = ({ children }) => {
           </div>
 
           <div className={subContainer}>
-            <Typography className={subtitle} variant="subtitle1">
-              INCOME OUTCOME MANAGEMENT
-            </Typography>
+            <div className={subtitle1Wrapper}>
+              <Typography className={subtitle} variant="subtitle1">
+                מערכת לניהול
+              </Typography>
+            </div>
+
+            <div className={subtitle2Wrapper}>
+              <Typography className={subtitle} variant="subtitle1">
+                תקציבי בניינים
+              </Typography>
+            </div>
+
+            <div className={appVersionWrapper}>
+              <Typography className={versionText} variant="subtitle1">
+                {`v${appVersion}`}
+              </Typography>
+            </div>
           </div>
 
         </div>
         {/* end wrapper */}
-
-        {children}
 
       </div>
     </div>

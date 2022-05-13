@@ -22,12 +22,9 @@
 .logo {
   background-image: url('../../../assets/images/Untitled-1.png');
   background-repeat: no-repeat;
-  height: 90px;
-  width: 230px;
-  background-position-x: -10px;
-  /* -6px */
-  background-position-y: 20px;
-  /* filter: drop-shadow(2px 2px 2px #00000034); */
+  height: 100px;
+  width: 240px;
+  background-position-y: 25px;
 }
 
 .mainTitle {
@@ -41,28 +38,37 @@
 }
 
 .subContainer {
-  text-align: right;
-  margin-top: 5px;
+  margin-top: -10px;
   z-index: 3;
-  padding-bottom: 20px;
-  display: flex;
-  justify-content: center;
+  padding-bottom: 28px;
+}
+
+.subtitle1Wrapper {
+  padding-right: 60px;
+}
+
+.subtitle2Wrapper {
+  padding-right: 20px;
+  margin-top: -4px;
 }
 
 .subtitle {
-  text-align: center;
+  text-align: right;
   font-size: 12px;
   color: rgb(46 56 60);
   font-weight: 500;
   font-style: normal;
   position: relative;
-  width: 220px;
 }
 
 .appVersionWrapper {
-  color: #7a8492;
   position: absolute;
   bottom: 5px;
-  left: 15px;
-  font-size: 13px;
+  left: 20px;
+}
+
+.versionText {
+  font-size: 14px;
+  color: #000000;
+  font-weight: 400;
 }

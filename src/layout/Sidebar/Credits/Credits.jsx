@@ -13,10 +13,10 @@ const container = css`
 `;
 
 const developedBy = css`
-  font-size: 14px;
+  font-size: 12px;
   width: initial;
   text-align: center;
-  color:rgb(107,108,119);
+  color:#000000;
   font-style: normal;
   font-weight: 400;
   margin-left: 5px;
@@ -24,23 +24,16 @@ const developedBy = css`
 
 const ndts = css`
   margin-left: 3px;
-  font-weight: 600;
-  color: rgb(107,108,119);
+  font-weight: 500;
+  color: #000000;
+  font-size: 12px;
   font-style: italic;
 `;
-
-const version = css`
-  color: #d0d0d0;
-`;
-
-//ELECTRON
-const appVersion = require("electron").remote.app.getVersion();
 
 const Credits = () => {
   return <div className={container}>
     <span className={ndts}>NDTS</span>
     <span className={developedBy}>developed by</span>
-    <span className={version}>{`v${appVersion}`}</span>
   </div>
 }
 
