@@ -23,30 +23,29 @@ const useStyles = makeStyles(theme => ({
     '-webkit-app-region': "no-drag",
     '-webkit-user-select': "none",
     padding: 0,
-    zIndex: 888,
+    zIndex: 999,
     position: "absolute",
     width: "60px",
     height: "50px",
     flip: false,
     '&:hover': {
-      background: "none"
+      background: "#3a94ea"
     },
-    '&:before': {
-      borderTop: "50px solid transparent",
-      borderRight: `60px solid ${theme.palette.primary.main}`,
-      transform: "rotateX(180deg)",
-      content: '""',
-      zIndex: 887,
-      position: "absolute",
-      flip: false
-    }
+    backgroundColor: theme.palette.primary.main,
+    boxShadow: "0 0 6px 2px rgb(0 0 0 / 18%)",
+    height: "100px",
+    position: "absolute",
+    top: "-52px",
+    right: "-60px",
+    width: "100px",
+    transform: "rotate(40deg)",
   },
   iconWrapper: {
-    transform: `rotate(314deg)`,
-    zIndex: "999",
     position: "absolute",
-    top: "4px",
-    right: "10px",
+    top: "119px",
+    right: "17px",
+    transform: "rotateZ(276deg)",
+    width: "100%",
     flip: false
   },
   iconStyle: {
@@ -56,17 +55,6 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     top: "-8px",
     position: "absolute",
-    flip: false
-  },
-  nonClickable: {
-    borderTop: "50px solid transparent",
-    borderRight: "60px solid transparent",
-    content: "",
-    zIndex: "999",
-    position: "absolute",
-    transform: "skew(50deg)",
-    top: "0px",
-    right: "30px",
     flip: false
   }
 }));
@@ -93,7 +81,6 @@ const ToggleButton = () => {
         <div className={classes.iconWrapper}>{icon}</div>
 
       </ButtonWithSound>
-      <div className={classes.nonClickable}></div>
     </div>
   );
 

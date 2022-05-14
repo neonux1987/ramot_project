@@ -12,18 +12,15 @@ const style = css`
   -webkit-app-region: drag;
 
   :after{
-    width: 50px;
-    border-top: 50px solid transparent;
-    border-right: 50px solid rgb(26 187 148);
-    -webkit-transform: rotateX(180deg);
-    -ms-transform: rotateX(180deg);
-    transform: rotateX(180deg);
     content: "";
     z-index: 887;
-    position: absolute;
     -webkit-app-region: no-drag;
-    top: -4px;
-    right: -4px;
+    height: 100px;
+    position: absolute;
+    top: -52px;
+    right: -60px;
+    width: 100px;
+    transform: rotate(40deg);
   }
 `;
 

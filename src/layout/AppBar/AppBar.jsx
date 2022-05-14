@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     display: "flex",
     flexDirection: "row",
-    zIndex: 998,
+    zIndex: 885,
     padding: "15px",
     position: "fixed"
   },

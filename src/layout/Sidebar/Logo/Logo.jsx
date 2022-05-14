@@ -13,7 +13,8 @@ import {
   subtitle1Wrapper,
   subtitle2Wrapper,
   appVersionWrapper,
-  versionText
+  versionText,
+  mainTitle
 } from './Logo.module.css';
 
 //ELECTRON
@@ -38,6 +39,11 @@ const Logo = ({ children }) => {
         <div className={wrapper}>
 
           <div className={logoImgContainer}>
+            <div>
+              <Typography className={mainTitle} variant="subtitle1">
+                קבוצת רמות
+              </Typography>
+            </div>
             <div className={logo} />
           </div>
 

@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     borderRight: "none",
     boxShadow: "-2px 0px 4px 4px #00000005",
+    overflow: "hidden"
   },
   drawerHeader: {
     display: 'flex',

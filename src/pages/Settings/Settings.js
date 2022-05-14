@@ -18,7 +18,7 @@ const Settings = ({ match }) => {
       <SettingsNavigation match={match} />
       <Box>
         <Switch>
-          <Route path={`${match.path}/כללי`} component={General} />
+          <Route exact path={`${match.path}/כללי`} component={General} />
           <Route path={`${match.path}/עיצוב`} component={Theme} />
           <Route path={`${match.path}/גיבוי ושחזור`} component={BackupAndRestore} />
           <Route path={`${match.path}/עדכוני תוכנה`} component={AppUpdates} />
