@@ -1,4 +1,28 @@
 @font-face {
+  font-family: "Open Sans";
+  font-weight: 400;
+  src: url("../fonts/OpenSans/OpenSans-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-weight: 500;
+  src: url("../fonts/OpenSans/OpenSans-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-weight: 600;
+  src: url("../fonts/OpenSans/OpenSans-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-weight: 600;
+  src: url("../fonts/OpenSans/OpenSans-ExtraBold.ttf");
+}
+
+/* @font-face {
   font-family: "Assistant";
   font-weight: 400;
   src: url("../fonts/OpensSansHebrew/opensanshebrew-regular-webfont.ttf");
@@ -14,7 +38,7 @@
   font-family: "Assistant";
   font-weight: 600;
   src: url("../fonts/OpensSansHebrew/opensanshebrew-extrabold-webfont.ttf");
-}
+} */
 
 /**
 fixes Uncaught ReferenceError: process is not defined
@@ -28,7 +52,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: Assistant, sans-serif;
+  font-family: Open Sans, sans-serif;
   overflow: hidden;
   color: black;
 }
@@ -160,7 +184,7 @@ textarea {
 
   body {
     background: #ffffff !important;
-    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .page-number:before {

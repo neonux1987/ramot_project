@@ -7,7 +7,7 @@ const wrapper = css`
   justify-content: flex-start;
   align-items: center;
   font-size: 14px;
-  color: #555555;
+  color: #000000;
   font-weight: 400;
   border-top: none;
   user-select: none;
