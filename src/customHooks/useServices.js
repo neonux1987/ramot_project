@@ -25,14 +25,17 @@ const useServices = () => {
   }, [dispatch]);
 
   const startListeners = useCallback(async () => {
-    ipcRenderer.once("deletion", (event, buildingsForDeletion) => {
-
-      showModal(ConfirmBuildingsDeletion, {
-        onAgreeHandler: () => {
-          dispatch(removeBuildings(buildingsForDeletion))
-        },
-        buildingsForDeletion
-      });
+    ipcRenderer.once("buildings-for-deletion-data", (event, buildingsForDeletion = []) => {
+      if (buildingsForDeletion.length > 0) {
+        showModal(ConfirmBuildingsDeletion, {
+          onAgreeHandler: () => {
+            dispatch(removeBuildings(buildingsForDeletion))
+          },
+          buildingsForDeletion
+        });
+      } else {
+        toastManager.error("המערכת נכשלה לשלוף מידע לגבי בניינים שמיועדים למחיקה");
+      }
 
     });
   }, [dispatch, showModal]);

@@ -169,7 +169,7 @@ class MainSystem {
 
         const deletionDateTime = Date.parse(deletionDate);
 
-        const differenceTime = deletionDateTime - currentDateTime;
+        const differenceTime = currentDateTime - deletionDateTime;
 
         // To calculate the no. of days between two dates
         const differenceDays = differenceTime / (1000 * 3600 * 24);
@@ -187,7 +187,7 @@ class MainSystem {
     });
 
     if (buildingsForDeletion.length > 0)
-      sendToWindow("deletion", buildingsForDeletion);
+      sendToWindow("buildings-for-deletion-data", buildingsForDeletion);
 
   }
 

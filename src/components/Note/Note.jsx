@@ -6,7 +6,7 @@ const container = css`
   color: #555555;
   display: flex;
   font-size: 14px;
-  font-family: Assistant,sans-serif;
+  font-family: Open Sans,sans-serif;
 `;
 
 const Note = ({ text = "", important = false, margin = "0", className = "" }) => <div className={`${container} ${className}`} style={{ margin }}>

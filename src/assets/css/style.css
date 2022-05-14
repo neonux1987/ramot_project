@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
   font-family: "Open Sans";
   font-weight: 400;
   src: url("../fonts/OpenSans/OpenSans-Regular.ttf");
@@ -20,25 +20,25 @@
   font-family: "Open Sans";
   font-weight: 600;
   src: url("../fonts/OpenSans/OpenSans-ExtraBold.ttf");
-}
+} */
 
-/* @font-face {
-  font-family: "Assistant";
+@font-face {
+  font-family: "Open Sans";
   font-weight: 400;
   src: url("../fonts/OpensSansHebrew/opensanshebrew-regular-webfont.ttf");
 }
 
 @font-face {
-  font-family: "Assistant";
+  font-family: "Open Sans";
   font-weight: 500;
   src: url("../fonts/OpensSansHebrew/opensanshebrew-bold-webfont.ttf");
 }
 
 @font-face {
-  font-family: "Assistant";
+  font-family: "Open Sans";
   font-weight: 600;
   src: url("../fonts/OpensSansHebrew/opensanshebrew-extrabold-webfont.ttf");
-} */
+}
 
 /**
 fixes Uncaught ReferenceError: process is not defined

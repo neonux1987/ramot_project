@@ -177,6 +177,8 @@ export const removeBuildings = (buildingsToRemove) => {
         });
 
         ipcRenderer.send("set-global-variable", { key: "buildings", value: buildings });
+
+        toastManager.success("הבניינים נמחקו לצמיתות בהצלחה");
       },
       onError: result => {
         toastManager.error(result.error);

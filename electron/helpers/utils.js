@@ -24,6 +24,7 @@ exports.openLogFile = openLogFile;
  * @param {*} data to be sent
  */
 exports.sendToWindow = (channel, data) => {
+
   const window = getWindow("mainWindow");
 
   if (window)

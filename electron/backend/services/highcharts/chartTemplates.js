@@ -2,7 +2,7 @@ const columnChart = (title, series, categories) => ({
   chart: {
     type: "column",
     style: {
-      fontFamily: "Assistant, sans-serif"
+      fontFamily: "Open Sans, sans-serif"
     },
     height: "450px"
   },

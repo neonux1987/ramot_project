@@ -17,7 +17,7 @@ const BarChart = ({ title = "", categories = [], series }) => {
       chart: {
         type: "bar",
         style: {
-          fontFamily: "Assistant, sans-serif"
+          fontFamily: "Open Sans, sans-serif"
         },
         height: "650px"
       },
