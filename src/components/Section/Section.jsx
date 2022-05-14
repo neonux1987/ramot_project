@@ -27,7 +27,8 @@ const Section = ({
   children,
   className = "",
   isFullscreen = false,
-  id = "section"
+  id = "section",
+  style = {}
 }) => {
 
   return <Box
@@ -35,6 +36,7 @@ const Section = ({
     mb={marginBottom}
     mx={"20px 40px"}
     className={classnames(container, isFullscreen ? fullscreenStyle : "", className)}
+    style={style}
     id={id}
   >
     {children}

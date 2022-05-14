@@ -19,11 +19,11 @@ const subIconWrapper = css`
 
 const subIcon = css`
   font-size: 24px;
-  color: #555555;
+  color: #000000;
 `;
 
 const subTitle = css`
-  color: #555555;
+  color: #000000;
   font-weight: 400;
   margin-right: 5px;
 `;

@@ -1,6 +1,5 @@
 // LIBRARIES
 import React from "react";
-import { IoMdSettings } from "react-icons/io";
 import ButtonWithSound from "../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 import { css } from 'emotion';
 import classnames from 'classnames';

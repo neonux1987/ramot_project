@@ -3,7 +3,7 @@ import { css } from 'emotion';
 import { Typography } from '@material-ui/core';
 
 const container = css`
-  margin: 20px 20px 20px;
+  margin: 20px 0;
   border-bottom: 1px solid #dddddd;
 `;
 
@@ -17,7 +17,7 @@ const mainIcon = css`
   font-size: 48px;
   display: flex;
   align-items: center;
-  color: #555555;
+  color: #000000;
   padding-top: 0px;
   display: none;
 `;

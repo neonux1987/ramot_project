@@ -27,7 +27,7 @@ const ChangeBuildingColorModal = ({ buildingName, buildingId }) => {
       onBackdropClickHandler={onCancelHandler}
       invisibleBackdrop
     >
-      <Section marginTop="30px">
+      <Section marginTop="30px" style={{ display: "flex", justifyContent: "center", margin: "0 60px" }}>
         <SketchPicker
           color={buildingColor}
           onChange={onChangeHandler}

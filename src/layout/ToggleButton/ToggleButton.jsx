@@ -25,20 +25,17 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     zIndex: 999,
     position: "absolute",
-    width: "60px",
-    height: "50px",
     flip: false,
-    '&:hover': {
-      background: "#3a94ea"
-    },
     backgroundColor: theme.palette.primary.main,
     boxShadow: "0 0 6px 2px rgb(0 0 0 / 18%)",
     height: "100px",
-    position: "absolute",
     top: "-52px",
     right: "-60px",
     width: "100px",
     transform: "rotate(40deg)",
+    '&:hover': {
+      background: "#3a94ea"
+    }
   },
   iconWrapper: {
     position: "absolute",
