@@ -19,14 +19,15 @@ const DonutChart = props => {
       },
       plotOptions: {
         pie: {
-          fillColor: "#eee",
+          fillColor: "#f5f5f5",
           showInLegend: false,
-          innerSize: "60%",
+          innerSize: "80%",
           dataLabels: {
             enabled: false,
           },
-          size: 120,
-          enableMouseTracking: false
+          size: 140,
+          enableMouseTracking: false,
+          borderWidth: 0
         }
       },
       title: {

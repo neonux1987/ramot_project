@@ -11,6 +11,7 @@ const iframeStyle = css`
   width: 100%; 
   height: 100%; 
   border: 1px solid #ececec;
+  display: block !important;
 `;
 
 const Content = props => {

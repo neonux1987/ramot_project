@@ -50,7 +50,8 @@ const AppBar = ({
   showSidebar,
   pathname,
   buildingId,
-  routes
+  routes,
+  printMode
 }) => {
   const classes = useStyles();
 
@@ -63,6 +64,7 @@ const AppBar = ({
         },
           classes.root
         )}
+        id="toolbar"
       >
 
         <MoreMenu

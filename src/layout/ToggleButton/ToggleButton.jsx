@@ -60,13 +60,13 @@ const ToggleButton = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
-
+  const { isFullscreen } = useSelector(store => store.fullscreen);
   const icon = showSidebar ? <ArrowForwardIos className={classes.iconStyle} /> : <ArrowBackIos className={classes.iconStyle} style={{ right: "-3px" }} />;
 
   const onClick = () => dispatch(toggleSidebar());
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} id="toggleButton" style={{ display: isFullscreen ? "none" : "initial" }}>
       <ButtonWithSound
         className={classes.button}
         checked={showSidebar}

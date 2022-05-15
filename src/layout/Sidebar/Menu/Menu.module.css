@@ -5,6 +5,8 @@
   margin-top: 10px;
   user-select: none;
   overflow-y: overlay;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 

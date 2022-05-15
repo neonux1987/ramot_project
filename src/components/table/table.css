@@ -70,7 +70,7 @@ td {
   font-weight: 500;
   font-size: 16px;
   height: 40px !important;
-  border-right: 1px solid #eeeeee;
+  border-right: none;
 }
 
 .headerCell {

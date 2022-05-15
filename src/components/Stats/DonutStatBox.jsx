@@ -36,9 +36,9 @@ const row = css`
 `;
 
 const text = css`
-  font-size: 16px;
-  font-weight: 500;
-  color: #555555;
+  font-size: 18px;
+  font-weight: 400;
+  color: #000000;
 `;
 
 
@@ -47,7 +47,7 @@ const marker = css`
   height: 16px;
   background-color: red;
   margin-left: 3px;
-  border-radius: 3px;
+  border-radius: 100px;
 `;
 
 const blue = css`

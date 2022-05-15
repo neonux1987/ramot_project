@@ -2,7 +2,6 @@ const printerIpc = () => {
   const { ipcMain, BrowserWindow } = require('electron');
 
   ipcMain.on('print-pdf', async (event, pageSetup = {}) => {
-
     // Create the browser window.
     const win = BrowserWindow.getAllWindows()[0];
 
@@ -40,7 +39,6 @@ const printerIpc = () => {
         pageCount: pages.length
       });
     }
-
   });
 
   ipcMain.on('print', async (event, pageSetup = {}) => {

@@ -6,7 +6,6 @@ import useIcons from '../../../customHooks/useIcons';
 
 const style = css`
   border-radius: 0;
-  margin: 5px 0;
 `;
 
 const labelStyle = css`

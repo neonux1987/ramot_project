@@ -7,6 +7,7 @@ import pages from '../../../helpers/pages';
 import ExpandableMenuItem from './ExpandableMenuItem/ExpandableMenuItem';
 import Menuitem from './MenuItem/Menuitem';
 import { updateRoute } from '../../../redux/actions/routesActions';
+import HomeButton from '../HomeButton/HomeButton';
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 
@@ -142,6 +143,7 @@ const MenuContainer = ({ routes, data }) => {
 
   return (
     <Menu>
+      <HomeButton active={routes.active.state.page} />
       {menuRender}
     </Menu>
   );

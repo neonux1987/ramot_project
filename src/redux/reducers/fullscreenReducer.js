@@ -6,7 +6,7 @@ const initialState = {
 
 const fullscreenReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TYPES.SET_FULLSCREEN_MODE: {
+    case TYPES.TOGGLE_FULLSCREEN_MODE: {
       return {
         ...state,
         isFullscreen: !state.isFullscreen

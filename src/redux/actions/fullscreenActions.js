@@ -1,12 +1,12 @@
 // TYPES
 export const TYPES = {
-  SET_FULLSCREEN_MODE: "SET_FULLSCREEN_MODE"
+  TOGGLE_FULLSCREEN_MODE: "TOGGLE_FULLSCREEN_MODE"
 }
 
-export const setFullScreenMode = function () {
+export const toggleFullScreenMode = function () {
   return dispatch => {
     dispatch({
-      type: TYPES.SET_FULLSCREEN_MODE
+      type: TYPES.TOGGLE_FULLSCREEN_MODE
     });
   }
 }

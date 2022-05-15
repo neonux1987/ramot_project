@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 const Main = ({ mainContainerRef }) => {
   const classes = useStyles();
   const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
+  const { isFullscreen } = useSelector(store => store.fullscreen);
 
   return (
     <main
@@ -45,8 +46,9 @@ const Main = ({ mainContainerRef }) => {
       className={clsx(classes.main, {
         [classes.mainShift]: showSidebar,
       })}
+      style={{ marginTop: isFullscreen ? "0" : "64px" }}
     >
-      <div className={classes.content} ref={mainContainerRef}>
+      <div className={classes.content} ref={mainContainerRef} id="mainContent">
         <Route render={({ location }) => (
           <Routes location={location} />
         )} />

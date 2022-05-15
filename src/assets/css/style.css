@@ -169,10 +169,6 @@ textarea {
     /* auto is the initial value */
     margin: 10px 10px 35px 10px;
     /* this affects the margin in the printer settings */
-
-    /* @bottom-center {
-      content: "Page "counter(page) " of "counter(pages);
-    } */
   }
 
   html,
@@ -184,12 +180,7 @@ textarea {
 
   body {
     background: #ffffff !important;
-    print-color-adjust: exact !important;
-  }
-
-  .page-number:before {
-    counter-increment: page;
-    /* content: "Page "counter(page); */
+    -webkit-print-color-adjust: exact !important;
   }
 
   #root {
@@ -207,6 +198,7 @@ textarea {
   #styledSection-header,
   #printModal,
   #section-header,
+  #toggleButton,
   hr,
   .addBoxContainer {
     display: none !important;
@@ -218,6 +210,14 @@ textarea {
     box-shadow: none;
     height: 100vh;
     position: unset;
+  }
+
+  #mainContainer {
+    margin: 0;
+  }
+
+  #mainContent {
+    height: initial;
   }
 
   #tableSection {
