@@ -18,12 +18,15 @@ const BudgetExecutionsDatePicker = ({
 
   const quarters = useSelector(store => store.registeredQuarters[buildingId]);
   const years = useSelector(store => store.registeredYears[buildingId]);
-
+  console.log(years);
   // initial fetch of years
   useEffect(() => {
-
     dispatch(fetchRegisteredYears({ buildingId }));
-  }, [buildingId, dispatch]);
+
+    if (refresh === true)
+      setRefresh(false);
+    //eslint-disable-next-line
+  }, [buildingId, dispatch, refresh, setRefresh]);
 
   // initial fetch of quarters if year is not empty
   useEffect(() => {

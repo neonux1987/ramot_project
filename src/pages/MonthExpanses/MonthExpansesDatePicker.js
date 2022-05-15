@@ -23,7 +23,11 @@ const MonthExpansesDatePicker = ({
   // initial fetch of years
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingId }));
-  }, [buildingId, dispatch]);
+
+    if (refresh === true)
+      setRefresh(false);
+    //eslint-disable-next-line
+  }, [buildingId, dispatch, refresh, setRefresh]);
 
   // initial fetch of months if year is not empty
   useEffect(() => {
