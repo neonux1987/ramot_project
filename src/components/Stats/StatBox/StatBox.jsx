@@ -29,22 +29,7 @@ const StatBox = ({
     >
       <Paper className={paper}>
 
-        {/* start upper */}
-        <div className={upper} style={{ backgroundColor: "#ffffff" }}>
-          <div className={titleWrapper}>
-            <Typography variant="h6" className={titleText} style={{ color }}>
-              {title}
-            </Typography>
-          </div>
-
-        </div>
-        {/* end upper */}
-
-        {/* start bottom */}
-        <div className={bottom}>
-          {loading ? <Loader /> : children}
-        </div>
-        {/* end bottom */}
+        {loading ? <Loader /> : children}
 
       </Paper>
     </Grow>

@@ -10,8 +10,8 @@ const DonutChart = props => {
       },
       chart: {
         type: "pie",
-        width: 150,
-        height: 150,
+        width: 160,
+        height: 160,
         backgroundColor: "transparent"
       },
       exporting: {
@@ -21,17 +21,27 @@ const DonutChart = props => {
         pie: {
           fillColor: "#f5f5f5",
           showInLegend: false,
-          innerSize: "80%",
+          innerSize: "85%",
           dataLabels: {
             enabled: false,
           },
-          size: 140,
+          size: 150,
           enableMouseTracking: false,
           borderWidth: 0
         }
       },
       title: {
-        text: ""
+        text: props.title,
+        align: "center",
+        verticalAlign: "middle",
+        widthAdjust: 20,
+        style: {
+          fontSize: "24px",
+          fontFamily: "Open Sans, sans-serif",
+          fontWeight: "500",
+          width: "200px !important"
+        },
+        useHtml: true
       },
       series: props.series,
       tooltip: {
