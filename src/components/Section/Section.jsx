@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 const container = css`
   position: relative;
-  border-radius: 3px;
+  border-radius: 14px;
   margin: 0 0 20px;
 `;
 
@@ -35,7 +35,7 @@ const Section = ({
     mt={marginTop}
     mb={marginBottom}
     mx={"20px 40px"}
-    className={classnames(container, isFullscreen ? fullscreenStyle : "", className)}
+    className={`${container} ${isFullscreen ? fullscreenStyle : ""} ${className}`}
     style={style}
     id={id}
   >

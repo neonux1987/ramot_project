@@ -1,7 +1,11 @@
 import React from 'react';
 import SquareButton from './SquareButton';
-import { RiFileExcelLine } from 'react-icons/ri';
+import useIcons from '../../customHooks/useIcons';
 
-const ExcelButton = ({ onClick }) => <SquareButton Icon={RiFileExcelLine} onClick={onClick} iconColor="#000000" />;
+const ExcelButton = ({ onClick }) => {
+  const [generateIcon] = useIcons();
+  return <SquareButton Icon={generateIcon("excel")} onClick={onClick} iconColor="#000000" />;
+}
+
 
 export default ExcelButton;

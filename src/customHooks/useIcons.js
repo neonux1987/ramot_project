@@ -1,4 +1,4 @@
-import { Receipt, Label } from '@material-ui/icons';
+import { Label } from '@material-ui/icons';
 import useIconWrapper from './useIconWrapper';
 
 /* 
@@ -16,7 +16,12 @@ const useIcons = () => {
       case "סטטיסטיקה": return getIcon({ iconName: "nimbus:stats", style });
       case "home": return getIcon({ iconName: "iconoir:home", style });
       case "dashboard": return getIcon({ iconName: "lucide:layout-dashboard", style });
-      case "receipt": return Receipt;
+      case "print": return getIcon({ iconName: "fluent:print-16-regular", style });
+      case "excel": return getIcon({ iconName: "ri:file-excel-2-line", style });
+      case "edit": return getIcon({ iconName: "clarity:edit-line", style });
+      case "add": return getIcon({ iconName: "akar-icons:chat-add", style });
+      case "fullscreen": return getIcon({ iconName: "ant-design:fullscreen-outlined", style });
+      case "fullscreen-exit": return getIcon({ iconName: "ant-design:fullscreen-exit-outlined", style });
       default: return Label
     };
   }

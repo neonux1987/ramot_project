@@ -1,7 +1,10 @@
 import React from 'react';
-import { Print } from '@material-ui/icons';
 import SquareButton from './SquareButton';
+import useIcons from '../../customHooks/useIcons';
 
-const PrintButton = ({ onClick }) => <SquareButton Icon={Print} onClick={onClick} iconColor="#000000" />;
+const PrintButton = ({ onClick }) => {
+  const [generateIcon] = useIcons();
+  return <SquareButton Icon={generateIcon("print")} onClick={onClick} iconColor="#000000" />;
+}
 
 export default PrintButton;

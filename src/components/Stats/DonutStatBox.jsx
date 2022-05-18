@@ -18,7 +18,7 @@ const legend = css`
   padding: 15px;
 
   @media (max-width: 1400px) {
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 0 10px;
   }
 `;
@@ -26,8 +26,7 @@ const legend = css`
 const row = css`
   display: flex;
   align-items: center;
-  margin: 0 5px;
-  padding: 5px 0;
+  padding: 5px 10px;
   border-bottom: 1px solid #ececec;
 `;
 
@@ -39,7 +38,6 @@ const text = css`
   font-size: 16px;
   font-weight: 400;
   color: #000000;
-  margin-right: 5px;
 
   @media (max-width: 1400px) {
     font-size: 14px;

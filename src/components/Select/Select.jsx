@@ -22,10 +22,10 @@ const _select = css`
   width: 90px;
   background-color: #ffffff;
   font-size: 16px;
-  border-radius: 3px;
   color: #000000;
-  font-weight: 500;
-  border: 1px solid #f1f1f1;
+  font-weight: 400;
+  border: 1px solid #ececec;
+  border-radius: 6px;
 
   ::before {
     border-bottom: none;
@@ -38,7 +38,7 @@ const _select = css`
 
 const _classesSelect = css`
   padding: 8px 0 6px 24px;
-  font-weight: 500;
+  font-weight: 400;
 
   focus {
     background: none;

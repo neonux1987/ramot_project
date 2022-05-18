@@ -1,7 +1,10 @@
 import React from 'react';
 import SlashModeButton from './SlashModeButton';
-import { RiFileAddLine } from 'react-icons/ri';
+import useIcons from '../../customHooks/useIcons';
 
-const AddNewButton = props => <SlashModeButton {...props} Icon={RiFileAddLine} />
+const AddNewButton = props => {
+  const [generateIcon] = useIcons();
+  return <SlashModeButton {...props} Icon={generateIcon("add")} />;
+}
 
 export default AddNewButton;

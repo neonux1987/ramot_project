@@ -1,4 +1,4 @@
-/* @font-face {
+@font-face {
   font-family: "Open Sans";
   font-weight: 400;
   src: url("../fonts/OpenSans/OpenSans-Regular.ttf");
@@ -20,9 +20,9 @@
   font-family: "Open Sans";
   font-weight: 600;
   src: url("../fonts/OpenSans/OpenSans-ExtraBold.ttf");
-} */
+}
 
-@font-face {
+/* @font-face {
   font-family: "Open Sans";
   font-weight: 400;
   src: url("../fonts/OpensSansHebrew/opensanshebrew-regular-webfont.ttf");
@@ -38,7 +38,7 @@
   font-family: "Open Sans";
   font-weight: 600;
   src: url("../fonts/OpensSansHebrew/opensanshebrew-extrabold-webfont.ttf");
-}
+} */
 
 /**
 fixes Uncaught ReferenceError: process is not defined

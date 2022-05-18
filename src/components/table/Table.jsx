@@ -67,10 +67,14 @@ const Table = ({
     components={components}
   />;
 
-  const tableHeight = GroupComponent && isFullscreen ? "100vh" : "100vh";
-  const bodyHeight = GroupComponent && isFullscreen ? "80vh" : "85.7vh";
+  // to be consistent tables with no group component, their height is lower 
+  // and it leaves a margin from the bottom so we want that margin to be
+  // with tables that do have group component instead of them sticking all 
+  // the way to the bottom, so we add additional 40px to calculation when
+  // group component exist.
+  const bodyHeightClassName = GroupComponent && isFullscreen ? "tableBodyNoGroupHeader" : "";
 
-  return <TableWrapper id="table" printMode={printMode} colors={colors} height={tableHeight}>
+  return <TableWrapper id="table" printMode={printMode} colors={colors}>
 
     <Thead printMode={printMode}>
 
@@ -90,8 +94,8 @@ const Table = ({
     <Tbody
       printMode={printMode}
       divProps={{
-        className: "_tableBody",
-        style: { minHeight: isFullscreen ? "initial" : "600px", height: bodyHeight }
+        className: `_tableBody ${bodyHeightClassName}`,
+        style: { minHeight: isFullscreen ? "initial" : "600px" }
       }}
     >
 
