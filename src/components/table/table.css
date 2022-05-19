@@ -60,7 +60,7 @@ td {
 }
 
 .tableCell:first-child {
-  border-right: 0;
+  border-right: none;
 }
 
 .groupRow {
@@ -71,6 +71,8 @@ td {
 .headerRow {
   grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
   border: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
   position: relative;
   box-shadow: rgb(0 0 0 / 4%) 0px 8px 12px 0px;
   z-index: 2;

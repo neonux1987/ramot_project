@@ -218,6 +218,8 @@ textarea {
 
   #mainContent {
     height: initial;
+    position: initial;
+    overflow: initial;
   }
 
   #tableSection {
@@ -249,6 +251,10 @@ textarea {
     border-collapse: collapse;
     display: table;
     counter-reset: page;
+  }
+
+  ._tableBody {
+    border: none !important;
   }
 
   ._tableBody>div {
@@ -296,7 +302,9 @@ textarea {
   .headerRow {
     background-color: #f9f9f9 !important;
     border-top: thin solid black !important;
+    border-left: thin solid black !important;
     box-shadow: none !important;
+    border-right: none !important;
   }
 
   .tableRow {

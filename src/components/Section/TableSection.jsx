@@ -3,14 +3,13 @@ import SavedNotification from '../SavedNotification/SavedNotification';
 import SectionWithHeader from './SectionWithHeader';
 
 const TableSection = props => {
-
   return <SectionWithHeader
     {...props}
     id="tableSection"
   >
     {props.children}
-    <SavedNotification />
+    <SavedNotification bgColor={props.bgColor} />
   </SectionWithHeader>;
 }
 
-export default TableSection;
+export default React.memo(TableSection);

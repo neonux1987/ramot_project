@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 const _container = css`
   display: flex;
+  margin: 0 15px;
 `;
 
 const _label = css`
