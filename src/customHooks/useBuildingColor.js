@@ -16,12 +16,12 @@ const useBuildingColor = (buildingId) => {
 
   const changeCompleteUpdate = useCallback((color) => {
 
-    data.forEach(({ id }, index) => {
+    data.forEach((building, index) => {
 
-      if (id === buildingId) {
-        const newBuilding = { ...data[index] };
+      if (building.id === buildingId && color.hex !== building.color) {
+        const newBuilding = { ...building };
         newBuilding.color = color.hex;
-        dispatch(updateBuilding(buildingId, newBuilding, data[index], index));
+        dispatch(updateBuilding(buildingId, newBuilding, building, index));
       }
 
     });

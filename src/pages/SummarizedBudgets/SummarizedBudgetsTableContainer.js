@@ -32,7 +32,6 @@ import GroupRow from '../../components/table/components/GroupRow';
 import useTableLogic from '../../customHooks/useTableLogic';
 import YearOnlyDatePicker from '../../components/DatePicker/YearOnlyDatePicker';
 import TableSection from '../../components/Section/TableSection';
-import useBuildingColor from '../../customHooks/useBuildingColor';
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -57,7 +56,6 @@ const SummarizedBudgetsTableContainer = props => {
   } = useTableLogic();
 
   const themeContext = useContext(ThemeContext);
-  const [buildingColor] = useBuildingColor(buildingId);
   const dispatch = useDispatch();
 
   const onBlurHandler = (e) => {
@@ -235,7 +233,6 @@ const SummarizedBudgetsTableContainer = props => {
 
   return (
     <TableSection
-      bgColor={buildingColor}
       header={
         <TableControls
           rightPane={

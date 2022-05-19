@@ -14,7 +14,7 @@ const _header = css`
   align-items: center;
 `;
 
-const SectionWithHeader = ({ header = null, children, id, bgColor = "#0e7ab9" }) => {
+const SectionWithHeader = ({ header = null, children, id }) => {
   const isFullscreen = useSelector(store => store.fullscreen.isFullscreen);
 
   return <Section

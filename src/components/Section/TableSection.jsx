@@ -8,7 +8,7 @@ const TableSection = props => {
     id="tableSection"
   >
     {props.children}
-    <SavedNotification bgColor={props.bgColor} />
+    <SavedNotification />
   </SectionWithHeader>;
 }
 
