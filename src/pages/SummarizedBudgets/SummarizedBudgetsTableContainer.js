@@ -133,17 +133,11 @@ const SummarizedBudgetsTableContainer = props => {
   }
 
   const HeadersRow = () => {
-    const { colorSet } = themeContext;
-
     const quarterColumns = [];
 
     for (let i = 0; i < 4; i++) {
-      quarterColumns.push(<HeaderCell style={{ color: colorSet[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderCell>);
-      quarterColumns.push(<HeaderCell style={{ color: colorSet[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderCell>);
-    }
-
-    const yearStyle = {
-      color: colorSet[4]
+      quarterColumns.push(<HeaderCell key={`תקציב${i}`}>{"תקציב"}</HeaderCell>);
+      quarterColumns.push(<HeaderCell key={`ביצוע${i}`}>{"ביצוע"}</HeaderCell>);
     }
 
     return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
@@ -154,9 +148,9 @@ const SummarizedBudgetsTableContainer = props => {
 
       {quarterColumns}
 
-      <HeaderCell editMode={editMode} style={yearStyle}>{"הערכה"}</HeaderCell>
-      <HeaderCell style={yearStyle}>{"תקציב"}</HeaderCell>
-      <HeaderCell style={yearStyle}>{"ביצוע"}</HeaderCell>
+      <HeaderCell editMode={editMode}>{"הערכה"}</HeaderCell>
+      <HeaderCell>{"תקציב"}</HeaderCell>
+      <HeaderCell>{"ביצוע"}</HeaderCell>
 
       <HeaderCell editMode={editMode}>{"הערות"}</HeaderCell>
     </HeaderRow>

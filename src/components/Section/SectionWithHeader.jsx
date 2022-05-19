@@ -21,6 +21,7 @@ const SectionWithHeader = ({ header = null, children, id, bgColor = "#0e7ab9" })
     isFullscreen={isFullscreen}
     id={id}
     className={`${_section}`}
+    style={{ padding: isFullscreen ? "0" : "15px" }}
   >
     <div className={_header} id="section-header">{header}</div>
     {children}

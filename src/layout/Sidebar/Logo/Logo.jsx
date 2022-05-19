@@ -14,7 +14,8 @@ import {
   subtitle2Wrapper,
   appVersionWrapper,
   versionText,
-  mainTitle
+  mainTitle,
+  mainTitleWrapper
 } from './Logo.module.css';
 
 //ELECTRON
@@ -39,32 +40,26 @@ const Logo = ({ children }) => {
         <div className={wrapper}>
 
           <div className={logoImgContainer}>
-            <div>
+            <div className={logo} />
+            <div className={mainTitleWrapper}>
               <Typography className={mainTitle} variant="subtitle1">
                 קבוצת רמות
               </Typography>
             </div>
-            <div className={logo} />
           </div>
 
           <div className={subContainer}>
             <div className={subtitle1Wrapper}>
               <Typography className={subtitle} variant="subtitle1">
-                מערכת לניהול
+                מערכת לניהול תקציבי בניינים
               </Typography>
             </div>
 
-            <div className={subtitle2Wrapper}>
-              <Typography className={subtitle} variant="subtitle1">
-                תקציבי בניינים
-              </Typography>
-            </div>
-
-            <div className={appVersionWrapper}>
+            {/* <div className={appVersionWrapper}>
               <Typography className={versionText} variant="subtitle1">
                 {`Version: ${appVersion}`}
               </Typography>
-            </div>
+            </div> */}
           </div>
 
         </div>

@@ -193,14 +193,11 @@ const BudgetExecutionsTableContainer = props => {
   }
 
   const HeadersRow = () => {
-
-    const { colorSet } = themeContext;
-
     const monthColumns = [];
 
     for (let i = 0; i < 3; i++) {
-      monthColumns.push(<HeaderCell editMode={editMode} style={{ color: colorSet[i] }} key={`תקציב${i}`}>{"תקציב"}</HeaderCell>);
-      monthColumns.push(<HeaderCell style={{ color: colorSet[i] }} key={`ביצוע${i}`}>{"ביצוע"}</HeaderCell>);
+      monthColumns.push(<HeaderCell editMode={editMode} key={`תקציב${i}`}>{"תקציב"}</HeaderCell>);
+      monthColumns.push(<HeaderCell key={`ביצוע${i}`}>{"ביצוע"}</HeaderCell>);
     }
 
     return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
@@ -211,9 +208,9 @@ const BudgetExecutionsTableContainer = props => {
 
       {monthColumns}
 
-      <HeaderCell editMode={editMode} style={{ color: colorSet[3] }}>{"הערכה"}</HeaderCell>
-      <HeaderCell style={{ color: colorSet[3] }}>{"תקציב"}</HeaderCell>
-      <HeaderCell style={{ color: colorSet[3] }}>{"ביצוע"}</HeaderCell>
+      <HeaderCell editMode={editMode}>{"הערכה"}</HeaderCell>
+      <HeaderCell>{"תקציב"}</HeaderCell>
+      <HeaderCell>{"ביצוע"}</HeaderCell>
 
       <HeaderCell>{"הפרש"}</HeaderCell>
       <HeaderCell editMode={editMode}>{"הערות"}</HeaderCell>

@@ -68,7 +68,7 @@ const green = css`
 const donutWrapper = css`
   display: flex;
   justify-content: center;
-  padding: 20px 10px 0;
+  padding: 25px 10px 0;
   position: relative;
 `;
 

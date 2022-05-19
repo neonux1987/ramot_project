@@ -19,7 +19,7 @@ const useIcons = () => {
       case "print": return getIcon({ iconName: "fluent:print-16-regular", style });
       case "excel": return getIcon({ iconName: "ri:file-excel-2-line", style });
       case "edit": return getIcon({ iconName: "clarity:edit-line", style });
-      case "add": return getIcon({ iconName: "akar-icons:chat-add", style });
+      case "add": return getIcon({ iconName: "bi:journal-plus", style });
       case "fullscreen": return getIcon({ iconName: "ant-design:fullscreen-outlined", style });
       case "fullscreen-exit": return getIcon({ iconName: "ant-design:fullscreen-exit-outlined", style });
       default: return Label

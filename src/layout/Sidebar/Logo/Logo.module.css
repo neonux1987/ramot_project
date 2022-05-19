@@ -18,6 +18,8 @@
   align-items: center;
   height: 100px;
   padding-right: 10px;
+  padding-top: 5px;
+  margin-top: 10px;
 }
 
 .logo {
@@ -28,22 +30,26 @@
   background-position-y: 25px;
 }
 
+.mainTitleWrapper {
+  width: 100px;
+}
+
 .mainTitle {
   font-size: 28px;
   font-weight: 500;
-  line-height: normal;
+  line-height: 30px;
   margin-top: 18px;
   color: #000000;
 }
 
 .subContainer {
-  margin-top: -10px;
   z-index: 3;
-  padding-bottom: 28px;
+  padding-bottom: 35px;
 }
 
 .subtitle1Wrapper {
-  padding-right: 60px;
+  display: flex;
+  justify-content: center;
 }
 
 .subtitle2Wrapper {
