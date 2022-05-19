@@ -22,6 +22,7 @@ import useTableLogic from '../../../../customHooks/useTableLogic';
 
 // CONTAINERS
 import AddNewBuildingContainer from './AddNewBox/AddNewBuildingContainer';
+import { showSavedNotification } from '../../../../redux/actions/savedNotificationActions';
 
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
@@ -48,7 +49,7 @@ const BuildingsManagementTableContainer = () => {
     return data[index];
   }, [data]);
 
-  const updateAction = useCallback((name, value, index) => {
+  const updateAction = useCallback(async (name, value, index) => {
     const rowData = getDataObject(index);
     const oldCopy = { ...rowData };
 
@@ -59,7 +60,10 @@ const BuildingsManagementTableContainer = () => {
     if (name === "buildingName")
       payload.path = value.replaceAll(" ", "-");
 
-    dispatch(updateBuilding(rowData.id, payload, oldCopy, index));
+    const result = await dispatch(updateBuilding(rowData.id, payload, oldCopy, index));
+    if (result.success)
+      dispatch(showSavedNotification());
+
   }, [dispatch, getDataObject]);
 
   const isBuildingExist = useCallback(buildingName => {

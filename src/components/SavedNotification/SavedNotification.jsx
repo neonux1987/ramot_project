@@ -28,7 +28,7 @@ const container = css`
 const SavedNotification = () => {
   const dispatch = useDispatch();
   const { show } = useSelector(store => store.savedNotification);
-  console.log("why");
+
   const { play, types } = useSound(null);
 
   if (show)
@@ -52,4 +52,4 @@ const SavedNotification = () => {
 
 }
 
-export default React.memo(SavedNotification);
+export default SavedNotification;

@@ -70,7 +70,6 @@ export const updateBuilding = (id, payload, oldCopy, index) => {
       receive: {
         channel: "updated-building"
       },
-      onSuccess: () => dispatch(showSavedNotification()),
       onError: result => {
         dispatch(updateBuildingsInStore(oldCopy));
 
