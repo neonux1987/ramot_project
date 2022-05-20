@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { css } from 'emotion';
-import classnames from 'classnames';
 
 const container = css`
   position: relative;
@@ -19,6 +18,7 @@ const fullscreenStyle = css`
   height: 100%;
   background-color: #ffffff;
   -webkit-app-region: no-drag;
+  border-radius: 0;
 `;
 
 const Section = ({

@@ -14,6 +14,7 @@ import BudgetExecutionsTableContainer from './BudgetExecutionsTableContainer';
 // ACTIONS
 import Page from '../../components/Page/Page';
 import { fetchBudgetExecutions } from '../../redux/actions/budgetExecutionsActions';
+import SimplePageHeader from '../../components/PageHeader/SimplePageHeader';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";
@@ -41,6 +42,7 @@ const BudgetExecutions = () => {
 
   return <Page>
     <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
+    <SimplePageHeader title={"סטטיסטיקה"} />
 
     <Section>
       <QuarterStatsContainer
