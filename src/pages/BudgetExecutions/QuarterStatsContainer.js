@@ -1,5 +1,5 @@
 // LIBRARIES IMPORTS
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Helper from '../../helpers/Helper';
 import Stats from '../../components/Stats/Stats';
@@ -7,13 +7,12 @@ import DonutStatBox from '../../components/Stats/DonutStatBox';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
 import { fetchAllMonthsStatsByQuarter } from '../../redux/actions/monthlyStatsActions';
 import { fetchQuarterStats } from '../../redux/actions/quarterlyStatsActions';
-import useBuildingColor from '../../customHooks/useBuildingColor';
-
+import ThemeContext from '../../context/ThemeContext';
 
 const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
-
+  const { colorSet } = useContext(ThemeContext);
   const dispatch = useDispatch();
-  const [buildingColor] = useBuildingColor(buildingId);
+
 
   const monthlyStats = useSelector(store => store.monthlyStats[buildingId].pages[pageName]);
   const quarterlyStats = useSelector(store => store.quarterlyStats[buildingId].pages[pageName]);
@@ -48,7 +47,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
         outcome={outcome}
         income={income}
         unicodeSymbol={Helper.shekelUnicode}
-        //color={colors[i]}
+        color={colorSet[i]}
         loading={isFetching}
         index={i + 1}
       />;
@@ -68,7 +67,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
       outcome={outcome}
       income={income}
       unicodeSymbol={Helper.shekelUnicode}
-      color={buildingColor}
+      color={colorSet[3]}
       loading={isFetching}
       index={4}
       border

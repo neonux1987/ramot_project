@@ -27,7 +27,7 @@ const StatBox = ({
       style={{ transformOrigin: '0 0 0' }}
       timeout={(index) * 500}
     >
-      <Paper className={paper}>
+      <Paper className={paper} style={{ borderColor: color }}>
 
         {loading ? <Loader /> : children}
 

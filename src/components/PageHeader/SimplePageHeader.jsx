@@ -10,29 +10,35 @@ const container = css`
 const mainContainer = css`
   display: flex;
   align-items: center;
-  padding: 10px 5px 10px;
 `;
 
 const mainIcon = css`
-  font-size: 48px;
+  font-size: 36px;
   display: flex;
   align-items: center;
   color: #000000;
   padding-top: 0px;
-  display: none;
+  margin-left: 10px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #dddddd;
+  border-bottom: none;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
 `;
 
 const mainTitle = css`
   margin-right: 0px;
-  /* color: #6b6b6b; */
-  color: #555555;
-  font-weight: 500;
-  font-size: 2.4rem;
+  color: #000000;
+  font-weight: 400;
+  font-size: 32px;
 `;
 
 const SimplePageHeader = ({ title, icon = null }) => {
-
-
   return <div className={container} id="simplePageHeader">
 
     {/* main container */}

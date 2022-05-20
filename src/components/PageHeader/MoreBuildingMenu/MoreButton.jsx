@@ -24,7 +24,7 @@ const MoreButton = ({ onClick, active }) => {
 
   return <div className={wrapper}>
     <ButtonWithSound onClick={onClick} className={classnames(button, active ? "activeExpandItem" : "")}>
-      <SvgIcon Icon={getIcon({ iconName: "arcticons:settings" })} color="#000000" size="32px" />
+      <SvgIcon Icon={getIcon({ iconName: "ci:settings-filled", width: "36px", height: "36px" })} color="#000000" />
     </ButtonWithSound>
   </div>
 

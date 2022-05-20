@@ -1,18 +1,17 @@
 // LIBRARIES IMPORTS
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Helper from '../../helpers/Helper';
 import DonutStatBox from '../../components/Stats/DonutStatBox';
 import Stats from '../../components/Stats/Stats';
 import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import useBuildingColor from '../../customHooks/useBuildingColor';
 import { fetchAllQuartersStatsByYear } from '../../redux/actions/quarterlyStatsActions';
 import { fetchYearStats } from '../../redux/actions/yearlyStatsActions';
+import ThemeContext from '../../context/ThemeContext';
 
 const YearStatsContainer = ({ buildingId, pageName, date }) => {
-
+  const { colorSet } = useContext(ThemeContext);
   const dispatch = useDispatch();
-  const [buildingColor] = useBuildingColor(buildingId);
 
   const quarterlyStats = useSelector(store => store.quarterlyStats[buildingId].pages[pageName]);
   const yearlyStats = useSelector(store => store.yearlyStats[buildingId].pages[pageName]);
@@ -32,7 +31,6 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
   }, [buildingId, pageName, date, dispatch]);
 
   const generateQuarterlyStats = (quarterlyStats, isFetching) => {
-
     // list of strings of qurter months
     const quarters = Helper.getYearQuarters();
 
@@ -48,7 +46,7 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
         outcome={outcome}
         income={income}
         unicodeSymbol={Helper.shekelUnicode}
-        //color={colors[i]}
+        color={colorSet[i]}
         loading={isFetching}
         index={i + 1}
       />;
@@ -67,7 +65,7 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
       outcome={outcome}
       income={income}
       unicodeSymbol={Helper.shekelUnicode}
-      color={buildingColor}
+      color={colorSet[4]}
       border
       loading={isFetching}
       index={5}
