@@ -161,7 +161,7 @@ class SummarizedBudgetLogic {
     await this.quarterlyStatsLogic.batchInsert(buildingId, quarterlyStatsArr, trx);
 
     //insert empty month total row
-    await this.yearlyStatsLogic.insertYearStatsTrx(buildingId, {
+    const result = await this.yearlyStatsLogic.insertYearStatsTrx(buildingId, {
       year: date.year,
       income: 0,
       outcome: 0

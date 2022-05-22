@@ -6,9 +6,12 @@ import useModalLogic from '../../customHooks/useModalLogic';
 import GenerateExcelReportsModal from '../modals/GenerateExcelReportsModal';
 import GenerateEmptyReportsModal from '../modals/GenerateEmptyReportsModal';
 import ChangeBuildingColorModal from '../modals/ChangeBuildingColorModal';
+import SelectButton from '../buttons/SelectButton';
 
 const container = css`
-  margin: 20px 0 20px;
+  margin: 15px 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
 `;
 
 const mainContainer = css`
@@ -54,9 +57,10 @@ const PageHeader = ({ buildingName, buildingId }) => {
 
   return <div className={container} id="pageHeader">
     <div className={mainContainer}>
-      <MoreButton
+      {/* <MoreButton
         onClick={handleClick}
-      />
+      /> */}
+      <SelectButton onClick={handleClick} label="פעולות נוספות" />
       <MoreBuildingMenu
         anchorEl={anchorEl}
         handleClose={handleClose}

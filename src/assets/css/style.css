@@ -1,5 +1,11 @@
 @font-face {
   font-family: "Open Sans";
+  font-weight: 300;
+  src: url("../fonts/OpenSans/OpenSans-Light.ttf");
+}
+
+@font-face {
+  font-family: "Open Sans";
   font-weight: 400;
   src: url("../fonts/OpenSans/OpenSans-Regular.ttf");
 }
@@ -18,7 +24,7 @@
 
 @font-face {
   font-family: "Open Sans";
-  font-weight: 600;
+  font-weight: 700;
   src: url("../fonts/OpenSans/OpenSans-ExtraBold.ttf");
 }
 
@@ -199,6 +205,7 @@ textarea {
   #printModal,
   #section-header,
   #toggleButton,
+  #simplePageHeader,
   hr,
   .addBoxContainer {
     display: none !important;

@@ -8,8 +8,7 @@ const style = css`
   justify-content: flex-end;
   align-items: center;
   background: #1d73de;
-  border-radius: 14px;
-  padding: 0 8px;
+  padding: 0 10px;
   overflow: hidden;
 `;
 

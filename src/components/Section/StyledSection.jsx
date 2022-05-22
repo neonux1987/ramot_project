@@ -10,13 +10,14 @@ const _container = css`
   background-color: #ffffff;
   border-radius: 3px;
   overflow: hidden;
+  box-shadow: 0px 0px 20px 0px rgb(44 101 144 / 10%);
 `;
 
 const _header = css`
   height: 60px;
   display: flex;
   border-bottom: 1px solid #f1f1f1;
-  background: #0e7ab9;
+  background: #ffffff;
 `;
 
 const _titleBox = css`
@@ -38,7 +39,7 @@ const _iconWrapper = css`
 `;
 
 const _icon = css`
-  color: #ffffff;
+  color: #000000;
   font-size: 24px;
 `;
 
@@ -50,7 +51,7 @@ const _titleWrapper = css`
 `;
 
 const _titleTypography = css`
-  color: #ffffff;
+  color: #000000;
   font-weight: 400;
   font-size: 1.3em;
 `;
@@ -104,7 +105,7 @@ const StyledSection = ({
   return <div className={classnames(_container, isFullscreen ? fullscreenStyle : "")} id="styledSection">
 
     {/* header */}
-    <div className={classnames(_header, css`background-color:${bgColor}`)} id="styledSection-header">
+    <div className={_header} id="styledSection-header">
 
       {/* title box */}
       <div className={_titleBox}>

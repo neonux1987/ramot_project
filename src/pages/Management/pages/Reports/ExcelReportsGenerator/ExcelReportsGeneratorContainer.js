@@ -1,23 +1,14 @@
-// LIBRARIES
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RiFileExcel2Line } from 'react-icons/ri';
-
-// UTILS
 import Helper from '../../../../../helpers/Helper';
-
-// SERVICES
 import { exportReports } from '../../../../../services/reports.svc';
-
-// ACTIONS
 import { fetchRegisteredReportsGroupedByYear, fetchRegisteredReportsByYear } from '../../../../../redux/actions/registeredReportsActions';
 import { checkBuilding, setAllChecked } from '../../../../../redux/actions/reportsActions';
-
-// COMPONENTS
 import StyledSection from '../../../../../components/Section/StyledSection';
 import ExcelReportsGenerator from './ExcelReportsGenerator';
 import BuildingPicker from './BuildingPicker/BuildingPicker';
-import Section from '../../../../../components/Section/Section';
+import Box from '@material-ui/core/Box';
 
 const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   const date = new Date();//current date
@@ -103,13 +94,15 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
       noData={!isFetching & checkedBuildings.length === 0}
       noDataText="לא קיימים בניינים"
     >
-      <BuildingPicker
-        checkedBuildings={checkedBuildings}
-        isAllChecked={isAllChecked}
-        setAllChecked={setAllCheckedHandler}
-        checkBuilding={checkBuildingHandler}
-      />
-      <Section marginBottom="50px">
+      <Box margin="0 0 0 -5px">
+        <BuildingPicker
+          checkedBuildings={checkedBuildings}
+          isAllChecked={isAllChecked}
+          setAllChecked={setAllCheckedHandler}
+          checkBuilding={checkBuildingHandler}
+        />
+      </Box>
+      <Box margin="30px 15px 50px">
         <ExcelReportsGenerator
           year={year}
           quarter={quarter}
@@ -119,7 +112,7 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
           onQuarterChangeHandler={onQuarterChangeHandler}
           onYearChangeHandler={onYearChangeHandler}
         />
-      </Section>
+      </Box>
 
     </StyledSection>
   )

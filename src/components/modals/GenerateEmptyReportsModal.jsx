@@ -3,7 +3,7 @@ import Helper from '../../helpers/Helper';
 import EmptyReportsGenerator from '../../pages/Management/pages/Reports/EmptyReportsGenerator/EmptyReportsGenerator';
 import { generateEmptyReports } from '../../services/emptyReportsGenerator.svc';
 import CheckboxWithLabel from '../Checkboxes/CheckboxWithLabel';
-import Section from '../Section/Section';
+import Box from '@material-ui/core/Box';
 import EditModal from './modalTypes/EditModal';
 
 const years = generateYears(new Date().getFullYear());
@@ -52,15 +52,16 @@ const GenerateEmptyReportsModal = ({ buildingName, buildingId }) => {
       hideAgreeButton={true}
       cancelBtnText="סגור"
     >
-      <CheckboxWithLabel
-        label="צור מדוחות קודמים?"
-        name="fromPreviousReports"
-        checked={fromPreviousReports}
-        onChange={onCheckedHandler}
-        mr="9px"
-        mt="10px"
-      />
-      <Section marginBottom="50px" marginTop="0">
+      <Box margin="20px 30px">
+        <CheckboxWithLabel
+          label="צור מדוחות קודמים?"
+          name="fromPreviousReports"
+          checked={fromPreviousReports}
+          onChange={onCheckedHandler}
+          mr="-11px"
+          mt="10px"
+        />
+
         <EmptyReportsGenerator
           selectDate={selectDate}
           years={years}
@@ -68,7 +69,7 @@ const GenerateEmptyReportsModal = ({ buildingName, buildingId }) => {
           onChangeHandler={onChangeHandler}
           onClickHandler={onClickHandler}
         />
-      </Section>
+      </Box>
     </EditModal>
   );
 }

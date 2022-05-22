@@ -38,6 +38,7 @@ class YearlyStatsLogic {
     const buildings = await buildingsDao.getBuildingsByStatus("פעיל", trx);
 
     await asyncForEach(buildings, async ({ buildingName, buildingId, color }) => {
+
       const stat = {
         label: buildingName,
         color,

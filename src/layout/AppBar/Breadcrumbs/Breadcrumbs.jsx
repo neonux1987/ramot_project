@@ -8,7 +8,7 @@ const wrapper = css`
   align-items: center;
   font-size: 14px;
   color: #000000;
-  font-weight: 400;
+  font-weight: 500;
   border-top: none;
   user-select: none;
   flex-grow: 1;

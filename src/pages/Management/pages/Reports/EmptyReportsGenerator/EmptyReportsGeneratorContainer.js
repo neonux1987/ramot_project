@@ -2,22 +2,14 @@
 import React, { useCallback, useState } from 'react';
 import { Description } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
-
-// COMPONENTS
 import EmptyReportsGenerator from './EmptyReportsGenerator';
 import StyledSection from '../../../../../components/Section/StyledSection';
-import Section from '../../../../../components/Section/Section';
 import BuildingPicker from '../ExcelReportsGenerator/BuildingPicker/BuildingPicker';
-
-// UTILS
 import Helper from '../../../../../helpers/Helper';
-
-// SERVICES
 import { generateEmptyReports } from '../../../../../services/emptyReportsGenerator.svc';
-
-// ACTIONS
 import { checkBuilding, setAllChecked } from '../../../../../redux/actions/reportsActions';
 import CheckboxWithLabel from '../../../../../components/Checkboxes/CheckboxWithLabel';
+import Box from '@material-ui/core/Box';
 
 const years = generateYears(new Date().getFullYear());
 const quarters = Helper.getYearQuarters();
@@ -82,23 +74,25 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
       noData={!isFetching & checkedBuildings.length === 0}
       noDataText="לא קיימים בניינים"
     >
-      <BuildingPicker
-        checkedBuildings={checkedBuildings}
-        isAllChecked={isAllChecked}
-        setAllChecked={setAllCheckedHandler}
-        checkBuilding={checkBuildingHandler}
-      />
+      <Box margin="0 0 0 -5px">
+        <BuildingPicker
+          checkedBuildings={checkedBuildings}
+          isAllChecked={isAllChecked}
+          setAllChecked={setAllCheckedHandler}
+          checkBuilding={checkBuildingHandler}
+        />
 
-      <CheckboxWithLabel
-        label="צור מדוחות קודמים?"
-        name="fromPreviousReports"
-        checked={fromPreviousReports}
-        onChange={onCheckedHandler}
-        mr="9px"
-        mt="10px"
-      />
+        <CheckboxWithLabel
+          label="צור מדוחות קודמים?"
+          name="fromPreviousReports"
+          checked={fromPreviousReports}
+          onChange={onCheckedHandler}
+          mr="9px"
+          mt="10px"
+        />
+      </Box>
 
-      <Section marginBottom="50px" marginTop="0">
+      <Box margin="0 20px 50px">
         <EmptyReportsGenerator
           selectDate={selectDate}
           years={years}
@@ -106,7 +100,7 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
           onChangeHandler={onChangeHandler}
           onClickHandler={onClickHandler}
         />
-      </Section>
+      </Box>
     </StyledSection>
   )
 };

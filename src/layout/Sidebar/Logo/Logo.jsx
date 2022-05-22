@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import { useTheme } from "@material-ui/core";
 
 // CSS
 import {
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Logo = ({ children }) => {
   const classes = useStyles();
-
+  const { main } = useTheme().palette.primary;
   return (
     <div className={classes.drawerHeader}>
       <div className={container}>
@@ -40,7 +41,7 @@ const Logo = ({ children }) => {
         <div className={wrapper}>
 
           <div className={logoImgContainer}>
-            <div className={logo} />
+            <div className={logo} style={{ backgroundColor: main }} />
             <div className={mainTitleWrapper}>
               <Typography className={mainTitle} variant="subtitle1">
                 קבוצת רמות

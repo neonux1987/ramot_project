@@ -23,11 +23,16 @@
 }
 
 .logo {
-  background-image: url('../../../assets/images/Untitled-1.png');
-  background-repeat: no-repeat;
+  /* background-image: url('../../../assets/images/Untitled-1.png'); */
+  mask: url('../../../assets/images/Untitled-1.png') center/contain;
+  -webkit-mask: url('../../../assets/images/Untitled-1.png') center;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
   height: 100px;
   width: 80px;
-  background-position-y: 25px;
+  mask-position: 0 25px;
+  -webkit-mask-position: 0 25px;
+  background: black;
 }
 
 .mainTitleWrapper {
@@ -36,7 +41,7 @@
 
 .mainTitle {
   font-size: 28px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 30px;
   margin-top: 18px;
   color: #000000;

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-
 import { useSelector, useDispatch } from 'react-redux';
 import Helper from '../../helpers/Helper';
 import ExcelReportsGenerator from '../../pages/Management/pages/Reports/ExcelReportsGenerator/ExcelReportsGenerator';
 import { fetchRegisteredReportsByYear, fetchRegisteredReportsGroupedByYear } from '../../redux/actions/registeredReportsActions';
 import { exportReports } from '../../services/reports.svc';
-import Section from '../Section/Section';
-
 import EditModal from './modalTypes/EditModal';
+import Box from '@material-ui/core/Box';
 
 const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
   const date = new Date();//current date
@@ -79,7 +77,7 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
       hideAgreeButton={true}
       cancelBtnText="סגור"
     >
-      <Section marginTop="30px">
+      <Box margin="40px">
         <ExcelReportsGenerator
           year={year}
           quarter={quarter}
@@ -89,7 +87,7 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
           onQuarterChangeHandler={onQuarterChangeHandler}
           onYearChangeHandler={onYearChangeHandler}
         />
-      </Section>
+      </Box>
     </EditModal>
   );
 }

@@ -37,6 +37,10 @@ const MoreBuildingMenu = ({
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       onClose={handleClose}
+      getContentAnchorEl={null}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      disableAutoFocusItem
     >
 
       <MoreMenuItem

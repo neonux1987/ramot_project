@@ -28,11 +28,11 @@ const _select = css`
   border: 1px solid #ececec;
   border-radius: 6px;
 
-  ::before {
+  :before {
     border-bottom: none;
   } 
 
-  ::after {
+  :after {
     border-bottom: none;
   } 
 `;
@@ -41,7 +41,7 @@ const _classesSelect = css`
   padding: 8px 0 6px 24px;
   font-weight: 400;
 
-  focus {
+  :focus {
     background: none;
   }
 `;

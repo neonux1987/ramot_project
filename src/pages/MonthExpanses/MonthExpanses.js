@@ -1,12 +1,7 @@
-// LIBRARIES
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router';
-
-// COMPONENTS
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Page from '../../components/Page/Page';
-
-// CONTAINERS
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonthExpanses } from '../../redux/actions/monthExpansesActions';
@@ -15,9 +10,7 @@ const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "הוצאות חודשיות";
 
 const MonthExpanses = () => {
-
   const dispatch = useDispatch();
-
   const { buildingName, buildingId } = useLocation().state;
   const { date, data, isFetching } = useSelector(store => store.monthExpanses[buildingId]);
 

@@ -12,10 +12,10 @@ const text = css`
 
 const lastStyle = css`
   color: #000000;
-  font-weight: 500;
+  font-weight: 700;
 `
 
-const Crumb = ({ last = false, location, separator = true }) => {
+const Crumb = ({ last = false, location }) => {
 
   return <div>
     <span className={last ? lastStyle : text}>

@@ -48,7 +48,7 @@ const select = css`
   direction: ltr;
   width: 180px;
   background: #f5f5f5;
-  margin: 0;
+  margin: 0 -15px;
 `;
 
 const input = css`
@@ -284,7 +284,7 @@ const Sidebar = props => {
       <WhiteButton onClick={onClose}>בטל</WhiteButton>
       <PrimaryButton className={printbutton} onClick={onPrintClick}>
         הדפס
-    </PrimaryButton>
+      </PrimaryButton>
     </div>
 
   </form>;

@@ -4,7 +4,6 @@ import { css } from 'emotion';
 
 const container = css`
   position: relative;
-  border-radius: 14px;
   margin: 0 0 20px;
 `;
 

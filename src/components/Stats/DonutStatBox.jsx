@@ -35,12 +35,12 @@ const label = css`
 `;
 
 const text = css`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   color: #000000;
 
   @media (max-width: 1400px) {
-    font-size: 14px;
+    font-size: 16px;
   }
 `;
 

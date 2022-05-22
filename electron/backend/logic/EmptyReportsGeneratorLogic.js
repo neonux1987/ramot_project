@@ -36,7 +36,6 @@ class EmptyReportsGeneratorLogic {
         await this.createEmptyReportsByMonth(buildingId, date, fromPreviousReports, trx);
         createdReportsBuidlings.push(buildingName);
       }
-
       else
         existingReportsBuidlings.push(buildingName);
     });
