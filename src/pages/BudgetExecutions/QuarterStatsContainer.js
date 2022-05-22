@@ -50,6 +50,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
         color={colorSet[i]}
         loading={isFetching}
         index={i + 1}
+        xs={true}
       />;
 
     } // end loop
@@ -71,6 +72,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
       loading={isFetching}
       index={4}
       border
+      xs={true}
     />;
   }
 

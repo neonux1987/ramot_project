@@ -49,6 +49,7 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
         color={colorSet[i]}
         loading={isFetching}
         index={i + 1}
+        xs={true}
       />;
 
     } // end loop
@@ -69,6 +70,7 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
       border
       loading={isFetching}
       index={5}
+      xs={true}
     />;
   }
 

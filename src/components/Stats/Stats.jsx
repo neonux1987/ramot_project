@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Section from '../Section/Section';
 
-const Stats = ({ stats }) => <Section style={{ backgroundColor: "#ffffff", padding: "15px", borderRadius: "0" }}>
+const Stats = ({ stats }) => <Section>
   <Grid
     container
     spacing={2}

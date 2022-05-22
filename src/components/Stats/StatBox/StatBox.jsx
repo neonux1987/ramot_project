@@ -3,22 +3,16 @@ import { Grid, Grow, Paper, Typography } from '@material-ui/core';
 import Spinner from '../../Spinner/Spinner';
 import { AlignCenterMiddle } from '../../AlignCenterMiddle/AlignCenterMiddle';
 import {
-  paper,
-  upper,
-  titleWrapper,
-  titleText,
-  bottom,
+  paper
 } from './StatBox.module.css';
 
 
 const StatBox = ({
-  title,
   loading = true,
   children,
   index = 1,
   color = "#000000",
-  border = false,
-  xs = "auto"
+  xs = true
 }) => {
 
   return <Grid item xs={xs} style={{ flexGrow: 1 }}>
