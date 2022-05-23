@@ -1,24 +1,21 @@
-// LIBRARIES
 import React from 'react';
-
-// CONTAINERS
 import BuildingsManagementTableContainer from './BuildingsManagementTableContainer';
 import Page from '../../../../components/Page/Page';
-import SimplePageHeader from '../../../../components/PageHeader/SimplePageHeader';
 import Note from '../../../../components/Note/Note';
-import useIconWrapper from '../../../../customHooks/useIconWrapper';
+import TitledSection from '../../../../components/Section/TitledSection';
+import useIcons from '../../../../customHooks/useIcons';
 
 const TABLE_TITLE = "ניהול בניינים";
 
 const BuildingsManagement = () => {
-  const [getIcon] = useIconWrapper();
-
-  const Icon = getIcon({ iconName: "bi:table", width: "28px", height: "28px" });
+  const [generateIcon] = useIcons();
+  const TableIcon = generateIcon("table");
   return (
     <Page>
-      <SimplePageHeader title={TABLE_TITLE} icon={<Icon />} />
-      <Note margin="0 0 10px 0" text="בניינים שהועברו לסטטוס מחיקה, ימחקו לאחר 30 יום לאחר אישור המשתמש" important />
-      <BuildingsManagementTableContainer />
+      <Note margin="0" text="בניינים שהועברו לסטטוס מחיקה, ימחקו לאחר 30 יום לאחר אישור המשתמש" important />
+      <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon} margin="0">
+        <BuildingsManagementTableContainer />
+      </TitledSection>
     </Page>
   );
 

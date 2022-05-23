@@ -25,8 +25,7 @@ const _select = css`
   font-size: 16px;
   color: #000000;
   font-weight: 400;
-  border: 1px solid #ececec;
-  border-radius: 6px;
+  border: 1px solid #dddddd;
 
   :before {
     border-bottom: none;

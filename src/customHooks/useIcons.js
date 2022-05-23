@@ -22,6 +22,8 @@ const useIcons = () => {
       case "add": return getIcon({ iconName: "bi:journal-plus", style });
       case "fullscreen": return getIcon({ iconName: "ant-design:fullscreen-outlined", style });
       case "fullscreen-exit": return getIcon({ iconName: "ant-design:fullscreen-exit-outlined", style });
+      case "table": return getIcon({ iconName: "bi:table", style });
+      case "stats": return getIcon({ iconName: "ic:round-donut-large", style: { width: "30px", height: "30px", ...style } });
       default: return Label
     };
   }

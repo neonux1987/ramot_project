@@ -2,10 +2,8 @@
   position: relative;
   z-index: 6;
   flex-grow: 1;
-  margin: 15px 0;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ececec;
+  padding: 5px 10px;
+  background: #fafafa;
 }
 
 .controls {

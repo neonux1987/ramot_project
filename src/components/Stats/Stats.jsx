@@ -1,8 +1,8 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Section from '../Section/Section';
+import Box from '@material-ui/core/Box';
 
-const Stats = ({ stats }) => <Section>
+const Stats = ({ stats }) => <Box style={{ backgroundColor: "#ffffff", padding: "15px", borderRadius: "0" }} >
   <Grid
     container
     spacing={2}
@@ -10,6 +10,6 @@ const Stats = ({ stats }) => <Section>
   >
     {stats || []}
   </Grid>
-</Section>
+</Box>
 
 export default Stats;

@@ -5,9 +5,11 @@ import Page from '../../components/Page/Page';
 import MonthExpansesTableContainer from './MonthExpansesTableContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonthExpanses } from '../../redux/actions/monthExpansesActions';
+import TitledSection from '../../components/Section/TitledSection';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "הוצאות חודשיות";
+const TABLE_TITLE = "מעקב הוצאות";
 
 const MonthExpanses = () => {
   const dispatch = useDispatch();
@@ -25,15 +27,17 @@ const MonthExpanses = () => {
     <Page>
       <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
 
-      <MonthExpansesTableContainer
-        buildingName={buildingName}
-        buildingId={buildingId}
-        date={date}
-        pageName={PAGE_NAME}
-        pageTitle={PAGE_TITLE}
-        data={data}
-        isFetching={isFetching}
-      />
+      <TitledSection title={TABLE_TITLE}>
+        <MonthExpansesTableContainer
+          buildingName={buildingName}
+          buildingId={buildingId}
+          date={date}
+          pageName={PAGE_NAME}
+          pageTitle={PAGE_TITLE}
+          data={data}
+          isFetching={isFetching}
+        />
+      </TitledSection>
     </Page>
   );
 }

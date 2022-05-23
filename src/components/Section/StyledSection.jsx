@@ -14,10 +14,10 @@ const _container = css`
 `;
 
 const _header = css`
-  height: 60px;
+  height: 70px;
   display: flex;
   border-bottom: 1px solid #f1f1f1;
-  background: #ffffff;
+  background: rgb(22, 95, 165);
 `;
 
 const _titleBox = css`
@@ -39,7 +39,7 @@ const _iconWrapper = css`
 `;
 
 const _icon = css`
-  color: #000000;
+  color: #ffffff;
   font-size: 24px;
 `;
 
@@ -51,7 +51,7 @@ const _titleWrapper = css`
 `;
 
 const _titleTypography = css`
-  color: #000000;
+  color: #ffffff;
   font-weight: 400;
   font-size: 1.3em;
 `;

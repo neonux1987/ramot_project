@@ -1,19 +1,19 @@
-// LIBRARIES
 import React from 'react';
-
-// CONTAINERS
 import ExpansesCodesTableContainer from './ExpansesCodesTableContainer';
 import Page from '../../../../components/Page/Page';
-import SimplePageHeader from '../../../../components/PageHeader/SimplePageHeader';
+import TitledSection from '../../../../components/Section/TitledSection';
+import useIcons from '../../../../customHooks/useIcons';
 
 const TABLE_TITLE = "מעקב וניהול קודי הנהלת חשבונות";
 
 const ExpansesCodes = () => {
-
+  const [generateIcon] = useIcons();
+  const TableIcon = generateIcon("table");
   return (
     <Page>
-      <SimplePageHeader title={TABLE_TITLE} />
-      <ExpansesCodesTableContainer />
+      <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon} margin="0">
+        <ExpansesCodesTableContainer />
+      </TitledSection>
     </Page>
   );
 

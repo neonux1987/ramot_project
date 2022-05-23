@@ -1,14 +1,19 @@
 import React from 'react';
 import BuildingsStatsContainer from './BuildingsStatsContainer';
 import Page from '../../components/Page/Page';
-import Section from '../../components/Section/Section';
+import TitledSection from '../../components/Section/TitledSection';
+import useIcons from '../../customHooks/useIcons';
+
+const STATS_TITLE = "סיכום";
 
 const Home = () => {
+  const [generateIcon] = useIcons();
+  const StatsIcon = generateIcon("stats");
   return (
     <Page>
-      <Section>
+      <TitledSection title={STATS_TITLE} TitleIcon={StatsIcon}>
         <BuildingsStatsContainer />
-      </Section>
+      </TitledSection>
     </Page>
   );
 }
