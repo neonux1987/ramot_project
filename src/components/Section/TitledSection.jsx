@@ -15,7 +15,7 @@ const TitledSection = ({ title = "", children, TitleIcon, margin = "20px 0", col
 
   return (
     <Box margin={margin} bgcolor="#ffffff">
-      <Box id="titled-section-header" display="flex" alignItems="center" bgcolor="rgb(22 95 165)" height="70px" paddingLeft="15px">
+      <Box id="titled-section-header" display="flex" alignItems="center" bgcolor="rgb(23 110 193)" height="70px" paddingLeft="15px">
         <Box color="#ffffff" marginRight="10px" >{TitleIcon}</Box>
         <Box flexGrow="1"><Typography style={{ color: "#ffffff" }} variant='h5'>{title}</Typography></Box>
         {
