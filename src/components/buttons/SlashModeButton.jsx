@@ -13,7 +13,7 @@ const _slash = css`
     transform: rotate(-45deg);
     position: absolute;
     top: -13px;
-    left: 12px;
+    left: 8px;
   }
 `;
 
