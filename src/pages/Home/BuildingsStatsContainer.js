@@ -14,7 +14,8 @@ const BuildingsStatsContainer = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllBuildingsStatsByYear(2021));
+    const currentYear = (new Date()).getFullYear();
+    dispatch(fetchAllBuildingsStatsByYear(currentYear));
   }, [dispatch]);
 
   const generateBuildingsStats = (data, isFetching) => {

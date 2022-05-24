@@ -22,7 +22,6 @@ export const fetchAllBuildingsStatsByYear = (year) => {
         channel: "all-buildings-stats-by-year-data"
       },
       onSuccess: result => {
-        console.log(result);
         dispatch(receiveAllBuildingsYearlyStats(result.data))
       },
       onError: result => dispatch(fetchingAllBuildingsYearlyStatsFailed(result.error))
