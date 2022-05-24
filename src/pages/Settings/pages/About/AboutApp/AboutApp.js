@@ -1,10 +1,7 @@
-// LIBRARIES
 import React from 'react';
-import { LaptopMac } from '@material-ui/icons';
-
-// COMPONENTS
 import ExpandableSection from '../../../../../components/Section/ExpandableSection';
 import BoldUnderlineLabel from '../../../../../components/BoldUnderlineLabel/BoldUnderlineLabel';
+import useIcons from '../../../../../customHooks/useIcons';
 
 //ELECTRON
 const app = require("electron").remote.app;
@@ -12,11 +9,12 @@ const appCurrentVersion = app.getVersion();
 const appName = app.name;
 
 const AboutApp = () => {
-
+  const [generateIcon] = useIcons();
+  const AboutIcon = generateIcon("about");
   return (
     <ExpandableSection
       title={"אודות התוכנה"}
-      Icon={LaptopMac}
+      Icon={AboutIcon}
     >
 
       <BoldUnderlineLabel label={`שם תוכנה:`}>

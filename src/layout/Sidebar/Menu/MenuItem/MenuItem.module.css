@@ -1,5 +1,13 @@
 .listItem {
   padding-right: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.listItem:active {
+  padding-right: 16px;
+  position: relative;
+  z-index: 1;
 }
 
 .listItem,

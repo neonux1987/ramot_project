@@ -1,17 +1,15 @@
-// LIBRARIES
 import React from 'react';
-import { Code } from '@material-ui/icons';
-
-// COMPONENTS
 import ExpandableSection from '../../../../../components/Section/ExpandableSection';
 import BoldUnderlineLabel from '../../../../../components/BoldUnderlineLabel/BoldUnderlineLabel';
+import useIcons from '../../../../../customHooks/useIcons';
 
 const AboutDeveloper = () => {
-
+  const [generateIcon] = useIcons();
+  const DeveloperIcon = generateIcon("developer");
   return (
     <ExpandableSection
       title={"אודות המפתח"}
-      Icon={Code}
+      Icon={DeveloperIcon}
       padding={"30px 20px 60px"}
     >
 
