@@ -5,6 +5,7 @@
   position: relative;
   z-index: 6;
   border-collapse: collapse;
+  padding: 4px;
 }
 
 th,
@@ -24,6 +25,8 @@ td {
   height: -moz-calc(100vh - 183px);
   height: -webkit-calc(100vh - 183px);
   height: calc(100vh - 183px);
+  border: 1px solid #dddddd;
+  border-top: none;
 }
 
 .tableBodyNoGroupHeader {
@@ -66,15 +69,14 @@ td {
   border-bottom: none !important;
   position: relative;
   background-color: #fafafa;
-  border-top: 1px solid #dddddd;
+  border: 1px solid #dddddd;
+  border-bottom: none;
 }
 
 .headerRow {
   grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
   border: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
-  border-left: none;
-  border-right: none;
   position: relative;
   box-shadow: rgb(0 0 0 / 4%) 0px 8px 12px 0px;
   z-index: 2;

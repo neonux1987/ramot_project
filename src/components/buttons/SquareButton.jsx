@@ -9,7 +9,6 @@ const _container = css`
   cursor: pointer;
   background: none;
   margin: 0 5px;
-  padding: 0;
   display: inline-flex;
   justify-content: center;
   align-items: center;

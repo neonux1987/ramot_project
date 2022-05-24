@@ -1,29 +1,19 @@
-// LIBRARIES
 import React, { useState } from 'react';
-import { AccessibilityNew } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
-
-// COMPONENTS
 import SettingsExpandableSection from '../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import FileSelector from '../../../../../components/FileSelector/FileSelector';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
-
-// ACTIONS
 import { updateSettings, saveSettings } from '../../../../../redux/actions/settingsActions';
-
-// SERVICES
 import { selectFolderDialog } from '../../../../../services/electronDialogs.svc';
 import { openItem } from '../../../../../services/mainProcess.svc';
-
-// ACTIONS
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
-
+import useIcons from '../../../../../customHooks/useIcons';
 
 const SETTINGS_NAME = "user";
 
 const UserContainer = () => {
   const dispatch = useDispatch();
-
+  const [generateIcon] = useIcons();
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
   const [data, setData] = useState(settings);
@@ -66,10 +56,12 @@ const UserContainer = () => {
     }); //end selectFolderDialog
   }
 
+  const Icon = generateIcon("user");
+
   return (
     <SettingsExpandableSection
       title={"משתמש"}
-      Icon={AccessibilityNew}
+      Icon={Icon}
       onSaveClick={save}
     >
 

@@ -1,33 +1,22 @@
-// LIBRARIES
 import React, { useState } from 'react';
-import { Android } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
-
-// COMPONENTS
 import Sound from './Sound/Sound';
 import SettingsExpandableSection from '../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import FileSelector from '../../../../../components/FileSelector/FileSelector';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
-
-// ACTIONS
 import { updateSettings, saveSettings } from '../../../../../redux/actions/settingsActions';
-
-// SOUND
 import { soundManager } from '../../../../../soundManager/SoundManager';
 import Divider from '../../../../../components/Divider/Divider';
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
-
-// SERVICES
 import { openItem } from '../../../../../services/mainProcess.svc';
-
+import useIcons from '../../../../../customHooks/useIcons';
 
 const SETTINGS_NAME = "system";
 
 const SystemContainer = () => {
   const dispatch = useDispatch();
-
+  const [generateIcon] = useIcons();
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
-
   const [data, setData] = useState(settings);
 
   const {
@@ -69,10 +58,12 @@ const SystemContainer = () => {
     });
   }
 
+  const Icon = generateIcon("android");
+
   return (
     <SettingsExpandableSection
       title={"מערכת"}
-      Icon={Android}
+      Icon={Icon}
       onSaveClick={save}
     >
 

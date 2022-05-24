@@ -7,8 +7,8 @@ const style = css`
   /* width: 100%; */
   justify-content: flex-end;
   align-items: center;
-  background: #1d73de;
-  padding: 0 10px;
+  background: rgb(23, 110, 193);
+  padding: 2px 10px;
   overflow: hidden;
 `;
 
@@ -27,7 +27,7 @@ const button = css`
   color: #ffffff;
 
   :hover{
-    background-color: rgba(0, 0, 0, 0.06);
+    background-color: rgb(255 255 255 / 20%);
   }
 `;
 

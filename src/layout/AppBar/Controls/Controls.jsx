@@ -3,6 +3,7 @@ import { css } from 'emotion';
 import { Icon } from '@iconify/react';
 import SpinningButton from '../../../components/buttons/SpinningButton/SpinningButton';
 import VolumeButton from '../Controls/VolumeButton/VolumeButton';
+import useIcons from '../../../customHooks/useIcons';
 
 const container = css`
   display: flex;
@@ -23,7 +24,7 @@ const volumeBtn = css`
   outline: none;
   cursor: pointer;
   background: none;
-  color: #00000;
+  color: #000000;
   min-width: 0;
   margin: 0 10px;
   -webkit-app-region: no-drag;
@@ -36,11 +37,11 @@ const settingsBtn = css`
   color: #000000 !important;
 `;
 
-const SettingsIcon = () => <Icon icon="akar-icons:settings-vertical" width="24" height="24" />;
-
 const Controls = ({
   routes
 }) => {
+  const [generateIcon] = useIcons();
+  const SettingsIcon = generateIcon("settings");
   return (
     <div className={container}>
       <SpinningButton

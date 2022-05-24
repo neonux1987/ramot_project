@@ -1,16 +1,15 @@
-// LIBRARIES
 import React from "react";
-import { VolumeOff, VolumeUp } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateSettings, saveSettings } from "../../../../redux/actions/settingsActions";
 import { soundManager } from "../../../../soundManager/SoundManager";
 import ButtonWithSound from "../../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
+import useIcons from "../../../../customHooks/useIcons";
 
 const VolumeButton = props => {
   const { className = "" } = props;
 
   const dispatch = useDispatch();
-
+  const [generateIcon] = useIcons();
   const system = useSelector(store => store.settings.data.system);
   const { soundEnabled } = system;
 
@@ -22,9 +21,12 @@ const VolumeButton = props => {
     dispatch(saveSettings(false));
   }
 
+  const VolumeOn = generateIcon("volume-on");
+  const VolumeOff = generateIcon("volume-off");
+
   return (
     <ButtonWithSound onClick={onClick} className={className} reverse={1}>
-      {soundEnabled ? <VolumeUp /> : <VolumeOff />}
+      {soundEnabled ? <VolumeOn /> : <VolumeOff />}
     </ButtonWithSound>
   );
 

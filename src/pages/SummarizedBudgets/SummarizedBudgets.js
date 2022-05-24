@@ -35,7 +35,7 @@ const SummarizedBudgets = () => {
   return <Page>
     <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
 
-    <TitledSection title={STATS_TITLE} TitleIcon={StatsIcon}>
+    <TitledSection title={STATS_TITLE} TitleIcon={StatsIcon} id={"sb-stats"}>
       <YearStatsContainer
         buildingId={buildingId}
         date={date}

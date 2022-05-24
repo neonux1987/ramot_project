@@ -4,7 +4,7 @@ import Page from '../../components/Page/Page';
 import TitledSection from '../../components/Section/TitledSection';
 import useIcons from '../../customHooks/useIcons';
 
-const STATS_TITLE = "סיכום";
+const STATS_TITLE = "תמונת מצב כללית";
 
 const Home = () => {
   const [generateIcon] = useIcons();

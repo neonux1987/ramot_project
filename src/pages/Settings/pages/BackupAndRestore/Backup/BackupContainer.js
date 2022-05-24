@@ -1,10 +1,7 @@
-// LIBRARIES
 import React, { useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MenuItem } from '@material-ui/core';
 import { Backup } from '@material-ui/icons';
-
-// COMPONENTS
 import SettingsExpandableSection from '../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import ConfirmDbPathChangeModel from '../../../../../components/modals/ConfirmDbPathChangeModel/ConfirmDbPathChangeModel';
 import ManualBackupSelector from './ManualBackupSelector/ManualBackupSelector';
@@ -12,34 +9,23 @@ import CheckboxWithLabel from '../../../../../components/Checkboxes/CheckboxWith
 import Divider from '../../../../../components/Divider/Divider';
 import TitleTypography from '../../../../../components/Typographies/TitleTypography';
 import FileSelector from '../../../../../components/FileSelector/FileSelector';
-
-// SERVICES
 import { selectFolderDialog, saveToFileDialog } from '../../../../../services/electronDialogs.svc';
 import { dbIndependentBackup } from '../../../../../services/dbBackup.svc';
-
-// ACTIONS
 import { saveSettings, updateSettings } from '../../../../../redux/actions/settingsActions';
 import { initializeRegisteredBackups } from '../../../../../redux/actions/registeredBackupsActions';
 import { setDirty } from '../../../../../redux/actions/goodByeActions';
-
-// TOASTS
 import { toastManager } from '../../../../../toasts/toastManager';
-
-// HOOKS
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import Note from '../../../../../components/Note/Note';
+import useIcons from '../../../../../customHooks/useIcons';
 
 const SETTINGS_NAME = "db_backup";
 
 const BackupContainer = () => {
-
   const dispatch = useDispatch();
-
+  const [generateIcon] = useIcons();
   const { showModal } = useModalLogic();
-
-  // state
   const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
-
   const [data, setData] = useState(settings);
 
   const save = async (event) => {
@@ -119,10 +105,12 @@ const BackupContainer = () => {
     backups_to_save.push(<MenuItem value={i} key={i}>{i}</MenuItem>)
   }
 
+  const Icon = generateIcon("backup");
+
   return (
     <SettingsExpandableSection
       title={"גיבוי בסיס נתונים"}
-      Icon={Backup}
+      Icon={Icon}
       onSaveClick={save}
     >
 

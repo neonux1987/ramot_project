@@ -1,29 +1,21 @@
-// LIBRARIES
 import React, { useState } from 'react';
-import { Style } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
-
-// COMPONENTS
 import SettingsExpandableSection from '../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
 import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
 import TitleTypography from '../../../../components/Typographies/TitleTypography';
 import Page from '../../../../components/Page/Page';
 import ColorSeries from './ColorSeries';
 import Note from '../../../../components/Note/Note';
-
-// ACTIONS
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
 import { setDirty } from '../../../../redux/actions/goodByeActions';
+import useIcons from '../../../../customHooks/useIcons';
 
 const SETTINGS_NAME = "theme";
 
 export const Theme = () => {
-
   const dispatch = useDispatch();
-
-  // state
+  const [generateIcon] = useIcons();
   const settings = useSelector(store => store.settings.data.theme);
-
   const [data, setData] = useState(settings);
 
   const save = async (event) => {
@@ -45,12 +37,14 @@ export const Theme = () => {
     dispatch(setDirty(true));
   }
 
+  const Icon = generateIcon("style");
+
   return (
     <Page>
 
       <SettingsExpandableSection
         title={"עיצוב"}
-        Icon={Style}
+        Icon={Icon}
         onSaveClick={save}
       >
 

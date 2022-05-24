@@ -1,13 +1,10 @@
-// LIBRARIES
 import React, { useState } from 'react';
 import Collapse from '@material-ui/core/Collapse';
-import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { css } from 'emotion';
-
-// CSS
 import styles from './ExpandableSection.module.css';
 import DefaultLoader from '../AnimatedLoaders/DefaultLoader';
 import StyledSection from './StyledSection';
+import ExpandButton from '../buttons/ExpandButton';
 
 const _content = css`
   padding: 20px 15px;
@@ -28,23 +25,11 @@ const ExpandableSection = ({
     setOpen(!open);
   }
 
-  const expandIcon = open ? <ExpandLess className={styles.expandIcon} /> : <ExpandMore className={styles.expandIcon} />
-
-  const ExtraDetails = () => <div className={styles.extraDetailsWrapper}>
-    <div>
-      {extraDetails}
-    </div>
-
-    <div className={styles.expandIconWrapper} onClick={expandClick}>
-      {expandIcon}
-    </div>
-  </div>;
-
   return <StyledSection
     title={title}
     Icon={Icon}
     bgColor={bgColor}
-    extraDetails={<ExtraDetails />}
+    extraDetails={<ExtraDetails extraDetails={extraDetails} open={open} expandClick={expandClick} style={styles.expandIconWrapper} />}
   >
     <Collapse
       timeout={300}
@@ -59,3 +44,13 @@ const ExpandableSection = ({
 }
 
 export default ExpandableSection;
+
+const ExtraDetails = ({ extraDetails, open, expandClick, style }) => <div className={styles.extraDetailsWrapper}>
+  <div>
+    {extraDetails}
+  </div>
+
+  <div className={style}>
+    <ExpandButton checked={open} onClick={expandClick} />
+  </div>
+</div>;

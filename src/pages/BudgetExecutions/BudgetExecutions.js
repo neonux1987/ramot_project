@@ -39,7 +39,7 @@ const BudgetExecutions = () => {
   return <Page>
     <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
 
-    <TitledSection title={STATS_TITLE} TitleIcon={StatsIcon} >
+    <TitledSection title={STATS_TITLE} TitleIcon={StatsIcon} id={"be-stats"}>
       <QuarterStatsContainer
         buildingId={buildingId}
         date={date}
@@ -47,7 +47,7 @@ const BudgetExecutions = () => {
       />
     </TitledSection>
 
-    <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon} >
+    <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon}>
       <BudgetExecutionsTableContainer
         buildingName={buildingName}
         buildingId={buildingId}

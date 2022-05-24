@@ -1,46 +1,31 @@
-// LIBRARIES
 import React, { useEffect, Fragment, useState } from 'react';
 import { Typography, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { Restore as Res } from '@material-ui/icons';
-
-// COMPONENTS
 import ExpandableSection from '../../../../../components/Section/ExpandableSection';
 import Separator from '../../../../../components/Seperator/Separator';
 import RestoreFromList from './RestoreFromList/RestoreFromList';
 import RestoreFromFile from './RestoreFromFile/RestoreFromFile';
-
-// ACTIONS
 import {
   fetchRegisteredBackups
 } from '../../../../../redux/actions/registeredBackupsActions';
-
-// LOADERS
 import DefaultLoader from '../../../../../components/AnimatedLoaders/DefaultLoader';
-
-// SERVICES
 import { selectFileDialog } from '../../../../../services/electronDialogs.svc';
 import { restore } from '../../../../../services/restoreDbService';
 import { toastManager } from '../../../../../toasts/toastManager';
 import useModalLogic from '../../../../../customHooks/useModalLogic';
 import ConfirmDbRestoreModal from '../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal';
-
 import WhiteButton from '../../../../../components/buttons/WhiteButton';
+import useIcons from '../../../../../customHooks/useIcons';
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
 const Restore = () => {
-
   const dispatch = useDispatch();
-
+  const [generateIcon] = useIcons();
   const { showModal } = useModalLogic();
-
   const { isFetching, data } = useSelector(store => store.registeredBackups);
-
   const [selectedBackupDate, setSelectedBackupDate] = useState("");
-
   const [selectedFile, setSelectedFile] = useState(null);
-
   const [checkBoxValue, setCheckBoxValue] = useState({
     byList: true,
     byFile: false
@@ -63,7 +48,7 @@ const Restore = () => {
     return <MenuItem value={backup.fileName} key={index}>{newLocaleDateTime}</MenuItem>
   }) : <MenuItem value="לא קיימים גיבויים שמורים" disabled>
     לא קיימים גיבויים
-</MenuItem>;
+  </MenuItem>;
 
   const onBackupDateChangeHandler = (event) => {
     const { value } = event.target;
@@ -141,16 +126,18 @@ const Restore = () => {
 
       <Typography variant="body2">
         *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה חירום.
-    </Typography>
+      </Typography>
 
       <WhiteButton margin="8px 0 0" onClick={restoreHandler}>בצע שיחזור</WhiteButton>
     </Fragment>
+
+  const Icon = generateIcon("restore");
 
   return (
 
     <ExpandableSection
       title={"שיחזור בסיס נתונים"}
-      Icon={Res}
+      Icon={Icon}
     >
       {render}
     </ExpandableSection>

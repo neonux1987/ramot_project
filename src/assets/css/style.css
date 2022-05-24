@@ -205,7 +205,9 @@ textarea {
   #printModal,
   #section-header,
   #toggleButton,
-  #simplePageHeader,
+  #titled-section-header,
+  #be-stats,
+  #sb-stats,
   hr,
   .addBoxContainer {
     display: none !important;
@@ -227,6 +229,7 @@ textarea {
     height: initial;
     position: initial;
     overflow: initial;
+    margin-top: -20px;
   }
 
   #tableSection {
@@ -250,6 +253,7 @@ textarea {
   #table {
     box-shadow: none !important;
     border: none !important;
+    padding: 0;
   }
 
   table {
@@ -302,8 +306,9 @@ textarea {
 
   .groupRow {
     background-color: #f9f9f9 !important;
+    border: none !important;
     border-top: thin solid black !important;
-    border-bottom: none !important;
+
   }
 
   .headerRow {

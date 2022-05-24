@@ -8,7 +8,6 @@ import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
 const _container = css`
   margin: 30px 0 20px;
   background-color: #ffffff;
-  border-radius: 3px;
   overflow: hidden;
   box-shadow: 0px 0px 20px 0px rgb(44 101 144 / 10%);
 `;
@@ -17,7 +16,7 @@ const _header = css`
   height: 70px;
   display: flex;
   border-bottom: 1px solid #f1f1f1;
-  background: rgb(22, 95, 165);
+  background: rgb(23, 110, 193);
 `;
 
 const _titleBox = css`

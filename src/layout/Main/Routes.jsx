@@ -23,7 +23,7 @@ const Routes = props => {
     let routes = [];
     menu.forEach(route => {
       routes.push(pages.map(page => {
-        return (<Route path={"/" + route.path + "/" + page.path} exact component={whichPageComponent(page.label)} key={page.label} />);
+        return (<Route path={"/" + route.path + "/" + page.path} exact component={whichPageComponent(page.label)} key={"/" + route.path + "/" + page.path} />);
       }));
     });
 

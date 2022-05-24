@@ -13,7 +13,7 @@ const style = css`
 
   :hover{
     box-shadow: none;
-    background: #0000000a;
+    background: #f1f1f1;
   }
 `;
 

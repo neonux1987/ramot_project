@@ -6,6 +6,7 @@ import MonthExpansesTableContainer from './MonthExpansesTableContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonthExpanses } from '../../redux/actions/monthExpansesActions';
 import TitledSection from '../../components/Section/TitledSection';
+import useIcons from '../../customHooks/useIcons';
 
 const PAGE_NAME = "monthExpanses";
 const PAGE_TITLE = "הוצאות חודשיות";
@@ -13,6 +14,7 @@ const TABLE_TITLE = "מעקב הוצאות";
 
 const MonthExpanses = () => {
   const dispatch = useDispatch();
+  const [generateIcon] = useIcons();
   const { buildingName, buildingId } = useLocation().state;
   const { date, data, isFetching } = useSelector(store => store.monthExpanses[buildingId]);
 
@@ -23,11 +25,13 @@ const MonthExpanses = () => {
       dispatch(fetchMonthExpanses({ buildingId, date }));
   }, [dispatch, buildingId, date]);
 
+  const TableIcon = generateIcon("table");
+
   return (
     <Page>
       <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
 
-      <TitledSection title={TABLE_TITLE}>
+      <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon}>
         <MonthExpansesTableContainer
           buildingName={buildingName}
           buildingId={buildingId}

@@ -24,6 +24,16 @@ const useIcons = () => {
       case "fullscreen-exit": return getIcon({ iconName: "ant-design:fullscreen-exit-outlined", style });
       case "table": return getIcon({ iconName: "bi:table", style });
       case "stats": return getIcon({ iconName: "ic:round-donut-large", style: { width: "30px", height: "30px", ...style } });
+      case "user": return getIcon({ iconName: "ant-design:user-outlined", style });
+      case "android": return getIcon({ iconName: "fa:android", style });
+      case "style": return getIcon({ iconName: "fa6-solid:palette", style });
+      case "backup": return getIcon({ iconName: "bi:cloud-arrow-up-fill", style });
+      case "restore": return getIcon({ iconName: "ic:sharp-settings-backup-restore", style: { width: "30px", height: "30px", ...style } });
+      case "update": return getIcon({ iconName: "ic:baseline-update", style: { width: "30px", height: "30px", ...style } });
+      case "settings": return getIcon({ iconName: "fluent:settings-20-regular", style: { width: "24px", height: "24px", ...style } });
+      case "more-menu": return getIcon({ iconName: "ci:menu-alt-05", style });
+      case "volume-on": return getIcon({ iconName: "fa-solid:volume-up", style });
+      case "volume-off": return getIcon({ iconName: "fa-solid:volume-mute", style });
       default: return Label
     };
   }

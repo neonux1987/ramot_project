@@ -1,26 +1,17 @@
-// LIBRARIES
 import React, { useState, memo, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SystemUpdateAlt } from '@material-ui/icons';
-
-// COMPONENTS
 import ToastRender from '../../../../components/ToastRender/ToastRender';
 import Page from '../../../../components/Page/Page';
 import ExpandableSection from '../../../../components/Section/ExpandableSection';
 import NewUpdate from './NewUpdate/NewUpdate';
 import NoUpdate from './NoUpdate/NoUpdate';
 import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
-import PrimaryButton from '../../../../components/buttons/PrimaryButton';
-
-// SERVICES
 import { checkForUpdates, downloadUpdate, abortDownload, deleteUpdate, installUpdate } from '../../../../services/updates.svc';
 import { initiateDbBackup } from '../../../../services/dbBackup.svc';
-
-// ACTIONS
 import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
-
-// TOASTS
 import { toastManager } from '../../../../toasts/toastManager';
+import WhiteButton from '../../../../components/buttons/WhiteButton';
+import useIcons from '../../../../customHooks/useIcons';
 
 // ELECTRON
 const { ipcRenderer } = require('electron');
@@ -28,17 +19,12 @@ const { ipcRenderer } = require('electron');
 const SETTINGS_NAME = "appUpdates";
 
 const AppUpdates = () => {
-
   const isCancelled = useRef(false);
-
   const dispatch = useDispatch();
-
+  const [generateIcon] = useIcons();
   const [isChecking, setIsChecking] = useState(true);
-
   const [isDownloading, setIsDownloading] = useState(false);
-
   const [progress, setProgress] = useState(progressState());
-
   const appUpdatesSettings = useSelector(store => store.settings.data[SETTINGS_NAME]);
 
   const {
@@ -231,12 +217,14 @@ const AppUpdates = () => {
     <CheckingUpdates /> :
     renderNewUpdate();
 
+  const Icon = generateIcon("update");
+
   return (
     <Page>
       <ExpandableSection
         title={"עדכוני תוכנה"}
-        Icon={SystemUpdateAlt}
-        extraDetails={<PrimaryButton onClick={refreshHandler}>רענן</PrimaryButton>}
+        Icon={Icon}
+        extraDetails={<WhiteButton onClick={refreshHandler}>רענן</WhiteButton>}
       >
 
         {content}
