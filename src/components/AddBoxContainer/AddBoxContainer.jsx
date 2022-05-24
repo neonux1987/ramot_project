@@ -1,19 +1,41 @@
 import React from 'react';
 import { css } from 'emotion';
-import { Collapse } from '@material-ui/core';
 
-const style = css`
-  margin: 0px;
-  padding: 10px 0 0;
-  z-index: 8;
-  position: relative;
-  display: flex;
+const wrapper = css`
+  height: 0;
   background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 9;
+  position: relative;
+  opacity: 0;
 `;
 
-const AddBoxContainer = props => <Collapse in={props.show} mountOnEnter unmountOnExit timeout={400} className="addBoxContainer">
-  <div className={style}>{props.show ? props.children : null}</div>
-</Collapse>
+const childrenWrapper = css`
+  display: flex;
+  padding: 10px;
+`;
+
+const transitionOut = css`
+  height: 0px;
+  opacity: 0;
+  overflow: hidden;
+  transition: height ease 200ms, opacity ease 200ms;
+`;
+
+const transitionIn = css`
+  height: 75px;
+  opacity: 1;
+  transition: height ease 200ms, opacity 100ms ease 100ms;
+  overflow: initial;
+`;
+
+const AddBoxContainer = ({ show, children }) => (
+  <div className={`${wrapper} ${!show ? transitionOut : transitionIn}`}>
+    <div className={childrenWrapper}>{children}</div>
+  </div>
+);
 
 
 export default AddBoxContainer;

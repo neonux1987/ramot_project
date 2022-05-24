@@ -1,8 +1,5 @@
-// LIBRARIES
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-// ACTIONS
 import {
   fetchSummarizedSections,
   addSummarizedSection,
@@ -10,8 +7,6 @@ import {
   summarizedSectionsCleanup,
   deleteSummarizedSection
 } from '../../../../redux/actions/summarizedSectionsActions';
-
-// COMPONENTS
 import EditControls from '../../../../components/EditControls/EditControls';
 import TableActions from '../../../../components/table/TableActions/TableActions';
 import TableControls from '../../../../components/table/TableControls/TableControls';
@@ -21,11 +16,6 @@ import TableRow from '../../../../components/table/components/TableRow';
 import Cell from '../../../../components/table/components/Cell';
 import HeaderCell from '../../../../components/table/components/HeaderCell';
 import Table from '../../../../components/table/Table';
-
-// HOC
-import withFormFunctionality from '../../../../HOC/withFormFunctionality';
-
-// CUSTOM HOOKS
 import AddSummarizedSectionContainer from './AddSummarizedSectionContainer/AddSummarizedSectionContainer';
 import { toastManager } from '../../../../toasts/toastManager';
 import useTableLogic from '../../../../customHooks/useTableLogic';
@@ -185,9 +175,6 @@ const SummarizedSectionsTableContainer = () => {
     </TableRow>
   }
 
-  //give the box a form functionality
-  const WrappedAddNewBox = withFormFunctionality(AddSummarizedSectionContainer);
-
   return (
     <TableSection
       header={
@@ -206,7 +193,7 @@ const SummarizedSectionsTableContainer = () => {
       }
     >
 
-      <WrappedAddNewBox submitHandler={addNewSubmitHandler} show={addNewMode} />
+      <AddSummarizedSectionContainer submitHandler={addNewSubmitHandler} show={addNewMode} />
 
       <Table
         Row={Row}

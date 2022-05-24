@@ -1,13 +1,8 @@
-// LIBRARIES
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MenuItem } from '@material-ui/core';
-
-// ACTIONS
 import { fetchExpansesCodesByStatus, expansesCodesCleanup, updateExpanseCode, addExpanseCode, deleteExpanseCode } from '../../../../redux/actions/expansesCodesActions';
 import { fetchSummarizedSections } from '../../../../redux/actions/summarizedSectionsActions';
-
-// COMPONENTS
 import EditControls from '../../../../components/EditControls/EditControls';
 import SelectDropDown from '../../../../components/SelectDropDown/SelectDropDown';
 import TableActions from '../../../../components/table/TableActions/TableActions';
@@ -17,11 +12,6 @@ import HeaderCell from '../../../../components/table/components/HeaderCell';
 import HeaderRow from '../../../../components/table/components/HeaderRow';
 import TableRow from '../../../../components/table/components/TableRow';
 import Table from '../../../../components/table/Table';
-
-// HOC
-import withFormFunctionality from '../../../../HOC/withFormFunctionality';
-
-// CONTAINERS
 import AddExpanseCode from './AddExpanseCode/AddExpanseCode';
 import { toastManager } from '../../../../toasts/toastManager';
 import useTableLogic from '../../../../customHooks/useTableLogic';
@@ -256,9 +246,6 @@ const ExpansesCodes = () => {
     </TableRow>
   }
 
-  //give the box a form functionality
-  const WrappedAddNewBox = withFormFunctionality(AddExpanseCode);
-
   return (
     <TableSection
       header={
@@ -276,7 +263,7 @@ const ExpansesCodes = () => {
         /> //end TableControls
       }
     >
-      <WrappedAddNewBox submitHandler={addNewSubmitHandler} summarizedSections={summarizedSections.data} show={addNewMode} />
+      <AddExpanseCode submitHandler={addNewSubmitHandler} summarizedSections={summarizedSections.data} show={addNewMode} />
 
       <Table
         Row={Row}

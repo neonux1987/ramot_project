@@ -18,11 +18,11 @@ const styles = theme => ({
   root: {
     width: 230,
     display: "inline-flex",
+    paddingTop: "12px",
     marginRight: "8px",
     marginLeft: "8px",
     flexDirection: "column",
-    verticalAlign: "top",
-    paddingTop: "12px"
+    verticalAlign: "top"
   },
   input: {
     display: 'flex',

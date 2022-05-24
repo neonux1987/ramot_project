@@ -3,8 +3,10 @@ import { TextField } from '@material-ui/core';
 import styles from './AddSummarizedSectionContainer.module.css'
 import ButtonWithSound from '../../../../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import AddBoxContainer from '../../../../../components/AddBoxContainer/AddBoxContainer';
+import useFormLogic from '../../../../../customHooks/useFormLogic';
 
-const AddSummarizedSectionContainer = ({ show, changeHandler, reset, submitHandler }) => {
+const AddSummarizedSectionContainer = ({ show, submitHandler }) => {
+  const { reset, changeHandler } = useFormLogic();
 
   const [formInputs, setFormInput] = useState({
     section: ""

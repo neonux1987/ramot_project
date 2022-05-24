@@ -4,17 +4,14 @@ import { TextField, Select, FormControl, InputLabel, MenuItem } from '@material-
 import styles from './AddExpanseCode.module.css'
 import ButtonWithSound from '../../../../../componentsWithSound/ButtonWithSound/ButtonWithSound';
 import AddBoxContainer from '../../../../../components/AddBoxContainer/AddBoxContainer';
-
-const keys = ["code", "codeName", "summarized_section_id", "submit"];
+import useFormLogic from '../../../../../customHooks/useFormLogic';
 
 const AddExpanseCode = ({
   show,
   summarizedSections,
-  inputEnterPress,
-  changeHandler,
-  reset,
   submitHandler
 }) => {
+  const { reset, changeHandler } = useFormLogic();
 
   const [formInputs, setFormInput] = useState({
     code: "",
@@ -37,7 +34,6 @@ const AddExpanseCode = ({
         className={styles.boxWrapper}
         noValidate
         autoComplete="off"
-        onKeyPress={(event) => inputEnterPress(event, keys)}
         onChange={(event) => changeHandler(event, formInputs, setFormInput)}
         onSubmit={(event) => event.preventDefault()}
       >
