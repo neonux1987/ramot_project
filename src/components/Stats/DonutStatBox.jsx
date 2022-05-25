@@ -2,7 +2,6 @@ import React from 'react';
 import DonutChart from '../charts/DonutChart';
 import StatBox from './StatBox/StatBox';
 import { css } from 'emotion';
-import classnames from 'classnames';
 
 const wrapper = css`
   flex-grow: 1;
@@ -74,20 +73,6 @@ const outcomeIncomeFlex = css`
   flex-grow: 1;
 `;
 
-/* const bubble = css`
-  position: absolute;
-  right: 15px;
-  top: -15px;
-  background: #ffffff;
-  padding: 15px 20px;
-  border-radius: 14px;
-  box-shadow: 0 0 12px 2px #0000000a;
-  font-weight: 500;
-  flex-grow: 1;
-  font-size: 24px;
-  z-index: 99;
-`; */
-
 const DonutStatBox = ({ title, income, outcome, unicodeSymbol, color, loading = true, index = 1, border, xs }) => {
 
   const incomeText = `${income} ${unicodeSymbol}`;
@@ -97,10 +82,6 @@ const DonutStatBox = ({ title, income, outcome, unicodeSymbol, color, loading = 
     <div className={wrapper}>
 
       <div className={donutWrapper}>
-
-        {/* <div className={bubble}>
-          <span>{title}</span>
-        </div> */}
 
         <DonutChart
           series={[
@@ -114,13 +95,13 @@ const DonutStatBox = ({ title, income, outcome, unicodeSymbol, color, loading = 
 
       <div className={legend}>
         <div className={row}>
-          <div className={classnames(marker, blue)}></div>
+          <div className={`${marker} ${blue}`}></div>
           <div className={`${text} ${label}`}>הוצאות</div>
           <div className={`${text} ${outcomeIncomeFlex}`}><span>{outcomeText}</span></div>
         </div>
 
         <div className={row}>
-          <div className={classnames(marker, green)}></div>
+          <div className={`${marker} ${green}`}></div>
           <div className={`${text} ${label}`}>הכנסות</div>
           <div className={`${text} ${outcomeIncomeFlex}`}><span>{incomeText}</span></div>
         </div>

@@ -25,7 +25,7 @@ const DonutChart = props => {
           dataLabels: {
             enabled: false,
           },
-          size: 150,
+          size: 160,
           enableMouseTracking: false,
           borderWidth: 0
         }

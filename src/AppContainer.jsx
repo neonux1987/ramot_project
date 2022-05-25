@@ -22,14 +22,10 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: "#0f8fe5",
-      light: "#65bfff",
-      dark: "#0062b2"
+      main: "rgb(23, 110, 193)"
     },
     secondary: {
-      main: "#001120",
-      light: "#33404c",
-      dark: "#000b16"
+      main: "#001120"
     }
   },
 }, heIL);

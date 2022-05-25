@@ -88,7 +88,6 @@
     "exceljs": "^4.2.0",
     "file-type": "^16.0.0",
     "fs-extra": "^9.0.1",
-    "highcharts": "^9.0.1",
     "highcharts-export-server": "^2.1.0",
     "knex": "^0.21.11",
     "nanoid": "^3.1.22",
@@ -96,7 +95,7 @@
     "nesthydrationjs": "^2.0.0",
     "pdf-lib": "^1.16.0",
     "platform-folders": "^0.5.2",
-    "sqlite3": "^5.0.0",
+    "sqlite3": "^5.0.8",
     "v8-compile-cache": "^2.3.0"
   },
   "devDependencies": {
@@ -110,6 +109,7 @@
     "electron": "13.1.4",
     "electron-builder": "^22.11.7",
     "emotion": "^10.0.27",
+    "highcharts": "^9.0.1",
     "highcharts-react-official": "^3.0.0",
     "jss-rtl": "^0.3.0",
     "nodemon": "^2.0.6",

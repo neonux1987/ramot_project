@@ -122,7 +122,7 @@ a {
 .activeButton,
 .activeButton:hover,
 .activeButton:focus {
-  background: rgb(42 127 214);
+  background: rgb(23, 110, 193);
   border-radius: 0px;
   padding-right: 16px;
 }
