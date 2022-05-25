@@ -12,7 +12,7 @@ const text = css`
 
 const lastStyle = css`
   color: #000000;
-  font-weight: 700;
+  font-weight: 600;
 `
 
 const Crumb = ({ last = false, location }) => {

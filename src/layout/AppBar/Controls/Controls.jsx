@@ -26,7 +26,7 @@ const volumeBtn = css`
   background: none;
   color: #000000;
   min-width: 0;
-  margin: 0 10px;
+
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
 `;

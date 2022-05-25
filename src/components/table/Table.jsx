@@ -74,7 +74,7 @@ const Table = ({
   // group component exist.
   const bodyHeightClassName = GroupComponent && isFullscreen ? "tableBodyNoGroupHeader" : "";
 
-  return <TableWrapper id="table" printMode={printMode} colors={colors}>
+  return <TableWrapper id="table" printMode={printMode} colors={colors} isFullscreen={isFullscreen}>
 
     <Thead printMode={printMode}>
 

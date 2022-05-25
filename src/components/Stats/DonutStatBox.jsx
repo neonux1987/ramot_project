@@ -13,28 +13,32 @@ const wrapper = css`
 
 const legend = css`
   padding: 10px 15px;
+  margin-top: -25px;
+  padding-bottom: 25px;
   
   @media (max-width: 1400px) {
-    margin-top: 20px;
-    padding: 0 10px;
+    margin-top: -10px;
+    padding: 0 5px;
+    padding-bottom: 15px;
   }
 `;
 
 const row = css`
   display: flex;
   align-items: center;
-  padding: 5px 10px;
-  border-bottom: 1px solid #ececec;
+  padding: 10px 10px;
+  border-bottom: 1px dotted #dddddd;
 `;
 
 const label = css`
-  font-weight: 500 !important;
+  font-weight: 600 !important;
 `;
 
 const text = css`
   font-size: 18px;
   font-weight: 400;
   color: #000000;
+
   @media (max-width: 1400px) {
     font-size: 16px;
   }
@@ -44,11 +48,13 @@ const marker = css`
   width: 16px;
   height: 16px;
   background-color: red;
-  margin-left: 3px;
+  margin-left: 10px;
   border-radius: 100px;
+
   @media (max-width: 1400px) {
     width: 12px;
     height: 12px;
+    margin-left: 3px;
   }
 `;
 
@@ -63,8 +69,12 @@ const green = css`
 const donutWrapper = css`
   display: flex;
   justify-content: center;
-  padding: 25px 10px 0;
+  padding: 15px 10px 0;
   position: relative;
+
+  @media (max-width: 1400px) {
+    padding: 15px 5px 0;
+  }
 `;
 
 const outcomeIncomeFlex = css`
@@ -100,7 +110,7 @@ const DonutStatBox = ({ title, income, outcome, unicodeSymbol, color, loading = 
           <div className={`${text} ${outcomeIncomeFlex}`}><span>{outcomeText}</span></div>
         </div>
 
-        <div className={row}>
+        <div className={row} style={{ border: "none" }}>
           <div className={`${marker} ${green}`}></div>
           <div className={`${text} ${label}`}>הכנסות</div>
           <div className={`${text} ${outcomeIncomeFlex}`}><span>{incomeText}</span></div>

@@ -7,8 +7,6 @@ import Credits from './Credits/Credits';
 import MenuContainer from './Menu/MenuContainer';
 import CenteredLoader from '../../components/AnimatedLoaders/CenteredLoader';
 import { useSelector } from 'react-redux';
-import img from '../../assets/images/Virtual-Grass-for-ALL-iPhone-AR72014.jpeg';
-import { urlAlphabet } from 'nanoid';
 
 const drawerWidth = 240;
 
@@ -17,15 +15,13 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     zIndex: 5,
-    overflow: "unset",
-    background: "#000000"
+    overflow: "unset"
   },
   drawerPaper: {
     width: drawerWidth,
     borderRight: "none",
     boxShadow: "-2px 0px 4px 4px #00000005",
-    overflow: "hidden",
-    //background: `url(${img})`
+    overflow: "hidden"
   },
   drawerHeader: {
     display: 'flex',

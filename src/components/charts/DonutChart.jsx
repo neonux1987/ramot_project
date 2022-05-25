@@ -10,8 +10,8 @@ const DonutChart = props => {
       },
       chart: {
         type: "pie",
-        width: 160,
-        height: 160,
+        width: 170,
+        height: 170,
         backgroundColor: "transparent"
       },
       exporting: {

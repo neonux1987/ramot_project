@@ -1,6 +1,6 @@
 // LIBRARIES
 import React from "react";
-import { Menu, Divider, SvgIcon } from "@material-ui/core";
+import { Menu, Divider, SvgIcon, Box } from "@material-ui/core";
 import styles from './MoreMenu.module.css';
 import { ExpandLess, ExpandMore, Description, ListAlt, Home } from "@material-ui/icons";
 import SubMenu from "./SubMenu/SubMenu";
@@ -83,7 +83,7 @@ const MoreMenu = ({ active }) => {
   }
 
   return (
-    <div>
+    <Box display="flex" justifyContent="center">
       <MoreButton
         className={styles.moreBtn}
         onClick={handleClick}
@@ -171,7 +171,7 @@ const MoreMenu = ({ active }) => {
         <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} purgeCache={clearCache} />
 
       </Menu>
-    </div>
+    </Box>
   );
 
 }
