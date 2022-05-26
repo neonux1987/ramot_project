@@ -1,8 +1,8 @@
 import React from 'react'
 
 const TableWrapper = ({ printMode, children, id, colors = true, height = "initial", isFullscreen = false }) => {
-  const fullscreenPadding = isFullscreen ? "5px" : "15px";
-  const printModePadding = printMode ? "0" : "15px";
+  const fullscreenPadding = isFullscreen ? "5px" : "0 15px 15px";
+  const printModePadding = printMode ? "0" : "0 15px 15px";
   return printMode ? <table
     id={id}
     style={{

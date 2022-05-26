@@ -6,6 +6,7 @@
   z-index: 6;
   border-collapse: collapse;
   padding: 15px;
+  padding-top: 0;
 }
 
 th,

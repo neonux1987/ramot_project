@@ -28,21 +28,21 @@ const updatesIpc = () => {
 
   let cancellationToken = undefined;
 
-  ipcMain.on('check-for-updates', (event) => {
-
+  ipcMain.on('check-for-updates', async (event) => {
     const currentVersion = autoUpdater.currentVersion.version;
+    const result = await autoUpdater.checkForUpdates();
 
-    autoUpdater.checkForUpdates().then((info) => {
-      const { version, releaseDate } = info.updateInfo;
-      cancellationToken = info.cancellationToken;
-      //console.log(info.updateInfo);
+    if (result === null) {
+      event.sender.send('checked_for_updates', { error: "בדיקת עידכונים חדשים נכשלה" });
+    } else {
+      const { version, releaseDate } = result.updateInfo;
+      cancellationToken = result.cancellationToken;
+
       if (version !== currentVersion)
         event.sender.send('checked_for_updates', { data: { version, releaseDate } });
       else
         event.sender.send('checked_for_updates', { data: null });
-    }).catch(() => {
-      event.sender.send('checked_for_updates', { error: "בדיקת עידכונים חדשים נכשלה" });
-    });
+    }
   });
 
   ipcMain.on('abort-download', (event) => {
