@@ -1,41 +1,33 @@
 import React from 'react';
-import DonutChart from '../charts/DonutChart';
+import useIcons from '../../customHooks/useIcons';
 import StatBox from './StatBox/StatBox';
 import { css } from 'emotion';
+import SliderChart from '../charts/SliderChart';
 
 const wrapper = css`
   flex-grow: 1;
-  @media (max-width: 1400px) {
-    flex-direction: column-reverse;
-    margin-top: 0px;
-  }
+  display: flex;
 `;
 
 const legend = css`
-  padding: 10px 15px;
-  margin-top: -25px;
-  padding-bottom: 25px;
-  
+  padding: 40px 20px 0;
+
   @media (max-width: 1400px) {
-    margin-top: -10px;
-    padding: 0 5px;
-    padding-bottom: 15px;
+    padding: 40px 15px 0;
   }
 `;
 
 const row = css`
   display: flex;
   align-items: center;
-  padding: 10px 10px;
-  border-bottom: 1px dotted #dddddd;
 `;
 
 const label = css`
-  font-weight: 600 !important;
+  font-weight: 400 !important;
 `;
 
 const text = css`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   color: #000000;
 
@@ -45,35 +37,40 @@ const text = css`
 `;
 
 const marker = css`
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 4px;
   background-color: red;
   margin-left: 10px;
-  border-radius: 100px;
-
-  @media (max-width: 1400px) {
-    width: 12px;
-    height: 12px;
-    margin-left: 3px;
-  }
 `;
 
 const blue = css`
-  background-color: rgb(0, 143, 251);
+  background-color: rgb(23 146 239);
 `;
 
 const green = css`
-  background-color: rgb(0, 227, 150);
+  background-color: rgb(23 208 145);
 `;
 
-const donutWrapper = css`
+const sliderWrapper = css`
   display: flex;
   justify-content: center;
-  padding: 15px 10px 0;
   position: relative;
+  height: 100%;
+  padding: 30px 20px;
+
+  :last-child {
+    margin: 0 0 0 10px;
+    padding: 30px 0px 30px 20px;
+  }
 
   @media (max-width: 1400px) {
-    padding: 15px 5px 0;
+    padding: 30px 0px;
+    height: 100%;
+    :last-child {
+      margin: 0 0 0 10px;
+      padding: 30px 0px 30px 0px;
+    }
+
   }
 `;
 
@@ -83,37 +80,94 @@ const outcomeIncomeFlex = css`
   flex-grow: 1;
 `;
 
+const headerWrapper = css`
+  padding: 20px;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 1400px) {
+    padding: 15px;
+  }
+`;
+
+const titleStyle = css`
+  margin: 0;
+  font-size: 32px;
+  font-weight: 500;
+  margin-right: 10px;
+
+  @media (max-width: 1400px) {
+    font-size: 24px;
+    margin-right: 0;
+  }
+`;
+
+const iconWrapper = css`
+  padding: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: rgb(20 20 20 / 12%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(20 20 20 / 7%) 0rem 0.125rem 0.25rem -0.0625rem;
+
+  @media (max-width: 1400px) {
+    display: none;
+  }
+`;
+
+const leftPanel = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: flex-end;
+  border-right: 1px solid #dddddd;
+`;
+
+const rightPanel = css`
+  flex-grow: 1; 
+`;
+
 const DonutStatBox = ({ title, income, outcome, unicodeSymbol, color, loading = true, index = 1, border, xs }) => {
+  const [generateIcon] = useIcons();
 
   const incomeText = `${income} ${unicodeSymbol}`;
   const outcomeText = `${outcome} ${unicodeSymbol}`;
+  const total = income + outcome;
+  const outcomePercentage = total === 0 ? 0 : (outcome / total) * 100;
+  const incomePercentage = total === 0 ? 0 : (income / total) * 100;
+
+  const CalendarIcon = generateIcon("calendar", { width: "32px", height: "32px" });
 
   return <StatBox title={title} color={color} loading={loading} index={index} border={border} xs={xs}>
+    <div className={headerWrapper}>
+      <div className={iconWrapper} style={{ backgroundColor: color }}>
+        <CalendarIcon color="#ffffff" style={{ padding: "6px" }} />
+      </div>
+      <h2 className={titleStyle}>{title}</h2>
+    </div>
     <div className={wrapper}>
 
-      <div className={donutWrapper}>
+      <div className={rightPanel}>
 
-        <DonutChart
-          series={[
-            {
-              data: [{ name: "הוצאות", y: outcome, color: "#30a3fc" }, { name: "הכנסות", y: income, color: "#30e8aa" }]
-            }
-          ]}
-          title={title}
-        />
+
+        <div className={legend}>
+          <div className={row}>
+            <div className={`${marker} ${blue}`}></div>
+            <div className={`${text} ${label}`}>{outcomeText}</div>
+          </div>
+
+          <div className={row}>
+            <div className={`${marker} ${green}`}></div>
+            <div className={`${text} ${label}`}>{incomeText}</div>
+          </div>
+        </div>
       </div>
 
-      <div className={legend}>
-        <div className={row}>
-          <div className={`${marker} ${blue}`}></div>
-          <div className={`${text} ${label}`}>הוצאות</div>
-          <div className={`${text} ${outcomeIncomeFlex}`}><span>{outcomeText}</span></div>
+      <div className={leftPanel}>
+        <div className={sliderWrapper}>
+          <SliderChart value={outcomePercentage} color={"rgb(23 146 239)"} />
         </div>
-
-        <div className={row} style={{ border: "none" }}>
-          <div className={`${marker} ${green}`}></div>
-          <div className={`${text} ${label}`}>הכנסות</div>
-          <div className={`${text} ${outcomeIncomeFlex}`}><span>{incomeText}</span></div>
+        <div className={sliderWrapper}>
+          <SliderChart value={incomePercentage} color={"rgb(23 208 145)"} />
         </div>
       </div>
 

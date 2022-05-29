@@ -1,7 +1,7 @@
 import { css } from 'emotion';
 import React from 'react';
 import Cell from './Cell';
-import { Icon } from '@iconify/react';
+import useIcons from '../../../customHooks/useIcons';
 
 const markerWrapper = css`
   display: flex;
@@ -10,13 +10,9 @@ const markerWrapper = css`
   margin-left: 10px;
 `;
 
-const marker = css`
-  width: 12px;
-  height: 12px;
-  border-radius: 10px;
-`;
-
 const GroupCell = ({ color = "#000000", span = 1, children }) => {
+  const [generateIcon] = useIcons();
+  const CalendarIcon = generateIcon("calendar");
   return <Cell
     className="groupCell"
     style={{
@@ -24,7 +20,7 @@ const GroupCell = ({ color = "#000000", span = 1, children }) => {
     }}
   >
     <div className={markerWrapper}>
-      {color !== "#000000" && <Icon icon="mdi:calendar-month-outline" width="24" height="24" style={{ color: color === "#000000" ? "initial" : color }} />}
+      {color !== "#000000" && <CalendarIcon style={{ color: color === "#000000" ? "initial" : color }} />}
     </div>
     {children}
   </Cell>

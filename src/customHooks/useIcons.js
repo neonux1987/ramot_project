@@ -22,7 +22,7 @@ const useIcons = () => {
       case "add": return getIcon({ iconName: "bi:journal-plus", style });
       case "fullscreen": return getIcon({ iconName: "ant-design:fullscreen-outlined", style });
       case "fullscreen-exit": return getIcon({ iconName: "ant-design:fullscreen-exit-outlined", style });
-      case "table": return getIcon({ iconName: "bi:table", style });
+      case "table": return getIcon({ iconName: "ant-design:borderless-table-outlined", style });
       case "stats": return getIcon({ iconName: "ic:round-donut-large", style: { width: "30px", height: "30px", ...style } });
       case "user": return getIcon({ iconName: "ant-design:user-outlined", style });
       case "android": return getIcon({ iconName: "icon-park-solid:system", style });
@@ -36,6 +36,10 @@ const useIcons = () => {
       case "volume-off": return getIcon({ iconName: "fa-solid:volume-mute", style });
       case "developer": return getIcon({ iconName: "fluent:developer-board-24-filled", style });
       case "about": return getIcon({ iconName: "eos-icons:software", style });
+      case "calendar": return getIcon({ iconName: "fontisto:date", style });
+      case "close": return getIcon({ iconName: "ic:baseline-close", style: { width: "24px", height: "24px", ...style } });
+      case "maximize": return getIcon({ iconName: "ic:baseline-crop-square", style: { width: "24px", height: "24px", ...style } });
+      case "minimize": return getIcon({ iconName: "ic:baseline-minimize", style: { width: "24px", height: "24px", ...style } });
       default: return Label
     };
   }

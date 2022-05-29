@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useLocation, withRouter } from 'react-router';
-import { IoMdStats } from 'react-icons/io';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Page from '../../components/Page/Page';
 import YearStatsContainer from './YearStatsContainer';
@@ -12,7 +11,6 @@ import useIcons from '../../customHooks/useIcons';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
-const STATS_TITLE = "סטטיסטיקה שנתית";
 const TABLE_TITLE = "טבלת מעקב";
 
 const SummarizedBudgets = () => {
@@ -29,19 +27,16 @@ const SummarizedBudgets = () => {
     }
   }, [buildingId, dispatch, date]);
 
-  const StatsIcon = generateIcon("stats");
   const TableIcon = generateIcon("table");
 
   return <Page>
     <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
 
-    <TitledSection title={STATS_TITLE} TitleIcon={StatsIcon} id={"sb-stats"}>
-      <YearStatsContainer
-        buildingId={buildingId}
-        date={date}
-        pageName={PAGE_NAME}
-      />
-    </TitledSection>
+    <YearStatsContainer
+      buildingId={buildingId}
+      date={date}
+      pageName={PAGE_NAME}
+    />
 
     <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon}>
       <SummarizedBudgetsTableContainer

@@ -11,7 +11,6 @@ import useIcons from '../../customHooks/useIcons';
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";
-const STATS_TITLE = "סטטיסטיקה רבעונית";
 const TABLE_TITLE = "מעקב ביצוע מול תקציב";
 
 const BudgetExecutions = () => {
@@ -33,19 +32,16 @@ const BudgetExecutions = () => {
     }
   }, [dispatch, buildingId, buildingName, date]);
 
-  const StatsIcon = generateIcon("stats");
   const TableIcon = generateIcon("table");
 
   return <Page>
     <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
 
-    <TitledSection title={STATS_TITLE} TitleIcon={StatsIcon} id={"be-stats"}>
-      <QuarterStatsContainer
-        buildingId={buildingId}
-        date={date}
-        pageName={PAGE_NAME}
-      />
-    </TitledSection>
+    <QuarterStatsContainer
+      buildingId={buildingId}
+      date={date}
+      pageName={PAGE_NAME}
+    />
 
     <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon}>
       <BudgetExecutionsTableContainer

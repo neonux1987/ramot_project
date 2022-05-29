@@ -14,7 +14,6 @@ const StatBox = ({
   color = "#000000",
   xs = true
 }) => {
-
   return <Grid item xs={xs} style={{ flexGrow: 1 }}>
     <Grow
       in={!loading}
@@ -32,6 +31,6 @@ const StatBox = ({
 
 export default StatBox;
 
-const Loader = () => <Grid item xs={"auto"} style={{ flexGrow: 1 }}>
+const Loader = () => <Grid item xs={"auto"} style={{ flexGrow: 1, height: "280px" }}>
   <AlignCenterMiddle><Spinner loadingText={"טוען נתונים"} size={20} /></AlignCenterMiddle>
 </Grid>;

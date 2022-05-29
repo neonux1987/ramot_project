@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
     borderRight: "none",
-    boxShadow: "-2px 0px 4px 4px #00000005",
+    boxShadow: "2px 0px 14px 1px #00000012", //-2px 0px 4px 4px #00000005
     overflow: "hidden"
   },
   drawerHeader: {
