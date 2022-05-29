@@ -19,7 +19,7 @@ const TitledSection = ({
   };
 
   return (
-    <Box margin={margin} bgcolor="#ffffff" id={id} boxShadow="rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem">
+    <Box margin={margin} bgcolor="#ffffff" id={id} boxShadow="rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem" borderRadius="14px" overflow="hidden" position="reative">
       <Box id="titled-section-header" display="flex" alignItems="center" bgcolor="rgb(23 110 193)" height="70px" paddingLeft="15px">
         <Box color="#ffffff" marginRight="10px" >{TitleIcon}</Box>
         <Box flexGrow="1"><Typography style={{ color: "#ffffff" }} variant='h5'>{title}</Typography></Box>

@@ -1,6 +1,5 @@
 .paper {
   background-color: #ffffff;
-  min-height: 280px;
   /* box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); */
   border: 0px solid rgba(0, 0, 0, 0.125);
   box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
@@ -10,12 +9,7 @@
   border-radius: 14px;
   /*   border-bottom-left-radius: 10px; */
   /*   border-bottom-right-radius: 10px; */
-}
-
-@media (max-width: 1400px) {
-  .paper {
-    min-height: 240px;
-  }
+  overflow: hidden;
 }
 
 .upper {

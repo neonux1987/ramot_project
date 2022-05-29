@@ -88,11 +88,12 @@ td {
   font-weight: 500;
   font-size: 16px;
   height: 45px !important;
+  border-right: none;
 }
 
 .headerCell {
   font-weight: 500;
   font-size: 16px;
   height: 45px !important;
-  border-right: 1px solid #dddddd;
+  border-right: none;
 }

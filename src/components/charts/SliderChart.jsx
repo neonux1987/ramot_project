@@ -15,33 +15,20 @@ const useStyles = makeStyles({
     left: "calc(-50% + 4px)"
   },
   track: {
-    width: 12,
+    height: 12,
     backgroundColor: ({ color }) => color,
     borderRadius: 4
   },
   rail: {
     height: 12,
-    background: "none",
     display: "none"
-  },
-  vertical: {
-    '& $rail': {
-      width: 12
-    },
-    '& $track': {
-      width: 12
-    },
-    '& $thumb': {
-      marginLeft: -8,
-      marginBottom: -11
-    }
   }
 });
 
 const SliderChart = ({ value, color }) => {
   const classes = useStyles({ value, color });
   return (
-    <Slider value={value} disabled classes={classes} orientation="vertical" />
+    <Slider value={value} disabled classes={classes} />
   );
 }
 

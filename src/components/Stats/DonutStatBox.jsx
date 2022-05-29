@@ -6,20 +6,21 @@ import SliderChart from '../charts/SliderChart';
 
 const wrapper = css`
   flex-grow: 1;
-  display: flex;
+  min-height: 280px;
+
+  @media (max-width: 1400px) {
+    min-height: 240px;
+  }
 `;
 
 const legend = css`
   padding: 40px 20px 0;
-
-  @media (max-width: 1400px) {
-    padding: 40px 15px 0;
-  }
 `;
 
 const row = css`
   display: flex;
   align-items: center;
+  margin-top: -15px;
 `;
 
 const label = css`
@@ -30,10 +31,6 @@ const text = css`
   font-size: 16px;
   font-weight: 400;
   color: #000000;
-
-  @media (max-width: 1400px) {
-    font-size: 16px;
-  }
 `;
 
 const marker = css`
@@ -52,26 +49,8 @@ const green = css`
 `;
 
 const sliderWrapper = css`
-  display: flex;
-  justify-content: center;
+  padding: 0 20px;
   position: relative;
-  height: 100%;
-  padding: 30px 20px;
-
-  :last-child {
-    margin: 0 0 0 10px;
-    padding: 30px 0px 30px 20px;
-  }
-
-  @media (max-width: 1400px) {
-    padding: 30px 0px;
-    height: 100%;
-    :last-child {
-      margin: 0 0 0 10px;
-      padding: 30px 0px 30px 0px;
-    }
-
-  }
 `;
 
 const outcomeIncomeFlex = css`
@@ -84,21 +63,18 @@ const headerWrapper = css`
   padding: 20px;
   display: flex;
   align-items: center;
-
-  @media (max-width: 1400px) {
-    padding: 15px;
-  }
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
 `;
 
 const titleStyle = css`
   margin: 0;
   font-size: 32px;
   font-weight: 500;
-  margin-right: 10px;
+  margin-right: 0;
 
   @media (max-width: 1400px) {
-    font-size: 24px;
-    margin-right: 0;
+    font-size: 28px;
   }
 `;
 
@@ -108,22 +84,20 @@ const iconWrapper = css`
   align-items: center;
   border-radius: 4px;
   box-shadow: rgb(20 20 20 / 12%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(20 20 20 / 7%) 0rem 0.125rem 0.25rem -0.0625rem;
+`;
+
+const emptyStyle = css`
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  padding-top: 40px;
+  font-weight: 400;
 
   @media (max-width: 1400px) {
-    display: none;
+    font-size: 16px;
   }
-`;
-
-const leftPanel = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  justify-content: flex-end;
-  border-right: 1px solid #dddddd;
-`;
-
-const rightPanel = css`
-  flex-grow: 1; 
 `;
 
 const DonutStatBox = ({ title, income, outcome, unicodeSymbol, color, loading = true, index = 1, border, xs }) => {
@@ -138,38 +112,33 @@ const DonutStatBox = ({ title, income, outcome, unicodeSymbol, color, loading = 
   const CalendarIcon = generateIcon("calendar", { width: "32px", height: "32px" });
 
   return <StatBox title={title} color={color} loading={loading} index={index} border={border} xs={xs}>
-    <div className={headerWrapper}>
-      <div className={iconWrapper} style={{ backgroundColor: color }}>
-        <CalendarIcon color="#ffffff" style={{ padding: "6px" }} />
-      </div>
-      <h2 className={titleStyle}>{title}</h2>
-    </div>
     <div className={wrapper}>
 
-      <div className={rightPanel}>
-
-
-        <div className={legend}>
-          <div className={row}>
-            <div className={`${marker} ${blue}`}></div>
-            <div className={`${text} ${label}`}>{outcomeText}</div>
-          </div>
-
-          <div className={row}>
-            <div className={`${marker} ${green}`}></div>
-            <div className={`${text} ${label}`}>{incomeText}</div>
-          </div>
-        </div>
+      <div className={headerWrapper}>
+        {/* <div className={iconWrapper} style={{ backgroundColor: color }}>
+          <CalendarIcon color="#ffffff" style={{ padding: "6px" }} />
+        </div> */}
+        <h2 className={titleStyle}>{title}</h2>
       </div>
 
-      <div className={leftPanel}>
+      {(outcome > 0 || income > 0) && <div>
         <div className={sliderWrapper}>
           <SliderChart value={outcomePercentage} color={"rgb(23 146 239)"} />
+          <div className={row}>
+            <div className={`${text} ${label}`}>{`${outcome} הוצאות`}</div>
+          </div>
         </div>
         <div className={sliderWrapper}>
           <SliderChart value={incomePercentage} color={"rgb(23 208 145)"} />
+          <div className={row}>
+            <div className={`${text} ${label}`}>{`${income} הכנסות`}</div>
+          </div>
         </div>
-      </div>
+      </div>}
+
+
+
+      {income === 0 && outcome === 0 && <div className={emptyStyle}>אין הוצאות ואין הכנסות</div>}
 
     </div>
   </StatBox >
