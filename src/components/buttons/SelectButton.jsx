@@ -1,26 +1,25 @@
-import React from 'react';
-import Select from '@material-ui/core/Select';
-import { css } from 'emotion';
-import MenuItem from '@material-ui/core/MenuItem';
+import React from "react";
+import Select from "@material-ui/core/Select";
+import { css } from "emotion";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const _select = css`
   text-align: center;
   background-color: #ffffff;
   color: #000000;
-  border: 1px solid #dddddd;
   border-radius: 6px;
 
   :before {
     border-bottom: none;
-  } 
+  }
 
   :after {
     border-bottom: none;
-    
-    :hover:not{
+
+    :hover:not {
       border: none;
     }
-  } 
+  }
 `;
 
 const _classesSelect = css`
@@ -33,7 +32,6 @@ const _classesSelect = css`
 `;
 
 const SelectButton = ({ onClick, label = "ללא שם" }) => {
-
   return (
     <Select
       className={_select}
@@ -45,7 +43,6 @@ const SelectButton = ({ onClick, label = "ללא שם" }) => {
       <MenuItem value={label}>פעולות נוספות</MenuItem>
     </Select>
   );
-
-}
+};
 
 export default SelectButton;

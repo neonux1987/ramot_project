@@ -1,41 +1,40 @@
 // LIBRARIES IMPORTS
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 // ACTIONS IMPORTS
 import {
   updateMonthExpanse,
   addMonthExpanse,
-  deleteMonthExpanse
-} from '../../redux/actions/monthExpansesActions';
-import { fetchExpansesCodesByStatus } from '../../redux/actions/expansesCodesActions';
+  deleteMonthExpanse,
+} from "../../redux/actions/monthExpansesActions";
+import { fetchExpansesCodesByStatus } from "../../redux/actions/expansesCodesActions";
 
 // UTILITY IMPORTS
-import Helper from '../../helpers/Helper';
+import Helper from "../../helpers/Helper";
 
 // COMMON COMPONENTS IMPORTS
-import PageControls from '../../components/PageControls/PageControls';
-import TableControls from '../../components/table/TableControls/TableControls';
-import EditControls from '../../components/EditControls/EditControls';
-import TableActions from '../../components/table/TableActions/TableActions';
-import Spinner from '../../components/Spinner/Spinner';
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import AddNewContainer from './AddNewContainer';
-import Table from '../../components/table/Table';
-import Cell from '../../components/table/components/Cell';
-import NonZeroCell from '../../components/table/components/NonZeroCell';
-import HeaderRow from '../../components/table/components/HeaderRow';
-import HeaderCell from '../../components/table/components/HeaderCell';
-import TableRow from '../../components/table/components/TableRow';
+import PageControls from "../../components/PageControls/PageControls";
+import TableControls from "../../components/table/TableControls/TableControls";
+import EditControls from "../../components/EditControls/EditControls";
+import TableActions from "../../components/table/TableActions/TableActions";
+import Spinner from "../../components/Spinner/Spinner";
+import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
+import AddNewContainer from "./AddNewContainer";
+import Table from "../../components/table/Table";
+import Cell from "../../components/table/components/Cell";
+import NonZeroCell from "../../components/table/components/NonZeroCell";
+import HeaderRow from "../../components/table/components/HeaderRow";
+import HeaderCell from "../../components/table/components/HeaderCell";
+import TableRow from "../../components/table/components/TableRow";
 
 // AUDIO
-import { toastManager } from '../../toasts/toastManager';
-import useTableLogic from '../../customHooks/useTableLogic';
-import MonthExpansesDatePicker from './MonthExpansesDatePicker';
-import TableSection from '../../components/Section/TableSection';
+import { toastManager } from "../../toasts/toastManager";
+import useTableLogic from "../../customHooks/useTableLogic";
+import MonthExpansesDatePicker from "./MonthExpansesDatePicker";
+import TableSection from "../../components/Section/TableSection";
 
-const MonthExpansesTableContainer = props => {
-
+const MonthExpansesTableContainer = (props) => {
   const {
     date,
     pageName,
@@ -43,7 +42,7 @@ const MonthExpansesTableContainer = props => {
     buildingName,
     buildingId,
     data,
-    isFetching
+    isFetching,
   } = props;
 
   const {
@@ -52,12 +51,12 @@ const MonthExpansesTableContainer = props => {
     toggleAddNewMode,
     addNewMode,
     textAreaInput,
-    numberInput
+    numberInput,
   } = useTableLogic();
   const dispatch = useDispatch();
 
   // page data
-  const generalSettings = useSelector(store => store.generalSettings);
+  const generalSettings = useSelector((store) => store.generalSettings);
 
   useEffect(() => {
     dispatch(fetchExpansesCodesByStatus("active"));
@@ -94,21 +93,20 @@ const MonthExpansesTableContainer = props => {
     const params = {
       buildingId,
       expanse: parsedFormInputs,
-      date: date
-    }
+      date: date,
+    };
 
     dispatch(addMonthExpanse(params, params.expanse)).then(() => {
       reset();
     });
-
-  }
+  };
 
   const validateFormInputs = (formInputs) => {
     if (!formInputs.code && !formInputs.codeName) {
       return false;
     }
     return true;
-  }
+  };
 
   const parseFormInputs = (formInputs) => {
     // tax data
@@ -117,24 +115,29 @@ const MonthExpansesTableContainer = props => {
     const copyFormInputs = { ...formInputs };
     //parse inputs
     copyFormInputs.code = Number.parseInt(copyFormInputs.code);
-    copyFormInputs.sum = copyFormInputs.sum === "" ? 0 : Number.parseFloat(copyFormInputs.sum);
-    copyFormInputs.summarized_section_id = Number.parseInt(copyFormInputs.summarized_section_id);
+    copyFormInputs.sum =
+      copyFormInputs.sum === "" ? 0 : Number.parseFloat(copyFormInputs.sum);
+    copyFormInputs.summarized_section_id = Number.parseInt(
+      copyFormInputs.summarized_section_id
+    );
     copyFormInputs.year = Number.parseInt(formInputs.year);
     copyFormInputs.tax = Number.parseFloat(formInputs.tax);
 
     return copyFormInputs;
-  }
-
+  };
 
   const findExpanseIndex = (code = null, codeName = null) => {
     let result = null;
     data.forEach((row, index) => {
-      if (row["code"] === Number.parseInt(code) || row["codeName"] === codeName) {
+      if (
+        row["code"] === Number.parseInt(code) ||
+        row["codeName"] === codeName
+      ) {
         result = index;
       }
     });
     return result;
-  }
+  };
 
   const onBlurHandler = (e) => {
     // tax data
@@ -164,76 +167,110 @@ const MonthExpansesTableContainer = props => {
     expanse.tax = tax;
 
     // init tax property
-    if (expanse.sum === 0)
-      expanse.tax = 0;
+    if (expanse.sum === 0) expanse.tax = 0;
 
     //prepare the params
     let params = {
       expanse: expanse,
       buildingId,
-      date
+      date,
     };
 
     //update expanse
     dispatch(updateMonthExpanse(params, oldExpanseCopy, index));
     e.target.blur();
-  }
+  };
 
   const deleteExpanseHandler = (id, index) => {
-
     //prepare the params
     let params = {
       id,
       buildingId,
-      date
+      date,
     };
     dispatch(deleteMonthExpanse(params, index));
-  }
+  };
 
   const getDataObject = (index) => {
     return data[index];
-  }
+  };
 
   const HeadersRow = () => {
     // column settings
-    const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+    const gridTemplateColumns = `${
+      editMode ? "80px" : ""
+    }  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    return <HeaderRow gridTemplateColumns={gridTemplateColumns} /* style={{borderBottom: "1px solid rgba(0, 0, 0, 0.22)"}} */>
-
-      {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
-      <HeaderCell>{"שורה"}</HeaderCell>
-      <HeaderCell>{`קוד הנהח"ש`}</HeaderCell>
-      <HeaderCell>{"שם חשבון"}</HeaderCell>
-      <HeaderCell>{"מקושר לסעיף מסכם..."}</HeaderCell>
-      <HeaderCell editMode={editMode}>{"ספק"}</HeaderCell>
-      <HeaderCell editMode={editMode}>{"סכום"}</HeaderCell>
-      <HeaderCell editMode={editMode}>{"הערות"}</HeaderCell>
-    </HeaderRow>
-  }
+    return (
+      <HeaderRow
+        gridTemplateColumns={
+          gridTemplateColumns
+        } /* style={{borderBottom: "1px solid rgba(0, 0, 0, 0.22)"}} */
+      >
+        {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
+        <HeaderCell>{"שורה"}</HeaderCell>
+        <HeaderCell>{`קוד הנהח"ש`}</HeaderCell>
+        <HeaderCell>{"שם חשבון"}</HeaderCell>
+        <HeaderCell>{"מקושר לסעיף מסכם..."}</HeaderCell>
+        <HeaderCell editMode={editMode}>{"ספק"}</HeaderCell>
+        <HeaderCell editMode={editMode}>{"סכום"}</HeaderCell>
+        <HeaderCell editMode={editMode}>{"הערות"}</HeaderCell>
+      </HeaderRow>
+    );
+  };
 
   const Row = (index) => {
     // row data
     const rowData = getDataObject(index);
     // column settings
-    const gridTemplateColumns = `${editMode ? "80px" : ""}  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
+    const gridTemplateColumns = `${
+      editMode ? "80px" : ""
+    }  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
-    return <TableRow key={index} gridTemplateColumns={gridTemplateColumns}>
-      {editMode ? <TableActions deleteHandler={() => deleteExpanseHandler(rowData.id, index)} /> : null}
+    return (
+      <TableRow key={index} gridTemplateColumns={gridTemplateColumns}>
+        {editMode ? (
+          <TableActions
+            deleteHandler={() => deleteExpanseHandler(rowData.id, index)}
+          />
+        ) : null}
 
-      <Cell>{index + 1}</Cell>
+        <Cell>{index + 1}</Cell>
 
-      <Cell>{rowData["code"]}</Cell>
-      <Cell>{rowData["codeName"]}</Cell>
-      <Cell>{rowData["section"]}</Cell>
+        <Cell>{rowData["code"]}</Cell>
+        <Cell>{rowData["codeName"]}</Cell>
+        <Cell>{rowData["section"]}</Cell>
 
-      {editMode ? textAreaInput("supplierName", rowData["supplierName"], index, onBlurHandler) : <Cell>{rowData["supplierName"]}</Cell>}
-      {editMode ? numberInput("sum", rowData["sum"], index, onBlurHandler) : <NonZeroCell>{rowData["sum"]}</NonZeroCell>}
-      {editMode ? textAreaInput("notes", rowData["notes"], index, onBlurHandler) : <Cell style={{ paddingLeft: "10px" }}>{rowData["notes"]}</Cell>}
-    </TableRow>
-  }
+        {editMode ? (
+          textAreaInput(
+            "supplierName",
+            rowData["supplierName"],
+            index,
+            onBlurHandler
+          )
+        ) : (
+          <Cell>{rowData["supplierName"]}</Cell>
+        )}
+        {editMode ? (
+          numberInput("sum", rowData["sum"], index, onBlurHandler)
+        ) : (
+          <NonZeroCell>{rowData["sum"]}</NonZeroCell>
+        )}
+        {editMode ? (
+          textAreaInput("notes", rowData["notes"], index, onBlurHandler)
+        ) : (
+          <Cell style={{ paddingLeft: "10px" }}>{rowData["notes"]}</Cell>
+        )}
+      </TableRow>
+    );
+  };
 
   if (generalSettings.isFetching) {
-    return <AlignCenterMiddle><Spinner loadingText={"טוען הגדרות טבלת מעקב הוצאות חודשיות..."} /></AlignCenterMiddle>;
+    return (
+      <AlignCenterMiddle>
+        <Spinner loadingText={"טוען הגדרות טבלת מעקב הוצאות חודשיות..."} />
+      </AlignCenterMiddle>
+    );
   }
 
   return (
@@ -249,14 +286,6 @@ const MonthExpansesTableContainer = props => {
               dataExist={data.length > 0}
             />
           } // end rightPane
-          middlePane={
-            <MonthExpansesDatePicker
-              date={date}
-              buildingId={buildingId}
-
-            />
-
-          } // end middlePane
           editMode={editMode}
           leftPane={
             <PageControls
@@ -265,10 +294,10 @@ const MonthExpansesTableContainer = props => {
                 fileName: Helper.getMonthExpansesFilename(buildingName, date),
                 buildingName,
                 buildingId,
-                date
+                date,
               }}
               print={{
-                pageName
+                pageName,
               }}
               pageName={pageName}
               dataExist={data.length > 0}
@@ -285,6 +314,8 @@ const MonthExpansesTableContainer = props => {
         show={addNewMode}
       />
 
+      <MonthExpansesDatePicker date={date} buildingId={buildingId} />
+
       <Table
         Row={Row}
         HeaderComponent={HeadersRow}
@@ -292,13 +323,11 @@ const MonthExpansesTableContainer = props => {
         totalCount={data.length}
         printHeaderDetails={{
           pageTitle: buildingName + " - " + pageTitle,
-          date: `שנה ${date.year} / רבעון ${date.quarter} / חודש ${date.monthHeb}`
+          date: `שנה ${date.year} / רבעון ${date.quarter} / חודש ${date.monthHeb}`,
         }}
       />
-
     </TableSection>
   );
-
-}
+};
 
 export default MonthExpansesTableContainer;

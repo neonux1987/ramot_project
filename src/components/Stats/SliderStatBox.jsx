@@ -2,11 +2,17 @@ import React from "react";
 import useIcons from "../../customHooks/useIcons";
 import StatBox from "./StatBox/StatBox";
 import { css } from "emotion";
-import DonutChart from "../charts/DonutChart";
+import SliderChart from "../charts/SliderChart";
 import FadedDivider from "../CustomDivider/FadedDivider";
 
 const wrapper = css`
   flex-grow: 1;
+  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
+  background-color: #ffffff;
+  min-height: 290px;
+  border-radius: 14px;
+  border: 1px solid #dddddd;
+  overflow: hidden;
 `;
 
 const row = css`
@@ -40,39 +46,22 @@ const green = css`
   color: rgb(23 208 145);
 `;
 
-/* const sliderWrapper = css`
-  border-radius: 14px;
+const sliderWrapper = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 240px;
   padding-bottom: 0;
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
-  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-  border-radius: 14px;
   position: relative;
   overflow: hidden;
-
-  :after {
-    content: "";
-    position: absolute;
-    top: -45px;
-    right: -45px;
-    width: 80px;
-    height: 80px;
-    background: blue;
-    transform: rotate(39deg);
-  }
-`; */
+`;
 
 const slider = css`
-  padding: 30px 30px;
+  padding: 10px 30px;
   position: relative;
 `;
 
 const headerWrapper = css`
-  padding: 0 5px 5px;
+  padding: 15px 20px 0px;
   display: flex;
   align-items: center;
 `;
@@ -82,6 +71,7 @@ const titleStyle = css`
   font-size: 42px;
   font-weight: 500;
   margin-right: 0px;
+  color: #000000;
 
   @media (max-width: 1400px) {
     font-size: 28px;
@@ -104,15 +94,11 @@ const emptyStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 260px;
   font-size: 14px;
   padding-top: 30px;
   font-weight: 400;
   padding: 20px;
   text-align: center;
-  background-color: #ffffff;
-  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-  min-height: 240px;
   color: #b5b5b5;
   letter-spacing: 2px;
 
@@ -121,7 +107,7 @@ const emptyStyle = css`
   }
 `;
 
-const DonutStatBox = ({
+const SliderStatBox = ({
   title,
   income,
   outcome,
@@ -163,44 +149,8 @@ const DonutStatBox = ({
         </div>
 
         {(outcome > 0 || income > 0) && (
-          <div
-            className={css`
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              min-height: 260px;
-              padding-bottom: 0;
-              background-color: #ffffff;
-              box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-              border-radius: 0;
-              position: relative;
-              overflow: hidden;
-
-              :after {
-                content: "";
-                position: absolute;
-                top: -45px;
-                right: -45px;
-                width: 80px;
-                height: 80px;
-                background: ${color};
-                transform: rotate(39deg);
-                box-shadow: rgb(0 0 0 / 20%) 0 0 8px 1px;
-              }
-            `}
-          >
+          <div className={sliderWrapper}>
             <div className={slider}>
-              <DonutChart
-                series={[
-                  {
-                    data: [
-                      { name: "הוצאות", y: outcome, color: "#30a3fc" },
-                      { name: "הכנסות", y: income, color: "#30e8aa" },
-                    ],
-                  },
-                ]}
-              />
-
               <div className={row}>
                 <div className={`${text} ${label}`}>
                   <span>{outcome}</span>{" "}
@@ -213,6 +163,15 @@ const DonutStatBox = ({
                 </div>
               </div>
 
+              <SliderChart
+                value={outcomePercentage}
+                color={"rgb(23 146 239)"}
+              />
+            </div>
+
+            <FadedDivider />
+
+            <div className={slider} style={{ padding: "10px 30px 40px" }}>
               <div className={row}>
                 <div className={`${text} ${label}`}>
                   <span>{income}</span>{" "}
@@ -224,49 +183,14 @@ const DonutStatBox = ({
                   </span>
                 </div>
               </div>
+
+              <SliderChart value={incomePercentage} color={"rgb(23 208 145)"} />
             </div>
           </div>
         )}
 
         {income === 0 && outcome === 0 && (
-          <div
-            className={css`
-              flex-grow: 1;
-              height: 100%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 260px;
-              font-size: 14px;
-              padding-top: 30px;
-              font-weight: 400;
-              padding: 20px;
-              text-align: center;
-              background-color: #ffffff;
-              box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-              min-height: 240px;
-              color: #b5b5b5;
-              letter-spacing: 2px;
-              overflow: hidden;
-              position: relative;
-
-              :after {
-                content: "";
-                position: absolute;
-                top: -45px;
-                right: -45px;
-                width: 80px;
-                height: 80px;
-                background: ${color};
-                transform: rotate(39deg);
-                box-shadow: rgb(0 0 0 / 20%) 0 0 8px 1px;
-              }
-
-              @media (max-width: 1400px) {
-                font-size: 16px;
-              }
-            `}
-          >
+          <div className={emptyStyle}>
             <span>אין נתונים</span>
           </div>
         )}
@@ -275,4 +199,4 @@ const DonutStatBox = ({
   );
 };
 
-export default DonutStatBox;
+export default SliderStatBox;

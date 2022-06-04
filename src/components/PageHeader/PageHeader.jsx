@@ -1,17 +1,19 @@
-import React from 'react';
-import { css } from 'emotion';
-import MoreButton from './MoreBuildingMenu/MoreButton';
-import MoreBuildingMenu from './MoreBuildingMenu/MoreBuildingMenu';
-import useModalLogic from '../../customHooks/useModalLogic';
-import GenerateExcelReportsModal from '../modals/GenerateExcelReportsModal';
-import GenerateEmptyReportsModal from '../modals/GenerateEmptyReportsModal';
-import ChangeBuildingColorModal from '../modals/ChangeBuildingColorModal';
-import SelectButton from '../buttons/SelectButton';
+import React from "react";
+import { css } from "emotion";
+import MoreButton from "./MoreBuildingMenu/MoreButton";
+import MoreBuildingMenu from "./MoreBuildingMenu/MoreBuildingMenu";
+import useModalLogic from "../../customHooks/useModalLogic";
+import GenerateExcelReportsModal from "../modals/GenerateExcelReportsModal";
+import GenerateEmptyReportsModal from "../modals/GenerateEmptyReportsModal";
+import ChangeBuildingColorModal from "../modals/ChangeBuildingColorModal";
+import SelectButton from "../buttons/SelectButton";
 
 const container = css`
   margin: 15px 0;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
+  border-bottom: 1px solid #dddddd;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
 `;
 
 const mainContainer = css`
@@ -21,7 +23,6 @@ const mainContainer = css`
 `;
 
 const PageHeader = ({ buildingName, buildingId }) => {
-
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const { showModal } = useModalLogic();
@@ -37,39 +38,41 @@ const PageHeader = ({ buildingName, buildingId }) => {
   const onExcelReportsHandler = () => {
     showModal(GenerateExcelReportsModal, {
       buildingName,
-      buildingId
+      buildingId,
     });
-  }
+  };
 
   const onEmptyReportsHandler = () => {
     showModal(GenerateEmptyReportsModal, {
       buildingName,
-      buildingId
+      buildingId,
     });
-  }
+  };
 
   const onChangeBuildingColorHandler = () => {
     showModal(ChangeBuildingColorModal, {
       buildingName,
-      buildingId
+      buildingId,
     });
-  }
+  };
 
-  return <div className={container} id="pageHeader">
-    <div className={mainContainer}>
-      {/* <MoreButton
+  return (
+    <div className={container} id="pageHeader">
+      <div className={mainContainer}>
+        {/* <MoreButton
         onClick={handleClick}
       /> */}
-      <SelectButton onClick={handleClick} label="פעולות נוספות" />
-      <MoreBuildingMenu
-        anchorEl={anchorEl}
-        handleClose={handleClose}
-        onExcelReportsHandler={onExcelReportsHandler}
-        onEmptyReportsHandler={onEmptyReportsHandler}
-        onChangeBuildingColorHandler={onChangeBuildingColorHandler}
-      />
+        <SelectButton onClick={handleClick} label="פעולות נוספות" />
+        <MoreBuildingMenu
+          anchorEl={anchorEl}
+          handleClose={handleClose}
+          onExcelReportsHandler={onExcelReportsHandler}
+          onEmptyReportsHandler={onEmptyReportsHandler}
+          onChangeBuildingColorHandler={onChangeBuildingColorHandler}
+        />
+      </div>
     </div>
-  </div>
-}
+  );
+};
 
 export default PageHeader;

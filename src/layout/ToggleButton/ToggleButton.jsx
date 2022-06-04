@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     flip: false
   },
   button: {
+    background: "rgb(23, 110, 193)",
     borderRadius: "3px",
     outline: "none",
     cursor: "pointer",
@@ -26,31 +27,31 @@ const useStyles = makeStyles(theme => ({
     zIndex: 999,
     position: "absolute",
     flip: false,
-    backgroundColor: theme.palette.primary.main,
-    boxShadow: "0 0 6px 2px rgb(0 0 0 / 18%)",
+    /* backgroundColor: theme.palette.primary.main, */
+    /* boxShadow: "0 0 6px 2px rgb(0 0 0 / 18%)", */
     height: "100px",
     top: "-52px",
     right: "-60px",
     width: "100px",
-    transform: "rotate(40deg)",
+    transform: "rotate(39deg)",
     '&:hover': {
-      background: "#3a94ea"
+      background: "rgb(23, 110, 193)"
     }
   },
   iconWrapper: {
     position: "absolute",
-    top: "119px",
-    right: "17px",
+    top: "116px",
+    right: "16px",
     transform: "rotateZ(276deg)",
     width: "100%",
     flip: false
   },
   iconStyle: {
-    width: "24px",
-    height: "24px",
+    width: "32px",
+    height: "32px",
     color: "#ffffff",
-    right: 0,
-    top: "-8px",
+    right: "-3px",
+    top: "-13px",
     position: "absolute",
     flip: false
   }
@@ -61,7 +62,7 @@ const ToggleButton = () => {
   const dispatch = useDispatch();
   const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
   const { isFullscreen } = useSelector(store => store.fullscreen);
-  const icon = showSidebar ? <ArrowForwardIos className={classes.iconStyle} /> : <ArrowBackIos className={classes.iconStyle} style={{ right: "-3px" }} />;
+  const icon = showSidebar ? <ArrowForwardIos className={classes.iconStyle} /> : <ArrowBackIos className={classes.iconStyle} style={{ right: "-6px" }} />;
 
   const onClick = () => dispatch(toggleSidebar());
 

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // COMPONENTS
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Page from '../../components/Page/Page';
-import StyledSection from '../../components/Section/StyledSection';
+import SimpleTitledSection from '../../components/Section/SimpleTitledSection';
 
 // CHARTS
 import MonthsChartContainer from './charts/MonthsChartContainer';
@@ -49,14 +49,14 @@ const Statistics = props => {
 
   return <Page>
     <PageHeader buildingName={buildingName} buildingId={buildingId} page={PAGE_TITLE} />
-    <StyledSection
+    <SimpleTitledSection
       bgColor={buildingColor}
       title={selectedChart}
       Icon={IoMdStats}
       extraDetails={<ExtraDetails />}
     >
       <Chart buildingId={buildingId} pageName={PAGE_NAME} />
-    </StyledSection>
+    </SimpleTitledSection>
   </Page>;
 
 }

@@ -5,7 +5,7 @@
   position: relative;
   z-index: 6;
   border-collapse: collapse;
-  padding: 15px;
+  padding: 20px;
   padding-top: 0;
 }
 
@@ -69,31 +69,33 @@ td {
 .groupRow {
   border-bottom: none !important;
   position: relative;
-  background-color: #fdfdfd;
   border: 1px solid #dddddd;
   border-bottom: none;
+  /* border-radius: 6px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; */
 }
 
 .headerRow {
   grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
   border: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
+  /* border-bottom: 4px solid #dddddd; */
   position: relative;
   box-shadow: rgb(0 0 0 / 4%) 0px 8px 12px -4px;
   z-index: 2;
-  background-color: #fdfdfd;
+  /* background-color: #fdfdfd; */
 }
 
 .groupCell {
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 14px;
   height: 45px !important;
   border-right: none;
 }
 
 .headerCell {
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 14px;
   height: 45px !important;
   border-right: none;
 }

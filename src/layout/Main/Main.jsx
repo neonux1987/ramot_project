@@ -1,16 +1,16 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
-import { Route } from 'react-router';
-import Routes from './Routes';
+import React from "react";
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import { useSelector } from "react-redux";
+import { Route } from "react-router";
+import Routes from "./Routes";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   main: {
     flexGrow: 1,
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -18,27 +18,27 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     zIndex: 990,
     position: "relative",
-    marginTop: "64px"
+    marginTop: "64px",
   },
   mainShift: {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0
+    marginLeft: 0,
   },
   content: {
     height: "100%",
     width: "100%",
     overflow: "overlay",
-    position: "absolute"
-  }
+    position: "absolute",
+  },
 }));
 
 const Main = ({ mainContainerRef }) => {
   const classes = useStyles();
-  const showSidebar = useSelector(store => store.toggleSidebar.showSidebar);
-  const { isFullscreen } = useSelector(store => store.fullscreen);
+  const showSidebar = useSelector((store) => store.toggleSidebar.showSidebar);
+  const { isFullscreen } = useSelector((store) => store.fullscreen);
 
   return (
     <main
@@ -49,12 +49,10 @@ const Main = ({ mainContainerRef }) => {
       style={{ marginTop: isFullscreen ? "0" : "64px" }}
     >
       <div className={classes.content} ref={mainContainerRef} id="mainContent">
-        <Route render={({ location }) => (
-          <Routes location={location} />
-        )} />
+        <Route render={({ location }) => <Routes location={location} />} />
       </div>
     </main>
   );
-}
+};
 
 export default Main;

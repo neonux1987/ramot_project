@@ -6,12 +6,12 @@ import YearStatsContainer from './YearStatsContainer';
 import SummarizedBudgetsTableContainer from './SummarizedBudgetsTableContainer';
 import { fetchSummarizedBudgets } from '../../redux/actions/summarizedBudgetActions';
 import { useDispatch, useSelector } from 'react-redux';
-import TitledSection from '../../components/Section/TitledSection';
 import useIcons from '../../customHooks/useIcons';
+import SimpleTitledSection from '../../components/Section/SimpleTitledSection';
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
-const TABLE_TITLE = "טבלת מעקב";
+const TABLE_TITLE = "מעקב";
 
 const SummarizedBudgets = () => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const SummarizedBudgets = () => {
       pageName={PAGE_NAME}
     />
 
-    <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon}>
+    <SimpleTitledSection title={TABLE_TITLE} TitleIcon={TableIcon}>
       <SummarizedBudgetsTableContainer
         buildingName={buildingName}
         buildingId={buildingId}
@@ -48,7 +48,7 @@ const SummarizedBudgets = () => {
         data={data}
         isFetching={isFetching}
       />
-    </TitledSection>
+    </SimpleTitledSection>
 
   </Page>;
 

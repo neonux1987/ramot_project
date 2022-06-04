@@ -1,7 +1,7 @@
-import React from 'react';
-import Section from './Section';
-import { css } from 'emotion';
-import { useSelector } from 'react-redux';
+import React from "react";
+import Section from "./Section";
+import { css } from "emotion";
+import { useSelector } from "react-redux";
 
 const _section = css`
   background-color: #ffffff;
@@ -11,20 +11,20 @@ const _section = css`
 const _header = css`
   display: flex;
   align-items: center;
+  background-color: #ffffff;
 `;
 
 const SectionWithHeader = ({ header = null, children, id }) => {
-  const isFullscreen = useSelector(store => store.fullscreen.isFullscreen);
+  const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
 
-  return <Section
-    isFullscreen={isFullscreen}
-    id={id}
-    className={`${_section}`}
-  >
-    <div className={_header} id="section-header">{header}</div>
-    {children}
-
-  </Section>;
-}
+  return (
+    <Section isFullscreen={isFullscreen} id={id} className={`${_section}`}>
+      <div className={_header} id="section-header">
+        {header}
+      </div>
+      {children}
+    </Section>
+  );
+};
 
 export default SectionWithHeader;

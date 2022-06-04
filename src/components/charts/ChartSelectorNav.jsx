@@ -10,11 +10,16 @@ const BY_YEARS_TITLE = "הוצאות והכנסות לפי שנים";
 const TOP_EXPANSES_TITLE = "טופ הוצאות";
 
 const activeClass = css`
-  background-color: #00000040;
+  background-color: rgb(23, 110, 193);
+  color: #ffffff;
+
+  :hover{
+    background-color: rgb(23, 110, 193);
+  }
 `;
 
 const button = css`
-  color: #ffffff;
+  color: #000000;
 `;
 
 const ChartSelectorNav = ({ active, onClick }) => {

@@ -16,12 +16,13 @@ const GroupCell = ({ color = "#000000", span = 1, children }) => {
   return <Cell
     className="groupCell"
     style={{
-      gridColumn: `span ${span}`
+      gridColumn: `span ${span}`,
+      color
     }}
   >
-    <div className={markerWrapper}>
+    {/* <div className={markerWrapper}>
       {color !== "#000000" && <CalendarIcon style={{ color: color === "#000000" ? "initial" : color }} />}
-    </div>
+    </div> */}
     {children}
   </Cell>
 }

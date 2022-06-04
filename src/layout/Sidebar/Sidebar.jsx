@@ -7,6 +7,7 @@ import Credits from './Credits/Credits';
 import MenuContainer from './Menu/MenuContainer';
 import CenteredLoader from '../../components/AnimatedLoaders/CenteredLoader';
 import { useSelector } from 'react-redux';
+import FadedDivider from '../../components/CustomDivider/FadedDivider';
 
 const drawerWidth = 240;
 
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
     borderRight: "none",
-    boxShadow: "2px 0px 14px 1px #00000012", //-2px 0px 4px 4px #00000005
+    boxShadow: "2px 0px 14px 1px #00000012", //2px 0px 14px 1px #00000012
     overflow: "hidden"
   },
   drawerHeader: {
@@ -52,7 +53,8 @@ const Sidebar = ({ routes, isFetching, data }) => {
       style={{ display: isFullscreen ? "none" : "initial" }}
     >
       <Logo />
-      <Divider />
+
+      <FadedDivider />
       {isFetching ? <CenteredLoader text="טוען תפריט" color="#ffffff" /> : <MenuContainer routes={routes} data={data} />}
       <Credits />
     </Drawer>

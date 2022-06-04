@@ -1,41 +1,40 @@
 // LIBRARIES
-import React, { useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { heIL } from '@material-ui/core/locale';
-import { createMuiTheme } from '@material-ui/core/styles';
-import LogoLoader from './components/AnimatedLoaders/LogoLoader/LogoLoader';
-import useServices from './customHooks/useServices';
-import generalSettingsActions from './redux/actions/generalSettingsActions';
-import { toggleSidebar } from './redux/actions/toggleSidebarActions';
-import 'react-toastify/dist/ReactToastify.css';
-import './assets/css/style.css';
-import App from './App';
+import React, { useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { heIL } from "@material-ui/core/locale";
+import { createMuiTheme } from "@material-ui/core/styles";
+import LogoLoader from "./components/AnimatedLoaders/LogoLoader/LogoLoader";
+import useServices from "./customHooks/useServices";
+import generalSettingsActions from "./redux/actions/generalSettingsActions";
+import { toggleSidebar } from "./redux/actions/toggleSidebarActions";
+import "react-toastify/dist/ReactToastify.css";
+import "./assets/css/style.css";
+import App from "./App";
 
-const theme = createMuiTheme({
-  direction: 'rtl', // Both here and <body dir="rtl">
-  typography: {
-    useNextVariants: true,
-    fontFamily: [
-      'Open Sans',
-      'sans-serif'
-    ].join(',')
-  },
-  palette: {
-    primary: {
-      main: "rgb(23, 110, 193)"
+const theme = createMuiTheme(
+  {
+    direction: "rtl", // Both here and <body dir="rtl">
+    typography: {
+      useNextVariants: true,
+      fontFamily: ["Open Sans", "sans-serif"].join(","),
     },
-    secondary: {
-      main: "#001120"
-    }
+    palette: {
+      primary: {
+        main: "rgb(23, 110, 193)",
+      },
+      secondary: {
+        main: "#001120",
+      },
+    },
   },
-}, heIL);
+  heIL
+);
 
 const AppContainer = () => {
-
   const mainContainerRef = useRef(null);
 
-  const settings = useSelector(store => store.settings);
-  const generalSettings = useSelector(store => store.generalSettings);
+  const settings = useSelector((store) => store.settings);
+  const generalSettings = useSelector((store) => store.generalSettings);
 
   const dispatch = useDispatch();
   const [start, stop] = useServices();
@@ -49,7 +48,7 @@ const AppContainer = () => {
 
     return () => {
       stop();
-    }
+    };
   }, [start, stop]);
 
   const onClick = () => {
@@ -68,7 +67,6 @@ const AppContainer = () => {
       settings={settings}
     />
   );
-
-}
+};
 
 export default React.memo(AppContainer);
