@@ -3,6 +3,7 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Helper from "../../helpers/Helper";
 import Stats from "../../components/Stats/Stats";
+import DonutStatBox from "../../components/Stats/DonutStatBox";
 import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
 import { fetchAllMonthsStatsByQuarter } from "../../redux/actions/monthlyStatsActions";
 import { fetchQuarterStats } from "../../redux/actions/quarterlyStatsActions";
@@ -55,6 +56,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
           loading={isFetching}
           index={i + 1}
           xs={true}
+          border
         />
       );
     } // end loop
@@ -75,7 +77,6 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
         color={colorSet[3]}
         loading={isFetching}
         index={4}
-        border
         xs={true}
       />
     );
@@ -103,7 +104,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
       generateQuarterStats(quarterlyStats.data[0], quarterlyStats.isFetching)
     );
 
-    return <Stats stats={stats} columns={4} />;
+    return <Stats stats={stats} spacing={0} />;
   }
 };
 

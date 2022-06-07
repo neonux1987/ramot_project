@@ -1,37 +1,33 @@
-// LIBRARIES
-import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllQuartersStatsByYear } from "../../../redux/actions/quarterlyStatsActions";
+import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
+import ColumnChart from "../../../components/charts/ColumnChart";
+import { updateDate } from "../../../redux/actions/quartersChartActions";
+import Tab from "../../../components/Tab/Tab";
+import YearOnlyDatePicker from "../../../components/DatePicker/YearOnlyDatePicker";
 
-// ACTIONS
-import { fetchAllQuartersStatsByYear } from '../../../redux/actions/quarterlyStatsActions';
-
-// COMPONENTS
-import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
-import TableControls from '../../../components/table/TableControls/TableControls';
-import ColumnChart from '../../../components/charts/ColumnChart';
-import { updateDate } from '../../../redux/actions/quartersChartActions';
-import YearOnlyDatePicker from '../../../components/DatePicker/YearOnlyDatePicker';
-import Tab from '../../../components/Tab/Tab';
-
-const QuartersChartContainer = props => {
+const QuartersChartContainer = (props) => {
   //building name
   const { buildingId, pageName } = props;
 
-  const { isFetching, data } = useSelector(store => store.quarterlyStats[buildingId].pages[pageName]);
-  const date = useSelector(store => store.quartersChart[buildingId].date);
+  const { isFetching, data } = useSelector(
+    (store) => store.quarterlyStats[buildingId].pages[pageName]
+  );
+  const date = useSelector((store) => store.quartersChart[buildingId].date);
   const dispatch = useDispatch();
 
   const [chartData, setChartData] = useState({
     labels: [],
-    series: []
+    series: [],
   });
 
   const fetchMonthsData = useCallback(() => {
     const params = {
       buildingId,
       pageName,
-      date
-    }
+      date,
+    };
 
     return dispatch(fetchAllQuartersStatsByYear(params));
   }, [dispatch, buildingId, pageName, date]);
@@ -40,7 +36,6 @@ const QuartersChartContainer = props => {
     const promise = await fetchMonthsData();
 
     if (promise !== undefined) {
-
       const labels = [];
       const incomeData = [];
       const outcomeData = [];
@@ -58,47 +53,41 @@ const QuartersChartContainer = props => {
             {
               name: "הוצאות",
               data: outcomeData,
-              color: "#30a3fc"
+              color: "#30a3fc",
             },
             {
               name: "הכנסות",
               data: incomeData,
-              color: "#30e8aa"
-            }
-          ]
+              color: "#30e8aa",
+            },
+          ],
         };
-      })
-
+      });
     }
-
   }, [fetchMonthsData]);
 
   useEffect(() => {
-    if (date.year !== undefined)
-      fetchAndPrepareData();
+    if (date.year !== undefined) fetchAndPrepareData();
   }, [dispatch, fetchAndPrepareData, date.year]);
 
-  return <Tab>
-    <TableControls
-      withFullscreen={false}
-      middlePane={
-        <YearOnlyDatePicker
-          date={date}
-          buildingId={buildingId}
-          updateDate={updateDate}
-          blackLabels={true}
-        />}
-    />
-
-    <ChartWrapper itemCount={data.length} isFetching={isFetching} >
-      <ColumnChart
-        title={date.year}
-        series={chartData.series}
-        categories={chartData.labels}
+  return (
+    <Tab>
+      <YearOnlyDatePicker
+        date={date}
+        buildingId={buildingId}
+        updateDate={updateDate}
+        blackLabels={true}
       />
-    </ChartWrapper>
-  </Tab>
 
-}
+      <ChartWrapper itemCount={data.length} isFetching={isFetching}>
+        <ColumnChart
+          title={date.year}
+          series={chartData.series}
+          categories={chartData.labels}
+        />
+      </ChartWrapper>
+    </Tab>
+  );
+};
 
 export default QuartersChartContainer;

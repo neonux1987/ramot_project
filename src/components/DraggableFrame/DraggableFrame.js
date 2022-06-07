@@ -1,5 +1,5 @@
-import React from 'react';
-import { css } from 'emotion';
+import React from "react";
+import { css } from "emotion";
 
 const style = css`
   position: absolute;
@@ -11,7 +11,7 @@ const style = css`
   bottom: 0px;
   -webkit-app-region: drag;
 
-  :after{
+  :after {
     content: "";
     z-index: 887;
     -webkit-app-region: no-drag;
@@ -24,12 +24,10 @@ const style = css`
   }
 `;
 
-const DraggableFrame = props => {
-  return <div className={style}>
-    {props.children}
-  </div>;
-}
+const DraggableFrame = (props) => {
+  return <div className={style}>{props.children}</div>;
+};
 
-export default React.forwardRef((props, ref) =>
+export default React.forwardRef((props, ref) => (
   <DraggableFrame innerRef={ref} {...props} />
-);
+));

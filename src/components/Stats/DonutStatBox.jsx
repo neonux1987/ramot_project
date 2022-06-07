@@ -1,5 +1,4 @@
 import React from "react";
-import useIcons from "../../customHooks/useIcons";
 import StatBox from "./StatBox/StatBox";
 import { css } from "emotion";
 import DonutChart from "../charts/DonutChart";
@@ -10,69 +9,77 @@ const wrapper = css`
 `;
 
 const row = css`
-  display: flex;
-  align-items: center;
   margin-top: 0;
+
+  @media (max-width: 1400px) {
+    display: block;
+  }
 `;
 
-const label = css`
-  font-weight: 400 !important;
+const labelWrapper = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  width: 70px;
+  font-weight: 500;
+  color: #ffffff;
+  border-radius: 4px;
 `;
 
 const text = css`
   font-size: 32px;
   font-weight: 400;
   color: #000000;
-`;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px 0 5px;
 
-const marker = css`
-  width: 24px;
-  height: 4px;
-  background-color: red;
-  margin-left: 10px;
+  @media (max-width: 1400px) {
+    font-size: 24px;
+  }
 `;
 
 const blue = css`
-  color: rgb(23 146 239);
+  background: rgb(23 146 239);
 `;
 
 const green = css`
-  color: rgb(23 208 145);
+  background: rgb(23 208 145);
 `;
 
-/* const sliderWrapper = css`
-  border-radius: 14px;
+const sliderWrapper = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 240px;
   padding-bottom: 0;
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
-  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-  border-radius: 14px;
   position: relative;
   overflow: hidden;
-
-  :after {
-    content: "";
-    position: absolute;
-    top: -45px;
-    right: -45px;
-    width: 80px;
-    height: 80px;
-    background: blue;
-    transform: rotate(39deg);
-  }
-`; */
+  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
+  background-color: #ffffff;
+  min-height: 380px;
+  border-radius: 14px;
+  border: 1px solid #dddddd;
+  overflow: hidden;
+`;
 
 const slider = css`
-  padding: 30px 30px;
+  padding: 5px 30px;
+  display: flex;
+  justify-content: center;
   position: relative;
+
+  @media (max-width: 1400px) {
+    padding: 15px;
+  }
 `;
 
 const headerWrapper = css`
-  padding: 0 5px 5px;
+  padding: 0 10px 10px;
   display: flex;
   align-items: center;
 `;
@@ -82,9 +89,14 @@ const titleStyle = css`
   font-size: 42px;
   font-weight: 500;
   margin-right: 0px;
+  color: #000000;
 
   @media (max-width: 1400px) {
-    font-size: 28px;
+    font-size: 32px;
+    text-overflow: ellipsis;
+    width: 130px;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `;
 
@@ -100,21 +112,20 @@ const titleStyle = css`
 
 const emptyStyle = css`
   flex-grow: 1;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 260px;
   font-size: 14px;
   padding-top: 30px;
   font-weight: 400;
   padding: 20px;
   text-align: center;
-  background-color: #ffffff;
-  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-  min-height: 240px;
   color: #b5b5b5;
-  letter-spacing: 2px;
+  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
+  background-color: #ffffff;
+  min-height: 380px;
+  border-radius: 14px;
+  border: 1px solid #dddddd;
 
   @media (max-width: 1400px) {
     font-size: 16px;
@@ -132,19 +143,6 @@ const DonutStatBox = ({
   border,
   xs,
 }) => {
-  const [generateIcon] = useIcons();
-
-  const incomeText = `${income} ${unicodeSymbol}`;
-  const outcomeText = `${outcome} ${unicodeSymbol}`;
-  const total = income + outcome;
-  const outcomePercentage = total === 0 ? 0 : (outcome / total) * 100;
-  const incomePercentage = total === 0 ? 0 : (income / total) * 100;
-
-  const CalendarIcon = generateIcon("calendar", {
-    width: "32px",
-    height: "32px",
-  });
-
   return (
     <StatBox
       title={title}
@@ -163,32 +161,7 @@ const DonutStatBox = ({
         </div>
 
         {(outcome > 0 || income > 0) && (
-          <div
-            className={css`
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              min-height: 260px;
-              padding-bottom: 0;
-              background-color: #ffffff;
-              box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-              border-radius: 0;
-              position: relative;
-              overflow: hidden;
-
-              :after {
-                content: "";
-                position: absolute;
-                top: -45px;
-                right: -45px;
-                width: 80px;
-                height: 80px;
-                background: ${color};
-                transform: rotate(39deg);
-                box-shadow: rgb(0 0 0 / 20%) 0 0 8px 1px;
-              }
-            `}
-          >
+          <div className={sliderWrapper}>
             <div className={slider}>
               <DonutChart
                 series={[
@@ -200,74 +173,33 @@ const DonutStatBox = ({
                   },
                 ]}
               />
+            </div>
 
-              <div className={row}>
-                <div className={`${text} ${label}`}>
-                  <span>{outcome}</span>{" "}
-                  <span
-                    className={blue}
-                    style={{ fontWeight: 500, fontSize: "14px" }}
-                  >
-                    הוצאות
-                  </span>
+            <FadedDivider />
+
+            <div className={row}>
+              <div className={text}>
+                <div className={`${labelWrapper} ${green}`}>
+                  <span>הכנסות</span>
                 </div>
+                <div>{income}</div>
               </div>
 
-              <div className={row}>
-                <div className={`${text} ${label}`}>
-                  <span>{income}</span>{" "}
-                  <span
-                    className={green}
-                    style={{ fontWeight: 400, fontSize: "14px" }}
-                  >
-                    הכנסות
-                  </span>
+              <FadedDivider />
+
+              <div className={text}>
+                <div className={`${labelWrapper} ${blue}`}>
+                  <span>הוצאות</span>
                 </div>
+                <div>{outcome}</div>
               </div>
             </div>
           </div>
         )}
 
         {income === 0 && outcome === 0 && (
-          <div
-            className={css`
-              flex-grow: 1;
-              height: 100%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 260px;
-              font-size: 14px;
-              padding-top: 30px;
-              font-weight: 400;
-              padding: 20px;
-              text-align: center;
-              background-color: #ffffff;
-              box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-              min-height: 240px;
-              color: #b5b5b5;
-              letter-spacing: 2px;
-              overflow: hidden;
-              position: relative;
-
-              :after {
-                content: "";
-                position: absolute;
-                top: -45px;
-                right: -45px;
-                width: 80px;
-                height: 80px;
-                background: ${color};
-                transform: rotate(39deg);
-                box-shadow: rgb(0 0 0 / 20%) 0 0 8px 1px;
-              }
-
-              @media (max-width: 1400px) {
-                font-size: 16px;
-              }
-            `}
-          >
-            <span>אין נתונים</span>
+          <div className={emptyStyle}>
+            <div>אין נתונים</div>
           </div>
         )}
       </div>

@@ -8,6 +8,8 @@ const _select = css`
   background-color: #ffffff;
   color: #000000;
   border-radius: 6px;
+  border: 1px solid #dddddd;
+  background-color: #fafafa;
 
   :before {
     border-bottom: none;

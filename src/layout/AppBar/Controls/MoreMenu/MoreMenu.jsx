@@ -1,23 +1,28 @@
 // LIBRARIES
 import React from "react";
 import { Menu, Divider, SvgIcon, Box } from "@material-ui/core";
-import styles from './MoreMenu.module.css';
-import { ExpandLess, ExpandMore, Description, ListAlt, Home } from "@material-ui/icons";
+import styles from "./MoreMenu.module.css";
+import {
+  ExpandLess,
+  ExpandMore,
+  Description,
+  ListAlt,
+  Home,
+} from "@material-ui/icons";
 import SubMenu from "./SubMenu/SubMenu";
-import { initiateDbBackup } from '../../../../services/dbBackup.svc';
+import { initiateDbBackup } from "../../../../services/dbBackup.svc";
 import { toastManager } from "../../../../toasts/toastManager";
 import ToastRender from "../../../../components/ToastRender/ToastRender";
 import { purgeCache } from "../../../../redux/actions/persistorActions";
 import { refreshView, restartApp } from "../../../../services/mainProcess.svc";
 import MoreMenuNavLinkItem from "../../../../components/moreMenu/MoreMenuNavLinkItem";
 import MoreMenuItem from "../../../../components/moreMenu/MoreMenuItem";
-import { CgMathPercent } from 'react-icons/cg';
+import { CgMathPercent } from "react-icons/cg";
 import MoreButton from "../MoreButton/MoreButton";
 import useModalLogic from "../../../../customHooks/useModalLogic";
 import EditVatModal from "../../../../components/modals/EditVatModal/EditVatModal";
 
 const MoreMenu = ({ active }) => {
-
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { showModal } = useModalLogic();
@@ -33,11 +38,11 @@ const MoreMenu = ({ active }) => {
   const taxClickHandler = () => {
     handleClose();
     showModal(EditVatModal);
-  }
+  };
 
   const restartAppHandler = () => {
     restartApp();
-  }
+  };
 
   const expandClick = () => {
     setOpen(!open);
@@ -46,44 +51,59 @@ const MoreMenu = ({ active }) => {
   const upgradedHandleClose = () => {
     handleClose();
     setOpen(false);
-  }
+  };
 
   const clearCache = () => {
     purgeCache().then(() => {
-      toastManager.success("ניקוי היסטוריית מטמון בוצע בהצלחה. המערכת תרענן את העמוד.", {
-        autoClose: 2500,
-        onClose: () => refreshView()
-      });
+      toastManager.success(
+        "ניקוי היסטוריית מטמון בוצע בהצלחה. המערכת תרענן את העמוד.",
+        {
+          autoClose: 2500,
+          onClose: () => refreshView(),
+        }
+      );
     });
-  }
+  };
 
   const dbBackupHandler = async () => {
-    const id = toastManager.info(<ToastRender spinner={true} message={"גיבוי בסיס נתונים החל..."} />, {
-      autoClose: false
-    });
+    const id = toastManager.info(
+      <ToastRender spinner={true} message={"גיבוי בסיס נתונים החל..."} />,
+      {
+        autoClose: false,
+      }
+    );
 
     const promise = await initiateDbBackup().catch((result) => {
       toastManager.update(id, {
         render: <ToastRender message={result.error} />,
         type: toastManager.types.ERROR,
         delay: 3000,
-        autoClose: 2500
+        autoClose: 2500,
       });
     });
 
     // success
     if (promise)
       toastManager.update(id, {
-        render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים בהצלחה."} />,
+        render: (
+          <ToastRender
+            done={true}
+            message={"גיבוי בסיס הנתונים הסתיים בהצלחה."}
+          />
+        ),
         type: toastManager.types.SUCCESS,
         delay: 2000,
-        autoClose: 1500
+        autoClose: 1500,
       });
-
-  }
+  };
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box
+      display="flex"
+      justifyContent="center"
+      flexGrow={1}
+      justifyContent="flex-start"
+    >
       <MoreButton
         className={styles.moreBtn}
         onClick={handleClick}
@@ -96,7 +116,6 @@ const MoreMenu = ({ active }) => {
         onClose={upgradedHandleClose}
         className={styles.container}
       >
-
         <MoreMenuNavLinkItem
           icon={<Description />}
           label="הפקת דוחות"
@@ -106,8 +125,8 @@ const MoreMenu = ({ active }) => {
             state: {
               page: "הפקת דוחות",
               buildingName: "ניהול",
-              buildingId: "management"
-            }
+              buildingId: "management",
+            },
           }}
         />
 
@@ -120,8 +139,8 @@ const MoreMenu = ({ active }) => {
             state: {
               page: "ניהול בניינים",
               buildingName: "ניהול",
-              buildingId: "management"
-            }
+              buildingId: "management",
+            },
           }}
         />
 
@@ -134,8 +153,8 @@ const MoreMenu = ({ active }) => {
             state: {
               page: "קודי הנהלת חשבונות",
               buildingName: "ניהול",
-              buildingId: "management"
-            }
+              buildingId: "management",
+            },
           }}
         />
 
@@ -148,8 +167,8 @@ const MoreMenu = ({ active }) => {
             state: {
               page: "סעיפים מסכמים",
               buildingName: "ניהול",
-              buildingId: "management"
-            }
+              buildingId: "management",
+            },
           }}
         />
 
@@ -161,19 +180,19 @@ const MoreMenu = ({ active }) => {
 
         <Divider style={{ margin: "8px" }} />
 
-        <MoreMenuItem
-          label="עוד..."
-          onClick={expandClick}
-        >
+        <MoreMenuItem label="עוד..." onClick={expandClick}>
           {open ? <ExpandLess /> : <ExpandMore />}
         </MoreMenuItem>
 
-        <SubMenu open={open} restartAppHandler={restartAppHandler} dbBackupHandler={dbBackupHandler} purgeCache={clearCache} />
-
+        <SubMenu
+          open={open}
+          restartAppHandler={restartAppHandler}
+          dbBackupHandler={dbBackupHandler}
+          purgeCache={clearCache}
+        />
       </Menu>
     </Box>
   );
-
-}
+};
 
 export default React.memo(MoreMenu);

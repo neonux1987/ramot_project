@@ -1,13 +1,9 @@
-// LIBRARIES
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Helper from "../../helpers/Helper";
-import Stats from "../../components/Stats/Stats";
 import DonutStatBox from "../../components/Stats/DonutStatBox";
-
-// ACTIONS
 import { fetchAllBuildingsStatsByYear } from "../../redux/actions/homeActions";
-import SliderStatBox from "../../components/Stats/SliderStatBox";
+import HomeStats from "../../components/Stats/HomeStats";
 
 const BuildingsStatsContainer = () => {
   const { data, isFetching } = useSelector((store) => store.home.yearlyStats);
@@ -30,7 +26,7 @@ const BuildingsStatsContainer = () => {
       const { income, outcome } = data[building].data[0];
 
       statsList.push(
-        <SliderStatBox
+        <DonutStatBox
           key={label}
           title={label}
           outcome={outcome}
@@ -38,7 +34,7 @@ const BuildingsStatsContainer = () => {
           unicodeSymbol={Helper.shekelUnicode}
           loading={isFetching}
           index={index + 1}
-          xs={3}
+          xs={2}
           color={data[building].color}
         />
       );
@@ -47,7 +43,7 @@ const BuildingsStatsContainer = () => {
     return statsList;
   };
 
-  return <Stats stats={generateBuildingsStats(data, isFetching)} columns={4} />;
+  return <HomeStats stats={generateBuildingsStats(data, isFetching)} />;
 };
 
 export default BuildingsStatsContainer;

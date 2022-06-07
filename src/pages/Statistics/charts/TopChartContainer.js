@@ -1,25 +1,26 @@
-// LIBRARIES
-import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toastManager } from '../../../toasts/toastManager';
+import React, { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toastManager } from "../../../toasts/toastManager";
+import { fetchRegisteredYears } from "../../../redux/actions/registeredYearsActions";
+import {
+  updateDate,
+  fetchTopIncomeOutcome,
+} from "../../../redux/actions/topChartActions";
+import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
+import DateRangePicker from "../../../components/DateRangePicker/DateRangePicker";
+import BarChart from "../../../components/charts/BarChart";
+import Tab from "../../../components/Tab/Tab";
 
-// ACTIONS
-import { fetchRegisteredYears } from '../../../redux/actions/registeredYearsActions';
-import { updateDate, fetchTopIncomeOutcome } from '../../../redux/actions/topChartActions';
-
-// COMPONENTS
-import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
-import TableControls from '../../../components/table/TableControls/TableControls';
-import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
-import BarChart from '../../../components/charts/BarChart';
-import Tab from '../../../components/Tab/Tab';
-
-const TopChartContainer = props => {
+const TopChartContainer = (props) => {
   //building name
   const { buildingId, pageName } = props;
 
-  const registeredYears = useSelector(store => store.registeredYears[buildingId]);
-  const { date, data, isFetching } = useSelector(store => store.topChart[buildingId]);
+  const registeredYears = useSelector(
+    (store) => store.registeredYears[buildingId]
+  );
+  const { date, data, isFetching } = useSelector(
+    (store) => store.topChart[buildingId]
+  );
 
   const [ready, setReady] = useState(false);
 
@@ -27,7 +28,7 @@ const TopChartContainer = props => {
 
   const [chartData, setChartData] = useState({
     labels: [],
-    series: []
+    series: [],
   });
 
   const fetchData = useCallback(() => {
@@ -35,10 +36,10 @@ const TopChartContainer = props => {
       buildingId,
       date: {
         fromYear: date.fromYear,
-        toYear: date.toYear
+        toYear: date.toYear,
       },
-      limit: 10
-    }
+      limit: 10,
+    };
 
     return dispatch(fetchTopIncomeOutcome(params));
   }, [dispatch, buildingId, date.fromYear, date.toYear]);
@@ -62,12 +63,11 @@ const TopChartContainer = props => {
             {
               name: "הוצאות",
               data: outcomeData,
-              color: "#30a3fc"
-            }
-          ]
+              color: "#30a3fc",
+            },
+          ],
         };
-      })
-
+      });
     }
 
     setReady(() => true);
@@ -77,11 +77,9 @@ const TopChartContainer = props => {
     dispatch(fetchRegisteredYears({ buildingId }));
   }, [dispatch, pageName, buildingId]);
 
-
   // load on start the previous selected data
   useEffect(() => {
-    if (date.fromYear !== "" && date.toYear !== "")
-      fetchAndPrepareData();
+    if (date.fromYear !== "" && date.toYear !== "") fetchAndPrepareData();
   }, [date, fetchAndPrepareData]);
 
   const submit = (date) => {
@@ -90,28 +88,26 @@ const TopChartContainer = props => {
     else {
       dispatch(updateDate(buildingId, date));
     }
-  }
+  };
 
-  return <Tab>
-    <TableControls
-      withFullscreen={false}
-      middlePane={<DateRangePicker
+  return (
+    <Tab>
+      <DateRangePicker
         years={registeredYears.data}
         date={date}
         submit={submit}
         loading={registeredYears.isFetching}
-      />}
-    />
-
-    <ChartWrapper itemCount={data.length} isFetching={isFetching && !ready} >
-      <BarChart
-        title={`טופ 10 הוצאות מ- ${date.fromYear} עד- ${date.toYear}`}
-        series={chartData.series}
-        categories={chartData.labels}
       />
-    </ChartWrapper>
-  </Tab>
 
-}
+      <ChartWrapper itemCount={data.length} isFetching={isFetching && !ready}>
+        <BarChart
+          title={`טופ 10 הוצאות מ- ${date.fromYear} עד- ${date.toYear}`}
+          series={chartData.series}
+          categories={chartData.labels}
+        />
+      </ChartWrapper>
+    </Tab>
+  );
+};
 
 export default React.memo(TopChartContainer);

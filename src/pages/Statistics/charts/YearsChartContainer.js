@@ -1,27 +1,25 @@
-// LIBRARIES
-import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toastManager } from '../../../toasts/toastManager';
+import React, { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toastManager } from "../../../toasts/toastManager";
+import { fetchYearStatsByYearRange } from "../../../redux/actions/yearlyStatsActions";
+import { fetchRegisteredYears } from "../../../redux/actions/registeredYearsActions";
+import { updateDate } from "../../../redux/actions/yearsChartActions";
+import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
+import ColumnChart from "../../../components/charts/ColumnChart";
+import DateRangePicker from "../../../components/DateRangePicker/DateRangePicker";
+import Tab from "../../../components/Tab/Tab";
 
-// ACTIONS
-import { fetchYearStatsByYearRange } from '../../../redux/actions/yearlyStatsActions';
-import { fetchRegisteredYears } from '../../../redux/actions/registeredYearsActions';
-import { updateDate } from '../../../redux/actions/yearsChartActions';
-
-// COMPONENTS
-import ChartWrapper from '../../../components/ChartWrapper/ChartWrapper';
-import TableControls from '../../../components/table/TableControls/TableControls';
-import ColumnChart from '../../../components/charts/ColumnChart';
-import DateRangePicker from '../../../components/DateRangePicker/DateRangePicker';
-import Tab from '../../../components/Tab/Tab';
-
-const YearsChartContainer = props => {
+const YearsChartContainer = (props) => {
   //building name
   const { buildingId, pageName } = props;
 
-  const { isFetching, data } = useSelector(store => store.yearlyStats[buildingId].pages[pageName]);
-  const registeredYears = useSelector(store => store.registeredYears[buildingId]);
-  const { date } = useSelector(store => store.yearsChart[buildingId]);
+  const { isFetching, data } = useSelector(
+    (store) => store.yearlyStats[buildingId].pages[pageName]
+  );
+  const registeredYears = useSelector(
+    (store) => store.registeredYears[buildingId]
+  );
+  const { date } = useSelector((store) => store.yearsChart[buildingId]);
 
   const [ready, setReady] = useState(false);
 
@@ -29,62 +27,65 @@ const YearsChartContainer = props => {
 
   const [chartData, setChartData] = useState({
     labels: [],
-    series: []
+    series: [],
   });
 
-  const fetchData = useCallback((date) => {
-    const params = {
-      buildingId,
-      pageName,
-      fromYear: date.fromYear,
-      toYear: date.toYear
-    }
+  const fetchData = useCallback(
+    (date) => {
+      const params = {
+        buildingId,
+        pageName,
+        fromYear: date.fromYear,
+        toYear: date.toYear,
+      };
 
-    return dispatch(fetchYearStatsByYearRange(params));
-  }, [dispatch, buildingId, pageName]);
+      return dispatch(fetchYearStatsByYearRange(params));
+    },
+    [dispatch, buildingId, pageName]
+  );
 
-  const fetchAndPrepareData = useCallback(async (date) => {
-    const promise = await fetchData(date);
+  const fetchAndPrepareData = useCallback(
+    async (date) => {
+      const promise = await fetchData(date);
 
-    if (promise !== undefined) {
+      if (promise !== undefined) {
+        const labels = [];
+        const incomeData = [];
+        const outcomeData = [];
 
-      const labels = [];
-      const incomeData = [];
-      const outcomeData = [];
+        promise.data.forEach((element) => {
+          labels.push(element.year);
+          incomeData.push(element.income);
+          outcomeData.push(element.outcome);
+        });
 
-      promise.data.forEach((element) => {
-        labels.push(element.year);
-        incomeData.push(element.income);
-        outcomeData.push(element.outcome);
-      });
+        setChartData(() => {
+          return {
+            labels,
+            series: [
+              {
+                name: "הוצאות",
+                data: outcomeData,
+                color: "#30a3fc",
+              },
+              {
+                name: "הכנסות",
+                data: incomeData,
+                color: "#30e8aa",
+              },
+            ],
+          };
+        });
+      }
 
-      setChartData(() => {
-        return {
-          labels,
-          series: [
-            {
-              name: "הוצאות",
-              data: outcomeData,
-              color: "#30a3fc"
-            },
-            {
-              name: "הכנסות",
-              data: incomeData,
-              color: "#30e8aa"
-            }
-          ]
-        };
-      })
-
-    }
-
-    setReady(() => true);
-  }, [fetchData]);
+      setReady(() => true);
+    },
+    [fetchData]
+  );
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingId }));
   }, [dispatch, pageName, buildingId]);
-
 
   // load on start the previous selected data
   useEffect(() => {
@@ -99,29 +100,26 @@ const YearsChartContainer = props => {
       dispatch(updateDate(buildingId, date));
       fetchAndPrepareData(date);
     }
-  }
+  };
 
-  return <Tab>
-
-    <TableControls
-      withFullscreen={false}
-      middlePane={<DateRangePicker
+  return (
+    <Tab>
+      <DateRangePicker
         years={registeredYears.data}
         date={date}
         submit={submit}
         loading={registeredYears.isFetching}
-      />}
-    />
-
-    <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready} >
-      <ColumnChart
-        title={`מ- ${date.fromYear} עד- ${date.toYear}`}
-        series={chartData.series}
-        categories={chartData.labels}
       />
-    </ChartWrapper>
-  </Tab>;
 
-}
+      <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready}>
+        <ColumnChart
+          title={`מ- ${date.fromYear} עד- ${date.toYear}`}
+          series={chartData.series}
+          categories={chartData.labels}
+        />
+      </ChartWrapper>
+    </Tab>
+  );
+};
 
 export default React.memo(YearsChartContainer);

@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 import { Route } from "react-router";
 import Routes from "./Routes";
+import PageHeader from "../../components/PageHeader/PageHeader";
 
 const drawerWidth = 240;
 
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     height: "100%",
     width: "100%",
-    overflow: "overlay",
+    overflow: "auto",
     position: "absolute",
   },
 }));
@@ -49,6 +50,7 @@ const Main = ({ mainContainerRef }) => {
       style={{ marginTop: isFullscreen ? "0" : "64px" }}
     >
       <div className={classes.content} ref={mainContainerRef} id="mainContent">
+        <PageHeader />
         <Route render={({ location }) => <Routes location={location} />} />
       </div>
     </main>

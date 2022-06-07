@@ -254,13 +254,6 @@ const SummarizedBudgetsTableContainer = (props) => {
               dataExist={data.length > 0}
             />
           } // end rightPane
-          middlePane={
-            <YearOnlyDatePicker
-              date={date}
-              buildingId={buildingId}
-              updateDate={updateDate}
-            />
-          } // end middlePane
           leftPane={
             <PageControls
               dataExist={data.length > 0}
@@ -283,6 +276,11 @@ const SummarizedBudgetsTableContainer = (props) => {
         /> //End TableControls
       }
     >
+      <YearOnlyDatePicker
+        date={date}
+        buildingId={buildingId}
+        updateDate={updateDate}
+      />
       <Table
         Row={Row}
         GroupComponent={HeaderGroups}

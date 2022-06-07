@@ -10,24 +10,39 @@ const DonutChart = (props) => {
         },
         chart: {
           type: "pie",
-          width: 150,
-          height: 150,
+          width: 170,
+          height: 170,
           backgroundColor: "transparent",
         },
         exporting: {
           enabled: false,
         },
         plotOptions: {
+          responsive: {
+            rules: [
+              {
+                condition: {
+                  maxWidth: 1400,
+                },
+                chartOptions: {
+                  width: 40,
+                  height: 40,
+                },
+              },
+            ],
+          },
           pie: {
-            fillColor: "#f5f5f5",
-            showInLegend: false,
-            innerSize: "80%",
+            innerSize: "70%",
+            borderWidth: 10,
+            borderRadius: 10,
+            borderColor: "#fff",
             dataLabels: {
               enabled: false,
             },
-            size: 140,
+            fillColor: "#ffffff",
+            showInLegend: false,
             enableMouseTracking: false,
-            borderWidth: 0,
+            size: 160,
           },
         },
         title: {

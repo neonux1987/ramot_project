@@ -9,7 +9,6 @@
   padding-bottom: 0;
 }
 
-
 .list:hover {
   overflow-y: overlay;
   z-index: 999;

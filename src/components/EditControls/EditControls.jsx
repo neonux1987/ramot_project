@@ -1,29 +1,39 @@
 // LIBRARIES
-import React from 'react';
-import classnames from 'classnames';
+import React from "react";
+import classnames from "classnames";
 // CSS
-import styles from './EditControls.module.css';
+import styles from "./EditControls.module.css";
 
 // COMPONENTS
-import EditButton from '../buttons/EditButton';
-import AddNewButton from '../buttons/AddNewButton';
+import EditButton from "../buttons/EditButton";
+import AddNewButton from "../buttons/AddNewButton";
 
-
-const EditControls = ({ editMode, toggleEditMode, addNewMode, toggleAddNewMode, style, dataExist = false }) => {
-
+const EditControls = ({
+  editMode,
+  toggleEditMode,
+  addNewMode,
+  toggleAddNewMode,
+  style,
+  dataExist = false,
+}) => {
   const show = dataExist ? styles.show : styles.hide;
 
   const clickWithScroll = (event) => {
-    toggleEditMode(event)
-  }
+    toggleEditMode(event);
+  };
 
-  return <div className={classnames(styles.wrapper, show)} style={style}>
-    <EditButton on={editMode} onClick={clickWithScroll} iconColor="#000000" />
-    {
-      toggleAddNewMode && <AddNewButton on={addNewMode} onClick={toggleAddNewMode} iconColor="#000000" />
-    }
-  </div>;
-
-}
+  return (
+    <div className={classnames(styles.wrapper, show)} style={style}>
+      <EditButton on={editMode} onClick={clickWithScroll} iconColor="#ffffff" />
+      {toggleAddNewMode && (
+        <AddNewButton
+          on={addNewMode}
+          onClick={toggleAddNewMode}
+          iconColor="#ffffff"
+        />
+      )}
+    </div>
+  );
+};
 
 export default EditControls;

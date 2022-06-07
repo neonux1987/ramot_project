@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import PageHeader from "../../components/PageHeader/PageHeader";
 import QuarterStatsContainer from "./QuarterStatsContainer";
 import BudgetExecutionsTableContainer from "./BudgetExecutionsTableContainer";
 import Page from "../../components/Page/Page";
 import { fetchBudgetExecutions } from "../../redux/actions/budgetExecutionsActions";
-import SimpleTitledSection from "../../components/Section/SimpleTitledSection";
 import useIcons from "../../customHooks/useIcons";
 import TitledSection from "../../components/Section/TitledSection";
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";
+const STATS_TITLE = "סטטיסטיקה";
 
 const BudgetExecutions = () => {
   const dispatch = useDispatch();
@@ -35,22 +34,17 @@ const BudgetExecutions = () => {
   }, [dispatch, buildingId, buildingName, date]);
 
   const TableIcon = generateIcon("table");
-
+  const StatIcon = generateIcon("stats");
   return (
     <Page>
-      <PageHeader
-        buildingName={buildingName}
-        buildingId={buildingId}
-        page={PAGE_TITLE}
-      />
-
-      <QuarterStatsContainer
-        buildingId={buildingId}
-        date={date}
-        pageName={PAGE_NAME}
-      />
-
-      <SimpleTitledSection title={PAGE_TITLE} TitleIcon={TableIcon}>
+      <TitledSection title={STATS_TITLE} TitleIcon={StatIcon} id="be-stats">
+        <QuarterStatsContainer
+          buildingId={buildingId}
+          date={date}
+          pageName={PAGE_NAME}
+        />
+      </TitledSection>
+      <TitledSection title={PAGE_TITLE} TitleIcon={TableIcon} id="be-table">
         <BudgetExecutionsTableContainer
           buildingName={buildingName}
           buildingId={buildingId}
@@ -60,7 +54,7 @@ const BudgetExecutions = () => {
           data={data}
           isFetching={isFetching}
         />
-      </SimpleTitledSection>
+      </TitledSection>
     </Page>
   );
 };

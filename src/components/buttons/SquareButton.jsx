@@ -1,7 +1,7 @@
-import React from 'react';
-import classnames from 'classnames';
-import { css } from 'emotion';
-import ButtonWithSound from '../../componentsWithSound/ButtonWithSound/ButtonWithSound';
+import React from "react";
+import classnames from "classnames";
+import { css } from "emotion";
+import ButtonWithSound from "../../componentsWithSound/ButtonWithSound/ButtonWithSound";
 
 const _container = css`
   border: none;
@@ -31,13 +31,29 @@ const SquareButton = ({
   onClick,
   bgColor = "none",
   iconColor = "#555555",
-  disabled
-}) => <ButtonWithSound
-  disabled={disabled}
-  className={classnames(_container, css`background:${bgColor}; margin: ${margin}`, className)}
-  onClick={onClick}
->
-    <Icon className={classnames(_icon, css`color:${iconColor}`)} />
-  </ButtonWithSound>;
+  disabled,
+}) => (
+  <ButtonWithSound
+    disabled={disabled}
+    className={classnames(
+      _container,
+      css`
+        background: ${bgColor};
+        margin: ${margin};
+      `,
+      className
+    )}
+    onClick={onClick}
+  >
+    <Icon
+      className={classnames(
+        _icon,
+        css`
+          color: ${iconColor};
+        `
+      )}
+    />
+  </ButtonWithSound>
+);
 
 export default SquareButton;

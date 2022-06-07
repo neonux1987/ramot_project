@@ -19,11 +19,7 @@ const TableControls = ({
   }, [dispatch]);
 
   return (
-    <div
-      className={styles.wrapper}
-      style={{ ...style, margin: isFullscreen ? "5px" : "15px 20px 0" }}
-      id="tableControls"
-    >
+    <div className={styles.wrapper} style={style} id="tableControls">
       <div className={styles.controls}>
         <div className={styles.rightPane}>{rightPane}</div>
 

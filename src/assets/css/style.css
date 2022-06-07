@@ -74,6 +74,7 @@ body {
   font-family: "Open Sans", sans-serif;
   overflow: hidden;
   color: black;
+  print-color-adjust: exact !important;
 }
 
 html {
@@ -186,6 +187,7 @@ textarea {
     /* auto is the initial value */
     margin: 10px 10px 35px 10px;
     /* this affects the margin in the printer settings */
+    scale: 100;
   }
 
   html,
@@ -193,10 +195,12 @@ textarea {
   #mainContainer,
   #appWrapper {
     overflow: visible !important;
+    text-rendering: optimizeLegibility;
   }
 
   body {
     background: #ffffff !important;
+    print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }
 
@@ -220,6 +224,8 @@ textarea {
   #be-stats,
   #sb-stats,
   #stats,
+  #formWrapper,
+  #add-box,
   hr,
   .addBoxContainer {
     display: none !important;
@@ -270,7 +276,7 @@ textarea {
   #table {
     box-shadow: none !important;
     border: none !important;
-    padding: 0;
+    padding: 0 !important;
   }
 
   table {

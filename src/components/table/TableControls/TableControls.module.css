@@ -2,12 +2,15 @@
   position: relative;
   z-index: 6;
   flex-grow: 1;
-  margin: 15px 20px 0;
+  background-color: rgb(23 110 193);
+  height: 70px;
+  padding: 0 10px;
 }
 
 .controls {
   display: flex;
   align-items: center;
+  height: 70px;
 }
 
 .fullscrenn {

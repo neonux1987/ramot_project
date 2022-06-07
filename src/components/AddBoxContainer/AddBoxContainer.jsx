@@ -1,5 +1,5 @@
-import React from 'react';
-import { css } from 'emotion';
+import React from "react";
+import { css } from "emotion";
 
 const wrapper = css`
   height: 0;
@@ -10,6 +10,7 @@ const wrapper = css`
   z-index: 9;
   position: relative;
   opacity: 0;
+  border-bottom: 1px solid #dddddd;
 `;
 
 const childrenWrapper = css`
@@ -32,11 +33,12 @@ const transitionIn = css`
 `;
 
 const AddBoxContainer = ({ show, children }) => (
-  <div className={`${wrapper} ${!show ? transitionOut : transitionIn}`}>
+  <div
+    className={`${wrapper} ${!show ? transitionOut : transitionIn}`}
+    id="add-box"
+  >
     <div className={childrenWrapper}>{children}</div>
   </div>
 );
 
-
 export default AddBoxContainer;
-

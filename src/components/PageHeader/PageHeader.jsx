@@ -7,23 +7,36 @@ import GenerateExcelReportsModal from "../modals/GenerateExcelReportsModal";
 import GenerateEmptyReportsModal from "../modals/GenerateEmptyReportsModal";
 import ChangeBuildingColorModal from "../modals/ChangeBuildingColorModal";
 import SelectButton from "../buttons/SelectButton";
+import { useLocation } from "react-router";
+import BreadcrumbsContainer from "../../layout/AppBar/Breadcrumbs/BreadcrumbsContainer";
 
 const container = css`
-  margin: 15px 0;
-  border-bottom: 1px solid #dddddd;
+  margin: 15px;
+  border: 1px solid #dddddd;
   display: flex;
   align-items: center;
-  padding: 10px 0;
+  padding: 0 20px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem;
+  height: 70px;
 `;
 
 const mainContainer = css`
   display: flex;
   align-items: center;
   padding: 0;
+  flex-grow: 1;
 `;
 
-const PageHeader = ({ buildingName, buildingId }) => {
+const breadcrumbsWrapper = css`
+  flex-grow: 1;
+`;
+
+const PageHeader = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { pathname, state = {} } = useLocation();
+  const { buildingName, buildingId } = state;
 
   const { showModal } = useModalLogic();
 
@@ -59,10 +72,14 @@ const PageHeader = ({ buildingName, buildingId }) => {
   return (
     <div className={container} id="pageHeader">
       <div className={mainContainer}>
-        {/* <MoreButton
-        onClick={handleClick}
-      /> */}
-        <SelectButton onClick={handleClick} label="פעולות נוספות" />
+        <div className={breadcrumbsWrapper}>
+          <BreadcrumbsContainer pathname={pathname} />
+        </div>
+        {/* <MoreButton onClick={handleClick} /> */}
+        {buildingId !== "settings" && (
+          <SelectButton onClick={handleClick} label="פעולות נוספות" />
+        )}
+
         <MoreBuildingMenu
           anchorEl={anchorEl}
           handleClose={handleClose}

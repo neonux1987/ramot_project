@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 const _section = css`
   background-color: #ffffff;
+  border: 1px solid #dddddd;
   padding: 0;
 `;
 
@@ -18,7 +19,12 @@ const SectionWithHeader = ({ header = null, children, id }) => {
   const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
 
   return (
-    <Section isFullscreen={isFullscreen} id={id} className={`${_section}`}>
+    <Section
+      isFullscreen={isFullscreen}
+      id={id}
+      className={`${_section}`}
+      style={{ border: isFullscreen ? "none" : "border: 1px solid #dddddd" }}
+    >
       <div className={_header} id="section-header">
         {header}
       </div>

@@ -7,12 +7,7 @@ import FadedDivider from "../CustomDivider/FadedDivider";
 
 const wrapper = css`
   flex-grow: 1;
-  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
-  background-color: #ffffff;
-  min-height: 290px;
-  border-radius: 14px;
-  border: 1px solid #dddddd;
-  overflow: hidden;
+  padding: 20px 0 40px;
 `;
 
 const row = css`
@@ -29,6 +24,12 @@ const text = css`
   font-size: 32px;
   font-weight: 400;
   color: #000000;
+  line-height: 32px;
+  margin-bottom: 10px;
+
+  @media (max-width: 1400px) {
+    font-size: 24px;
+  }
 `;
 
 const marker = css`
@@ -58,12 +59,20 @@ const sliderWrapper = css`
 const slider = css`
   padding: 10px 30px;
   position: relative;
+
+  @media (max-width: 1400px) {
+    padding: 10px 20px;
+  }
 `;
 
 const headerWrapper = css`
-  padding: 15px 20px 0px;
+  padding: 0 30px 10px;
   display: flex;
   align-items: center;
+
+  @media (max-width: 1400px) {
+    padding: 5px 20px 10px;
+  }
 `;
 
 const titleStyle = css`
@@ -72,9 +81,8 @@ const titleStyle = css`
   font-weight: 500;
   margin-right: 0px;
   color: #000000;
-
   @media (max-width: 1400px) {
-    font-size: 28px;
+    font-size: 32px;
   }
 `;
 
@@ -90,7 +98,6 @@ const titleStyle = css`
 
 const emptyStyle = css`
   flex-grow: 1;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,7 +108,6 @@ const emptyStyle = css`
   text-align: center;
   color: #b5b5b5;
   letter-spacing: 2px;
-
   @media (max-width: 1400px) {
     font-size: 16px;
   }
@@ -126,10 +132,10 @@ const SliderStatBox = ({
   const outcomePercentage = total === 0 ? 0 : (outcome / total) * 100;
   const incomePercentage = total === 0 ? 0 : (income / total) * 100;
 
-  const CalendarIcon = generateIcon("calendar", {
+  /* const CalendarIcon = generateIcon("calendar", {
     width: "32px",
     height: "32px",
-  });
+  }); */
 
   return (
     <StatBox
@@ -140,60 +146,55 @@ const SliderStatBox = ({
       border={border}
       xs={xs}
     >
-      <div className={wrapper}>
+      <div
+        className={wrapper}
+        style={{ borderLeft: border ? "1px solid #dddddd" : "none" }}
+      >
         <div className={headerWrapper}>
           {/*           <div className={iconWrapper} style={{ backgroundColor: color }}>
             <CalendarIcon color="#ffffff" style={{ padding: "6px" }} />
           </div> */}
-          <h2 className={titleStyle}>{title}</h2>
+          <h2 className={titleStyle} /* style={{ color }} */>
+            <span>{title}</span>
+          </h2>
         </div>
 
-        {(outcome > 0 || income > 0) && (
-          <div className={sliderWrapper}>
-            <div className={slider}>
-              <div className={row}>
-                <div className={`${text} ${label}`}>
-                  <span>{outcome}</span>{" "}
-                  <span
-                    className={blue}
-                    style={{ fontWeight: 500, fontSize: "14px" }}
-                  >
-                    הוצאות
-                  </span>
-                </div>
-              </div>
+        <FadedDivider />
 
-              <SliderChart
-                value={outcomePercentage}
-                color={"rgb(23 146 239)"}
-              />
+        <div className={sliderWrapper}>
+          <div className={slider}>
+            <div className={blue} style={{ fontWeight: 500, fontSize: "14px" }}>
+              הוצאות
             </div>
 
-            <FadedDivider />
-
-            <div className={slider} style={{ padding: "10px 30px 40px" }}>
-              <div className={row}>
-                <div className={`${text} ${label}`}>
-                  <span>{income}</span>{" "}
-                  <span
-                    className={green}
-                    style={{ fontWeight: 400, fontSize: "14px" }}
-                  >
-                    הכנסות
-                  </span>
-                </div>
+            <div className={row}>
+              <div className={`${text} ${label}`}>
+                <span>{outcome}</span>
               </div>
-
-              <SliderChart value={incomePercentage} color={"rgb(23 208 145)"} />
             </div>
-          </div>
-        )}
 
-        {income === 0 && outcome === 0 && (
-          <div className={emptyStyle}>
-            <span>אין נתונים</span>
+            <SliderChart value={outcomePercentage} color={"rgb(23 146 239)"} />
           </div>
-        )}
+
+          <FadedDivider />
+
+          <div className={slider}>
+            <div
+              className={green}
+              style={{ fontWeight: 500, fontSize: "14px" }}
+            >
+              הכנסות
+            </div>
+
+            <div className={row}>
+              <div className={`${text} ${label}`}>
+                <span>{income}</span>
+              </div>
+            </div>
+
+            <SliderChart value={incomePercentage} color={"rgb(23 208 145)"} />
+          </div>
+        </div>
       </div>
     </StatBox>
   );

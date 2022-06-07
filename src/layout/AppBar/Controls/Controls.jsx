@@ -1,9 +1,9 @@
-import React from 'react';
-import { css } from 'emotion';
-import { Icon } from '@iconify/react';
-import SpinningButton from '../../../components/buttons/SpinningButton/SpinningButton';
-import VolumeButton from '../Controls/VolumeButton/VolumeButton';
-import useIcons from '../../../customHooks/useIcons';
+import React from "react";
+import { css } from "emotion";
+import { Icon } from "@iconify/react";
+import SpinningButton from "../../../components/buttons/SpinningButton/SpinningButton";
+import VolumeButton from "../Controls/VolumeButton/VolumeButton";
+import useIcons from "../../../customHooks/useIcons";
 
 const container = css`
   display: flex;
@@ -37,9 +37,7 @@ const settingsBtn = css`
   color: #000000 !important;
 `;
 
-const Controls = ({
-  routes
-}) => {
+const Controls = ({ routes }) => {
   const [generateIcon] = useIcons();
   const SettingsIcon = generateIcon("settings");
   return (
@@ -48,12 +46,12 @@ const Controls = ({
         className={settingsBtn}
         Icon={SettingsIcon}
         to={{
-          pathname: `/הגדרות`,
+          pathname: `/הגדרות/כללי`,
           state: {
             page: "כללי",
             buildingName: "הגדרות",
-            buildingId: "settings"
-          }
+            buildingId: "settings",
+          },
         }}
         active={routes.active.state.buildingName === "הגדרות"}
       />
@@ -61,6 +59,6 @@ const Controls = ({
       <VolumeButton className={volumeBtn} />
     </div>
   );
-}
+};
 
 export default Controls;
