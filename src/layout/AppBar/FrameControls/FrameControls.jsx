@@ -1,7 +1,7 @@
-import React from 'react';
-import { Minimize, CheckBoxOutlineBlank, Close } from '@material-ui/icons';
-import { css } from 'emotion';
-import useIcons from '../../../customHooks/useIcons';
+import React from "react";
+import { Minimize, CheckBoxOutlineBlank, Close } from "@material-ui/icons";
+import { css } from "emotion";
+import useIcons from "../../../customHooks/useIcons";
 
 const style = css`
   display: flex;
@@ -25,15 +25,13 @@ const button = css`
   -webkit-user-select: none;
   color: #000000;
 
-  :hover{
+  :hover {
     background-color: rgb(255 255 255 / 20%);
   }
 `;
 
 const close = css`
-  margin-left: -4px;
-
-  :hover{
+  :hover {
     background: red;
     color: #ffffff;
   }
@@ -48,7 +46,6 @@ const maximizeIcon = css`
   margin-top: 0px;
 `;
 
-
 const FrameControls = ({ onMinimize, onMaximize, onClose }) => {
   const [generateIcon] = useIcons();
   const CloseIcon = generateIcon("close");
@@ -56,11 +53,17 @@ const FrameControls = ({ onMinimize, onMaximize, onClose }) => {
   const MinimizeIcon = generateIcon("minimize");
   return (
     <div className={style}>
-      <button className={button} onClick={onMinimize}><MinimizeIcon className={icon} /></button>
-      <button className={button} onClick={onMaximize}><MaximizeIcon className={maximizeIcon} /></button>
-      <button className={`${button} ${close}`} onClick={onClose}><CloseIcon className={icon} /></button>
+      <button className={button} onClick={onMinimize}>
+        <MinimizeIcon className={icon} />
+      </button>
+      <button className={button} onClick={onMaximize}>
+        <MaximizeIcon className={maximizeIcon} />
+      </button>
+      <button className={`${button} ${close}`} onClick={onClose}>
+        <CloseIcon className={icon} />
+      </button>
     </div>
   );
-}
+};
 
 export default FrameControls;

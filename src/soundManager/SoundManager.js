@@ -1,12 +1,12 @@
-import action from '../assets/audio/action.wav';
-import error from '../assets/audio/error.wav';
-import message from '../assets/audio/message.wav';
-import welcome from '../assets/audio/welcome.wav';
-import update from '../assets/audio/update.wav';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import action from "../assets/audio/action.wav";
+import error from "../assets/audio/error.wav";
+import message from "../assets/audio/message.wav";
+import welcome from "../assets/audio/welcome.wav";
+import update from "../assets/audio/update.wav";
+import { useState } from "react";
+import { useEffect } from "react";
 
-const remote = require('electron').remote;
+const remote = require("electron").remote;
 const sharedObject = remote.getGlobal("sharedObject");
 const TYPES = {
   action: "action",
@@ -14,10 +14,9 @@ const TYPES = {
   message: "message",
   welcome: "welcome",
   update: "update",
-}
+};
 
 class SoundManager {
-
   constructor() {
     this.systemSettings = sharedObject.settings.system;
     this.systemSound = null;
@@ -27,15 +26,13 @@ class SoundManager {
 
   reload = () => {
     this.systemSettings = sharedObject.settings.system;
-  }
+  };
 
   play = (type) => {
-    if (sharedObject === undefined)
-      return;
+    if (sharedObject === undefined) return;
 
     const { soundEnabled, soundVolume } = this.systemSettings;
-    if (soundEnabled === false)
-      return;
+    if (soundEnabled === false) return;
 
     // init for the next sound
     this.systemSound = new Audio();
@@ -62,13 +59,10 @@ class SoundManager {
         this.systemSound.src = message;
     }
 
-    this.systemSound.play()
-      .catch(() => {
-        // Auto-play was prevented
-      });
-
-  }
-
+    this.systemSound.play().catch(() => {
+      // Auto-play was prevented
+    });
+  };
 }
 
 export const soundManager = new SoundManager();
@@ -84,23 +78,23 @@ export const useSound = (url, options) => {
     src: url,
     currentTime: 0,
     reverse: 0,
-    ...options
+    ...options,
   });
 
   useEffect(() => {
-    setLocalOptions(prevOptions => ({
+    setLocalOptions((prevOptions) => ({
       ...prevOptions,
       soundEnabled,
-      soundVolume
+      soundVolume,
     }));
   }, [soundEnabled, soundVolume]);
 
   const setOptions = (options) => {
-    setLocalOptions(prevOptions => ({
+    setLocalOptions((prevOptions) => ({
       ...prevOptions,
-      ...options
+      ...options,
     }));
-  }
+  };
 
   const play = (type) => {
     // let the user pass a type of chosen
@@ -124,17 +118,16 @@ export const useSound = (url, options) => {
     if (localOptions.reverse === 1 && localOptions.soundEnabled === false) {
       audio.play();
     }
-  }
+  };
 
   const pause = () => {
-    if (audio !== null)
-      audio.pause();
-  }
+    if (audio !== null) audio.pause();
+  };
 
   return {
     play,
     setOptions,
     pause,
-    types: soundManager.types
-  }
-}
+    types: soundManager.types,
+  };
+};

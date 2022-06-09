@@ -187,7 +187,6 @@ textarea {
     /* auto is the initial value */
     margin: 10px 10px 35px 10px;
     /* this affects the margin in the printer settings */
-    scale: 100;
   }
 
   html,
@@ -200,7 +199,6 @@ textarea {
 
   body {
     background: #ffffff !important;
-    print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }
 
@@ -277,6 +275,8 @@ textarea {
     box-shadow: none !important;
     border: none !important;
     padding: 0 !important;
+    background: white !important;
+    color: black !important;
   }
 
   table {

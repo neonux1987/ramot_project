@@ -7,9 +7,14 @@ import useIcons from "../../customHooks/useIcons";
 const Home = () => {
   const [generateIcon] = useIcons();
   const StatIcon = generateIcon("stats");
+  const currentDate = new Date();
+
   return (
     <Page>
-      <TitledSection title={"תמונת מצב כללית"} TitleIcon={StatIcon}>
+      <TitledSection
+        title={`תמונת מצב לשנת ${currentDate.getFullYear()}`}
+        TitleIcon={StatIcon}
+      >
         <BuildingsStatsContainer />
       </TitledSection>
     </Page>

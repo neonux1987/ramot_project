@@ -1,9 +1,9 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import { reducer } from './reducer';
+import React, { useEffect, useReducer, useState } from "react";
+import { reducer } from "./reducer";
 import printTemplates from "../../printTemplates";
-import Sidebar from './Sidebar';
-import { useDispatch } from 'react-redux';
-import { setColors } from '../../../../../redux/actions/printActions';
+import Sidebar from "./Sidebar";
+import { useDispatch } from "react-redux";
+import { setColors } from "../../../../../redux/actions/printActions";
 
 const rangeRegex = "^(\\s*\\d+\\s*\\-\\s*\\d+\\s*,?|\\d)+$";
 
@@ -12,26 +12,19 @@ const rangeRegex = "^(\\s*\\d+\\s*\\-\\s*\\d+\\s*,?|\\d)+$";
 function initState(data, pageName) {
   const state = printTemplates[pageName];
   if (data.length !== 0) {
-
     data.forEach(({ isDefault, deviceName }) => {
-      if (isDefault)
-        state.deviceName = deviceName;
+      if (isDefault) state.deviceName = deviceName;
     });
-
   }
   return state;
 }
 
-const SidebarContainer = props => {
-  const {
-    pdf,
-    onClose,
-    onPrint,
-    printers,
-    generate,
-    pageName
-  } = props;
-  const [state, dispatch] = useReducer(reducer, initState(printers.data, pageName));
+const SidebarContainer = (props) => {
+  const { pdf, onClose, onPrint, printers, generate, pageName } = props;
+  const [state, dispatch] = useReducer(
+    reducer,
+    initState(printers.data, pageName)
+  );
 
   const reduxDispatch = useDispatch();
 
@@ -69,46 +62,42 @@ const SidebarContainer = props => {
     const range = target.value.split("-");
 
     if (passed) {
-
       // two values range
       if (range.length === 2) {
-
         if (range[0] > pageCount || range[1] > pageCount || range[0] > range[1])
           valid = false;
-
       }
 
       // one value range, duplicate first value
       // and push to the array
       if (range.length === 1) {
-
-        if (range[0] > pageCount)
-          valid = false;
+        if (range[0] > pageCount) valid = false;
         else {
           range.push(range[0]);
         }
-
       }
-
     }
 
-    if (!valid)
-      setRangeValid(false);
+    if (!valid) setRangeValid(false);
     else {
-      if (rangeValid === false)
-        setRangeValid(true);
+      if (rangeValid === false) setRangeValid(true);
 
       // subtract 1 from 'from' and 'to' because electron print options pageRanges is 0 based
-      dispatch({ type: "setPageRanges", pageRanges: { from: Number.parseInt(range[0]) - 1, to: Number.parseInt(range[1]) - 1 } });
+      dispatch({
+        type: "setPageRanges",
+        pageRanges: {
+          from: Number.parseInt(range[0]) - 1,
+          to: Number.parseInt(range[1]) - 1,
+        },
+      });
     }
+  };
 
-  }
-
-  const onScaleFactorBlur = event => {
+  const onScaleFactorBlur = (event) => {
     const value = Number.parseInt(event.target.getAttribute("aria-valuenow"));
 
     dispatch({ type: "setScaleFactor", scaleFactor: value });
-  }
+  };
 
   const onChange = (event) => {
     const target = event.target;
@@ -118,8 +107,7 @@ const SidebarContainer = props => {
         dispatch({ type: "setDeviceName", deviceName: target.value });
         break;
       case "copies":
-        if (target.value !== "")
-          setCopies(Number.parseInt(target.value));
+        if (target.value !== "") setCopies(Number.parseInt(target.value));
         break;
       case "allPages":
         setAllPages(target.value);
@@ -136,31 +124,34 @@ const SidebarContainer = props => {
         dispatch({ type: "setColors", colors: target.value });
         reduxDispatch(setColors(target.value));
         break;
-      default: return null;
+      default:
+        return null;
     }
-  }
+  };
 
   const onPrintClick = () => {
     const newState = { ...state };
     newState.copies = copies;
-    onPrint(state);
+    onPrint(state, pdf);
     onClose();
-  }
+  };
 
-  return <Sidebar
-    onPrintClick={onPrintClick}
-    onClose={onClose}
-    state={state}
-    printers={printers}
-    onChange={onChange}
-    onPageRangesBlur={onPageRangesBlur}
-    onScaleFactorBlur={onScaleFactorBlur}
-    allPages={allPages}
-    copies={copies}
-    rangeValid={rangeValid}
-    pdf={pdf}
-    initialNumOfPages={initialNumOfPages}
-  />;
-}
+  return (
+    <Sidebar
+      onPrintClick={onPrintClick}
+      onClose={onClose}
+      state={state}
+      printers={printers}
+      onChange={onChange}
+      onPageRangesBlur={onPageRangesBlur}
+      onScaleFactorBlur={onScaleFactorBlur}
+      allPages={allPages}
+      copies={copies}
+      rangeValid={rangeValid}
+      pdf={pdf}
+      initialNumOfPages={initialNumOfPages}
+    />
+  );
+};
 
 export default React.memo(SidebarContainer);

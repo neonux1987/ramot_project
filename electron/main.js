@@ -1,13 +1,13 @@
 //========================= Libraries =========================//
-require('v8-compile-cache');
-require('dotenv').config();
-const { app, BrowserWindow, powerMonitor } = require('electron');
-const path = require('path');
-const contextMenu = require('electron-context-menu');
+require("v8-compile-cache");
+require("dotenv").config();
+const { app, BrowserWindow, powerMonitor } = require("electron");
+const path = require("path");
+const contextMenu = require("electron-context-menu");
 
 //========================= services =========================//
-const mainSystem = require('./backend/system/MainSystem');
-const { AppErrorDialog } = require('./helpers/utils');
+const mainSystem = require("./backend/system/MainSystem");
+const { AppErrorDialog } = require("./helpers/utils");
 
 const isDev = !app.isPackaged;
 process.env.APP_ROOT_PATH = app.getAppPath();
@@ -17,30 +17,29 @@ contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
     {
       role: "selectAll",
-      label: "סמן הכל"
+      label: "סמן הכל",
     },
     {
       role: "reload",
-      label: "טען מחדש"
-    }
-
+      label: "טען מחדש",
+    },
   ],
   labels: {
-    cut: 'גזור',
-    copy: 'העתק',
-    paste: 'הדבק',
-    save: 'שמור',
-    saveImageAs: 'שמור תמונה',
-    copyLink: 'העתק קישור',
-    copyImageAddress: 'העתק קישור תמונה',
-    inspect: 'Inspect'
-  }
+    cut: "גזור",
+    copy: "העתק",
+    paste: "הדבק",
+    save: "שמור",
+    saveImageAs: "שמור תמונה",
+    copyLink: "העתק קישור",
+    copyImageAddress: "העתק קישור תמונה",
+    inspect: "Inspect",
+  },
 });
 
 //app details
 const companyName = "NDT Solutions";
 const appName = "מערכת ניהול דוחות";
-const icon = path.join(app.getAppPath(), 'Icon/ramot-group-icon.png');
+const icon = path.join(app.getAppPath(), "Icon/ramot-group-icon.png");
 
 let mainWindow = null;
 
@@ -62,83 +61,89 @@ async function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      contextIsolation: false
+      contextIsolation: false,
     },
   });
   loading.uniqueId = "loadingWindow";
 
-  loading.once('show', () => {
-
+  loading.once("show", () => {
     /* start system */
-    mainSystem.startSystem().then(() => {
+    mainSystem
+      .startSystem()
+      .then(() => {
+        mainWindow = new BrowserWindow({
+          minWidth: 1280,
+          minHeight: 720,
+          width: 1280,
+          height: 720,
+          title: appName + " - " + companyName,
+          titleBarStyle: "hidden",
+          webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true,
+            contextIsolation: false,
+          },
+          icon,
+          frame: false,
+          resizeable: false,
+          show: false,
+        });
 
-      mainWindow = new BrowserWindow({
-        minWidth: 1280,
-        minHeight: 720,
-        width: 1280,
-        height: 720,
-        title: appName + " - " + companyName,
-        titleBarStyle: "hidden",
-        webPreferences: {
-          nodeIntegration: true,
-          enableRemoteModule: true,
-          contextIsolation: false
-        },
-        icon,
-        frame: false,
-        resizeable: false,
-        show: false
+        mainWindow.uniqueId = "mainWindow";
+
+        //const ses = mainWindow.webContents.session;
+
+        if (isDev) {
+          // Open the DevTools.
+          mainWindow.webContents.openDevTools();
+
+          //add react dev tools
+          //ses.loadExtension(
+          //    path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
+          //);
+        } else {
+          process.env.NODE_ENV = "production";
+        }
+
+        mainWindow.on("closed", () => (mainWindow = null));
+
+        mainWindow.webContents.on("new-window", (event) => {
+          event.preventDefault();
+        });
+
+        mainWindow.webContents.once("dom-ready", () => {
+          mainWindow.show();
+          loading.hide();
+          loading.destroy();
+          loading = null;
+
+          mainSystem.scheduledTasks();
+        });
+        // long loading html
+        mainWindow.loadURL(
+          isDev
+            ? "http://localhost:3000"
+            : `file://${path.join(__dirname, "../build/index.html")}`
+        );
+
+        powerMonitor.on("resume", () => {
+          // we want to cover more ways to run up the task
+          // of deleting buildings except the start of the app
+          mainSystem.deleteBuildingsInQueue();
+        });
+      })
+      .catch(async () => {
+        await AppErrorDialog();
       });
-
-      mainWindow.uniqueId = "mainWindow";
-
-      //const ses = mainWindow.webContents.session;
-
-      if (isDev) {
-        // Open the DevTools.
-        mainWindow.webContents.openDevTools();
-
-        //add react dev tools
-        //ses.loadExtension(
-        //    path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
-        //);
-      } else {
-        process.env.NODE_ENV = "production";
-      }
-
-      mainWindow.on('closed', () => mainWindow = null);
-
-      mainWindow.webContents.on('new-window', event => {
-        event.preventDefault()
-      });
-
-      mainWindow.webContents.once('dom-ready', () => {
-        mainWindow.show();
-        loading.hide();
-        loading.destroy();
-        loading = null;
-
-        mainSystem.scheduledTasks();
-      });
-      // long loading html
-      mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
-
-      powerMonitor.on("resume", () => {
-        // we want to cover more ways to run up the task 
-        // of deleting buildings except the start of the app
-        mainSystem.deleteBuildingsInQueue();
-      });
-
-    }).catch(async () => {
-      await AppErrorDialog();
-    });
     /* end start system */
-
   });
 
-  loading.loadURL(isDev ? 'http://localhost:3000/?page=loading' : `file://${path.join(__dirname, '../build/index.html?page=loading')}`)
+  loading.loadURL(
+    isDev
+      ? "http://localhost:3000/?page=loading"
+      : `file://${path.join(__dirname, "../build/index.html?page=loading")}`
+  );
   loading.show();
-
 }
 
 //-------------------------------------------------------------------
@@ -146,32 +151,27 @@ async function createWindow() {
 // otherwise create the instance
 //-------------------------------------------------------------------
 if (!gotTheLock) {
-  app.quit()
+  app.quit();
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
+  app.on("second-instance", (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
     if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore()
-      mainWindow.focus()
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
     }
-  })
+  });
 
-  app.on('ready', createWindow);
+  app.on("ready", createWindow);
 
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+  app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
       app.quit();
     }
   });
 
-  app.on('activate', () => {
+  app.on("activate", () => {
     if (mainWindow === null) {
       createWindow();
     }
   });
 }
-
-
-
-
-

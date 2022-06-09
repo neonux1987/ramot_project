@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      padding: 0;
-      margin: 0;
-    }
+      .viewerStyle {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
 
-    .viewerStyle {
-      height: 100%;
-      width: 100%;
-    }
-  </style>
-</head>
+  <body>
+    <embed
+      class="viewerStyle"
+      type="application/pdf"
+      id="viewer"
+      width="100%"
+      height="100%"
+      WMODE="transparent"
+    />
+  </body>
 
-<body>
-  <embed class="viewerStyle" type="application/pdf" id="viewer" width="100%" height="100%" WMODE="transparent">
-</body>
-
-<script>
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const viewer = document.getElementById("viewer");
-  viewer.src = urlParams.get("pdf") + "#view=Fit&zoom=20&toolbar=0";
-</script>
-
+  <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const viewer = document.getElementById("viewer");
+    viewer.src = urlParams.get("pdf") + "#view=Fit&zoom=20&toolbar=1";
+  </script>
 </html>
