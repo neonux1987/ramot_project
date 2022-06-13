@@ -15,12 +15,16 @@ const _container = css`
   min-width: initial;
   width: 40px;
   height: 40px;
-  border-radius: 3px;
   box-shadow: none;
+
+  :hover {
+    margin-bottom: 8px;
+    transition: margin-bottom 0.2s;
+  }
 `;
 
 const _icon = css`
-  color: #555555;
+  color: #ffffff;
   font-size: 24px;
 `;
 
@@ -30,7 +34,7 @@ const SquareButton = ({
   Icon = null,
   onClick,
   bgColor = "none",
-  iconColor = "#555555",
+  iconColor = "#ffffff",
   disabled,
 }) => (
   <ButtonWithSound

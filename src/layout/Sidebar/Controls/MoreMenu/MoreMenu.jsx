@@ -98,12 +98,7 @@ const MoreMenu = ({ active }) => {
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      flexGrow={1}
-      justifyContent="flex-start"
-    >
+    <Box display="flex" justifyContent="flex-start">
       <MoreButton
         className={styles.moreBtn}
         onClick={handleClick}
@@ -115,6 +110,9 @@ const MoreMenu = ({ active }) => {
         open={Boolean(anchorEl)}
         onClose={upgradedHandleClose}
         className={styles.container}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        getContentAnchorEl={null}
       >
         <MoreMenuNavLinkItem
           icon={<Description />}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Grow, Paper } from "@material-ui/core";
+import { Fade, Grid, Paper } from "@material-ui/core";
 import Spinner from "../../Spinner/Spinner";
 import { AlignCenterMiddle } from "../../AlignCenterMiddle/AlignCenterMiddle";
 import { paper } from "./StatBox.module.css";
@@ -13,15 +13,15 @@ const StatBox = ({
 }) => {
   return (
     <Grid item xs={xs} style={{ flexGrow: 1 }}>
-      <Grow
+      <Fade
         in={!loading}
         style={{ transformOrigin: "0 0 0" }}
-        timeout={index * 500}
+        timeout={(index / 2) * 800}
       >
         <Paper className={paper} style={{ borderColor: color }}>
           {loading ? <Loader /> : children}
         </Paper>
-      </Grow>
+      </Fade>
     </Grid>
   );
 };

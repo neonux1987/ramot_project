@@ -7,12 +7,6 @@ import classnames from "classnames";
 const _container = css`
   display: flex;
   margin: 0 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 170px;
-  height: 38px;
-  overflow: hidden;
-  box-shadow: 0px 1px 8px -4px #0000001f;
 `;
 
 const _label = css`
@@ -21,25 +15,20 @@ const _label = css`
   display: flex;
   align-items: center;
   font-weight: 500;
-  width: 110px;
-  border-left: 1px solid #dddddd;
-  justify-content: center;
-  background: #f5f5f5;
 `;
 
 const _select = css`
   text-align: center;
   margin: 0 5px;
-  width: inherit;
+  width: 90px;
   background-color: #ffffff;
   font-size: 16px;
   color: #000000;
   font-weight: 400;
-
+  border: 1px solid #dddddd;
   :before {
     border-bottom: none;
   }
-
   :after {
     border-bottom: none;
   }
@@ -48,13 +37,12 @@ const _select = css`
 const _classesSelect = css`
   padding: 8px 0 6px 24px;
   font-weight: 400;
-
   :focus {
     background: none;
   }
 `;
 
-const Select = ({
+const PrintSelect = ({
   label,
   name,
   value,
@@ -90,25 +78,23 @@ const Select = ({
 
   return (
     <div className={_container}>
-      {label && (
-        <InputLabel
-          className={classnames(
-            _label,
-            css`
-              color: ${blackLabels ? "#000000" : "#000000"};
-            `
-          )}
-          id="label"
-        >
-          {label}
-        </InputLabel>
-      )}
+      <InputLabel
+        className={classnames(
+          _label,
+          css`
+            color: ${blackLabels ? "#000000" : "#000000"};
+          `
+        )}
+        id="label"
+      >
+        {label}
+      </InputLabel>
       {render}
     </div>
   );
 };
 
-export default React.memo(Select);
+export default React.memo(PrintSelect);
 
 const Dummy = ({ selectStyle }) => {
   return (

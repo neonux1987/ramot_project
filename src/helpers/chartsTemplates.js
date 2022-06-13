@@ -1,4 +1,4 @@
-import { css } from 'emotion';
+import { css } from "emotion";
 
 const menuClassName = css`
   direction: rtl;
@@ -8,13 +8,23 @@ const menuClassName = css`
   }
 `;
 
-export const columnChart = (title, series, categories) => ({
+export const columnChart = (title, series, categories, isFullscreen) => ({
   chart: {
     type: "column",
     style: {
-      fontFamily: "Open Sans, sans-serif"
+      fontFamily: "Open Sans, sans-serif",
     },
-    height: "450px"
+    height: "450px",
+    events: {
+      render: (highcharts) => {
+        /* highcharts.target.container.style.height = isFullscreen
+          ? "1050px"
+          : "450px";
+        highcharts.target.chartHeight = isFullscreen ? 1050 : 450;
+        highcharts.target.containerHeight = isFullscreen ? "1050px" : "450px"; */
+        //console.log(highcharts.target);
+      },
+    },
   },
   lang: {
     downloadCSV: `שמור כקובץ נתונים CSV`,
@@ -22,7 +32,7 @@ export const columnChart = (title, series, categories) => ({
     downloadPDF: `שמור כקובץ PDF`,
     printChart: `הדפס גרף`,
     viewFullscreen: `מסך מלא`,
-    exitFullscreen: `יציאה ממסך מלא`
+    exitFullscreen: `יציאה ממסך מלא`,
   },
   exporting: {
     enabled: true,
@@ -33,9 +43,15 @@ export const columnChart = (title, series, categories) => ({
         enabled: true,
         align: "left",
         menuClassName,
-        menuItems: ["viewFullscreen", "printChart", "separator", "downloadPNG", "downloadPDF"]
-      }
-    }
+        menuItems: [
+          "viewFullscreen",
+          "printChart",
+          "separator",
+          "downloadPNG",
+          "downloadPDF",
+        ],
+      },
+    },
   },
   legend: {
     rtl: true,
@@ -43,62 +59,63 @@ export const columnChart = (title, series, categories) => ({
     title: {
       style: {
         fontWeight: "500",
-        fontSize: "14px"
-      }
-    }
+        fontSize: "14px",
+      },
+    },
   },
   credits: {
-    enabled: false
+    enabled: false,
   },
   title: {
     text: title,
     style: {
       fontSize: "34px",
       fontWeight: "500",
-    }
+    },
   },
   tooltip: {
-    headerFormat: '<span style="font-size:14px;float: right;">{point.key}</span><table>',
-    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+    headerFormat:
+      '<span style="font-size:14px;float: right;">{point.key}</span><table>',
+    pointFormat:
+      '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
       '<td style="padding:0;text-align: right;"><b>{point.y:.2f} ש"ח</b></td></tr>',
-    footerFormat: '</table>',
+    footerFormat: "</table>",
     shared: true,
     useHTML: true,
     style: {
-      direction: 'rtl',
+      direction: "rtl",
       fontWeight: "500",
-      fontSize: "14px"
-    }
+      fontSize: "14px",
+    },
   },
   plotOptions: {
     column: {
       dataLabels: {
         enabled: true,
-        allowOverlap: true
-      }
-    }
+        allowOverlap: true,
+      },
+    },
   },
   yAxis: {
     opposite: true,
     title: {
-      enabled: false
+      enabled: false,
     },
     gridLineDashStyle: "dash",
     labels: {
       style: {
-        fontSize: "14px"
-      }
-    }
+        fontSize: "14px",
+      },
+    },
   },
   xAxis: {
     categories,
     crosshair: true,
     labels: {
       style: {
-        fontSize: "16px"
-      }
-    }
+        fontSize: "16px",
+      },
+    },
   },
-  series
+  series,
 });
-

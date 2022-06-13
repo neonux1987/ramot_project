@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { toast } from "react-toastify";
-import styles from './toastManager.module.css'
+import styles from "./toastManager.module.css";
 import { soundManager } from "../soundManager/SoundManager";
 import AppUpdateNewVersionToast from "./CustomToasts/AppUpdateNewVersionToast/AppUpdateNewVersionToast";
 import AppUpdateInstallToast from "./CustomToasts/AppUpdateInstallToast/AppUpdateInstallToast";
@@ -14,11 +14,10 @@ const TYPES = {
   WARNING: "warning",
   ERROR: "error",
   UPDATE: "update",
-  DISMISS: "dismiss"
-}
+  DISMISS: "dismiss",
+};
 
 class ToastManager {
-
   types = TYPES;
 
   appUpdateNewVersion = (version, properties = {}) => {
@@ -27,7 +26,7 @@ class ToastManager {
       className: styles.basic,
       ...properties,
       autoClose: false,
-      closeOnClick: false
+      closeOnClick: false,
     });
   };
 
@@ -37,7 +36,7 @@ class ToastManager {
       className: styles.basic,
       ...properties,
       autoClose: false,
-      closeOnClick: false
+      closeOnClick: false,
     });
   };
 
@@ -45,7 +44,7 @@ class ToastManager {
     play(types.message);
     return toast.info(content, {
       className: styles.basic,
-      ...properties
+      ...properties,
     });
   };
 
@@ -53,7 +52,7 @@ class ToastManager {
     play(types.message);
     return toast.info(content, {
       className: styles.info,
-      ...properties
+      ...properties,
     });
   };
 
@@ -61,7 +60,7 @@ class ToastManager {
     play(types.message);
     return toast.success(content, {
       className: styles.success,
-      ...properties
+      ...properties,
     });
   };
 
@@ -69,7 +68,7 @@ class ToastManager {
     play(types.warning);
     return toast.warning(content, {
       className: styles.warning,
-      ...properties
+      ...properties,
     });
   };
 
@@ -78,16 +77,16 @@ class ToastManager {
     return toast.error(content, {
       className: styles.error,
       autoClose: 5000,
-      ...properties
+      ...properties,
     });
   };
 
   update = (id, properties) => {
     return toast.update(id, {
       className: styles[properties.type],
-      ...properties
+      ...properties,
     });
-  }
+  };
 
   dismiss = (id) => toast.dismiss(id);
 }

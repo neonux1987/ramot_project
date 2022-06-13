@@ -1,8 +1,8 @@
 // LIBRARIES
-import React from 'react';
-import Menuitem from '../Menu/MenuItem/Menuitem';
-import { css } from 'emotion';
-import useIcons from '../../../customHooks/useIcons';
+import React from "react";
+import Menuitem from "../Menu/MenuItem/Menuitem";
+import { css } from "emotion";
+import useIcons from "../../../customHooks/useIcons";
 
 const style = css`
   border-radius: 0;
@@ -15,7 +15,7 @@ const labelStyle = css`
 const HOME_BUTTON_LABEL = "דף הבית";
 const HOME_BUTTON_PATH = "/דף-הבית";
 
-const HomeButton = props => {
+const HomeButton = (props) => {
   const [generateIcon] = useIcons();
 
   return (
@@ -29,9 +29,9 @@ const HomeButton = props => {
           pathname: HOME_BUTTON_PATH,
           state: {
             page: HOME_BUTTON_LABEL,
-            buildingName: "",
-            buildingId: ""
-          }
+            buildingName: "דף הבית",
+            buildingId: "home",
+          },
         }}
         active={props.active === HOME_BUTTON_LABEL}
       />

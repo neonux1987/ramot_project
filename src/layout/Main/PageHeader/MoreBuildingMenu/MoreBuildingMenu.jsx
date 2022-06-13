@@ -1,35 +1,34 @@
 // LIBRARIES
 import React from "react";
 import { Menu, useTheme } from "@material-ui/core";
-import { MdColorLens, MdDescription } from 'react-icons/md';
-import MoreMenuItem from "../../moreMenu/MoreMenuItem";
-import SvgIcon from "../../SvgIcon/SvgIcon";
+import { MdColorLens, MdDescription } from "react-icons/md";
+import MoreMenuItem from "../../../../components/moreMenu/MoreMenuItem";
+import SvgIcon from "../../../../components/SvgIcon/SvgIcon";
 
 const MoreBuildingMenu = ({
   anchorEl,
   handleClose,
   onExcelReportsHandler,
   onEmptyReportsHandler,
-  onChangeBuildingColorHandler
+  onChangeBuildingColorHandler,
 }) => {
-
   const theme = useTheme();
   const primaryColor = theme.palette.primary.main;
 
   const onEmptyReportsClick = () => {
     onEmptyReportsHandler();
     handleClose();
-  }
+  };
 
   const onExcelReportsClick = () => {
     onExcelReportsHandler();
     handleClose();
-  }
+  };
 
   const onChangeBuildingColorClick = () => {
     onChangeBuildingColorHandler();
     handleClose();
-  }
+  };
 
   return (
     <Menu
@@ -38,11 +37,10 @@ const MoreBuildingMenu = ({
       open={Boolean(anchorEl)}
       onClose={handleClose}
       getContentAnchorEl={null}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       disableAutoFocusItem
     >
-
       <MoreMenuItem
         icon={<SvgIcon Icon={MdDescription} color={primaryColor} />}
         label="הפקת דוחות ריקים"
@@ -62,10 +60,8 @@ const MoreBuildingMenu = ({
         label="שנה צבע בניין"
         onClick={onChangeBuildingColorClick}
       />
-
     </Menu>
   );
-
-}
+};
 
 export default React.memo(MoreBuildingMenu);

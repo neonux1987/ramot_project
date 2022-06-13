@@ -76,6 +76,7 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
         loading={isFetching}
         index={5}
         xs={true}
+        last
       />
     );
   };

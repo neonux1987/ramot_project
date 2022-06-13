@@ -6,7 +6,6 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import LogoLoader from "./components/AnimatedLoaders/LogoLoader/LogoLoader";
 import useServices from "./customHooks/useServices";
 import generalSettingsActions from "./redux/actions/generalSettingsActions";
-import { toggleSidebar } from "./redux/actions/toggleSidebarActions";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/css/style.css";
 import App from "./App";
@@ -51,10 +50,6 @@ const AppContainer = () => {
     };
   }, [start, stop]);
 
-  const onClick = () => {
-    dispatch(toggleSidebar());
-  };
-
   if (generalSettings.isFetching) {
     return <LogoLoader />;
   }
@@ -63,7 +58,6 @@ const AppContainer = () => {
     <App
       theme={theme}
       mainContainerRef={mainContainerRef}
-      sidebarToggleHandler={onClick}
       settings={settings}
     />
   );

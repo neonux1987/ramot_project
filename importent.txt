@@ -26,3 +26,13 @@ explanation:
 // as an argument it unable's to because the location is directed
 // to the asar archive and phantomjs.exe can't access it so we need to direct him
 // to the app.asar.unpacked highcharts-export-server module instead
+
+
+/*****************/
+go to node_modules/electron-updater/out/AppUpdater.js
+
+change const promises_1 = require("fs/promises");
+
+to
+
+const promises_1 = require("fs").promises;

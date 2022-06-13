@@ -1,6 +1,6 @@
 // define child rescript
-module.exports = config => {
-  config.target = 'electron-renderer';
+module.exports = (config) => {
+  config.target = "electron-renderer";
   /* config.output = {
     path: '/',
     publicPath: '/'
@@ -9,5 +9,4 @@ module.exports = config => {
     minimize: false
   } */
   return config;
-
-}
+};

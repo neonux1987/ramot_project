@@ -1,9 +1,8 @@
-const { asyncForEach } = require('../../helpers/utils');
-const ConnectionPool = require('../connection/ConnectionPool');
-const BuildingsDao = require('../dao/BuildingsDao');
+const { asyncForEach } = require("../../helpers/utils");
+const ConnectionPool = require("../connection/ConnectionPool");
+const BuildingsDao = require("../dao/BuildingsDao");
 
 class BuildingsLogic {
-
   constructor() {
     this.buildingsDao = new BuildingsDao();
   }
@@ -39,15 +38,15 @@ class BuildingsLogic {
 
   /**
    * add a building
-   * @param {*} params buildingName of the building to create 
-   * @returns 
+   * @param {*} params buildingName of the building to create
+   * @returns
    */
   async addBuilding({ buildingName }) {
     // start transaction
     const trx = await ConnectionPool.getTransaction();
 
-    const { customAlphabet } = require('nanoid');
-    const { lowercase } = require('nanoid-dictionary');
+    const { customAlphabet } = require("nanoid");
+    const { lowercase } = require("nanoid-dictionary");
     const lowercaseRandomString = customAlphabet(lowercase, 10);
 
     const buildings = await this.getAllBuildings(trx);
@@ -64,7 +63,7 @@ class BuildingsLogic {
       color: "rgb(14, 122, 185)",
       status: "פעיל",
       order: buildings.length + 1,
-      previousBuildingName: buildingName
+      previousBuildingName: buildingName,
     };
 
     // create path string
@@ -83,7 +82,10 @@ class BuildingsLogic {
     await createQuarterlyStatsTable(id, trx);
     await createYearlyStatsTable(id, trx);
 
-    const addedBuilding = await this.buildingsDao.getBuildingByBuildingName(buildingName, trx);
+    const addedBuilding = await this.buildingsDao.getBuildingByBuildingName(
+      buildingName,
+      trx
+    );
 
     // end transaction
     trx.commit();
@@ -93,7 +95,7 @@ class BuildingsLogic {
 
   /**
    * update building
-   * @param {*} params id and the payload to update 
+   * @param {*} params id and the payload to update
    * @returns the updated building
    */
   async updateBuilding({ id, payload }) {
@@ -102,18 +104,23 @@ class BuildingsLogic {
 
     const record = { ...payload };
 
+    const building = await this.getBuildingById(id, trx);
+
     // for deleted status מחוק added deletion date
     // otherwise init it to null
-    if (payload.status === "מחוק") {
+    if (payload.status === "מחוק" && payload.status !== building.status) {
       const deletionDate = new Date();
-      deletionDate.setDate(deletionDate.getDate() + 30)
+      deletionDate.setDate(deletionDate.getDate() + 30);
       record.deletionDate = deletionDate.toDateString();
     } else {
-      if (payload.deletionDate !== null)
-        payload.deletionDate = null;
+      if (payload.deletionDate !== null) record.deletionDate = null;
     }
 
-    const updatedBuilding = await this.buildingsDao.updateBuilding(id, record, trx);
+    const updatedBuilding = await this.buildingsDao.updateBuilding(
+      id,
+      record,
+      trx
+    );
 
     // end transaction
     trx.commit();
@@ -129,7 +136,7 @@ class BuildingsLogic {
     // start transaction
     const trx = await ConnectionPool.getTransaction();
 
-    const RegisteredReportsDao = require('../dao/RegisteredReportsDao');
+    const RegisteredReportsDao = require("../dao/RegisteredReportsDao");
     const registeredReportsDao = new RegisteredReportsDao();
 
     // drop all the tables of the specific building
@@ -154,142 +161,128 @@ class BuildingsLogic {
     // end transaction
     trx.commit();
   }
-
 }
 
 async function createMonthExpansesTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_month_expanses`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('expanses_code_id').notNullable();
-    table.text('supplierName');
-    table.float('sum');
-    table.float('tax');
-    table.text('notes');
-    table.text('month');
-    table.integer('year');
-
+  await trx.schema.createTable(`${tablePrefix}_month_expanses`, (table) => {
+    table.increments("id").primary().notNullable();
+    table.integer("expanses_code_id").notNullable();
+    table.text("supplierName");
+    table.float("sum");
+    table.float("tax");
+    table.text("notes");
+    table.text("month");
+    table.integer("year");
   });
 }
 
 async function createBudgetExecutionTables(tablePrefix, trx) {
-  const Helper = require('../../helpers/Helper');
+  const Helper = require("../../helpers/Helper");
 
   // create table for each quarter
   for (let i = 1; i < 5; i++) {
     // months of specific quarter
     const months = Helper.getQuarterMonths(i);
 
-    await trx.schema.createTable(`${tablePrefix}_budget_execution_quarter${i}`, table => {
+    await trx.schema.createTable(
+      `${tablePrefix}_budget_execution_quarter${i}`,
+      (table) => {
+        table.increments("id").primary().notNullable();
+        table.integer("summarized_section_id").notNullable();
+        table.integer("year").notNullable();
+        table.integer("quarter").notNullable();
 
-      table.increments('id').primary().notNullable();
-      table.integer('summarized_section_id').notNullable();
-      table.integer('year').notNullable();
-      table.integer('quarter').notNullable();
+        months.forEach((month) => {
+          table.float(`${month}_budget`);
+          table.float(`${month}_budget_execution`);
+        });
 
-      months.forEach(month => {
-        table.float(`${month}_budget`);
-        table.float(`${month}_budget_execution`);
-      });
-
-      table.float('evaluation');
-      table.float('total_budget');
-      table.float('total_execution');
-      table.float('difference');
-      table.text('notes');
-
-    });
+        table.float("evaluation");
+        table.float("total_budget");
+        table.float("total_execution");
+        table.float("difference");
+        table.text("notes");
+      }
+    );
   }
 }
 
 async function createSummarizedBudgetTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_summarized_budget`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('summarized_section_id').notNullable();
-    table.integer('year').notNullable();
+  await trx.schema.createTable(`${tablePrefix}_summarized_budget`, (table) => {
+    table.increments("id").primary().notNullable();
+    table.integer("summarized_section_id").notNullable();
+    table.integer("year").notNullable();
 
     for (let i = 1; i < 5; i++) {
       table.float(`quarter${i}_budget`);
       table.float(`quarter${i}_execution`);
     }
 
-    table.float('evaluation');
-    table.float('year_total_budget');
-    table.float('year_total_execution');
-    table.text('notes');
-
+    table.float("evaluation");
+    table.float("year_total_budget");
+    table.float("year_total_execution");
+    table.text("notes");
   });
-
 }
 
 async function createRegisteredMonthsTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_registered_months`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('year').notNullable();
-    table.integer('quarter').notNullable();
-    table.text('month').notNullable();
-    table.text('monthHeb').notNullable();
-    table.integer('monthNum').notNullable();
-
+  await trx.schema.createTable(`${tablePrefix}_registered_months`, (table) => {
+    table.increments("id").primary().notNullable();
+    table.integer("year").notNullable();
+    table.integer("quarter").notNullable();
+    table.text("month").notNullable();
+    table.text("monthHeb").notNullable();
+    table.integer("monthNum").notNullable();
   });
 }
 
 async function createRegisteredQuartersTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_registered_quarters`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('year').notNullable();
-    table.integer('quarter').notNullable();
-    table.text('quarterHeb').notNullable();
-
-  });
+  await trx.schema.createTable(
+    `${tablePrefix}_registered_quarters`,
+    (table) => {
+      table.increments("id").primary().notNullable();
+      table.integer("year").notNullable();
+      table.integer("quarter").notNullable();
+      table.text("quarterHeb").notNullable();
+    }
+  );
 }
 
 async function createRegisteredYearsTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_registered_years`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('year').notNullable();
-
+  await trx.schema.createTable(`${tablePrefix}_registered_years`, (table) => {
+    table.increments("id").primary().notNullable();
+    table.integer("year").notNullable();
   });
 }
 
 async function createMonthlyStatsTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_monthly_stats`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('year').notNullable();
-    table.integer('quarter').notNullable();
-    table.text('month').notNullable();
-    table.integer('monthNum').notNullable();
-    table.float('income').notNullable();
-    table.float('outcome').notNullable();
-
+  await trx.schema.createTable(`${tablePrefix}_monthly_stats`, (table) => {
+    table.increments("id").primary().notNullable();
+    table.integer("year").notNullable();
+    table.integer("quarter").notNullable();
+    table.text("month").notNullable();
+    table.integer("monthNum").notNullable();
+    table.float("income").notNullable();
+    table.float("outcome").notNullable();
   });
 }
 
 async function createQuarterlyStatsTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_quarterly_stats`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('year').notNullable();
-    table.integer('quarter').notNullable();
-    table.float('income').notNullable();
-    table.float('outcome').notNullable();
-
+  await trx.schema.createTable(`${tablePrefix}_quarterly_stats`, (table) => {
+    table.increments("id").primary().notNullable();
+    table.integer("year").notNullable();
+    table.integer("quarter").notNullable();
+    table.float("income").notNullable();
+    table.float("outcome").notNullable();
   });
 }
 
 async function createYearlyStatsTable(tablePrefix, trx) {
-  await trx.schema.createTable(`${tablePrefix}_yearly_stats`, table => {
-
-    table.increments('id').primary().notNullable();
-    table.integer('year').notNullable();
-    table.float('income').notNullable();
-    table.float('outcome').notNullable();
-
+  await trx.schema.createTable(`${tablePrefix}_yearly_stats`, (table) => {
+    table.increments("id").primary().notNullable();
+    table.integer("year").notNullable();
+    table.float("income").notNullable();
+    table.float("outcome").notNullable();
   });
 }
 

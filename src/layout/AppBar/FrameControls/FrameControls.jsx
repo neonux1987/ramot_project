@@ -9,6 +9,7 @@ const style = css`
   justify-content: flex-end;
   align-items: center;
   overflow: hidden;
+  flex-grow: 1;
 `;
 
 const button = css`

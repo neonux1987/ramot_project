@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
 import AppBar from "./AppBar";
 import useModalLogic from "../../customHooks/useModalLogic";
 import { quitApp } from "../../services/mainProcess.svc";
@@ -14,10 +13,6 @@ const remote = require("electron").remote;
 const AppBarContainer = () => {
   const showSidebar = useSelector((store) => store.toggleSidebar.showSidebar);
   const settings = useSelector((store) => store.settings);
-  const routes = useSelector((store) => store.routes);
-
-  const { state = {} } = useLocation();
-  const { buildingId } = state;
 
   const { showModal } = useModalLogic();
 
@@ -109,8 +104,6 @@ const AppBarContainer = () => {
     <Fragment>
       <AppBar
         showSidebar={showSidebar}
-        routes={routes}
-        buildingId={buildingId}
         onClose={onClose}
         onMaximize={onMaximize}
         onMinimize={onMinimize}

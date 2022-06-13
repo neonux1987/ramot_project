@@ -1,34 +1,32 @@
 // LIBRARIES
-const { sendToWindow } = require('../../helpers/utils');
+const { sendToWindow } = require("../../helpers/utils");
 
 class MainSystem {
-
   async initializeIpcs() {
-
     //========================= my ipc's imports =========================//
-    const monthExpansesIpc = require('../../ipcs/monthExpanses.ipc');
-    const budgetExecutionIpc = require('../../ipcs/budgetExecution.ipc');
-    const summarizedBudgetIpc = require('../../ipcs/SummarizedBudget.ipc');
-    const summarizedSectionsIpc = require('../../ipcs/summarizedSections.ipc');
-    const expansesCodesIpc = require('../../ipcs/expansesCodes.ipc');
-    const generalSettingsIpc = require('../../ipcs/generalSettings.ipc');
-    const registeredMonthsIpc = require('../../ipcs/registeredMonths.ipc');
-    const registeredYearsIpc = require('../../ipcs/registeredYears.ipc');
-    const registeredQuartersIpc = require('../../ipcs/registeredQuarters.ipc');
-    const registeredReportsIpc = require('../../ipcs/registeredReports.ipc');
-    const monthlyStatsIpc = require('../../ipcs/monthlyStats.ipc');
-    const quarterlyStatsIpc = require('../../ipcs/quarterlyStats.ipc');
-    const yearlyStatsIpc = require('../../ipcs/yearlyStats.ipc');
-    const tableSettingsIpc = require('../../ipcs/tableSettings.ipc');
-    const settingsIpc = require('../../ipcs/settings.ipc');
-    const registeredBackupsIpc = require('../../ipcs/registeredBackups.ipc');
-    const dbBackupIpc = require('../../ipcs/dbBackup.ipc');
-    const reportsIpc = require('../../ipcs/reports.ipc');
-    const mainProcessIpc = require('../../ipcs/mainProcess.ipc');
-    const restoreDbIpc = require('../../ipcs/restoreDb.ipc');
-    const updatesIpc = require('../../ipcs/updates.ipc');
-    const printerIpc = require('../../ipcs/printer.ipc');
-    const buildingsIpc = require('../../ipcs/buildings.ipc');
+    const monthExpansesIpc = require("../../ipcs/monthExpanses.ipc");
+    const budgetExecutionIpc = require("../../ipcs/budgetExecution.ipc");
+    const summarizedBudgetIpc = require("../../ipcs/SummarizedBudget.ipc");
+    const summarizedSectionsIpc = require("../../ipcs/summarizedSections.ipc");
+    const expansesCodesIpc = require("../../ipcs/expansesCodes.ipc");
+    const generalSettingsIpc = require("../../ipcs/generalSettings.ipc");
+    const registeredMonthsIpc = require("../../ipcs/registeredMonths.ipc");
+    const registeredYearsIpc = require("../../ipcs/registeredYears.ipc");
+    const registeredQuartersIpc = require("../../ipcs/registeredQuarters.ipc");
+    const registeredReportsIpc = require("../../ipcs/registeredReports.ipc");
+    const monthlyStatsIpc = require("../../ipcs/monthlyStats.ipc");
+    const quarterlyStatsIpc = require("../../ipcs/quarterlyStats.ipc");
+    const yearlyStatsIpc = require("../../ipcs/yearlyStats.ipc");
+    const tableSettingsIpc = require("../../ipcs/tableSettings.ipc");
+    const settingsIpc = require("../../ipcs/settings.ipc");
+    const registeredBackupsIpc = require("../../ipcs/registeredBackups.ipc");
+    const dbBackupIpc = require("../../ipcs/dbBackup.ipc");
+    const reportsIpc = require("../../ipcs/reports.ipc");
+    const mainProcessIpc = require("../../ipcs/mainProcess.ipc");
+    const restoreDbIpc = require("../../ipcs/restoreDb.ipc");
+    const updatesIpc = require("../../ipcs/updates.ipc");
+    const printerIpc = require("../../ipcs/printer.ipc");
+    const buildingsIpc = require("../../ipcs/buildings.ipc");
 
     mainProcessIpc();
 
@@ -75,16 +73,15 @@ class MainSystem {
     printerIpc();
 
     buildingsIpc();
-
   }
 
   async startSystem() {
     try {
-      const SetupLogic = require('../logic/SetupLogic');
-      const UpdatesLogic = require('../logic/UpdatesLogic');
-      const connectionPool = require('../connection/ConnectionPool');
-      const SettingsLogic = require('../logic/SettingsLogic');
-      const BuildingsLogic = require('../logic/BuildingsLogic');
+      const SetupLogic = require("../logic/SetupLogic");
+      const UpdatesLogic = require("../logic/UpdatesLogic");
+      const connectionPool = require("../connection/ConnectionPool");
+      const SettingsLogic = require("../logic/SettingsLogic");
+      const BuildingsLogic = require("../logic/BuildingsLogic");
 
       const setupLogic = new SetupLogic();
       const settingsLogic = new SettingsLogic();
@@ -106,9 +103,14 @@ class MainSystem {
       // In the main process.
       global.sharedObject = {
         buildings,
-        pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets", "statistics"],
-        settings
-      }
+        pages: [
+          "monthExpanses",
+          "budgetExecutions",
+          "summarizedBudgets",
+          "statistics",
+        ],
+        settings,
+      };
 
       await updatesLogic.runUpdateLogic();
 
@@ -116,32 +118,38 @@ class MainSystem {
       // between the main process and the renderer
       await this.initializeIpcs();
     } catch (error) {
-      const logManager = require('../logger/LogManager');
+      const logManager = require("../logger/LogManager");
       const logger = logManager.getLogger();
 
       logger.error(error.toString());
 
-      // in case of an app error that prevents 
+      // in case of an app error that prevents
       // the initialization of the global object
       // lets load the default config in the app
       if (global.sharedObject === undefined) {
-        const { app } = require('electron');
-        const fse = require('fs-extra');
-        const path = require('path');
+        const { app } = require("electron");
+        const fse = require("fs-extra");
+        const path = require("path");
 
         // load the default config
-        const defaultConfig = await fse.readJson(path.join(app.getAppPath(), 'extraResources/config/config.json'));
+        const defaultConfig = await fse.readJson(
+          path.join(app.getAppPath(), "extraResources/config/config.json")
+        );
 
         global.sharedObject = {
           buildings: [],
-          pages: ["monthExpanses", "budgetExecutions", "summarizedBudgets", "statistics"],
-          settings: defaultConfig
-        }
+          pages: [
+            "monthExpanses",
+            "budgetExecutions",
+            "summarizedBudgets",
+            "statistics",
+          ],
+          settings: defaultConfig,
+        };
       }
 
       throw error;
     }
-
   }
 
   async scheduledTasks() {
@@ -150,23 +158,21 @@ class MainSystem {
 
   /**
    * if 30 days or more passed since the user changed
-   * the status of the buildings to deleted, notify the renderer 
+   * the status of the buildings to deleted, notify the renderer
    * to delete the buildings
    */
   async deleteBuildingsInQueue() {
-    const BuildingsLogic = require('../logic/BuildingsLogic');
+    const BuildingsLogic = require("../logic/BuildingsLogic");
     const buildingsLogic = new BuildingsLogic();
 
-    const currentDateTime = (new Date()).getTime();
+    const currentDateTime = new Date().getTime();
 
     const buildings = await buildingsLogic.getAllBuildings();
 
     const buildingsForDeletion = [];
 
     buildings.forEach(({ buildingName, status, deletionDate, id }) => {
-
       if (status === "מחוק") {
-
         const deletionDateTime = Date.parse(deletionDate);
 
         const differenceTime = currentDateTime - deletionDateTime;
@@ -177,20 +183,15 @@ class MainSystem {
         if (differenceDays > 30) {
           buildingsForDeletion.push({
             id,
-            buildingName
-          })
-
+            buildingName,
+          });
         }
-
       }
-
     });
 
     if (buildingsForDeletion.length > 0)
       sendToWindow("buildings-for-deletion-data", buildingsForDeletion);
-
   }
-
 }
 
 module.exports = new MainSystem();

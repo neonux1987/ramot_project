@@ -1,13 +1,16 @@
-import React from 'react';
-import ChartWithExporting from './ChartWithExporting';
-const { columnChart } = require('../../helpers/chartsTemplates');
+import React from "react";
+import { useSelector } from "react-redux";
+import ChartWithExporting from "./ChartWithExporting";
+const { columnChart } = require("../../helpers/chartsTemplates");
 
 const ColumnChart = ({ title = "", categories = [], series }) => {
-
-  return <ChartWithExporting
-    options={columnChart(title, series, categories)}
-  />;
-
-}
+  const { printMode } = useSelector((store) => store.print);
+  const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
+  return (
+    <ChartWithExporting
+      options={columnChart(title, series, categories, isFullscreen)}
+    />
+  );
+};
 
 export default ColumnChart;

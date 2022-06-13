@@ -1,6 +1,6 @@
 {
   "name": "ramot-group-income-outcome-management",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "private": true,
   "repository": {
     "type": "git",
@@ -10,6 +10,12 @@
     "name": "Andrey Glemb",
     "email": "neonux1987@gmail.com",
     "url": "https://your-website.com"
+  },
+  "myUpdater": {
+    "githubInfo": {
+      "repo": "ramot_project",
+      "user": "neonux1987"
+    }
   },
   "build": {
     "appId": "com.my-website.ramot-group-income-outcome-management",
@@ -48,8 +54,7 @@
       "allowToChangeInstallationDirectory": false,
       "oneClick": true,
       "createDesktopShortcut": true,
-      "deleteAppDataOnUninstall": true,
-      "differentialPackage": false
+      "deleteAppDataOnUninstall": true
     },
     "directories": {
       "buildResources": "assets"
@@ -84,7 +89,7 @@
     "dotenv": "^9.0.2",
     "electron-context-menu": "^2.3.0",
     "electron-log": "^4.3.4",
-    "electron-updater": "^5.0.1",
+    "electron-updater": "^4.6.5",
     "exceljs": "^4.2.0",
     "file-type": "^16.0.0",
     "fs-extra": "^9.0.1",
@@ -95,7 +100,7 @@
     "nesthydrationjs": "^2.0.0",
     "pdf-lib": "^1.16.0",
     "pdf-to-printer": "^5.3.0",
-    "sqlite3": "^5.0.0",
+    "sqlite3": "^5.0.8",
     "v8-compile-cache": "^2.3.0"
   },
   "devDependencies": {
@@ -107,8 +112,8 @@
     "@rescripts/rescript-env": "0.0.12",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.2",
-    "electron": "^10.1.5",
-    "electron-builder": "^22.9.1",
+    "electron": "^13.6.9",
+    "electron-builder": "^22.11.7",
     "emotion": "^10.0.27",
     "highcharts": "^9.0.1",
     "highcharts-react-official": "^3.0.0",

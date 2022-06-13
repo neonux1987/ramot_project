@@ -18,19 +18,6 @@ const DonutChart = (props) => {
           enabled: false,
         },
         plotOptions: {
-          responsive: {
-            rules: [
-              {
-                condition: {
-                  maxWidth: 1400,
-                },
-                chartOptions: {
-                  width: 40,
-                  height: 40,
-                },
-              },
-            ],
-          },
           pie: {
             innerSize: "70%",
             borderWidth: 10,

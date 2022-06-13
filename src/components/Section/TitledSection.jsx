@@ -50,10 +50,13 @@ const TitledSection = ({
           marginRight="10px"
           boxShadow="rgb(20 20 20 / 12%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(20 20 20 / 7%) 0rem 0.125rem 0.25rem -0.0625rem"
           borderRadius="4px"
-          width="42px"
-          height="42px"
+          width="52px"
+          height="52px"
           padding="6px"
-          bgcolor="rgb(81 89 103)"
+          style={{
+            background:
+              "linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.25) 100%) rgb(81, 89, 103)",
+          }}
         >
           {TitleIcon}
         </Box>

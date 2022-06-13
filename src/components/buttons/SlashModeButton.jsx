@@ -1,10 +1,10 @@
-import React from 'react';
-import { css } from 'emotion';
-import SquareButton from './SquareButton';
+import React from "react";
+import { css } from "emotion";
+import SquareButton from "./SquareButton";
 
 const _slash = css`
-  ::after{
-    content: '|';
+  ::before {
+    content: "|";
     color: red;
     display: block;
     font-weight: bold;
@@ -13,15 +13,21 @@ const _slash = css`
     transform: rotate(-45deg);
     position: absolute;
     top: -13px;
-    left: 13px;
+    left: 8px;
   }
 `;
 
 const SlashModeButton = ({ Icon, iconColor, onClick, on = false }) => {
-
   const style = on ? _slash : undefined;
 
-  return <SquareButton className={style} Icon={Icon} onClick={onClick} iconColor={iconColor} />;
+  return (
+    <SquareButton
+      className={style}
+      Icon={Icon}
+      onClick={onClick}
+      iconColor={iconColor}
+    />
+  );
 };
 
 export default SlashModeButton;

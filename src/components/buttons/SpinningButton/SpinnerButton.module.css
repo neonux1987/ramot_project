@@ -17,12 +17,72 @@
 }
 
 .icon {
-  color: #000000;
+  color: #ffffff;
   font-size: 1.5rem;
 }
 
 .navLink {
   display: flex;
-  padding: 6px 8px;
-  border-radius: 3px;
+  box-shadow: rgba(0, 20, 20, 0.12) 0rem 0.25rem 0.375rem -0.0625rem,
+    rgba(20, 20, 20, 0.07) 0rem 0.125rem 0.25rem -0.0625rem;
+  margin: 0 10px;
+  border-radius: 4px;
+  background: linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(255, 255, 255, 0.25) 100%
+    )
+    rgb(81, 89, 103);
+  width: 34px;
+  height: 32px;
+}
+
+.navLink:hover {
+  background: linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(255, 255, 255, 0.25) 100%
+    )
+    rgb(81, 89, 103);
+}
+
+.minWidth {
+  min-width: 0;
+}
+
+.animatedIn {
+  animation: rotateForward 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes rotateForward {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(405deg);
+    border-radius: 100%;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.animatedOut {
+  animation: rotateBackwards 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes rotateBackwards {
+  from {
+    transform: rotate(405deg);
+    border-radius: 100%;
+    width: 32px;
+    height: 32px;
+  }
+  to {
+    transform: rotate(0deg);
+    border-radius: 4px;
+    width: 34px;
+    height: 32px;
+  }
 }

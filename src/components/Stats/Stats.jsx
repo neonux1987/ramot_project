@@ -9,7 +9,7 @@ const Stats = ({ stats, spacing = 2 }) => (
     border="1px solid #dddddd"
     borderRadius="14px"
     bgcolor="#ffffff"
-    overflow="hidden"
+    //overflow="hidden"
   >
     <Grid container spacing={spacing} style={{ padding: "0" }}>
       {stats || []}

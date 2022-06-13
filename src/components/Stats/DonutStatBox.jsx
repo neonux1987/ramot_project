@@ -38,10 +38,6 @@ const text = css`
   align-items: center;
   flex-direction: column;
   padding: 10px 0 5px;
-
-  @media (max-width: 1400px) {
-    font-size: 24px;
-  }
 `;
 
 const blue = css`
@@ -72,10 +68,6 @@ const slider = css`
   display: flex;
   justify-content: center;
   position: relative;
-
-  @media (max-width: 1400px) {
-    padding: 15px;
-  }
 `;
 
 const headerWrapper = css`
@@ -90,25 +82,10 @@ const titleStyle = css`
   font-weight: 500;
   margin-right: 0px;
   color: #000000;
-
-  @media (max-width: 1400px) {
-    font-size: 32px;
-    text-overflow: ellipsis;
-    width: 130px;
-    overflow: hidden;
-    white-space: nowrap;
-  }
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
-
-/* const iconWrapper = css`
-  padding: 0;
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  box-shadow: rgb(20 20 20 / 12%) 0rem 0.25rem 0.375rem -0.0625rem,
-    rgb(20 20 20 / 7%) 0rem 0.125rem 0.25rem -0.0625rem;
-  margin-top: 3px;
-`; */
 
 const emptyStyle = css`
   flex-grow: 1;
@@ -126,9 +103,36 @@ const emptyStyle = css`
   min-height: 380px;
   border-radius: 14px;
   border: 1px solid #dddddd;
+`;
+
+const ribbon = css`
+  filter: drop-shadow(2px 3px 2px rgb(0 0 0 / 21%));
+  position: absolute;
+  top: 0;
+  right: 30px;
+  z-index: 888;
+
+  @media (max-width: 1650px) {
+    right: 20px;
+  }
+`;
+
+const ribbonContent = css`
+  width: 60px;
+  height: 65px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 18px), 0 100%);
+  transition: clip-path 1s, height 1s, width 1s, background 1s;
 
   @media (max-width: 1400px) {
-    font-size: 16px;
+    width: 40px;
+    height: 45px;
+    transition: clip-path 1s, height 1s, width 1s, background 1s;
+  }
+
+  @media (min-width: 1400px) and (max-width: 1650px) {
+    width: 50px;
+    height: 55px;
+    transition: clip-path 1s, height 1s, width 1s, background 1s;
   }
 `;
 
@@ -154,14 +158,20 @@ const DonutStatBox = ({
     >
       <div className={wrapper}>
         <div className={headerWrapper}>
-          {/*           <div className={iconWrapper} style={{ backgroundColor: color }}>
-            <CalendarIcon color="#ffffff" style={{ padding: "6px" }} />
-          </div> */}
           <h2 className={titleStyle}>{title}</h2>
         </div>
 
         {(outcome > 0 || income > 0) && (
           <div className={sliderWrapper}>
+            <div className={ribbon}>
+              <div
+                className={ribbonContent}
+                style={{
+                  background: `${color} linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.25) 100%)`,
+                }}
+              ></div>
+            </div>
+
             <div className={slider}>
               <DonutChart
                 series={[

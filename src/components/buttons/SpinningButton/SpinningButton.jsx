@@ -1,25 +1,31 @@
-import React from 'react';
-import classnames from 'classnames';
-import { spinner, icon, navLink } from './SpinnerButton.module.css';
-import ButtonNavLink from '../ButtonNavLink';
-import { css } from 'emotion';
+import React from "react";
+import classnames from "classnames";
+import {
+  spinner,
+  icon,
+  navLink,
+  minWidth,
+  animatedIn,
+  animatedOut,
+} from "./SpinnerButton.module.css";
+import ButtonNavLink from "../ButtonNavLink";
 
-const SpinnerButton = props => {
-  const {
-    Icon,
-    to = {},
-    active = false,
-    className
-  } = props;
+const SpinnerButton = ({ Icon, to = {}, active = false, className }) => {
   return (
     <ButtonNavLink
-      className={classnames(className, navLink, active ? "activeExpandItem" : "", css`min-width:0`)}
+      className={classnames(
+        className,
+        navLink,
+        minWidth,
+        active ? animatedIn : animatedOut,
+        active ? "activeExpandItem" : ""
+      )}
       to={to}
       draggable={false}
     >
       <Icon className={classnames(icon, spinner)} />
     </ButtonNavLink>
-  )
-}
+  );
+};
 
 export default SpinnerButton;

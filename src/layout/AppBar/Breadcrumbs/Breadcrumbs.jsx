@@ -1,6 +1,6 @@
 // LIBRARIES
 import React from "react";
-import { css } from 'emotion';
+import { css } from "emotion";
 
 const wrapper = css`
   display: flex;
@@ -15,11 +15,7 @@ const wrapper = css`
 `;
 
 const Breadcrumbs = ({ children = [] }) => {
-  return (
-    <div className={wrapper}>
-      {children}
-    </div>
-  );
-}
+  return <div className={wrapper}>{children}</div>;
+};
 
 export default Breadcrumbs;

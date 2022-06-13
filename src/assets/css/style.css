@@ -74,7 +74,6 @@ body {
   font-family: "Open Sans", sans-serif;
   overflow: hidden;
   color: black;
-  print-color-adjust: exact !important;
 }
 
 html {
@@ -363,4 +362,9 @@ textarea {
   .tableCell {
     border-right: thin solid black !important;
   }
+}
+
+/******** highcharts override *********/
+.highcharts-container-override {
+  overflow: visible !important;
 }

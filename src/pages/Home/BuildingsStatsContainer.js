@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Helper from "../../helpers/Helper";
 import DonutStatBox from "../../components/Stats/DonutStatBox";
@@ -7,7 +7,6 @@ import HomeStats from "../../components/Stats/HomeStats";
 
 const BuildingsStatsContainer = () => {
   const { data, isFetching } = useSelector((store) => store.home.yearlyStats);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const BuildingsStatsContainer = () => {
           unicodeSymbol={Helper.shekelUnicode}
           loading={isFetching}
           index={index + 1}
-          xs={2}
+          xs={3}
           color={data[building].color}
         />
       );

@@ -11,6 +11,8 @@ import { Box } from "@material-ui/core";
 import useBuildingColor from "../../customHooks/useBuildingColor";
 import TitledSection from "../../components/Section/TitledSection";
 import useIcons from "../../customHooks/useIcons";
+import TableControls from "../../components/table/TableControls/TableControls";
+import PageControls from "../../components/PageControls/PageControls";
 
 const PAGE_NAME = "statistics";
 
@@ -57,7 +59,18 @@ const Statistics = (props) => {
         extraDetails={<ExtraDetails />}
         collapsable={false}
       >
-        <Box bgcolor="#ffffff" borderRadius="14px" border="1px solid #dddddd">
+        <TableControls
+          leftPane={
+            <PageControls
+              print={{
+                pageName: PAGE_NAME,
+              }}
+              pageName={PAGE_NAME}
+              dataExist={true}
+            />
+          } // end leftPane
+        />
+        <Box bgcolor="#ffffff">
           <Chart buildingId={buildingId} pageName={PAGE_NAME} />
         </Box>
       </TitledSection>

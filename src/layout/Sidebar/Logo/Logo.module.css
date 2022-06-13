@@ -19,13 +19,12 @@
   height: 100px;
   padding-right: 0px;
   padding-top: 5px;
-  margin-top: 10px;
 }
 
 .logo {
   /* background-image: url('../../../assets/images/Untitled-1.png'); */
-  mask: url('../../../assets/images/Untitled-1.png') center/contain;
-  -webkit-mask: url('../../../assets/images/Untitled-1.png') center;
+  mask: url("../../../assets/images/Untitled-1.png") center/contain;
+  -webkit-mask: url("../../../assets/images/Untitled-1.png") center;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   height: 100px;
@@ -49,7 +48,7 @@
 
 .subContainer {
   z-index: 3;
-  padding-bottom: 35px;
+  padding-bottom: 15px;
 }
 
 .subtitle1Wrapper {

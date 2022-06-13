@@ -51,7 +51,6 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
           title={`${month}`}
           outcome={outcome}
           income={income}
-          unicodeSymbol={Helper.shekelUnicode}
           color={colorSet[i]}
           loading={isFetching}
           index={i + 1}
@@ -73,11 +72,11 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
         title={`רבעון ${quarter}`}
         outcome={outcome}
         income={income}
-        unicodeSymbol={Helper.shekelUnicode}
         color={colorSet[3]}
         loading={isFetching}
         index={4}
         xs={true}
+        last
       />
     );
   };

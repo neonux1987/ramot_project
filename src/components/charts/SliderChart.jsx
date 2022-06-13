@@ -18,7 +18,8 @@ const useStyles = makeStyles({
   track: {
     height: 16,
     borderRadius: 4,
-    backgroundColor: ({ color }) => color,
+    background: ({ color }) =>
+      `linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.20) 100%) ${color};`,
     minWidth: ({ value }) => (value === 0 ? "1%" : "initial"),
     "&:before": {
       content: ({ value }) => (value === 0 ? "" : `"${Math.round(value)}%"`),
