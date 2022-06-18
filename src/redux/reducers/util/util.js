@@ -1,12 +1,12 @@
 const { buildings = [], pages = [] } =
-  require("electron").remote.getGlobal("sharedObject");
+  require("@electron/remote").getGlobal("sharedObject");
 
 export function updateGlobalBuilding(buildingId, payload) {
   buildings.forEach(({ id }, index) => {
     if (id === buildingId)
       buildings[index] = {
         ...buildings[index],
-        ...payload,
+        ...payload
       };
   });
 
@@ -30,10 +30,10 @@ export const setState = (state, pageName, buildingName, target) => {
         ...state.pages[pageName],
         [buildingName]: {
           ...state.pages[pageName][buildingName],
-          ...target,
-        },
-      },
-    },
+          ...target
+        }
+      }
+    }
   };
 };
 
@@ -46,10 +46,10 @@ export const setBuildingState = (buildingId, pageName, state, target) => {
         ...state[buildingId].pages,
         [pageName]: {
           ...state[buildingId].pages[pageName],
-          ...target,
-        },
-      },
-    },
+          ...target
+        }
+      }
+    }
   };
 };
 
@@ -62,7 +62,7 @@ export const initBuildingState = (initState) => {
 
     pages.forEach((page) => {
       pagesState[page] = {
-        ...initState,
+        ...initState
       };
     });
   });
@@ -75,7 +75,7 @@ export const initState = (initState) => {
 
   buildings.forEach((building) => {
     state[building.id] = {
-      ...initState,
+      ...initState
     };
   });
 

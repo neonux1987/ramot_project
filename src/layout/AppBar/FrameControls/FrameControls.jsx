@@ -1,5 +1,4 @@
 import React from "react";
-import { Minimize, CheckBoxOutlineBlank, Close } from "@material-ui/icons";
 import { css } from "emotion";
 import useIcons from "../../../customHooks/useIcons";
 

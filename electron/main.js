@@ -2,8 +2,11 @@
 require("v8-compile-cache");
 require("dotenv").config();
 const { app, BrowserWindow, powerMonitor } = require("electron");
+const remote = require("@electron/remote/main");
 const path = require("path");
 const contextMenu = require("electron-context-menu");
+
+remote.initialize();
 
 //========================= services =========================//
 const mainSystem = require("./backend/system/MainSystem");
@@ -14,15 +17,15 @@ process.env.APP_ROOT_PATH = app.getAppPath();
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
 contextMenu({
-  prepend: (defaultActions, params, browserWindow) => [
+  prepend: () => [
     {
       role: "selectAll",
-      label: "סמן הכל",
+      label: "סמן הכל"
     },
     {
       role: "reload",
-      label: "טען מחדש",
-    },
+      label: "טען מחדש"
+    }
   ],
   labels: {
     cut: "גזור",
@@ -32,8 +35,8 @@ contextMenu({
     saveImageAs: "שמור תמונה",
     copyLink: "העתק קישור",
     copyImageAddress: "העתק קישור תמונה",
-    inspect: "Inspect",
-  },
+    inspect: "Inspect"
+  }
 });
 
 //app details
@@ -61,10 +64,11 @@ async function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      contextIsolation: false,
-    },
+      contextIsolation: false
+    }
   });
   loading.uniqueId = "loadingWindow";
+  remote.enable(loading.webContents);
 
   loading.once("show", () => {
     /* start system */
@@ -81,15 +85,17 @@ async function createWindow() {
           webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
-            contextIsolation: false,
+            contextIsolation: false
           },
           icon,
           frame: false,
           resizeable: false,
-          show: false,
+          show: false
         });
 
         mainWindow.uniqueId = "mainWindow";
+
+        remote.enable(mainWindow.webContents);
 
         //const ses = mainWindow.webContents.session;
 

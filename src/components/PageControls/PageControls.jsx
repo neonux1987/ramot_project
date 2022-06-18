@@ -1,6 +1,5 @@
 // LIBRARIES
 import React, { useCallback } from "react";
-import PropTypes from "prop-types";
 import { css } from "emotion";
 import classnames from "classnames";
 
@@ -14,9 +13,8 @@ import useModalLogic from "../../customHooks/useModalLogic";
 import PrintModal from "../modals/PrintModal/PrintModal";
 import ExcelButton from "../buttons/ExcelButton";
 import PrintButton from "../buttons/PrintButton";
-import { setPrintMode } from "../../redux/actions/printActions";
 import { useDispatch } from "react-redux";
-//import MoreButton from '../buttons/MoreButton';
+import { setPrintMode } from "../../redux/actions/printActions";
 
 const _container = css`
   float: left;
@@ -34,7 +32,7 @@ const _show = css`
 `;
 
 let options = {
-  filters: [{ name: "Excel", extensions: ["xlsx"] }],
+  filters: [{ name: "Excel", extensions: ["xlsx"] }]
 };
 
 const PageControls = (props) => {
@@ -77,7 +75,7 @@ const PageControls = (props) => {
 
             showModal(PrintModal, {
               ...print,
-              onClose,
+              onClose
             });
           }}
         />
@@ -88,4 +86,4 @@ const PageControls = (props) => {
   );
 };
 
-export default PageControls;
+export default React.memo(PageControls);

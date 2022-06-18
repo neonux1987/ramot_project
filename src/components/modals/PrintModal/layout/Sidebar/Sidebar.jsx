@@ -6,7 +6,7 @@ import {
   Input,
   MenuItem,
   Slider,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import WhiteButton from "../../../../buttons/WhiteButton";
 import PrintSelect from "../../../../Select/PrintSelect";
@@ -96,12 +96,12 @@ const slider = css`
 const sliderMarks = [
   {
     value: 0,
-    label: "0",
+    label: "0"
   },
   {
     value: 100,
-    label: "100",
-  },
+    label: "100"
+  }
 ];
 
 const Sidebar = (props) => {
@@ -110,13 +110,15 @@ const Sidebar = (props) => {
     onClose,
     onPrintClick,
     printers,
-    state,
+    template,
     onChange,
     onPageRangesBlur,
     onScaleFactorBlur,
     allPages,
     copies,
     rangeValid,
+    printer,
+    printerOnChange
   } = props;
 
   return (
@@ -141,8 +143,8 @@ const Sidebar = (props) => {
         <LeftPane>
           <WideSelect
             name="deviceName"
-            value={state.deviceName}
-            onChange={onChange}
+            value={printer}
+            onChange={printerOnChange}
             loading={printers.isFetching}
           >
             {printers.data.map(({ deviceName }) => {
@@ -171,7 +173,7 @@ const Sidebar = (props) => {
               className: inputInner,
               min: 1,
               max: 10,
-              type: "number",
+              type: "number"
             }}
           />
         </LeftPane>
@@ -202,7 +204,7 @@ const Sidebar = (props) => {
                   className: inputInner,
                   min: 0,
                   max: pdf ? pdf.pageCount : 0,
-                  onBlur: onPageRangesBlur,
+                  onBlur: onPageRangesBlur
                 }}
                 placeholder="דוגמא: 1-5, 8, 11-13"
               />
@@ -225,7 +227,7 @@ const Sidebar = (props) => {
         <LeftPane>
           <WideSelect
             name="pageSize"
-            value={state.pageSize}
+            value={template.pageSize}
             onChange={onChange}
           >
             <MenuItem value="A3">A3</MenuItem>
@@ -246,7 +248,7 @@ const Sidebar = (props) => {
         <LeftPane>
           <WideSelect
             name="landscape"
-            value={state.landscape}
+            value={template.landscape}
             onChange={onChange}
           >
             <MenuItem value={false}>לאורך</MenuItem>
@@ -261,7 +263,7 @@ const Sidebar = (props) => {
         </RightPane>
 
         <LeftPane>
-          <WideSelect name="colors" value={state.colors} onChange={onChange}>
+          <WideSelect name="colors" value={template.colors} onChange={onChange}>
             <MenuItem value={true}>צבעוני</MenuItem>
             <MenuItem value={false}>שחור לבן</MenuItem>
           </WideSelect>

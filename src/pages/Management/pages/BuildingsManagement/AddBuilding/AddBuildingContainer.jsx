@@ -7,50 +7,41 @@ import { useDispatch } from "react-redux";
 import { toastManager } from "../../../../../toasts/toastManager";
 
 // COMPONENTS
-import AddNewBuilding from "./AddNewBuilding";
+import AddBuilding from "./AddBuilding";
 
-const AddNewBuildingContainer = (props) => {
-
+const AddBuildingContainer = (props) => {
   const dispatch = useDispatch();
 
   const [buildingName, setBuildingName] = useState("");
 
-  const {
-    show,
-    isBuildingExist
-  } = props;
+  const { show, isBuildingExist } = props;
 
-  const onChangeHandler = event => {
+  const onChangeHandler = (event) => {
     const target = event.target;
 
     setBuildingName(target.value);
-  }
+  };
 
   const add = async () => {
-    if (buildingName === "")
-      toastManager.error("שם בניין לא יכול להיות ריק")
+    if (buildingName === "") toastManager.error("שם בניין לא יכול להיות ריק");
     else {
       if (isBuildingExist(buildingName))
-        toastManager.error(`בניין עם השם ${buildingName} כבר קיים`)
+        toastManager.error(`בניין עם השם ${buildingName} כבר קיים`);
       else {
         dispatch(addBuilding({ buildingName }));
         setBuildingName("");
       }
-
     }
-
-  }
+  };
 
   return (
-    <AddNewBuilding
+    <AddBuilding
       show={show}
       buildingName={buildingName}
       onChangeHandler={onChangeHandler}
       add={add}
     />
+  );
+};
 
-
-  )
-}
-
-export default AddNewBuildingContainer;
+export default AddBuildingContainer;

@@ -1,10 +1,16 @@
-import React from 'react';
-import SlashModeButton from './SlashModeButton';
-import useIcons from '../../customHooks/useIcons';
+import React from "react";
+import SlashModeButton from "./SlashModeButton";
+import useIcons from "../../customHooks/useIcons";
 
-const EditButton = props => {
+const EditButton = (props) => {
   const [generateIcon] = useIcons();
-  return <SlashModeButton {...props} Icon={generateIcon("edit")} />;
-}
+  return (
+    <SlashModeButton
+      {...props}
+      Icon={generateIcon("edit")}
+      iconColor="#ffffff"
+    />
+  );
+};
 
 export default EditButton;

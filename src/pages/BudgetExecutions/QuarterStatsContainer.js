@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Helper from "../../helpers/Helper";
 import Stats from "../../components/Stats/Stats";
-import DonutStatBox from "../../components/Stats/DonutStatBox";
 import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
 import { fetchAllMonthsStatsByQuarter } from "../../redux/actions/monthlyStatsActions";
 import { fetchQuarterStats } from "../../redux/actions/quarterlyStatsActions";
@@ -25,7 +24,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
     const params = {
       buildingId,
       pageName,
-      date,
+      date
     };
 
     //fetch quarter months stats

@@ -3,7 +3,7 @@ import React from "react";
 import AddBoxContainer from "../../../../../components/AddBoxContainer/AddBoxContainer";
 import { TextField } from "@material-ui/core";
 import DefaultButton from "../../../../../components/buttons/DefaultButton";
-import { css } from 'emotion';
+import { css } from "emotion";
 
 const _container = css`
   margin: 0 15px 15px;
@@ -15,18 +15,11 @@ const _button = css`
   margin-right: 10px;
 `;
 
-const AddNewBuilding = (props) => {
-
-  const {
-    show,
-    buildingName,
-    onChangeHandler,
-    add
-  } = props;
+const AddBuilding = (props) => {
+  const { show, buildingName, onChangeHandler, add } = props;
 
   return (
     <AddBoxContainer show={show}>
-
       <div className={_container}>
         <TextField
           name="section"
@@ -47,9 +40,8 @@ const AddNewBuilding = (props) => {
           הוסף
         </DefaultButton>
       </div>
-
     </AddBoxContainer>
-  )
-}
+  );
+};
 
-export default AddNewBuilding;
+export default AddBuilding;

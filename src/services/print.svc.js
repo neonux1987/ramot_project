@@ -1,17 +1,19 @@
 import { ipcRenderer } from "electron";
 
-export const generatePreview = async (options) => {
-  ipcRenderer.send("print-pdf", options);
+export const printPreview = async (options, blobUrl) => {
+  ipcRenderer.send("print-pdf", options, blobUrl);
 
   return new Promise((resolve, reject) => {
     ipcRenderer.on("pdf-printed", (event, { data, pageCount, error }) => {
       if (error) reject(error);
       else {
-        const blob = new Blob([data], { type: "application/pdf" });
+        const blob = new Blob([data], {
+          type: "application/pdf;charset=utf-8"
+        });
         resolve({
           pdfBuffer: data,
           blobUrl: URL.createObjectURL(blob),
-          pageCount,
+          pageCount
         });
       }
     });
@@ -19,9 +21,9 @@ export const generatePreview = async (options) => {
 };
 
 export const print = async (options, pdfInfo) => {
-  ipcRenderer.send("print", options, pdfInfo);
-
   return new Promise((resolve, reject) => {
+    ipcRenderer.send("print", options, pdfInfo);
+
     ipcRenderer.on("printed", (event, { error }) => {
       if (error) reject(error);
     });

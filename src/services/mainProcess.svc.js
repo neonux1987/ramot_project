@@ -1,30 +1,27 @@
-import { ipcSendReceive } from '../redux/actions/util/util';
-import { ipcRenderer, remote } from 'electron';
+import { ipcSendReceive } from "../redux/actions/util/util";
+import { ipcRenderer } from "electron";
+const remote = require("@electron/remote");
 
 export const quitApp = () => {
-
   return ipcSendReceive({
     send: {
-      channel: "quit-app",
+      channel: "quit-app"
     },
     receive: {
       channel: "app-terminated"
     }
   });
-
 };
 
 export const restartApp = () => {
-
   return ipcSendReceive({
     send: {
-      channel: "restart-app",
+      channel: "restart-app"
     },
     receive: {
       channel: "app-restarted"
     }
   });
-
 };
 
 export const muteSound = (muted) => {
@@ -32,14 +29,14 @@ export const muteSound = (muted) => {
   remote.getCurrentWebContents().reload();
 };
 
-export const refreshView = (muted) => {
+export const refreshView = () => {
   remote.getCurrentWebContents().reload();
 };
 
 export const showItemInFolder = (path) => {
-  ipcRenderer.send('show-item-in-folder', path);
+  ipcRenderer.send("show-item-in-folder", path);
 };
 
 export const openItem = (path) => {
-  ipcRenderer.send('open-item', path);
+  ipcRenderer.send("open-item", path);
 };

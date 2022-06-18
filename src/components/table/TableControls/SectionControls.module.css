@@ -1,12 +1,3 @@
-/* .wrapper {
-  position: relative;
-  z-index: 6;
-  flex-grow: 1;
-  background-color: rgb(23 110 193);
-  height: 70px;
-  padding: 0 10px;
-} */
-
 .wrapper {
   position: relative;
   z-index: 88;
@@ -50,37 +41,19 @@
   position: relative;
 }
 
-.fullscrenn {
+.fullscreen {
   justify-content: flex-end;
   display: flex;
 }
 
-.leftPane {
+.leftControls {
   flex: 1;
   justify-content: flex-end;
   display: flex;
 }
 
-.middlePane {
+.rightControls {
   flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.rightPane {
-  flex: 1;
-}
-
-.titleWrapper {
-  flex: 1;
-}
-
-.editModeWrapper {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000000;
 }
 
 .hidden {

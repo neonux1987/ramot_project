@@ -4,7 +4,6 @@ import ChartWithExporting from "./ChartWithExporting";
 const { columnChart } = require("../../helpers/chartsTemplates");
 
 const ColumnChart = ({ title = "", categories = [], series }) => {
-  const { printMode } = useSelector((store) => store.print);
   const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
   return (
     <ChartWithExporting

@@ -1,6 +1,6 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import React from "react";
+import Typography from "@material-ui/core/Typography";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import { useTheme } from "@material-ui/core";
 
 // CSS
@@ -12,15 +12,15 @@ import {
   subContainer,
   wrapper,
   subtitle1Wrapper,
-  subtitle2Wrapper,
-  appVersionWrapper,
-  versionText,
+  //subtitle2Wrapper,
+  //appVersionWrapper,
+  //versionText,
   mainTitle,
   mainTitleWrapper
-} from './Logo.module.css';
+} from "./Logo.module.css";
 
 //ELECTRON
-const appVersion = require("electron").remote.app.getVersion();
+//const appVersion = require("@electron/remote").app.getVersion();
 
 const useStyles = makeStyles((theme) => ({
   drawerHeader: {
@@ -36,10 +36,8 @@ const Logo = ({ children }) => {
   return (
     <div className={classes.drawerHeader}>
       <div className={container}>
-
         {/* wrapper */}
         <div className={wrapper}>
-
           <div className={logoImgContainer}>
             <div className={logo} style={{ backgroundColor: main }} />
             <div className={mainTitleWrapper}>
@@ -62,13 +60,11 @@ const Logo = ({ children }) => {
               </Typography>
             </div> */}
           </div>
-
         </div>
         {/* end wrapper */}
-
       </div>
     </div>
   );
-}
+};
 
 export default Logo;

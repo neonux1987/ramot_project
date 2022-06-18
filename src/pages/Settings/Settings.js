@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import { Box } from "@material-ui/core";
 import { Route, Switch } from "react-router-dom";
 import General from "./pages/General/General";
 import Theme from "./pages/Theme/Theme";

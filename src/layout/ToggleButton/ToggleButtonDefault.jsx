@@ -1,8 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../redux/actions/toggleSidebarActions";
-import ButtonWithSound from "../../componentsWithSound/ButtonWithSound/ButtonWithSound";
-import { ArrowForwardIos, ArrowBackIos } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import SwitchWithSound from "../../componentsWithSound/SwitchWithSound/SwitchWithSound";
 
@@ -13,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     margin: theme.spacing(1),
     "-webkit-app-region": "no-drag",
-    "-webkit-user-select": "none",
+    "-webkit-user-select": "none"
   },
   switchBase: {
     padding: 1,
@@ -24,27 +22,27 @@ const useStyles = makeStyles((theme) => ({
         background:
           "linear-gradient( 45deg, rgba(0,0,0,0) 0%, rgba(255,255,255,0.25) 100% ) rgb(23,110,193)",
         opacity: 1,
-        border: "none",
-      },
+        border: "none"
+      }
     },
     "&$focusVisible $thumb": {
       color: "#52d869",
-      border: "6px solid #fff",
-    },
+      border: "6px solid #fff"
+    }
   },
   thumb: {
     width: 24,
-    height: 24,
+    height: 24
   },
   track: {
     borderRadius: 26 / 2,
     border: `1px solid ${theme.palette.grey[400]}`,
     backgroundColor: "#dddddd",
     opacity: 1,
-    transition: theme.transitions.create(["background-color", "border"]),
+    transition: theme.transitions.create(["background-color", "border"])
   },
   checked: {},
-  focusVisible: {},
+  focusVisible: {}
 }));
 
 const ToggleButtonDefault = () => {
@@ -63,7 +61,7 @@ const ToggleButtonDefault = () => {
         switchBase: classes.switchBase,
         thumb: classes.thumb,
         track: classes.track,
-        checked: classes.checked,
+        checked: classes.checked
       }}
     />
   );

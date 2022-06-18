@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 // ACTIONS
 import {
   updateSummarizedBudget,
-  updateDate,
+  updateDate
 } from "../../redux/actions/summarizedBudgetActions";
 
 // UTILS
@@ -15,9 +15,6 @@ import Helper from "../../helpers/Helper";
 import ThemeContext from "../../context/ThemeContext";
 
 // COMPONENTS
-import TableControls from "../../components/table/TableControls/TableControls";
-import PageControls from "../../components/PageControls/PageControls";
-import EditControls from "../../components/EditControls/EditControls";
 import HeaderRow from "../../components/table/components/HeaderRow";
 import GroupCell from "../../components/table/components/GroupCell";
 import HeaderCell from "../../components/table/components/HeaderCell";
@@ -25,13 +22,14 @@ import TableRow from "../../components/table/components/TableRow";
 import Cell from "../../components/table/components/Cell";
 import NonZeroCell from "../../components/table/components/NonZeroCell";
 import TableActions from "../../components/table/TableActions/TableActions";
-import Table from "../../components/table/Table";
+import TableContainer from "../../components/table/TableContainer";
 import GroupRow from "../../components/table/components/GroupRow";
+import YearOnlyDatePicker from "../../components/DatePicker/YearOnlyDatePicker";
+import TableSection from "../../components/Section/TableSection";
+import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
 
 // HOC
 import useTableLogic from "../../customHooks/useTableLogic";
-import YearOnlyDatePicker from "../../components/DatePicker/YearOnlyDatePicker";
-import TableSection from "../../components/Section/TableSection";
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -44,7 +42,7 @@ const SummarizedBudgetsTableContainer = (props) => {
     pageName,
     pageTitle,
     buildingName,
-    buildingId,
+    buildingId
   } = props;
 
   const { toggleEditMode, editMode, textAreaInput, numberInput } =
@@ -76,7 +74,7 @@ const SummarizedBudgetsTableContainer = (props) => {
       buildingId,
       date,
       summarizedBudget: newCopy,
-      summarized_section_id: oldCopy.summarized_section_id,
+      summarized_section_id: oldCopy.summarized_section_id
     };
 
     dispatch(updateSummarizedBudget(params, oldCopy, newCopy, index));
@@ -213,13 +211,13 @@ const SummarizedBudgetsTableContainer = (props) => {
     });
 
     const incomeRow = {
-      ...row,
+      ...row
     };
     incomeRow.section = "הכנסות";
     incomeRow.notes = "";
 
     const outcomeRow = {
-      ...row,
+      ...row
     };
     outcomeRow.section = "הוצאות";
     outcomeRow.notes = "";
@@ -239,49 +237,39 @@ const SummarizedBudgetsTableContainer = (props) => {
 
     return {
       incomeRow,
-      outcomeRow,
+      outcomeRow
     };
   }, [getDataObject, data]);
 
   return (
-    <TableSection
-      header={
-        <TableControls
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              dataExist={data.length > 0}
-            />
-          } // end rightPane
-          leftPane={
-            <PageControls
-              dataExist={data.length > 0}
-              excel={{
-                data,
-                fileName: Helper.getSummarizedBudgetsFilename(
-                  buildingName,
-                  date
-                ),
-                buildingName,
-                buildingId,
-                date,
-              }}
-              print={{
-                pageName,
-              }}
-              pageName={pageName}
-            />
-          } // end leftPane
-        /> //End TableControls
-      }
-    >
+    <TableSection>
+      <SectionControlsContainer
+        edit={true}
+        editModeProps={{
+          editMode,
+          toggleEditMode,
+          dataExist: data.length > 0
+        }}
+        excel={true}
+        excelProps={{
+          data,
+          fileName: Helper.getSummarizedBudgetsFilename(buildingName, date),
+          buildingName,
+          buildingId,
+          date,
+          pageName
+        }}
+        print={true}
+        printProps={{
+          pageName
+        }}
+      />
       <YearOnlyDatePicker
         date={date}
         buildingId={buildingId}
         updateDate={updateDate}
       />
-      <Table
+      <TableContainer
         Row={Row}
         GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
@@ -289,7 +277,7 @@ const SummarizedBudgetsTableContainer = (props) => {
         totalCount={data.length}
         printHeaderDetails={{
           pageTitle: buildingName + " - " + pageTitle,
-          date: `שנה ${date.year}`,
+          date: `שנה ${date.year}`
         }}
         generateIncomeOutcomeData={generateIncomeOutcomeData}
       />

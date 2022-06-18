@@ -1,0 +1,9 @@
+.reactSelectStyle {
+  justify-self: right;
+}
+
+.buttonWrapper {
+  align-items: center;
+  display: flex;
+  justify-self: left;
+}

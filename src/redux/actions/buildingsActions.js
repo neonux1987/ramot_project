@@ -1,22 +1,65 @@
-import { batch } from 'react-redux';
-import { toastManager } from '../../toasts/toastManager';
-import { ipcSendReceive } from './util/util';
-import { addBuilding as be_ADD, removeBuilding as be_REMOVE } from './budgetExecutionsActions';
-import { addBuilding as me_ADD, removeBuilding as me_REMOVE } from './monthExpansesActions';
-import { addBuilding as sb_ADD, removeBuilding as sb_REMOVE } from './summarizedBudgetActions';
-import { addBuilding as ms_ADD, removeBuilding as ms_REMOVE } from './monthlyStatsActions';
-import { addBuilding as qs_ADD, removeBuilding as qs_REMOVE } from './quarterlyStatsActions';
-import { addBuilding as ys_ADD, removeBuilding as ys_REMOVE } from './yearlyStatsActions';
-import { addBuilding as rm_ADD, removeBuilding as rm_REMOVE } from './registeredMonthsActions';
-import { addBuilding as rq_ADD, removeBuilding as rq_REMOVE } from './registeredQuartersActions';
-import { addBuilding as ry_ADD, removeBuilding as ry_REMOVE } from './registeredYearsActions';
-import { addBuilding as mc_ADD, removeBuilding as mc_REMOVE } from './monthsChartAction';
-import { addBuilding as qc_ADD, removeBuilding as qc_REMOVE } from './quartersChartActions';
-import { addBuilding as yc_ADD, removeBuilding as yc_REMOVE } from './yearsChartActions';
-import { addBuilding as tc_ADD, removeBuilding as tc_REMOVE } from './topChartActions';
-import { addBuilding as s_ADD, removeBuilding as s_REMOVE } from './statisticsActions';
-import { ipcRenderer, remote } from 'electron';
-import { updateGlobalBuilding } from '../reducers/util/util';
+import { batch } from "react-redux";
+import { toastManager } from "../../toasts/toastManager";
+import { ipcSendReceive } from "./util/util";
+import {
+  addBuilding as be_ADD,
+  removeBuilding as be_REMOVE
+} from "./budgetExecutionsActions";
+import {
+  addBuilding as me_ADD,
+  removeBuilding as me_REMOVE
+} from "./monthExpansesActions";
+import {
+  addBuilding as sb_ADD,
+  removeBuilding as sb_REMOVE
+} from "./summarizedBudgetActions";
+import {
+  addBuilding as ms_ADD,
+  removeBuilding as ms_REMOVE
+} from "./monthlyStatsActions";
+import {
+  addBuilding as qs_ADD,
+  removeBuilding as qs_REMOVE
+} from "./quarterlyStatsActions";
+import {
+  addBuilding as ys_ADD,
+  removeBuilding as ys_REMOVE
+} from "./yearlyStatsActions";
+import {
+  addBuilding as rm_ADD,
+  removeBuilding as rm_REMOVE
+} from "./registeredMonthsActions";
+import {
+  addBuilding as rq_ADD,
+  removeBuilding as rq_REMOVE
+} from "./registeredQuartersActions";
+import {
+  addBuilding as ry_ADD,
+  removeBuilding as ry_REMOVE
+} from "./registeredYearsActions";
+import {
+  addBuilding as mc_ADD,
+  removeBuilding as mc_REMOVE
+} from "./monthsChartAction";
+import {
+  addBuilding as qc_ADD,
+  removeBuilding as qc_REMOVE
+} from "./quartersChartActions";
+import {
+  addBuilding as yc_ADD,
+  removeBuilding as yc_REMOVE
+} from "./yearsChartActions";
+import {
+  addBuilding as tc_ADD,
+  removeBuilding as tc_REMOVE
+} from "./topChartActions";
+import {
+  addBuilding as s_ADD,
+  removeBuilding as s_REMOVE
+} from "./statisticsActions";
+import { ipcRenderer } from "electron";
+import { updateGlobalBuilding } from "../reducers/util/util";
+const remote = require("@electron/remote");
 
 export const TYPES = {
   BUILDINGS_UPDATE: "BUILDINGS_UPDATE",
@@ -25,13 +68,10 @@ export const TYPES = {
   BUILDINGS_REQUEST: "BUILDINGS_REQUEST",
   BUILDINGS_RECEIVE: "BUILDINGS_RECEIVE",
   BUILDINGS_FETCHING_FAILED: "BUILDINGS_FETCHING_FAILED"
-}
-
+};
 
 export const fetchBuildings = () => {
-
-  return dispatch => {
-
+  return (dispatch) => {
     //let react know that the fetching is started
     dispatch(requestBuildings());
 
@@ -42,24 +82,24 @@ export const fetchBuildings = () => {
       receive: {
         channel: "all-buildings-data"
       },
-      onSuccess: result => dispatch(receiveBuildings(result.data)),
-      onError: result => dispatch(fetchingFailed(result.error))
+      onSuccess: (result) => dispatch(receiveBuildings(result.data)),
+      onError: (result) => dispatch(fetchingFailed(result.error))
     });
-
-  }
+  };
 };
 
 export const updateBuilding = (id, payload, oldCopy, index) => {
-
-  return dispatch => {
-
+  return (dispatch) => {
     // save previous name
     if (payload.buildingName && payload.buildingName !== oldCopy.buildingName)
       payload.previousBuildingName = oldCopy.buildingName;
 
     dispatch(updateBuildingsInStore(index, payload));
     const updatedBuildings = updateGlobalBuilding(id, payload);
-    ipcRenderer.send("set-global-variable", { key: "buildings", value: updatedBuildings });
+    ipcRenderer.send("set-global-variable", {
+      key: "buildings",
+      value: updatedBuildings
+    });
 
     return ipcSendReceive({
       send: {
@@ -69,21 +109,23 @@ export const updateBuilding = (id, payload, oldCopy, index) => {
       receive: {
         channel: "updated-building"
       },
-      onError: result => {
+      onError: (result) => {
         dispatch(updateBuildingsInStore(oldCopy));
 
         const updatedBuildings = updateGlobalBuilding(id, payload);
-        ipcRenderer.send("set-global-variable", { key: "buildings", value: updatedBuildings });
+        ipcRenderer.send("set-global-variable", {
+          key: "buildings",
+          value: updatedBuildings
+        });
 
         toastManager.error(result.error);
       }
     });
-
-  }
+  };
 };
 
 export const addBuilding = (payload) => {
-  return dispatch => {
+  return (dispatch) => {
     return ipcSendReceive({
       send: {
         channel: "add-building",
@@ -92,7 +134,7 @@ export const addBuilding = (payload) => {
       receive: {
         channel: "added-building"
       },
-      onSuccess: result => {
+      onSuccess: (result) => {
         dispatch(addBuildingsInStore(result.data));
         const { id } = result.data;
 
@@ -112,26 +154,27 @@ export const addBuilding = (payload) => {
           dispatch(yc_ADD(id));
           dispatch(tc_ADD(id));
           dispatch(s_ADD(id));
-
         });
 
         // we also need to add the new building to the global
         // shared object, otherwise on refresh it will use the
         // global shared object of previous data
-        const buildings = remote.getGlobal('sharedObject').buildings;
+        const buildings = remote.getGlobal("sharedObject").buildings;
         buildings.push(result.data);
-        ipcRenderer.send("set-global-variable", { key: "buildings", value: buildings });
+        ipcRenderer.send("set-global-variable", {
+          key: "buildings",
+          value: buildings
+        });
       },
-      onError: result => {
+      onError: (result) => {
         toastManager.error(result.error);
       }
     });
-
-  }
+  };
 };
 
 export const removeBuildings = (buildingsToRemove) => {
-  return dispatch => {
+  return (dispatch) => {
     return ipcSendReceive({
       send: {
         channel: "remove-buildings",
@@ -141,7 +184,7 @@ export const removeBuildings = (buildingsToRemove) => {
         channel: "buildings-removed"
       },
       onSuccess: () => {
-        const buildings = remote.getGlobal('sharedObject').buildings;
+        const buildings = remote.getGlobal("sharedObject").buildings;
 
         buildingsToRemove.forEach(({ id }) => {
           dispatch(removeBuildingInStore(id));
@@ -168,22 +211,22 @@ export const removeBuildings = (buildingsToRemove) => {
           // shared object, otherwise on refresh it will use the
           // global shared object of previous data
           buildings.forEach((building, index) => {
-            if (id === building.id)
-              buildings.splice(index, 1);
+            if (id === building.id) buildings.splice(index, 1);
           });
-
         });
 
-        ipcRenderer.send("set-global-variable", { key: "buildings", value: buildings });
+        ipcRenderer.send("set-global-variable", {
+          key: "buildings",
+          value: buildings
+        });
 
         toastManager.success("הבניינים נמחקו לצמיתות בהצלחה");
       },
-      onError: result => {
+      onError: (result) => {
         toastManager.error(result.error);
       }
     });
-
-  }
+  };
 };
 
 const updateBuildingsInStore = function (index, payload) {
@@ -191,39 +234,39 @@ const updateBuildingsInStore = function (index, payload) {
     type: TYPES.BUILDINGS_UPDATE,
     index,
     payload
-  }
+  };
 };
 
 const addBuildingsInStore = function (payload) {
   return {
     type: TYPES.BUILDINGS_ADD,
     payload
-  }
+  };
 };
 
 const removeBuildingInStore = function (id) {
   return {
     type: TYPES.BUILDINGS_REMOVE,
     id
-  }
+  };
 };
 
 const requestBuildings = function () {
   return {
     type: TYPES.BUILDINGS_REQUEST
-  }
+  };
 };
 
 const receiveBuildings = function (data) {
   return {
     type: TYPES.BUILDINGS_RECEIVE,
     data: data
-  }
-}
+  };
+};
 
 const fetchingFailed = function (error) {
   return {
     type: TYPES.BUILDINGS_FETCHING_FAILED,
     error
-  }
+  };
 };

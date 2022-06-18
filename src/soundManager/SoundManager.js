@@ -6,14 +6,14 @@ import update from "../assets/audio/update.wav";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const remote = require("electron").remote;
+const remote = require("@electron/remote");
 const sharedObject = remote.getGlobal("sharedObject");
 const TYPES = {
   action: "action",
   error: "error",
   message: "message",
   welcome: "welcome",
-  update: "update",
+  update: "update"
 };
 
 class SoundManager {
@@ -78,21 +78,21 @@ export const useSound = (url, options) => {
     src: url,
     currentTime: 0,
     reverse: 0,
-    ...options,
+    ...options
   });
 
   useEffect(() => {
     setLocalOptions((prevOptions) => ({
       ...prevOptions,
       soundEnabled,
-      soundVolume,
+      soundVolume
     }));
   }, [soundEnabled, soundVolume]);
 
   const setOptions = (options) => {
     setLocalOptions((prevOptions) => ({
       ...prevOptions,
-      ...options,
+      ...options
     }));
   };
 
@@ -128,6 +128,6 @@ export const useSound = (url, options) => {
     play,
     setOptions,
     pause,
-    types: soundManager.types,
+    types: soundManager.types
   };
 };

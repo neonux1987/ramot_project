@@ -5,8 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 // ACTIONS IMPORTS
 import {
   updateMonthExpanse,
-  addMonthExpanse,
-  deleteMonthExpanse,
+  deleteMonthExpanse
 } from "../../redux/actions/monthExpansesActions";
 import { fetchExpansesCodesByStatus } from "../../redux/actions/expansesCodesActions";
 
@@ -14,25 +13,22 @@ import { fetchExpansesCodesByStatus } from "../../redux/actions/expansesCodesAct
 import Helper from "../../helpers/Helper";
 
 // COMMON COMPONENTS IMPORTS
-import PageControls from "../../components/PageControls/PageControls";
-import TableControls from "../../components/table/TableControls/TableControls";
-import EditControls from "../../components/EditControls/EditControls";
 import TableActions from "../../components/table/TableActions/TableActions";
 import Spinner from "../../components/Spinner/Spinner";
 import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
-import AddNewContainer from "./AddNewContainer";
-import Table from "../../components/table/Table";
+import TableContainer from "../../components/table/TableContainer";
 import Cell from "../../components/table/components/Cell";
 import NonZeroCell from "../../components/table/components/NonZeroCell";
 import HeaderRow from "../../components/table/components/HeaderRow";
 import HeaderCell from "../../components/table/components/HeaderCell";
 import TableRow from "../../components/table/components/TableRow";
-
-// AUDIO
-import { toastManager } from "../../toasts/toastManager";
-import useTableLogic from "../../customHooks/useTableLogic";
 import MonthExpansesDatePicker from "./MonthExpansesDatePicker";
 import TableSection from "../../components/Section/TableSection";
+import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
+import AddExpanseContainer from "./AddExpanse/AddExpanseContainer";
+
+// HOOKS
+import useTableLogic from "../../customHooks/useTableLogic";
 
 const MonthExpansesTableContainer = (props) => {
   const {
@@ -42,7 +38,7 @@ const MonthExpansesTableContainer = (props) => {
     buildingName,
     buildingId,
     data,
-    isFetching,
+    isFetching
   } = props;
 
   const {
@@ -51,93 +47,15 @@ const MonthExpansesTableContainer = (props) => {
     toggleAddNewMode,
     addNewMode,
     textAreaInput,
-    numberInput,
+    numberInput
   } = useTableLogic();
   const dispatch = useDispatch();
-
   // page data
   const generalSettings = useSelector((store) => store.generalSettings);
 
   useEffect(() => {
     dispatch(fetchExpansesCodesByStatus("active"));
   }, [dispatch]);
-
-  const addNewExpanseSubmit = async (formInputs, reset) => {
-    // tax data
-    const tax = generalSettings.data[0].tax;
-
-    const valid = validateFormInputs(formInputs);
-    if (!valid) {
-      // send the error to the notification center
-      toastManager.error("קוד או שם חשבון לא יכולים להיות ריקים");
-      return;
-    }
-
-    if (date.year === undefined) {
-      // send the error to the notification center
-      toastManager.error("לא ניתן להוסיף שורה לדוח ריק");
-      return;
-    }
-
-    const copiedFormInputs = { ...formInputs };
-    copiedFormInputs.code = copiedFormInputs.code.code;
-    copiedFormInputs.codeName = copiedFormInputs.codeName.codeName;
-    copiedFormInputs.expanses_code_id = formInputs.code.id;
-    copiedFormInputs.year = date.year;
-    copiedFormInputs.month = date.month;
-    copiedFormInputs.tax = tax;
-
-    //parse form inputs
-    const parsedFormInputs = parseFormInputs(copiedFormInputs);
-
-    const params = {
-      buildingId,
-      expanse: parsedFormInputs,
-      date: date,
-    };
-
-    dispatch(addMonthExpanse(params, params.expanse)).then(() => {
-      reset();
-    });
-  };
-
-  const validateFormInputs = (formInputs) => {
-    if (!formInputs.code && !formInputs.codeName) {
-      return false;
-    }
-    return true;
-  };
-
-  const parseFormInputs = (formInputs) => {
-    // tax data
-    //const tax = generalSettings.data[0].tax;
-
-    const copyFormInputs = { ...formInputs };
-    //parse inputs
-    copyFormInputs.code = Number.parseInt(copyFormInputs.code);
-    copyFormInputs.sum =
-      copyFormInputs.sum === "" ? 0 : Number.parseFloat(copyFormInputs.sum);
-    copyFormInputs.summarized_section_id = Number.parseInt(
-      copyFormInputs.summarized_section_id
-    );
-    copyFormInputs.year = Number.parseInt(formInputs.year);
-    copyFormInputs.tax = Number.parseFloat(formInputs.tax);
-
-    return copyFormInputs;
-  };
-
-  const findExpanseIndex = (code = null, codeName = null) => {
-    let result = null;
-    data.forEach((row, index) => {
-      if (
-        row["code"] === Number.parseInt(code) ||
-        row["codeName"] === codeName
-      ) {
-        result = index;
-      }
-    });
-    return result;
-  };
 
   const onBlurHandler = (e) => {
     // tax data
@@ -173,7 +91,7 @@ const MonthExpansesTableContainer = (props) => {
     let params = {
       expanse: expanse,
       buildingId,
-      date,
+      date
     };
 
     //update expanse
@@ -186,7 +104,7 @@ const MonthExpansesTableContainer = (props) => {
     let params = {
       id,
       buildingId,
-      date,
+      date
     };
     dispatch(deleteMonthExpanse(params, index));
   };
@@ -202,11 +120,7 @@ const MonthExpansesTableContainer = (props) => {
     }  100px 1fr 1fr 1fr 1fr 1fr 1fr`;
 
     return (
-      <HeaderRow
-        gridTemplateColumns={
-          gridTemplateColumns
-        } /* style={{borderBottom: "1px solid rgba(0, 0, 0, 0.22)"}} */
-      >
+      <HeaderRow gridTemplateColumns={gridTemplateColumns}>
         {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
         <HeaderCell>{"שורה"}</HeaderCell>
         <HeaderCell>{`קוד הנהח"ש`}</HeaderCell>
@@ -274,56 +188,53 @@ const MonthExpansesTableContainer = (props) => {
   }
 
   return (
-    <TableSection
-      header={
-        <TableControls
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              addNewMode={addNewMode}
-              toggleAddNewMode={toggleAddNewMode}
-              dataExist={data.length > 0}
-            />
-          } // end rightPane
-          editMode={editMode}
-          leftPane={
-            <PageControls
-              excel={{
-                data,
-                fileName: Helper.getMonthExpansesFilename(buildingName, date),
-                buildingName,
-                buildingId,
-                date,
-              }}
-              print={{
-                pageName,
-              }}
-              pageName={pageName}
-              dataExist={data.length > 0}
-            />
-          } // end leftPane
-        /> //end TableControls
-      }
-    >
-      {/* add new box */}
-      <AddNewContainer
+    <TableSection>
+      <SectionControlsContainer
+        edit={true}
+        editModeProps={{
+          editMode,
+          toggleEditMode,
+          dataExist: data.length > 0
+        }}
+        addNew={true}
+        addNewModeProps={{
+          addNewMode,
+          toggleAddNewMode,
+          dataExist: data.length > 0
+        }}
+        excel={true}
+        excelProps={{
+          data,
+          fileName: Helper.getMonthExpansesFilename(buildingName, date),
+          buildingName,
+          buildingId,
+          date,
+          pageName
+        }}
+        print={true}
+        printProps={{
+          pageName
+        }}
+      />
+
+      <AddExpanseContainer
         data={data}
-        submitData={addNewExpanseSubmit}
-        findData={findExpanseIndex}
         show={addNewMode}
+        buildingId={buildingId}
+        tax={generalSettings.data[0].tax}
+        date={date}
       />
 
       <MonthExpansesDatePicker date={date} buildingId={buildingId} />
 
-      <Table
+      <TableContainer
         Row={Row}
         HeaderComponent={HeadersRow}
         isFetching={isFetching}
         totalCount={data.length}
         printHeaderDetails={{
           pageTitle: buildingName + " - " + pageTitle,
-          date: `שנה ${date.year} / רבעון ${date.quarter} / חודש ${date.monthHeb}`,
+          date: `שנה ${date.year} / רבעון ${date.quarter} / חודש ${date.monthHeb}`
         }}
       />
     </TableSection>

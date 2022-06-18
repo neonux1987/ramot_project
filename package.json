@@ -11,12 +11,6 @@
     "email": "neonux1987@gmail.com",
     "url": "https://your-website.com"
   },
-  "myUpdater": {
-    "githubInfo": {
-      "repo": "ramot_project",
-      "user": "neonux1987"
-    }
-  },
   "build": {
     "appId": "com.my-website.ramot-group-income-outcome-management",
     "productName": "קבוצת רמות ניהול הוצאות והכנסות",
@@ -34,12 +28,6 @@
     "asarUnpack": [
       "node_modules/highcharts-export-server/**/*"
     ],
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "./Icon/ramot-group-icon.ico"
-    },
     "publish": [
       {
         "provider": "github",
@@ -47,9 +35,16 @@
         "private": true,
         "releaseType": "release",
         "protocol": "https",
-        "repo": "ramot_project"
+        "repo": "ramot_project",
+        "host": "github.com"
       }
     ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "./Icon/ramot-group-icon.ico"
+    },
     "nsis": {
       "allowToChangeInstallationDirectory": false,
       "oneClick": true,
@@ -86,8 +81,9 @@
     "development": []
   },
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "dotenv": "^9.0.2",
-    "electron-context-menu": "^2.3.0",
+    "electron-context-menu": "^3.2.0",
     "electron-log": "^4.3.4",
     "electron-updater": "^4.6.5",
     "exceljs": "^4.2.0",
@@ -104,7 +100,6 @@
     "v8-compile-cache": "^2.3.0"
   },
   "devDependencies": {
-    "@electron/remote": "^2.0.8",
     "@iconify/react": "^3.2.1",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
@@ -112,8 +107,8 @@
     "@rescripts/rescript-env": "0.0.12",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.2",
-    "electron": "^13.6.9",
-    "electron-builder": "^22.11.7",
+    "electron": "^19.0.4",
+    "electron-builder": "^23.0.3",
     "emotion": "^10.0.27",
     "highcharts": "^9.0.1",
     "highcharts-react-official": "^3.0.0",

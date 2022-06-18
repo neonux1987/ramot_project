@@ -4,39 +4,39 @@ export const checkForUpdates = () => {
   return () => {
     return ipcSendReceive({
       send: {
-        channel: "check-for-updates"
+        channel: "check-for-updates",
       },
       receive: {
         channel: "checked_for_updates",
-      }
+      },
     });
-  }
-}
+  };
+};
 
 export const downloadUpdate = () => {
   return () => {
     return ipcSendReceive({
       send: {
-        channel: "download-update"
+        channel: "download-update",
       },
       receive: {
         channel: "downloading_update",
-      }
+      },
     });
-  }
-}
+  };
+};
 
 export const abortDownload = (silent) => {
   return ipcSendReceive({
     send: {
-      channel: "abort-download"
+      channel: "abort-download",
     },
     receive: {
       channel: "download_aborted",
     },
-    withErrorNotification: silent
+    withErrorNotification: silent,
   });
-}
+};
 
 export const installUpdate = () => {
   return ipcSendReceive({
@@ -45,18 +45,18 @@ export const installUpdate = () => {
     },
     receive: {
       channel: "update_installed",
-    }
+    },
   });
-}
+};
 
 export const deleteUpdate = (filePath) => {
   return ipcSendReceive({
     send: {
       channel: "delete-update",
-      params: filePath
+      params: filePath,
     },
     receive: {
       channel: "update_deleted",
-    }
+    },
   });
-}
+};

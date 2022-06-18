@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 // ACTIONS
 import {
   updateBudgetExecution,
-  deleteBudgetExecution,
+  deleteBudgetExecution
 } from "../../redux/actions/budgetExecutionsActions";
 
 // UTILS
@@ -15,27 +15,25 @@ import Helper from "../../helpers/Helper";
 import ThemeContext from "../../context/ThemeContext";
 
 // COMPONENTS
-import TableControls from "../../components/table/TableControls/TableControls";
-import PageControls from "../../components/PageControls/PageControls";
-import EditControls from "../../components/EditControls/EditControls";
 import GroupCell from "../../components/table/components/GroupCell";
 import HeaderRow from "../../components/table/components/HeaderRow";
 import TableRow from "../../components/table/components/TableRow";
 import NonZeroCell from "../../components/table/components/NonZeroCell";
 import TableActions from "../../components/table/TableActions/TableActions";
-import Table from "../../components/table/Table";
+import TableContainer from "../../components/table/TableContainer";
 import GroupRow from "../../components/table/components/GroupRow";
 import ConfirmDeleteBudgetExecution from "../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution";
 import HeaderCell from "../../components/table/components/HeaderCell";
 import Cell from "../../components/table/components/Cell";
 import TableSection from "../../components/Section/TableSection";
+import BudgetExecutionsDatePicker from "./BudgetExecutionsDatePicker";
+import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
 
 // HOOKS
 import useModalLogic from "../../customHooks/useModalLogic";
-import AddNewContainer from "./AddNewContainer/AddNewContainer";
+import AddBudgetExecutionContainer from "./AddNewContainer/AddBudgetExecutionContainer";
 import useTableLogic from "../../customHooks/useTableLogic";
 import useDifferenceColor from "../../customHooks/useDifferenceColor";
-import BudgetExecutionsDatePicker from "./BudgetExecutionsDatePicker";
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -48,7 +46,7 @@ const BudgetExecutionsTableContainer = (props) => {
     pageName,
     pageTitle,
     data,
-    isFetching,
+    isFetching
   } = props;
 
   const {
@@ -57,7 +55,7 @@ const BudgetExecutionsTableContainer = (props) => {
     toggleAddNewMode,
     addNewMode,
     textAreaInput,
-    numberInput,
+    numberInput
   } = useTableLogic();
 
   const themeContext = useContext(ThemeContext);
@@ -101,7 +99,7 @@ const BudgetExecutionsTableContainer = (props) => {
       pageName,
       date,
       budgetExec: newBudgetExecutionObj,
-      summarized_section_id: budgetExecutionObj.summarized_section_id,
+      summarized_section_id: budgetExecutionObj.summarized_section_id
     };
 
     //check if it's a month budget column,
@@ -130,7 +128,7 @@ const BudgetExecutionsTableContainer = (props) => {
 
   const deleteHandler = (index, rowData) => {
     showModal(ConfirmDeleteBudgetExecution, {
-      onAgreeHandler: () => onAgreeHandler(buildingId, date, index, rowData),
+      onAgreeHandler: () => onAgreeHandler(buildingId, date, index, rowData)
     });
   };
 
@@ -317,13 +315,13 @@ const BudgetExecutionsTableContainer = (props) => {
     });
 
     const incomeRow = {
-      ...row,
+      ...row
     };
     incomeRow.section = "הכנסות";
     incomeRow.notes = "";
 
     const outcomeRow = {
-      ...row,
+      ...row
     };
     outcomeRow.section = "הוצאות";
     outcomeRow.notes = "";
@@ -344,47 +342,49 @@ const BudgetExecutionsTableContainer = (props) => {
 
     return {
       incomeRow,
-      outcomeRow,
+      outcomeRow
     };
   }, [getDataObject, data, date.quarter]);
 
   return (
-    <TableSection
-      header={
-        <TableControls
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              addNewMode={addNewMode}
-              toggleAddNewMode={toggleAddNewMode}
-              dataExist={data.length > 0}
-            />
-          } // end rightPane
-          leftPane={
-            <PageControls
-              excel={{
-                data,
-                fileName: Helper.getBudgetExecutionFilename(buildingName, date),
-                buildingName,
-                buildingId,
-                date,
-              }}
-              print={{
-                pageName,
-              }}
-              pageName={pageName}
-              dataExist={data.length > 0}
-            />
-          } // end leftPane
-        /> //End TableControls
-      }
-    >
-      <AddNewContainer show={addNewMode} date={date} buildingId={buildingId} />
+    <TableSection>
+      <SectionControlsContainer
+        edit={true}
+        editModeProps={{
+          editMode,
+          toggleEditMode,
+          dataExist: data.length > 0
+        }}
+        addNew={true}
+        addNewModeProps={{
+          addNewMode,
+          toggleAddNewMode,
+          dataExist: data.length > 0
+        }}
+        excel={true}
+        excelProps={{
+          data,
+          fileName: Helper.getBudgetExecutionFilename(buildingName, date),
+          buildingName,
+          buildingId,
+          date,
+          pageName
+        }}
+        print={true}
+        printProps={{
+          pageName
+        }}
+      />
+
+      <AddBudgetExecutionContainer
+        show={addNewMode}
+        date={date}
+        buildingId={buildingId}
+      />
 
       <BudgetExecutionsDatePicker date={date} buildingId={buildingId} />
 
-      <Table
+      <TableContainer
         Row={Row}
         GroupComponent={HeaderGroups}
         HeaderComponent={HeadersRow}
@@ -392,7 +392,7 @@ const BudgetExecutionsTableContainer = (props) => {
         totalCount={data.length}
         printHeaderDetails={{
           pageTitle: buildingName + " - " + pageTitle,
-          date: `שנה ${date.year} / רבעון ${date.quarter}`,
+          date: `שנה ${date.year} / רבעון ${date.quarter}`
         }}
         generateIncomeOutcomeData={generateIncomeOutcomeData}
       />

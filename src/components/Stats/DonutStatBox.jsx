@@ -3,6 +3,7 @@ import StatBox from "./StatBox/StatBox";
 import { css } from "emotion";
 import DonutChart from "../charts/DonutChart";
 import FadedDivider from "../CustomDivider/FadedDivider";
+import Ribbon from "./Ribbon";
 
 const wrapper = css`
   flex-grow: 1;
@@ -60,7 +61,7 @@ const sliderWrapper = css`
   min-height: 380px;
   border-radius: 14px;
   border: 1px solid #dddddd;
-  overflow: hidden;
+  overflow: visible;
 `;
 
 const slider = css`
@@ -103,49 +104,19 @@ const emptyStyle = css`
   min-height: 380px;
   border-radius: 14px;
   border: 1px solid #dddddd;
-`;
-
-const ribbon = css`
-  filter: drop-shadow(2px 3px 2px rgb(0 0 0 / 21%));
-  position: absolute;
-  top: 0;
-  right: 30px;
-  z-index: 888;
-
-  @media (max-width: 1650px) {
-    right: 20px;
-  }
-`;
-
-const ribbonContent = css`
-  width: 60px;
-  height: 65px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 18px), 0 100%);
-  transition: clip-path 1s, height 1s, width 1s, background 1s;
-
-  @media (max-width: 1400px) {
-    width: 40px;
-    height: 45px;
-    transition: clip-path 1s, height 1s, width 1s, background 1s;
-  }
-
-  @media (min-width: 1400px) and (max-width: 1650px) {
-    width: 50px;
-    height: 55px;
-    transition: clip-path 1s, height 1s, width 1s, background 1s;
-  }
+  position: relative;
 `;
 
 const DonutStatBox = ({
   title,
   income,
   outcome,
-  unicodeSymbol,
   color,
   loading = true,
   index = 1,
   border,
   xs,
+  Icon
 }) => {
   return (
     <StatBox
@@ -163,24 +134,16 @@ const DonutStatBox = ({
 
         {(outcome > 0 || income > 0) && (
           <div className={sliderWrapper}>
-            <div className={ribbon}>
-              <div
-                className={ribbonContent}
-                style={{
-                  background: `${color} linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.25) 100%)`,
-                }}
-              ></div>
-            </div>
-
+            <Ribbon color={color} Icon={Icon} />
             <div className={slider}>
               <DonutChart
                 series={[
                   {
                     data: [
                       { name: "הוצאות", y: outcome, color: "#30a3fc" },
-                      { name: "הכנסות", y: income, color: "#30e8aa" },
-                    ],
-                  },
+                      { name: "הכנסות", y: income, color: "#30e8aa" }
+                    ]
+                  }
                 ]}
               />
             </div>
@@ -209,6 +172,7 @@ const DonutStatBox = ({
 
         {income === 0 && outcome === 0 && (
           <div className={emptyStyle}>
+            <Ribbon color={color} Icon={Icon} />
             <div>אין נתונים</div>
           </div>
         )}

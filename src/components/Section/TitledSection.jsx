@@ -25,7 +25,7 @@ const TitledSection = ({
   id = "",
   margin = "20px 0",
   collapsable = true,
-  extraDetails = null,
+  extraDetails = null
 }) => {
   const [checked, setChecked] = React.useState(true);
   const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
@@ -55,7 +55,7 @@ const TitledSection = ({
           padding="6px"
           style={{
             background:
-              "linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.25) 100%) rgb(81, 89, 103)",
+              "linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.25) 100%) rgb(81, 89, 103)"
           }}
         >
           {TitleIcon}

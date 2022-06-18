@@ -6,8 +6,9 @@ const initialState = {
   printers: {
     isFetching: true,
     data: []
-  }
-}
+  },
+  printableComponentRef: null
+};
 
 const printReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -32,7 +33,6 @@ const printReducer = (state = initialState, action) => {
         }
       };
     }
-
     case TYPES.PRINT_RECEIVE: {
       return {
         ...state,
@@ -43,9 +43,15 @@ const printReducer = (state = initialState, action) => {
         }
       };
     }
-    default: return state;
+    case TYPES.SET_PRINTABLE_COMPONENT_REF: {
+      return {
+        ...state,
+        printableComponentRef: action.printableComponentRef
+      };
+    }
+    default:
+      return state;
   }
-
-}
+};
 
 export default printReducer;

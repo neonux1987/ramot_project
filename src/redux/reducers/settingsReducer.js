@@ -1,12 +1,12 @@
 import { TYPES } from "../actions/settingsActions";
 
-const settings = require("electron").remote.getGlobal("sharedObject").settings;
+const settings = require("@electron/remote").getGlobal("sharedObject").settings;
 
 const initState = {
   isFetching: true,
   status: "",
   error: "",
-  data: settings ? settings : {},
+  data: settings ? settings : {}
 };
 
 const settingsReducer = (state = initState, action) => {
@@ -17,19 +17,19 @@ const settingsReducer = (state = initState, action) => {
         ...state,
         isFetching: false,
         status: "success",
-        data,
+        data
       };
     case TYPES.SETTINGS_REQUEST:
       return {
         ...state,
-        isFetching: true,
+        isFetching: true
       };
     case TYPES.SETTINGS_FETCHING_FAILED:
       return {
         ...state,
         status: "error",
         isFetching: false,
-        error: action.payload,
+        error: action.payload
       };
     case TYPES.SETTINGS_UPDATE: {
       const { settingName, payload } = action;
@@ -39,14 +39,14 @@ const settingsReducer = (state = initState, action) => {
           ...state.data,
           [settingName]: {
             ...state.data[settingName],
-            ...payload,
-          },
-        },
+            ...payload
+          }
+        }
       };
       //update settings in the shared object
       settings[settingName] = {
         ...settings[settingName],
-        ...payload,
+        ...payload
       };
 
       return newState;
@@ -57,7 +57,7 @@ const settingsReducer = (state = initState, action) => {
         saved: true,
         status: "",
         error: "",
-        data: {},
+        data: {}
       };
     default:
       return state;

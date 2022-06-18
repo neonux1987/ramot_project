@@ -8,7 +8,7 @@ import { initiateDbBackup } from "../../services/dbBackup.svc";
 import ToastRender from "../../components/ToastRender/ToastRender";
 import BackupOnExitModal from "../../components/modals/BackupOnExitModal/BackupOnExitModal";
 
-const remote = require("electron").remote;
+const remote = require("@electron/remote");
 
 const AppBarContainer = () => {
   const showSidebar = useSelector((store) => store.toggleSidebar.showSidebar);
@@ -43,7 +43,7 @@ const AppBarContainer = () => {
             message={"מבצע גיבוי בסיס נתונים לפני יציאה..."}
           />,
           {
-            autoClose: false,
+            autoClose: false
           }
         );
 
@@ -55,7 +55,7 @@ const AppBarContainer = () => {
             autoClose: 2500,
             onClose: () => {
               quitApp();
-            },
+            }
           });
         });
 
@@ -75,12 +75,12 @@ const AppBarContainer = () => {
             autoClose: 1500,
             onClose: () => {
               quitApp();
-            },
+            }
           });
       } /* end onAgreeHandler */,
       onCancelHandler: () => {
         quitApp();
-      },
+      }
     });
     /* end showModal */
   };

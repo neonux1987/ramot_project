@@ -1,53 +1,41 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSummarizedSections,
-  addSummarizedSection,
   updateSummarizedSection,
   summarizedSectionsCleanup,
   deleteSummarizedSection
-} from '../../../../redux/actions/summarizedSectionsActions';
-import EditControls from '../../../../components/EditControls/EditControls';
-import TableActions from '../../../../components/table/TableActions/TableActions';
-import TableControls from '../../../../components/table/TableControls/TableControls';
-import TableSection from '../../../../components/Section/TableSection';
-import HeaderRow from '../../../../components/table/components/HeaderRow';
-import TableRow from '../../../../components/table/components/TableRow';
-import Cell from '../../../../components/table/components/Cell';
-import HeaderCell from '../../../../components/table/components/HeaderCell';
-import Table from '../../../../components/table/Table';
-import AddSummarizedSectionContainer from './AddSummarizedSectionContainer/AddSummarizedSectionContainer';
-import { toastManager } from '../../../../toasts/toastManager';
-import useTableLogic from '../../../../customHooks/useTableLogic';
+} from "../../../../redux/actions/summarizedSectionsActions";
+import TableActions from "../../../../components/table/TableActions/TableActions";
+import TableSection from "../../../../components/Section/TableSection";
+import HeaderRow from "../../../../components/table/components/HeaderRow";
+import TableRow from "../../../../components/table/components/TableRow";
+import Cell from "../../../../components/table/components/Cell";
+import HeaderCell from "../../../../components/table/components/HeaderCell";
+import TableContainer from "../../../../components/table/TableContainer";
+import AddSummarizedSectionContainer from "./AddSummarizedSection/AddSummarizedSectionContainer";
+import { toastManager } from "../../../../toasts/toastManager";
+import useTableLogic from "../../../../customHooks/useTableLogic";
+import SectionControlsContainer from "../../../../components/table/TableControls/SectionControlsContainer";
 
 const EDITMODE_TEMPLATE = "minmax(250px,5%) minmax(250px,5%) 1fr";
 const DEFAULT_TEMPLATE = "minmax(250px,5%) 1fr";
 
 const SummarizedSectionsTableContainer = () => {
-
-  const {
-    toggleEditMode,
-    editMode,
-    toggleAddNewMode,
-    addNewMode,
-    textInput,
-  } = useTableLogic();
+  const { toggleEditMode, editMode, toggleAddNewMode, addNewMode, textInput } =
+    useTableLogic();
 
   // page data
-  const {
-    isFetching,
-    data
-  } = useSelector(store => store.summarizedSections);
+  const { isFetching, data } = useSelector((store) => store.summarizedSections);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-
     dispatch(fetchSummarizedSections("active"));
 
     const cleanup = () => {
       dispatch(summarizedSectionsCleanup());
-    }
+    };
 
     return cleanup;
   }, [dispatch]);
@@ -67,14 +55,13 @@ const SummarizedSectionsTableContainer = () => {
     }
 
     onBlurAction(key, value, index);
-  }
+  };
 
   const validateOnBlur = (key, summarizedSectionId, value) => {
     let valid = true;
     let message = "";
 
     if (key === "section") {
-
       if (value.length < 1) {
         message = `סעיף מסכם לא יכול להיות פחות מ- 1 תוים.`;
         valid = false;
@@ -82,14 +69,12 @@ const SummarizedSectionsTableContainer = () => {
         message = `לא ניתן להוסיף סעיף מסכם שכבר קים.`;
         valid = false;
       }
-
     }
 
-    if (!valid)
-      toastManager.error(message);
+    if (!valid) toastManager.error(message);
 
     return valid;
-  }
+  };
 
   const onBlurAction = (name, value, index) => {
     const oldCopy = { ...data[index] };
@@ -99,68 +84,42 @@ const SummarizedSectionsTableContainer = () => {
     newCopy[name] = value;
 
     dispatch(updateSummarizedSection(newCopy, oldCopy, index));
-  }
-
-  const addNewSubmitHandler = (formInputs) => {
-    const valid = validateFormInputs(formInputs);
-
-    if (!valid) {
-      toastManager.error("חובה לבחור סעיף!");
-      return;
-    }
-
-    const exist = dataExist(formInputs.section);
-    if (exist) {
-      toastManager.error("הסעיף כבר קיים ברשימה, לא ניתן להוסיף סעיף שקיים.");
-      return;
-    }
-
-    const summarizedSection = {
-      section: formInputs.section
-    };
-
-    dispatch(addSummarizedSection({ summarizedSection }));
-  }
-
-  const validateFormInputs = (formInputs) => {
-    if (formInputs.section === "")
-      return false;
-    else
-      return true;
-  }
+  };
 
   const dataExist = (id, section) => {
     let valid = false;
 
-    data.forEach(item => {
+    data.forEach((item) => {
       if (item.section === section && item.id !== id) {
         valid = true;
       }
     });
 
     return valid;
-  }
+  };
 
   const deleteHandler = (rowData, index) => {
     const expanseCodeCopy = { ...rowData };
     dispatch(deleteSummarizedSection(expanseCodeCopy, index));
-  }
+  };
 
   const getGridTemplateColumns = () => {
     return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
-  }
+  };
 
   const getDataObject = (index) => {
     return data[index];
-  }
+  };
 
   const HeadersRow = () => {
-    return <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
-      {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
-      <HeaderCell>{"שורה"}</HeaderCell>
-      <HeaderCell>{"סעיף מסכם"}</HeaderCell>
-    </HeaderRow>
-  }
+    return (
+      <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
+        {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
+        <HeaderCell>{"שורה"}</HeaderCell>
+        <HeaderCell>{"סעיף מסכם"}</HeaderCell>
+      </HeaderRow>
+    );
+  };
 
   const Row = (index) => {
     // row data
@@ -168,44 +127,59 @@ const SummarizedSectionsTableContainer = () => {
 
     const odd = index % 2 === 0 ? "" : "";
 
-    return <TableRow style={{ minHeight: "35px", backgroundColor: odd }} gridTemplateColumns={getGridTemplateColumns()}>
-      {editMode ? <TableActions deleteHandler={() => deleteHandler(rowData, index)} /> : null}
-      <Cell>{index + 1}</Cell>
-      {editMode ? textInput("section", rowData["section"], index, onBlurHandler) : <Cell>{rowData["section"]}</Cell>}
-    </TableRow>
-  }
+    return (
+      <TableRow
+        style={{ minHeight: "35px", backgroundColor: odd }}
+        gridTemplateColumns={getGridTemplateColumns()}
+      >
+        {editMode ? (
+          <TableActions deleteHandler={() => deleteHandler(rowData, index)} />
+        ) : null}
+        <Cell>{index + 1}</Cell>
+        {editMode ? (
+          textInput("section", rowData["section"], index, onBlurHandler)
+        ) : (
+          <Cell>{rowData["section"]}</Cell>
+        )}
+      </TableRow>
+    );
+  };
 
   return (
-    <TableSection
-      header={
-        <TableControls
-          editMode={editMode}
-          rightPane={
-            <EditControls
-              editMode={editMode}
-              toggleEditMode={toggleEditMode}
-              addNewMode={addNewMode}
-              toggleAddNewMode={toggleAddNewMode}
-              dataExist={data.length > 0}
-            />
-          } // end rightPane
-        /> //end TableControls
-      }
-    >
+    <TableSection>
+      <SectionControlsContainer
+        edit={true}
+        editModeProps={{
+          editMode,
+          toggleEditMode,
+          dataExist: data.length > 0
+        }}
+        addNew={true}
+        addNewModeProps={{
+          addNewMode,
+          toggleAddNewMode,
+          dataExist: data.length > 0
+        }}
+        print={true}
+        printProps={{
+          pageName: "expansesCodes"
+        }}
+      />
 
-      <AddSummarizedSectionContainer submitHandler={addNewSubmitHandler} show={addNewMode} />
+      <AddSummarizedSectionContainer show={addNewMode} dataExist={dataExist} />
 
-      <Table
+      <TableContainer
         Row={Row}
         HeaderComponent={HeadersRow}
         isFetching={isFetching || data.length === 0}
         totalCount={data.length}
+        printHeaderDetails={{
+          pageTitle: "סעיפים מסכמים"
+        }}
       />
-
     </TableSection>
   );
-
-}
+};
 
 export default React.memo(SummarizedSectionsTableContainer, areEqual);
 
@@ -213,6 +187,7 @@ function areEqual(prevProps, nextProps) {
   if (
     prevProps.editMode === nextProps.editMode &&
     prevProps.addNewMode === nextProps.addNewMode
-  ) return true;
+  )
+    return true;
   else return false;
 }

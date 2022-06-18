@@ -1,8 +1,7 @@
-import { remote } from 'electron';
-import os from 'os';
+import os from "os";
+const remote = require("@electron/remote");
 
 export const saveToFileDialog = (defaultFileName = "", options = {}) => {
-
   const dialog = remote.dialog;
   const WIN = remote.getCurrentWindow();
 
@@ -14,24 +13,22 @@ export const saveToFileDialog = (defaultFileName = "", options = {}) => {
 
   //asynchronous - returns a promise
   return dialog.showSaveDialog(WIN, options);
-
-}
+};
 
 export const selectFileDialog = () => {
-  return selectFolderDialog({ properties: ['openFile'] });
-}
+  return selectFolderDialog({ properties: ["openFile"] });
+};
 
 export const selectFolderDialog = (options = {}) => {
   const dialog = remote.dialog;
   const WIN = remote.getCurrentWindow();
 
   const copiedOptions = {
-    properties: ['openDirectory'],
+    properties: ["openDirectory"],
     defaultPath: options.defaultPath ? options.defaultPath : os.homedir(),
-    ...options,
-  }
+    ...options
+  };
 
   //asynchronous - using callback
   return dialog.showOpenDialog(WIN, copiedOptions);
-
-}
+};

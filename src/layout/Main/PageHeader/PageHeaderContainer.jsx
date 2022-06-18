@@ -23,21 +23,21 @@ const PageHeaderContainer = () => {
   const onExcelReportsHandler = () => {
     showModal(GenerateExcelReportsModal, {
       buildingName,
-      buildingId,
+      buildingId
     });
   };
 
   const onEmptyReportsHandler = () => {
     showModal(GenerateEmptyReportsModal, {
       buildingName,
-      buildingId,
+      buildingId
     });
   };
 
   const onChangeBuildingColorHandler = () => {
     showModal(ChangeBuildingColorModal, {
       buildingName,
-      buildingId,
+      buildingId
     });
   };
 
@@ -56,6 +56,7 @@ const PageHeaderContainer = () => {
       default:
         return true;
     }
+    return isValid;
   };
 
   return (

@@ -1,6 +1,6 @@
-import React from 'react';
-import { css } from 'emotion';
-import CenteredLoader from '../../../../AnimatedLoaders/CenteredLoader';
+import React from "react";
+import { css } from "emotion";
+import CenteredLoader from "../../../../AnimatedLoaders/CenteredLoader";
 
 const _content = css`
   margin: 0;
@@ -8,35 +8,29 @@ const _content = css`
 `;
 
 const iframeStyle = css`
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
   border: 1px solid #ececec;
   display: block !important;
 `;
 
-const Content = props => {
-  const {
-    blob,
-    loading
-  } = props;
+const Content = (props) => {
+  const { blob, loading } = props;
 
-  return <div id="print-table" className={_content}>
-
-    {loading ?
-      <CenteredLoader text="טוען תצוגה מקדימה" /> :
-      <iframe
-        title="print-preview"
-        id="print-iframe"
-        className={iframeStyle}
-        src={`./print.html?pdf=${blob ? blob : ""}`}
-      >
-
-      </iframe>
-    }
-
-
-
-  </div>;
-}
+  return (
+    <div id="print-table" className={_content}>
+      {loading ? (
+        <CenteredLoader text="טוען תצוגה מקדימה" />
+      ) : (
+        <iframe
+          title="print-preview"
+          id="print-iframe"
+          className={iframeStyle}
+          src={`./print.html?pdf=${blob ? blob : ""}`}
+        ></iframe>
+      )}
+    </div>
+  );
+};
 
 export default Content;

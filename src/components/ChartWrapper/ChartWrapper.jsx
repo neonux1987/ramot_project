@@ -1,10 +1,11 @@
 // LIBRARIES
-import React from 'react';
-import { css } from 'emotion';
+import React from "react";
+import { css } from "emotion";
 
 // COMPONENTS
-import { AlignCenterMiddle } from '../../components/AlignCenterMiddle/AlignCenterMiddle';
-import Spinner from '../../components/Spinner/Spinner';
+import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
+import Spinner from "../../components/Spinner/Spinner";
+import usePrintRef from "../../customHooks/usePrintRef";
 
 const container = css`
   background: #ffffff;
@@ -14,24 +15,34 @@ const container = css`
 `;
 
 const text = css`
- font-size: 18px;
+  font-size: 18px;
 `;
 
-const ChartWrapper = props => {
+const ChartWrapper = (props) => {
   const { children, isFetching, itemCount } = props;
+  const ref = usePrintRef();
 
-  const Loading = isFetching ? <Loader /> : <div>
-    {children}
-  </div>;
+  const Loading = isFetching ? <Loader /> : <div>{children}</div>;
 
-  return <div className={container}>
-    {isFetching === false && itemCount === 0 ? <AlignCenterMiddle><span className={text}>לא נטענו נתונים.</span></AlignCenterMiddle> : Loading}
-  </div>;
-
-}
+  return (
+    <div className={container} ref={ref}>
+      {isFetching === false && itemCount === 0 ? (
+        <AlignCenterMiddle>
+          <span className={text}>לא נטענו נתונים.</span>
+        </AlignCenterMiddle>
+      ) : (
+        Loading
+      )}
+    </div>
+  );
+};
 
 export default ChartWrapper;
 
 const Loader = () => {
-  return <AlignCenterMiddle><Spinner size={60} loadingText={"טוען נתונים..."} /></AlignCenterMiddle>;
-}
+  return (
+    <AlignCenterMiddle>
+      <Spinner size={60} loadingText={"טוען נתונים..."} />
+    </AlignCenterMiddle>
+  );
+};

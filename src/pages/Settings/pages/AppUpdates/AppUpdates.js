@@ -1,20 +1,29 @@
-import React, { useState, memo, useEffect, useRef, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import ToastRender from '../../../../components/ToastRender/ToastRender';
-import Page from '../../../../components/Page/Page';
-import ExpandableSection from '../../../../components/Section/ExpandableSection';
-import NewUpdate from './NewUpdate/NewUpdate';
-import NoUpdate from './NoUpdate/NoUpdate';
-import CheckingUpdates from './CheckingUpdates/CheckingUpdates';
-import { checkForUpdates, downloadUpdate, abortDownload, deleteUpdate, installUpdate } from '../../../../services/updates.svc';
-import { initiateDbBackup } from '../../../../services/dbBackup.svc';
-import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
-import { toastManager } from '../../../../toasts/toastManager';
-import WhiteButton from '../../../../components/buttons/WhiteButton';
-import useIcons from '../../../../customHooks/useIcons';
+import React, { useState, memo, useEffect, useRef, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ToastRender from "../../../../components/ToastRender/ToastRender";
+import Page from "../../../../components/Page/Page";
+import ExpandableSection from "../../../../components/Section/ExpandableSection";
+import NewUpdate from "./NewUpdate/NewUpdate";
+import NoUpdate from "./NoUpdate/NoUpdate";
+import CheckingUpdates from "./CheckingUpdates/CheckingUpdates";
+import {
+  checkForUpdates,
+  downloadUpdate,
+  abortDownload,
+  deleteUpdate,
+  installUpdate
+} from "../../../../services/updates.svc";
+import { initiateDbBackup } from "../../../../services/dbBackup.svc";
+import {
+  updateSettings,
+  saveSettings
+} from "../../../../redux/actions/settingsActions";
+import { toastManager } from "../../../../toasts/toastManager";
+import WhiteButton from "../../../../components/buttons/WhiteButton";
+import useIcons from "../../../../customHooks/useIcons";
 
 // ELECTRON
-const { ipcRenderer } = require('electron');
+const { ipcRenderer } = require("electron");
 
 const SETTINGS_NAME = "appUpdates";
 
@@ -25,14 +34,16 @@ const AppUpdates = () => {
   const [isChecking, setIsChecking] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
   const [progress, setProgress] = useState(progressState());
-  const appUpdatesSettings = useSelector(store => store.settings.data[SETTINGS_NAME]);
+  const appUpdatesSettings = useSelector(
+    (store) => store.settings.data[SETTINGS_NAME]
+  );
 
   const {
     availableUpdate,
     updateVersion,
     releaseDate,
-    updateDownloaded,
-    updateFilePath
+    updateDownloaded
+    //updateFilePath
   } = appUpdatesSettings;
 
   const downloadHandler = async () => {
@@ -44,12 +55,18 @@ const AppUpdates = () => {
       if (promise === undefined)
         if (!isCancelled.current) setIsDownloading(false);
     }
-  }
+  };
 
   const installHandler = async () => {
-    const id = toastManager.info(<ToastRender spinner={true} message={"מבצע גיבוי בסיס נתונים לפני התקנה..."} />, {
-      autoClose: false
-    });
+    const id = toastManager.info(
+      <ToastRender
+        spinner={true}
+        message={"מבצע גיבוי בסיס נתונים לפני התקנה..."}
+      />,
+      {
+        autoClose: false
+      }
+    );
 
     const promise = await initiateDbBackup().catch((result) => {
       toastManager.update(id, {
@@ -63,7 +80,14 @@ const AppUpdates = () => {
     // success
     if (promise)
       toastManager.update(id, {
-        render: <ToastRender done={true} message={"גיבוי בסיס הנתונים הסתיים. המערכת מבצעת יציאה לצורך התקנת העידכון."} />,
+        render: (
+          <ToastRender
+            done={true}
+            message={
+              "גיבוי בסיס הנתונים הסתיים. המערכת מבצעת יציאה לצורך התקנת העידכון."
+            }
+          />
+        ),
         type: toastManager.types.SUCCESS,
         delay: 3000,
         autoClose: 2500,
@@ -71,8 +95,7 @@ const AppUpdates = () => {
           installUpdate();
         }
       });
-
-  }
+  };
 
   // abort download handler
   const abortDownloadHandler = useCallback(async (silent) => {
@@ -91,7 +114,6 @@ const AppUpdates = () => {
       setProgress(progressState());
     }
 
-
     await abortDownloadHandler();
     await dispatch(checkForUpdates());
   };
@@ -101,21 +123,23 @@ const AppUpdates = () => {
     event.stopPropagation();
 
     // get rid of the file name to get the folder for deletion
-    var index = updateFilePath.indexOf("\\update.exe");
-    var newPath = updateFilePath.substr(0, index);
+    //var index = updateFilePath.indexOf("\\update.exe");
+    var newPath = `C:\\Users\\Admin\\AppData\\Local\\ramot-group-income-outcome-management-updater\\pending\\`; //updateFilePath.substr(0, index)
 
     const promise = await deleteUpdate(newPath);
 
     // reset settings
     if (promise) {
-      await dispatch(updateSettings(SETTINGS_NAME, {
-        availableUpdate: false,
-        updateVersion: "",
-        releaseDate: "",
-        userNotified: false,
-        updateDownloaded: false,
-        updateFilePath: ""
-      }));
+      await dispatch(
+        updateSettings(SETTINGS_NAME, {
+          availableUpdate: false,
+          updateVersion: "",
+          releaseDate: "",
+          userNotified: false,
+          updateDownloaded: false,
+          updateFilePath: ""
+        })
+      );
       await dispatch(saveSettings(false));
       await dispatch(checkForUpdates());
     }
@@ -137,13 +161,15 @@ const AppUpdates = () => {
       if (!isCancelled.current) setIsChecking(false);
 
       if (!updateDownloaded || version !== updateVersion) {
-        await dispatch(updateSettings(SETTINGS_NAME, {
-          availableUpdate: true,
-          updateVersion: version,
-          releaseDate,
-          updateDownloaded: false,
-          userNotified: true
-        }));
+        await dispatch(
+          updateSettings(SETTINGS_NAME, {
+            availableUpdate: true,
+            updateVersion: version,
+            releaseDate,
+            updateDownloaded: false,
+            userNotified: true
+          })
+        );
         await dispatch(saveSettings(false));
       }
     });
@@ -151,26 +177,32 @@ const AppUpdates = () => {
     ipcRenderer.on("update_not_available", async (event) => {
       if (!isCancelled.current) setIsChecking(false);
 
-      await dispatch(updateSettings(SETTINGS_NAME, {
-        availableUpdate: false,
-        updateVersion: "",
-        releaseDate: "",
-        updateDownloaded: false,
-        userNotified: false,
-        updateFilePath: ""
-      }));
+      await dispatch(
+        updateSettings(SETTINGS_NAME, {
+          availableUpdate: false,
+          updateVersion: "",
+          releaseDate: "",
+          updateDownloaded: false,
+          userNotified: false,
+          updateFilePath: ""
+        })
+      );
       await dispatch(saveSettings(false));
     });
 
     ipcRenderer.on("downloading_update", (event, result) => {
-      if (result.data)
-        if (!isCancelled.current) setIsDownloading(true);
+      if (result.data) if (!isCancelled.current) setIsDownloading(true);
     });
 
     ipcRenderer.on("update_downloaded", async (event, result) => {
       if (!isCancelled.current) setIsDownloading(false);
 
-      await dispatch(updateSettings(SETTINGS_NAME, { updateDownloaded: true, updateFilePath: result.data.downloadedFile }));
+      await dispatch(
+        updateSettings(SETTINGS_NAME, {
+          updateDownloaded: true,
+          updateFilePath: result.data.downloadedFile
+        })
+      );
       await dispatch(saveSettings(false));
     });
 
@@ -178,7 +210,6 @@ const AppUpdates = () => {
       toastManager.error(result.error);
       if (!isCancelled.current) setIsDownloading(false);
     });
-
   }, [dispatch, updateDownloaded, updateVersion]);
 
   // cleanup
@@ -192,30 +223,28 @@ const AppUpdates = () => {
       ipcRenderer.removeAllListeners("update_downloaded");
       ipcRenderer.removeAllListeners("updater_error");
       abortDownloadHandler();
-    }
+    };
   }, [abortDownloadHandler]);
 
   const renderNewUpdate = () => {
-    return (
-      !isChecking && availableUpdate ?
-        <NewUpdate
-          updateVersion={updateVersion}
-          releaseDate={releaseDate}
-          updateDownloaded={updateDownloaded}
-          progress={progress}
-          isDownloading={isDownloading}
-          downloadHandler={downloadHandler}
-          installHandler={installHandler}
-          abortDownloadHandler={abortDownloadHandler}
-          deleteUpdateHandler={deleteUpdateHandler}
-        /> :
-        <NoUpdate />
-    )
-  }
+    return !isChecking && availableUpdate ? (
+      <NewUpdate
+        updateVersion={updateVersion}
+        releaseDate={releaseDate}
+        updateDownloaded={updateDownloaded}
+        progress={progress}
+        isDownloading={isDownloading}
+        downloadHandler={downloadHandler}
+        installHandler={installHandler}
+        abortDownloadHandler={abortDownloadHandler}
+        deleteUpdateHandler={deleteUpdateHandler}
+      />
+    ) : (
+      <NoUpdate />
+    );
+  };
 
-  const content = isChecking ?
-    <CheckingUpdates /> :
-    renderNewUpdate();
+  const content = isChecking ? <CheckingUpdates /> : renderNewUpdate();
 
   const Icon = generateIcon("update");
 
@@ -226,13 +255,11 @@ const AppUpdates = () => {
         Icon={Icon}
         extraDetails={<WhiteButton onClick={refreshHandler}>רענן</WhiteButton>}
       >
-
         {content}
-
-      </ExpandableSection >
+      </ExpandableSection>
     </Page>
   );
-}
+};
 
 export default memo(AppUpdates);
 

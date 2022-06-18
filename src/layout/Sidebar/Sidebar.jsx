@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import Divider from "@material-ui/core/Divider";
 import Logo from "./Logo/Logo";
 import Credits from "./Credits/Credits";
 import MenuContainer from "./Menu/MenuContainer";
@@ -17,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     zIndex: 5,
-    overflow: "unset",
+    overflow: "unset"
   },
   drawerPaper: {
     width: drawerWidth,
     borderRight: "none",
     boxShadow: "2px 0px 14px 1px #00000012", //2px 0px 14px 1px #00000012
-    overflow: "hidden",
+    overflow: "hidden"
   },
   drawerHeader: {
     display: "flex",
@@ -31,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
+    justifyContent: "flex-end"
+  }
 }));
 
 const Sidebar = ({ routes, isFetching, data }) => {
@@ -48,7 +47,7 @@ const Sidebar = ({ routes, isFetching, data }) => {
       anchor="left"
       open={showSidebar}
       classes={{
-        paper: classes.drawerPaper,
+        paper: classes.drawerPaper
       }}
       id="sidebar"
       style={{ display: isFullscreen ? "none" : "initial" }}

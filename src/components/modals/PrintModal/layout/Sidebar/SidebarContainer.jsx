@@ -1,44 +1,42 @@
-import React, { useEffect, useReducer, useState } from "react";
-import { reducer } from "./reducer";
-import printTemplates from "../../printTemplates";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import { useDispatch } from "react-redux";
-import { setColors } from "../../../../../redux/actions/printActions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getPrinters,
+  setColors
+} from "../../../../../redux/actions/printActions";
+import { updateTemplate } from "../../../../../redux/actions/printTemplatesActions";
 
 const rangeRegex = "^(\\s*\\d+\\s*\\-\\s*\\d+\\s*,?|\\d)+$";
 
-// this method is used for initial setng of
-// the default user printer in the list
-function initState(data, pageName) {
-  const state = printTemplates[pageName];
-  if (data.length !== 0) {
-    data.forEach(({ isDefault, deviceName }) => {
-      if (isDefault) state.deviceName = deviceName;
-    });
-  }
-  return state;
-}
-
 const SidebarContainer = (props) => {
-  const { pdf, onClose, onPrint, printers, generate, pageName } = props;
-  const [state, dispatch] = useReducer(
-    reducer,
-    initState(printers.data, pageName)
-  );
+  const { pdf, onClose, onPrint, generate, pageName } = props;
 
-  const reduxDispatch = useDispatch();
+  const printers = useSelector((store) => store.print.printers);
+  const template = useSelector((store) => store.printTemplates[pageName]);
 
+  const dispatch = useDispatch();
+
+  const [printer, setPrinter] = useState("");
   const [allPages, setAllPages] = useState(true);
-
   const [rangeValid, setRangeValid] = useState(true);
-
   const [copies, setCopies] = useState(1);
-
   const [initialNumOfPages, setInitialNumOfPages] = useState(0);
 
   useEffect(() => {
-    generate(state);
-  }, [state, generate]);
+    generate(template);
+    // eslint-disable-next-line
+  }, [template]);
+
+  useEffect(() => {
+    dispatch(getPrinters()).then((data) => {
+      if (data.length !== 0) {
+        data.forEach(({ isDefault, deviceName }) => {
+          if (isDefault) setPrinter(deviceName);
+        });
+      }
+    });
+  }, [dispatch]);
 
   const onPageRangesBlur = (event) => {
     let pageCount = pdf.pageCount;
@@ -83,46 +81,62 @@ const SidebarContainer = (props) => {
       if (rangeValid === false) setRangeValid(true);
 
       // subtract 1 from 'from' and 'to' because electron print options pageRanges is 0 based
-      dispatch({
-        type: "setPageRanges",
-        pageRanges: {
-          from: Number.parseInt(range[0]) - 1,
-          to: Number.parseInt(range[1]) - 1,
-        },
-      });
+      dispatch(
+        updateTemplate({
+          pageName,
+          key: "pageRanges",
+          value: {
+            from: Number.parseInt(range[0]) - 1,
+            to: Number.parseInt(range[1]) - 1
+          }
+        })
+      );
     }
   };
 
   const onScaleFactorBlur = (event) => {
     const value = Number.parseInt(event.target.getAttribute("aria-valuenow"));
 
-    dispatch({ type: "setScaleFactor", scaleFactor: value });
+    dispatch(updateTemplate({ pageName, key: "scaleFactor", value }));
   };
 
   const onChange = (event) => {
     const target = event.target;
 
     switch (target.name) {
-      case "deviceName":
-        dispatch({ type: "setDeviceName", deviceName: target.value });
-        break;
       case "copies":
         if (target.value !== "") setCopies(Number.parseInt(target.value));
         break;
       case "allPages":
         setAllPages(target.value);
         if (target.value === true)
-          dispatch({ type: "setPageRanges", pageRanges: undefined });
+          dispatch(
+            updateTemplate({
+              pageName,
+              key: "pageRanges",
+              value: undefined
+            })
+          );
         break;
       case "pageSize":
-        dispatch({ type: "setPageSize", pageSize: target.value });
+        dispatch(
+          updateTemplate({ pageName, key: "pageSize", value: target.value })
+        );
         break;
       case "landscape":
-        dispatch({ type: "setLandscape", landscape: target.value });
+        dispatch(
+          updateTemplate({
+            pageName,
+            key: "landscape",
+            value: target.value
+          })
+        );
         break;
       case "colors":
-        dispatch({ type: "setColors", colors: target.value });
-        reduxDispatch(setColors(target.value));
+        dispatch(
+          updateTemplate({ pageName, key: "colors", value: target.value })
+        );
+        dispatch(setColors(target.value));
         break;
       default:
         return null;
@@ -130,18 +144,25 @@ const SidebarContainer = (props) => {
   };
 
   const onPrintClick = () => {
-    const newState = { ...state };
+    const newState = { ...template };
     newState.copies = copies;
-    onPrint(state, pdf);
+    newState.printer = printer;
+    onPrint(newState);
     onClose();
+  };
+
+  const printerOnChange = (event) => {
+    setPrinter(event.target.value);
   };
 
   return (
     <Sidebar
       onPrintClick={onPrintClick}
       onClose={onClose}
-      state={state}
+      template={template}
       printers={printers}
+      printer={printer}
+      printerOnChange={printerOnChange}
       onChange={onChange}
       onPageRangesBlur={onPageRangesBlur}
       onScaleFactorBlur={onScaleFactorBlur}

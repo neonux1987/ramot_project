@@ -1,11 +1,14 @@
 const printerIpc = () => {
   const { ipcMain, BrowserWindow, app, dialog } = require("electron");
 
-  ipcMain.on("print-pdf", async (event, pageSetup = {}) => {
-    // Create the browser window.
-    const win = BrowserWindow.getAllWindows()[0];
+  ipcMain.on("print-pdf", async (event, options = {}, blobUrl = null) => {
+    let win = new BrowserWindow({
+      title: "Print Preview",
+      show: false,
+      autoHideMenuBar: true
+    });
 
-    const options = {
+    const pageSetup = {
       marginsType: 0,
       pageSize: "A4",
       printBackground: true,
@@ -13,34 +16,31 @@ const printerIpc = () => {
       silent: true,
       landscape: true,
       scaleFactor: 100,
-      ...pageSetup,
+      ...options
     };
 
-    const data = await win.webContents.printToPDF(options);
+    win.loadURL(blobUrl);
 
-    const { PDFDocument } = require("pdf-lib");
-    const doc = await PDFDocument.load(data);
-    const pages = doc.getPages();
+    win.webContents.once("did-finish-load", async () => {
+      const data = await win.webContents.printToPDF(pageSetup, () =>
+        win.destroy()
+      );
 
-    if (data === undefined || data === null)
-      event.sender.send("pdf-printed", {
-        error: `המערכת לא הצליחה לקרוא את קובץ ה-pdf לתצוגת הדפסה`,
-      });
-    else {
-      // add page numbers
-      for (let i = 0; i < pages.length; i++) {
-        pages[i].drawText(`${i + 1}/${pages.length}`, {
-          x: 10,
-          y: 10,
-          size: 14,
+      if (data === undefined || data === null) {
+        event.sender.send("pdf-printed", {
+          error: `המערכת לא הצליחה לקרוא את קובץ ה-pdf לתצוגת הדפסה`
         });
+        return;
       }
 
+      const { pageCount, output } = await addPageNumbers(data);
+
       event.sender.send("pdf-printed", {
-        data: await doc.save(),
-        pageCount: pages.length,
+        data: output,
+        blobUrl,
+        pageCount
       });
-    }
+    });
   });
 
   ipcMain.on("print", async (event, pageSetup = {}, pdfInfo) => {
@@ -55,10 +55,10 @@ const printerIpc = () => {
     );
 
     const options = {
-      printer: pageSetup.deviceName,
+      printer: pageSetup.printer,
       silent: true,
       paperSize: pageSetup.pageSize,
-      copies: pageSetup.copies,
+      copies: pageSetup.copies
     };
 
     // write the pdf data to a file
@@ -74,7 +74,7 @@ const printerIpc = () => {
     // editable and small size pdf and it's a lot faster
     if (options.printer.toUpperCase().includes("PDF")) {
       const { canceled, filePath } = await dialog.showSaveDialog(null, {
-        title: "שמירת קובץ PDF",
+        title: "שמירת קובץ PDF"
       });
       if (!canceled) {
         await fse.copy(tempFilePath, filePath);
@@ -95,17 +95,34 @@ const printerIpc = () => {
   ipcMain.on("get-printers", async (event, pageSetup) => {
     // Create the browser window.
     const win = BrowserWindow.getAllWindows()[0];
-    const printers = win.webContents.getPrinters();
+    const printers = await win.webContents.getPrintersAsync();
 
     const list = [];
     printers.forEach(({ name, isDefault }) => {
       list.push({
         deviceName: name,
-        isDefault,
+        isDefault
       });
     });
     event.sender.send("printers-list", { data: list });
   });
 };
+
+// add page numbers
+async function addPageNumbers(data) {
+  const { PDFDocument } = require("pdf-lib");
+  const doc = await PDFDocument.load(data);
+  const pages = doc.getPages();
+
+  for (let i = 0; i < pages.length; i++) {
+    pages[i].drawText(`${i + 1}/${pages.length}`, {
+      x: 10,
+      y: 10,
+      size: 14
+    });
+  }
+
+  return { pageCount: pages.length, output: await doc.save() };
+}
 
 module.exports = printerIpc;

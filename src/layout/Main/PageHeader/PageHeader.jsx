@@ -1,5 +1,5 @@
 import React from "react";
-import { css, keyframes } from "emotion";
+import { css } from "emotion";
 import MoreBuildingMenu from "./MoreBuildingMenu/MoreBuildingMenu";
 import BreadcrumbsContainer from "../../AppBar/Breadcrumbs/BreadcrumbsContainer";
 import SelectButton from "../../../components/buttons/SelectButton";
@@ -28,7 +28,6 @@ const breadcrumbsWrapper = css`
 `;
 
 const PageHeader = ({
-  shake,
   pathname,
   isPathValid,
   handleClick,
@@ -36,7 +35,7 @@ const PageHeader = ({
   handleClose,
   onExcelReportsHandler,
   onEmptyReportsHandler,
-  onChangeBuildingColorHandler,
+  onChangeBuildingColorHandler
 }) => {
   return (
     <div className={container} id="pageHeader">
