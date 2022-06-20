@@ -14,7 +14,7 @@ const { AppErrorDialog } = require("./helpers/utils");
 
 const isDev = !app.isPackaged;
 process.env.APP_ROOT_PATH = app.getAppPath();
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+//process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
 contextMenu({
   prepend: () => [
@@ -102,11 +102,7 @@ async function createWindow() {
         if (isDev) {
           // Open the DevTools.
           mainWindow.webContents.openDevTools();
-
-          //add react dev tools
-          //ses.loadExtension(
-          //    path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.7.0_0')
-          //);
+          process.traceProcessWarnings = true;
         } else {
           process.env.NODE_ENV = "production";
         }

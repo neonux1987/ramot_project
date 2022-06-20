@@ -23,11 +23,13 @@ const SectionControls = ({
   },
   print,
   printProps = {
-    onPrintClick: Function
+    onPrintClick: Function,
+    dataExist: false
   },
   excel,
   excelProps = {
-    exportToExcelHandler: Function
+    exportToExcelHandler: Function,
+    dataExist: false
   }
 }) => {
   const show = addNewModeProps.dataExist ? styles.show : styles.hide;
@@ -36,13 +38,13 @@ const SectionControls = ({
     <div className={styles.wrapper} style={style} id="tableControls">
       <div className={styles.controls}>
         <div className={`${styles.rightControls} ${show}`}>
-          {edit && (
+          {edit && editModeProps.dataExist && (
             <EditButton
               on={editModeProps.editMode}
               onClick={editModeProps.toggleEditMode}
             />
           )}
-          {addNew && (
+          {addNew && addNewModeProps.dataExist && (
             <AddNewButton
               on={addNewModeProps.addNewMode}
               onClick={addNewModeProps.toggleAddNewMode}
@@ -51,8 +53,12 @@ const SectionControls = ({
         </div>
 
         <div className={styles.leftControls}>
-          {excel && <ExcelButton onClick={excelProps.exportToExcelHandler} />}
-          {print && <PrintButton onClick={printProps.onPrintClick} />}
+          {excel && excelProps.dataExist && (
+            <ExcelButton onClick={excelProps.exportToExcelHandler} />
+          )}
+          {print && printProps.dataExist && (
+            <PrintButton onClick={printProps.onPrintClick} />
+          )}
         </div>
 
         <div className={styles.fullscreen}>

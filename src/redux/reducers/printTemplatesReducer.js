@@ -29,8 +29,6 @@ const initialState = {
     pageSize: "A4",
     copies: 1,
     landscape: true,
-    colors: true,
-    pageRanges: undefined,
     scaleFactor: 100
   },
   expansesCodes: {
@@ -54,13 +52,16 @@ const initialState = {
 const printReducer = (state = initialState, action) => {
   switch (action.type) {
     case TYPES.UPDATE_TEMPLATE: {
-      return {
+      console.log("state", state);
+      const newState = {
         ...state,
         [action.pageName]: {
           ...state[action.pageName],
           [action.key]: action.value
         }
       };
+      console.log("newState", newState);
+      return newState;
     }
     default:
       return state;

@@ -48,7 +48,9 @@ const Statistics = (props) => {
       </Box>
     );
   }, [onClick, selectedChart]);
+
   const SectionIcon = generateIcon("סטטיסטיקה");
+
   return (
     <Page>
       <TitledSection
@@ -61,7 +63,8 @@ const Statistics = (props) => {
         <SectionControlsContainer
           print={true}
           printProps={{
-            pageName: PAGE_NAME
+            pageName: PAGE_NAME,
+            dataExist: true
           }}
         />
 

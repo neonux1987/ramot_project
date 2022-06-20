@@ -12,7 +12,7 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
   chart: {
     type: "column",
     style: {
-      fontFamily: "Open Sans, sans-serif",
+      fontFamily: "Open Sans, sans-serif"
     },
     height: "450px",
     events: {
@@ -23,8 +23,8 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
         highcharts.target.chartHeight = isFullscreen ? 1050 : 450;
         highcharts.target.containerHeight = isFullscreen ? "1050px" : "450px"; */
         //console.log(highcharts.target);
-      },
-    },
+      }
+    }
   },
   lang: {
     downloadCSV: `שמור כקובץ נתונים CSV`,
@@ -32,7 +32,7 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
     downloadPDF: `שמור כקובץ PDF`,
     printChart: `הדפס גרף`,
     viewFullscreen: `מסך מלא`,
-    exitFullscreen: `יציאה ממסך מלא`,
+    exitFullscreen: `יציאה ממסך מלא`
   },
   exporting: {
     enabled: true,
@@ -48,10 +48,10 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
           "printChart",
           "separator",
           "downloadPNG",
-          "downloadPDF",
-        ],
-      },
-    },
+          "downloadPDF"
+        ]
+      }
+    }
   },
   legend: {
     rtl: true,
@@ -59,19 +59,19 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
     title: {
       style: {
         fontWeight: "500",
-        fontSize: "14px",
-      },
-    },
+        fontSize: "14px"
+      }
+    }
   },
   credits: {
-    enabled: false,
+    enabled: false
   },
   title: {
     text: title,
     style: {
       fontSize: "34px",
-      fontWeight: "500",
-    },
+      fontWeight: "500"
+    }
   },
   tooltip: {
     headerFormat:
@@ -85,37 +85,49 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
     style: {
       direction: "rtl",
       fontWeight: "500",
-      fontSize: "14px",
-    },
+      fontSize: "14px"
+    }
   },
   plotOptions: {
     column: {
       dataLabels: {
         enabled: true,
-        allowOverlap: true,
-      },
-    },
+        allowOverlap: true
+      }
+    }
   },
   yAxis: {
     opposite: true,
     title: {
-      enabled: false,
+      enabled: false
     },
     gridLineDashStyle: "dash",
     labels: {
       style: {
-        fontSize: "14px",
-      },
-    },
+        fontSize: "14px"
+      }
+    }
   },
   xAxis: {
     categories,
     crosshair: true,
     labels: {
       style: {
-        fontSize: "16px",
-      },
-    },
+        fontSize: "16px"
+      }
+    }
   },
   series,
+  responsive: {
+    rules: [
+      {
+        condition: {
+          maxWidth: 1400
+        },
+        chartOptions: {
+          height: "1050px"
+        }
+      }
+    ]
+  }
 });

@@ -1,5 +1,5 @@
 const printerIpc = () => {
-  const { ipcMain, BrowserWindow, app, dialog } = require("electron");
+  const { ipcMain, BrowserWindow, dialog } = require("electron");
 
   ipcMain.on("print-pdf", async (event, options = {}, blobUrl = null) => {
     let win = new BrowserWindow({

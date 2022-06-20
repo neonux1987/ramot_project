@@ -86,7 +86,7 @@ const SummarizedSectionsTableContainer = () => {
     dispatch(updateSummarizedSection(newCopy, oldCopy, index));
   };
 
-  const dataExist = (id, section) => {
+  const isDataExist = (id, section) => {
     let valid = false;
 
     data.forEach((item) => {
@@ -145,6 +145,8 @@ const SummarizedSectionsTableContainer = () => {
     );
   };
 
+  const dataExist = data.length > 0;
+
   return (
     <TableSection>
       <SectionControlsContainer
@@ -152,21 +154,25 @@ const SummarizedSectionsTableContainer = () => {
         editModeProps={{
           editMode,
           toggleEditMode,
-          dataExist: data.length > 0
+          dataExist
         }}
         addNew={true}
         addNewModeProps={{
           addNewMode,
           toggleAddNewMode,
-          dataExist: data.length > 0
+          dataExist
         }}
         print={true}
         printProps={{
-          pageName: "expansesCodes"
+          pageName: "expansesCodes",
+          dataExist
         }}
       />
 
-      <AddSummarizedSectionContainer show={addNewMode} dataExist={dataExist} />
+      <AddSummarizedSectionContainer
+        show={addNewMode}
+        dataExist={isDataExist}
+      />
 
       <TableContainer
         Row={Row}

@@ -241,6 +241,8 @@ const SummarizedBudgetsTableContainer = (props) => {
     };
   }, [getDataObject, data]);
 
+  const dataExist = data.length > 0;
+
   return (
     <TableSection>
       <SectionControlsContainer
@@ -248,7 +250,7 @@ const SummarizedBudgetsTableContainer = (props) => {
         editModeProps={{
           editMode,
           toggleEditMode,
-          dataExist: data.length > 0
+          dataExist
         }}
         excel={true}
         excelProps={{
@@ -257,11 +259,13 @@ const SummarizedBudgetsTableContainer = (props) => {
           buildingName,
           buildingId,
           date,
-          pageName
+          pageName,
+          dataExist
         }}
         print={true}
         printProps={{
-          pageName
+          pageName,
+          dataExist
         }}
       />
       <YearOnlyDatePicker

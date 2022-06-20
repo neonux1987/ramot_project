@@ -142,6 +142,8 @@ const BuildingsManagementTableContainer = () => {
     );
   };
 
+  const dataExist = data.length > 0;
+
   return (
     <TableSection>
       <SectionControlsContainer
@@ -149,13 +151,13 @@ const BuildingsManagementTableContainer = () => {
         editModeProps={{
           editMode,
           toggleEditMode,
-          dataExist: data.length > 0
+          dataExist
         }}
         addNew={true}
         addNewModeProps={{
           addNewMode,
           toggleAddNewMode,
-          dataExist: data.length > 0
+          dataExist
         }}
       />
       <AddBuildingContainer

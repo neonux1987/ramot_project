@@ -1,19 +1,19 @@
 // LIBRARIES
-import React, { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { ipcRenderer } from 'electron';
-import { fetchMenu } from '../../redux/actions/menuActions';
-import Sidebar from './Sidebar';
+import React, { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ipcRenderer } from "electron";
+import { fetchMenu } from "../../redux/actions/menuActions";
+import Sidebar from "./Sidebar";
 
 const SidebarContainer = () => {
   const dispatch = useDispatch();
 
-  const routes = useSelector(store => store.routes);
-  const { data, isFetching } = useSelector(store => store.menu);
+  const routes = useSelector((store) => store.routes);
+  const { data, isFetching } = useSelector((store) => store.menu);
 
   const fetchListener = useCallback(() => {
     dispatch(fetchMenu());
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     fetchListener();
@@ -23,13 +23,13 @@ const SidebarContainer = () => {
   // exisiting building is updated, fetch
   // the menu again to get the updated state
   useEffect(() => {
-    ipcRenderer.on("updated-building", fetchListener)
-    ipcRenderer.on("added-building", fetchListener)
+    ipcRenderer.on("updated-building", fetchListener);
+    ipcRenderer.on("added-building", fetchListener);
 
     return () => {
       ipcRenderer.removeListener("updated-building", fetchListener);
       ipcRenderer.removeListener("added-building", fetchListener);
-    }
+    };
   }, [fetchListener]);
 
   return (
@@ -40,8 +40,6 @@ const SidebarContainer = () => {
       data={data}
     />
   );
-
-}
+};
 
 export default SidebarContainer;
-

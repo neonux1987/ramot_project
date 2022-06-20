@@ -1,15 +1,10 @@
 import React from "react";
 import { css } from "emotion";
 import PrimaryButton from "../../../../buttons/PrimaryButton";
-import {
-  Collapse,
-  Input,
-  MenuItem,
-  Slider,
-  Typography
-} from "@material-ui/core";
+import { Collapse, Input, MenuItem, Typography } from "@material-ui/core";
 import WhiteButton from "../../../../buttons/WhiteButton";
 import PrintSelect from "../../../../Select/PrintSelect";
+import Slider from "../../../../Slider/Slider";
 
 const sidebar = css`
   border-bottom: 1px solid #e6e6e6;
@@ -120,7 +115,6 @@ const Sidebar = (props) => {
     printer,
     printerOnChange
   } = props;
-
   return (
     <form className={sidebar}>
       <Row>
@@ -179,45 +173,49 @@ const Sidebar = (props) => {
         </LeftPane>
       </Row>
 
-      <Row>
-        <RightPane>
-          <Label>עמודים</Label>
-        </RightPane>
+      {template.hasOwnProperty("pageRanges") && (
+        <Row>
+          <RightPane>
+            <Label>עמודים</Label>
+          </RightPane>
 
-        <LeftPane>
-          <WideSelect name="allPages" value={allPages} onChange={onChange}>
-            <MenuItem value={true}>הכל</MenuItem>
-            <MenuItem value={false}>מותאם</MenuItem>
-          </WideSelect>
-        </LeftPane>
-      </Row>
+          <LeftPane>
+            <WideSelect name="allPages" value={allPages} onChange={onChange}>
+              <MenuItem value={true}>הכל</MenuItem>
+              <MenuItem value={false}>מותאם</MenuItem>
+            </WideSelect>
+          </LeftPane>
+        </Row>
+      )}
 
-      <Collapse timeout={300} in={!allPages}>
-        <div>
-          <div className={row + " " + rangeRow}>
-            <RightPane></RightPane>
-            <LeftPane>
-              <Input
-                name="pageRanges"
-                classes={{ root: input }}
-                inputProps={{
-                  className: inputInner,
-                  min: 0,
-                  max: pdf ? pdf.pageCount : 0,
-                  onBlur: onPageRangesBlur
-                }}
-                placeholder="דוגמא: 1-5, 8, 11-13"
-              />
-            </LeftPane>
-          </div>
-
-          {!rangeValid ? (
-            <div className={rangeError}>
-              טווח עמודים לא תקין, דוגמא תקינה: 1-5, 8, 11-13
+      {template.hasOwnProperty("pageRanges") && (
+        <Collapse timeout={300} in={!allPages}>
+          <div>
+            <div className={row + " " + rangeRow}>
+              <RightPane></RightPane>
+              <LeftPane>
+                <Input
+                  name="pageRanges"
+                  classes={{ root: input }}
+                  inputProps={{
+                    className: inputInner,
+                    min: 0,
+                    max: pdf ? pdf.pageCount : 0,
+                    onBlur: onPageRangesBlur
+                  }}
+                  placeholder="דוגמא: 1-5, 8, 11-13"
+                />
+              </LeftPane>
             </div>
-          ) : null}
-        </div>
-      </Collapse>
+
+            {!rangeValid ? (
+              <div className={rangeError}>
+                טווח עמודים לא תקין, דוגמא תקינה: 1-5, 8, 11-13
+              </div>
+            ) : null}
+          </div>
+        </Collapse>
+      )}
 
       <Row>
         <RightPane>
@@ -257,18 +255,24 @@ const Sidebar = (props) => {
         </LeftPane>
       </Row>
 
-      <Row>
-        <RightPane>
-          <Label>צבעים</Label>
-        </RightPane>
+      {template.hasOwnProperty("colors") && (
+        <Row>
+          <RightPane>
+            <Label>צבעים</Label>
+          </RightPane>
 
-        <LeftPane>
-          <WideSelect name="colors" value={template.colors} onChange={onChange}>
-            <MenuItem value={true}>צבעוני</MenuItem>
-            <MenuItem value={false}>שחור לבן</MenuItem>
-          </WideSelect>
-        </LeftPane>
-      </Row>
+          <LeftPane>
+            <WideSelect
+              name="colors"
+              value={template.colors}
+              onChange={onChange}
+            >
+              <MenuItem value={true}>צבעוני</MenuItem>
+              <MenuItem value={false}>שחור לבן</MenuItem>
+            </WideSelect>
+          </LeftPane>
+        </Row>
+      )}
 
       <Row>
         <RightPane>
@@ -278,7 +282,7 @@ const Sidebar = (props) => {
         <LeftPane>
           <Slider
             className={slider}
-            defaultValue={100}
+            value={template.scaleFactor}
             onBlur={onScaleFactorBlur}
             step={1}
             min={0}

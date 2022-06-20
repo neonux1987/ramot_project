@@ -187,6 +187,8 @@ const MonthExpansesTableContainer = (props) => {
     );
   }
 
+  const dataExist = data.length > 0;
+
   return (
     <TableSection>
       <SectionControlsContainer
@@ -194,13 +196,13 @@ const MonthExpansesTableContainer = (props) => {
         editModeProps={{
           editMode,
           toggleEditMode,
-          dataExist: data.length > 0
+          dataExist
         }}
         addNew={true}
         addNewModeProps={{
           addNewMode,
           toggleAddNewMode,
-          dataExist: data.length > 0
+          dataExist
         }}
         excel={true}
         excelProps={{
@@ -209,11 +211,13 @@ const MonthExpansesTableContainer = (props) => {
           buildingName,
           buildingId,
           date,
-          pageName
+          pageName,
+          dataExist
         }}
         print={true}
         printProps={{
-          pageName
+          pageName,
+          dataExist
         }}
       />
 

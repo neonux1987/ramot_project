@@ -1,43 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { setColors, setPrintMode } from "../../../redux/actions/printActions";
+import {
+  setColors,
+  setPrintMode,
+  setOutput
+} from "../../../redux/actions/printActions";
 import SidebarContainer from "./layout/Sidebar/SidebarContainer";
 import Content from "./layout/Content/Content";
 import Container from "./Container";
-import usePrint from "../../../customHooks/usePrint";
 
 const PrintModal = (props) => {
   const { onClose, pageName } = props;
 
-  const { printers, printableComponentRef } = useSelector(
+  const { printers, printableComponentRef, output } = useSelector(
     (store) => store.print
   );
 
-  const { generatePreview, generatingPreview, output, print } = usePrint();
-
+  // using this make it look like closing
+  // the modal is faster since we're using
+  // modal open prop to hide it on close too
   const [open, setOpen] = useState(true);
 
   const dispatch = useDispatch();
 
   const onClick = () => {
     setOpen(false);
+    dispatch(setPrintMode(false));
+    dispatch(setColors(true));
     onClose();
   };
 
-  const generate = (options) => {
-    if (
-      printableComponentRef !== null &&
-      printableComponentRef.current !== null
-    )
-      generatePreview(printableComponentRef, options);
-  };
-
   useEffect(() => {
-    return () => {
-      dispatch(setPrintMode(false));
-      dispatch(setColors(true));
-    };
+    return dispatch(setOutput(null));
   }, [dispatch]);
 
   return (
@@ -52,17 +47,11 @@ const PrintModal = (props) => {
           pageName={pageName}
           pdf={output}
           onClose={onClick}
-          onPrint={print}
           printers={printers}
-          generate={generate}
         />
 
         <Content
-          loading={
-            printableComponentRef === null ||
-            generatingPreview ||
-            output === null
-          }
+          loading={printableComponentRef === null || output === null}
           blob={output !== null ? output.blobUrl : ""}
           output={output}
         />

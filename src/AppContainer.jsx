@@ -15,16 +15,16 @@ const theme = createMuiTheme(
     direction: "rtl", // Both here and <body dir="rtl">
     typography: {
       useNextVariants: true,
-      fontFamily: ["Open Sans", "sans-serif"].join(","),
+      fontFamily: ["Open Sans", "sans-serif"].join(",")
     },
     palette: {
       primary: {
-        main: "rgb(23, 110, 193)",
+        main: "rgb(23, 110, 193)"
       },
       secondary: {
-        main: "#001120",
-      },
-    },
+        main: "#001120"
+      }
+    }
   },
   heIL
 );

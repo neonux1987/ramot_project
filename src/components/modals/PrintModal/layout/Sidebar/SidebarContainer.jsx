@@ -3,18 +3,19 @@ import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getPrinters,
+  print,
+  printPreviewTest,
   setColors
 } from "../../../../../redux/actions/printActions";
 import { updateTemplate } from "../../../../../redux/actions/printTemplatesActions";
-
-const rangeRegex = "^(\\s*\\d+\\s*\\-\\s*\\d+\\s*,?|\\d)+$";
+import { validatePageRanges } from "../../../../../helpers/utils";
 
 const SidebarContainer = (props) => {
-  const { pdf, onClose, onPrint, generate, pageName } = props;
+  const { pdf, onClose, pageName } = props;
 
   const printers = useSelector((store) => store.print.printers);
   const template = useSelector((store) => store.printTemplates[pageName]);
-
+  console.log(template);
   const dispatch = useDispatch();
 
   const [printer, setPrinter] = useState("");
@@ -22,11 +23,14 @@ const SidebarContainer = (props) => {
   const [rangeValid, setRangeValid] = useState(true);
   const [copies, setCopies] = useState(1);
   const [initialNumOfPages, setInitialNumOfPages] = useState(0);
+  const [pageRanges, setPageRanges] = useState(null);
 
   useEffect(() => {
-    generate(template);
-    // eslint-disable-next-line
-  }, [template]);
+    const newTemplate = { ...template };
+    if (pageRanges) newTemplate.pageRanges = pageRanges;
+    console.log(newTemplate);
+    dispatch(printPreviewTest(newTemplate));
+  }, [template, pageRanges, dispatch]);
 
   useEffect(() => {
     dispatch(getPrinters()).then((data) => {
@@ -53,44 +57,22 @@ const SidebarContainer = (props) => {
     const target = event.target;
     const value = target.value;
 
-    const regex = new RegExp(rangeRegex);
-    const passed = regex.test(value);
-
-    let valid = true;
-    const range = target.value.split("-");
-
-    if (passed) {
-      // two values range
-      if (range.length === 2) {
-        if (range[0] > pageCount || range[1] > pageCount || range[0] > range[1])
-          valid = false;
-      }
-
-      // one value range, duplicate first value
-      // and push to the array
-      if (range.length === 1) {
-        if (range[0] > pageCount) valid = false;
-        else {
-          range.push(range[0]);
-        }
-      }
-    }
+    const valid = validatePageRanges(value, pageCount);
 
     if (!valid) setRangeValid(false);
     else {
-      if (rangeValid === false) setRangeValid(true);
-
-      // subtract 1 from 'from' and 'to' because electron print options pageRanges is 0 based
-      dispatch(
-        updateTemplate({
-          pageName,
-          key: "pageRanges",
-          value: {
-            from: Number.parseInt(range[0]) - 1,
-            to: Number.parseInt(range[1]) - 1
-          }
-        })
-      );
+      const range = value.split("-").map((x) => x.trim());
+      setRangeValid(true);
+      if (range.length === 1)
+        setPageRanges({
+          from: Number.parseInt(range[0]) - 1,
+          to: Number.parseInt(range[0]) - 1
+        });
+      else
+        setPageRanges({
+          from: Number.parseInt(range[0]) - 1,
+          to: Number.parseInt(range[1]) - 1
+        });
     }
   };
 
@@ -109,14 +91,7 @@ const SidebarContainer = (props) => {
         break;
       case "allPages":
         setAllPages(target.value);
-        if (target.value === true)
-          dispatch(
-            updateTemplate({
-              pageName,
-              key: "pageRanges",
-              value: undefined
-            })
-          );
+        if (target.value === true) setPageRanges(null);
         break;
       case "pageSize":
         dispatch(
@@ -147,7 +122,9 @@ const SidebarContainer = (props) => {
     const newState = { ...template };
     newState.copies = copies;
     newState.printer = printer;
-    onPrint(newState);
+    newState.pageRanges = pageRanges;
+
+    dispatch(print(newState));
     onClose();
   };
 

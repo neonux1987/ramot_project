@@ -134,7 +134,7 @@ const ExpansesCodes = () => {
     return sections[id];
   };
 
-  const dataExist = (id, code) => {
+  const isDataExist = (id, code) => {
     let valid = false;
     const parsedCode = Number.parseInt(code);
 
@@ -246,6 +246,8 @@ const ExpansesCodes = () => {
     );
   };
 
+  const dataExist = data.length > 0;
+
   return (
     <TableSection>
       <SectionControlsContainer
@@ -253,24 +255,25 @@ const ExpansesCodes = () => {
         editModeProps={{
           editMode,
           toggleEditMode,
-          dataExist: data.length > 0
+          dataExist
         }}
         addNew={true}
         addNewModeProps={{
           addNewMode,
           toggleAddNewMode,
-          dataExist: data.length > 0
+          dataExist
         }}
         print={true}
         printProps={{
-          pageName: "expansesCodes"
+          pageName: "expansesCodes",
+          dataExist
         }}
       />
 
       <AddExpanseCodeContainer
         summarizedSections={summarizedSections.data}
         show={addNewMode}
-        dataExist={dataExist}
+        dataExist={isDataExist}
       />
 
       <TableContainer

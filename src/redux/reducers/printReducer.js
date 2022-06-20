@@ -7,7 +7,8 @@ const initialState = {
     isFetching: true,
     data: []
   },
-  printableComponentRef: null
+  printableComponentRef: null,
+  output: null
 };
 
 const printReducer = (state = initialState, action) => {
@@ -22,6 +23,12 @@ const printReducer = (state = initialState, action) => {
       return {
         ...state,
         colors: action.colors
+      };
+    }
+    case TYPES.SET_OUTPUT: {
+      return {
+        ...state,
+        output: action.output
       };
     }
     case TYPES.PRINT_REQUEST: {
