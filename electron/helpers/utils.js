@@ -49,6 +49,8 @@ function getWindow(id) {
 exports.getWindow = getWindow;
 
 function createRestoreDbWindow() {
+  const remote = require("@electron/remote/main");
+
   const icon = path.join(app.getAppPath(), "Icon/ramot-group-icon.png");
   const isDev = !app.isPackaged;
 
@@ -60,13 +62,16 @@ function createRestoreDbWindow() {
     title: "אשף שיחזור בסיס נתונים",
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      contextIsolation: false
     },
     backgroundColor: "#eee",
     icon,
     resizeable: false,
     show: false
   });
+
+  remote.enable(restoreDbWindow.webContents);
 
   restoreDbWindow.loadURL(
     isDev

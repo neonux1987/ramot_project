@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Sound from './Sound/Sound';
-import SettingsExpandableSection from '../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
-import FileSelector from '../../../../../components/FileSelector/FileSelector';
-import TitleTypography from '../../../../../components/Typographies/TitleTypography';
-import { updateSettings, saveSettings } from '../../../../../redux/actions/settingsActions';
-import { soundManager } from '../../../../../soundManager/SoundManager';
-import Divider from '../../../../../components/Divider/Divider';
-import { setDirty } from '../../../../../redux/actions/goodByeActions';
-import { openItem } from '../../../../../services/mainProcess.svc';
-import useIcons from '../../../../../customHooks/useIcons';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Sound from "./Sound/Sound";
+import SettingsExpandableSection from "../../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection";
+import FileSelector from "../../../../../components/FileSelector/FileSelector";
+import TitleTypography from "../../../../../components/Typographies/TitleTypography";
+import {
+  updateSettings,
+  saveSettings
+} from "../../../../../redux/actions/settingsActions";
+import { soundManager } from "../../../../../soundManager/SoundManager";
+import Divider from "../../../../../components/Divider/Divider";
+import { setDirty } from "../../../../../redux/actions/routerPromptActions";
+import { openItem } from "../../../../../services/mainProcess.svc";
+import useIcons from "../../../../../customHooks/useIcons";
 
 const SETTINGS_NAME = "system";
 
 const SystemContainer = () => {
   const dispatch = useDispatch();
   const [generateIcon] = useIcons();
-  const settings = useSelector(store => store.settings.data[SETTINGS_NAME]);
+  const settings = useSelector((store) => store.settings.data[SETTINGS_NAME]);
   const [data, setData] = useState(settings);
 
-  const {
-    soundEnabled,
-    soundVolume,
-    config_folder_path
-  } = data;
+  const { soundEnabled, soundVolume, config_folder_path } = data;
 
   const onSoundCheck = (event) => {
     const { checked } = event.target;
@@ -32,7 +31,7 @@ const SystemContainer = () => {
       soundEnabled: checked
     });
     dispatch(setDirty());
-  }
+  };
 
   const onSliderBlur = (value) => {
     const calculatedValue = value / 100;
@@ -42,7 +41,7 @@ const SystemContainer = () => {
       soundVolume: calculatedValue
     });
     dispatch(setDirty());
-  }
+  };
 
   const save = async (event) => {
     event.stopPropagation();
@@ -56,20 +55,13 @@ const SystemContainer = () => {
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
       dispatch(setDirty(false));
     });
-  }
+  };
 
   const Icon = generateIcon("android");
 
   return (
-    <SettingsExpandableSection
-      title={"מערכת"}
-      Icon={Icon}
-      onSaveClick={save}
-    >
-
-      <TitleTypography gutterBottom>
-        הגדרות צלילי מערכת:
-      </TitleTypography>
+    <SettingsExpandableSection title={"מערכת"} Icon={Icon} onSaveClick={save}>
+      <TitleTypography gutterBottom>הגדרות צלילי מערכת:</TitleTypography>
 
       <Sound
         soundEnabled={soundEnabled}
@@ -81,14 +73,15 @@ const SystemContainer = () => {
 
       <Divider />
 
-      <TitleTypography>
-        מיקום תיקיית הגדרות מערכת:
-      </TitleTypography>
+      <TitleTypography>מיקום תיקיית הגדרות מערכת:</TitleTypography>
 
-      <FileSelector buttonLabel="פתח תיקייה" onOpenClick={() => openItem(config_folder_path)} value={config_folder_path} />
-
-    </SettingsExpandableSection >
+      <FileSelector
+        buttonLabel="פתח תיקייה"
+        onOpenClick={() => openItem(config_folder_path)}
+        value={config_folder_path}
+      />
+    </SettingsExpandableSection>
   );
-}
+};
 
 export default SystemContainer;

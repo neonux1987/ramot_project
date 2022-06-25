@@ -23,6 +23,11 @@ const SidebarContainer = () => {
   // exisiting building is updated, fetch
   // the menu again to get the updated state
   useEffect(() => {
+    // remove previous listeners if exist
+    // before registering new ones
+    ipcRenderer.removeListener("updated-building", fetchListener);
+    ipcRenderer.removeListener("added-building", fetchListener);
+
     ipcRenderer.on("updated-building", fetchListener);
     ipcRenderer.on("added-building", fetchListener);
 

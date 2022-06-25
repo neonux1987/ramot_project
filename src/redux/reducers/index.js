@@ -15,7 +15,7 @@ import registeredReports from "./registeredReportsReducer";
 import routes from "./routesReducer";
 import modal from "./modalReducer";
 import savedNotification from "./savedNotificationReducer";
-import goodBye from "./goodByeReducer";
+import routerPrompt from "./routerPromptReducer";
 import toggleSidebar from "./toggleSidebarReducer";
 import statistics from "./statisticsReducer";
 import monthsChart from "./monthsChartReducer";
@@ -54,7 +54,7 @@ const reducers = {
   registeredReports,
   routes,
   savedNotification,
-  goodBye,
+  routerPrompt,
   toggleSidebar,
   statistics,
   monthsChart,

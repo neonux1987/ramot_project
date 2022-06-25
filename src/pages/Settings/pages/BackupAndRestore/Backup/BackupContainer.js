@@ -18,7 +18,7 @@ import {
   updateSettings
 } from "../../../../../redux/actions/settingsActions";
 import { initializeRegisteredBackups } from "../../../../../redux/actions/registeredBackupsActions";
-import { setDirty } from "../../../../../redux/actions/goodByeActions";
+import { setDirty } from "../../../../../redux/actions/routerPromptActions";
 import { toastManager } from "../../../../../toasts/toastManager";
 import useModalLogic from "../../../../../customHooks/useModalLogic";
 import Note from "../../../../../components/Note/Note";

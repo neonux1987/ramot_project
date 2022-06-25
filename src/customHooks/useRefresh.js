@@ -1,5 +1,5 @@
 import { ipcRenderer } from "electron";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 /* 
   this hook listens to an event refresh and will execute a callback
@@ -9,17 +9,20 @@ import { useCallback, useEffect, useState } from "react";
 const useRefresh = () => {
   const [refresh, setRefresh] = useState(false);
 
-  const callback = useCallback(async () => {
-    setRefresh(true);
-  }, []);
-
   useEffect(() => {
-    ipcRenderer.on("refresh", callback);
+    const listener = () => {
+      setRefresh(true);
+    };
+    // remove previous listener if exist
+    // before registering a new one
+    ipcRenderer.removeListener("refresh", listener);
+
+    ipcRenderer.on("refresh", listener);
 
     return () => {
-      ipcRenderer.removeListener("refresh", callback);
+      ipcRenderer.removeListener("refresh", listener);
     };
-  }, [callback]);
+  }, []);
 
   return [refresh, setRefresh];
 };

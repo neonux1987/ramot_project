@@ -1,11 +1,11 @@
-import { ipcRenderer } from 'electron';
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import ConfirmBuildingsDeletion from '../components/modals/ConfirmBuildingsDeletion/ConfirmBuildingsDeletion';
-import { removeBuildings } from '../redux/actions/buildingsActions';
-import { checkForUpdates } from '../services/updates.svc';
-import { toastManager } from '../toasts/toastManager';
-import useModalLogic from './useModalLogic';
+import { ipcRenderer } from "electron";
+import { useCallback, useRef } from "react";
+import { useDispatch } from "react-redux";
+import ConfirmBuildingsDeletion from "../components/modals/ConfirmBuildingsDeletion/ConfirmBuildingsDeletion";
+import { removeBuildings } from "../redux/actions/buildingsActions";
+//import { checkForUpdates } from "../services/updates.svc";
+import { toastManager } from "../toasts/toastManager";
+import useModalLogic from "./useModalLogic";
 
 /* 
   this hook is responsible for all the services
@@ -13,32 +13,46 @@ import useModalLogic from './useModalLogic';
   of the app
 */
 const useServices = () => {
-
   const dispatch = useDispatch();
   const { showModal } = useModalLogic();
 
-  const checkUpdates = useCallback(async () => {
+  /* const checkUpdates = useCallback(async () => {
     const promise = await dispatch(checkForUpdates());
 
     if (promise && promise.data !== null)
       toastManager.appUpdateNewVersion(promise.data.version);
-  }, [dispatch]);
+  }, [dispatch]); */
 
-  const startListeners = useCallback(async () => {
-    ipcRenderer.once("buildings-for-deletion-data", (event, buildingsForDeletion = []) => {
+  const buildingsRemovalConfirmListener = useRef(
+    (_, buildingsForDeletion = []) => {
       if (buildingsForDeletion.length > 0) {
         showModal(ConfirmBuildingsDeletion, {
           onAgreeHandler: () => {
-            dispatch(removeBuildings(buildingsForDeletion))
+            dispatch(removeBuildings(buildingsForDeletion));
           },
           buildingsForDeletion
         });
       } else {
-        toastManager.error("המערכת נכשלה לשלוף מידע לגבי בניינים שמיועדים למחיקה");
+        toastManager.error(
+          "המערכת נכשלה לשלוף מידע לגבי בניינים שמיועדים למחיקה"
+        );
       }
+    }
+  );
 
-    });
-  }, [dispatch, showModal]);
+  const startListeners = useCallback(async () => {
+    // remove previous listener if exist
+    // before registering a new one
+    ipcRenderer.removeListener(
+      "buildings-for-deletion-data",
+      buildingsRemovalConfirmListener.current
+    );
+
+    ipcRenderer.once(
+      "buildings-for-deletion-data",
+      buildingsRemovalConfirmListener.current
+    );
+  }, []);
 
   const start = useCallback(() => {
     //checkUpdates();
@@ -46,7 +60,10 @@ const useServices = () => {
   }, [startListeners]);
 
   const stop = useCallback(async () => {
-
+    ipcRenderer.removeListener(
+      "buildings-for-deletion-data",
+      buildingsRemovalConfirmListener.current
+    );
   }, []);
 
   return [start, stop];

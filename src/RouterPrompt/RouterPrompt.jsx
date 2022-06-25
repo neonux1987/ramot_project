@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Prompt, useHistory } from "react-router";
 import LeaveWithoutSavingModal from "../components/modals/LeaveWithoutSavingModal/LeaveWithoutSavingModal";
-import { setDirty } from "../redux/actions/goodByeActions";
+import { setDirty } from "../redux/actions/routerPromptActions";
 import useModalLogic from "../customHooks/useModalLogic";
 import { useEffect } from "react";
 import { useRef } from "react";
 
 const RouterPrompt = () => {
   const history = useHistory();
-  const { dirty } = useSelector((store) => store.goodBye);
+  const { dirty } = useSelector((store) => store.routerPrompt);
   const [currentPath, setCurrentPath] = useState("");
   const [agree, setAgree] = useState(false);
   const dispatch = useDispatch();

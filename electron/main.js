@@ -14,7 +14,7 @@ const { AppErrorDialog } = require("./helpers/utils");
 
 const isDev = !app.isPackaged;
 process.env.APP_ROOT_PATH = app.getAppPath();
-//process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
 contextMenu({
   prepend: () => [
@@ -111,6 +111,10 @@ async function createWindow() {
 
         mainWindow.webContents.on("new-window", (event) => {
           event.preventDefault();
+        });
+
+        mainWindow.webContents.on("devtools-reload-page", () => {
+          console.log("hello");
         });
 
         mainWindow.webContents.once("dom-ready", () => {

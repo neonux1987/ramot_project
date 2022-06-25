@@ -30,7 +30,7 @@ const persistConfig = {
     //"routes",
     "date",
     "savedNotification",
-    "goodBye",
+    "routerPrompt",
     //"toggleSidebar",
     //statistics
     //"monthsChart",

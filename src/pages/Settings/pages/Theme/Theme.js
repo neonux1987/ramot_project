@@ -9,7 +9,7 @@ import {
   updateSettings,
   saveSettings
 } from "../../../../redux/actions/settingsActions";
-import { setDirty } from "../../../../redux/actions/goodByeActions";
+import { setDirty } from "../../../../redux/actions/routerPromptActions";
 import useIcons from "../../../../customHooks/useIcons";
 
 const SETTINGS_NAME = "theme";

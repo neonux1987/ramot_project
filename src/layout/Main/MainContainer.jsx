@@ -1,5 +1,6 @@
 // LIBRARIES
 import React, { useEffect } from "react";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import { updateRoute } from "../../redux/actions/routesActions";
@@ -11,11 +12,13 @@ const MainContainer = ({ mainContainerRef }) => {
   const dispatch = useDispatch();
   const routes = useSelector((store) => store.routes);
 
-  useEffect(() => {
+  const restoreActveRoute = useRef(() => {
     const { state = {}, pathname } = routes.active;
     history.replace(pathname, state);
+  });
 
-    //eslint-disable-next-line
+  useEffect(() => {
+    restoreActveRoute.current();
   }, []);
 
   useEffect(() => {
