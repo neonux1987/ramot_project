@@ -1,46 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import AppContainer from "./AppContainer";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import LoadingCircle from "./components/LoadingCircle";
-import LoadingPage from "./LoadingPage/LoadingPage";
-import RestoreWizard from "./RestoreWizard/RestoreWizard";
-
-// get query params from the url
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const page = urlParams.get("page");
-
-// based of the page param, detec which component to render
-const Component = whichComponent(page);
-
-// wraps the component with store access
-function storeWrapper(Component) {
-  return () => (
-    <Provider store={store}>
-      <PersistGate loading={<LoadingCircle />} persistor={persistor}>
-        <Component />
-      </PersistGate>
-    </Provider>
-  );
-}
-
-function whichComponent(page) {
-  switch (page) {
-    case "loading":
-      return LoadingPage;
-    case "restoreDB":
-      return storeWrapper(RestoreWizard);
-    default:
-      return storeWrapper(AppContainer);
-  }
-}
+import ViewManager from "./ViewManager/ViewManager";
 
 //after the reducers injected, render the app
-ReactDOM.render(<Component />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <PersistGate loading={<LoadingCircle />} persistor={persistor}>
+      <ViewManager />
+    </PersistGate>
+  </Provider>,
+  document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

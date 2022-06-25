@@ -1,8 +1,6 @@
 // LIBRARIES
 import React from "react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import { MemoryRouter } from "react-router-dom";
-import { withGoodBye } from "react-goodbye";
 import { CssBaseline } from "@material-ui/core";
 import RTL from "./components/RTL";
 import ModalRoot from "./components/modals/ModalRoot";
@@ -20,31 +18,25 @@ const App = ({ theme, settings, mainContainerRef }) => {
   return (
     <RTL>
       <MuiThemeProvider theme={theme}>
-        <EnhancedRouter>
-          <ThemeContext.Provider value={settings.data.theme}>
-            <ScrollToTop mainContainer={mainContainerRef} />
+        <ThemeContext.Provider value={settings.data.theme}>
+          <ScrollToTop mainContainer={mainContainerRef} />
 
-            <AppWrapper>
-              <CssBaseline />
-              <AppBarContainer />
-              <SidebarContainer />
-              <MainContainer
-                mainContainerRef={mainContainerRef}
-                settings={settings}
-              />
-            </AppWrapper>
+          <AppWrapper>
+            <CssBaseline />
+            <AppBarContainer />
+            <SidebarContainer />
+            <MainContainer
+              mainContainerRef={mainContainerRef}
+              settings={settings}
+            />
+          </AppWrapper>
 
-            <CustomToastContainer />
-          </ThemeContext.Provider>
-          <ModalRoot />
-        </EnhancedRouter>
+          <CustomToastContainer />
+        </ThemeContext.Provider>
+        <ModalRoot />
       </MuiThemeProvider>
     </RTL>
   );
 };
-
-// allows to prompt a dialog to the user on route
-// change when the user didn't save data
-const EnhancedRouter = withGoodBye(MemoryRouter);
 
 export default App;

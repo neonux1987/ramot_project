@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import SettingsExpandableSection from '../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection';
-import GoodByeWrapper from '../../../../goodbye/GoodByeWrapper';
-import TitleTypography from '../../../../components/Typographies/TitleTypography';
-import Page from '../../../../components/Page/Page';
-import ColorSeries from './ColorSeries';
-import Note from '../../../../components/Note/Note';
-import { updateSettings, saveSettings } from '../../../../redux/actions/settingsActions';
-import { setDirty } from '../../../../redux/actions/goodByeActions';
-import useIcons from '../../../../customHooks/useIcons';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import SettingsExpandableSection from "../../../../components/Section/SettingsExpandableSection/SettingsExpandableSection";
+import TitleTypography from "../../../../components/Typographies/TitleTypography";
+import Page from "../../../../components/Page/Page";
+import ColorSeries from "./ColorSeries";
+import Note from "../../../../components/Note/Note";
+import {
+  updateSettings,
+  saveSettings
+} from "../../../../redux/actions/settingsActions";
+import { setDirty } from "../../../../redux/actions/goodByeActions";
+import useIcons from "../../../../customHooks/useIcons";
 
 const SETTINGS_NAME = "theme";
 
 export const Theme = () => {
   const dispatch = useDispatch();
   const [generateIcon] = useIcons();
-  const settings = useSelector(store => store.settings.data.theme);
+  const settings = useSelector((store) => store.settings.data.theme);
   const [data, setData] = useState(settings);
 
   const save = async (event) => {
@@ -23,11 +25,11 @@ export const Theme = () => {
 
     const dataCopy = { ...data };
 
-    dispatch(updateSettings(SETTINGS_NAME, dataCopy))
+    dispatch(updateSettings(SETTINGS_NAME, dataCopy));
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
       dispatch(setDirty(false));
     });
-  }
+  };
 
   const onColorSetChange = (colorSet) => {
     setData({
@@ -35,33 +37,29 @@ export const Theme = () => {
       colorSet
     });
     dispatch(setDirty(true));
-  }
+  };
 
   const Icon = generateIcon("style");
 
   return (
     <Page>
+      <SettingsExpandableSection title={"עיצוב"} Icon={Icon} onSaveClick={save}>
+        <TitleTypography>סדרת צבעים:</TitleTypography>
 
-      <SettingsExpandableSection
-        title={"עיצוב"}
-        Icon={Icon}
-        onSaveClick={save}
-      >
+        <Note
+          margin="0 0 20px"
+          text="סדרת הצבעים משמשת את צביעת החודשים והרבעונים בטבלאות מימין לשמאל"
+          important
+        />
 
-        <TitleTypography>
-          סדרת צבעים:
-        </TitleTypography>
-
-        <Note margin="0 0 20px" text="סדרת הצבעים משמשת את צביעת החודשים והרבעונים בטבלאות מימין לשמאל" important />
-
-        <ColorSeries colorSet={data.colorSet} defaultColorSet={data.defaultColorSet} action={onColorSetChange} />
-
-      </SettingsExpandableSection >
-
-      <GoodByeWrapper />
+        <ColorSeries
+          colorSet={data.colorSet}
+          defaultColorSet={data.defaultColorSet}
+          action={onColorSetChange}
+        />
+      </SettingsExpandableSection>
     </Page>
   );
-
-}
+};
 
 export default Theme;

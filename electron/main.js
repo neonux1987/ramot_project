@@ -124,8 +124,11 @@ async function createWindow() {
         // long loading html
         mainWindow.loadURL(
           isDev
-            ? "http://localhost:3000"
-            : `file://${path.join(__dirname, "../build/index.html")}`
+            ? "http://localhost:3000?view=AppView"
+            : `file://${path.join(
+                __dirname,
+                "../build/index.html?view=AppView"
+              )}`
         );
 
         powerMonitor.on("resume", () => {
@@ -142,8 +145,11 @@ async function createWindow() {
 
   loading.loadURL(
     isDev
-      ? "http://localhost:3000/?page=loading"
-      : `file://${path.join(__dirname, "../build/index.html?page=loading")}`
+      ? "http://localhost:3000/?view=AppLoadingView"
+      : `file://${path.join(
+          __dirname,
+          "../build/index.html?view=AppLoadingView"
+        )}`
   );
   loading.show();
 }

@@ -14,7 +14,6 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
     style: {
       fontFamily: "Open Sans, sans-serif"
     },
-    height: "450px",
     events: {
       render: (highcharts) => {
         /* highcharts.target.container.style.height = isFullscreen
@@ -36,6 +35,7 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
   },
   exporting: {
     enabled: true,
+    fallbackToExportServer: false,
     sourceWidth: 1280,
     sourceHeight: 720,
     buttons: {
@@ -125,7 +125,9 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
           maxWidth: 1400
         },
         chartOptions: {
-          height: "1050px"
+          chart: {
+            height: "1050px"
+          }
         }
       }
     ]

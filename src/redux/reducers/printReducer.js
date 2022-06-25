@@ -8,7 +8,8 @@ const initialState = {
     data: []
   },
   printableComponentRef: null,
-  output: null
+  output: null,
+  printReady: false
 };
 
 const printReducer = (state = initialState, action) => {
@@ -23,6 +24,12 @@ const printReducer = (state = initialState, action) => {
       return {
         ...state,
         colors: action.colors
+      };
+    }
+    case TYPES.SET_PRINT_READY: {
+      return {
+        ...state,
+        printReady: action.printReady
       };
     }
     case TYPES.SET_OUTPUT: {

@@ -1,13 +1,13 @@
-const { app, dialog, shell, BrowserWindow } = require('electron');
-const path = require('path');
+const { app, dialog, shell, BrowserWindow } = require("electron");
+const path = require("path");
 
-const SystemPaths = require('../backend/system/SystemPaths');
+const SystemPaths = require("../backend/system/SystemPaths");
 
 exports.asyncForEach = async function (array, callback) {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
   }
-}
+};
 
 function openLogFile() {
   shell.showItemInFolder(SystemPaths.paths.log_file_path);
@@ -24,20 +24,20 @@ exports.openLogFile = openLogFile;
  * @param {*} data to be sent
  */
 exports.sendToWindow = (channel, data) => {
-
   const window = getWindow("mainWindow");
 
-  if (window)
-    window.webContents.send(channel, data);
+  if (window) window.webContents.send(channel, data);
   else
-    throw new Error("The system could not send message to the renderer since main window is undefined");
-}
+    throw new Error(
+      "The system could not send message to the renderer since main window is undefined"
+    );
+};
 
 function getWindow(id) {
   const allWindows = BrowserWindow.getAllWindows();
   let desiredWindow = undefined;
 
-  allWindows.forEach(window => {
+  allWindows.forEach((window) => {
     if (window.uniqueId === id) {
       desiredWindow = window;
     }
@@ -49,7 +49,7 @@ function getWindow(id) {
 exports.getWindow = getWindow;
 
 function createRestoreDbWindow() {
-  const icon = path.join(app.getAppPath(), 'Icon/ramot-group-icon.png');
+  const icon = path.join(app.getAppPath(), "Icon/ramot-group-icon.png");
   const isDev = !app.isPackaged;
 
   const restoreDbWindow = new BrowserWindow({
@@ -68,7 +68,14 @@ function createRestoreDbWindow() {
     show: false
   });
 
-  restoreDbWindow.loadURL(isDev ? 'http://localhost:3000/?page=restoreDB' : `file://${path.join(__dirname, '../build/index.html?page=restoreDB')}`)
+  restoreDbWindow.loadURL(
+    isDev
+      ? "http://localhost:3000/?view=RestoreWizardView"
+      : `file://${path.join(
+          __dirname,
+          "../build/index.html?view=RestoreWizardView"
+        )}`
+  );
   restoreDbWindow.show();
 }
 
@@ -91,16 +98,15 @@ exports.AppErrorDialog = async () => {
   });
 
   if (dialogData.response === 0) {
-
     // close main window so it won't
     // interfer with the restore db window
     const mainWindow = getWindow("mainWindow");
     if (mainWindow) mainWindow.close();
 
-    const registeredBackupsIpc = require('../ipcs/registeredBackups.ipc');
-    const restoreDbIpc = require('../ipcs/restoreDb.ipc');
-    const mainProcessIpc = require('../ipcs/mainProcess.ipc');
-    // need the registered backups ipc in order for the restore 
+    const registeredBackupsIpc = require("../ipcs/registeredBackups.ipc");
+    const restoreDbIpc = require("../ipcs/restoreDb.ipc");
+    const mainProcessIpc = require("../ipcs/mainProcess.ipc");
+    // need the registered backups ipc in order for the restore
     // renderer be able to fetch backups from the backend
     registeredBackupsIpc();
     restoreDbIpc();
@@ -110,11 +116,8 @@ exports.AppErrorDialog = async () => {
     // after the restore db window loaded only
     // otherwise the app will be terminated
     if (loadingWindow) loadingWindow.close();
-  }
-  else if (dialogData.response === 1) {
+  } else if (dialogData.response === 1) {
     openLogFile();
     app.quit(0);
-  }
-  else if (dialogData.response === 2)
-    app.quit(0);
-}
+  } else if (dialogData.response === 2) app.quit(0);
+};

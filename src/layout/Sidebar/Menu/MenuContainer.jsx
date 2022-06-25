@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
-import useIcons from '../../../customHooks/useIcons';
-import Menu from './Menu';
-import pages from '../../../helpers/pages';
-import ExpandableMenuItem from './ExpandableMenuItem/ExpandableMenuItem';
-import Menuitem from './MenuItem/Menuitem';
-import { updateRoute } from '../../../redux/actions/routesActions';
-import HomeButton from '../HomeButton/HomeButton';
+import React, { useEffect } from "react";
+import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import useIcons from "../../../customHooks/useIcons";
+import Menu from "./Menu";
+import pages from "../../../helpers/pages";
+import ExpandableMenuItem from "./ExpandableMenuItem/ExpandableMenuItem";
+import Menuitem from "./MenuItem/Menuitem";
+import { updateRoute } from "../../../redux/actions/routesActions";
+import HomeButton from "../HomeButton/HomeButton";
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 
@@ -22,12 +22,14 @@ const MenuContainer = ({ routes, data }) => {
   const [state, setState] = React.useState(() => {
     let newState = {};
 
-    data.forEach(item => {
+    data.forEach((item) => {
       const buildings = routes.active.expanded;
       newState[item.buildingId] = {
-        open: buildings[item.buildingId] === undefined ? false : buildings[item.buildingId].open
-      }
-
+        open:
+          buildings[item.buildingId] === undefined
+            ? false
+            : buildings[item.buildingId].open
+      };
     });
 
     return newState;
@@ -52,23 +54,27 @@ const MenuContainer = ({ routes, data }) => {
         page: DEFAULT_PAGE,
         buildingName: buildingName,
         buildingId: buildingId
-      }
+      };
 
       const pathname = `/${path}/הוצאות-חודשיות`;
 
       history.replace(pathname, newState);
 
-      dispatch(updateRoute({
-        pathname,
-        state: newState,
-        expanded
-      }));
+      dispatch(
+        updateRoute({
+          pathname,
+          state: newState,
+          expanded
+        })
+      );
     }
 
     setState(() => {
-      dispatch(updateRoute({
-        expanded
-      }));
+      dispatch(
+        updateRoute({
+          expanded
+        })
+      );
 
       return expanded;
     });
@@ -84,7 +90,7 @@ const MenuContainer = ({ routes, data }) => {
     // that it's the home page, in that case don't set
     // open state
     if (buildingId !== "")
-      setState(prevState => {
+      setState((prevState) => {
         return {
           ...prevState,
           [buildingId]: {
@@ -92,11 +98,10 @@ const MenuContainer = ({ routes, data }) => {
           }
         };
       });
-
   }, [routeState]);
 
   useEffect(() => {
-    const element = document.querySelector('.activeButton');
+    const element = document.querySelector(".activeButton");
 
     if (element !== null) {
       element.focus();
@@ -104,42 +109,45 @@ const MenuContainer = ({ routes, data }) => {
   }, []);
 
   const menuRender = data.map((item) => {
-
     const { buildingName, buildingId } = item;
 
-    return <ExpandableMenuItem
-      label={buildingName}
-      Icon={generateIcon("home")}
-      onClick={() => expandHandleClick(item)}
-      open={state[buildingId].open}
-      key={buildingId}
-      active={routeState.buildingName === buildingName}
-      buildingId={buildingId}
-    >
+    return (
+      <ExpandableMenuItem
+        label={buildingName}
+        Icon={generateIcon("home")}
+        onClick={() => expandHandleClick(item)}
+        open={state[buildingId].open}
+        key={buildingId}
+        active={routeState.buildingName === buildingName}
+        buildingId={buildingId}
+      >
+        {pages.map((page) => {
+          const { label, path } = page;
+          const active =
+            routeState.page === label &&
+            routeState.buildingName === item.buildingName;
 
-      {pages.map((page) => {
-        const { label, path } = page;
-        const active = routeState.page === label && routeState.buildingName === item.buildingName;
-
-        return <Menuitem
-          label={label}
-          Icon={generateIcon(label)}
-          key={label}
-          tabIndex={counter++}
-          to={{
-            pathname: `/${item.path}/${path}`,
-            state: {
-              page: label,
-              buildingName: item.buildingName,
-              buildingId: item.buildingId
-            }
-          }}
-          active={active}
-        />;
-      })}
-
-    </ExpandableMenuItem>;
-  })
+          return (
+            <Menuitem
+              label={label}
+              Icon={generateIcon(label)}
+              key={label}
+              tabIndex={counter++}
+              to={{
+                pathname: `/${item.path}/${path}`,
+                state: {
+                  page: label,
+                  buildingName: item.buildingName,
+                  buildingId: item.buildingId
+                }
+              }}
+              active={active}
+            />
+          );
+        })}
+      </ExpandableMenuItem>
+    );
+  });
 
   return (
     <Menu>
@@ -147,7 +155,6 @@ const MenuContainer = ({ routes, data }) => {
       {menuRender}
     </Menu>
   );
-
 };
 
 export default React.memo(MenuContainer);

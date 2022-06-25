@@ -38,6 +38,15 @@ export const setColors = function async(colors) {
   };
 };
 
+export const setPrintReady = function async(printReady) {
+  return (dispatch) => {
+    dispatch({
+      type: TYPES.SET_PRINT_READY,
+      printReady
+    });
+  };
+};
+
 export const getPrinters = () => {
   return (dispatch) => {
     ipcRenderer.send("get-printers");
@@ -75,7 +84,7 @@ export const setOutput = function (output) {
   };
 };
 
-export const printPreviewTest = (options) => {
+export const printPreview = (options) => {
   return (dispatch, getState) => {
     const state = getState();
     const { printableComponentRef } = state.print;
@@ -101,7 +110,7 @@ export const printPreviewTest = (options) => {
   };
 };
 
-export const print = async (options) => {
+export const print = (options) => {
   return (_, getState) => {
     const state = getState();
     const { output } = state.print;

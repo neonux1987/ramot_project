@@ -89,8 +89,8 @@ const Controls = ({ routes }) => {
           state: {
             page: "כללי",
             buildingName: "הגדרות",
-            buildingId: "settings",
-          },
+            buildingId: "settings"
+          }
         }}
         active={routes.active.state.buildingName === "הגדרות"}
       />

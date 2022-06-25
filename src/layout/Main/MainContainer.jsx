@@ -1,16 +1,15 @@
 // LIBRARIES
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router';
-import { updateRoute } from '../../redux/actions/routesActions';
-import Main from './Main';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router";
+import { updateRoute } from "../../redux/actions/routesActions";
+import Main from "./Main";
 
 const MainContainer = ({ mainContainerRef }) => {
-
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const routes = useSelector(store => store.routes);
+  const routes = useSelector((store) => store.routes);
 
   useEffect(() => {
     const { state = {}, pathname } = routes.active;
@@ -20,7 +19,6 @@ const MainContainer = ({ mainContainerRef }) => {
   }, []);
 
   useEffect(() => {
-
     const { pathname, state = {} } = location;
 
     if (routes.pathname !== pathname) {
@@ -31,13 +29,9 @@ const MainContainer = ({ mainContainerRef }) => {
 
       dispatch(updateRoute(active));
     }
-
   }, [location, routes.pathname, dispatch]);
 
-  return (
-    <Main location={location} mainContainerRef={mainContainerRef} />
-  );
-
-}
+  return <Main location={location} mainContainerRef={mainContainerRef} />;
+};
 
 export default MainContainer;

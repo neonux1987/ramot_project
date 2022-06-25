@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getPrinters,
   print,
-  printPreviewTest,
+  printPreview,
   setColors
 } from "../../../../../redux/actions/printActions";
 import { updateTemplate } from "../../../../../redux/actions/printTemplatesActions";
@@ -15,7 +15,7 @@ const SidebarContainer = (props) => {
 
   const printers = useSelector((store) => store.print.printers);
   const template = useSelector((store) => store.printTemplates[pageName]);
-  console.log(template);
+
   const dispatch = useDispatch();
 
   const [printer, setPrinter] = useState("");
@@ -28,8 +28,8 @@ const SidebarContainer = (props) => {
   useEffect(() => {
     const newTemplate = { ...template };
     if (pageRanges) newTemplate.pageRanges = pageRanges;
-    console.log(newTemplate);
-    dispatch(printPreviewTest(newTemplate));
+
+    dispatch(printPreview(newTemplate));
   }, [template, pageRanges, dispatch]);
 
   useEffect(() => {
