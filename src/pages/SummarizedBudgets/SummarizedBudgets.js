@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, withRouter } from "react-router";
+import { useLocation, withRouter } from "react-router-dom";
 import Page from "../../components/Page/Page";
 import YearStatsContainer from "./YearStatsContainer";
 import SummarizedBudgetsTableContainer from "./SummarizedBudgetsTableContainer";

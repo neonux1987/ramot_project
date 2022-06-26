@@ -15,12 +15,12 @@ const useRefresh = () => {
     };
     // remove previous listener if exist
     // before registering a new one
-    ipcRenderer.removeListener("refresh", listener);
+    ipcRenderer.removeAllListeners("refresh");
 
     ipcRenderer.on("refresh", listener);
 
     return () => {
-      ipcRenderer.removeListener("refresh", listener);
+      ipcRenderer.removeAllListeners("refresh");
     };
   }, []);
 

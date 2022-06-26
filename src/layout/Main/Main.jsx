@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
-import { Route } from "react-router";
+import { Route } from "react-router-dom";
 import Routes from "./Routes";
 import PageHeaderContainer from "./PageHeader/PageHeaderContainer";
 
@@ -13,27 +13,27 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      duration: theme.transitions.duration.leavingScreen
     }),
     marginLeft: -drawerWidth,
     display: "block",
     zIndex: 990,
     position: "relative",
-    marginTop: "64px",
+    marginTop: "64px"
   },
   mainShift: {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
+      duration: theme.transitions.duration.enteringScreen
     }),
-    marginLeft: 0,
+    marginLeft: 0
   },
   content: {
     height: "100%",
     width: "100%",
     overflow: "auto",
-    position: "absolute",
-  },
+    position: "absolute"
+  }
 }));
 
 const Main = ({ mainContainerRef }) => {
@@ -45,7 +45,7 @@ const Main = ({ mainContainerRef }) => {
     <main
       id="mainContainer"
       className={clsx(classes.main, {
-        [classes.mainShift]: showSidebar,
+        [classes.mainShift]: showSidebar
       })}
       style={{ marginTop: isFullscreen ? "0" : "64px" }}
     >

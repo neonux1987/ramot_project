@@ -3,7 +3,7 @@ import useModalLogic from "../../../customHooks/useModalLogic";
 import GenerateExcelReportsModal from "../../../components/modals/GenerateExcelReportsModal";
 import GenerateEmptyReportsModal from "../../../components/modals/GenerateEmptyReportsModal";
 import ChangeBuildingColorModal from "../../../components/modals/ChangeBuildingColorModal";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import PageHeader from "./PageHeader";
 
 const PageHeaderContainer = () => {

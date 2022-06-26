@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Prompt, useHistory } from "react-router";
+import { Prompt, useHistory } from "react-router-dom";
 import LeaveWithoutSavingModal from "../components/modals/LeaveWithoutSavingModal/LeaveWithoutSavingModal";
 import { setDirty } from "../redux/actions/routerPromptActions";
 import useModalLogic from "../customHooks/useModalLogic";

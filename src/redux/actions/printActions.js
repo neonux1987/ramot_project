@@ -54,7 +54,7 @@ export const getPrinters = () => {
     return new Promise((resolve) => {
       dispatch(requestPrinters());
 
-      ipcRenderer.on("printers-list", (event, { data }) => {
+      ipcRenderer.once("printers-list", (event, { data }) => {
         dispatch(receivePrinters(data));
         resolve(data);
       });

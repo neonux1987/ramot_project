@@ -6,16 +6,16 @@ const DonutChart = (props) => {
     <Chart
       options={{
         credits: {
-          enabled: false,
+          enabled: false
         },
         chart: {
           type: "pie",
           width: 170,
           height: 170,
-          backgroundColor: "transparent",
+          backgroundColor: "transparent"
         },
         exporting: {
-          enabled: false,
+          enabled: false
         },
         plotOptions: {
           pie: {
@@ -24,21 +24,21 @@ const DonutChart = (props) => {
             borderRadius: 10,
             borderColor: "#fff",
             dataLabels: {
-              enabled: false,
+              enabled: false
             },
             fillColor: "#ffffff",
             showInLegend: false,
             enableMouseTracking: false,
-            size: 160,
-          },
+            size: 160
+          }
         },
         title: {
-          text: "",
+          text: ""
         },
         series: props.series,
         tooltip: {
-          enabled: false,
-        },
+          enabled: false
+        }
       }}
     />
   );

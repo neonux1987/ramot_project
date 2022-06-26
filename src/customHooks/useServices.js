@@ -43,10 +43,7 @@ const useServices = () => {
   const startListeners = useCallback(async () => {
     // remove previous listener if exist
     // before registering a new one
-    ipcRenderer.removeListener(
-      "buildings-for-deletion-data",
-      buildingsRemovalConfirmListener.current
-    );
+    ipcRenderer.removeAllListeners("buildings-for-deletion-data");
 
     ipcRenderer.once(
       "buildings-for-deletion-data",
@@ -60,10 +57,7 @@ const useServices = () => {
   }, [startListeners]);
 
   const stop = useCallback(async () => {
-    ipcRenderer.removeListener(
-      "buildings-for-deletion-data",
-      buildingsRemovalConfirmListener.current
-    );
+    ipcRenderer.removeAllListeners("buildings-for-deletion-data");
   }, []);
 
   return [start, stop];

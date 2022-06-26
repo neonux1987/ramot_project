@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import Page from "../../components/Page/Page";
 import MonthExpansesTableContainer from "./MonthExpansesTableContainer";
 import { useDispatch, useSelector } from "react-redux";

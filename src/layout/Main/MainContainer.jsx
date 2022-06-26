@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router-dom";
 import { updateRoute } from "../../redux/actions/routesActions";
 import Main from "./Main";
 

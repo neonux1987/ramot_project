@@ -47,9 +47,7 @@
 }
 
 .leftControls {
-  flex: 1;
-  justify-content: flex-end;
-  display: flex;
+  display: block;
 }
 
 .rightControls {

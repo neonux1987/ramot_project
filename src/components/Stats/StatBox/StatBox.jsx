@@ -9,7 +9,7 @@ const StatBox = ({
   children,
   index = 1,
   color = "#000000",
-  xs = true,
+  xs = true
 }) => {
   return (
     <Grid item xs={xs} style={{ flexGrow: 1 }}>

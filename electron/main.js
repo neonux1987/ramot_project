@@ -113,10 +113,6 @@ async function createWindow() {
           event.preventDefault();
         });
 
-        mainWindow.webContents.on("devtools-reload-page", () => {
-          console.log("hello");
-        });
-
         mainWindow.webContents.once("dom-ready", () => {
           mainWindow.show();
           loading.hide();

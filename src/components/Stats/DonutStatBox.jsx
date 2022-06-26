@@ -116,6 +116,9 @@ const DonutStatBox = ({
   index = 1,
   border,
   xs,
+  sm,
+  md,
+  lg,
   Icon
 }) => {
   return (
@@ -126,6 +129,9 @@ const DonutStatBox = ({
       index={index}
       border={border}
       xs={xs}
+      sm={sm}
+      md={md}
+      lg={lg}
     >
       <div className={wrapper}>
         <div className={headerWrapper}>

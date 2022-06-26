@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import QuarterStatsContainer from "./QuarterStatsContainer";
 import BudgetExecutionsTableContainer from "./BudgetExecutionsTableContainer";
@@ -26,7 +26,7 @@ const BudgetExecutions = () => {
     if (date.year !== "" && date.quarter !== "") {
       const buildingInfo = {
         buildingId,
-        buildingName,
+        buildingName
       };
 
       dispatch(fetchBudgetExecutions(buildingInfo, date));

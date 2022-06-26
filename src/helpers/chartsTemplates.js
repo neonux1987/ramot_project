@@ -117,19 +117,5 @@ export const columnChart = (title, series, categories, isFullscreen) => ({
       }
     }
   },
-  series,
-  responsive: {
-    rules: [
-      {
-        condition: {
-          maxWidth: 1400
-        },
-        chartOptions: {
-          chart: {
-            height: "1050px"
-          }
-        }
-      }
-    ]
-  }
+  series
 });

@@ -150,6 +150,17 @@ const AppUpdates = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    // remove all listeners if exist before
+    // registering news once in case of same
+    // listenres were registered again despite never removed
+    // due to renderer refresh
+    ipcRenderer.removeAllListeners("download_progress");
+    ipcRenderer.removeAllListeners("update_available");
+    ipcRenderer.removeAllListeners("update_not_available");
+    ipcRenderer.removeAllListeners("downloading_update");
+    ipcRenderer.removeAllListeners("update_downloaded");
+    ipcRenderer.removeAllListeners("updater_error");
+
     // download progress
     ipcRenderer.on("download_progress", async (event, progress) => {
       if (!isCancelled.current) setProgress(progress);
