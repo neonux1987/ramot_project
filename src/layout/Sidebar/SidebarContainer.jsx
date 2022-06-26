@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useCallback, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ipcRenderer } from "electron";
 import { fetchMenu } from "../../redux/actions/menuActions";
@@ -11,13 +11,13 @@ const SidebarContainer = () => {
   const routes = useSelector((store) => store.routes);
   const { data, isFetching } = useSelector((store) => store.menu);
 
-  const fetchListener = useCallback(() => {
+  const fetchMenuRef = useRef(() => {
     dispatch(fetchMenu());
-  }, [dispatch]);
+  });
 
   useEffect(() => {
-    fetchListener();
-  }, [fetchListener]);
+    fetchMenuRef.current();
+  }, []);
 
   // when a new building is added or
   // exisiting building is updated, fetch
@@ -28,14 +28,14 @@ const SidebarContainer = () => {
     ipcRenderer.removeAllListeners("updated-building");
     ipcRenderer.removeAllListeners("added-building");
 
-    ipcRenderer.on("updated-building", fetchListener);
-    ipcRenderer.on("added-building", fetchListener);
+    ipcRenderer.on("updated-building", fetchMenuRef.current);
+    ipcRenderer.on("added-building", fetchMenuRef.current);
 
     return () => {
       ipcRenderer.removeAllListeners("updated-building");
       ipcRenderer.removeAllListeners("added-building");
     };
-  }, [fetchListener]);
+  }, []);
 
   return (
     <Sidebar

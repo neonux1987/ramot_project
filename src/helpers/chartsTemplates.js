@@ -8,21 +8,11 @@ const menuClassName = css`
   }
 `;
 
-export const columnChart = (title, series, categories, isFullscreen) => ({
+export const columnChart = (title, series, categories) => ({
   chart: {
     type: "column",
     style: {
       fontFamily: "Open Sans, sans-serif"
-    },
-    events: {
-      render: (highcharts) => {
-        /* highcharts.target.container.style.height = isFullscreen
-          ? "1050px"
-          : "450px";
-        highcharts.target.chartHeight = isFullscreen ? 1050 : 450;
-        highcharts.target.containerHeight = isFullscreen ? "1050px" : "450px"; */
-        //console.log(highcharts.target);
-      }
     }
   },
   lang: {

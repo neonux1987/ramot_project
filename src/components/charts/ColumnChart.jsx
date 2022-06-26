@@ -8,9 +8,13 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
   const chartRef = useRef();
 
   useEffect(() => {
-    //if (isFullscreen) chartRef.current.chart.setSize(null, "calc(100vh-400px)");
-    //console.log(chartRef.current.container.current.clientHeight);
-    chartRef.current.chart.reflow();
+    if (chartRef.current.container.current) {
+      chartRef.current.container.current.style.setProperty(
+        "height",
+        isFullscreen ? "calc(100vh - 224px)" : "500px"
+      );
+      chartRef.current.chart.reflow();
+    }
   }, [isFullscreen]);
 
   return (
