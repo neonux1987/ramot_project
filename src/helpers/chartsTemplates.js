@@ -8,7 +8,7 @@ const menuClassName = css`
   }
 `;
 
-export const columnChart = (title, series, categories) => ({
+export const columnChart = (title, series, categories, isFullscreen) => ({
   chart: {
     type: "column",
     style: {

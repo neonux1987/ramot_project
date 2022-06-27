@@ -1,10 +1,8 @@
 import React, { useMemo } from "react";
 
 const useTableComponents = () => {
-
   const components = useMemo(() => {
     return {
-
       List: React.forwardRef(({ style, children }, listRef) => {
         return (
           <div
@@ -20,19 +18,21 @@ const useTableComponents = () => {
       }),
       Item: ({ children, ...props }) => {
         return (
-          <div {...props} style={{
-            minHeight: "35px",
-            pageBreakInside: "avoid"
-          }}>
+          <div
+            {...props}
+            style={{
+              minHeight: "35px",
+              pageBreakInside: "avoid"
+            }}
+          >
             {children}
           </div>
         );
       }
-
     };
   }, []);
 
-  return [components]
+  return [components];
 };
 
 export default useTableComponents;

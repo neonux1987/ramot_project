@@ -5,6 +5,7 @@ import welcome from "../assets/audio/welcome.wav";
 import update from "../assets/audio/update.wav";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const remote = require("@electron/remote");
 const sharedObject = remote.getGlobal("sharedObject");
@@ -68,7 +69,9 @@ class SoundManager {
 export const soundManager = new SoundManager();
 
 export const useSound = (url, options) => {
-  const { soundEnabled, soundVolume } = sharedObject.settings.system;
+  const { soundEnabled, soundVolume } = useSelector(
+    (store) => store.settings.data.system
+  );
 
   let audio = null;
 
