@@ -182,7 +182,6 @@ textarea {
 
 @media only print {
   @page {
-    size: auto;
     /* auto is the initial value */
     margin: 10px 10px 35px 10px;
     /* this affects the margin in the printer settings */
@@ -367,4 +366,12 @@ textarea {
 /******** highcharts override *********/
 .highcharts-container-override {
   overflow: visible !important;
+}
+
+.highcharts-container {
+  width: 100% !important;
+}
+
+.highcharts-root {
+  width: 100% !important;
 }

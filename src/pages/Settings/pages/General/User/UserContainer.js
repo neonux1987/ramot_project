@@ -57,6 +57,9 @@ const UserContainer = () => {
     }); //end selectFolderDialog
   };
 
+  // open folder and ensure the dir exist
+  const openFolder = () => openItem(reports_folder_path, true);
+
   const Icon = generateIcon("user");
 
   return (
@@ -67,7 +70,7 @@ const UserContainer = () => {
 
       <FileSelector
         onChangeClick={dbSelectFolderHandler}
-        onOpenClick={() => openItem(reports_folder_path)}
+        onOpenClick={openFolder}
         value={reports_folder_path}
       />
     </SettingsExpandableSection>

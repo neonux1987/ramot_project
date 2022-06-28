@@ -17,6 +17,10 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
     }
   }, [isFullscreen]);
 
+  useEffect(() => {
+    //console.log(chartRef.current.chart.getSVG());
+  }, []);
+
   return (
     <ChartWithExporting
       options={columnChart(title, series, categories)}

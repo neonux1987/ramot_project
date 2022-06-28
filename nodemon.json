@@ -1,8 +1,4 @@
 {
-    "verbose": true,
-    "ignore": [
-        "src/*",
-        ".git",
-        "node_modules/**/node_modules"
-    ]
+  "verbose": true,
+  "ignore": ["**/src/**", ".git", "**/node_modules/**/node_modules"]
 }
