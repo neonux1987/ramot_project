@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { setPrintMode, setOutput } from "../../../redux/actions/printActions";
+import {
+  setPrintMode,
+  setOutput,
+  setPrintReady
+} from "../../../redux/actions/printActions";
 import SidebarContainer from "./layout/Sidebar/SidebarContainer";
 import Content from "./layout/Content/Content";
 import Container from "./Container";
@@ -9,7 +13,7 @@ import Container from "./Container";
 const PrintModal = (props) => {
   const { onClose, pageName } = props;
 
-  const { printers, printableComponentRef, output } = useSelector(
+  const { printers, printableComponentRef, output, printReady } = useSelector(
     (store) => store.print
   );
 
@@ -23,6 +27,7 @@ const PrintModal = (props) => {
   const onClick = () => {
     setOpen(false);
     dispatch(setPrintMode(false));
+    dispatch(setPrintReady(false));
     onClose();
   };
 

@@ -1,18 +1,15 @@
 import { toastManager } from "../toasts/toastManager";
 
-const { ipcRenderer } = require('electron');
+const { ipcRenderer } = require("electron");
 
 export const initUpdateListeners = () => {
-
-  ipcRenderer.on('update_available', (event, version) => {
-    ipcRenderer.removeAllListeners('update_available');
+  ipcRenderer.on("update_available", (event, version) => {
+    ipcRenderer.removeAllListeners("update_available");
     toastManager.AppUpdateNewVersion(version);
-
   });
 
-  ipcRenderer.on('update_downloaded', (event, version) => {
-    ipcRenderer.removeAllListeners('update_downloaded');
+  ipcRenderer.on("update_downloaded", (event, version) => {
+    ipcRenderer.removeAllListeners("update_downloaded");
     toastManager.AppUpdateInstall(version);
   });
-
-}
+};

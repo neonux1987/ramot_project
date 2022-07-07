@@ -107,9 +107,9 @@ class MainSystem {
           "monthExpanses",
           "budgetExecutions",
           "summarizedBudgets",
-          "statistics",
+          "statistics"
         ],
-        settings,
+        settings
       };
 
       await updatesLogic.runUpdateLogic();
@@ -142,9 +142,9 @@ class MainSystem {
             "monthExpanses",
             "budgetExecutions",
             "summarizedBudgets",
-            "statistics",
+            "statistics"
           ],
-          settings: defaultConfig,
+          settings: defaultConfig
         };
       }
 
@@ -183,7 +183,7 @@ class MainSystem {
         if (differenceDays > 30) {
           buildingsForDeletion.push({
             id,
-            buildingName,
+            buildingName
           });
         }
       }

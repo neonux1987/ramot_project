@@ -11,7 +11,7 @@ const container = css`
   background: #ffffff;
   margin: 0;
   min-height: 500px;
-  margin: 20px 15px;
+  margin: 20px 15px 40px;
 `;
 
 const text = css`

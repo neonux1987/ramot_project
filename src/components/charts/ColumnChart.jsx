@@ -1,11 +1,15 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPrintReady } from "../../redux/actions/printActions";
 import ChartWithExporting from "./ChartWithExporting";
 const { columnChart } = require("../../helpers/chartsTemplates");
 
 const ColumnChart = ({ title = "", categories = [], series }) => {
   const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
+  const printMode = useSelector((store) => store.print.printMode);
   const chartRef = useRef();
+  const dispatch = useDispatch();
+  const [svg, setSvg] = useState(null);
 
   useEffect(() => {
     if (chartRef.current.container.current) {
@@ -18,14 +22,16 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
   }, [isFullscreen]);
 
   useEffect(() => {
-    //console.log(chartRef.current.chart.getSVG());
+    setSvg(chartRef.current.container.current.children[0].children[0]);
   }, []);
 
   return (
-    <ChartWithExporting
-      options={columnChart(title, series, categories)}
-      chartRef={chartRef}
-    />
+    <>
+      <ChartWithExporting
+        options={columnChart(title, series, categories)}
+        chartRef={chartRef}
+      />
+    </>
   );
 };
 

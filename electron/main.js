@@ -15,6 +15,7 @@ const { AppErrorDialog } = require("./helpers/utils");
 const isDev = !app.isPackaged;
 process.env.APP_ROOT_PATH = app.getAppPath();
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+process.traceProcessWarnings = true;
 
 contextMenu({
   prepend: () => [

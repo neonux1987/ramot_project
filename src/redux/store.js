@@ -51,30 +51,6 @@ const persistedReducer = persistReducer(
 
 const store = createStore(persistedReducer, applyMiddleware(thunk));
 
-store.asyncReducers = {};
-
-store.injectReducer = (key, asyncReducer) => {
-  store.asyncReducers[key] = asyncReducer;
-  store.replaceReducer(createReducer(store.asyncReducers));
-  store.persistor.persist();
-};
-
-// will later be used in the creation of dynamic reducers
-store.addToBlacklist = async function addToBlacklist(buildingName) {
-  persistConfig.blacklist.push(buildingName);
-};
-
-function createReducer(asyncReducers) {
-  const combinedReducers = combineReducers({
-    ...staticReducers,
-    ...asyncReducers
-  });
-
-  const persistedReducer = persistReducer(persistConfig, combinedReducers);
-
-  return persistedReducer;
-}
-
 const persistor = persistStore(store);
 store.persistor = persistor;
 //persistor.purge();
