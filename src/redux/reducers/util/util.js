@@ -1,5 +1,5 @@
-const { buildings = [], pages = [] } =
-  require("@electron/remote").getGlobal("sharedObject");
+const buildings = localStorage.getItem("buildings");
+const pages = localStorage.getItem("pages");
 
 export function updateGlobalBuilding(buildingId, payload) {
   buildings.forEach(({ id }, index) => {

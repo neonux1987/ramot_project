@@ -1,4 +1,4 @@
-const { ipcMain, shell } = require("electron");
+const { ipcMain, shell, app, BrowserWindow, dialog } = require("electron");
 const MainProcessLogic = require("../backend/logic/MainProcessLogic");
 const LoggerError = require("../backend/customErrors/LoggerError");
 const { AppErrorDialog } = require("../helpers/utils");
@@ -60,6 +60,39 @@ const mainProcessIpc = () => {
       fse.ensureDir(path);
     }
     shell.openPath(path);
+  });
+
+  ipcMain.handle("get-app-info", () => {
+    return {
+      appVersion: app.getVersion(),
+      appName: app.getName()
+    };
+  });
+
+  ipcMain.handle("get-dialog", () => {
+    return dialog;
+  });
+
+  ipcMain.handle("get-focused-window", () => {
+    return BrowserWindow.getFocusedWindow();
+  });
+
+  ipcMain.handle("get-focused-window-webContents", () => {
+    return BrowserWindow.getFocusedWindow().webContents;
+  });
+
+  ipcMain.handle("minimize-window", () => {
+    const window = BrowserWindow.getFocusedWindow();
+    window.minimize();
+  });
+
+  ipcMain.handle("maximize-window", () => {
+    const window = BrowserWindow.getFocusedWindow();
+    if (!window.isMaximized()) {
+      window.maximize();
+    } else {
+      window.unmaximize();
+    }
   });
 };
 

@@ -23,7 +23,7 @@ import WhiteButton from "../../../../components/buttons/WhiteButton";
 import useIcons from "../../../../customHooks/useIcons";
 
 // ELECTRON
-const { ipcRenderer } = require("electron");
+import { ipcRenderer } from "electron";
 
 const SETTINGS_NAME = "appUpdates";
 

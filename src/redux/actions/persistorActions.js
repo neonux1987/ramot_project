@@ -1,5 +1,5 @@
-import { persistor } from "../store"
+import { getPersistor } from "../store";
 
 export const purgeCache = () => {
-  return persistor.purge();
-}
+  return getPersistor().purge();
+};

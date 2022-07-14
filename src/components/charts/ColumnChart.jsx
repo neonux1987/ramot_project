@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPrintReady } from "../../redux/actions/printActions";
 import ChartWithExporting from "./ChartWithExporting";
-const { columnChart } = require("../../helpers/chartsTemplates");
+import { columnChart } from "../../helpers/chartsTemplates";
 
 const ColumnChart = ({ title = "", categories = [], series }) => {
   const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
@@ -22,11 +22,30 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
   }, [isFullscreen]);
 
   useEffect(() => {
-    setSvg(chartRef.current.container.current.children[0].children[0]);
+    const ele = chartRef.current.chart.renderer.box.cloneNode(true);
+    const div = document.createElement("div");
+    const chartSVG = chartRef.current.chart.getSVG({
+      exporting: {
+        allowHTML: true
+      }
+    });
+    div.innerHTML = chartSVG;
+    var svgData = new XMLSerializer().serializeToString(div);
+
+    var img = document.createElement("img");
+    img.setAttribute(
+      "src",
+      "data:image/svg+xml;base64," +
+        window.btoa(decodeURIComponent(encodeURIComponent(svgData)))
+    );
+    setSvg(div);
   }, []);
 
   return (
     <>
+      {svg !== null && (
+        <div ref={(node) => node && node.appendChild(svg)}></div>
+      )}
       <ChartWithExporting
         options={columnChart(title, series, categories)}
         chartRef={chartRef}

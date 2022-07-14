@@ -1,12 +1,11 @@
 //========================= Libraries =========================//
 require("v8-compile-cache");
 require("dotenv").config();
-const { app, BrowserWindow, powerMonitor } = require("electron");
-const remote = require("@electron/remote/main");
+const { app, powerMonitor } = require("electron");
 const path = require("path");
 const contextMenu = require("electron-context-menu");
-
-remote.initialize();
+const createMainWindow = require("./windows/main_window");
+const createLoadingWindow = require("./windows/loading_window");
 
 //========================= services =========================//
 const mainSystem = require("./backend/system/MainSystem");
@@ -15,7 +14,6 @@ const { AppErrorDialog } = require("./helpers/utils");
 const isDev = !app.isPackaged;
 process.env.APP_ROOT_PATH = app.getAppPath();
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
-process.traceProcessWarnings = true;
 
 contextMenu({
   prepend: () => [
@@ -41,8 +39,6 @@ contextMenu({
 });
 
 //app details
-const companyName = "NDT Solutions";
-const appName = "מערכת ניהול דוחות";
 const icon = path.join(app.getAppPath(), "Icon/ramot-group-icon.png");
 
 let mainWindow = null;
@@ -50,53 +46,14 @@ let mainWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();
 
 async function createWindow() {
-  let loading = new BrowserWindow({
-    show: false,
-    frame: false,
-    resizeable: false,
-    width: 320,
-    height: 380,
-    maxWidth: 320,
-    maxHeight: 380,
-    minWidth: 320,
-    minHeight: 380,
-    transparent: true,
-    icon,
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true,
-      contextIsolation: false
-    }
-  });
-  loading.uniqueId = "loadingWindow";
-  remote.enable(loading.webContents);
+  let loadingWindow = createLoadingWindow({ icon });
 
-  loading.once("show", () => {
+  loadingWindow.once("show", () => {
     /* start system */
     mainSystem
       .startSystem()
       .then(() => {
-        mainWindow = new BrowserWindow({
-          minWidth: 1280,
-          minHeight: 720,
-          width: 1280,
-          height: 720,
-          title: appName + " - " + companyName,
-          titleBarStyle: "hidden",
-          webPreferences: {
-            nodeIntegration: true,
-            enableRemoteModule: true,
-            contextIsolation: false
-          },
-          icon,
-          frame: false,
-          resizeable: false,
-          show: false
-        });
-
-        mainWindow.uniqueId = "mainWindow";
-
-        remote.enable(mainWindow.webContents);
+        mainWindow = createMainWindow({ icon });
 
         //const ses = mainWindow.webContents.session;
 
@@ -116,9 +73,9 @@ async function createWindow() {
 
         mainWindow.webContents.once("dom-ready", () => {
           mainWindow.show();
-          loading.hide();
-          loading.destroy();
-          loading = null;
+          loadingWindow.hide();
+          loadingWindow.destroy();
+          loadingWindow = null;
 
           mainSystem.scheduledTasks();
         });
@@ -144,7 +101,7 @@ async function createWindow() {
     /* end start system */
   });
 
-  loading.loadURL(
+  loadingWindow.loadURL(
     isDev
       ? "http://localhost:3000/?view=AppLoadingView"
       : `file://${path.join(
@@ -152,7 +109,7 @@ async function createWindow() {
           "../build/index.html?view=AppLoadingView"
         )}`
   );
-  loading.show();
+  loadingWindow.show();
 }
 
 //-------------------------------------------------------------------

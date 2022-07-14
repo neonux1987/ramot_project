@@ -59,7 +59,6 @@ import {
 } from "./statisticsActions";
 import { ipcRenderer } from "electron";
 import { updateGlobalBuilding } from "../reducers/util/util";
-const remote = require("@electron/remote");
 
 export const TYPES = {
   BUILDINGS_UPDATE: "BUILDINGS_UPDATE",
@@ -159,7 +158,7 @@ export const addBuilding = (payload) => {
         // we also need to add the new building to the global
         // shared object, otherwise on refresh it will use the
         // global shared object of previous data
-        const buildings = remote.getGlobal("sharedObject").buildings;
+        const buildings = localStorage.getItem("buildings");
         buildings.push(result.data);
         ipcRenderer.send("set-global-variable", {
           key: "buildings",
@@ -184,7 +183,7 @@ export const removeBuildings = (buildingsToRemove) => {
         channel: "buildings-removed"
       },
       onSuccess: () => {
-        const buildings = remote.getGlobal("sharedObject").buildings;
+        const buildings = localStorage.getItem("buildings");
 
         buildingsToRemove.forEach(({ id }) => {
           dispatch(removeBuildingInStore(id));

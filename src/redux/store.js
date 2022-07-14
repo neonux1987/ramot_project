@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
-import staticReducers from "./reducers/index";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web and AsyncStorage for react-native
 import thunk from "redux-thunk";
@@ -44,14 +43,29 @@ const persistConfig = {
   ]
 };
 
-const persistedReducer = persistReducer(
-  persistConfig,
-  combineReducers(staticReducers)
-);
+let store = null;
+let persistor = null;
 
-const store = createStore(persistedReducer, applyMiddleware(thunk));
+const initStore = () => {
+  const staticReducers = import("./reducers/index");
 
-const persistor = persistStore(store);
-store.persistor = persistor;
-//persistor.purge();
-export { store, persistor };
+  const persistedReducer = persistReducer(
+    persistConfig,
+    combineReducers(staticReducers)
+  );
+
+  store = createStore(persistedReducer, applyMiddleware(thunk));
+  persistor = persistStore(store);
+  store.persistor = persistor;
+  return { store, persistor };
+};
+
+const getStore = () => {
+  return store;
+};
+
+const getPersistor = () => {
+  return persistor;
+};
+
+export { initStore, getStore, getPersistor };

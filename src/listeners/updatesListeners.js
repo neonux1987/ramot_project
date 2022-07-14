@@ -1,6 +1,6 @@
 import { toastManager } from "../toasts/toastManager";
 
-const { ipcRenderer } = require("electron");
+import { ipcRenderer } from "electron";
 
 export const initUpdateListeners = () => {
   ipcRenderer.on("update_available", (event, version) => {

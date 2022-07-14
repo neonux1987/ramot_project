@@ -24,6 +24,7 @@ export const columnChart = (title, series, categories) => ({
     exitFullscreen: `יציאה ממסך מלא`
   },
   exporting: {
+    allowHTML: true,
     enabled: true,
     fallbackToExportServer: false,
     sourceWidth: 1280,

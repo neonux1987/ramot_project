@@ -1,9 +1,9 @@
+import { ipcRenderer } from "electron";
 import os from "os";
-const remote = require("@electron/remote");
 
-export const saveToFileDialog = (defaultFileName = "", options = {}) => {
-  const dialog = remote.dialog;
-  const WIN = remote.getCurrentWindow();
+export const saveToFileDialog = async (defaultFileName = "", options = {}) => {
+  const dialog = await ipcRenderer.invoke("get-dialog");
+  const WIN = await ipcRenderer.invoke("get-focused-window");
 
   if (options.defaultPath) {
     options.defaultPath = options.defaultPath + "/" + defaultFileName;
@@ -19,9 +19,9 @@ export const selectFileDialog = () => {
   return selectFolderDialog({ properties: ["openFile"] });
 };
 
-export const selectFolderDialog = (options = {}) => {
-  const dialog = remote.dialog;
-  const WIN = remote.getCurrentWindow();
+export const selectFolderDialog = async (options = {}) => {
+  const dialog = await ipcRenderer.invoke("get-dialog");
+  const WIN = await ipcRenderer.invoke("get-focused-window");
 
   const copiedOptions = {
     properties: ["openDirectory"],

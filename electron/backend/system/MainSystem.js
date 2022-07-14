@@ -2,6 +2,17 @@
 const { sendToWindow } = require("../../helpers/utils");
 
 class MainSystem {
+  sharedObject = {
+    buildings: [],
+    pages: [
+      "monthExpanses",
+      "budgetExecutions",
+      "summarizedBudgets",
+      "statistics"
+    ],
+    settings: {}
+  };
+
   async initializeIpcs() {
     //========================= my ipc's imports =========================//
     const monthExpansesIpc = require("../../ipcs/monthExpanses.ipc");
@@ -101,16 +112,8 @@ class MainSystem {
       const buildings = await buildingsLogic.getAllBuildings();
 
       // In the main process.
-      global.sharedObject = {
-        buildings,
-        pages: [
-          "monthExpanses",
-          "budgetExecutions",
-          "summarizedBudgets",
-          "statistics"
-        ],
-        settings
-      };
+      this.sharedObject.buildings = buildings;
+      this.sharedObject.settings = settings;
 
       await updatesLogic.runUpdateLogic();
 
@@ -136,16 +139,8 @@ class MainSystem {
           path.join(app.getAppPath(), "extraResources/config/config.json")
         );
 
-        global.sharedObject = {
-          buildings: [],
-          pages: [
-            "monthExpanses",
-            "budgetExecutions",
-            "summarizedBudgets",
-            "statistics"
-          ],
-          settings: defaultConfig
-        };
+        this.sharedObject.buildings = [];
+        this.sharedObject.settings = defaultConfig;
       }
 
       throw error;

@@ -2,13 +2,15 @@ import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import AppBar from "./AppBar";
 import useModalLogic from "../../customHooks/useModalLogic";
-import { quitApp } from "../../services/mainProcess.svc";
+import {
+  maximizeWindow,
+  minimizeWindow,
+  quitApp
+} from "../../services/mainProcess.svc";
 import { toastManager } from "../../toasts/toastManager";
 import { initiateDbBackup } from "../../services/dbBackup.svc";
 import ToastRender from "../../components/ToastRender/ToastRender";
 import BackupOnExitModal from "../../components/modals/BackupOnExitModal/BackupOnExitModal";
-
-const remote = require("@electron/remote");
 
 const AppBarContainer = () => {
   const showSidebar = useSelector((store) => store.toggleSidebar.showSidebar);
@@ -86,18 +88,11 @@ const AppBarContainer = () => {
   };
 
   const onMinimize = () => {
-    const window = remote.getCurrentWindow();
-    window.minimize();
+    minimizeWindow();
   };
 
   const onMaximize = () => {
-    const window = remote.getCurrentWindow();
-
-    if (!window.isMaximized()) {
-      window.maximize();
-    } else {
-      window.unmaximize();
-    }
+    maximizeWindow();
   };
 
   return (

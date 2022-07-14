@@ -2,6 +2,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { useTheme } from "@material-ui/core";
+//import { getAppVersion } from "../../../services/mainProcess.svc";
 
 // CSS
 import {
@@ -19,9 +20,6 @@ import {
   mainTitleWrapper
 } from "./Logo.module.css";
 
-//ELECTRON
-//const appVersion = require("@electron/remote").app.getVersion();
-
 const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     // necessary for content to be below app bar
@@ -30,9 +28,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Logo = ({ children }) => {
+const Logo = () => {
   const classes = useStyles();
   const { main } = useTheme().palette.primary;
+  /* const [version, setVersion] = useState(""); */
+
+  /* useEffect(async () => {
+    setVersion(await getAppVersion());
+  }, []); */
+
   return (
     <div className={classes.drawerHeader}>
       <div className={container}>
@@ -56,7 +60,7 @@ const Logo = ({ children }) => {
 
             {/* <div className={appVersionWrapper}>
               <Typography className={versionText} variant="subtitle1">
-                {`Version: ${appVersion}`}
+                {`Version: ${version}`}
               </Typography>
             </div> */}
           </div>

@@ -1,6 +1,6 @@
 import { TYPES } from "../actions/settingsActions";
 
-const settings = require("@electron/remote").getGlobal("sharedObject").settings;
+const settings = localStorage.getItem("settings");
 
 const initState = {
   isFetching: true,

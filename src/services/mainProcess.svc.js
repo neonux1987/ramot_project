@@ -1,6 +1,5 @@
 import { ipcSendReceive } from "../redux/actions/util/util";
 import { ipcRenderer } from "electron";
-const remote = require("@electron/remote");
 
 export const quitApp = () => {
   return ipcSendReceive({
@@ -24,13 +23,11 @@ export const restartApp = () => {
   });
 };
 
-export const muteSound = (muted) => {
-  remote.getCurrentWebContents().setAudioMuted(muted);
-  remote.getCurrentWebContents().reload();
-};
-
-export const refreshView = () => {
-  remote.getCurrentWebContents().reload();
+export const refreshView = async () => {
+  const webContents = await ipcRenderer.invoke(
+    "get-focused-window-webContents"
+  );
+  webContents.reload();
 };
 
 export const showItemInFolder = (path) => {
@@ -39,4 +36,28 @@ export const showItemInFolder = (path) => {
 
 export const openItem = (path, ensure) => {
   ipcRenderer.send("open-item", path, ensure);
+};
+
+export const getAppInfo = async () => {
+  return await ipcRenderer.invoke("get-app-info");
+};
+
+export const minimizeWindow = async () => {
+  return await ipcRenderer.invoke("minimize-window");
+};
+
+export const maximizeWindow = async () => {
+  return await ipcRenderer.invoke("maximize-window");
+};
+
+export const getSettings = (callback) => {
+  ipcRenderer.removeAllListeners("settings-data");
+  ipcRenderer.send("get-settings", callback);
+  ipcRenderer.once("settings-data", callback);
+};
+
+export const getAllBuildings = (callback) => {
+  ipcRenderer.removeAllListeners("all-buildings-data");
+  ipcRenderer.send("get-all-buildings", callback);
+  ipcRenderer.once("all-buildings-data", callback);
 };

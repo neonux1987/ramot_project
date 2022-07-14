@@ -7,8 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const remote = require("@electron/remote");
-const sharedObject = remote.getGlobal("sharedObject");
+const settings = localStorage.getItem("settings");
 const TYPES = {
   action: "action",
   error: "error",
@@ -19,18 +18,18 @@ const TYPES = {
 
 class SoundManager {
   constructor() {
-    this.systemSettings = sharedObject.settings.system;
+    this.systemSettings = settings === null ? {} : settings.system;
     this.systemSound = null;
   }
 
   types = TYPES;
 
   reload = () => {
-    this.systemSettings = sharedObject.settings.system;
+    this.systemSettings = settings.system;
   };
 
   play = (type) => {
-    if (sharedObject === undefined) return;
+    if (settings === undefined) return;
 
     const { soundEnabled, soundVolume } = this.systemSettings;
     if (soundEnabled === false) return;

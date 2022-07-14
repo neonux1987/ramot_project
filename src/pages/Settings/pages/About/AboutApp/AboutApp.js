@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ExpandableSection from "../../../../../components/Section/ExpandableSection";
 import BoldUnderlineLabel from "../../../../../components/BoldUnderlineLabel/BoldUnderlineLabel";
 import useIcons from "../../../../../customHooks/useIcons";
-
-//ELECTRON
-const app = require("@electron/remote").app;
-const appCurrentVersion = app.getVersion();
-const appName = app.name;
+import { getAppInfo } from "../../../../../services/mainProcess.svc";
 
 const AboutApp = () => {
   const [generateIcon] = useIcons();
   const AboutIcon = generateIcon("about");
+  const [appInfo, setAppInfo] = useState(null);
+  const { appVersion, appName } = appInfo;
+
+  useEffect(() => {
+    const fetchAppInfo = async () => {
+      setAppInfo(await getAppInfo());
+    };
+
+    fetchAppInfo();
+  }, []);
+
   return (
-    <ExpandableSection title={"אודות התוכנה"} Icon={AboutIcon}>
+    <ExpandableSection
+      title={"אודות התוכנה"}
+      Icon={AboutIcon}
+      loading={appInfo === null}
+    >
       <BoldUnderlineLabel label={`שם תוכנה:`}>
         קבוצת רמות ניהול הוצאות והכנסות
       </BoldUnderlineLabel>
@@ -22,7 +33,7 @@ const AboutApp = () => {
       </BoldUnderlineLabel>
 
       <BoldUnderlineLabel label={`גירסה נוכחית:`}>
-        {appCurrentVersion}
+        {appVersion}
       </BoldUnderlineLabel>
     </ExpandableSection>
   );
