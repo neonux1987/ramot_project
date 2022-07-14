@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const settings = localStorage.getItem("settings");
+const settings = JSON.parse(localStorage.getItem("settings"));
 const TYPES = {
   action: "action",
   error: "error",

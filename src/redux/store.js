@@ -46,17 +46,23 @@ const persistConfig = {
 let store = null;
 let persistor = null;
 
-const initStore = () => {
-  const staticReducers = import("./reducers/index");
+// we dont want to import reducers outside of this fucntion
+// because they are using data from the backend api to init
+// some of the reducers state, if we import it outside this function
+// in some of the reducers it will run function to initial the state
+// based on data from the backend but we dont have it yet
+const initStore = async () => {
+  const staticReducers = await import("./reducers/index");
 
   const persistedReducer = persistReducer(
     persistConfig,
-    combineReducers(staticReducers)
+    combineReducers(staticReducers.default)
   );
 
   store = createStore(persistedReducer, applyMiddleware(thunk));
   persistor = persistStore(store);
   store.persistor = persistor;
+
   return { store, persistor };
 };
 

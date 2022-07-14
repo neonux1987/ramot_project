@@ -52,12 +52,16 @@ export const maximizeWindow = async () => {
 
 export const getSettings = (callback) => {
   ipcRenderer.removeAllListeners("settings-data");
-  ipcRenderer.send("get-settings", callback);
-  ipcRenderer.once("settings-data", callback);
+  ipcRenderer.send("get-settings");
+  ipcRenderer.once("settings-data", (_, result) => {
+    callback(result);
+  });
 };
 
 export const getAllBuildings = (callback) => {
   ipcRenderer.removeAllListeners("all-buildings-data");
-  ipcRenderer.send("get-all-buildings", callback);
-  ipcRenderer.once("all-buildings-data", callback);
+  ipcRenderer.send("get-all-buildings");
+  ipcRenderer.once("all-buildings-data", (_, result) => {
+    callback(result);
+  });
 };

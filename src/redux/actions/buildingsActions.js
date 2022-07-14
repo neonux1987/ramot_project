@@ -158,7 +158,7 @@ export const addBuilding = (payload) => {
         // we also need to add the new building to the global
         // shared object, otherwise on refresh it will use the
         // global shared object of previous data
-        const buildings = localStorage.getItem("buildings");
+        const buildings = JSON.parse(localStorage.getItem("buildings"));
         buildings.push(result.data);
         ipcRenderer.send("set-global-variable", {
           key: "buildings",
@@ -183,7 +183,7 @@ export const removeBuildings = (buildingsToRemove) => {
         channel: "buildings-removed"
       },
       onSuccess: () => {
-        const buildings = localStorage.getItem("buildings");
+        const buildings = JSON.parse(localStorage.getItem("buildings"));
 
         buildingsToRemove.forEach(({ id }) => {
           dispatch(removeBuildingInStore(id));

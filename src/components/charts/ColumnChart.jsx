@@ -21,7 +21,7 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
     }
   }, [isFullscreen]);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     const ele = chartRef.current.chart.renderer.box.cloneNode(true);
     const div = document.createElement("div");
     const chartSVG = chartRef.current.chart.getSVG({
@@ -39,13 +39,13 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
         window.btoa(decodeURIComponent(encodeURIComponent(svgData)))
     );
     setSvg(div);
-  }, []);
+  }, []); */
 
   return (
     <>
-      {svg !== null && (
+      {/* {svg !== null && (
         <div ref={(node) => node && node.appendChild(svg)}></div>
-      )}
+      )} */}
       <ChartWithExporting
         options={columnChart(title, series, categories)}
         chartRef={chartRef}
