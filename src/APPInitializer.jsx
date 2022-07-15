@@ -7,10 +7,12 @@ import ViewManager from "./ViewManager/ViewManager";
 import { getAllBuildings, getSettings } from "./services/mainProcess.svc";
 
 // because redux reducers depend on some data from the backend
-// we must fetch it first before creating the store and especialli
+// we must fetch it first before creating the store and especially
 // the store reducers because they depend on that data for
 // the intial state for some of the reducers
 // better than using electron's remote module which causes memory leaks
+// future projects will have a better structure that will avoid this
+// design mistake
 const APPInitializer = () => {
   const [buildingsDataReady, setBuildingsDataReady] = useState(false);
   const [settingsReady, setSettingsReady] = useState(false);
