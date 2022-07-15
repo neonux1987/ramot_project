@@ -77,8 +77,8 @@ const mainProcessIpc = () => {
     return BrowserWindow.getFocusedWindow();
   });
 
-  ipcMain.handle("get-focused-window-webContents", () => {
-    return BrowserWindow.getFocusedWindow().webContents;
+  ipcMain.on("refresh-webContent-view", () => {
+    BrowserWindow.getFocusedWindow().webContents.reload();
   });
 
   ipcMain.handle("minimize-window", () => {

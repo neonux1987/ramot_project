@@ -13,8 +13,8 @@ module.exports = (properties) => {
     minHeight: 380,
     transparent: true,
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true
+      nodeIntegration: true,
+      contextIsolation: false
     },
     ...properties
   });

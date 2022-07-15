@@ -8,11 +8,11 @@ const AboutApp = () => {
   const [generateIcon] = useIcons();
   const AboutIcon = generateIcon("about");
   const [appInfo, setAppInfo] = useState(null);
-  const { appVersion, appName } = appInfo;
 
   useEffect(() => {
     const fetchAppInfo = async () => {
-      setAppInfo(await getAppInfo());
+      const data = await getAppInfo();
+      setAppInfo(data);
     };
 
     fetchAppInfo();
@@ -29,11 +29,11 @@ const AboutApp = () => {
       </BoldUnderlineLabel>
 
       <BoldUnderlineLabel label={`שם תוכנה באנגלית:`}>
-        {appName}
+        {appInfo && appInfo.appName}
       </BoldUnderlineLabel>
 
       <BoldUnderlineLabel label={`גירסה נוכחית:`}>
-        {appVersion}
+        {appInfo && appInfo.appVersion}
       </BoldUnderlineLabel>
     </ExpandableSection>
   );

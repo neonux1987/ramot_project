@@ -11,7 +11,7 @@ import { getAllBuildings, getSettings } from "./services/mainProcess.svc";
 // the store reducers because they depend on that data for
 // the intial state for some of the reducers
 // better than using electron's remote module which causes memory leaks
-const Initializer = () => {
+const APPInitializer = () => {
   const [buildingsDataReady, setBuildingsDataReady] = useState(false);
   const [settingsReady, setSettingsReady] = useState(false);
   const [store, setStore] = useState(null);
@@ -69,4 +69,4 @@ const Initializer = () => {
   );
 };
 
-export default Initializer;
+export default APPInitializer;

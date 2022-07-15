@@ -23,11 +23,8 @@ export const restartApp = () => {
   });
 };
 
-export const refreshView = async () => {
-  const webContents = await ipcRenderer.invoke(
-    "get-focused-window-webContents"
-  );
-  webContents.reload();
+export const refreshView = () => {
+  ipcRenderer.send("refresh-webContent-view");
 };
 
 export const showItemInFolder = (path) => {
@@ -39,7 +36,7 @@ export const openItem = (path, ensure) => {
 };
 
 export const getAppInfo = async () => {
-  return await ipcRenderer.invoke("get-app-info");
+  return ipcRenderer.invoke("get-app-info");
 };
 
 export const minimizeWindow = async () => {
