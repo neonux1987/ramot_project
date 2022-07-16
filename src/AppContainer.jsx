@@ -24,16 +24,16 @@ const theme = createMuiTheme(
       secondary: {
         main: "#001120"
       }
-    },
-    breakpoints: {
-      values: {
-        xs: 1280,
-        sm: 1400,
-        md: 1600,
-        lg: 1900,
-        xl: 1920
-      }
     }
+    // breakpoints: {
+    //   values: {
+    //     xs: 1280,
+    //     sm: 1400,
+    //     md: 1600,
+    //     lg: 1900,
+    //     xl: 1920
+    //   }
+    // }
   },
   heIL
 );

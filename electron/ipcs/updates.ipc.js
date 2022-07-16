@@ -1,6 +1,5 @@
 const { ipcMain } = require("electron");
 const { autoUpdater, CancellationToken } = require("electron-updater");
-const isDev = require("electron-is-dev");
 const logManager = require("../backend/logger/LogManager");
 const { sendToWindow } = require("../helpers/utils");
 

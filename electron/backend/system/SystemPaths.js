@@ -1,6 +1,6 @@
 const { app } = require("electron");
-const isDev = require("electron-is-dev");
 const path = require("path");
+const isDev = !app.isPackaged;
 
 const DB_FILE_NAME = "ramot-group-db";
 
@@ -63,11 +63,11 @@ class SystemPaths {
     log_file_path: LOG_FILE_PATH,
     user_main_folder: USER_MAIN_FOLDER,
     user_reports_folder: USER_REPORTS_FOLDER,
-    app_temp_folder: APP_TEMP_FOLDER,
+    app_temp_folder: APP_TEMP_FOLDER
   };
 
   static info = {
-    db_file_name: DB_FILE_NAME,
+    db_file_name: DB_FILE_NAME
   };
 }
 
