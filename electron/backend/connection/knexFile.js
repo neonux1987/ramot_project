@@ -15,7 +15,7 @@ module.exports = {
   production: {
     client: "sqlite3",
     connection: {
-      filename: ""
+      filename: "../data/db/ramot-group-db.sqlite"
     },
     useNullAsDefault: true,
     migrations: {
