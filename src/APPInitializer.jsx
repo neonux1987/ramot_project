@@ -66,7 +66,7 @@ const APPInitializer = () => {
   }, [settingsReady, buildingsDataReady]);
 
   // i had to extract the AppLoadingView from the ViewManger
-  // and put it one level because it will ignore this view
+  // and put it one level above because it will ignore this view
   // because of the if statement under that loades the AppLoader
   if (viewName === "AppLoadingView") return <AppLoadingView />;
 
