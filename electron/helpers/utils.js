@@ -50,7 +50,7 @@ exports.getWindow = getWindow;
 
 function createRestoreDbWindow() {
   const icon = path.join(app.getAppPath(), "Icon/ramot-group-icon.png");
-  const isDev = !app.isPackaged;
+  const isDev = process.env.NODE_ENV === "development";
 
   const restoreDbWindow = new BrowserWindow({
     minWidth: 1280,

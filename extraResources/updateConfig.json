@@ -1,3 +1,4 @@
 {
-  "runScript": false
+  "runScript": false,
+  "runMigrations": false
 }

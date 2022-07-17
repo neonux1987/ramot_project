@@ -93,9 +93,11 @@ class MainSystem {
       const connectionPool = require("../connection/ConnectionPool");
       const SettingsLogic = require("../logic/SettingsLogic");
       const BuildingsLogic = require("../logic/BuildingsLogic");
-
       const setupLogic = new SetupLogic();
       const settingsLogic = new SettingsLogic();
+
+      // must run first
+      await connectionPool.init();
 
       // if the app runs for the first time
       await setupLogic.firstTimeSetup();

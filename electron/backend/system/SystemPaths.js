@@ -1,6 +1,6 @@
 const { app } = require("electron");
 const path = require("path");
-const isDev = !app.isPackaged;
+const isDev = process.env.NODE_ENV === "development";
 
 const DB_FILE_NAME = "ramot-group-db";
 
@@ -22,6 +22,7 @@ const SERVICES_FILE_PATH = path.join(CONFIG_FOLDER_PATH, "services.json");
 
 const DB_FOLDER_PATH = path.join(RAMOT_GROUP_FOLDER_PATH, "db");
 const DB_FILE_PATH = path.join(DB_FOLDER_PATH, `${DB_FILE_NAME}.sqlite`);
+process.env.RAMOT_DB_FILE_PATH = DB_FILE_PATH;
 
 // db backups
 const DB_BACKUPS_FOLDER_PATH = path.join(
