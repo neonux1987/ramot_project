@@ -5,12 +5,8 @@ import AppLoadingView from "../WindowViews/AppLoadingView/AppLoadingView";
 import RestoreWizardView from "../WindowViews/RestoreWizardView/RestoreWizardView";
 import { MemoryRouter } from "react-router-dom";
 
-const ViewManager = () => {
+const ViewManager = ({ viewName }) => {
   const whichView = () => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const viewName = urlParams.get("view");
-
     switch (viewName) {
       case "AppLoadingView":
         return AppLoadingView;

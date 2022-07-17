@@ -5,6 +5,13 @@ import { PersistGate } from "redux-persist/integration/react";
 import LoadingCircle from "./components/LoadingCircle";
 import ViewManager from "./ViewManager/ViewManager";
 import { getAllBuildings, getSettings } from "./services/mainProcess.svc";
+import AppLoader from "./components/AnimatedLoaders/AppLoader";
+import AppLoadingView from "./WindowViews/AppLoadingView/AppLoadingView";
+
+// get url query param for the view manager
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const viewName = urlParams.get("view");
 
 // because redux reducers depend on some data from the backend
 // we must fetch it first before creating the store and especially
@@ -23,7 +30,7 @@ const APPInitializer = () => {
     getAllBuildings((result) => {
       if (result.data) {
         localStorage.setItem("buildings", JSON.stringify(result.data));
-        setBuildingsDataReady(true);
+        setBuildingsDataReady(false);
       }
     });
 
@@ -58,16 +65,25 @@ const APPInitializer = () => {
     }
   }, [settingsReady, buildingsDataReady]);
 
+  // i had to extract the AppLoadingView from the ViewManger
+  // and put it one level because it will ignore this view
+  // because of the if statement under that loades the AppLoader
+  if (viewName === "AppLoadingView") return <AppLoadingView />;
+
+  if (
+    !buildingsDataReady ||
+    !settingsReady ||
+    store === null ||
+    persistor === null
+  )
+    return <AppLoader text="טוען הגדרות אפליקציה" />;
+
   return (
-    <>
-      {buildingsDataReady && settingsReady && store && persistor && (
-        <Provider store={store}>
-          <PersistGate loading={<LoadingCircle />} persistor={persistor}>
-            <ViewManager />
-          </PersistGate>
-        </Provider>
-      )}
-    </>
+    <Provider store={store}>
+      <PersistGate loading={<LoadingCircle />} persistor={persistor}>
+        <ViewManager viewName={viewName} />
+      </PersistGate>
+    </Provider>
   );
 };
 

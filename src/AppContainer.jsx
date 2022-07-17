@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { heIL } from "@material-ui/core/locale";
 import { createMuiTheme } from "@material-ui/core/styles";
-import LogoLoader from "./components/AnimatedLoaders/LogoLoader/LogoLoader";
+import AppLoader from "./components/AnimatedLoaders/AppLoader";
 import useServices from "./customHooks/useServices";
 import generalSettingsActions from "./redux/actions/generalSettingsActions";
 import "react-toastify/dist/ReactToastify.css";
@@ -60,7 +60,7 @@ const AppContainer = () => {
   }, [start, stop]);
 
   if (generalSettings.isFetching) {
-    return <LogoLoader />;
+    return <AppLoader text={"טוען הגדרות אפליקציה"} />;
   }
 
   return (

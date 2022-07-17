@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
   border-radius: 26px;
   height: 100%;
   display: flex;
@@ -7,47 +7,47 @@
   justify-content: center;
 }
 
-h1,h3{
+h1,
+h3 {
   margin: 0;
   text-align: center;
 }
 
-.logo{
+.logo {
   display: flex;
   justify-content: center;
 }
 
-.mainTitle{
-  color: #444;
+.mainTitle {
+  color: #000000;
   font-weight: 400;
 }
 
-.mainTitle h1{
+.mainTitle h1 {
   font-size: 24px;
 }
 
-.subTitle{
-  color: #444;
-  
+.subTitle {
+  color: #000000;
 }
 
-.subTitle h3{
+.subTitle h3 {
   font-size: 14px;
   font-weight: 400;
 }
 
-.loadingText{
-  color: #444;
+.loadingText {
+  color: #000000;
   margin-top: 20px;
 }
 
-.loadingText h1{
+.loadingText h1 {
   font-weight: 400;
   font-size: 18px;
 }
 
-.gif{
-  background: url('./loader.gif') no-repeat;
+.gif {
+  background: url("./loader.gif") no-repeat;
   width: 160px;
   height: 24px;
 }
