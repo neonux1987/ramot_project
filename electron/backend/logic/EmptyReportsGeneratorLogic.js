@@ -28,7 +28,7 @@ class EmptyReportsGeneratorLogic {
 
     const defaultExpansesCodes =
       await this.defaultExpansesCodesLogic.getDefaultExpansesCodesTrx(trx);
-    console.log(defaultExpansesCodes);
+
     if (defaultExpansesCodes.length === 0) {
       trx.commit();
       throw new LogicError(
