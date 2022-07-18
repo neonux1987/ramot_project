@@ -57,7 +57,6 @@ import {
   addBuilding as s_ADD,
   removeBuilding as s_REMOVE
 } from "./statisticsActions";
-import { ipcRenderer } from "electron";
 import { updateGlobalBuilding } from "../reducers/util/util";
 
 export const TYPES = {
@@ -95,10 +94,7 @@ export const updateBuilding = (id, payload, oldCopy, index) => {
 
     dispatch(updateBuildingsInStore(index, payload));
     const updatedBuildings = updateGlobalBuilding(id, payload);
-    ipcRenderer.send("set-global-variable", {
-      key: "buildings",
-      value: updatedBuildings
-    });
+    localStorage.getItem("buildings", JSON.stringify(updatedBuildings));
 
     return ipcSendReceive({
       send: {
@@ -112,10 +108,7 @@ export const updateBuilding = (id, payload, oldCopy, index) => {
         dispatch(updateBuildingsInStore(oldCopy));
 
         const updatedBuildings = updateGlobalBuilding(id, payload);
-        ipcRenderer.send("set-global-variable", {
-          key: "buildings",
-          value: updatedBuildings
-        });
+        localStorage.getItem("buildings", JSON.stringify(updatedBuildings));
 
         toastManager.error(result.error);
       }
@@ -160,10 +153,7 @@ export const addBuilding = (payload) => {
         // global shared object of previous data
         const buildings = JSON.parse(localStorage.getItem("buildings"));
         buildings.push(result.data);
-        ipcRenderer.send("set-global-variable", {
-          key: "buildings",
-          value: buildings
-        });
+        localStorage.getItem("buildings", JSON.stringify(buildings));
       },
       onError: (result) => {
         toastManager.error(result.error);
@@ -214,10 +204,7 @@ export const removeBuildings = (buildingsToRemove) => {
           });
         });
 
-        ipcRenderer.send("set-global-variable", {
-          key: "buildings",
-          value: buildings
-        });
+        localStorage.getItem("buildings", JSON.stringify(buildings));
 
         toastManager.success("הבניינים נמחקו לצמיתות בהצלחה");
       },

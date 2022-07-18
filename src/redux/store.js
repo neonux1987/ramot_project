@@ -23,7 +23,6 @@ const persistConfig = {
     "monthlyStats",
     "quarterlyStats",
     "yearlyStats",
-    "tableSettings",
     "modal",
     "registeredReports",
     //"routes",

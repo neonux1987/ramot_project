@@ -57,7 +57,7 @@ const Sidebar = ({ routes, isFetching, data }) => {
       <ControlsContainer routes={routes} />
       <FadedDivider />
       {isFetching ? (
-        <CenteredLoader text="טוען תפריט" color="#ffffff" />
+        <CenteredLoader text="טוען תפריט" color="#000000" />
       ) : (
         <MenuContainer routes={routes} data={data} />
       )}

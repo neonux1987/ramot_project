@@ -2,17 +2,6 @@
 const { sendToWindow } = require("../../helpers/utils");
 
 class MainSystem {
-  sharedObject = {
-    buildings: [],
-    pages: [
-      "monthExpanses",
-      "budgetExecutions",
-      "summarizedBudgets",
-      "statistics"
-    ],
-    settings: {}
-  };
-
   async initializeIpcs() {
     //========================= my ipc's imports =========================//
     const monthExpansesIpc = require("../../ipcs/monthExpanses.ipc");
@@ -28,7 +17,6 @@ class MainSystem {
     const monthlyStatsIpc = require("../../ipcs/monthlyStats.ipc");
     const quarterlyStatsIpc = require("../../ipcs/quarterlyStats.ipc");
     const yearlyStatsIpc = require("../../ipcs/yearlyStats.ipc");
-    const tableSettingsIpc = require("../../ipcs/tableSettings.ipc");
     const settingsIpc = require("../../ipcs/settings.ipc");
     const registeredBackupsIpc = require("../../ipcs/registeredBackups.ipc");
     const dbBackupIpc = require("../../ipcs/dbBackup.ipc");
@@ -64,8 +52,6 @@ class MainSystem {
     quarterlyStatsIpc();
 
     yearlyStatsIpc();
-
-    tableSettingsIpc();
 
     settingsIpc();
 
@@ -107,16 +93,6 @@ class MainSystem {
 
       const updatesLogic = new UpdatesLogic();
 
-      const settings = await settingsLogic.getSettings();
-
-      //fetch menu data
-      const buildingsLogic = new BuildingsLogic();
-      const buildings = await buildingsLogic.getAllBuildings();
-
-      // In the main process.
-      this.sharedObject.buildings = buildings;
-      this.sharedObject.settings = settings;
-
       await updatesLogic.runUpdateLogic();
 
       // initialize all the ipc's for connection
@@ -127,23 +103,6 @@ class MainSystem {
       const logger = logManager.getLogger();
 
       logger.error(error.toString());
-
-      // in case of an app error that prevents
-      // the initialization of the global object
-      // lets load the default config in the app
-      if (global.sharedObject === undefined) {
-        const { app } = require("electron");
-        const fse = require("fs-extra");
-        const path = require("path");
-
-        // load the default config
-        const defaultConfig = await fse.readJson(
-          path.join(app.getAppPath(), "extraResources/config/config.json")
-        );
-
-        this.sharedObject.buildings = [];
-        this.sharedObject.settings = defaultConfig;
-      }
 
       throw error;
     }

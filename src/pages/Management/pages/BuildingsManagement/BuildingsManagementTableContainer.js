@@ -157,7 +157,7 @@ const BuildingsManagementTableContainer = () => {
         addNewModeProps={{
           addNewMode,
           toggleAddNewMode,
-          dataExist
+          dataExist: true
         }}
       />
       <AddBuildingContainer

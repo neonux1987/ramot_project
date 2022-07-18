@@ -160,7 +160,7 @@ const SummarizedSectionsTableContainer = () => {
         addNewModeProps={{
           addNewMode,
           toggleAddNewMode,
-          dataExist
+          dataExist: true
         }}
         print={true}
         printProps={{
@@ -177,11 +177,12 @@ const SummarizedSectionsTableContainer = () => {
       <TableContainer
         Row={Row}
         HeaderComponent={HeadersRow}
-        isFetching={isFetching || data.length === 0}
+        isFetching={isFetching}
         totalCount={data.length}
         printHeaderDetails={{
           pageTitle: "סעיפים מסכמים"
         }}
+        noDataText={"אין נתונים"}
       />
     </TableSection>
   );

@@ -1,21 +1,24 @@
 // LIBRARIES
-import React, { useCallback, useState } from 'react';
-import { Description } from '@material-ui/icons';
-import { useDispatch } from 'react-redux';
-import EmptyReportsGenerator from './EmptyReportsGenerator';
-import StyledSection from '../../../../../components/Section/StyledSection';
-import BuildingPicker from '../ExcelReportsGenerator/BuildingPicker/BuildingPicker';
-import Helper from '../../../../../helpers/Helper';
-import { generateEmptyReports } from '../../../../../services/emptyReportsGenerator.svc';
-import { checkBuilding, setAllChecked } from '../../../../../redux/actions/reportsActions';
-import CheckboxWithLabel from '../../../../../components/Checkboxes/CheckboxWithLabel';
-import Box from '@material-ui/core/Box';
+import React, { useCallback, useState } from "react";
+import { Description } from "@material-ui/icons";
+import { useDispatch } from "react-redux";
+import EmptyReportsGenerator from "./EmptyReportsGenerator";
+import StyledSection from "../../../../../components/Section/StyledSection";
+import BuildingPicker from "../ExcelReportsGenerator/BuildingPicker/BuildingPicker";
+import Helper from "../../../../../helpers/Helper";
+import { generateEmptyReports } from "../../../../../services/emptyReportsGenerator.svc";
+import {
+  checkBuilding,
+  setAllChecked
+} from "../../../../../redux/actions/reportsActions";
+import CheckboxWithLabel from "../../../../../components/Checkboxes/CheckboxWithLabel";
+import Box from "@material-ui/core/Box";
 
 const years = generateYears(new Date().getFullYear());
 const quarters = Helper.getYearQuarters();
 
 const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
-  const date = new Date();//current date
+  const date = new Date(); //current date
 
   const { checkedBuildings, isAllChecked } = emptyReports;
 
@@ -38,7 +41,7 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
       ...selectDate,
       [name]: Number.parseInt(value)
     });
-  }
+  };
 
   const onClickHandler = async () => {
     const newDate = {
@@ -46,23 +49,35 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
       quarter: selectDate.quarter,
       quarterHeb: Helper.getQuarterHeb(selectDate.quarter),
       quarterEng: Helper.convertQuarterToEng(selectDate.quarter)
-    }
+    };
 
     // keep only the selected buildings
-    const filteredBuildings = checkedBuildings.filter(building => building.isChecked === true);
+    const filteredBuildings = checkedBuildings.filter(
+      (building) => building.isChecked === true
+    );
 
-    generateEmptyReports({ date: newDate, buildings: filteredBuildings, fromPreviousReports });
-  }
+    generateEmptyReports({
+      date: newDate,
+      buildings: filteredBuildings,
+      fromPreviousReports
+    });
+  };
 
-  const setAllCheckedHandler = useCallback((checked, checkedBuildings) => {
-    dispatch(setAllChecked("emptyReports", checked, checkedBuildings));
-  }, [dispatch]);
+  const setAllCheckedHandler = useCallback(
+    (checked, checkedBuildings) => {
+      dispatch(setAllChecked("emptyReports", checked, checkedBuildings));
+    },
+    [dispatch]
+  );
 
-  const checkBuildingHandler = useCallback((name, checked, checkedBuildings) => {
-    dispatch(checkBuilding("emptyReports", name, checked, checkedBuildings));
-  }, [dispatch]);
+  const checkBuildingHandler = useCallback(
+    (name, checked, checkedBuildings) => {
+      dispatch(checkBuilding("emptyReports", name, checked, checkedBuildings));
+    },
+    [dispatch]
+  );
 
-  const onCheckedHandler = useCallback(event => {
+  const onCheckedHandler = useCallback((event) => {
     setFromPreviousReports(event.target.checked);
   }, []);
 
@@ -71,7 +86,7 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
       title={"הפקת דוחות ריקים - רבעוניים"}
       Icon={Description}
       loading={isFetching}
-      noData={!isFetching & checkedBuildings.length === 0}
+      noData={!isFetching & (checkedBuildings.length === 0)}
       noDataText="לא קיימים בניינים"
     >
       <Box margin="0 0 0 -5px">
@@ -102,14 +117,13 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
         />
       </Box>
     </StyledSection>
-  )
+  );
 };
 
 function generateYears(currentYear) {
   const arr = [];
   const backToYearLimit = currentYear - 5;
-  for (let i = currentYear; i > backToYearLimit; i--)
-    arr.push(i);
+  for (let i = currentYear; i > backToYearLimit; i--) arr.push(i);
 
   return arr;
 }

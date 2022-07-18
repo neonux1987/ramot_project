@@ -32,6 +32,7 @@ const buildingsIpc = () => {
       .addBuilding(params)
       .then((result) => {
         event.reply("added-building", { data: result });
+        event.sender.send("renderer-added-building-update");
       })
       .catch((error) => {
         event.reply("added-building", { error: error.message });
@@ -54,6 +55,7 @@ const buildingsIpc = () => {
       .updateBuilding(params)
       .then((result) => {
         event.reply("updated-building", { data: result });
+        event.sender.send("renderer-updated-building-update");
       })
       .catch((error) => {
         event.reply("updated-building", { error: error.message });

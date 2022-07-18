@@ -261,7 +261,7 @@ const ExpansesCodes = () => {
         addNewModeProps={{
           addNewMode,
           toggleAddNewMode,
-          dataExist
+          dataExist: summarizedSections.data.length === 0 ? false : true
         }}
         print={true}
         printProps={{
@@ -279,11 +279,16 @@ const ExpansesCodes = () => {
       <TableContainer
         Row={Row}
         HeaderComponent={HeadersRow}
-        isFetching={isFetching || data.length === 0}
+        isFetching={isFetching}
         totalCount={data.length}
         printHeaderDetails={{
           pageTitle: "קודי הנהלת חשבונות"
         }}
+        noDataText={
+          summarizedSections.data.length === 0
+            ? "לא ניתן להוסיף קודי הנהלת חשבונות מכיוון שלא קיימים סעיפים מסכמים"
+            : "אין נתונים"
+        }
       />
     </TableSection>
   );

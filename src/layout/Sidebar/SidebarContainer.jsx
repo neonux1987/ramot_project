@@ -25,11 +25,11 @@ const SidebarContainer = () => {
   useEffect(() => {
     // remove previous listeners if exist
     // before registering new ones
-    ipcRenderer.removeAllListeners("updated-building");
-    ipcRenderer.removeAllListeners("added-building");
+    ipcRenderer.removeAllListeners("renderer-updated-building-update");
+    ipcRenderer.removeAllListeners("renderer-added-building-update");
 
-    ipcRenderer.on("updated-building", fetchMenuRef.current);
-    ipcRenderer.on("added-building", fetchMenuRef.current);
+    ipcRenderer.on("renderer-updated-building-update", fetchMenuRef.current);
+    ipcRenderer.on("renderer-added-building-update", fetchMenuRef.current);
 
     return () => {
       ipcRenderer.removeAllListeners("updated-building");

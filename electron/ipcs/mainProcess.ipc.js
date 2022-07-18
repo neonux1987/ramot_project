@@ -7,10 +7,6 @@ const mainProcessIpc = () => {
   const mainProcessLogic = new MainProcessLogic();
   const logger = require("../backend/logger/LogManager").getLogger();
 
-  ipcMain.on("set-global-variable", (event, { key, value }) => {
-    global.sharedObject[key] = value;
-  });
-
   ipcMain.on("quit-app", (event) => {
     mainProcessLogic.quit();
   });

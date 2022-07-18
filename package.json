@@ -68,7 +68,8 @@
     "preelectron-pack": "npm run build",
     "electron-pack": "electron-builder --win --publish never",
     "electron-deploy": "npm run build && electron-builder --win --publish always",
-    "migrate": "knex migrate:latest --knexfile electron/backend/connection/knexFile.js"
+    "migrate": "knex migrate:latest --knexfile electron/backend/connection/knexFile.js",
+    "seed": "knex seed:run --knexfile electron/backend/connection/knexFile.js"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -30,7 +30,7 @@ const APPInitializer = () => {
     getAllBuildings((result) => {
       if (result.data) {
         localStorage.setItem("buildings", JSON.stringify(result.data));
-        setBuildingsDataReady(false);
+        setBuildingsDataReady(true);
       }
     });
 

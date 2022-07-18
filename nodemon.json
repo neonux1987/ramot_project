@@ -1,4 +1,10 @@
 {
   "verbose": true,
-  "ignore": ["**/src/**", ".git", "**/node_modules/**/node_modules"]
+  "ignore": [
+    "**/src/**",
+    ".git",
+    "**/node_modules/**/node_modules",
+    "**/database/**",
+    "**/extraResources/**"
+  ]
 }

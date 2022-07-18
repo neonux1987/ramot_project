@@ -6,12 +6,10 @@ export const TYPES = {
   REPORTS_BUILDINGS_REQUEST: "REPORTS_BUILDINGS_REQUEST",
   REPORTS_BUILDINGS_RECEIVE: "REPORTS_BUILDINGS_RECEIVE",
   REPORTS_BUILDINGS_FETCHING_FAILED: "REPORTS_BUILDINGS_FETCHING_FAILED"
-}
+};
 
 export const fetchBuildings = () => {
-
-  return dispatch => {
-
+  return (dispatch) => {
     //let react know that the fetching is started
     dispatch(requestBuildings());
 
@@ -23,10 +21,10 @@ export const fetchBuildings = () => {
       receive: {
         channel: "by-status-buildings-data"
       },
-      onSuccess: result => {
-        const checkedBuildings = []
+      onSuccess: (result) => {
+        const checkedBuildings = [];
 
-        result.data.forEach(building => {
+        result.data.forEach((building) => {
           const { buildingName, buildingId } = building;
 
           checkedBuildings.push({
@@ -36,35 +34,37 @@ export const fetchBuildings = () => {
           });
         });
 
-        dispatch(receiveBuildings(checkedBuildings))
+        dispatch(receiveBuildings(checkedBuildings));
       },
-      onError: result => dispatch(fetchingFailed(result.error))
+      onError: (result) => dispatch(fetchingFailed(result.error))
     });
-
-  }
+  };
 };
 
-export const checkBuilding = (reportsType, buildingId, checked, checkedBuildings) => {
+export const checkBuilding = (
+  reportsType,
+  buildingId,
+  checked,
+  checkedBuildings
+) => {
   let isAllChecked = true;
 
   const copyArr = [...checkedBuildings];
 
-  copyArr.forEach(building => {
-    if (building.buildingId === buildingId)
-      building.isChecked = checked;
+  copyArr.forEach((building) => {
+    if (building.buildingId === buildingId) building.isChecked = checked;
 
-    if (building.isChecked === false)
-      isAllChecked = false;
-  })
+    if (building.isChecked === false) isAllChecked = false;
+  });
 
   return setChecked(reportsType, isAllChecked, copyArr);
-}
+};
 
 export const setAllChecked = (reportsType, isAllChecked, checkedBuildings) => {
-  checkedBuildings.forEach(building => building.isChecked = isAllChecked);
+  checkedBuildings.forEach((building) => (building.isChecked = isAllChecked));
 
   return setChecked(reportsType, isAllChecked, checkedBuildings);
-}
+};
 
 const setChecked = (reportsType, isAllChecked, checkedBuildings) => {
   return {
@@ -73,24 +73,24 @@ const setChecked = (reportsType, isAllChecked, checkedBuildings) => {
     isAllChecked,
     checkedBuildings
   };
-}
+};
 
 const requestBuildings = function () {
   return {
     type: TYPES.REPORTS_BUILDINGS_REQUEST
-  }
+  };
 };
 
 const receiveBuildings = function (data) {
   return {
     type: TYPES.REPORTS_BUILDINGS_RECEIVE,
     data: data
-  }
-}
+  };
+};
 
 const fetchingFailed = function (error) {
   return {
     type: TYPES.REPORTS_BUILDINGS_FETCHING_FAILED,
     error
-  }
+  };
 };

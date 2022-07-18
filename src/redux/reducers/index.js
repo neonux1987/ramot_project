@@ -10,7 +10,6 @@ import registeredBackups from "./registeredBackupsReducer";
 import monthlyStats from "./monthlyStatsReducer";
 import quarterlyStats from "./quarterlyStatsReducer";
 import yearlyStats from "./yearlyStatsReducer";
-import tableSettings from "./tableSettingsReducer";
 import registeredReports from "./registeredReportsReducer";
 import routes from "./routesReducer";
 import modal from "./modalReducer";
@@ -49,7 +48,6 @@ const reducers = {
   monthlyStats,
   quarterlyStats,
   yearlyStats,
-  tableSettings,
   modal,
   registeredReports,
   routes,
