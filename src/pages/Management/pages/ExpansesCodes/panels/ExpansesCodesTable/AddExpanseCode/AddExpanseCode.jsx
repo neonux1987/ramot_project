@@ -8,8 +8,8 @@ import {
   MenuItem
 } from "@material-ui/core";
 import styles from "./AddExpanseCode.module.css";
-import ButtonWithSound from "../../../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
-import AddBoxContainer from "../../../../../components/AddBoxContainer/AddBoxContainer";
+import ButtonWithSound from "../../../../../../../componentsWithSound/ButtonWithSound/ButtonWithSound";
+import AddBoxContainer from "../../../../../../../components/AddBoxContainer/AddBoxContainer";
 
 const AddExpanseCode = ({
   show,

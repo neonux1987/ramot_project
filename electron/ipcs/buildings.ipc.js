@@ -2,7 +2,6 @@ const { ipcMain } = require("electron");
 const BuildingsLogic = require("../backend/logic/BuildingsLogic");
 
 const buildingsIpc = () => {
-  //fetch month expanses data
   const buildingsLogic = new BuildingsLogic();
 
   ipcMain.on("get-all-buildings", (event) => {
@@ -15,17 +14,6 @@ const buildingsIpc = () => {
         event.reply("all-buildings-data", { error: error.message });
       });
   });
-
-  /* ipcMain.on("get-buildings-by-status", (event, { status }) => {
-    buildingsLogic
-      .getBuildingsByStatus(status)
-      .then((result) => {
-        event.reply("by-status-buildings-data", { data: result });
-      })
-      .catch((error) => {
-        event.reply("by-status-buildings-data", { error: error.message });
-      });
-  }); */
 
   ipcMain.handle("get-buildings-by-status", async (_, { status }) => {
     try {

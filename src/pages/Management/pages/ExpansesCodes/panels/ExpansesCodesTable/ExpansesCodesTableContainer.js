@@ -6,19 +6,19 @@ import {
   expansesCodesCleanup,
   updateExpanseCode,
   deleteExpanseCode
-} from "../../../../redux/actions/expansesCodesActions";
-import { fetchSummarizedSections } from "../../../../redux/actions/summarizedSectionsActions";
-import SelectDropDown from "../../../../components/SelectDropDown/SelectDropDown";
-import TableActions from "../../../../components/table/TableActions/TableActions";
-import Cell from "../../../../components/table/components/Cell";
-import HeaderCell from "../../../../components/table/components/HeaderCell";
-import HeaderRow from "../../../../components/table/components/HeaderRow";
-import TableRow from "../../../../components/table/components/TableRow";
-import TableContainer from "../../../../components/table/TableContainer";
-import { toastManager } from "../../../../toasts/toastManager";
-import useTableLogic from "../../../../customHooks/useTableLogic";
-import TableSection from "../../../../components/Section/TableSection";
-import SectionControlsContainer from "../../../../components/table/TableControls/SectionControlsContainer";
+} from "../../../../../../redux/actions/expansesCodesActions";
+import { fetchSummarizedSections } from "../../../../../../redux/actions/summarizedSectionsActions";
+import SelectDropDown from "../../../../../../components/SelectDropDown/SelectDropDown";
+import TableActions from "../../../../../../components/table/TableActions/TableActions";
+import Cell from "../../../../../../components/table/components/Cell";
+import HeaderCell from "../../../../../../components/table/components/HeaderCell";
+import HeaderRow from "../../../../../../components/table/components/HeaderRow";
+import TableRow from "../../../../../../components/table/components/TableRow";
+import TableContainer from "../../../../../../components/table/TableContainer";
+import { toastManager } from "../../../../../../toasts/toastManager";
+import useTableLogic from "../../../../../../customHooks/useTableLogic";
+import TableSection from "../../../../../../components/Section/TableSection";
+import SectionControlsContainer from "../../../../../../components/table/TableControls/SectionControlsContainer";
 import AddExpanseCodeContainer from "./AddExpanseCode/AddExpanseCodeContainer";
 
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
