@@ -1,7 +1,7 @@
 import React from "react";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import logo from "../../assets/images/ramot group.png";
-import { css, keyframes } from "emotion";
+import { css } from "emotion";
 import { AlignCenterMiddle } from "../AlignCenterMiddle/AlignCenterMiddle";
 import Typography from "@material-ui/core/Typography";
 

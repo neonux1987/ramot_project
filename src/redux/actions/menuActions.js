@@ -1,4 +1,5 @@
-import { ipcSendReceive } from "./util/util";
+import { ipcRenderer } from "electron";
+import { toastManager } from "../../toasts/toastManager";
 
 export const TYPES = {
   MENU_REQUEST: "MENU_REQUEST",
@@ -7,21 +8,22 @@ export const TYPES = {
 };
 
 export const fetchMenu = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     //let react know that the fetching is started
     dispatch(requestMenu());
 
-    return ipcSendReceive({
-      send: {
-        channel: "get-buildings-by-status",
-        params: { status: "פעיל" }
-      },
-      receive: {
-        channel: "by-status-buildings-data"
-      },
-      onSuccess: (result) => dispatch(receiveMenu(result.data)),
-      onError: (result) => dispatch(fetchingFailed(result.error))
-    });
+    const { data, error } = await ipcRenderer.invoke(
+      "get-buildings-by-status",
+      {
+        status: "פעיל"
+      }
+    );
+
+    if (data) dispatch(receiveMenu(data));
+    else {
+      dispatch(fetchingFailed(error));
+      toastManager.error(error);
+    }
   };
 };
 

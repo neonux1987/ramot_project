@@ -1,4 +1,5 @@
-import { ipcSendReceive } from "./util/util";
+import { ipcRenderer } from "electron";
+import { toastManager } from "../../toasts/toastManager";
 
 // TYPES
 export const TYPES = {
@@ -9,35 +10,35 @@ export const TYPES = {
 };
 
 export const fetchBuildings = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     //let react know that the fetching is started
     dispatch(requestBuildings());
 
-    return ipcSendReceive({
-      send: {
-        channel: "get-buildings-by-status",
-        params: { status: "פעיל" }
-      },
-      receive: {
-        channel: "by-status-buildings-data"
-      },
-      onSuccess: (result) => {
-        const checkedBuildings = [];
+    const { data, error } = await ipcRenderer.invoke(
+      "get-buildings-by-status",
+      {
+        status: "פעיל"
+      }
+    );
 
-        result.data.forEach((building) => {
-          const { buildingName, buildingId } = building;
+    if (data) {
+      const checkedBuildings = [];
 
-          checkedBuildings.push({
-            buildingName,
-            buildingId,
-            isChecked: true
-          });
+      data.forEach((building) => {
+        const { buildingName, buildingId } = building;
+
+        checkedBuildings.push({
+          buildingName,
+          buildingId,
+          isChecked: true
         });
+      });
 
-        dispatch(receiveBuildings(checkedBuildings));
-      },
-      onError: (result) => dispatch(fetchingFailed(result.error))
-    });
+      dispatch(receiveBuildings(checkedBuildings));
+    } else {
+      dispatch(fetchingFailed(error));
+      toastManager.error(error);
+    }
   };
 };
 

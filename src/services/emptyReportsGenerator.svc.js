@@ -1,4 +1,3 @@
-import { ipcRenderer } from "electron";
 import { ipcSendReceive } from "../redux/actions/util/util";
 import { toastManager } from "../toasts/toastManager";
 

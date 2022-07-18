@@ -77,7 +77,7 @@ const APPInitializer = () => {
     persistor === null
   )
     return <AppLoader text="טוען הגדרות אפליקציה" />;
-
+  //persistor.purge();
   return (
     <Provider store={store}>
       <PersistGate loading={<LoadingCircle />} persistor={persistor}>

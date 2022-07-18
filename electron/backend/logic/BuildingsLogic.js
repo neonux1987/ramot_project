@@ -63,7 +63,7 @@ class BuildingsLogic {
       color: "rgb(14, 122, 185)",
       status: "פעיל",
       order: buildings.length + 1,
-      previousBuildingName: buildingName,
+      previousBuildingName: buildingName
     };
 
     // create path string

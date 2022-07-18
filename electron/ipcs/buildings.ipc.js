@@ -16,7 +16,7 @@ const buildingsIpc = () => {
       });
   });
 
-  ipcMain.on("get-buildings-by-status", (event, { status }) => {
+  /* ipcMain.on("get-buildings-by-status", (event, { status }) => {
     buildingsLogic
       .getBuildingsByStatus(status)
       .then((result) => {
@@ -25,6 +25,15 @@ const buildingsIpc = () => {
       .catch((error) => {
         event.reply("by-status-buildings-data", { error: error.message });
       });
+  }); */
+
+  ipcMain.handle("get-buildings-by-status", async (_, { status }) => {
+    try {
+      const data = await buildingsLogic.getBuildingsByStatus(status);
+      return { data };
+    } catch (error) {
+      return { error: error.message };
+    }
   });
 
   ipcMain.on("add-building", (event, params) => {
