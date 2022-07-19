@@ -1,10 +1,9 @@
-const fse = require('fs-extra');
-const SystemPaths = require('../system/SystemPaths');
+const fse = require("fs-extra");
+const SystemPaths = require("../system/SystemPaths");
 
 const CONFIG_LOCATION = SystemPaths.paths.config_file_path;
 
 class SettingsLogic {
-
   getSettings() {
     return fse.readJson(CONFIG_LOCATION);
   }
@@ -15,8 +14,16 @@ class SettingsLogic {
     });
   }
 
+  getUserSettings() {
+    return this.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.USER);
+  }
+
   getSystemSettings() {
     return this.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.SYSTEM);
+  }
+
+  getThemeSettings() {
+    return this.getSpecificSetting(SettingsLogic.SETTINGS_NAMES.THEME);
   }
 
   getLocationsSettings() {
@@ -50,11 +57,11 @@ class SettingsLogic {
   static SETTINGS_NAMES = {
     USER: "user",
     SYSTEM: "system",
+    THEME: "theme",
     LOCATIONS: "locations",
     DB_BACKUP: "db_backup",
     DB_RESTORE: "db_restore"
-  }
-
+  };
 }
 
 module.exports = SettingsLogic;

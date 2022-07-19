@@ -3,8 +3,7 @@ const columnChart = (title, series, categories) => ({
     type: "column",
     style: {
       fontFamily: "Open Sans, sans-serif"
-    },
-    height: "450px"
+    }
   },
   legend: {
     rtl: true,
@@ -23,18 +22,20 @@ const columnChart = (title, series, categories) => ({
     text: title,
     style: {
       fontSize: "34px",
-      fontWeight: "500",
+      fontWeight: "500"
     }
   },
   tooltip: {
-    headerFormat: '<span style="font-size:14px;float: right;">{point.key}</span><table>',
-    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+    headerFormat:
+      '<span style="font-size:14px;float: right;">{point.key}</span><table>',
+    pointFormat:
+      '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
       '<td style="padding:0;text-align: right;"><b>{point.y:.2f} ש"ח</b></td></tr>',
-    footerFormat: '</table>',
+    footerFormat: "</table>",
     shared: true,
     useHTML: true,
     style: {
-      direction: 'rtl',
+      direction: "rtl",
       fontWeight: "500",
       fontSize: "14px"
     }
@@ -71,4 +72,4 @@ const columnChart = (title, series, categories) => ({
   series
 });
 
-module.exports = { columnChart }
+module.exports = { columnChart };

@@ -44,6 +44,7 @@ class ConnectionPool {
     });
   }
 
+  // used for first time setup
   async createDbIfNoneExist() {
     const sqlite3 = require("sqlite3").verbose();
     const db = new sqlite3.Database(this.config.connection.filename);
@@ -51,6 +52,7 @@ class ConnectionPool {
 
     // run latest migrations
     await this.knex.migrate.latest();
+    await this.knex.seed.run();
   }
 
   getConnection() {

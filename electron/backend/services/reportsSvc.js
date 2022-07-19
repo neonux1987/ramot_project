@@ -25,13 +25,11 @@ const exportReports = async (date, buildings) => {
   const monthlyStatsLogic = new MonthlyStatsLogic();
   const registeredReportsLogic = new RegisteredReportsLogic();
 
-  const colorSet = localStorage.getItem("settings").theme.colorSet;
+  const userSettings = await settingsLogic.getUserSettings();
+  const themeSettings = await settingsLogic.getThemeSettings();
+  const colorSet = themeSettings.colorSet;
 
   chartExporter.initPool();
-
-  const userSettings = await settingsLogic.getSpecificSetting(
-    SettingsLogic.SETTINGS_NAMES.USER
-  );
 
   // user reports folder
   const { reports_folder_path } = userSettings;
