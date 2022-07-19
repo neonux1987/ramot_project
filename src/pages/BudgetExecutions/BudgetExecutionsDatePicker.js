@@ -31,8 +31,8 @@ const BudgetExecutionsDatePicker = ({ buildingId, date }) => {
         fetchRegisteredQuarters({
           buildingId,
           date: {
-            year: date.year,
-          },
+            year: date.year
+          }
         })
       );
 
@@ -56,8 +56,8 @@ const BudgetExecutionsDatePicker = ({ buildingId, date }) => {
         fetchRegisteredQuarters({
           buildingId,
           date: {
-            year: value,
-          },
+            year: value
+          }
         })
       ).then(({ data }) => {
         // if exist, load the same quarter of the previous year in the chosen year
