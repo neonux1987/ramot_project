@@ -21,14 +21,12 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
     }
   }, [isFullscreen]);
 
-  /*  useEffect(() => {
-    const ele = chartRef.current.chart.renderer.box.cloneNode(true);
+  useEffect(() => {
+    const ele = chartRef.current.container.current.cloneNode(true);
     const div = document.createElement("div");
-    const chartSVG = chartRef.current.chart.getSVG({
-      exporting: {
-        allowHTML: true
-      }
-    });
+    const chartSVG = chartRef.current.chart.getSVG();
+    chartRef.current.chart.fullscreen.isOpen = true;
+    console.log(ele);
     div.innerHTML = chartSVG;
     var svgData = new XMLSerializer().serializeToString(div);
 
@@ -38,14 +36,14 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
       "data:image/svg+xml;base64," +
         window.btoa(decodeURIComponent(encodeURIComponent(svgData)))
     );
-    setSvg(div);
-  }, []); */
+    setSvg(ele);
+  }, []);
 
   return (
     <>
-      {/* {svg !== null && (
+      {svg !== null && (
         <div ref={(node) => node && node.appendChild(svg)}></div>
-      )} */}
+      )}
       <ChartWithExporting
         options={columnChart(title, series, categories)}
         chartRef={chartRef}

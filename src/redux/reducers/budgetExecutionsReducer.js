@@ -1,5 +1,5 @@
-import { TYPES } from '../actions/budgetExecutionsActions';
-import { initState } from '../reducers/util/util';
+import { TYPES } from "../actions/budgetExecutionsActions";
+import { initState } from "../reducers/util/util";
 
 const initialState = initState({
   isFetching: false,
@@ -19,8 +19,8 @@ const setState = (buildingId, state, newState) => {
       ...state[buildingId],
       ...newState
     }
-  }
-}
+  };
+};
 
 const budgetExecutionsReducer = (state = initialState, action) => {
   const buildingId = action.buildingId;
@@ -36,30 +36,21 @@ const budgetExecutionsReducer = (state = initialState, action) => {
       return setState(buildingId, state, {
         isFetching: true
       });
-    case TYPES.BUDGET_EXECUTIONS_UPDATE:
-      {
-        const {
-          payload,
-          index,
-          buildingId
-        } = action;
+    case TYPES.BUDGET_EXECUTIONS_UPDATE: {
+      const { payload, index, buildingId } = action;
 
-        // copy the data
-        const dataCopy = [...state[buildingId].data];
+      // copy the data
+      const dataCopy = [...state[buildingId].data];
 
-        // replace the old object with the updated object
-        dataCopy[index] = payload;
+      // replace the old object with the updated object
+      dataCopy[index] = payload;
 
-        return setState(buildingId, state, {
-          data: dataCopy
-        });
-      }
+      return setState(buildingId, state, {
+        data: dataCopy
+      });
+    }
     case TYPES.BUDGET_EXECUTIONS_ADD: {
-      const {
-        payload,
-        buildingId,
-        compareFunc
-      } = action;
+      const { payload, buildingId, compareFunc } = action;
 
       // copy the data
       let dataCopy = [...state[buildingId].data];
@@ -74,12 +65,9 @@ const budgetExecutionsReducer = (state = initialState, action) => {
       return setState(buildingId, state, {
         data: dataCopy
       });
-    };
+    }
     case TYPES.BUDGET_EXECUTIONS_DELETE: {
-      const {
-        buildingId,
-        index
-      } = action;
+      const { buildingId, index } = action;
 
       // copy the data
       const dataCopy = [...state[buildingId].data];
@@ -90,7 +78,7 @@ const budgetExecutionsReducer = (state = initialState, action) => {
       return setState(buildingId, state, {
         data: dataCopy
       });
-    };
+    }
     case TYPES.BUDGET_EXECUTIONS_FETCHING_FAILED:
       return setState(buildingId, state, {
         status: "error",
@@ -100,38 +88,36 @@ const budgetExecutionsReducer = (state = initialState, action) => {
       return setState(buildingId, state, {
         date: action.date
       });
-    case TYPES.BUDGET_EXECUTIONS_CLEANUP:
-      {
-        let stateCopy = { ...state };
-        delete stateCopy[buildingId];
+    case TYPES.BUDGET_EXECUTIONS_CLEANUP: {
+      let stateCopy = { ...state };
+      delete stateCopy[buildingId];
 
-        return stateCopy;
-      }
-    case TYPES.BUDGET_EXECUTIONS_ADD_BUILDING_STATE:
-      {
-        let stateCopy = { ...state };
+      return stateCopy;
+    }
+    case TYPES.BUDGET_EXECUTIONS_ADD_BUILDING_STATE: {
+      let stateCopy = { ...state };
 
-        stateCopy[buildingId] = {
-          isFetching: false,
-          status: "",
-          error: "",
-          data: [],
-          date: {
-            quarter: "",
-            year: ""
-          }
-        };
+      stateCopy[buildingId] = {
+        isFetching: false,
+        status: "",
+        error: "",
+        data: [],
+        date: {
+          quarter: "",
+          year: ""
+        }
+      };
 
-        return stateCopy;
-      }
-    case TYPES.BUDGET_EXECUTIONS_REMOVE_BUILDING_STATE:
-      {
-        let stateCopy = { ...state };
-        delete stateCopy[buildingId];
-        return stateCopy;
-      }
-    default: return state;
+      return stateCopy;
+    }
+    case TYPES.BUDGET_EXECUTIONS_REMOVE_BUILDING_STATE: {
+      let stateCopy = { ...state };
+      delete stateCopy[buildingId];
+      return stateCopy;
+    }
+    default:
+      return state;
   }
-}
+};
 
 export default budgetExecutionsReducer;

@@ -17,7 +17,7 @@ const DEFAULT_TEMPLATE = {
 function initPool() {
   // init phantom workers
   chartExporter.initPool({
-    initialWorkers: 1,
+    initialWorkers: 2,
     maxWorkers: 6
   });
 }
