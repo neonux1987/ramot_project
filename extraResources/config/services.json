@@ -2,11 +2,15 @@
   "db_backup": {
     "enabled": true,
     "serviceName": "db_backup",
-    "serviceNameHeb": "גיבוי בסיס נתונים"
+    "serviceNameHeb": "גיבוי בסיס נתונים",
+    "restartRequired": false,
+    "restart_required": false
   },
   "empty_reports_generator": {
     "enabled": false,
     "serviceName": "empty_reports_generator",
-    "serviceNameHeb": "מחולל דוחות ריקים"
+    "serviceNameHeb": "מחולל דוחות ריקים",
+    "restartRequired": false,
+    "restart_required": false
   }
 }

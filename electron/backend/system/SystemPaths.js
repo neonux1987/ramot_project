@@ -4,6 +4,7 @@ const isDev = process.env.NODE_ENV === "development";
 const APP_ROOT_PATH = app.getAppPath();
 
 const usersAppDataFolder = app.getPath("appData");
+const devDataFolder = path.join(__dirname, "../../../extraResources");
 
 // ramot group data folder location
 const RAMOT_GROUP_FOLDER_PATH = path.join(
@@ -12,7 +13,10 @@ const RAMOT_GROUP_FOLDER_PATH = path.join(
 );
 
 // config folder and config files location
-const CONFIG_FOLDER_PATH = path.join(RAMOT_GROUP_FOLDER_PATH, "config");
+const CONFIG_FOLDER_PATH = path.join(
+  isDev ? devDataFolder : RAMOT_GROUP_FOLDER_PATH,
+  "config"
+);
 const CONFIG_FILE_PATH = path.join(CONFIG_FOLDER_PATH, "config.json");
 const BACKUPS_NAMES_FILE_PATH = path.join(
   CONFIG_FOLDER_PATH,
@@ -22,7 +26,9 @@ const SERVICES_FILE_PATH = path.join(CONFIG_FOLDER_PATH, "services.json");
 
 // database folder and database file location
 const DB_FILE_NAME = "ramot-group-db";
-const DB_FOLDER_PATH = path.join(RAMOT_GROUP_FOLDER_PATH, "db");
+const DB_FOLDER_PATH = isDev
+  ? path.join(__dirname, "../../../database")
+  : path.join(RAMOT_GROUP_FOLDER_PATH, "db");
 const DB_FILE_PATH = path.join(DB_FOLDER_PATH, `${DB_FILE_NAME}.sqlite`);
 process.env.RAMOT_DB_FILE_PATH = DB_FILE_PATH;
 

@@ -25,10 +25,10 @@ module.exports = {
     },
     useNullAsDefault: true,
     migrations: {
-      directory: path.join(__dirname, "../../../extraResources/migrations")
+      directory: path.join(process.resourcesPath, "extraResources/migrations")
     },
     seeds: {
-      directory: path.join(__dirname, "../../../extraResources/seeds")
+      directory: path.join(process.resourcesPath, "extraResources/seeds")
     }
   }
 };

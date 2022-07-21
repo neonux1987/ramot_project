@@ -77,16 +77,14 @@ class MainSystem {
       const SetupLogic = require("../logic/SetupLogic");
       const UpdatesLogic = require("../logic/UpdatesLogic");
       const connectionPool = require("../connection/ConnectionPool");
-      const SettingsLogic = require("../logic/SettingsLogic");
-      const BuildingsLogic = require("../logic/BuildingsLogic");
       const setupLogic = new SetupLogic();
-      const settingsLogic = new SettingsLogic();
 
       // must run first
       await connectionPool.init();
 
       // if the app runs for the first time
       await setupLogic.firstTimeSetup();
+      //await setupLogic.setLocations();
 
       // set up the db connection
       await connectionPool.createConnection();
