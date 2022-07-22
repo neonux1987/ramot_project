@@ -12,6 +12,7 @@ const container = css`
   margin: 0;
   min-height: 500px;
   margin: 20px 15px 40px;
+  padding-bottom: 60px;
 `;
 
 const text = css`
@@ -20,12 +21,12 @@ const text = css`
 
 const ChartWrapper = (props) => {
   const { children, isFetching, itemCount } = props;
-  const ref = usePrintRef();
+  //const ref = usePrintRef();
 
   const Loading = isFetching ? <Loader /> : <div>{children}</div>;
 
   return (
-    <div className={container} ref={ref}>
+    <div className={container}>
       {isFetching === false && itemCount === 0 ? (
         <AlignCenterMiddle>
           <span className={text}>לא נטענו נתונים.</span>

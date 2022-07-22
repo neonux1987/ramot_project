@@ -13,8 +13,9 @@ import ColumnChart from "../../../components/charts/ColumnChart";
 import { updateDate } from "../../../redux/actions/monthsChartAction";
 import YearOnlyDatePicker from "../../../components/DatePicker/YearOnlyDatePicker";
 import Tab from "../../../components/Tab/Tab";
+import ColumnChartV2 from "../../../components/charts/ColumnChartV2";
 
-const MonthsChartContainer = (props) => {
+const MonthsChartContainerV2 = (props) => {
   //building name
   const { buildingId, pageName } = props;
 
@@ -27,7 +28,7 @@ const MonthsChartContainer = (props) => {
 
   const [chartData, setChartData] = useState({
     labels: [],
-    series: []
+    datasets: []
   });
 
   const fetchMonthsData = useCallback(() => {
@@ -56,16 +57,16 @@ const MonthsChartContainer = (props) => {
       setChartData(() => {
         return {
           labels,
-          series: [
+          datasets: [
             {
-              name: "הוצאות",
+              label: "הוצאות",
               data: outcomeData,
-              color: "#30a3fc"
+              backgroundColor: "#30a3fc"
             },
             {
-              name: "הכנסות",
+              label: "הכנסות",
               data: incomeData,
-              color: "#30e8aa"
+              backgroundColor: "#30e8aa"
             }
           ]
         };
@@ -86,15 +87,14 @@ const MonthsChartContainer = (props) => {
         blackLabels={true}
       />
 
-      <ChartWrapper itemCount={data.length} isFetching={isFetching}>
-        <ColumnChart
-          title={date.year}
-          series={chartData.series}
-          categories={chartData.labels}
-        />
+      <ChartWrapper
+        itemCount={data.length}
+        isFetching={isFetching || chartData.datasets.length === 0}
+      >
+        <ColumnChartV2 data={chartData} />
       </ChartWrapper>
     </Tab>
   );
 };
 
-export default MonthsChartContainer;
+export default MonthsChartContainerV2;

@@ -10,7 +10,7 @@ const ColumnChart = ({ title = "", categories = [], series }) => {
   const chartRef = useRef();
   const dispatch = useDispatch();
   const [svg, setSvg] = useState(null);
-
+  console.log(title, categories, series);
   useEffect(() => {
     if (chartRef.current.container.current) {
       chartRef.current.container.current.style.setProperty(

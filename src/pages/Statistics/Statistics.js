@@ -12,6 +12,7 @@ import useBuildingColor from "../../customHooks/useBuildingColor";
 import TitledSection from "../../components/Section/TitledSection";
 import useIcons from "../../customHooks/useIcons";
 import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
+import MonthsChartContainerV2 from "./charts/MonthsChartContainerV2";
 
 const PAGE_NAME = "statistics";
 
@@ -81,7 +82,7 @@ export default Statistics;
 function whichChart(name) {
   switch (name) {
     case BY_MONTHS_TITLE:
-      return MonthsChartContainer;
+      return MonthsChartContainerV2;
     case BY_QUARTERS_TITLE:
       return QuartersChartContainer;
     case BY_YEARS_TITLE:
