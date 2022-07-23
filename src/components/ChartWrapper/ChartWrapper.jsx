@@ -12,7 +12,7 @@ const container = css`
   margin: 0;
   min-height: 500px;
   margin: 20px 15px 40px;
-  padding-bottom: 60px;
+  padding-bottom: 40px;
 `;
 
 const text = css`

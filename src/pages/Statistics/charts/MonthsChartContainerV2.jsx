@@ -17,7 +17,7 @@ import ColumnChartV2 from "../../../components/charts/ColumnChartV2";
 
 const MonthsChartContainerV2 = (props) => {
   //building name
-  const { buildingId, pageName } = props;
+  const { buildingId, buildingName, pageName } = props;
 
   const { isFetching, data } = useSelector(
     (store) => store.monthlyStats[buildingId].pages[pageName]
@@ -91,7 +91,10 @@ const MonthsChartContainerV2 = (props) => {
         itemCount={data.length}
         isFetching={isFetching || chartData.datasets.length === 0}
       >
-        <ColumnChartV2 data={chartData} />
+        <ColumnChartV2
+          data={chartData}
+          title={`${buildingName} - הוצאות והכנסות לשנת ${date.year}`}
+        />
       </ChartWrapper>
     </Tab>
   );

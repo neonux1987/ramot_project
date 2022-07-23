@@ -22,7 +22,7 @@ const BY_YEARS_TITLE = "הוצאות והכנסות לפי שנים";
 const TOP_EXPANSES_TITLE = "טופ הוצאות";
 
 const Statistics = (props) => {
-  const { buildingId } = props.location.state;
+  const { buildingId, buildingName } = props.location.state;
 
   const [generateIcon] = useIcons();
 
@@ -70,7 +70,11 @@ const Statistics = (props) => {
         />
 
         <Box bgcolor="#ffffff">
-          <Chart buildingId={buildingId} pageName={PAGE_NAME} />
+          <Chart
+            buildingId={buildingId}
+            pageName={PAGE_NAME}
+            buildingName={buildingName}
+          />
         </Box>
       </TitledSection>
     </Page>

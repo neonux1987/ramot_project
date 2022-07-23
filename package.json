@@ -88,7 +88,7 @@
     "electron-log": "^4.3.4",
     "electron-updater": "^4.6.5",
     "exceljs": "^4.2.0",
-    "file-type": "^16.0.0",
+    "file-type": "^16.5.4",
     "fs-extra": "^9.0.1",
     "highcharts-export-server": "^2.1.0",
     "knex": "^0.21.11",

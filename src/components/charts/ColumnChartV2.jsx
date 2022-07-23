@@ -25,7 +25,7 @@ ChartJS.register(
   Legend
 );
 
-const ColumnChartV2 = ({ data }) => {
+const ColumnChartV2 = ({ data, title }) => {
   const ref = useRef();
   const [svg, setSvg] = useState(null);
   const [chartHeight, setChartHeight] = useState("600px");
@@ -38,15 +38,22 @@ const ColumnChartV2 = ({ data }) => {
   }, [isFullscreen]);
 
   const done = (result) => {
+    const chart = result.chart;
     const div = document.createElement("div");
     var img = document.createElement("img");
-    const clonedChart = { ...result.chart };
-    console.log();
-
-    const dataUrl = result.chart.toBase64Image();
-
+    //chart.resize(1280, 780);
+    console.log(chart);
+    const dataUrl = result.chart.toBase64Image("image/png", 1);
+    //chart.resize();
     img.setAttribute("src", dataUrl);
+    // img.height = "100%";
+    // img.width = "100%";
 
+    // div.style.justifyContent = "center";
+    // div.style.display = "flex";
+    // div.style.alignItems = "center";
+    // div.style.height = "100%";
+    // div.style.width = "100%";
     div.appendChild(img);
     dispatch(setPrintableComponentRef({ current: div }));
     //if (!printMode) dispatch(setPrintReady(true));
@@ -102,14 +109,18 @@ const ColumnChartV2 = ({ data }) => {
         }
       },
       title: {
-        display: false,
-        text: "Chart.js Bar Chart"
+        display: true,
+        text: title,
+        color: "#000000",
+        font: {
+          size: 32
+        }
       }
     }
   });
 
   return (
-    <div style={{ height: "100%", position: "relative", height: chartHeight }}>
+    <div style={{ position: "relative", height: chartHeight }}>
       <Bar ref={ref} options={options} data={data} />
     </div>
   );
