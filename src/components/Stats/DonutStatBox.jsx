@@ -143,14 +143,19 @@ const DonutStatBox = ({
             <Ribbon color={color} Icon={Icon} />
             <div className={slider}>
               <DonutChart
-                series={[
-                  {
-                    data: [
-                      { name: "הוצאות", y: outcome, color: "#30a3fc" },
-                      { name: "הכנסות", y: income, color: "#30e8aa" }
-                    ]
-                  }
-                ]}
+                data={{
+                  labels: ["הוצאות", "הכנסות"],
+                  datasets: [
+                    {
+                      label: "הוצאות",
+                      data: [outcome, income],
+                      backgroundColor: ["#30a3fc", "#30e8aa"],
+                      //borderColor: ["#30a3fc", "#30e8aa"],
+                      spacing: 6,
+                      cutout: "80%"
+                    }
+                  ]
+                }}
               />
             </div>
 

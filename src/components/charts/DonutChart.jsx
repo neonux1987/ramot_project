@@ -1,46 +1,28 @@
 import React from "react";
-import Chart from "./Chart";
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip);
 
 const DonutChart = (props) => {
   return (
-    <Chart
-      options={{
-        credits: {
-          enabled: false
-        },
-        chart: {
-          type: "pie",
-          width: 170,
-          height: 170,
-          backgroundColor: "transparent"
-        },
-        exporting: {
-          enabled: false
-        },
-        plotOptions: {
-          pie: {
-            innerSize: "70%",
-            borderWidth: 10,
-            borderRadius: 10,
-            borderColor: "#fff",
-            dataLabels: {
-              enabled: false
+    <div style={{ width: "155px", height: "165px", marginBottom: "5px" }}>
+      <Doughnut
+        data={props.data}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
             },
-            fillColor: "#ffffff",
-            showInLegend: false,
-            enableMouseTracking: false,
-            size: 160
+            title: {
+              display: false
+            }
           }
-        },
-        title: {
-          text: ""
-        },
-        series: props.series,
-        tooltip: {
-          enabled: false
-        }
-      }}
-    />
+        }}
+      />
+    </div>
   );
 };
 
