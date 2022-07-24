@@ -27,7 +27,7 @@ ChartJS.register(
 
 const ColumnChartV2 = ({ data, title }) => {
   const ref = useRef();
-  const [svg, setSvg] = useState(null);
+  const [chartReady, setChartReady] = useState(false);
   const [chartHeight, setChartHeight] = useState("600px");
   const printMode = useSelector((store) => store.print.printMode);
   const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
@@ -37,26 +37,8 @@ const ColumnChartV2 = ({ data, title }) => {
     setChartHeight(isFullscreen ? "70vh" : "600px");
   }, [isFullscreen]);
 
-  const done = (result) => {
-    const chart = result.chart;
-    const div = document.createElement("div");
-    var img = document.createElement("img");
-    //chart.resize(1280, 780);
-    console.log(chart);
-    const dataUrl = result.chart.toBase64Image("image/png", 1);
-    //chart.resize();
-    img.setAttribute("src", dataUrl);
-    // img.height = "100%";
-    // img.width = "100%";
-
-    // div.style.justifyContent = "center";
-    // div.style.display = "flex";
-    // div.style.alignItems = "center";
-    // div.style.height = "100%";
-    // div.style.width = "100%";
-    div.appendChild(img);
-    dispatch(setPrintableComponentRef({ current: div }));
-    //if (!printMode) dispatch(setPrintReady(true));
+  const done = () => {
+    setChartReady(true);
   };
 
   const [options, setOptions] = useState({
@@ -118,6 +100,26 @@ const ColumnChartV2 = ({ data, title }) => {
       }
     }
   });
+
+  /* 
+    resize the chart to the desirable print 
+  */
+  useEffect(() => {
+    if (chartReady && printMode) {
+      const chart = ref.current;
+      const div = document.createElement("div");
+      var img = document.createElement("img");
+
+      chart.resize(1280, 780);
+      const dataUrl = chart.toBase64Image("image/png", 1);
+      chart.resize();
+
+      img.setAttribute("src", dataUrl);
+      div.appendChild(img);
+
+      dispatch(setPrintableComponentRef({ current: div }));
+    }
+  }, [chartReady, printMode, dispatch]);
 
   return (
     <div style={{ position: "relative", height: chartHeight }}>

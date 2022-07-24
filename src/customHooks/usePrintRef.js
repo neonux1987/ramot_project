@@ -8,6 +8,7 @@ const usePrintRef = () => {
 
   useEffect(() => {
     if (ref && ref.current) dispatch(setPrintableComponentRef(ref));
+    return () => dispatch(setPrintableComponentRef(null));
   }, [ref, dispatch]);
 
   return ref;

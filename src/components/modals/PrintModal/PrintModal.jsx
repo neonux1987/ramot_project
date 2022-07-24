@@ -9,6 +9,7 @@ import {
 import SidebarContainer from "./layout/Sidebar/SidebarContainer";
 import Content from "./layout/Content/Content";
 import Container from "./Container";
+import CenteredLoader from "../../AnimatedLoaders/CenteredLoader";
 
 const PrintModal = (props) => {
   const { onClose, pageName } = props;
@@ -42,20 +43,26 @@ const PrintModal = (props) => {
       disableBackdropClick={true}
       id="printModal"
     >
-      <Container>
-        <SidebarContainer
-          pageName={pageName}
-          pdf={output}
-          onClose={onClick}
-          printers={printers}
-        />
+      {printableComponentRef === null ? (
+        <Container>
+          <CenteredLoader text="טוען הגדרות" color="#000000" />
+        </Container>
+      ) : (
+        <Container>
+          <SidebarContainer
+            pageName={pageName}
+            pdf={output}
+            onClose={onClick}
+            printers={printers}
+          />
 
-        <Content
-          loading={printableComponentRef === null || output === null}
-          blob={output !== null ? output.blobUrl : ""}
-          output={output}
-        />
-      </Container>
+          <Content
+            loading={printableComponentRef === null || output === null}
+            blob={output !== null ? output.blobUrl : ""}
+            output={output}
+          />
+        </Container>
+      )}
     </Modal>
   );
 };
