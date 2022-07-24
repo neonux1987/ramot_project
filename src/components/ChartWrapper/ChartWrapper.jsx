@@ -5,7 +5,6 @@ import { css } from "emotion";
 // COMPONENTS
 import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
 import Spinner from "../../components/Spinner/Spinner";
-import usePrintRef from "../../customHooks/usePrintRef";
 
 const container = css`
   background: #ffffff;
@@ -21,7 +20,6 @@ const text = css`
 
 const ChartWrapper = (props) => {
   const { children, isFetching, itemCount } = props;
-  //const ref = usePrintRef();
 
   const Loading = isFetching ? <Loader /> : <div>{children}</div>;
 

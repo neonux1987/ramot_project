@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Page from "../../components/Page/Page";
-import MonthsChartContainer from "./charts/MonthsChartContainer";
 import YearsChartContainer from "./charts/YearsChartContainer";
 import QuartersChartContainer from "./charts/QuartersChartContainer";
 import TopChartContainer from "./charts/TopChartContainer";
@@ -12,7 +11,7 @@ import useBuildingColor from "../../customHooks/useBuildingColor";
 import TitledSection from "../../components/Section/TitledSection";
 import useIcons from "../../customHooks/useIcons";
 import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
-import MonthsChartContainerV2 from "./charts/MonthsChartContainerV2";
+import MonthsChartContainer from "./charts/MonthsChartContainer";
 
 const PAGE_NAME = "statistics";
 
@@ -86,7 +85,7 @@ export default Statistics;
 function whichChart(name) {
   switch (name) {
     case BY_MONTHS_TITLE:
-      return MonthsChartContainerV2;
+      return MonthsChartContainer;
     case BY_QUARTERS_TITLE:
       return QuartersChartContainer;
     case BY_YEARS_TITLE:

@@ -1,43 +1,36 @@
-// LIBRARIES
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-// ACTIONS
-import { fetchAllMonthsStatsByYear } from "../../../redux/actions/monthlyStatsActions";
-
-// COMPONENTS
+import { fetchAllQuartersStatsByYear } from "../../../redux/actions/quarterlyStatsActions";
 import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
-import ColumnChart from "../../../components/charts/ColumnChart";
-
-// HOOKS
-import { updateDate } from "../../../redux/actions/monthsChartAction";
-import YearOnlyDatePicker from "../../../components/DatePicker/YearOnlyDatePicker";
+import BarChart from "../../../components/charts/BarChart";
+import { updateDate } from "../../../redux/actions/quartersChartActions";
 import Tab from "../../../components/Tab/Tab";
+import YearOnlyDatePicker from "../../../components/DatePicker/YearOnlyDatePicker";
 
-const MonthsChartContainer = (props) => {
+const QuartersChartContainer = (props) => {
   //building name
-  const { buildingId, pageName } = props;
+  const { buildingId, buildingName, pageName } = props;
 
   const { isFetching, data } = useSelector(
-    (store) => store.monthlyStats[buildingId].pages[pageName]
+    (store) => store.quarterlyStats[buildingId].pages[pageName]
   );
-  const date = useSelector((store) => store.monthsChart[buildingId].date);
-
+  const date = useSelector((store) => store.quartersChart[buildingId].date);
   const dispatch = useDispatch();
 
   const [chartData, setChartData] = useState({
     labels: [],
-    series: []
+    datasets: []
   });
 
   const fetchMonthsData = useCallback(() => {
     const params = {
       buildingId,
       pageName,
-      year: date.year
+      date
     };
-    return dispatch(fetchAllMonthsStatsByYear(params));
-  }, [dispatch, buildingId, pageName, date.year]);
+
+    return dispatch(fetchAllQuartersStatsByYear(params));
+  }, [dispatch, buildingId, pageName, date]);
 
   const fetchAndPrepareData = useCallback(async () => {
     const promise = await fetchMonthsData();
@@ -48,7 +41,7 @@ const MonthsChartContainer = (props) => {
       const outcomeData = [];
 
       promise.data.forEach((element) => {
-        labels.push(element.month);
+        labels.push(`רבעון ${element.quarter}`);
         incomeData.push(element.income);
         outcomeData.push(element.outcome);
       });
@@ -56,16 +49,18 @@ const MonthsChartContainer = (props) => {
       setChartData(() => {
         return {
           labels,
-          series: [
+          datasets: [
             {
-              name: "הוצאות",
+              label: "הוצאות",
               data: outcomeData,
-              color: "#30a3fc"
+              backgroundColor: "#30a3fc99",
+              borderColor: "#30a3fc"
             },
             {
-              name: "הכנסות",
+              label: "הכנסות",
               data: incomeData,
-              color: "#30e8aa"
+              backgroundColor: "#30e8aa99",
+              borderColor: "#30e8aa"
             }
           ]
         };
@@ -87,14 +82,13 @@ const MonthsChartContainer = (props) => {
       />
 
       <ChartWrapper itemCount={data.length} isFetching={isFetching}>
-        <ColumnChart
-          title={date.year}
-          series={chartData.series}
-          categories={chartData.labels}
+        <BarChart
+          data={chartData}
+          title={`${buildingName} - הוצאות והכנסות לשנת ${date.year}`}
         />
       </ChartWrapper>
     </Tab>
   );
 };
 
-export default MonthsChartContainer;
+export default QuartersChartContainer;

@@ -4,12 +4,12 @@ import { toastManager } from "../../../toasts/toastManager";
 import { fetchRegisteredYears } from "../../../redux/actions/registeredYearsActions";
 import {
   updateDate,
-  fetchTopIncomeOutcome,
+  fetchTopIncomeOutcome
 } from "../../../redux/actions/topChartActions";
 import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
 import DateRangePicker from "../../../components/DateRangePicker/DateRangePicker";
-import BarChart from "../../../components/charts/BarChart";
 import Tab from "../../../components/Tab/Tab";
+import HorizontalBarChart from "../../../components/charts/HorizontalBarChart";
 
 const TopChartContainer = (props) => {
   //building name
@@ -28,7 +28,7 @@ const TopChartContainer = (props) => {
 
   const [chartData, setChartData] = useState({
     labels: [],
-    series: [],
+    datasets: []
   });
 
   const fetchData = useCallback(() => {
@@ -36,9 +36,9 @@ const TopChartContainer = (props) => {
       buildingId,
       date: {
         fromYear: date.fromYear,
-        toYear: date.toYear,
+        toYear: date.toYear
       },
-      limit: 10,
+      limit: 10
     };
 
     return dispatch(fetchTopIncomeOutcome(params));
@@ -59,13 +59,14 @@ const TopChartContainer = (props) => {
       setChartData(() => {
         return {
           labels,
-          series: [
+          datasets: [
             {
-              name: "הוצאות",
+              label: "הוצאות",
               data: outcomeData,
-              color: "#30a3fc",
-            },
-          ],
+              backgroundColor: "#30a3fc99",
+              borderColor: "#30a3fc"
+            }
+          ]
         };
       });
     }
@@ -100,10 +101,9 @@ const TopChartContainer = (props) => {
       />
 
       <ChartWrapper itemCount={data.length} isFetching={isFetching && !ready}>
-        <BarChart
+        <HorizontalBarChart
           title={`טופ 10 הוצאות מ- ${date.fromYear} עד- ${date.toYear}`}
-          series={chartData.series}
-          categories={chartData.labels}
+          data={chartData}
         />
       </ChartWrapper>
     </Tab>

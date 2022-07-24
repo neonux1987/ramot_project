@@ -7,15 +7,14 @@ import { fetchAllMonthsStatsByYear } from "../../../redux/actions/monthlyStatsAc
 
 // COMPONENTS
 import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
-import ColumnChart from "../../../components/charts/ColumnChart";
+import BarChart from "../../../components/charts/BarChart";
 
 // HOOKS
 import { updateDate } from "../../../redux/actions/monthsChartAction";
 import YearOnlyDatePicker from "../../../components/DatePicker/YearOnlyDatePicker";
 import Tab from "../../../components/Tab/Tab";
-import ColumnChartV2 from "../../../components/charts/ColumnChartV2";
 
-const MonthsChartContainerV2 = (props) => {
+const MonthsChartContainer = (props) => {
   //building name
   const { buildingId, buildingName, pageName } = props;
 
@@ -61,12 +60,14 @@ const MonthsChartContainerV2 = (props) => {
             {
               label: "הוצאות",
               data: outcomeData,
-              backgroundColor: "#30a3fc"
+              backgroundColor: "#30a3fc99",
+              borderColor: "#30a3fc"
             },
             {
               label: "הכנסות",
               data: incomeData,
-              backgroundColor: "#30e8aa"
+              backgroundColor: "#30e8aa99",
+              borderColor: "#30e8aa"
             }
           ]
         };
@@ -91,7 +92,7 @@ const MonthsChartContainerV2 = (props) => {
         itemCount={data.length}
         isFetching={isFetching || chartData.datasets.length === 0}
       >
-        <ColumnChartV2
+        <BarChart
           data={chartData}
           title={`${buildingName} - הוצאות והכנסות לשנת ${date.year}`}
         />
@@ -100,4 +101,4 @@ const MonthsChartContainerV2 = (props) => {
   );
 };
 
-export default MonthsChartContainerV2;
+export default MonthsChartContainer;

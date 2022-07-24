@@ -1,116 +1,141 @@
-import React from 'react';
-import ChartWithExporting from './ChartWithExporting';
-import { css } from 'emotion';
+import React, { useState, useRef } from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
 
-const menuClassName = css`
-  direction: rtl;
+import { Bar } from "react-chartjs-2";
+import { setPrintableComponentRef } from "../../redux/actions/printActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
-  ul li {
-    text-align: right;
-  }
-`;
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const BarChart = ({ title = "", categories = [], series }) => {
+const BarChart = ({ data, title }) => {
+  const ref = useRef();
+  const [chartReady, setChartReady] = useState(false);
+  const printMode = useSelector((store) => store.print.printMode);
+  const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
+  const dispatch = useDispatch();
 
-  return <ChartWithExporting
-    options={{
-      chart: {
-        type: "bar",
-        style: {
-          fontFamily: "Open Sans, sans-serif"
+  const done = () => {
+    setChartReady(true);
+  };
+
+  const [options, _] = useState({
+    responsive: true,
+    maintainAspectRatio: false,
+    elements: {
+      bar: {
+        borderWidth: 2
+      }
+    },
+    scales: {
+      y: {
+        position: "right",
+        reverse: false,
+        grid: {
+          circular: true
         },
-        height: "650px"
+        ticks: {
+          color: "#000000",
+          font: {
+            size: 16,
+            weight: 600
+          }
+        },
+        grace: "5%"
       },
+      x: {
+        position: "left",
+        reverse: false,
+        grid: {
+          circular: true
+        },
+        ticks: {
+          color: "#000000",
+          font: {
+            size: 16,
+            weight: 600
+          }
+        }
+      }
+    },
+    animation: {
+      onComplete: done
+    },
+    plugins: {
       legend: {
+        position: "top",
         rtl: true,
-        reversed: false,
-        title: {
-          style: {
-            fontWeight: "500",
-            fontSize: "14px"
+        reverse: true,
+        labels: {
+          color: "#000000",
+          font: {
+            size: 14,
+            weight: 600
           }
         }
-      },
-      lang: {
-        downloadCSV: `שמור כקובץ נתונים CSV`,
-        downloadPNG: `שמור כתמונת PNG`,
-        downloadPDF: `שמור כקובץ PDF`,
-        printChart: `הדפס גרף`,
-        viewFullscreen: `מסך מלא`,
-        exitFullscreen: `יציאה ממסך מלא`
-      },
-      exporting: {
-        enabled: true,
-        sourceWidth: 1280,
-        sourceHeight: 720,
-        buttons: {
-          contextButton: {
-            enabled: true,
-            align: "left",
-            menuClassName,
-            menuItems: ["viewFullscreen", "printChart", "separator", "downloadPNG", "downloadPDF"]
-          }
-        }
-      },
-      credits: {
-        enabled: false
       },
       title: {
+        display: false,
         text: title,
-        style: {
-          fontSize: "34px",
-          fontWeight: "500",
+        color: "#000000",
+        font: {
+          size: 32
         }
-      },
-      tooltip: {
-        headerFormat: '<span style="font-size:14px;float: right;">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0;text-align: right;"><b>{point.y:.2f} ש"ח</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true,
-        style: {
-          direction: 'rtl',
-          fontWeight: "500",
-          fontSize: "14px"
-        }
-      },
-      plotOptions: {
-        bar: {
-          dataLabels: {
-            enabled: true,
-            allowOverlap: true
-          }
-        }
-      },
-      yAxis: {
-        opposite: true,
-        reversed: true,
-        title: {
-          enabled: false
-        },
-        gridLineDashStyle: "dash",
-        labels: {
-          style: {
-            fontSize: "14px"
-          },
-          opposite: true
-        }
-      },
-      xAxis: {
-        categories,
-        crosshair: true,
-        opposite: true,
-        labels: {
-          style: {
-            fontSize: "16px"
-          }
-        }
-      },
-      series
-    }}
-  />;
+      }
+    }
+  });
 
-}
+  /* 
+    resize the chart to the desirable print 
+  */
+  useEffect(() => {
+    if (chartReady && printMode) {
+      const chart = ref.current;
+      const div = document.createElement("div");
+      var img = document.createElement("img");
+
+      // enable the title while in print mode
+      chart.config._config.options.plugins.title.display = true;
+      chart.resize(1280, 780);
+
+      const dataUrl = chart.toBase64Image("image/png", 1);
+
+      // restore to normal
+      chart.config._config.options.plugins.title.display = false;
+      chart.resize();
+
+      img.setAttribute("src", dataUrl);
+      div.appendChild(img);
+
+      dispatch(setPrintableComponentRef({ current: div }));
+    }
+  }, [chartReady, printMode, dispatch]);
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        height: isFullscreen ? "calc(100vh - 220px)" : "600px"
+      }}
+    >
+      <Bar ref={ref} options={options} data={data} />
+    </div>
+  );
+};
 
 export default BarChart;

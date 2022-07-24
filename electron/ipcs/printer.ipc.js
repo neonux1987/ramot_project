@@ -4,7 +4,7 @@ const printerIpc = () => {
   ipcMain.on("print-pdf", async (event, options = {}, blobUrl = null) => {
     let win = new BrowserWindow({
       title: "Print Preview",
-      show: true,
+      show: false,
       autoHideMenuBar: true
     });
 

@@ -5,13 +5,13 @@ import { fetchYearStatsByYearRange } from "../../../redux/actions/yearlyStatsAct
 import { fetchRegisteredYears } from "../../../redux/actions/registeredYearsActions";
 import { updateDate } from "../../../redux/actions/yearsChartActions";
 import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
-import ColumnChart from "../../../components/charts/ColumnChart";
 import DateRangePicker from "../../../components/DateRangePicker/DateRangePicker";
 import Tab from "../../../components/Tab/Tab";
+import BarChart from "../../../components/charts/BarChart";
 
 const YearsChartContainer = (props) => {
   //building name
-  const { buildingId, pageName } = props;
+  const { buildingId, buildingName, pageName } = props;
 
   const { isFetching, data } = useSelector(
     (store) => store.yearlyStats[buildingId].pages[pageName]
@@ -27,7 +27,7 @@ const YearsChartContainer = (props) => {
 
   const [chartData, setChartData] = useState({
     labels: [],
-    series: [],
+    datasets: []
   });
 
   const fetchData = useCallback(
@@ -36,7 +36,7 @@ const YearsChartContainer = (props) => {
         buildingId,
         pageName,
         fromYear: date.fromYear,
-        toYear: date.toYear,
+        toYear: date.toYear
       };
 
       return dispatch(fetchYearStatsByYearRange(params));
@@ -62,18 +62,20 @@ const YearsChartContainer = (props) => {
         setChartData(() => {
           return {
             labels,
-            series: [
+            datasets: [
               {
-                name: "הוצאות",
+                label: "הוצאות",
                 data: outcomeData,
-                color: "#30a3fc",
+                backgroundColor: "#30a3fc99",
+                borderColor: "#30a3fc"
               },
               {
-                name: "הכנסות",
+                label: "הכנסות",
                 data: incomeData,
-                color: "#30e8aa",
-              },
-            ],
+                backgroundColor: "#30e8aa99",
+                borderColor: "#30e8aa"
+              }
+            ]
           };
         });
       }
@@ -112,10 +114,9 @@ const YearsChartContainer = (props) => {
       />
 
       <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready}>
-        <ColumnChart
-          title={`מ- ${date.fromYear} עד- ${date.toYear}`}
-          series={chartData.series}
-          categories={chartData.labels}
+        <BarChart
+          title={`${buildingName} - הוצאות והכנסות מ- ${date.fromYear} עד- ${date.toYear}`}
+          data={chartData}
         />
       </ChartWrapper>
     </Tab>
