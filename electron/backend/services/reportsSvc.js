@@ -1,6 +1,6 @@
 const exportReports = async (date, buildings) => {
   const { exportExcel } = require("./excel/excelSvc");
-  const chartExporter = require("./highcharts/exporter");
+  //const ChartExporter = require("./chartjs/ChartExporter");
   const fse = require("fs-extra");
   const path = require("path");
 
@@ -29,7 +29,7 @@ const exportReports = async (date, buildings) => {
   const themeSettings = await settingsLogic.getThemeSettings();
   const colorSet = themeSettings.colorSet;
 
-  chartExporter.initPool();
+  //const chartExporter = new ChartExporter();
 
   // user reports folder
   const { reports_folder_path } = userSettings;
@@ -154,53 +154,45 @@ const exportReports = async (date, buildings) => {
 
     if (monthlyStatsData.length > 0) {
       // export charts for each building
-      const exportConfig = prepareAndExportChart({
-        filepath: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
-        data: monthlyStatsData,
-        title: `${buildingName} הוצאות והכנסות שנה ${year}`
-      });
+      const chartData = prepareAndExportChart(monthlyStatsData);
 
-      await chartExporter.exportChart(exportConfig);
+      // await chartExporter.exportImage({
+      //   data: chartData,
+      //   filePath: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
+      //   title: `${buildingName} הוצאות והכנסות שנה ${year}`
+      // });
     }
   });
-
-  // stop exporter
-  chartExporter.killPool();
 };
 
-function prepareAndExportChart(config) {
-  const { columnChart } = require("./highcharts/chartTemplates");
-
-  const categories = [];
+function prepareAndExportChart(stats) {
+  const labels = [];
   const incomeData = [];
   const outcomeData = [];
 
-  config.data.forEach((element) => {
-    categories.push(element.month);
+  stats.forEach((element) => {
+    labels.push(element.month);
     incomeData.push(element.income);
     outcomeData.push(element.outcome);
   });
 
   const chartData = {
-    categories,
-    series: [
+    labels,
+    datasets: [
       {
-        name: "הוצאות",
+        label: "הוצאות",
         data: outcomeData,
-        color: "#30a3fc"
+        backgroundColor: "#30a3fc"
       },
       {
-        name: "הכנסות",
+        label: "הכנסות",
         data: incomeData,
-        color: "#30e8aa"
+        backgroundColor: "#30e8aa"
       }
     ]
   };
-  config.template = {
-    options: columnChart(config.title, chartData.series, chartData.categories)
-  };
 
-  return config;
+  return chartData;
 }
 
 function getMonthExpansesFilename(monthHeb) {

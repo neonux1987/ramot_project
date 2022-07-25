@@ -2,7 +2,7 @@
 import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { heIL } from "@material-ui/core/locale";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import AppLoader from "./components/AnimatedLoaders/AppLoader";
 import useServices from "./customHooks/useServices";
 import generalSettingsActions from "./redux/actions/generalSettingsActions";
@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./assets/css/style.css";
 import App from "./App";
 
-const theme = createMuiTheme(
+const theme = createTheme(
   {
     direction: "rtl", // Both here and <body dir="rtl">
     typography: {
