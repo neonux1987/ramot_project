@@ -83,7 +83,6 @@
     "development": []
   },
   "dependencies": {
-    "chartjs-node-canvas": "^4.1.6",
     "dotenv": "^9.0.2",
     "electron-context-menu": "^3.2.0",
     "electron-log": "^4.3.4",
