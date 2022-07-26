@@ -1,14 +1,13 @@
-import React from 'react';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import useModalLogic from '../../customHooks/useModalLogic';
-import ModalButton from '../buttons/ModalButton';
-import Dialog from './Dialog';
-import ModalHeader from './ModalHeader';
+import React from "react";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import useModalLogic from "../../customHooks/useModalLogic";
+import ModalButton from "../buttons/ModalButton";
+import Dialog from "./Dialog";
+import ModalHeader from "./ModalHeader";
 
 const Modal = (props) => {
-
   const {
     agreeBtnText = "בצע פעולה",
     hideAgreeButton = false,
@@ -30,26 +29,21 @@ const Modal = (props) => {
 
   const agree = () => {
     if (valid === undefined || valid) {
-      setOpen(false);
       onAgreeHandler();
-      hideModal();
+      handleClose();
     }
   };
 
   const cancel = () => {
     onCancelHandler && onCancelHandler();
-    onEscapeKeyDown();
-  }
+    handleClose();
+  };
 
-  const onEscapeKeyDown = () => {
+  const handleClose = () => {
+    onBackdropClickHandler && onBackdropClickHandler();
     setOpen(false);
     hideModal();
-  }
-
-  const onBackdropClick = () => {
-    onBackdropClickHandler && onBackdropClickHandler();
-    onEscapeKeyDown();
-  }
+  };
 
   const onKeyPressHandler = (event) => {
     // Number 13 is the "Enter" key on the keyboard
@@ -58,33 +52,37 @@ const Modal = (props) => {
       event.preventDefault();
       agree();
     }
-  }
+  };
 
-  const content = !contentText ? children : <DialogContentText id="alert-dialog-slide-description" style={{ whiteSpace: "pre-line" }}>
-    {contentText}
-  </DialogContentText>;
+  const content = !contentText ? (
+    children
+  ) : (
+    <DialogContentText
+      id="alert-dialog-slide-description"
+      style={{ whiteSpace: "pre-line" }}
+    >
+      {contentText}
+    </DialogContentText>
+  );
 
-  return <Dialog
-    open={open}
-    onEscapeKeyDown={onEscapeKeyDown}
-    onKeyPress={onKeyPressHandler}
-    onBackdropClick={onBackdropClick}
-    invisibleBackdrop={invisibleBackdrop}
-  >
-    <ModalHeader title={title} Icon={Icon} iconColor={iconColor} />
+  return (
+    <Dialog
+      open={open}
+      invisibleBackdrop={invisibleBackdrop}
+      onKeyPressHandler={onKeyPressHandler}
+      onClose={handleClose}
+    >
+      <ModalHeader title={title} Icon={Icon} iconColor={iconColor} />
 
-    <DialogContent style={{ padding: "24px" }}>
-      {content}
-    </DialogContent>
-    <DialogActions>
-      <ModalButton onClick={cancel}>
-        {cancelBtnText}
-      </ModalButton>
-      {!hideAgreeButton && <ModalButton onClick={agree}>
-        {agreeBtnText}
-      </ModalButton>}
-    </DialogActions>
-  </Dialog>;
-}
+      <DialogContent style={{ padding: "24px" }}>{content}</DialogContent>
+      <DialogActions>
+        <ModalButton onClick={cancel}>{cancelBtnText}</ModalButton>
+        {!hideAgreeButton && (
+          <ModalButton onClick={agree}>{agreeBtnText}</ModalButton>
+        )}
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 export default Modal;
