@@ -10,9 +10,7 @@ const Dialog = (props) => {
   const {
     open = false,
     children,
-    onEscapeKeyDown,
     onKeyPressHandler,
-    onBackdropClick,
     invisibleBackdrop = false,
     onClose
   } = props;
@@ -25,9 +23,7 @@ const Dialog = (props) => {
       open={open}
       TransitionComponent={Transition}
       keepMounted
-      //onEscapeKeyDown={onEscapeKeyDown}
       onKeyPress={onKeyPressHandler}
-      //onBackdropClick={onBackdropClick}
       onClose={onClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"

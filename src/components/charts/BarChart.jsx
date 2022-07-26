@@ -34,7 +34,7 @@ const BarChart = ({ data, title }) => {
     setChartReady(true);
   };
 
-  const [options, _] = useState({
+  const [options] = useState({
     responsive: true,
     maintainAspectRatio: false,
     elements: {

@@ -33,7 +33,7 @@ const HorizontalBarChart = ({ data, title }) => {
     setChartReady(true);
   };
 
-  const [options, _] = useState({
+  const [options] = useState({
     responsive: true,
     maintainAspectRatio: false,
     indexAxis: "y",
