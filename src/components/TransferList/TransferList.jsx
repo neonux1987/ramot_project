@@ -47,6 +47,8 @@ const TransferList = ({
           handleToggle={handleToggle}
           numberOfChecked={numberOfChecked}
           checked={checked}
+          keyName={"code"}
+          valueName={"codeName"}
         />
       </Grid>
       <Grid item>
@@ -80,6 +82,8 @@ const TransferList = ({
         handleToggle={handleToggle}
         numberOfChecked={numberOfChecked}
         checked={checked}
+        keyName={"code"}
+        valueName={"codeName"}
       />
     </Grid>
   );

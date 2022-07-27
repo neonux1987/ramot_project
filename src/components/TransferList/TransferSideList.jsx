@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 2)
   },
   cardHeaderTitle: {
-    fontSize: "24px"
+    fontSize: "24px",
+    color: "#000000"
   },
   list: {
     width: 300,
@@ -30,7 +31,9 @@ const TransferSideList = ({
   handleToggleAll,
   handleToggle,
   numberOfChecked,
-  checked
+  checked,
+  keyName,
+  valueName
 }) => {
   const classes = useStyles();
 
@@ -58,25 +61,25 @@ const TransferSideList = ({
       />
       <Divider />
       <List className={classes.list} dense component="div" role="list">
-        {items.map((value) => {
-          const labelId = `transfer-list-all-item-${value.code}-label`;
+        {items.map((item) => {
+          const labelId = `transfer-list-all-item-${item[keyName]}-label`;
 
           return (
             <ListItem
-              key={value.code + 1}
+              key={item[keyName] + 1}
               role="listitem"
               button
-              onClick={handleToggle(value)}
+              onClick={handleToggle(item)}
             >
               <ListItemIcon>
                 <Checkbox
-                  checked={checked.indexOf(value) !== -1}
+                  checked={checked.indexOf(item) !== -1}
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ "aria-labelledby": labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={value.codeName} />
+              <ListItemText id={labelId} primary={item[valueName]} />
             </ListItem>
           );
         })}
