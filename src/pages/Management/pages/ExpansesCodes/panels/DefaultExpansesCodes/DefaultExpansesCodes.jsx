@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import SectionWithHeader from "../../../../../../components/Section/SectionWithHeader";
 import SectionControlsContainer from "../../../../../../components/table/TableControls/SectionControlsContainer";
+import DefaultExpnansesCodesTransferList from "./DefaultExpnansesCodesTransferList";
 
 const DefaultExpansesCodes = () => {
   return (
@@ -9,10 +10,10 @@ const DefaultExpansesCodes = () => {
       <SectionControlsContainer edit={false} addNew={false} print={false} />
 
       <Box minHeight={"600px"} padding="20px">
-        hello
+        <DefaultExpnansesCodesTransferList />
       </Box>
     </SectionWithHeader>
   );
 };
 
-export default React.memo(DefaultExpansesCodes);
+export default DefaultExpansesCodes;

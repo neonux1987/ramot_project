@@ -1,11 +1,11 @@
-import { TYPES } from '../actions/expansesCodesActions'
+import { TYPES } from "../actions/expansesCodesActions";
 
 const initState = {
   isFetching: false,
   status: "",
   error: "",
   data: []
-}
+};
 
 const expansesCodeReducer = (state = initState, action) => {
   switch (action.type) {
@@ -24,7 +24,7 @@ const expansesCodeReducer = (state = initState, action) => {
       });
     case TYPES.EXPANSES_CODES_REQUEST:
       return setState(state, {
-        isFetching: true,
+        isFetching: true
       });
     case TYPES.EXPANSES_CODES_FETCHING_FAILED:
       return setState(state, {
@@ -46,33 +46,30 @@ const expansesCodeReducer = (state = initState, action) => {
         error: "",
         data: []
       });
-    case TYPES.EXPANSES_CODES_UPDATE:
-      {
-        const {
-          payload,
-          index
-        } = action;
+    case TYPES.EXPANSES_CODES_UPDATE: {
+      const { payload, index } = action;
 
-        // copy the data
-        const dataCopy = [...state.data];
+      // copy the data
+      const dataCopy = [...state.data];
 
-        // replace the old object with the updated object
-        dataCopy[index] = payload;
+      // replace the old object with the updated object
+      dataCopy[index] = payload;
 
-        return setState(state, {
-          data: dataCopy
-        });
-      }
+      return setState(state, {
+        data: dataCopy
+      });
+    }
 
-    default: return state;
+    default:
+      return state;
   }
-}
+};
 
 function setState(state, target) {
   return {
     ...state,
     ...target
-  }
+  };
 }
 
 export default expansesCodeReducer;

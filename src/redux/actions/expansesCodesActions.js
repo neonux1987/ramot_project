@@ -1,6 +1,6 @@
-import { ipcSendReceive } from './util/util';
-import { toastManager } from '../../toasts/toastManager';
-import { showSavedNotification } from './savedNotificationActions';
+import { ipcSendReceive } from "./util/util";
+import { toastManager } from "../../toasts/toastManager";
+import { showSavedNotification } from "./savedNotificationActions";
 
 // TYPES
 export const TYPES = {
@@ -13,16 +13,14 @@ export const TYPES = {
   EXPANSES_CODES_RESTORE: "EXPANSES_CODES_RESTORE",
   EXPANSES_CODES_INIT_STATE: "EXPANSES_CODES_INIT_STATE",
   EXPANSES_CODES_CLEANUP: "EXPANSES_CODES_CLEANUP"
-}
+};
 
 /**
  * fetch expanses codes
- * @param {*} params 
+ * @param {*} params
  */
 export const fetchExpansesCodesByStatus = (status) => {
-
-  return dispatch => {
-
+  return (dispatch) => {
     //let react know that the fetching is started
     dispatch(requestExpansesCodes());
 
@@ -43,38 +41,54 @@ export const fetchExpansesCodesByStatus = (status) => {
         dispatch(fetchingFailed(result.error));
       }
     });
+  };
+};
 
-  }
+export const fetchExpansesCodes = () => {
+  return (dispatch) => {
+    //let react know that the fetching is started
+    dispatch(requestExpansesCodes());
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-expanses-codes"
+      },
+      receive: {
+        channel: "expanses-codes-data"
+      },
+      onSuccess: (result) => dispatch(receiveExpansesCodes(result.data)),
+      onError: (result) => dispatch(fetchingFailed(result.error))
+    });
+  };
 };
 
 const requestExpansesCodes = function () {
   return {
     type: TYPES.EXPANSES_CODES_REQUEST
-  }
+  };
 };
 
 const receiveExpansesCodes = function (data) {
   return {
     type: TYPES.EXPANSES_CODES_RECEIVE,
     data: data
-  }
-}
+  };
+};
 
 const fetchingFailed = function (error) {
   return {
     type: TYPES.EXPANSES_CODES_FETCHING_FAILED,
     payload: error
-  }
+  };
 };
 
 /**
  * add expanse code
- * @param {*} payload 
- * @param {*} tableData 
+ * @param {*} payload
+ * @param {*} tableData
  */
 export const addExpanseCode = (expanseCode) => {
-  return dispatch => {
-
+  return (dispatch) => {
     return ipcSendReceive({
       send: {
         channel: "add-expanse-code",
@@ -95,33 +109,32 @@ export const addExpanseCode = (expanseCode) => {
         dispatch(fetchingFailed(result.error));
       }
     });
-
-  }
+  };
 };
 
 const addStoreOnly = (payload) => {
   return {
     type: TYPES.EXPANSES_CODES_ADD,
     payload
-  }
-}
+  };
+};
 
 const updateStoreOnly = (payload, index) => {
   return {
     type: TYPES.EXPANSES_CODES_UPDATE,
     index,
     payload
-  }
-}
+  };
+};
 
 /**
  * update expanse code
- * @param {*} payload 
- * @param {*} tableData 
+ * @param {*} payload
+ * @param {*} tableData
  */
 export const updateExpanseCode = (newCopy, oldCopy, index) => {
-  return dispatch => {
-    // first update the new copy in store 
+  return (dispatch) => {
+    // first update the new copy in store
     // for better user experience
     dispatch(updateStoreOnly(newCopy, index));
 
@@ -149,18 +162,18 @@ export const updateExpanseCode = (newCopy, oldCopy, index) => {
         dispatch(updateStoreOnly(oldCopy, index));
       }
     });
-  }
+  };
 };
 
 const deleteStoreOnly = (index) => {
   return {
     type: TYPES.EXPANSES_CODES_DELETE,
     index
-  }
-}
+  };
+};
 
 export const deleteExpanseCode = (id, oldCopy, index) => {
-  return dispatch => {
+  return (dispatch) => {
     //delete the item in store first
     dispatch(deleteStoreOnly(index));
 
@@ -181,12 +194,11 @@ export const deleteExpanseCode = (id, oldCopy, index) => {
         dispatch(addStoreOnly(oldCopy));
       }
     });
-
-  }
+  };
 };
 
 export const expansesCodesCleanup = () => {
   return {
     type: TYPES.EXPANSES_CODES_CLEANUP
-  }
-}
+  };
+};

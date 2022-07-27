@@ -1,36 +1,40 @@
-const DbError = require('../customErrors/DbError');
-const logManager = require('../logger/LogManager');
-const connectionPool = require('../connection/ConnectionPool');
+const DbError = require("../customErrors/DbError");
+const logManager = require("../logger/LogManager");
+const connectionPool = require("../connection/ConnectionPool");
 
-const FILENAME = "DefaultExpansesCodesDao.js"
+const FILENAME = "DefaultExpansesCodesDao.js";
 
 class DefaultExpansesCodesDao {
-
   constructor() {
     this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
   }
 
   /**
-  * get all month expanses records
-  */
-  getDefaultExpansesCodesTrx = (
-    trx = this.connection
-  ) => {
-    return trx.select(
-      "dec.expanses_code_id AS expanses_code_id",
-      "dec.supplierName AS supplierName",
-      "dec.notes AS notes",
-    ).from("default_expanses_codes AS dec")
+   * get all month expanses records
+   */
+  getDefaultExpansesCodesTrx = (trx = this.connection) => {
+    return trx
+      .select(
+        "dec.expanses_code_id AS expanses_code_id",
+        "dec.supplierName AS supplierName",
+        "dec.notes AS notes",
+        "ec.codeName As codeName",
+        "ec.code As code"
+      )
+      .from("default_expanses_codes AS dec")
       .innerJoin("expanses_codes AS ec", "ec.id", "dec.expanses_code_id")
-      .orderBy(['code', { column: 'codeName', order: 'asc' }])
+      .orderBy(["code", { column: "codeName", order: "asc" }])
       .catch((error) => {
-        const newError = new DbError("המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות הברירת מחדל", FILENAME, error);
-        this.logger.error(newError.toString())
+        const newError = new DbError(
+          "המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות הברירת מחדל",
+          FILENAME,
+          error
+        );
+        this.logger.error(newError.toString());
         throw newError;
       });
-  }
-
+  };
 }
 
 module.exports = DefaultExpansesCodesDao;

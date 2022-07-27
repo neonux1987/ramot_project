@@ -9,6 +9,7 @@ class MainSystem {
     const summarizedBudgetIpc = require("../../ipcs/SummarizedBudget.ipc");
     const summarizedSectionsIpc = require("../../ipcs/summarizedSections.ipc");
     const expansesCodesIpc = require("../../ipcs/expansesCodes.ipc");
+    const defaultExpansesCodesIpc = require("../../ipcs/defaultExpansesCodes.ipc");
     const generalSettingsIpc = require("../../ipcs/generalSettings.ipc");
     const registeredMonthsIpc = require("../../ipcs/registeredMonths.ipc");
     const registeredYearsIpc = require("../../ipcs/registeredYears.ipc");
@@ -38,6 +39,8 @@ class MainSystem {
     summarizedSectionsIpc();
 
     expansesCodesIpc();
+
+    defaultExpansesCodesIpc();
 
     generalSettingsIpc();
 

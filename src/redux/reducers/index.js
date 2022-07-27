@@ -31,6 +31,7 @@ import buildings from "./buildingsReducer";
 import home from "./homeReducer";
 import buildingsColors from "./buildingsColorsReducer";
 import printTemplates from "./printTemplatesReducer";
+import defaultExpansesCodes from "./defaultExpansesCodesReducer";
 
 const reducers = {
   menu,
@@ -65,7 +66,8 @@ const reducers = {
   buildings,
   home,
   buildingsColors,
-  printTemplates
+  printTemplates,
+  defaultExpansesCodes
 };
 
 export default reducers;
