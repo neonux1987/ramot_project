@@ -1,4 +1,4 @@
-import { TYPES } from "../actions/expansesCodesActions";
+import { TYPES } from "../actions/defaultExpansesCodesActions";
 
 const initState = {
   isFetching: false,

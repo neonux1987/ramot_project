@@ -25,7 +25,9 @@ const TransferList = ({
   handleToggle,
   numberOfChecked,
   checked,
-  isFetching
+  isFetching,
+  rightTitle,
+  leftTitle
 }) => {
   const classes = useStyles();
 
@@ -41,7 +43,7 @@ const TransferList = ({
     >
       <Grid item>
         <TransferSideList
-          title={"בחירה"}
+          title={leftTitle}
           items={leftItems}
           handleToggleAll={handleToggleAll}
           handleToggle={handleToggle}
@@ -76,7 +78,7 @@ const TransferList = ({
         </Grid>
       </Grid>
       <TransferSideList
-        title={"רשימת ברירת מחדל"}
+        title={rightTitle}
         items={rightItems}
         handleToggleAll={handleToggleAll}
         handleToggle={handleToggle}
@@ -89,4 +91,4 @@ const TransferList = ({
   );
 };
 
-export default TransferList;
+export default React.memo(TransferList);

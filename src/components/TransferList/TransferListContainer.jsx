@@ -13,11 +13,17 @@ function union(a, b) {
   return [...a, ...not(b, a)];
 }
 
-const TransferListContainer = ({ isFetching, rightItems, leftItems }) => {
+const TransferListContainer = ({
+  isFetching,
+  rightItems,
+  leftItems,
+  rightTitle,
+  leftTitle
+}) => {
   const [checked, setChecked] = React.useState([]);
   const [left, setLeft] = React.useState(rightItems);
   const [right, setRight] = React.useState(leftItems);
-  console.log(leftItems);
+
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
 
@@ -59,11 +65,13 @@ const TransferListContainer = ({ isFetching, rightItems, leftItems }) => {
   return (
     <TransferList
       handleCheckedLeft={handleCheckedLeft}
+      leftChecked={leftChecked}
+      leftItems={leftItems}
+      leftTitle={leftTitle}
       handleCheckedRight={handleCheckedRight}
       rightChecked={rightChecked}
-      leftChecked={leftChecked}
-      rightItems={right}
-      leftItems={left}
+      rightItems={rightItems}
+      rightTitle={rightTitle}
       handleToggleAll={handleToggleAll}
       handleToggle={handleToggle}
       numberOfChecked={numberOfChecked}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import TransferListContainer from "../../../../../../components/TransferList/TransferListContainer";
@@ -16,12 +16,21 @@ const DefaultExpnansesCodesTransferList = () => {
   const defaultExpansesCodes = useSelector(
     (store) => store.defaultExpansesCodes
   );
-  console.log(defaultExpansesCodes);
+  const [expansesCodesMap, setExpansesCodesMap] = useState();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     //get the building month expanses
-    dispatch(fetchExpansesCodes());
+    dispatch(fetchExpansesCodes()).then((result) => {
+      const expansesCodesMap = result.data.map((item) => {
+        return [item.code, item.codeName];
+      });
+      let map = new Map(expansesCodesMap);
+      setExpansesCodesMap(map);
+      map.set(1011, "אחזקה כללית");
+      console.log(map);
+    });
     dispatch(fetchDefaultExpansesCodes());
 
     return () => {
@@ -35,6 +44,8 @@ const DefaultExpnansesCodesTransferList = () => {
       isFetching={expansesCodes.isFetching || defaultExpansesCodes.isFetching}
       rightItems={expansesCodes.data}
       leftItems={defaultExpansesCodes.data}
+      leftTitle={"בחירה"}
+      rightTitle={"רשימת ברירת מחדל"}
     />
   );
 };
