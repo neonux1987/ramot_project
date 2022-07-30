@@ -62,6 +62,24 @@ export const fetchExpansesCodes = () => {
   };
 };
 
+export const fetchExpansesCodesReduced = () => {
+  return (dispatch) => {
+    //let react know that the fetching is started
+    dispatch(requestExpansesCodes());
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-expanses-codes-reduced"
+      },
+      receive: {
+        channel: "reduced-expanses-codes-data"
+      },
+      onSuccess: (result) => dispatch(receiveExpansesCodes(result.data)),
+      onError: (result) => dispatch(fetchingFailed(result.error))
+    });
+  };
+};
+
 const requestExpansesCodes = function () {
   return {
     type: TYPES.EXPANSES_CODES_REQUEST

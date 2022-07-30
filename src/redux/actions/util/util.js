@@ -19,7 +19,7 @@ export const ipcSendReceive = (details) => {
     ipcRenderer.removeAllListeners(receive.channel);
 
     //listen when the data comes back
-    ipcRenderer.once(receive.channel, (event, arg) => {
+    ipcRenderer.once(receive.channel, (_, arg = {}) => {
       if (arg.error) {
         onError && onError(arg);
         reject({

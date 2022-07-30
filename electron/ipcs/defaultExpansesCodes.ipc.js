@@ -15,6 +15,19 @@ const defaultExpansesCodesIpc = (connection) => {
         event.reply("default-expanses-codes-data", { error: error.message });
       });
   });
+
+  ipcMain.on("batch-insert-default-expanses-codes", (event, payload) => {
+    expansesCodesLogic
+      .batchInsertDefaultCodesTrx(payload)
+      .then(() => {
+        event.sender.send("batch-insert-default-expanses-codes-response", {});
+      })
+      .catch((error) => {
+        event.reply("batch-insert-default-expanses-codes-response", {
+          error: error.message
+        });
+      });
+  });
 };
 
 module.exports = defaultExpansesCodesIpc;

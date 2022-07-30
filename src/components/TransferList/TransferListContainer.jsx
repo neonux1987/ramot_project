@@ -18,14 +18,14 @@ const TransferListContainer = ({
   rightItems,
   leftItems,
   rightTitle,
-  leftTitle
+  leftTitle,
+  updateLeft,
+  updateRight
 }) => {
   const [checked, setChecked] = React.useState([]);
-  const [left, setLeft] = React.useState(rightItems);
-  const [right, setRight] = React.useState(leftItems);
 
-  const leftChecked = intersection(checked, left);
-  const rightChecked = intersection(checked, right);
+  const leftChecked = intersection(checked, leftItems);
+  const rightChecked = intersection(checked, rightItems);
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -51,15 +51,15 @@ const TransferListContainer = ({
   };
 
   const handleCheckedRight = () => {
-    setRight(right.concat(leftChecked));
-    setLeft(not(left, leftChecked));
     setChecked(not(checked, leftChecked));
+    updateLeft(not(leftItems, leftChecked), leftChecked);
+    updateRight(rightItems.concat(leftChecked));
   };
 
   const handleCheckedLeft = () => {
-    setLeft(left.concat(rightChecked));
-    setRight(not(right, rightChecked));
     setChecked(not(checked, rightChecked));
+    updateLeft(leftItems.concat(rightChecked), rightChecked);
+    updateRight(not(rightItems, rightChecked));
   };
 
   return (

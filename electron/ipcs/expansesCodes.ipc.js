@@ -27,6 +27,17 @@ const expansesCodesIpc = (connection) => {
       });
   });
 
+  ipcMain.on("get-expanses-codes-reduced", (event, status) => {
+    expansesCodesLogic
+      .getExpansesCodesReduced(status)
+      .then((result) => {
+        event.sender.send("reduced-expanses-codes-data", { data: result });
+      })
+      .catch((error) => {
+        event.reply("reduced-expanses-codes-data", { error: error.message });
+      });
+  });
+
   ipcMain.on("update-expanse-code", (event, params) => {
     expansesCodesLogic
       .updateExpanseCode(params)

@@ -68,7 +68,6 @@ const config = {
 class ChartExporter {
   constructor(width = 1280, height = 720) {
     this.chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
-    console.log("da");
   }
 
   async exportImage({ filePath, data, title }) {

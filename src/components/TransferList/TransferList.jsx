@@ -43,8 +43,8 @@ const TransferList = ({
     >
       <Grid item>
         <TransferSideList
-          title={leftTitle}
-          items={leftItems}
+          title={rightTitle}
+          items={rightItems}
           handleToggleAll={handleToggleAll}
           handleToggle={handleToggle}
           numberOfChecked={numberOfChecked}
@@ -59,34 +59,36 @@ const TransferList = ({
             variant="outlined"
             size="small"
             className={classes.button}
-            onClick={handleCheckedRight}
-            disabled={leftChecked.length === 0}
+            onClick={handleCheckedLeft}
+            disabled={rightChecked.length === 0}
             aria-label="move selected right"
           >
-            &gt;
+            {">"}
           </Button>
           <Button
             variant="outlined"
             size="small"
             className={classes.button}
-            onClick={handleCheckedLeft}
-            disabled={rightChecked.length === 0}
+            onClick={handleCheckedRight}
+            disabled={leftChecked.length === 0}
             aria-label="move selected left"
           >
-            &lt;
+            {"<"}
           </Button>
         </Grid>
       </Grid>
-      <TransferSideList
-        title={rightTitle}
-        items={rightItems}
-        handleToggleAll={handleToggleAll}
-        handleToggle={handleToggle}
-        numberOfChecked={numberOfChecked}
-        checked={checked}
-        keyName={"code"}
-        valueName={"codeName"}
-      />
+      <Grid item>
+        <TransferSideList
+          title={leftTitle}
+          items={leftItems}
+          handleToggleAll={handleToggleAll}
+          handleToggle={handleToggle}
+          numberOfChecked={numberOfChecked}
+          checked={checked}
+          keyName={"code"}
+          valueName={"codeName"}
+        />
+      </Grid>
     </Grid>
   );
 };

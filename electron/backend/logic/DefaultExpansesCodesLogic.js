@@ -1,18 +1,19 @@
-const DefaultExpansesCodesDao = require('../dao/DefaultExpansesCodesDao');
+const DefaultExpansesCodesDao = require("../dao/DefaultExpansesCodesDao");
 
 class DefaultExpansesCodesLogic {
-
   constructor(connection) {
     this.dec = new DefaultExpansesCodesDao(connection);
   }
 
-  /**
-   * get default expanses codes
-   * @param {*} trx transaction object
-   * @returns default expanses codes
-   */
-  getDefaultExpansesCodesTrx(trx,) {
+  getDefaultExpansesCodesTrx(trx) {
     return this.dec.getDefaultExpansesCodesTrx(trx);
+  }
+
+  batchInsertDefaultCodesTrx(payload, trx) {
+    const newPayload = payload.map((item) => ({
+      expanses_code_id: item.expanses_code_id
+    }));
+    return this.dec.batchInsertDefaultCodesTrx(newPayload, trx);
   }
 
   /**
@@ -29,7 +30,6 @@ class DefaultExpansesCodesLogic {
       data[i].supplierName = "";
       data[i].notes = "";
     }
-
   }
 
   /**
@@ -51,9 +51,7 @@ class DefaultExpansesCodesLogic {
       data[i].supplierName = "";
       data[i].notes = "";
     }
-
   }
-
 }
 
 module.exports = DefaultExpansesCodesLogic;

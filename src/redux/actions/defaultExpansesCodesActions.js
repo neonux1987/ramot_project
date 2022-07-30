@@ -2,6 +2,7 @@ import { ipcSendReceive } from "./util/util";
 
 // TYPES
 export const TYPES = {
+  DEFAULT_EXPANSES_CODES_UPDATE: "DEFAULT_EXPANSES_CODES_UPDATE",
   DEFAULT_EXPANSES_CODES_REQUEST: "DEFAULT_EXPANSES_CODES_REQUEST",
   DEFAULT_EXPANSES_CODES_RECEIVE: "DEFAULT_EXPANSES_CODES_RECEIVE",
   DEFAULT_EXPANSES_CODES_FETCHING_FAILED:
@@ -24,6 +25,32 @@ export const fetchDefaultExpansesCodes = () => {
       onSuccess: (result) => dispatch(receiveDefaultExpansesCodes(result.data)),
       onError: (result) => dispatch(fetchingFailed(result.error))
     });
+  };
+};
+
+export const updateDefaultCodes = (payload) => {
+  return (dispatch, getState) => {
+    const oldDefaultExpanses = getState().defaultExpanses;
+    //let react know that the fetching is started
+    dispatch(updateInStore(payload));
+
+    return ipcSendReceive({
+      send: {
+        channel: "batch-insert-default-expanses-codes",
+        params: payload
+      },
+      receive: {
+        channel: "batch-insert-default-expanses-codes-response"
+      },
+      onError: () => dispatch(updateInStore(oldDefaultExpanses))
+    });
+  };
+};
+
+const updateInStore = function (payload) {
+  return {
+    type: TYPES.DEFAULT_EXPANSES_CODES_UPDATE,
+    payload
   };
 };
 

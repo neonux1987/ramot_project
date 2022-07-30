@@ -9,6 +9,10 @@ const initState = {
 
 const defaultExpansesCodesReducer = (state = initState, action) => {
   switch (action.type) {
+    case TYPES.DEFAULT_EXPANSES_CODES_UPDATE:
+      return setState(state, {
+        data: action.payload
+      });
     case TYPES.DEFAULT_EXPANSES_CODES_RECEIVE:
       return setState(state, {
         isFetching: false,
