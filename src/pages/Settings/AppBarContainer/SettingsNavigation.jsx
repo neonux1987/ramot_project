@@ -1,29 +1,26 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
 // COMPONENTS
-import AppBar from '../../../components/Tabs/AppBar';
-import Tabs from '../../../components/Tabs/Tabs';
-import Tab from '../../../components/Tabs/Tab';
+import AppBar from "../../../components/Tabs/AppBar";
+import Tabs from "../../../components/Tabs/Tabs";
+import Tab from "../../../components/Tabs/Tab";
 
-const SettingsNavigation = props => {
+const SettingsNavigation = (props) => {
   const { match } = props;
 
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+  const handleChange = (_, newValue) => {
+    setValue(newValue);
+  };
 
-  const currentActive = useSelector(store => store.routes.active);
+  const currentActive = useSelector((store) => store.routes.active);
   const page = currentActive.state.page;
 
   return (
     <AppBar>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-      >
+      <Tabs value={value} onChange={handleChange}>
         <Tab
           label="כללי"
           to={{
@@ -82,7 +79,6 @@ const SettingsNavigation = props => {
       </Tabs>
     </AppBar>
   );
-
-}
+};
 
 export default SettingsNavigation;

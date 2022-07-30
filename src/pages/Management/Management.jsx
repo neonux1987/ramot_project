@@ -10,7 +10,7 @@ const Management = ({ match }) => {
     <Fragment>
       <Switch>
         <Route
-          path={`${match.path}/קודי הנהלת חשבונות`}
+          path={`${match.path}/ניהול קודי הנהלת חשבונות`}
           component={ExpansesCodes}
         />
         <Route

@@ -6,38 +6,36 @@ import useIcons from "../../../../customHooks/useIcons";
 import NavigationPanel from "./NavigationPanel";
 import TabPanel from "../../../../components/TabPanel/TabPanel";
 import DefaultExpansesCodes from "./panels/DefaultExpansesCodes/DefaultExpansesCodes";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
 
 const TABLE_TITLE = "מעקב וניהול קודי הנהלת חשבונות";
 
 const ExpansesCodes = () => {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (_, newValue) => {
-    setValue(newValue);
-  };
-
+  const match = useRouteMatch();
   const [generateIcon] = useIcons();
   const TableIcon = generateIcon("table");
+
   return (
     <Page>
       <TitledSection
         title={TABLE_TITLE}
         TitleIcon={TableIcon}
         margin="0"
-        extraDetails={
-          <NavigationPanel handleChange={handleChange} value={value} />
-        }
+        extraDetails={<NavigationPanel match={match} />}
       >
-        <TabPanel value={value} index={0}>
-          <ExpansesCodesTableContainer value={value} />
-        </TabPanel>
-
-        <TabPanel value={value} index={1}>
-          <DefaultExpansesCodes />
-        </TabPanel>
+        <Switch>
+          <Route
+            path={`${match.path}/קודי הנהלת חשבונות`}
+            component={ExpansesCodesTableContainer}
+          />
+          <Route
+            path={`${match.path}/קודי ברירת מחדל`}
+            component={DefaultExpansesCodes}
+          />
+        </Switch>
       </TitledSection>
     </Page>
   );
 };
 
-export default ExpansesCodes;
+export default React.memo(ExpansesCodes);

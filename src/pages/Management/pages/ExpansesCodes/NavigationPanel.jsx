@@ -1,8 +1,10 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+
 import { makeStyles } from "@material-ui/core/styles";
+import Tab from "../../../../components/Tabs/Tab";
+import Tabs from "../../../../components/Tabs/Tabs";
+import { useSelector } from "react-redux";
 
 function a11yProps(index) {
   return {
@@ -11,19 +13,25 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     background: "transparent",
     boxShadow: "none"
-  },
-  tab: {
-    color: "#000000"
   }
 }));
 
-const NavigationPanel = ({ handleChange, value }) => {
+const NavigationPanel = ({ match }) => {
   const classes = useStyles();
+
+  const [value, setValue] = React.useState(0);
+
+  const currentActive = useSelector((store) => store.routes.active);
+  const page = currentActive.state.page;
+
+  const handleChange = (_, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <AppBar position="static" classes={{ root: classes.root }}>
@@ -33,13 +41,27 @@ const NavigationPanel = ({ handleChange, value }) => {
         aria-label="expanses codes navigation panel"
       >
         <Tab
-          classes={{ root: classes.tab }}
+          to={{
+            pathname: `${match.path}/קודי הנהלת חשבונות`,
+            state: {
+              page: "קודי הנהלת חשבונות",
+              buildingName: "ניהול קודי הנהלת חשבונות"
+            }
+          }}
           label="קודי הנהלת חשבונות"
+          active={page === "קודי הנהלת חשבונות" ? true : false}
           {...a11yProps(0)}
         />
         <Tab
-          classes={{ root: classes.tab }}
+          to={{
+            pathname: `${match.path}/קודי ברירת מחדל`,
+            state: {
+              page: "קודי ברירת מחדל",
+              buildingName: "ניהול קודי הנהלת חשבונות"
+            }
+          }}
           label="הגדרת ברירת מחדל"
+          active={page === "קודי ברירת מחדל" ? true : false}
           {...a11yProps(1)}
         />
       </Tabs>

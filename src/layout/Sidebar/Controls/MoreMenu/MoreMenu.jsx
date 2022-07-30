@@ -7,7 +7,7 @@ import {
   ExpandMore,
   Description,
   ListAlt,
-  Home,
+  Home
 } from "@material-ui/icons";
 import SubMenu from "./SubMenu/SubMenu";
 import { initiateDbBackup } from "../../../../services/dbBackup.svc";
@@ -59,7 +59,7 @@ const MoreMenu = ({ active }) => {
         "ניקוי היסטוריית מטמון בוצע בהצלחה. המערכת תרענן את העמוד.",
         {
           autoClose: 2500,
-          onClose: () => refreshView(),
+          onClose: () => refreshView()
         }
       );
     });
@@ -69,7 +69,7 @@ const MoreMenu = ({ active }) => {
     const id = toastManager.info(
       <ToastRender spinner={true} message={"גיבוי בסיס נתונים החל..."} />,
       {
-        autoClose: false,
+        autoClose: false
       }
     );
 
@@ -78,7 +78,7 @@ const MoreMenu = ({ active }) => {
         render: <ToastRender message={result.error} />,
         type: toastManager.types.ERROR,
         delay: 3000,
-        autoClose: 2500,
+        autoClose: 2500
       });
     });
 
@@ -93,7 +93,7 @@ const MoreMenu = ({ active }) => {
         ),
         type: toastManager.types.SUCCESS,
         delay: 2000,
-        autoClose: 1500,
+        autoClose: 1500
       });
   };
 
@@ -123,8 +123,8 @@ const MoreMenu = ({ active }) => {
             state: {
               page: "הפקת דוחות",
               buildingName: "ניהול",
-              buildingId: "management",
-            },
+              buildingId: "management"
+            }
           }}
         />
 
@@ -137,8 +137,8 @@ const MoreMenu = ({ active }) => {
             state: {
               page: "ניהול בניינים",
               buildingName: "ניהול",
-              buildingId: "management",
-            },
+              buildingId: "management"
+            }
           }}
         />
 
@@ -147,12 +147,12 @@ const MoreMenu = ({ active }) => {
           label="ניהול קודי הנהלת חשבונות"
           onClick={upgradedHandleClose}
           to={{
-            pathname: "/ניהול/קודי הנהלת חשבונות",
+            pathname: "/ניהול/ניהול קודי הנהלת חשבונות",
             state: {
-              page: "קודי הנהלת חשבונות",
+              page: "ניהול קודי הנהלת חשבונות",
               buildingName: "ניהול",
-              buildingId: "management",
-            },
+              buildingId: "management"
+            }
           }}
         />
 
@@ -165,8 +165,8 @@ const MoreMenu = ({ active }) => {
             state: {
               page: "סעיפים מסכמים",
               buildingName: "ניהול",
-              buildingId: "management",
-            },
+              buildingId: "management"
+            }
           }}
         />
 

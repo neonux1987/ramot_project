@@ -1,10 +1,10 @@
-import React from 'react';
-import { Tab as MuTab } from '@material-ui/core';
-import { css } from 'emotion';
-import classnames from 'classnames';
+import React from "react";
+import { Tab as MuTab } from "@material-ui/core";
+import { css } from "emotion";
+import classnames from "classnames";
 
 // COMPONENTS
-import ButtonNavLinkWithSound from '../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound';
+import ButtonNavLinkWithSound from "../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound";
 
 const style = css`
   font-size: 16px;
@@ -13,14 +13,15 @@ const style = css`
   opacity: 1;
 `;
 
-const Tab = props => {
+const Tab = (props) => {
   const { className, active, ...newProps } = props;
-  return <MuTab
-    component={ButtonNavLinkWithSound}
-    className={classnames(style, active ? "activeButton2" : "")}
-    {...newProps}
-  />
-
-}
+  return (
+    <MuTab
+      component={ButtonNavLinkWithSound}
+      className={classnames(style, active ? "activeButton2" : "")}
+      {...newProps}
+    />
+  );
+};
 
 export default Tab;
