@@ -27,14 +27,18 @@ const expansesCodesIpc = (connection) => {
       });
   });
 
-  ipcMain.on("get-expanses-codes-reduced", (event, status) => {
+  ipcMain.on("get-expanses-codes-reduced-by-status", (event, status) => {
     expansesCodesLogic
-      .getExpansesCodesReduced(status)
+      .getExpansesCodesReducedByStatus(status)
       .then((result) => {
-        event.sender.send("reduced-expanses-codes-data", { data: result });
+        event.sender.send("reduced-expanses-codes-by-status-data", {
+          data: result
+        });
       })
       .catch((error) => {
-        event.reply("reduced-expanses-codes-data", { error: error.message });
+        event.reply("reduced-expanses-codes-by-status-data", {
+          error: error.message
+        });
       });
   });
 

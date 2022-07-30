@@ -28,6 +28,19 @@ const defaultExpansesCodesIpc = (connection) => {
         });
       });
   });
+
+  ipcMain.on("batch-delete-default-expanses-codes", (event, payload) => {
+    expansesCodesLogic
+      .batchDeleteDefaultCodesTrx(payload)
+      .then(() => {
+        event.sender.send("batch-delete-default-expanses-codes-response", {});
+      })
+      .catch((error) => {
+        event.reply("batch-delete-default-expanses-codes-response", {
+          error: error.message
+        });
+      });
+  });
 };
 
 module.exports = defaultExpansesCodesIpc;

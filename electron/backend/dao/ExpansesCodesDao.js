@@ -29,7 +29,7 @@ class ExpansesCodesDao {
       });
   }
 
-  getExpansesCodesReduced() {
+  getExpansesCodesReducedByStatus(status = "active") {
     return this.connection
       .select(
         "ec.id AS expanses_code_id",
@@ -38,6 +38,7 @@ class ExpansesCodesDao {
       )
       .from("expanses_codes AS ec")
       .orderBy(["code", { column: "codeName", order: "asc" }])
+      .where({ status })
       .catch((error) => {
         const newError = new DbError(
           "המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות",
@@ -54,7 +55,7 @@ class ExpansesCodesDao {
       .select()
       .from("expanses_codes")
       .orderBy(["code", { column: "codeName", order: "asc" }])
-      .where({ status: status })
+      .where({ status })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות לפי סטטוס ${status}`;
         const newError = new DbError(msg, FILENAME, error);

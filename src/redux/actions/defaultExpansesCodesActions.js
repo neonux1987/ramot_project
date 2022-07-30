@@ -28,19 +28,46 @@ export const fetchDefaultExpansesCodes = () => {
   };
 };
 
-export const updateDefaultCodes = (payload) => {
+export const batchInsertDefaultCodes = (
+  allDefaultExpansesUpdated,
+  checkedOnlyDefaultExpanses
+) => {
   return (dispatch, getState) => {
+    // keep a backup of default expanses
     const oldDefaultExpanses = getState().defaultExpanses;
-    //let react know that the fetching is started
-    dispatch(updateInStore(payload));
+
+    // update store state with new default expanses
+    dispatch(updateInStore(allDefaultExpansesUpdated));
 
     return ipcSendReceive({
       send: {
         channel: "batch-insert-default-expanses-codes",
-        params: payload
+        params: checkedOnlyDefaultExpanses
       },
       receive: {
         channel: "batch-insert-default-expanses-codes-response"
+      },
+      onError: () => dispatch(updateInStore(oldDefaultExpanses)) // rollback to the backed up default expanses
+    });
+  };
+};
+
+export const batchDeleteDefaultCodes = (
+  allDefaultExpansesUpdated,
+  checkedOnlyDefaultExpanses
+) => {
+  return (dispatch, getState) => {
+    const oldDefaultExpanses = getState().defaultExpanses;
+    //let react know that the fetching is started
+    dispatch(updateInStore(allDefaultExpansesUpdated));
+
+    return ipcSendReceive({
+      send: {
+        channel: "batch-delete-default-expanses-codes",
+        params: checkedOnlyDefaultExpanses
+      },
+      receive: {
+        channel: "batch-delete-default-expanses-codes-response"
       },
       onError: () => dispatch(updateInStore(oldDefaultExpanses))
     });

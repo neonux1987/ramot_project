@@ -10,8 +10,8 @@ class ExpansesCodesLogic {
     return this.expansesCodesDao.getExpansesCodes();
   }
 
-  getExpansesCodesReduced() {
-    return this.expansesCodesDao.getExpansesCodesReduced();
+  getExpansesCodesReducedByStatus(status) {
+    return this.expansesCodesDao.getExpansesCodesReducedByStatus(status);
   }
 
   getExpansesCodesByStatus(status) {

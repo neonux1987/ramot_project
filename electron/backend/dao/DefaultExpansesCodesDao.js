@@ -32,9 +32,21 @@ class DefaultExpansesCodesDao {
       });
   };
 
-  batchInsertDefaultCodesTrx(rows, trx = this.connection) {
+  batchInsertDefaultCodesTrx(payload, trx = this.connection) {
     return trx
-      .batchInsert("default_expanses_codes", rows, CHUNKSIZE)
+      .batchInsert("default_expanses_codes", payload, CHUNKSIZE)
+      .catch((error) => {
+        const msg = "המערכת נכשלה בעדכון קודי ברירת מחדל";
+        const newError = new DbError(msg, FILENAME, error);
+        this.logger.error(newError.toString());
+        throw newError;
+      });
+  }
+
+  batchDeleteDefaultCodesTrx(arrayOfIds, trx = this.connection) {
+    return trx("default_expanses_codes")
+      .whereIn("expanses_code_id", arrayOfIds)
+      .del()
       .catch((error) => {
         const msg = "המערכת נכשלה בעדכון קודי ברירת מחדל";
         const newError = new DbError(msg, FILENAME, error);

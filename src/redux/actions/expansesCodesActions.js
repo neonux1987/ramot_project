@@ -62,17 +62,18 @@ export const fetchExpansesCodes = () => {
   };
 };
 
-export const fetchExpansesCodesReduced = () => {
+export const fetchExpansesCodesReducedByStatus = (status) => {
   return (dispatch) => {
     //let react know that the fetching is started
     dispatch(requestExpansesCodes());
 
     return ipcSendReceive({
       send: {
-        channel: "get-expanses-codes-reduced"
+        channel: "get-expanses-codes-reduced-by-status",
+        params: status
       },
       receive: {
-        channel: "reduced-expanses-codes-data"
+        channel: "reduced-expanses-codes-by-status-data"
       },
       onSuccess: (result) => dispatch(receiveExpansesCodes(result.data)),
       onError: (result) => dispatch(fetchingFailed(result.error))

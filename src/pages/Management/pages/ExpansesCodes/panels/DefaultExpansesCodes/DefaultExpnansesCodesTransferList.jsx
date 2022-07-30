@@ -4,39 +4,14 @@ import TransferListContainer from "../../../../../../components/TransferList/Tra
 import {
   defaultExpansesCodesCleanup,
   fetchDefaultExpansesCodes,
-  updateDefaultCodes
+  batchInsertDefaultCodes,
+  batchDeleteDefaultCodes
 } from "../../../../../../redux/actions/defaultExpansesCodesActions";
 import {
-  fetchExpansesCodesReduced,
+  fetchExpansesCodesReducedByStatus,
   expansesCodesCleanup
 } from "../../../../../../redux/actions/expansesCodesActions";
-
-// filter expanses codes array with default
-// expanses codes array
-function filterExpansesCodes(defaultExpansesCodes, expansesCodes) {
-  // create an array of expanses codes key value pairs
-  // and store it in a map
-  const keyValuePairsArr = defaultExpansesCodes.map((item) => {
-    return [item.code, item.codeName];
-  });
-  let map = new Map(keyValuePairsArr);
-
-  const filteredExpansesCodes = expansesCodes.filter(
-    (item) => !map.has(item.code)
-  );
-  return filteredExpansesCodes;
-}
-
-const sort = (objectA, objectB) => {
-  if (objectA.codeName < objectB.codeName) {
-    return -1;
-  }
-  if (objectA.codeName > objectB.codeName) {
-    return 1;
-  }
-  // a must be equal to b
-  return 0;
-};
+import { filterExpansesCodes, sort } from "./util";
 
 const DefaultExpnansesCodesTransferList = () => {
   const [filteredExpansesCodes, setFilteredExpansesCodes] = useState([]);
@@ -47,15 +22,21 @@ const DefaultExpnansesCodesTransferList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const expansesCodesResult = await dispatch(fetchExpansesCodesReduced());
+      // fetch
+      const expansesCodesResult = await dispatch(
+        fetchExpansesCodesReducedByStatus("active")
+      );
       const defaultExpansesCodesResult = await dispatch(
         fetchDefaultExpansesCodes()
       );
 
+      // filter expanses
       const filteredExpansesCodes = filterExpansesCodes(
         defaultExpansesCodesResult.data,
         expansesCodesResult.data
       );
+
+      // set results
       setFilteredExpansesCodes(filteredExpansesCodes);
       setDefaultExpansesCodes(defaultExpansesCodesResult.data);
       setIsFetching(false);
@@ -69,10 +50,13 @@ const DefaultExpnansesCodesTransferList = () => {
     };
   }, [dispatch]);
 
-  const updateLeftList = (newLeft, checked) => {
+  const updateLeftList = (newLeft, expansesToUpdate) => {
     const sorted = newLeft.sort(sort);
     setDefaultExpansesCodes(sorted);
-    dispatch(updateDefaultCodes(checked));
+
+    if (defaultExpansesCodes.length > newLeft.length)
+      dispatch(batchDeleteDefaultCodes(newLeft, expansesToUpdate));
+    else dispatch(batchInsertDefaultCodes(newLeft, expansesToUpdate));
   };
 
   const updateRightList = (newRight) => {

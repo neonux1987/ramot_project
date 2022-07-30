@@ -10,10 +10,19 @@ class DefaultExpansesCodesLogic {
   }
 
   batchInsertDefaultCodesTrx(payload, trx) {
+    // create new array with only
+    // expanses code id property
     const newPayload = payload.map((item) => ({
       expanses_code_id: item.expanses_code_id
     }));
     return this.dec.batchInsertDefaultCodesTrx(newPayload, trx);
+  }
+
+  batchDeleteDefaultCodesTrx(payload, trx) {
+    // create new array with only
+    // expanses code id property
+    const arrayOfIds = payload.map((item) => item.expanses_code_id);
+    return this.dec.batchDeleteDefaultCodesTrx(arrayOfIds, trx);
   }
 
   /**
