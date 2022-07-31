@@ -77,7 +77,9 @@ const TitledSection = ({
       </Box>
 
       <Collapse in={checked}>
-        <div className={isFullscreen ? fullscreenStyle : ""}>{children}</div>
+        <div className={isFullscreen ? fullscreenStyle : "asdasd"}>
+          {children}
+        </div>
       </Collapse>
     </Box>
   );
