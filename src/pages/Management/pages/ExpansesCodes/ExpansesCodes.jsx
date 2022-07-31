@@ -4,7 +4,6 @@ import Page from "../../../../components/Page/Page";
 import TitledSection from "../../../../components/Section/TitledSection";
 import useIcons from "../../../../customHooks/useIcons";
 import NavigationPanel from "./NavigationPanel";
-import TabPanel from "../../../../components/TabPanel/TabPanel";
 import DefaultExpansesCodes from "./panels/DefaultExpansesCodes/DefaultExpansesCodes";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 
@@ -29,7 +28,7 @@ const ExpansesCodes = () => {
             component={ExpansesCodesTableContainer}
           />
           <Route
-            path={`${match.path}/קודי ברירת מחדל`}
+            path={`${match.path}/הגדרת קודי ברירת מחדל`}
             component={DefaultExpansesCodes}
           />
         </Switch>

@@ -147,9 +147,9 @@ const MoreMenu = ({ active }) => {
           label="ניהול קודי הנהלת חשבונות"
           onClick={upgradedHandleClose}
           to={{
-            pathname: "/ניהול/ניהול קודי הנהלת חשבונות",
+            pathname: "/ניהול/ניהול קודי הנהלת חשבונות/קודי הנהלת חשבונות",
             state: {
-              page: "ניהול קודי הנהלת חשבונות",
+              page: "קודי הנהלת חשבונות",
               buildingName: "ניהול",
               buildingId: "management"
             }

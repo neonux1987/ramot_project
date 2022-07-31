@@ -54,14 +54,14 @@ const NavigationPanel = ({ match }) => {
         />
         <Tab
           to={{
-            pathname: `${match.path}/קודי ברירת מחדל`,
+            pathname: `${match.path}/הגדרת קודי ברירת מחדל`,
             state: {
-              page: "קודי ברירת מחדל",
+              page: "הגדרת קודי ברירת מחדל",
               buildingName: "ניהול קודי הנהלת חשבונות"
             }
           }}
-          label="הגדרת ברירת מחדל"
-          active={page === "קודי ברירת מחדל" ? true : false}
+          label="הגדרת קודי ברירת מחדל"
+          active={page === "הגדרת קודי ברירת מחדל" ? true : false}
           {...a11yProps(1)}
         />
       </Tabs>
