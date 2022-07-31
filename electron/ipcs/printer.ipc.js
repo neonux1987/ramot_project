@@ -22,9 +22,7 @@ const printerIpc = () => {
     win.loadURL(blobUrl);
 
     win.webContents.once("did-finish-load", async () => {
-      const data = await win.webContents.printToPDF(pageSetup, () =>
-        win.destroy()
-      );
+      const data = await win.webContents.printToPDF(pageSetup);
 
       if (data === undefined || data === null) {
         event.sender.send("pdf-printed", {
@@ -32,6 +30,8 @@ const printerIpc = () => {
         });
         return;
       }
+
+      win.destroy();
 
       const { pageCount, output } = await addPageNumbers(data);
 
@@ -43,7 +43,7 @@ const printerIpc = () => {
     });
   });
 
-  ipcMain.on("print", async (event, pageSetup = {}, pdfInfo) => {
+  ipcMain.on("print", async (_, pageSetup = {}, pdfInfo) => {
     const fse = require("fs-extra");
     const path = require("path");
     const SystemPaths = require("../backend/system/SystemPaths");
@@ -92,7 +92,7 @@ const printerIpc = () => {
     await fse.remove(tempFilePath);
   });
 
-  ipcMain.on("get-printers", async (event, pageSetup) => {
+  ipcMain.on("get-printers", async (event) => {
     // Create the browser window.
     const win = BrowserWindow.getAllWindows()[0];
     const printers = await win.webContents.getPrintersAsync();
@@ -109,20 +109,25 @@ const printerIpc = () => {
 };
 
 // add page numbers
-async function addPageNumbers(data) {
-  const { PDFDocument } = require("pdf-lib");
-  const doc = await PDFDocument.load(data);
-  const pages = doc.getPages();
+function addPageNumbers(data) {
+  return new Promise((resolve, reject) => {
+    const { Worker } = require("worker_threads");
+    const path = require("path");
 
-  for (let i = 0; i < pages.length; i++) {
-    pages[i].drawText(`${i + 1}/${pages.length}`, {
-      x: 10,
-      y: 10,
-      size: 14
+    const worker = new Worker(
+      path.join(__dirname, "../workers/addPageNumbers.worker.js"),
+      {
+        workerData: data
+      }
+    );
+    worker.once("message", (data) => {
+      resolve(data);
     });
-  }
 
-  return { pageCount: pages.length, output: await doc.save() };
+    worker.once("error", (data) => {
+      reject(data);
+    });
+  });
 }
 
 module.exports = printerIpc;
