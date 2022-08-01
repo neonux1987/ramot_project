@@ -12,6 +12,7 @@ import AppWrapper from "./components/AppWrapper/AppWrapper";
 import ScrollToTop from "./containers/ScrollToTop/ScrollToTop";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/css/style.css";
+import { test } from "./services/mainProcess.svc";
 
 const App = ({ theme, settings, mainContainerRef }) => {
   return (

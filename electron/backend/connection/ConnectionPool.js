@@ -1,9 +1,7 @@
 const knex = require("knex");
 const DbError = require("../customErrors/DbError");
 const knexFile = require("./knexFile");
-const { app } = require("electron");
 const logManager = require("../logger/LogManager");
-const SystemPaths = require("../system/SystemPaths");
 
 const FILENAME = "ConnectionPool.js";
 

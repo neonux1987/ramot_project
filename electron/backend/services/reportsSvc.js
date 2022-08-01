@@ -7,6 +7,8 @@ const exportReports = async (date, buildings) => {
   const SettingsLogic = require("../logic/SettingsLogic");
   const MonthExpansesLogic = require("../logic/MonthExpansesLogic");
   const MonthlyStatsLogic = require("../logic/MonthlyStatsLogic");
+  const QuarterlyStatsLogic = require("../logic/QuarterlyStatsLogic");
+  const YearlyStatsLogic = require("../logic/YearlyStatsLogic");
   const BudgetExecutionLogic = require("../logic/BudgetExecutionLogic");
   const SummarizedBudgetLogic = require("../logic/SummarizedBudgetLogic");
   const RegisteredMonths = require("../logic/RegisteredMonthsLogic");
@@ -23,6 +25,8 @@ const exportReports = async (date, buildings) => {
   const budgetExecutionLogic = new BudgetExecutionLogic();
   const registeredMonths = new RegisteredMonths();
   const monthlyStatsLogic = new MonthlyStatsLogic();
+  const quarterlyStatsLogic = new QuarterlyStatsLogic();
+  const yearlyStatsLogic = new YearlyStatsLogic();
   const registeredReportsLogic = new RegisteredReportsLogic();
 
   const userSettings = await settingsLogic.getUserSettings();
