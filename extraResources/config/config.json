@@ -52,13 +52,13 @@
     "backups_to_save": 2,
     "byTime": {
       "currentDate": "2020-06-10T21:00:00.000Z",
-      "executed_backups": 94,
+      "executed_backups": 95,
       "day_max_allowed_backups": 2,
       "every_x_hours": 1,
       "enabled": false
     },
     "enabled": true,
-    "last_update": null,
+    "last_update": "2022-03-08T04:15:58.000Z",
     "max_num_of_history_backups": 7,
     "path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group backups",
     "restart_required": true,
