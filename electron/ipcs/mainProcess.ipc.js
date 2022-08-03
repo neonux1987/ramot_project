@@ -65,8 +65,14 @@ const mainProcessIpc = () => {
     };
   });
 
-  ipcMain.handle("get-dialog", () => {
-    return dialog;
+  ipcMain.handle("show-save-dialog", (_, options = {}) => {
+    const WIN = BrowserWindow.getFocusedWindow();
+    return dialog.showSaveDialog(WIN, options);
+  });
+
+  ipcMain.handle("show-folder-selector-dialog", (_, options = {}) => {
+    const WIN = BrowserWindow.getFocusedWindow();
+    return dialog.showOpenDialog(WIN, options);
   });
 
   ipcMain.handle("get-focused-window", () => {
