@@ -106,6 +106,28 @@ const exportReports = async (date, buildings) => {
       quarterFolder,
       budgetExecutionFileName
     );
+
+    const monthlyStatsForBudgetExecutionData =
+      await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({
+        buildingId,
+        date
+      });
+
+    const BudgetExecutionQuarterlyStatsData =
+      await quarterlyStatsLogic.getQuarterStatsTrx({
+        buildingId,
+        date
+      });
+
+    // add income and outcome rows to budget execution data before export
+    await addBudgetExecutionIncomeOutcome({
+      date,
+      budgetExecutionData,
+      buildingId,
+      quarterlyStats: BudgetExecutionQuarterlyStatsData,
+      monthlyStats: monthlyStatsForBudgetExecutionData
+    });
+
     await exportExcel(
       buildingName,
       buildingId,
@@ -209,6 +231,51 @@ function getBudgetExecutionFilename(quarterHeb) {
 
 function getSummarizedBudgetsFilename(year) {
   return `סיכום שנתי ${year}`;
+}
+
+async function addBudgetExecutionIncomeOutcome({
+  data,
+  date,
+  buildingId,
+  monthlyStats,
+  quarterlyStats
+}) {
+  const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({
+    buildingId,
+    date
+  });
+
+  const incomeRow = {
+    section: "הכנסות",
+    evaluation: "",
+    difference: "",
+    notes: ""
+  };
+  const outcomeRow = {
+    section: "הוצאות",
+    evaluation: "",
+    difference: "",
+    notes: ""
+  };
+
+  monthlyStats.forEach((item) => {
+    const engMonth = Helper.convertHebToEngMonth(item.month);
+
+    incomeRow[`${engMonth}_budget`] = item.income;
+    incomeRow[`${engMonth}_budget_execution`] = "";
+
+    outcomeRow[`${engMonth}_budget`] = "";
+    outcomeRow[`${engMonth}_budget_execution`] = item.outcome;
+  });
+
+  incomeRow.total_budget = quarterlyStats[0].income;
+  incomeRow.total_execution = "";
+
+  outcomeRow.total_budget = "";
+  outcomeRow.total_execution = quarterlyStats[0].outcome;
+
+  data.push(incomeRow);
+  data.push(outcomeRow);
 }
 
 module.exports = {

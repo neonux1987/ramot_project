@@ -75,10 +75,6 @@ const mainProcessIpc = () => {
     return dialog.showOpenDialog(WIN, options);
   });
 
-  ipcMain.handle("get-focused-window", () => {
-    return BrowserWindow.getFocusedWindow();
-  });
-
   ipcMain.on("refresh-webContent-view", () => {
     BrowserWindow.getFocusedWindow().webContents.reload();
   });

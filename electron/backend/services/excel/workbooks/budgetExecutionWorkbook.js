@@ -1,6 +1,4 @@
 const Excel = require("exceljs");
-const MonthlyStatsLogic = require("../../../logic/MonthlyStatsLogic");
-const QuarterlyStatsLogic = require("../../../logic/QuarterlyStatsLogic");
 const Helper = require("../../../../helpers/Helper");
 
 const BUDGET_EXECUTION_QUARTER1_KEYS = [
@@ -101,8 +99,6 @@ const headerStyle = {
 module.exports = async (buildingName, buildingId, date, data) => {
   const sheetTitle = `שנה ${date.year} רבעון ${date.quarter}`;
   const header = `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`;
-
-  await addIncomeOutcome(data, date, buildingId);
 
   //create new empty workbook
   const workbook = new Excel.Workbook();
@@ -416,51 +412,4 @@ function getMonthHeaders(quarter) {
     default:
       return null;
   }
-}
-
-async function addIncomeOutcome(data, date, buildingId) {
-  const monthlyStatsLogic = new MonthlyStatsLogic();
-  const quarterlyStatsLogic = new QuarterlyStatsLogic();
-
-  const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({
-    buildingId,
-    date
-  });
-
-  const incomeRow = {
-    section: "הכנסות",
-    evaluation: "",
-    difference: "",
-    notes: ""
-  };
-  const outcomeRow = {
-    section: "הוצאות",
-    evaluation: "",
-    difference: "",
-    notes: ""
-  };
-
-  monthlyStats.forEach((item) => {
-    const engMonth = Helper.convertHebToEngMonth(item.month);
-
-    incomeRow[`${engMonth}_budget`] = item.income;
-    incomeRow[`${engMonth}_budget_execution`] = "";
-
-    outcomeRow[`${engMonth}_budget`] = "";
-    outcomeRow[`${engMonth}_budget_execution`] = item.outcome;
-  });
-
-  const quarterlyStats = await quarterlyStatsLogic.getQuarterStatsTrx({
-    buildingId,
-    date
-  });
-
-  incomeRow.total_budget = quarterlyStats[0].income;
-  incomeRow.total_execution = "";
-
-  outcomeRow.total_budget = "";
-  outcomeRow.total_execution = quarterlyStats[0].outcome;
-
-  data.push(incomeRow);
-  data.push(outcomeRow);
 }
