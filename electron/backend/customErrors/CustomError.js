@@ -1,9 +1,13 @@
-class CustomError extends Error {
+const LogManager = require("../logger/LogManager");
 
+class CustomError extends Error {
   constructor(message, fileName, originalError) {
-    super(message)
+    super(message);
     this.fileName = fileName;
     this.originalError = originalError;
+
+    const logger = LogManager.getLogger();
+    logger.error(this.toString());
   }
 
   toString() {
@@ -12,12 +16,15 @@ class CustomError extends Error {
     error.fileName = this.fileName;
     error.message = this.message;
     error.stack = this.stack;
-    if (this.originalError)
-      error.original = this.originalError.toString();
+    if (this.originalError) {
+      error.originalError = {
+        message: this.originalError.message,
+        stack: this.originalError.stack
+      };
+    }
 
     return error;
   }
-
 }
 
 module.exports = CustomError;

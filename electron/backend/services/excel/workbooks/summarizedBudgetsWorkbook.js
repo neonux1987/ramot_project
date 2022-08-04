@@ -55,11 +55,9 @@ const headerStyle = {
   }
 };
 
-module.exports = async (buildingName, buildingId, date, data) => {
+module.exports = async (buildingName, date, data) => {
   const sheetTitle = `שנה ${date.year}`;
   const header = `${buildingName} / סיכום שנתי / ${date.year}`;
-
-  await addIncomeOutcome(data, date, buildingId);
 
   //create new empty workbook
   const workbook = new Excel.Workbook();
@@ -320,44 +318,3 @@ module.exports = async (buildingName, buildingId, date, data) => {
 
   return workbook;
 };
-
-async function addIncomeOutcome(data, date, buildingId) {
-  const quarterlyStatsLogic = new QuarterlyStatsLogic();
-  const yearlyStatsLogic = new YearlyStatsLogic();
-
-  const quarterlyStats = await quarterlyStatsLogic.getAllQuartersStatsByYearTrx(
-    { buildingId, date }
-  );
-
-  const incomeRow = {
-    section: "הכנסות",
-    evaluation: "",
-    notes: ""
-  };
-  const outcomeRow = {
-    section: "הוצאות",
-    evaluation: "",
-    notes: ""
-  };
-
-  quarterlyStats.forEach((item) => {
-    const { quarter } = item;
-
-    incomeRow[`quarter${quarter}_budget`] = item.income;
-    incomeRow[`quarter${quarter}_execution`] = "";
-
-    outcomeRow[`quarter${quarter}_budget`] = "";
-    outcomeRow[`quarter${quarter}_execution`] = item.outcome;
-  });
-
-  const yearlyStats = await yearlyStatsLogic.getYearStatsTrx(buildingId, date);
-
-  incomeRow.year_total_budget = yearlyStats[0].income;
-  incomeRow.year_total_execution = "";
-
-  outcomeRow.year_total_budget = "";
-  outcomeRow.year_total_execution = yearlyStats[0].outcome;
-
-  data.push(incomeRow);
-  data.push(outcomeRow);
-}

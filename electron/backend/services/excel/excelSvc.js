@@ -1,25 +1,32 @@
+// reportsQueue = {
+//   buildingName,
+//   pageName,
+//   fileName,
+//   date,
+//   data,
+//   colorSet
+// }
 
-const monthExpansesWorkbook = require('./workbooks/monthExpansesWorkbook');
-const budgetExecutionWorkbook = require('./workbooks/budgetExecutionWorkbook');
-const summarizedBudgetsWorkbook = require('./workbooks/summarizedBudgetsWorkbook');
+const exportExcel = async (reportsQueue) => {
+  return new Promise((resolve, reject) => {
+    const { Worker } = require("worker_threads");
+    const path = require("path");
 
-const exportExcel = async (buildingName, buildingId, pageName, fileName, date, data, colorSet) => {
-  // fill the workbook with data
-  const filledWorkBook = getPageWorkbook(buildingName, buildingId, pageName, date, data, colorSet);
-  return filledWorkBook.then((workbook) => {
-    return workbook.xlsx.writeFile(`${fileName}.xlsx`);
-  })
-}
+    const worker = new Worker(
+      path.join(__dirname, "../../../workers/excelReports.worker.js"),
+      {
+        workerData: reportsQueue
+      }
+    );
+    worker.once("message", (data) => {
+      resolve(data);
+    });
 
-
-function getPageWorkbook(buildingName, buildingId, pageName, date, data, colorSet) {
-  switch (pageName) {
-    case "monthExpanses": return monthExpansesWorkbook(buildingName, date, data, colorSet);
-    case "budgetExecutions": return budgetExecutionWorkbook(buildingName, buildingId, date, data, colorSet);
-    case "summarizedBudgets": return summarizedBudgetsWorkbook(buildingName, buildingId, date, data, colorSet);
-    default: return null;
-  }
-}
+    worker.once("error", (data) => {
+      reject(data);
+    });
+  });
+};
 
 module.exports = {
   exportExcel

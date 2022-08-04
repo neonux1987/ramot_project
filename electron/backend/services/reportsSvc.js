@@ -1,3 +1,5 @@
+const Helper = require("../../helpers/Helper");
+
 const exportReports = async (date, buildings) => {
   const { exportExcel } = require("./excel/excelSvc");
   //const ChartExporter = require("./chartjs/ChartExporter");
@@ -32,6 +34,8 @@ const exportReports = async (date, buildings) => {
   const userSettings = await settingsLogic.getUserSettings();
   const themeSettings = await settingsLogic.getThemeSettings();
   const colorSet = themeSettings.colorSet;
+
+  const reportsQueue = [];
 
   //const chartExporter = new ChartExporter();
 
@@ -81,15 +85,32 @@ const exportReports = async (date, buildings) => {
       yearFolder,
       summarizedBudgetsFileName
     );
-    await exportExcel(
-      buildingName,
+
+    addSummarizedBudgetIncomeOutcome({
+      data: summarizedBudgetData,
+      date,
       buildingId,
+      quarterlyStatsLogic,
+      yearlyStatsLogic
+    });
+
+    reportsQueue.push({
+      buildingName,
+      pageName: "summarizedBudgets",
+      fileName: summarizedBudgetsFilePath,
+      date,
+      data: summarizedBudgetData,
+      colorSet
+    });
+
+    /* await exportExcel(
+      buildingName,
       "summarizedBudgets",
       summarizedBudgetsFilePath,
       date,
       summarizedBudgetData,
       colorSet
-    );
+    ); */
 
     const budgetExecutionData = await budgetExecutionLogic.getAllByQuarter(
       {
@@ -107,36 +128,32 @@ const exportReports = async (date, buildings) => {
       budgetExecutionFileName
     );
 
-    const monthlyStatsForBudgetExecutionData =
-      await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({
-        buildingId,
-        date
-      });
-
-    const BudgetExecutionQuarterlyStatsData =
-      await quarterlyStatsLogic.getQuarterStatsTrx({
-        buildingId,
-        date
-      });
-
     // add income and outcome rows to budget execution data before export
     await addBudgetExecutionIncomeOutcome({
       date,
-      budgetExecutionData,
+      data: budgetExecutionData,
       buildingId,
-      quarterlyStats: BudgetExecutionQuarterlyStatsData,
-      monthlyStats: monthlyStatsForBudgetExecutionData
+      quarterlyStatsLogic,
+      monthlyStatsLogic
     });
 
-    await exportExcel(
+    reportsQueue.push({
       buildingName,
-      buildingId,
+      pageName: "budgetExecutions",
+      fileName: budgetExecutionFilePath,
+      date,
+      data: budgetExecutionData,
+      colorSet
+    });
+
+    /* await exportExcel(
+      buildingName,
       "budgetExecutions",
       budgetExecutionFilePath,
       date,
       budgetExecutionData,
       colorSet
-    );
+    ); */
 
     //create reports for the registered months
     const registeredMonthsData = await registeredMonths.getAllByQuarter(
@@ -162,15 +179,24 @@ const exportReports = async (date, buildings) => {
       );
       // add the month properties to date
       const newDate = { ...date, monthHeb };
-      await exportExcel(
+
+      reportsQueue.push({
         buildingName,
-        buildingId,
+        pageName: "monthExpanses",
+        fileName: monthExpansesFilePath,
+        date: newDate,
+        data: monthExpansesData,
+        colorSet
+      });
+
+      /* await exportExcel(
+        buildingName,
         "monthExpanses",
         monthExpansesFilePath,
         newDate,
         monthExpansesData,
         colorSet
-      );
+      ); */
     });
 
     const monthlyStatsData = await monthlyStatsLogic.getAllMonthsStatsByYear(
@@ -189,6 +215,12 @@ const exportReports = async (date, buildings) => {
       // });
     }
   });
+
+  try {
+    await exportExcel(reportsQueue);
+  } catch (error) {
+    throw new ServiceError(error.message, "reportsSvc.js", error);
+  }
 };
 
 function prepareAndExportChart(stats) {
@@ -233,12 +265,67 @@ function getSummarizedBudgetsFilename(year) {
   return `סיכום שנתי ${year}`;
 }
 
+async function exportReport({
+  buildingName,
+  buildingId,
+  pageName,
+  fileName,
+  date,
+  data
+}) {
+  const { exportExcel } = require("./excel/excelSvc");
+
+  switch (pageName) {
+    case "budgetExecutions":
+      {
+        const MonthlyStatsLogic = require("../logic/MonthlyStatsLogic");
+        const QuarterlyStatsLogic = require("../logic/QuarterlyStatsLogic");
+
+        const monthlyStatsLogic = new MonthlyStatsLogic();
+        const quarterlyStatsLogic = new QuarterlyStatsLogic();
+
+        // add rows of income and outcome
+        await addBudgetExecutionIncomeOutcome({
+          monthlyStatsLogic,
+          quarterlyStatsLogic,
+          data,
+          date,
+          buildingId
+        });
+      }
+      break;
+    case "summarizedBudgets":
+      {
+        const QuarterlyStatsLogic = require("../logic/QuarterlyStatsLogic");
+        const YearlyStatsLogic = require("../logic/YearlyStatsLogic");
+
+        const quarterlyStatsLogic = new QuarterlyStatsLogic();
+        const yearlyStatsLogic = new YearlyStatsLogic();
+
+        // add rows of income and outcome
+        await addSummarizedBudgetIncomeOutcome({
+          quarterlyStatsLogic,
+          yearlyStatsLogic,
+          data,
+          date,
+          buildingId
+        });
+      }
+      break;
+    default:
+  }
+
+  await exportExcel({ buildingName, pageName, fileName, date, data });
+
+  return data;
+}
+
 async function addBudgetExecutionIncomeOutcome({
   data,
   date,
   buildingId,
-  monthlyStats,
-  quarterlyStats
+  monthlyStatsLogic,
+  quarterlyStatsLogic
 }) {
   const monthlyStats = await monthlyStatsLogic.getAllMonthsStatsByQuarterTrx({
     buildingId,
@@ -268,6 +355,11 @@ async function addBudgetExecutionIncomeOutcome({
     outcomeRow[`${engMonth}_budget_execution`] = item.outcome;
   });
 
+  const quarterlyStats = await quarterlyStatsLogic.getQuarterStatsTrx({
+    buildingId,
+    date
+  });
+
   incomeRow.total_budget = quarterlyStats[0].income;
   incomeRow.total_execution = "";
 
@@ -278,6 +370,51 @@ async function addBudgetExecutionIncomeOutcome({
   data.push(outcomeRow);
 }
 
+async function addSummarizedBudgetIncomeOutcome({
+  data,
+  date,
+  buildingId,
+  quarterlyStatsLogic,
+  yearlyStatsLogic
+}) {
+  const quarterlyStats = await quarterlyStatsLogic.getAllQuartersStatsByYearTrx(
+    { buildingId, date }
+  );
+
+  const incomeRow = {
+    section: "הכנסות",
+    evaluation: "",
+    notes: ""
+  };
+  const outcomeRow = {
+    section: "הוצאות",
+    evaluation: "",
+    notes: ""
+  };
+
+  quarterlyStats.forEach((item) => {
+    const { quarter } = item;
+
+    incomeRow[`quarter${quarter}_budget`] = item.income;
+    incomeRow[`quarter${quarter}_execution`] = "";
+
+    outcomeRow[`quarter${quarter}_budget`] = "";
+    outcomeRow[`quarter${quarter}_execution`] = item.outcome;
+  });
+
+  const yearlyStats = await yearlyStatsLogic.getYearStatsTrx(buildingId, date);
+
+  incomeRow.year_total_budget = yearlyStats[0].income;
+  incomeRow.year_total_execution = "";
+
+  outcomeRow.year_total_budget = "";
+  outcomeRow.year_total_execution = yearlyStats[0].outcome;
+
+  data.push(incomeRow);
+  data.push(outcomeRow);
+}
+
 module.exports = {
-  exportReports
+  exportReports,
+  exportReport
 };

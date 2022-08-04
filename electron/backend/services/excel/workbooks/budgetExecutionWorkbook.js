@@ -96,7 +96,7 @@ const headerStyle = {
   }
 };
 
-module.exports = async (buildingName, buildingId, date, data) => {
+module.exports = async (buildingName, date, data) => {
   const sheetTitle = `שנה ${date.year} רבעון ${date.quarter}`;
   const header = `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`;
 

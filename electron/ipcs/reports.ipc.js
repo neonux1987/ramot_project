@@ -3,16 +3,25 @@ const { ipcMain } = require("electron");
 const reportsIpc = () => {
   ipcMain.on(
     "export-to-excel",
-    (event, { buildingName, buildingId, pageName, fileName, date, data }) => {
-      const { exportExcel } = require("../backend/services/excel/excelSvc");
+    async (
+      event,
+      { buildingName, buildingId, pageName, fileName, date, data }
+    ) => {
+      const { exportReport } = require("../backend/services/reportsSvc");
 
-      exportExcel(buildingName, buildingId, pageName, fileName, date, data)
-        .then((result) => {
-          event.sender.send("excel-exported", { data: result });
-        })
-        .catch((error) => {
-          event.reply("excel-exported", { error: error.message });
+      try {
+        const result = await exportReport({
+          buildingName,
+          buildingId,
+          pageName,
+          fileName,
+          date,
+          data
         });
+        event.sender.send("excel-exported", { data: result });
+      } catch (error) {
+        event.reply("excel-exported", { error: error.message });
+      }
     }
   );
 
