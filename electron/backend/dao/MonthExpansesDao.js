@@ -1,5 +1,4 @@
 const DbError = require("../customErrors/DbError");
-const logManager = require("../logger/LogManager");
 const NestHydrationJS = require("nesthydrationjs");
 const connectionPool = require("../connection/ConnectionPool");
 
@@ -25,7 +24,6 @@ const FILENAME = "MonthExpansesDao.js";
 
 class MonthExpansesDao {
   constructor() {
-    this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
     this.nestHydrationJS = new NestHydrationJS();
   }
@@ -72,9 +70,7 @@ class MonthExpansesDao {
       })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   };
 
@@ -123,9 +119,7 @@ class MonthExpansesDao {
       })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי טווח`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   };
 
@@ -138,9 +132,7 @@ class MonthExpansesDao {
       })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף מידע לגבי מספר השורות בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי טווח`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -180,9 +172,7 @@ class MonthExpansesDao {
       )
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי סעיף מסכם ${summarized_section_id}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -211,9 +201,7 @@ class MonthExpansesDao {
       )
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי סעיף מסכם ${summarized_section_id} ולפי החודשים`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -242,9 +230,7 @@ class MonthExpansesDao {
       )
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתונים של רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי המזהה ${id}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -265,9 +251,7 @@ class MonthExpansesDao {
       .update(expanse)
       .catch((error) => {
         const msg = `המערכת לא הצליחה לעדכן רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי מזהה ${id}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -280,9 +264,7 @@ class MonthExpansesDao {
       .insert(record)
       .catch((error) => {
         const msg = `המערכת לא הצליחה להוסיף רשומה להוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -296,9 +278,7 @@ class MonthExpansesDao {
       .del()
       .catch((error) => {
         const msg = `המערכת לא הצליחה למחוק רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי מזהה ${id}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -307,9 +287,7 @@ class MonthExpansesDao {
       .batchInsert(`${buildingName}_month_expanses`, rows, CHUNKSIZE)
       .catch((error) => {
         const msg = `המערכת לא הצליחה להוסיף רשומות להוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי המזההים ${ids}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 }

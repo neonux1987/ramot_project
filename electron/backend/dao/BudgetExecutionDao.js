@@ -1,7 +1,6 @@
-const NestHydrationJS = require('nesthydrationjs');
-const connectionPool = require('../connection/ConnectionPool');
-const DbError = require('../customErrors/DbError');
-const logManager = require('../logger/LogManager');
+const NestHydrationJS = require("nesthydrationjs");
+const connectionPool = require("../connection/ConnectionPool");
+const DbError = require("../customErrors/DbError");
 
 const quarter1 = [
   "exec.january_budget_execution AS january_budget_execution",
@@ -19,7 +18,7 @@ const quarter2 = [
   "exec.may_budget AS may_budget",
   "exec.june_budget_execution AS june_budget_execution",
   "exec.june_budget AS june_budget"
-]
+];
 
 const quarter3 = [
   "exec.july_budget_execution AS july_budget_execution",
@@ -28,7 +27,7 @@ const quarter3 = [
   "exec.august_budget AS august_budget",
   "exec.september_budget_execution AS september_budget_execution",
   "exec.september_budget AS september_budget"
-]
+];
 
 const quarter4 = [
   "exec.october_budget_execution AS october_budget_execution",
@@ -37,18 +36,16 @@ const quarter4 = [
   "exec.november_budget AS november_budget",
   "exec.december_budget_execution AS december_budget_execution",
   "exec.december_budget AS december_budget"
-]
+];
 
 const CHUNKSIZE = 100;
 
-const FILENAME = "BudgetExecutionDao.js"
+const FILENAME = "BudgetExecutionDao.js";
 
 class BudgetExecutionDao {
-
   constructor() {
     this.connection = connectionPool.getConnection();
     this.nestHydrationJS = new NestHydrationJS();
-    this.logger = logManager.getLogger();
   }
 
   static getQuarter1Query() {
@@ -79,15 +76,14 @@ class BudgetExecutionDao {
   getAllBudgetExecutionsTrx(
     buildingName = String,
     date = {
-      year: year = Number,
-      quarter: quarter = Number
+      year: (year = Number),
+      quarter: (quarter = Number)
     },
-    quarterQuery = Array
-    ,
+    quarterQuery = Array,
     trx = this.connection
   ) {
-
-    return trx.where({ year: date.year, quarter: date.quarter })
+    return trx
+      .where({ year: date.year, quarter: date.quarter })
       .select(
         "exec.id AS id",
         "exec.summarized_section_id AS summarized_section_id",
@@ -100,15 +96,19 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
-      .innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      )
+      .from(
+        buildingName + "_budget_execution_quarter" + date.quarter + " AS exec"
+      )
+      .innerJoin(
+        "summarized_sections AS ss",
+        "exec.summarized_section_id",
+        "ss.id"
+      )
       .catch((error) => {
         const msg = `המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין ${buildingNameHeb} רבעון ${quarter} שנה ${year}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError)
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
-
   }
 
   getBudgetExecutionsByRange(
@@ -139,13 +139,20 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingId + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
-      .limit(pageSize).offset(startElement)
+      )
+      .from(buildingId + "_budget_execution_quarter" + quarter + " AS exec")
+      .innerJoin(
+        "summarized_sections AS ss",
+        "exec.summarized_section_id",
+        "ss.id"
+      )
+      .limit(pageSize)
+      .offset(startElement)
       .orderBy("section")
       .catch((error) => {
         const msg = `המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין ${buildingName} רבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
@@ -173,12 +180,18 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      )
+      .from(buildingName + "_budget_execution_quarter" + quarter + " AS exec")
+      .innerJoin(
+        "summarized_sections AS ss",
+        "exec.summarized_section_id",
+        "ss.id"
+      )
       .orderBy("section")
       .catch((error) => {
         const msg = `המערכת נכשלה בשליפת נתונים של ביצוע מול תקציב לבניין ${buildingNameHeb} רבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
@@ -196,14 +209,19 @@ class BudgetExecutionDao {
   getBudgetExecutionTrx(
     buildingName = String,
     date = {
-      year: year = Number,
-      quarter: quarter = String
+      year: (year = Number),
+      quarter: (quarter = String)
     },
     quarterQuery = Array,
     summarized_section_id = Number,
     trx
   ) {
-    return trx.where({ year: date.year, quarter: date.quarter, summarized_section_id: summarized_section_id })
+    return trx
+      .where({
+        year: date.year,
+        quarter: date.quarter,
+        summarized_section_id: summarized_section_id
+      })
       .select(
         "exec.id AS id",
         "exec.summarized_section_id AS summarized_section_id",
@@ -216,11 +234,19 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      )
+      .from(
+        buildingName + "_budget_execution_quarter" + date.quarter + " AS exec"
+      )
+      .innerJoin(
+        "summarized_sections AS ss",
+        "exec.summarized_section_id",
+        "ss.id"
+      )
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתונים של רשומה בביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
@@ -228,14 +254,15 @@ class BudgetExecutionDao {
   getBudgetExecutionById(
     buildingName = String,
     date = {
-      year: year = Number,
-      quarter: quarter = String
+      year: (year = Number),
+      quarter: (quarter = String)
     },
     quarterQuery = Array,
     id = Number,
     trx = this.connection
   ) {
-    return trx.where("exec.id", id)
+    return trx
+      .where("exec.id", id)
       .select(
         "exec.id AS id",
         "exec.summarized_section_id AS summarized_section_id",
@@ -248,11 +275,19 @@ class BudgetExecutionDao {
         "exec.total_execution AS total_execution",
         "exec.difference AS difference",
         "exec.notes AS notes"
-      ).from(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec").innerJoin("summarized_sections AS ss", "exec.summarized_section_id", "ss.id")
+      )
+      .from(
+        buildingName + "_budget_execution_quarter" + date.quarter + " AS exec"
+      )
+      .innerJoin(
+        "summarized_sections AS ss",
+        "exec.summarized_section_id",
+        "ss.id"
+      )
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתונים של רשומה בביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
@@ -269,42 +304,44 @@ class BudgetExecutionDao {
   updateBudgetExecutionTrx(
     buildingName = String,
     date = {
-      year: year = Number,
-      quarter: quarter = String
+      year: (year = Number),
+      quarter: (quarter = String)
     },
     summarized_section_id = Number,
     budgetExec = Object,
     trx = this.connection
   ) {
-    return trx(buildingName + "_budget_execution_quarter" + date.quarter + " AS exec")
+    return trx(
+      buildingName + "_budget_execution_quarter" + date.quarter + " AS exec"
+    )
       .where({ year: date.year, summarized_section_id: summarized_section_id })
       .update(budgetExec)
       .catch((error) => {
         const msg = `המערכת לא הצליחה לעדכן את הרשומה בביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
 
-  deleteBudgetExecutionTrx(buildingName = String, date = Object, id = Number, trx) {
+  deleteBudgetExecutionTrx(
+    buildingName = String,
+    date = Object,
+    id = Number,
+    trx
+  ) {
     return trx(buildingName + "_budget_execution_quarter" + date.quarter)
       .where({ id: id, year: date.year })
       .del()
       .catch((error) => {
         const msg = `המערכת לא הצליחה למחוק את הרשומה בביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
 
-  addBudgetExecution(
-    buildingName,
-    date,
-    payload,
-    trx = this.connection
-  ) {
+  addBudgetExecution(buildingName, date, payload, trx = this.connection) {
     const { quarter, year } = date;
 
     return trx(`${buildingName}_budget_execution_quarter${quarter}`)
@@ -312,46 +349,44 @@ class BudgetExecutionDao {
       .catch((error) => {
         const msg = `המערכת לא הצליחה להוסיף רשומה לביצוע מול תקציב לבניין ${buildingName} לרבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
 
-  batchInsert(
-    buildingName,
-    date,
-    rows,
-    trx
-  ) {
+  batchInsert(buildingName, date, rows, trx) {
     const { quarter, year } = date;
 
-    return trx.batchInsert(`${buildingName}_budget_execution_quarter${quarter}`, rows, CHUNKSIZE)
+    return trx
+      .batchInsert(
+        `${buildingName}_budget_execution_quarter${quarter}`,
+        rows,
+        CHUNKSIZE
+      )
       .catch((error) => {
         const msg = `המערכת לא הצליחה להוסיף רשומות לביצוע מול תקציב לבניין ${buildingName} לרבעון ${quarter} שנה ${year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
 
-  dataRowCount(
-    buildingName,
-    date
-  ) {
-    return this.connection(`${buildingName}_budget_execution_quarter${date.quarter}`)
-      .count('id')
+  dataRowCount(buildingName, date) {
+    return this.connection(
+      `${buildingName}_budget_execution_quarter${date.quarter}`
+    )
+      .count("id")
       .where({ year: date.year, quarter: date.quarter })
       .then((result) => {
-        return result[0]['count(`id`)'];
+        return result[0]["count(`id`)"];
       })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף מידע לגבי מספר השורות בביצוע מול תקציב לבניין ${buildingName} לרבעון ${date.quarter} שנה ${date.year}`;
         const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
+        this.logger.error(newError.toString());
         throw newError;
       });
   }
-
 }
 
 module.exports = BudgetExecutionDao;

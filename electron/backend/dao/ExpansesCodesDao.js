@@ -1,12 +1,10 @@
 const DbError = require("../customErrors/DbError");
-const logManager = require("../logger/LogManager");
 const connectionPool = require("../connection/ConnectionPool");
 
 const FILENAME = "ExpansesCodesDao.js";
 
 class ExpansesCodesDao {
   constructor() {
-    this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
   }
 
@@ -19,13 +17,11 @@ class ExpansesCodesDao {
       .from("expanses_codes")
       .orderBy(["code", { column: "codeName", order: "asc" }])
       .catch((error) => {
-        const newError = new DbError(
+        throw new DbError(
           "המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות",
           FILENAME,
           error
         );
-        this.logger.error(newError.toString());
-        throw newError;
       });
   }
 
@@ -40,13 +36,11 @@ class ExpansesCodesDao {
       .orderBy(["code", { column: "codeName", order: "asc" }])
       .where({ status })
       .catch((error) => {
-        const newError = new DbError(
+        throw new DbError(
           "המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות",
           FILENAME,
           error
         );
-        this.logger.error(newError.toString());
-        throw newError;
       });
   }
 
@@ -58,9 +52,7 @@ class ExpansesCodesDao {
       .where({ status })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות לפי סטטוס ${status}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -71,9 +63,7 @@ class ExpansesCodesDao {
       .where({ code })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף את קוד הנהלת החשבונות לפי קוד ${code}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -88,16 +78,12 @@ class ExpansesCodesDao {
       .then((result) => {
         if (result === 0) {
           const msg = `${id} לא קיימת רשומה עם מספר זיהוי`;
-          const newError = new DbError(msg, FILENAME, error);
-          this.logger.error(newError.toString());
-          throw newError;
+          throw new DbError(msg, FILENAME, error);
         }
       })
       .catch((error) => {
         const msg = `המערכת לא הצליחה לעדכן את קוד הנהלת החשבונות לפי המזהה ${id}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -110,9 +96,7 @@ class ExpansesCodesDao {
       .insert(data)
       .catch((error) => {
         const msg = `המערכת לא הצליחה להוסיף את קוד הנהלת החשבונות`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -122,9 +106,7 @@ class ExpansesCodesDao {
       .del()
       .catch((error) => {
         const msg = `המערכת לא הצליחה למחוק את קוד הנהלת החשבונות לפי המזהה ${id}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 }

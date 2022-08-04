@@ -1,13 +1,10 @@
-const DbError = require('../customErrors/DbError');
-const logManager = require('../logger/LogManager');
-const connectionPool = require('../connection/ConnectionPool');
+const DbError = require("../customErrors/DbError");
+const connectionPool = require("../connection/ConnectionPool");
 
-const FILENAME = "GeneralSettingsDao.js"
+const FILENAME = "GeneralSettingsDao.js";
 
 class GeneralSettingsDao {
-
   constructor() {
-    this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
   }
 
@@ -15,12 +12,15 @@ class GeneralSettingsDao {
    * get general settings
    */
   getGeneralSettingsTrx(trx = this.connection) {
-    return trx.select("*")
+    return trx
+      .select("*")
       .from("general")
       .catch((error) => {
-        const newError = new DbError("המערכת לא הצליחה לשלוף נתונים לגבי הגדרות כלליות", FILENAME, error);
-        this.logger.error(newError.toString())
-        throw newError;
+        throw new DbError(
+          "המערכת לא הצליחה לשלוף נתונים לגבי הגדרות כלליות",
+          FILENAME,
+          error
+        );
       });
   }
 
@@ -34,13 +34,9 @@ class GeneralSettingsDao {
       .update(settings)
       .catch((error) => {
         const msg = `המערכת לא הצליחה לעדכן את ההגדרות הכלליות לפי המזהה ${id}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString())
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
-
-
 }
 
 module.exports = GeneralSettingsDao;

@@ -1,12 +1,10 @@
 const DbError = require("../customErrors/DbError");
-const logManager = require("../logger/LogManager");
 const connectionPool = require("../connection/ConnectionPool");
 
 const FILENAME = "QuarterlySatsDao.js";
 
 class QuarterlyStatsDao {
   constructor() {
-    this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
   }
 
@@ -20,9 +18,7 @@ class QuarterlyStatsDao {
       .from(`${buildingId}_quarterly_stats`)
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה רבעונית לבניין ${buildingId} לפי רבעון ${date.quarter} שנה ${date.year}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -37,9 +33,7 @@ class QuarterlyStatsDao {
       .orderBy("quarter", "desc")
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני סטטיסטיקה רבעונית לבניין ${buildingId} לפי רבעון ${date.quarter} שנה ${date.year}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -54,9 +48,7 @@ class QuarterlyStatsDao {
       .update(data)
       .catch((error) => {
         const msg = `המערכת לא הצליחה לעדכן רשומה בסטטיסטיקה רבעונית לבניין ${buildingId} לפי רבעון ${date.quarter} שנה ${date.year}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -69,9 +61,7 @@ class QuarterlyStatsDao {
       .insert(data)
       .catch((error) => {
         const msg = `המערכת לא הצליחה להוסיף רשומה לסטטיסטיקה רבעונית לבניין ${buildingId} לפי רבעון ${date.quarter} שנה ${date.year}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
   batchInsert(buildingId = String, rows, trx) {
@@ -79,9 +69,7 @@ class QuarterlyStatsDao {
       .batchInsert(`${buildingId}_quarterly_stats`, rows, rows.length)
       .catch((error) => {
         const msg = `המערכת לא הצליחה להוסיף רשומות לסטטיסטיקה רבעונית לבניין ${buildingId} לפי רבעון ${date.quarter} שנה ${date.year}`;
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 }

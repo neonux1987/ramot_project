@@ -1,5 +1,4 @@
 const DbError = require("../customErrors/DbError");
-const logManager = require("../logger/LogManager");
 const connectionPool = require("../connection/ConnectionPool");
 
 const FILENAME = "DefaultExpansesCodesDao.js";
@@ -7,7 +6,6 @@ const CHUNKSIZE = 100;
 
 class DefaultExpansesCodesDao {
   constructor() {
-    this.logger = logManager.getLogger();
     this.connection = connectionPool.getConnection();
   }
 
@@ -22,13 +20,11 @@ class DefaultExpansesCodesDao {
       .innerJoin("expanses_codes AS ec", "ec.id", "dec.expanses_code_id")
       .orderBy(["codeName", { column: "codeName", order: "asc" }])
       .catch((error) => {
-        const newError = new DbError(
+        throw new DbError(
           "המערכת לא הצליחה לשלוף את קודי הנהלת החשבונות הברירת מחדל",
           FILENAME,
           error
         );
-        this.logger.error(newError.toString());
-        throw newError;
       });
   };
 
@@ -37,9 +33,7 @@ class DefaultExpansesCodesDao {
       .batchInsert("default_expanses_codes", payload, CHUNKSIZE)
       .catch((error) => {
         const msg = "המערכת נכשלה בעדכון קודי ברירת מחדל";
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 
@@ -49,9 +43,7 @@ class DefaultExpansesCodesDao {
       .del()
       .catch((error) => {
         const msg = "המערכת נכשלה בעדכון קודי ברירת מחדל";
-        const newError = new DbError(msg, FILENAME, error);
-        this.logger.error(newError.toString());
-        throw newError;
+        throw new DbError(msg, FILENAME, error);
       });
   }
 }
