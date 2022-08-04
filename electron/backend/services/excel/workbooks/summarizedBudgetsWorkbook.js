@@ -1,6 +1,4 @@
 const Excel = require("exceljs");
-const QuarterlyStatsLogic = require("../../../logic/QuarterlyStatsLogic");
-const YearlyStatsLogic = require("../../../logic/YearlyStatsLogic");
 const Helper = require("../../../../helpers/Helper");
 
 const KEYS = [

@@ -2,18 +2,30 @@ const monthExpansesWorkbook = require("../backend/services/excel/workbooks/month
 const budgetExecutionWorkbook = require("../backend/services/excel/workbooks/budgetExecutionWorkbook");
 const summarizedBudgetsWorkbook = require("../backend/services/excel/workbooks/summarizedBudgetsWorkbook");
 
-async function exportExcel({ buildingName, pageName, date, data, colorSet }) {
-  // fill the workbook with data
-  const filledWorkBook = getPageWorkbook(
-    buildingName,
-    pageName,
-    date,
-    data,
-    colorSet
-  );
-  return filledWorkBook.then((workbook) => {
-    return workbook.xlsx.writeFile(`${fileName}.xlsx`);
-  });
+async function exportExcel({
+  buildingName,
+  pageName,
+  date,
+  data,
+  colorSet,
+  fileName
+}) {
+  try {
+    // fill the workbook with data
+    const finishedWorkbook = await getPageWorkbook(
+      buildingName,
+      pageName,
+      date,
+      data,
+      colorSet
+    );
+
+    await finishedWorkbook.xlsx.writeFile(`${fileName}.xlsx`);
+
+    return Promise.resolve(true);
+  } catch (error) {
+    throw error;
+  }
 }
 
 function getPageWorkbook(buildingName, pageName, date, data, colorSet) {
@@ -32,13 +44,16 @@ function getPageWorkbook(buildingName, pageName, date, data, colorSet) {
 async function execute() {
   const { parentPort, workerData } = require("worker_threads");
 
-  const promises = workerData.map(async (reportData) => {
-    return await exportExcel(reportData);
+  const promises = workerData.map((reportData) => {
+    return exportExcel(reportData);
   });
 
-  const result = await Promise.all(promises);
-  console.log(result);
-  parentPort.postMessage({ success: true });
+  try {
+    await Promise.all(promises);
+    parentPort.postMessage({ success: true });
+  } catch (error) {
+    throw error;
+  }
 }
 
 execute();
