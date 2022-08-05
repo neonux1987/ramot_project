@@ -19,7 +19,7 @@ export const generateEmptyReports = (params) => {
         );
 
       if (createdReportsBuidlings.length > 0) {
-        toastManager.info(
+        toastManager.success(
           `דוחות ריקים נוצרו בהצלחה לבניינים ${createdReportsBuidlings.toString()}`
         );
         //ipcRenderer.send("refresh-renderer");

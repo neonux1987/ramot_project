@@ -79,7 +79,7 @@ module.exports = async (buildingName, date, data) => {
   //set font style
   headerCell.font = {
     name: "Arial",
-    color: { argb: "1b75bc" },
+    color: { argb: "000000" },
     family: 2,
     size: 24
   };

@@ -1,20 +1,20 @@
 /* eslint-disable react/prop-types, react/jsx-handler-names */
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 //import classNames from 'classnames';
-import CreatableSelect from 'react-select/creatable';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import NoSsr from '@material-ui/core/NoSsr';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
+import CreatableSelect from "react-select/creatable";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import NoSsr from "@material-ui/core/NoSsr";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
 //import Chip from '@material-ui/core/Chip';
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from "@material-ui/core/MenuItem";
 //import CancelIcon from '@material-ui/icons/Cancel';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import { emphasize } from "@material-ui/core/styles/colorManipulator";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     width: 230,
     display: "inline-flex",
@@ -25,41 +25,43 @@ const styles = theme => ({
     verticalAlign: "top"
   },
   input: {
-    display: 'flex',
+    display: "flex",
     padding: 0,
-    height: 'auto',
+    height: "auto"
   },
   valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
     flex: 1,
-    alignItems: 'center',
-    overflow: 'hidden',
+    alignItems: "center",
+    overflow: "hidden"
   },
   chip: {
-    margin: theme.spacing(0.5, 0.25),
+    margin: theme.spacing(0.5, 0.25)
   },
   chipFocused: {
     backgroundColor: emphasize(
-      theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
-      0.08,
-    ),
+      theme.palette.type === "light"
+        ? theme.palette.grey[300]
+        : theme.palette.grey[700],
+      0.08
+    )
   },
   noOptionsMessage: {
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(1, 2)
   },
   singleValue: {
-    fontSize: 16,
+    fontSize: 16
   },
   placeholder: {
-    position: 'absolute',
+    position: "absolute",
     left: 2,
     bottom: 6,
     fontSize: 16,
     color: "#000000"
   },
   paper: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
     marginTop: theme.spacing(1),
     left: 0,
@@ -67,8 +69,8 @@ const styles = theme => ({
     top: "30px"
   },
   divider: {
-    height: theme.spacing(2),
-  },
+    height: theme.spacing(2)
+  }
 });
 
 function NoOptionsMessage(props) {
@@ -97,8 +99,8 @@ function Control(props) {
           className: props.selectProps.classes.input,
           inputRef: props.innerRef,
           children: props.children,
-          ...props.innerProps,
-        },
+          ...props.innerProps
+        }
       }}
       {...props.selectProps.textFieldProps}
     />
@@ -108,11 +110,11 @@ function Control(props) {
 function Option(props) {
   return (
     <MenuItem
-      buttonRef={props.innerRef}
+      ref={props.innerRef}
       selected={props.isFocused}
       component="div"
       style={{
-        fontWeight: props.isSelected ? 500 : 400,
+        fontWeight: props.isSelected ? 500 : 400
       }}
       {...props.innerProps}
     >
@@ -135,19 +137,30 @@ function Placeholder(props) {
 
 function SingleValue(props) {
   return (
-    <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+    <Typography
+      className={props.selectProps.classes.singleValue}
+      {...props.innerProps}
+    >
       {props.children}
     </Typography>
   );
 }
 
 function ValueContainer(props) {
-  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+  return (
+    <div className={props.selectProps.classes.valueContainer}>
+      {props.children}
+    </div>
+  );
 }
 
 function Menu(props) {
   return (
-    <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+    <Paper
+      square
+      className={props.selectProps.classes.paper}
+      {...props.innerProps}
+    >
       {props.children}
     </Paper>
   );
@@ -160,21 +173,20 @@ const components = {
   Option,
   Placeholder,
   SingleValue,
-  ValueContainer,
+  ValueContainer
 };
 
 class IntegrationReactSelect extends React.Component {
-
   render() {
     const { classes, theme } = this.props;
 
     const selectStyles = {
-      input: base => ({
+      input: (base) => ({
         ...base,
         color: theme.palette.text.primary,
-        '& input': {
-          font: 'inherit',
-        },
+        "& input": {
+          font: "inherit"
+        }
       }),
       loadingIndicator: () => ({
         fontSize: "8px",
@@ -214,7 +226,7 @@ class IntegrationReactSelect extends React.Component {
 
 IntegrationReactSelect.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);

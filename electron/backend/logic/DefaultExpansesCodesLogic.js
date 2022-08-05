@@ -32,6 +32,8 @@ class DefaultExpansesCodesLogic {
    */
   prepareDefaultBatchInsertion(data, date) {
     for (let i = 0; i < data.length; i++) {
+      delete data[i].code;
+      delete data[i].codeName;
       data[i].month = date.month;
       data[i].year = date.year;
       data[i].tax = 0.0;

@@ -32,7 +32,7 @@ class MonthExpansesDao {
    * get all month expanses records
    */
   getAllMonthExpansesTrx = (
-    buildingName = String,
+    buildingId = String,
     date = {
       year: (year = Number),
       month: (month = String)
@@ -55,7 +55,7 @@ class MonthExpansesDao {
         "building.month AS month",
         "building.year AS year"
       )
-      .from(buildingName + "_month_expanses AS building")
+      .from(buildingId + "_month_expanses AS building")
       .innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin(
         "summarized_sections AS sc",
@@ -69,13 +69,13 @@ class MonthExpansesDao {
         return this.nestHydrationJS.nest(result, DEFINITION);
       })
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingId} לחודש ${date.month} שנה ${date.year}`;
         throw new DbError(msg, FILENAME, error);
       });
   };
 
   getMonthExpansesByRange = (
-    buildingName = String,
+    buildingId = String,
     date = {
       year: (year = Number),
       month: (month = String)
@@ -102,7 +102,7 @@ class MonthExpansesDao {
         "building.month AS month",
         "building.year AS year"
       )
-      .from(buildingName + "_month_expanses AS building")
+      .from(buildingId + "_month_expanses AS building")
       .innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin(
         "summarized_sections AS sc",
@@ -118,29 +118,26 @@ class MonthExpansesDao {
         return this.nestHydrationJS.nest(result, DEFINITION);
       })
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי טווח`;
+        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingId} לחודש ${date.month} שנה ${date.year} לפי טווח`;
         throw new DbError(msg, FILENAME, error);
       });
   };
 
-  dataRowCount(buildingName, date) {
-    return this.connection(`${buildingName}_month_expanses`)
+  dataRowCount(buildingId, date) {
+    return this.connection(`${buildingId}_month_expanses`)
       .count("id")
       .where({ year: date.year, month: date.month })
       .then((result) => {
         return result[0]["count(`id`)"];
       })
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף מידע לגבי מספר השורות בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי טווח`;
+        const msg = `המערכת לא הצליחה לשלוף מידע לגבי מספר השורות בהוצאות חודשיות לבניין ${buildingId} לחודש ${date.month} שנה ${date.year} לפי טווח`;
         throw new DbError(msg, FILENAME, error);
       });
   }
 
-  /**
-   * get month expanse record by summarized section id
-   */
   getMonthExpansesBySummarizedSectionIdTrx(
-    buildingName = String,
+    buildingId = String,
     date = {
       year: (year = Number),
       month: (month = String)
@@ -163,7 +160,7 @@ class MonthExpansesDao {
         "sc.section AS section",
         "ec.with_vat AS with_vat"
       )
-      .from(buildingName + "_month_expanses AS building")
+      .from(buildingId + "_month_expanses AS building")
       .innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin(
         "summarized_sections AS sc",
@@ -171,44 +168,12 @@ class MonthExpansesDao {
         "sc.id"
       )
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי סעיף מסכם ${summarized_section_id}`;
+        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingId} לחודש ${date.month} שנה ${date.year} לפי סעיף מסכם ${summarized_section_id}`;
         throw new DbError(msg, FILENAME, error);
       });
   }
 
-  getMonthExpansesByMonthsAndSummarizedSectionId(
-    buildingName = String,
-    months = [],
-    summarized_section_id = Number
-  ) {
-    return this.connection
-      .whereIn("month", months)
-      .andWhere("summarized_section_id", summarized_section_id)
-      .select(
-        "building.id AS id",
-        "building.expanses_code_id AS expanses_code_id",
-        "building.sum AS sum",
-        "building.tax AS tax",
-        "sc.id AS summarized_section_id",
-        "sc.section AS section"
-      )
-      .from(buildingName + "_month_expanses AS building")
-      .innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
-      .innerJoin(
-        "summarized_sections AS sc",
-        "ec.summarized_section_id",
-        "sc.id"
-      )
-      .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתונים של הוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי סעיף מסכם ${summarized_section_id} ולפי החודשים`;
-        throw new DbError(msg, FILENAME, error);
-      });
-  }
-
-  /**
-   * get month expanse record by summarized section id
-   */
-  getMonthExpansesByIdTrx(id = Number, buildingName = String, trx) {
+  getMonthExpansesByIdTrx({ id = Number, buildingId = String, date, trx }) {
     return trx
       .where("building.id", id)
       .select(
@@ -221,7 +186,7 @@ class MonthExpansesDao {
         "sc.id AS summarized_section_id",
         "sc.section AS section"
       )
-      .from(buildingName + "_month_expanses AS building")
+      .from(buildingId + "_month_expanses AS building")
       .innerJoin("expanses_codes AS ec", "building.expanses_code_id", "ec.id")
       .innerJoin(
         "summarized_sections AS sc",
@@ -229,64 +194,60 @@ class MonthExpansesDao {
         "sc.id"
       )
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לשלוף נתונים של רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי המזהה ${id}`;
+        const msg = `המערכת לא הצליחה לשלוף נתונים של רשומה בהוצאות חודשיות לבניין ${buildingId} לחודש ${date.month} שנה ${date.year} לפי המזהה ${id}`;
         throw new DbError(msg, FILENAME, error);
       });
   }
 
-  /**
-   * update month expanse record
-   * @param {*} id the id of the expanse to update
-   * @param {*} buildingName the name of the building
-   * @param {*} expanse the expanse to update
-   */
-  updateMonthExpanseTrx(
-    buildingName = String,
+  updateMonthExpanseTrx({
+    buildingId = String,
     id = Number,
     expanse = Object,
     trx
-  ) {
-    return trx(buildingName + "_month_expanses")
+  }) {
+    return trx(buildingId + "_month_expanses")
       .where({ id: id })
       .update(expanse)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה לעדכן רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי מזהה ${id}`;
+        const msg = `המערכת לא הצליחה לעדכן רשומה בהוצאות חודשיות לבניין ${buildingId} לחודש ${date.month} שנה ${date.year} לפי מזהה ${id}`;
         throw new DbError(msg, FILENAME, error);
       });
   }
 
-  addNewMonthExpanseTrx(
-    buildingName = String,
+  addNewMonthExpanseTrx({
+    buildingId = String,
     record = Object,
-    trx = this.connection
-  ) {
-    return trx(buildingName + "_month_expanses")
+    trx = this.connection,
+    date
+  }) {
+    return trx(buildingId + "_month_expanses")
       .insert(record)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה להוסיף רשומה להוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year}`;
+        const msg = `המערכת לא הצליחה להוסיף רשומה להוצאות חודשיות לבניין ${buildingId} לחודש ${date.month} שנה ${date.year}`;
         throw new DbError(msg, FILENAME, error);
       });
   }
 
-  deleteMonthExpanse(
-    buildingName = String,
+  deleteMonthExpanse({
+    buildingId = String,
     id = Number,
-    trx = this.connection
-  ) {
-    return trx(buildingName + "_month_expanses")
+    trx = this.connection,
+    date
+  }) {
+    return trx(buildingId + "_month_expanses")
       .where({ id: id })
       .del()
       .catch((error) => {
-        const msg = `המערכת לא הצליחה למחוק רשומה בהוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי מזהה ${id}`;
+        const msg = `המערכת לא הצליחה למחוק רשומה בהוצאות חודשיות לבניין ${buildingId} לחודש ${date.month} שנה ${date.year} לפי מזהה ${id}`;
         throw new DbError(msg, FILENAME, error);
       });
   }
 
-  batchInsert(buildingName, rows, trx) {
+  batchInsert(buildingId, rows, trx) {
     return trx
-      .batchInsert(`${buildingName}_month_expanses`, rows, CHUNKSIZE)
+      .batchInsert(`${buildingId}_month_expanses`, rows, CHUNKSIZE)
       .catch((error) => {
-        const msg = `המערכת לא הצליחה להוסיף רשומות להוצאות חודשיות לבניין ${buildingName} לחודש ${date.month} שנה ${date.year} לפי המזההים ${ids}`;
+        const msg = `המערכת לא הצליחה להוסיף רשומות להוצאות חודשיות לבניין ${buildingId}`;
         throw new DbError(msg, FILENAME, error);
       });
   }

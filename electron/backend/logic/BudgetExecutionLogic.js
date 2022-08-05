@@ -590,12 +590,12 @@ class BudgetExecutionLogic {
           linked: false
         };
 
-        await this.monthExpansesDao.updateMonthExpanseTrx(
+        await this.monthExpansesDao.updateMonthExpanseTrx({
           buildingId,
-          item.id,
-          payload,
+          id: item.id,
+          expanse: payload,
           trx
-        );
+        });
       });
     });
 
