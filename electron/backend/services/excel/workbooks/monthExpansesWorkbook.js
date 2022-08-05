@@ -5,13 +5,14 @@ const headerStyle = {
   fill: {
     type: "pattern",
     pattern: "solid",
-    fgColor: { argb: "f5f5f5" }
+    fgColor: { argb: "F9F9F9" }
   },
   font: {
     name: "Arial",
     color: { argb: "000000" },
     family: 2,
-    size: 11
+    size: 11,
+    bold: true
   }
 };
 
@@ -32,7 +33,8 @@ module.exports = async (buildingName, date, data) => {
   //add a worksheet
   var sheet = workbook.addWorksheet(sheetTitle, {
     properties: {
-      tabColor: { argb: "FFC0000" }
+      tabColor: { argb: "FFC0000" },
+      defaultRowHeight: 20
     },
     views: [{ rightToLeft: true }],
     pageSetup: {

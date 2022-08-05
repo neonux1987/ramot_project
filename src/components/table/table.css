@@ -89,13 +89,13 @@ td {
 .groupCell {
   font-weight: 600;
   font-size: 14px;
-  height: 45px !important;
+  height: 45px;
   border-right: none;
 }
 
 .headerCell {
   font-weight: 600;
   font-size: 14px;
-  height: 45px !important;
+  height: 45px;
   border-right: none;
 }

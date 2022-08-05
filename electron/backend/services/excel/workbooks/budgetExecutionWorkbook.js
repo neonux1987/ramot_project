@@ -80,7 +80,7 @@ const headerStyle = {
   fill: {
     type: "pattern",
     pattern: "solid",
-    fgColor: { argb: "000000" }
+    fgColor: { argb: "FFFFFF" }
   },
   font: {
     name: "Arial",
@@ -96,10 +96,9 @@ const headerStyle = {
   }
 };
 
-module.exports = async (buildingName, date, data) => {
+module.exports = async (buildingName, date, data, colorSet) => {
   const sheetTitle = `שנה ${date.year} רבעון ${date.quarter}`;
   const header = `${buildingName} / ביצוע מול תקציב / רבעון ${date.quarter} / ${date.year}`;
-
   //create new empty workbook
   const workbook = new Excel.Workbook();
 
@@ -113,7 +112,8 @@ module.exports = async (buildingName, date, data) => {
   //add and config a worksheet
   var sheet = workbook.addWorksheet(sheetTitle, {
     properties: {
-      tabColor: { argb: "FFC0000" }
+      tabColor: { argb: "FFC0000" },
+      defaultRowHeight: 20
     },
     views: [{ rightToLeft: true }],
     pageSetup: {
@@ -142,7 +142,7 @@ module.exports = async (buildingName, date, data) => {
   const headerCellsStyles = {
     font: {
       name: "Arial",
-      color: { argb: "FFFFFF" },
+      color: { argb: "000000" },
       family: 2,
       size: 11,
       bold: true
@@ -173,7 +173,7 @@ module.exports = async (buildingName, date, data) => {
   //set font style
   headerCell.font = {
     name: "Arial",
-    color: { argb: "1b75bc" },
+    color: { argb: "000000" },
     family: 2,
     size: 24
   };
@@ -182,65 +182,103 @@ module.exports = async (buildingName, date, data) => {
 
   const months = getMonthHeaders(date.quarter);
 
-  //merge cells for month 1 header
+  const A3 = sheet.getCell("A3");
+  const H3 = sheet.getCell("H3");
+  const K3 = sheet.getCell("K3");
+  const L3 = sheet.getCell("L3");
+  A3.style = headerStyle;
+  H3.style = headerStyle;
+  K3.style = headerStyle;
+  L3.style = headerStyle;
+
+  // month 1
   sheet.mergeCells("B3", "C3");
   const month1 = sheet.getCell("B3");
-  //set title
-  month1.value = `חודש ${months[0]}`;
-  //set styles
-  month1.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "7051b9" }
-  };
-  month1.font = headerCellsStyles.font;
   month1.alignment = headerCellsStyles.alignment;
   month1.border = headerCellsStyles.border;
+  month1.value = {
+    richText: [
+      {
+        text: `חודש ${months[0]}`,
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[0].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
+  };
 
-  //merge cells for month 2 header
+  // month 2
   sheet.mergeCells("D3", "E3");
   const month2 = sheet.getCell("D3");
-  //set title
-  month2.value = `חודש ${months[1]}`;
-  //set styles
-  month2.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "386db1" }
-  };
-  month2.font = headerCellsStyles.font;
   month2.alignment = headerCellsStyles.alignment;
   month2.border = headerCellsStyles.border;
+  month2.value = {
+    richText: [
+      {
+        text: `חודש ${months[1]}`,
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[1].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
+  };
 
-  //merge cells for month 3 header
+  //month 3
   sheet.mergeCells("F3", "G3");
   const month3 = sheet.getCell("F3");
-  //set title
-  month3.value = `חודש ${months[2]}`;
-  //set styles
-  month3.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "31926c" }
-  };
-  month3.font = headerCellsStyles.font;
   month3.alignment = headerCellsStyles.alignment;
   month3.border = headerCellsStyles.border;
-
-  //merge cells for end of quarter
-  sheet.mergeCells("I3", "J3");
-  const quarterEnd = sheet.getCell("I3");
-  //set title
-  quarterEnd.value = "סוף רבעון";
-  //set styles
-  quarterEnd.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "dc3c60" }
+  month3.value = {
+    richText: [
+      {
+        text: `חודש ${months[2]}`,
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[2].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
   };
-  quarterEnd.font = headerCellsStyles.font;
+
+  // quarter
+  sheet.mergeCells("H3", "J3");
+  const quarterEnd = sheet.getCell("H3");
   quarterEnd.alignment = headerCellsStyles.alignment;
   quarterEnd.border = headerCellsStyles.border;
+  quarterEnd.value = {
+    richText: [
+      {
+        text: `סוף רבעון ${date.quarter}`,
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[3].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
+  };
+
   /*Column headers*/
   sheet.getRow(4).values = BUDGET_EXECUTION_HEADERS;
 
@@ -258,25 +296,37 @@ module.exports = async (buildingName, date, data) => {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "7051b9" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[0].substring(1) }
       };
     } else if (colNumber === 4 || colNumber === 5) {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "386db1" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[1].substring(1) }
       };
     } else if (colNumber === 6 || colNumber === 7) {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "31926c" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[2].substring(1) }
       };
     } else if (colNumber === 9 || colNumber === 10) {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "dc3c60" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[3].substring(1) }
       };
     } else {
       cell.style = headerStyle;
@@ -287,6 +337,11 @@ module.exports = async (buildingName, date, data) => {
     cell.alignment = {
       vertical: "middle",
       horizontal: "center"
+    };
+    cell.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "F9F9F9" }
     };
   });
 
@@ -344,14 +399,11 @@ module.exports = async (buildingName, date, data) => {
   //positive number is green
   sheet.getColumn("K").eachCell(function (cell, rowNumber) {
     if (rowNumber > 4) {
-      let bg = "ffff00";
-      let fontColor = "000000";
+      let fontColor = "ffff00";
       if (cell.value > 0) {
-        bg = "008000";
-        fontColor = "ffffff";
+        fontColor = "008000";
       } else if (cell.value < 0) {
-        bg = "ff0000";
-        fontColor = "ffffff";
+        fontColor = "ff0000";
       }
 
       cell.alignment = {
@@ -363,7 +415,7 @@ module.exports = async (buildingName, date, data) => {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: bg }
+        fgColor: { argb: "FFFFFF" }
       };
 
       cell.font = {

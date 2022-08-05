@@ -253,7 +253,6 @@ textarea {
     padding: 1px;
     border-collapse: collapse;
     display: table;
-    counter-reset: page;
   }
 
   ._tableBody {
@@ -291,7 +290,6 @@ textarea {
   }
 
   tfoot {
-    display: none;
     page-break-before: avoid;
     break-inside: avoid;
   }

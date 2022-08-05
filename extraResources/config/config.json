@@ -5,11 +5,11 @@
   "system": {
     "soundEnabled": true,
     "soundVolume": 0.16,
-    "config_folder_path": "D:\\my projects\\ramot\\ramot_project\\extraResources\\config",
-    "db_file_path": "D:\\my projects\\ramot\\ramot_project\\database\\ramot-group-db.sqlite",
-    "db_folder_path": "D:\\my projects\\ramot\\ramot_project\\database",
-    "config_file_path": "D:\\my projects\\ramot\\ramot_project\\extraResources\\config\\config.json",
-    "services_file_path": "D:\\my projects\\ramot\\ramot_project\\extraResources\\config\\services.json",
+    "config_folder_path": "D:\\My Projects\\ramot\\ramot_project\\extraResources\\config",
+    "db_file_path": "D:\\My Projects\\ramot\\ramot_project\\database\\ramot-group-db.sqlite",
+    "db_folder_path": "D:\\My Projects\\ramot\\ramot_project\\database",
+    "config_file_path": "D:\\My Projects\\ramot\\ramot_project\\extraResources\\config\\config.json",
+    "services_file_path": "D:\\My Projects\\ramot\\ramot_project\\extraResources\\config\\services.json",
     "logs_folder_path": "C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים",
     "log_file_path": "C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים\\ramot-group-errors.log"
   },
@@ -33,18 +33,18 @@
       "darkBlue": "#2b3a4a"
     },
     "colorSet": {
-      "0": "rgb(111 123 216)",
-      "1": "rgb(29 143 210)",
-      "2": "rgb(31 204 155)",
-      "3": "rgb(255 9 77)",
-      "4": "rgb(255 113 0)"
+      "0": "#6f7bd8",
+      "1": "#1d8fd2",
+      "2": "#1fcc9b",
+      "3": "#ff094d",
+      "4": "#ff7100"
     },
     "defaultColorSet": {
-      "0": "rgb(111 123 216)",
-      "1": "rgb(29 143 210)",
-      "2": "rgb(31 204 155)",
-      "3": "rgb(255 9 77)",
-      "4": "rgb(255 113 0)"
+      "0": "#6f7bd8",
+      "1": "#1d8fd2",
+      "2": "#1fcc9b",
+      "3": "#ff094d",
+      "4": "#ff7100"
     },
     "sticky_toolbar": false
   },
@@ -66,7 +66,7 @@
     "currentDate": "2021-05-05T21:00:00.000Z",
     "executed_backups": 0,
     "db_backups_folder_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group backups",
-    "backups_names_file_path": "D:\\my projects\\ramot\\ramot_project\\extraResources\\config\\backupsNames.json"
+    "backups_names_file_path": "D:\\My Projects\\ramot\\ramot_project\\extraResources\\config\\backupsNames.json"
   },
   "empty_reports_generator": {
     "enabled": false,

@@ -37,11 +37,11 @@ const headerStyle = {
   fill: {
     type: "pattern",
     pattern: "solid",
-    fgColor: { argb: "000000" }
+    fgColor: { argb: "FFFFFF" }
   },
   font: {
     name: "Arial",
-    color: { argb: "FFFFFF" },
+    color: { argb: "000000" },
     family: 2,
     size: 11
   },
@@ -53,7 +53,7 @@ const headerStyle = {
   }
 };
 
-module.exports = async (buildingName, date, data) => {
+module.exports = async (buildingName, date, data, colorSet) => {
   const sheetTitle = `שנה ${date.year}`;
   const header = `${buildingName} / סיכום שנתי / ${date.year}`;
 
@@ -70,7 +70,8 @@ module.exports = async (buildingName, date, data) => {
   //add a worksheet
   var sheet = workbook.addWorksheet(sheetTitle, {
     properties: {
-      tabColor: { argb: "FFC0000" }
+      tabColor: { argb: "FFC0000" },
+      defaultRowHeight: 20
     },
     views: [{ rightToLeft: true }],
     pageSetup: {
@@ -99,7 +100,7 @@ module.exports = async (buildingName, date, data) => {
   const headerCellsStyles = {
     font: {
       name: "Arial",
-      color: { argb: "FFFFFF" },
+      color: { argb: "000000" },
       family: 2,
       size: 11,
       bold: true
@@ -130,87 +131,129 @@ module.exports = async (buildingName, date, data) => {
   //set font style
   headerCell.font = {
     name: "Arial",
-    color: { argb: "1b75bc" },
+    color: { argb: "000000" },
     family: 2,
     size: 24
   };
   //set alignment
   headerCell.alignment = headerCellsStyles.alignment;
 
-  //merge cells for quarter 1 header
+  const A3 = sheet.getCell("A3");
+  const J3 = sheet.getCell("J3");
+  const M3 = sheet.getCell("M3");
+  A3.style = headerStyle;
+  J3.style = headerStyle;
+  M3.style = headerStyle;
+
+  // quarter 1
   sheet.mergeCells("B3", "C3");
   const quarter1 = sheet.getCell("B3");
-  //set title
-  quarter1.value = `רבעון 1`;
-  //set styles
-  quarter1.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "7051b9" }
-  };
-  quarter1.font = headerCellsStyles.font;
   quarter1.alignment = headerCellsStyles.alignment;
   quarter1.border = headerCellsStyles.border;
+  quarter1.value = {
+    richText: [
+      {
+        text: "רבעון 1",
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[0].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
+  };
 
-  //merge cells for quarter 2 header
+  // quarter 2
   sheet.mergeCells("D3", "E3");
   const quarter2 = sheet.getCell("D3");
-  //set title
-  quarter2.value = `רבעון 2`;
-  //set styles
-  quarter2.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "386db1" }
-  };
-  quarter2.font = headerCellsStyles.font;
   quarter2.alignment = headerCellsStyles.alignment;
   quarter2.border = headerCellsStyles.border;
+  quarter2.value = {
+    richText: [
+      {
+        text: "רבעון 2",
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[1].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
+  };
 
-  //merge cells for quarter 3 header
+  // quarter 3
   sheet.mergeCells("F3", "G3");
   const quarter3 = sheet.getCell("F3");
-  //set title
-  quarter3.value = `רבעון 3`;
-  //set styles
-  quarter3.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "31926c" }
-  };
-  quarter3.font = headerCellsStyles.font;
   quarter3.alignment = headerCellsStyles.alignment;
   quarter3.border = headerCellsStyles.border;
+  quarter3.value = {
+    richText: [
+      {
+        text: "רבעון 3",
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[2].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
+  };
 
-  //merge cells for quarter 4 header
+  // quarter 4
   sheet.mergeCells("H3", "I3");
   const quarter4 = sheet.getCell("H3");
-  //set title
-  quarter4.value = `רבעון 4`;
-  //set styles
-  quarter4.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "dc3c60" }
-  };
-  quarter4.font = headerCellsStyles.font;
   quarter4.alignment = headerCellsStyles.alignment;
   quarter4.border = headerCellsStyles.border;
-
-  //merge cells for end of quarter
-  sheet.mergeCells("K3", "L3");
-  const yearEnd = sheet.getCell("K3");
-  //set title
-  yearEnd.value = "סוף רבעון";
-  //set styles
-  yearEnd.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "F84D1E" }
+  quarter4.value = {
+    richText: [
+      {
+        text: "רבעון 4",
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[3].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
   };
-  yearEnd.font = headerCellsStyles.font;
+
+  // end of year
+  sheet.mergeCells("J3", "L3");
+  const yearEnd = sheet.getCell("J3");
   yearEnd.alignment = headerCellsStyles.alignment;
   yearEnd.border = headerCellsStyles.border;
+  yearEnd.value = {
+    richText: [
+      {
+        text: `סוף שנה ${date.year}`,
+        font: {
+          ...headerCellsStyles.font,
+          color: { argb: colorSet[4].substring(1) }
+        },
+        fill: {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F9F9F9" }
+        }
+      }
+    ]
+  };
 
   /*Column headers*/
   sheet.getRow(4).values = HEADERS;
@@ -229,31 +272,46 @@ module.exports = async (buildingName, date, data) => {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "7051b9" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[0].substring(1) }
       };
     } else if (colNumber === 4 || colNumber === 5) {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "386db1" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[1].substring(1) }
       };
     } else if (colNumber === 6 || colNumber === 7) {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "31926c" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[2].substring(1) }
       };
     } else if (colNumber === 8 || colNumber === 9) {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "dc3c60" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[3].substring(1) }
       };
     } else if (colNumber === 11 || colNumber === 12) {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "F84D1E" }
+        fgColor: { argb: "FFFFFF" }
+      };
+      cell.font = {
+        color: { argb: colorSet[4].substring(1) }
       };
     } else {
       cell.style = headerStyle;
@@ -264,6 +322,11 @@ module.exports = async (buildingName, date, data) => {
     cell.alignment = {
       vertical: "middle",
       horizontal: "center"
+    };
+    cell.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "F9F9F9" }
     };
   });
 

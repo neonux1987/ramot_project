@@ -114,7 +114,7 @@ const SummarizedBudgetsTableContainer = (props) => {
         <GroupCell></GroupCell>
         <GroupCell></GroupCell>
         {quarterColumns}
-        <GroupCell span={3} color={colorSet[4]}>{`סוף שנת ${year}`}</GroupCell>
+        <GroupCell span={3} color={colorSet[4]}>{`סוף שנה ${year}`}</GroupCell>
         <GroupCell></GroupCell>
       </GroupRow>
     );
