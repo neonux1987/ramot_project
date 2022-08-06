@@ -1,1 +1,98 @@
-{"user":{"reports_folder_path":"C:\\Users\\Admin\\Documents\\קבוצת רמות\\דוחות"},"system":{"soundEnabled":true,"soundVolume":0.16,"config_folder_path":"E:\\developer\\mezach\\ramot_project\\extraResources\\config","db_file_path":"E:\\developer\\mezach\\ramot_project\\database\\ramot-group-db.sqlite","db_folder_path":"E:\\developer\\mezach\\ramot_project\\database","config_file_path":"E:\\developer\\mezach\\ramot_project\\extraResources\\config\\config.json","services_file_path":"E:\\developer\\mezach\\ramot_project\\extraResources\\config\\services.json","logs_folder_path":"C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים","log_file_path":"C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים\\ramot-group-errors.log"},"notifications":{"enabled":false,"toastContainerProps":{"width":"340px","position":"bottom-center","autoClose":5000,"hideProgressBar":true,"newestOnTop":false,"rtl":true,"pauseOnVisibilityChange":true,"draggable":false,"pauseOnHover":true}},"theme":{"mainColors":{"primary":"#0066a2","darkBlue":"#2b3a4a"},"colorSet":{"0":"#6f7bd8","1":"#1d8fd2","2":"#1fcc9b","3":"#ff094d","4":"#ff7100"},"defaultColorSet":{"0":"#6f7bd8","1":"#1d8fd2","2":"#1fcc9b","3":"#ff094d","4":"#ff7100"},"sticky_toolbar":false},"db_backup":{"backups_to_save":2,"byTime":{"currentDate":"2020-06-10T21:00:00.000Z","executed_backups":95,"day_max_allowed_backups":2,"every_x_hours":1,"enabled":false},"enabled":true,"last_update":"2022-03-08T04:15:58.000Z","max_num_of_history_backups":7,"path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group backups","restart_required":true,"backup_on_exit":true,"currentDate":"2021-05-05T21:00:00.000Z","executed_backups":0,"db_backups_folder_path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group backups","backups_names_file_path":"E:\\developer\\mezach\\ramot_project\\extraResources\\config\\backupsNames.json"},"empty_reports_generator":{"enabled":false,"restartRequired":false},"appUpdates":{"availableUpdate":true,"updateVersion":"1.0.4","releaseDate":"2022-06-16T02:13:37.500Z","updateDownloaded":false,"userNotified":true,"updateFilePath":""},"db_restore":{"last_update":"8.10.2019, 23:37:00"},"locations":{"db_file_path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\db\\ramot-group-db.sqlite","db_folder_path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\db","db_backups_folder_path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group backups","reports_folder_path":"C:\\Users\\Admin\\Documents\\קבוצת רמות\\דוחות","config_folder_path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\config","config_file_path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\config\\config.json","backups_names_file_path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\config\\backupsNames.json","logs_folder_path":"C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים","log_file_path":"C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים\\ramot-group-errors.log","services_file_path":"C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\config\\services.json"}}
+{
+  "user": {
+    "reports_folder_path": "C:\\Users\\Admin\\Documents\\קבוצת רמות\\דוחות"
+  },
+  "system": {
+    "soundEnabled": true,
+    "soundVolume": 0.16,
+    "config_folder_path": "D:\\my projects\\ramot\\ramot_project\\extraResources\\config",
+    "db_file_path": "D:\\my projects\\ramot\\ramot_project\\database\\ramot-group-db.sqlite",
+    "db_folder_path": "D:\\my projects\\ramot\\ramot_project\\database",
+    "config_file_path": "D:\\my projects\\ramot\\ramot_project\\extraResources\\config\\config.json",
+    "services_file_path": "D:\\my projects\\ramot\\ramot_project\\extraResources\\config\\services.json",
+    "logs_folder_path": "C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים",
+    "log_file_path": "C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים\\ramot-group-errors.log"
+  },
+  "notifications": {
+    "enabled": false,
+    "toastContainerProps": {
+      "width": "340px",
+      "position": "bottom-center",
+      "autoClose": 5000,
+      "hideProgressBar": true,
+      "newestOnTop": false,
+      "rtl": true,
+      "pauseOnVisibilityChange": true,
+      "draggable": false,
+      "pauseOnHover": true
+    }
+  },
+  "theme": {
+    "mainColors": {
+      "primary": "#0066a2",
+      "darkBlue": "#2b3a4a"
+    },
+    "colorSet": {
+      "0": "#6f7bd8",
+      "1": "#1d8fd2",
+      "2": "#1fcc9b",
+      "3": "#ff094d",
+      "4": "#ff7100"
+    },
+    "defaultColorSet": {
+      "0": "#6f7bd8",
+      "1": "#1d8fd2",
+      "2": "#1fcc9b",
+      "3": "#ff094d",
+      "4": "#ff7100"
+    },
+    "sticky_toolbar": false
+  },
+  "db_backup": {
+    "backups_to_save": 2,
+    "byTime": {
+      "currentDate": "2020-06-10T21:00:00.000Z",
+      "executed_backups": 96,
+      "day_max_allowed_backups": 2,
+      "every_x_hours": 1,
+      "enabled": false
+    },
+    "enabled": true,
+    "last_update": "2022-06-07T22:47:40.000Z",
+    "max_num_of_history_backups": 7,
+    "path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group backups",
+    "restart_required": true,
+    "backup_on_exit": true,
+    "currentDate": "2021-05-05T21:00:00.000Z",
+    "executed_backups": 0,
+    "db_backups_folder_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group backups",
+    "backups_names_file_path": "D:\\my projects\\ramot\\ramot_project\\extraResources\\config\\backupsNames.json"
+  },
+  "empty_reports_generator": {
+    "enabled": false,
+    "restartRequired": false
+  },
+  "appUpdates": {
+    "availableUpdate": true,
+    "updateVersion": "1.0.4",
+    "releaseDate": "2022-06-16T02:13:37.500Z",
+    "updateDownloaded": false,
+    "userNotified": true,
+    "updateFilePath": ""
+  },
+  "db_restore": {
+    "last_update": "8.10.2019, 23:37:00"
+  },
+  "locations": {
+    "db_file_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\db\\ramot-group-db.sqlite",
+    "db_folder_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\db",
+    "db_backups_folder_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group backups",
+    "reports_folder_path": "C:\\Users\\Admin\\Documents\\קבוצת רמות\\דוחות",
+    "config_folder_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\config",
+    "config_file_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\config\\config.json",
+    "backups_names_file_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\config\\backupsNames.json",
+    "logs_folder_path": "C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים",
+    "log_file_path": "C:\\Users\\Admin\\Documents\\קבוצת רמות\\יומן אירועים\\ramot-group-errors.log",
+    "services_file_path": "C:\\Users\\Admin\\AppData\\Roaming\\ramot group data\\config\\services.json"
+  }
+}

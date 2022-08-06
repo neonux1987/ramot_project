@@ -157,14 +157,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[0].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  quarter1.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   // quarter 2
@@ -179,14 +179,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[1].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  quarter2.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   // quarter 3
@@ -201,14 +201,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[2].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  quarter3.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   // quarter 4
@@ -223,14 +223,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[3].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  quarter4.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   // end of year
@@ -245,14 +245,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[4].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  yearEnd.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   /*Column headers*/

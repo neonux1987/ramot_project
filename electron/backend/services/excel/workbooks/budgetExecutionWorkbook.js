@@ -203,14 +203,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[0].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  month1.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   // month 2
@@ -225,14 +225,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[1].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  month2.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   //month 3
@@ -247,14 +247,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[2].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  month3.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   // quarter
@@ -269,14 +269,14 @@ module.exports = async (buildingName, date, data, colorSet) => {
         font: {
           ...headerCellsStyles.font,
           color: { argb: colorSet[3].substring(1) }
-        },
-        fill: {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "F9F9F9" }
         }
       }
     ]
+  };
+  quarterEnd.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "F9F9F9" }
   };
 
   /*Column headers*/

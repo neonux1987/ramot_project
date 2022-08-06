@@ -2,7 +2,7 @@ const Helper = require("../../helpers/Helper");
 
 const exportReports = async (date, buildings) => {
   const { exportExcel } = require("./excel/excelSvc");
-  //const ChartExporter = require("./chartjs/ChartExporter");
+  const ChartExporter = require("./chartjs/ChartExporter");
   const fse = require("fs-extra");
   const path = require("path");
 
@@ -37,7 +37,7 @@ const exportReports = async (date, buildings) => {
 
   const reportsQueue = [];
 
-  //const chartExporter = new ChartExporter();
+  const chartExporter = new ChartExporter();
 
   // user reports folder
   const { reports_folder_path } = userSettings;
@@ -103,15 +103,6 @@ const exportReports = async (date, buildings) => {
       colorSet
     });
 
-    /* await exportExcel(
-      buildingName,
-      "summarizedBudgets",
-      summarizedBudgetsFilePath,
-      date,
-      summarizedBudgetData,
-      colorSet
-    ); */
-
     const budgetExecutionData = await budgetExecutionLogic.getAllByQuarter(
       {
         buildingName: buildingId,
@@ -146,15 +137,6 @@ const exportReports = async (date, buildings) => {
       colorSet
     });
 
-    /* await exportExcel(
-      buildingName,
-      "budgetExecutions",
-      budgetExecutionFilePath,
-      date,
-      budgetExecutionData,
-      colorSet
-    ); */
-
     //create reports for the registered months
     const registeredMonthsData = await registeredMonths.getAllByQuarter(
       buildingId,
@@ -188,15 +170,6 @@ const exportReports = async (date, buildings) => {
         data: monthExpansesData,
         colorSet
       });
-
-      /* await exportExcel(
-        buildingName,
-        "monthExpanses",
-        monthExpansesFilePath,
-        newDate,
-        monthExpansesData,
-        colorSet
-      ); */
     });
 
     const monthlyStatsData = await monthlyStatsLogic.getAllMonthsStatsByYear(
@@ -208,11 +181,11 @@ const exportReports = async (date, buildings) => {
       // export charts for each building
       const chartData = prepareAndExportChart(monthlyStatsData);
 
-      // await chartExporter.exportImage({
-      //   data: chartData,
-      //   filePath: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
-      //   title: `${buildingName} הוצאות והכנסות שנה ${year}`
-      // });
+      /* await chartExporter.exportImage({
+        data: chartData,
+        filePath: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
+        title: `${buildingName} הוצאות והכנסות שנה ${year}`
+      }); */
     }
   });
 

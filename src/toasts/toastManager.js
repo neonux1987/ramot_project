@@ -14,77 +14,77 @@ const TYPES = {
   WARNING: "warning",
   ERROR: "error",
   UPDATE: "update",
-  DISMISS: "dismiss",
+  DISMISS: "dismiss"
 };
 
 class ToastManager {
   types = TYPES;
 
   appUpdateNewVersion = (version, properties = {}) => {
-    play(types.update);
     return toast(<AppUpdateNewVersionToast version={version} />, {
       className: styles.basic,
       ...properties,
       autoClose: false,
       closeOnClick: false,
+      onOpen: () => play(types.update)
     });
   };
 
   appUpdateInstall = (version, properties = {}) => {
-    play(types.update);
     toast(<AppUpdateInstallToast version={version} />, {
       className: styles.basic,
       ...properties,
       autoClose: false,
       closeOnClick: false,
+      onOpen: () => play(types.update)
     });
   };
 
   basic = (content, properties = {}) => {
-    play(types.message);
     return toast.info(content, {
       className: styles.basic,
-      ...properties,
+      onOpen: () => play(types.message),
+      ...properties
     });
   };
 
   info = (content, properties = {}) => {
-    play(types.message);
     return toast.info(content, {
       className: styles.info,
-      ...properties,
+      onOpen: () => play(types.message),
+      ...properties
     });
   };
 
   success = (content, properties) => {
-    play(types.message);
     return toast.success(content, {
       className: styles.success,
-      ...properties,
+      onOpen: () => play(types.message),
+      ...properties
     });
   };
 
   warning = (content, properties) => {
-    play(types.warning);
     return toast.warning(content, {
       className: styles.warning,
-      ...properties,
+      onOpen: () => play(types.warning),
+      ...properties
     });
   };
 
   error = (content, properties) => {
-    play(types.error);
     return toast.error(content, {
       className: styles.error,
       autoClose: 5000,
-      ...properties,
+      onOpen: () => play(types.error),
+      ...properties
     });
   };
 
   update = (id, properties) => {
     return toast.update(id, {
       className: styles[properties.type],
-      ...properties,
+      ...properties
     });
   };
 
