@@ -11,7 +11,9 @@ module.exports = () => {
     title: "אשף שיחזור בסיס נתונים",
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: false
+      contextIsolation: false,
+      devTools: false,
+      webSecurity: false
     },
     backgroundColor: "#eee",
     icon,

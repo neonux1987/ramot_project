@@ -1,7 +1,7 @@
 //========================= Libraries =========================//
 require("v8-compile-cache");
 require("dotenv").config();
-const { app, powerMonitor } = require("electron");
+const { app, powerMonitor, protocol } = require("electron");
 const path = require("path");
 const contextMenu = require("electron-context-menu");
 
@@ -48,6 +48,13 @@ let mainWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();
 
 async function createWindow() {
+  // regster protocal to remove the file:/// prefix
+  // this will allow to load local resource
+  /* protocol.registerFileProtocol("file", (request, callback) => {
+    const pathname = decodeURI(request.url.replace("file:///", ""));
+    callback(pathname);
+  });
+ */
   let loadingWindow = createLoadingWindow({ icon });
 
   loadingWindow.once("show", () => {

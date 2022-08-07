@@ -14,7 +14,9 @@ module.exports = (properties) => {
     transparent: true,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      devTools: false,
+      webSecurity: false
     },
     ...properties
   });

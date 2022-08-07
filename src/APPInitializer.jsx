@@ -7,6 +7,7 @@ import ViewManager from "./ViewManager/ViewManager";
 import { getAllBuildings, getSettings } from "./services/mainProcess.svc";
 import AppLoader from "./components/AnimatedLoaders/AppLoader";
 import AppLoadingView from "./WindowViews/AppLoadingView/AppLoadingView";
+import ChartExportView from "./WindowViews/ChartExportView/ChartExportView";
 
 // get url query param for the view manager
 const queryString = window.location.search;
@@ -69,6 +70,9 @@ const APPInitializer = () => {
   // and put it one level above because it will ignore this view
   // because of the if statement under that loades the AppLoader
   if (viewName === "AppLoadingView") return <AppLoadingView />;
+
+  // to avoid the overhead of using the redux store
+  if (viewName === "ChartExportView") return <ChartExportView />;
 
   if (
     !buildingsDataReady ||

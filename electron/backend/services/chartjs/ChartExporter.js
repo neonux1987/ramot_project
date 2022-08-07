@@ -1,94 +1,35 @@
-const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
-const fse = require("fs-extra");
-const ServiceError = require("../../customErrors/ServiceError");
+async function exportCharts(reportsQueue) {
+  const fse = require("fs-extra");
+  const ServiceError = require("../../customErrors/ServiceError");
+  const createChartExportWindow = require("../../../windows/chart_export_window");
+  const { ipcMain } = require("electron");
 
-const config = {
-  responsive: true,
-  maintainAspectRatio: false,
-  elements: {
-    bar: {
-      borderWidth: 2
-    }
-  },
-  scales: {
-    y: {
-      position: "right",
-      reverse: false,
-      grid: {
-        circular: true
-      },
-      ticks: {
-        color: "#000000",
-        font: {
-          size: 16,
-          weight: 600
-        }
-      },
-      grace: "5%"
-    },
-    x: {
-      position: "left",
-      reverse: false,
-      grid: {
-        circular: true
-      },
-      ticks: {
-        color: "#000000",
-        font: {
-          size: 16,
-          weight: 600
-        }
+  try {
+    ipcMain.handleOnce("get-charts-data-to-export", () => {
+      return reportsQueue;
+    });
+
+    const chartExportWindow = createChartExportWindow();
+
+    const chartData = new Promise((resolve) => {
+      /* chartExportWindow.once("charts-ready", (_, chartsData) => {
+        resolve(chartsData);
+      }); */
+    });
+
+    /* if (chartData !== undefined) {
+      for (let i = 0; i < chartData.length; i++) {
+        await fse.writeFile(chartData[i].filePath, chartData[i].dataUrl);
       }
-    }
-  },
-  plugins: {
-    legend: {
-      position: "top",
-      rtl: true,
-      reverse: true,
-      labels: {
-        color: "#000000",
-        font: {
-          size: 14,
-          weight: 600
-        }
-      }
-    },
-    title: {
-      display: false,
-      text: "",
-      color: "#000000",
-      font: {
-        size: 32
-      }
-    }
-  }
-};
-
-class ChartExporter {
-  constructor(width = 1280, height = 720) {
-    this.chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
-  }
-
-  async exportImage({ filePath, data, title }) {
-    try {
-      const newConfig = { ...config };
-      newConfig.data = data;
-      newConfig.plugins.title.text = title;
-
-      const imageBuffer = await this.chartJSNodeCanvas.renderToBuffer(
-        newConfig
-      );
-      await fse.writeFile(filePath, imageBuffer);
-    } catch (error) {
-      console.log(error);
-      throw new ServiceError(
-        "המערכת לא הצליחה לשמור את הגרף כתמונה",
-        "ChartExporter.js",
-        error
-      );
-    }
+    } */
+  } catch (error) {
+    console.log(error);
+    throw new ServiceError(
+      "המערכת לא הצליחה לשמור את הגרף כתמונה",
+      "ChartExporter.js",
+      error
+    );
   }
 }
 
-module.exports = ChartExporter;
+module.exports = { exportCharts };

@@ -1,8 +1,12 @@
 const Helper = require("../../helpers/Helper");
 
 const exportReports = async (date, buildings) => {
+  return Promise.resolve();
+};
+
+const exportReports2 = async (date, buildings) => {
   const { exportExcel } = require("./excel/excelSvc");
-  const ChartExporter = require("./chartjs/ChartExporter");
+  const { exportCharts } = require("./chartjs/ChartExporter");
   const fse = require("fs-extra");
   const path = require("path");
 
@@ -36,8 +40,7 @@ const exportReports = async (date, buildings) => {
   const colorSet = themeSettings.colorSet;
 
   const reportsQueue = [];
-
-  const chartExporter = new ChartExporter();
+  const chartsQueue = [];
 
   // user reports folder
   const { reports_folder_path } = userSettings;
@@ -178,14 +181,11 @@ const exportReports = async (date, buildings) => {
     );
 
     if (monthlyStatsData.length > 0) {
-      // export charts for each building
-      const chartData = prepareAndExportChart(monthlyStatsData);
-
-      /* await chartExporter.exportImage({
-        data: chartData,
+      chartsQueue.push({
+        rawChartData: monthlyStatsData,
         filePath: path.join(yearFolder, `הוצאות והכנסות שנה ${year}.png`),
         title: `${buildingName} הוצאות והכנסות שנה ${year}`
-      }); */
+      });
     }
   });
 
@@ -194,37 +194,9 @@ const exportReports = async (date, buildings) => {
   } catch (error) {
     throw new ServiceError(error.message, "reportsSvc.js", error);
   }
+
+  await exportCharts(chartsQueue);
 };
-
-function prepareAndExportChart(stats) {
-  const labels = [];
-  const incomeData = [];
-  const outcomeData = [];
-
-  stats.forEach((element) => {
-    labels.push(element.month);
-    incomeData.push(element.income);
-    outcomeData.push(element.outcome);
-  });
-
-  const chartData = {
-    labels,
-    datasets: [
-      {
-        label: "הוצאות",
-        data: outcomeData,
-        backgroundColor: "#30a3fc"
-      },
-      {
-        label: "הכנסות",
-        data: incomeData,
-        backgroundColor: "#30e8aa"
-      }
-    ]
-  };
-
-  return chartData;
-}
 
 function getMonthExpansesFilename(monthHeb) {
   return `הוצאות חודש ${monthHeb}`;

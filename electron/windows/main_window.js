@@ -1,6 +1,5 @@
 module.exports = (properties) => {
   const { BrowserWindow } = require("electron");
-  const path = require("path");
 
   const mainWindow = new BrowserWindow({
     minWidth: 1280,
@@ -11,7 +10,8 @@ module.exports = (properties) => {
     titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      devTools: true
     },
     frame: false,
     resizeable: false,
