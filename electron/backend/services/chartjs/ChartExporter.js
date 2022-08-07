@@ -5,6 +5,7 @@ async function exportCharts(reportsQueue) {
   const { ipcMain } = require("electron");
 
   try {
+    ipcMain.removeAllListeners("get-charts-data-to-export");
     ipcMain.handleOnce("get-charts-data-to-export", () => {
       return reportsQueue;
     });

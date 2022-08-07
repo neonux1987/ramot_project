@@ -28,7 +28,27 @@ const Chart = ({
   setChartsDataQueue
 }) => {
   const [chartReady, setChartReady] = useState(false);
+  const [dataUrl, setDataUrl] = useState(false);
   const ref = useRef();
+  const addAndRemove = useRef();
+
+  addAndRemove.current = (dataUrl) => {
+    // save data url in the data urls queue
+    /* setChartDataUrls((prevData) => {
+      const dataClone = [...prevData];
+      dataClone.push({
+        dataUrl,
+        filePath
+      });
+      return dataClone;
+    }); */
+    /* // remove the already processed chart data from the queue
+    setChartsDataQueue((prevChartsData) => {
+      const clonedData = [...prevChartsData];
+      clonedData.splice(index, 1);
+      return clonedData;
+    }); */
+  };
 
   const done = () => {
     setChartReady(true);
@@ -103,6 +123,8 @@ const Chart = ({
 
   useEffect(() => {
     if (chartReady) {
+      setChartReady(false);
+
       const chart = ref.current;
 
       // get the data url of the chart
@@ -110,28 +132,18 @@ const Chart = ({
       chart.resize(1280, 780);
       const dataUrl = chart.toBase64Image("image/png", 1);
 
-      // save data url in the data urls queue
-      setChartDataUrls((prevData) => {
-        const dataClone = [...prevData];
-        dataClone.push({
-          dataUrl,
-          filePath
-        });
-        return dataClone;
-      });
-
-      // remove the already processed chart data from the queue
-      setChartsDataQueue((prevChartsData) => {
-        const clonedData = [...prevChartsData];
-        clonedData.splice(index, 1);
-        return clonedData;
-      });
-
-      setChartReady(false);
+      setDataUrl(dataUrl);
     }
-  }, [chartReady, index, setChartDataUrls, setChartsDataQueue, filePath]);
+  }, [chartReady]);
+
+  useEffect(() => {
+    if (dataUrl !== null) {
+      addAndRemove.current(dataUrl);
+      setDataUrl(null);
+    }
+  }, [dataUrl]);
 
   return <Bar ref={ref} options={options} data={data} />;
 };
 
-export default Chart;
+export default React.memo(Chart);

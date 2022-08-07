@@ -51,24 +51,32 @@ const ChartExportView = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (chartsDataQueue.length === 0) console.log(chartDataUrls);
-  }, [chartsDataQueue, chartDataUrls]);
+  }, [chartsDataQueue, chartDataUrls]); */
 
-  return chartsDataQueue.map(({ datasets, labels, filePath, title }, index) => (
-    <Chart
-      data={{
-        datasets,
-        labels
-      }}
-      key={title}
-      title={title}
-      filePath={filePath}
-      setChartDataUrls={setChartDataUrls}
-      setChartsDataQueue={setChartsDataQueue}
-      index={index}
-    />
-  ));
+  if (chartsDataQueue.length > 0)
+    return chartsDataQueue.map(
+      ({ datasets, labels, filePath, title }, index) => {
+        console.log("wtf");
+        return (
+          <Chart
+            data={{
+              datasets,
+              labels
+            }}
+            key={title}
+            title={title}
+            filePath={filePath}
+            setChartDataUrls={setChartDataUrls}
+            setChartsDataQueue={setChartsDataQueue}
+            index={index}
+          />
+        );
+      }
+    );
+
+  return null;
 };
 
-export default ChartExportView;
+export default React.memo(ChartExportView);

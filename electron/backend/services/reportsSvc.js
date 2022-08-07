@@ -1,10 +1,6 @@
 const Helper = require("../../helpers/Helper");
 
 const exportReports = async (date, buildings) => {
-  return Promise.resolve();
-};
-
-const exportReports2 = async (date, buildings) => {
   const { exportExcel } = require("./excel/excelSvc");
   const { exportCharts } = require("./chartjs/ChartExporter");
   const fse = require("fs-extra");
