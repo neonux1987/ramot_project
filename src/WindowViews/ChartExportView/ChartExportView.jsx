@@ -1,10 +1,25 @@
 import { ipcRenderer } from "electron";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chart from "./Chart";
 
 const ChartExportView = () => {
-  const [chartsDataQueue, setChartsDataQueue] = useState([]);
-  const [chartDataUrls, setChartDataUrls] = useState([]);
+  const [chartsDataQueue, setChartsDataQueue] = useState(null);
+  const [chartDataUrls, setChartDataUrls] = useState(new Map());
+
+  const onFinished = useRef();
+
+  onFinished.current = ({ index, dataUrl }) => {
+    const chartData = { ...chartsDataQueue[index] };
+
+    const newMap = Object.assign({}, chartDataUrls);
+    console.log(newMap);
+    newMap.set(index, {
+      dataUrl,
+      filePath: chartData.filePath
+    });
+
+    setChartDataUrls(newMap);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,30 +66,31 @@ const ChartExportView = () => {
     fetchData();
   }, []);
 
-  /* useEffect(() => {
-    if (chartsDataQueue.length === 0) console.log(chartDataUrls);
-  }, [chartsDataQueue, chartDataUrls]); */
+  useEffect(() => {
+    if (
+      chartsDataQueue !== null &&
+      chartsDataQueue.length === chartDataUrls.size()
+    ) {
+      console.log("yes");
+      //ipcRenderer.send("charts-ready", [...chartDataUrls.values()]);
+    }
+  }, [chartsDataQueue, chartDataUrls]);
 
-  if (chartsDataQueue.length > 0)
-    return chartsDataQueue.map(
-      ({ datasets, labels, filePath, title }, index) => {
-        console.log("wtf");
-        return (
-          <Chart
-            data={{
-              datasets,
-              labels
-            }}
-            key={title}
-            title={title}
-            filePath={filePath}
-            setChartDataUrls={setChartDataUrls}
-            setChartsDataQueue={setChartsDataQueue}
-            index={index}
-          />
-        );
-      }
-    );
+  if (chartsDataQueue !== null)
+    return chartsDataQueue.map(({ datasets, labels, title }, index) => {
+      return (
+        <Chart
+          data={{
+            datasets,
+            labels
+          }}
+          key={title}
+          title={title}
+          index={index}
+          onFinished={onFinished.current}
+        />
+      );
+    });
 
   return null;
 };

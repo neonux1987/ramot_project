@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,39 +19,14 @@ ChartJS.register(
   Legend
 );
 
-const Chart = ({
-  index,
-  data,
-  filePath,
-  title,
-  setChartDataUrls,
-  setChartsDataQueue
-}) => {
-  const [chartReady, setChartReady] = useState(false);
-  const [dataUrl, setDataUrl] = useState(false);
-  const ref = useRef();
-  const addAndRemove = useRef();
-
-  addAndRemove.current = (dataUrl) => {
-    // save data url in the data urls queue
-    /* setChartDataUrls((prevData) => {
-      const dataClone = [...prevData];
-      dataClone.push({
-        dataUrl,
-        filePath
-      });
-      return dataClone;
-    }); */
-    /* // remove the already processed chart data from the queue
-    setChartsDataQueue((prevChartsData) => {
-      const clonedData = [...prevChartsData];
-      clonedData.splice(index, 1);
-      return clonedData;
-    }); */
-  };
-
-  const done = () => {
-    setChartReady(true);
+const Chart = ({ index, data, onFinished, title }) => {
+  const [finished, setFinished] = useState(false);
+  const done = ({ chart }) => {
+    if (!finished) {
+      const dataUrl = chart.toBase64Image("image/png", 1);
+      onFinished({ index, dataUrl });
+      setFinished(true);
+    }
   };
 
   const [options] = useState({
@@ -121,29 +96,9 @@ const Chart = ({
     }
   });
 
-  useEffect(() => {
-    if (chartReady) {
-      setChartReady(false);
+  if (!finished) return <Bar options={options} data={data} />;
 
-      const chart = ref.current;
-
-      // get the data url of the chart
-      chart.config._config.options.plugins.title.display = true;
-      chart.resize(1280, 780);
-      const dataUrl = chart.toBase64Image("image/png", 1);
-
-      setDataUrl(dataUrl);
-    }
-  }, [chartReady]);
-
-  useEffect(() => {
-    if (dataUrl !== null) {
-      addAndRemove.current(dataUrl);
-      setDataUrl(null);
-    }
-  }, [dataUrl]);
-
-  return <Bar ref={ref} options={options} data={data} />;
+  return null;
 };
 
 export default React.memo(Chart);
