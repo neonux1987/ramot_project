@@ -9,6 +9,7 @@ import {
   Legend
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { drawBackground } from "./plugins";
 
 ChartJS.register(
   CategoryScale,
@@ -31,10 +32,18 @@ const Chart = ({ index, data, onFinished, title }) => {
 
   const [options] = useState({
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     elements: {
       bar: {
         borderWidth: 2
+      }
+    },
+    layout: {
+      padding: {
+        left: 30,
+        right: 30,
+        top: 40,
+        bottom: 80
       }
     },
     scales: {
@@ -98,7 +107,8 @@ const Chart = ({ index, data, onFinished, title }) => {
 
   useEffect(() => {}, [finished]);
 
-  if (!finished) return <Bar options={options} data={data} />;
+  if (!finished)
+    return <Bar options={options} data={data} plugins={[drawBackground]} />;
 
   return null;
 };

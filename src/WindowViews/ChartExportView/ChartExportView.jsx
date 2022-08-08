@@ -72,20 +72,24 @@ const ChartExportView = () => {
   });
 
   if (chartsDataQueue !== null)
-    return chartsDataQueue.map(({ datasets, labels, title }, index) => {
-      return (
-        <Chart
-          data={{
-            datasets,
-            labels
-          }}
-          key={title}
-          title={title}
-          index={index}
-          onFinished={onFinished.current}
-        />
-      );
-    });
+    return (
+      <div style={{ width: "1920px", height: "1080px" }}>
+        {chartsDataQueue.map(({ datasets, labels, title }, index) => {
+          return (
+            <Chart
+              data={{
+                datasets,
+                labels
+              }}
+              key={title}
+              title={title}
+              index={index}
+              onFinished={onFinished.current}
+            />
+          );
+        })}
+      </div>
+    );
 
   return null;
 };

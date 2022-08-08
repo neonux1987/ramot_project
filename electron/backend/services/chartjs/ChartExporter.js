@@ -21,13 +21,16 @@ async function exportCharts(reportsQueue) {
 
     if (resultData !== undefined) {
       for (let i = 0; i < resultData.length; i++) {
-        let base64data = new Buffer.from(resultData[i].dataUrl);
-        console.log(base64data);
-        await fse.writeFile(resultData[i].filePath, base64data);
+        const base64Data = resultData[i].dataUrl.replace(
+          "data:image/png;base64,",
+          ""
+        );
+
+        await fse.writeFile(resultData[i].filePath, base64Data, "base64");
       }
     }
 
-    //chartExportWindow.destroy();
+    chartExportWindow.destroy();
   } catch (error) {
     console.log(error);
     throw new ServiceError(
@@ -36,15 +39,6 @@ async function exportCharts(reportsQueue) {
       error
     );
   }
-}
-
-async function onChartsDataReady(ipcMain) {
-  new Promise((resolve) => {
-    ipcMain.handleOnce("charts-ready", (_, chartsData) => {
-      console.log(chartData);
-      resolve(chartsData);
-    });
-  });
 }
 
 module.exports = { exportCharts };

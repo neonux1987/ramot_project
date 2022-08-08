@@ -4,21 +4,17 @@ module.exports = async (properties) => {
   const isDev = process.env.NODE_ENV === "development";
 
   const chartExportWindow = new BrowserWindow({
-    minWidth: 1280,
-    minHeight: 720,
-    width: 1280,
-    height: 720,
     title: "מערכת ניהול דוחות" + " - " + "NDT Solutions",
     titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true,
+      devTools: false,
       webSecurity: false
     },
     frame: false,
     resizeable: false,
-    show: true,
+    show: false,
     ...properties
   });
 
