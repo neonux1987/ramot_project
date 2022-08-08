@@ -5,22 +5,29 @@ async function exportCharts(reportsQueue) {
   const { ipcMain } = require("electron");
 
   try {
-    ipcMain.handleOnce("get-charts-data-to-export", () => {
+    ipcMain.handleOnce("get-charts-data-for-export", () => {
       return reportsQueue;
     });
 
-    ipcMain.removeAllListeners("charts-ready");
-    ipcMain.once("charts-ready", (_, chartsData) => {
-      console.log(chartsData);
+    const promise = new Promise((resolve) => {
+      ipcMain.once("charts-ready", (_, chartsData) => {
+        resolve(chartsData);
+      });
     });
 
-    const chartExportWindow = createChartExportWindow();
+    const chartExportWindow = await createChartExportWindow();
 
-    /* if (chartData !== undefined) {
-      for (let i = 0; i < chartData.length; i++) {
-        await fse.writeFile(chartData[i].filePath, chartData[i].dataUrl);
+    const resultData = await promise;
+
+    if (resultData !== undefined) {
+      for (let i = 0; i < resultData.length; i++) {
+        let base64data = new Buffer.from(resultData[i].dataUrl);
+        console.log(base64data);
+        await fse.writeFile(resultData[i].filePath, base64data);
       }
-    } */
+    }
+
+    //chartExportWindow.destroy();
   } catch (error) {
     console.log(error);
     throw new ServiceError(

@@ -1,4 +1,4 @@
-module.exports = (properties) => {
+module.exports = async (properties) => {
   const { BrowserWindow } = require("electron");
   const path = require("path");
   const isDev = process.env.NODE_ENV === "development";

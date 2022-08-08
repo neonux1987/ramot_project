@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -95,6 +95,8 @@ const Chart = ({ index, data, onFinished, title }) => {
       }
     }
   });
+
+  useEffect(() => {}, [finished]);
 
   if (!finished) return <Bar options={options} data={data} />;
 

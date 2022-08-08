@@ -2,28 +2,24 @@ import { ipcRenderer } from "electron";
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "./Chart";
 
+const chartDataUrls = new Map();
+
 const ChartExportView = () => {
   const [chartsDataQueue, setChartsDataQueue] = useState(null);
-  const [chartDataUrls, setChartDataUrls] = useState(new Map());
-
   const onFinished = useRef();
 
-  onFinished.current = ({ index, dataUrl }) => {
+  onFinished.current = async ({ index, dataUrl }) => {
     const chartData = { ...chartsDataQueue[index] };
 
-    const newMap = Object.assign({}, chartDataUrls);
-    console.log(newMap);
-    newMap.set(index, {
+    chartDataUrls.set(index, {
       dataUrl,
       filePath: chartData.filePath
     });
-
-    setChartDataUrls(newMap);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const buildings = await ipcRenderer.invoke("get-charts-data-to-export");
+      const buildings = await ipcRenderer.invoke("get-charts-data-for-export");
 
       const processedChartData = [];
 
@@ -69,12 +65,11 @@ const ChartExportView = () => {
   useEffect(() => {
     if (
       chartsDataQueue !== null &&
-      chartsDataQueue.length === chartDataUrls.size()
+      chartsDataQueue.length === chartDataUrls.size
     ) {
-      console.log("yes");
-      //ipcRenderer.send("charts-ready", [...chartDataUrls.values()]);
+      ipcRenderer.send("charts-ready", [...chartDataUrls.values()]);
     }
-  }, [chartsDataQueue, chartDataUrls]);
+  });
 
   if (chartsDataQueue !== null)
     return chartsDataQueue.map(({ datasets, labels, title }, index) => {
