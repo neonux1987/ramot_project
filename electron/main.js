@@ -1,7 +1,7 @@
 //========================= Libraries =========================//
 require("v8-compile-cache");
 require("dotenv").config();
-const { app, powerMonitor, protocol } = require("electron");
+const { app, powerMonitor } = require("electron");
 const path = require("path");
 const contextMenu = require("electron-context-menu");
 
