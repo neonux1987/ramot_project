@@ -2,18 +2,16 @@ import React from "react";
 import BuildingsStatsContainer from "./BuildingsStatsContainer";
 import Page from "../../components/Page/Page";
 import TitledSection from "../../components/Section/TitledSection";
-import useIcons from "../../customHooks/useIcons";
+import DonutIcon from "../../components/Icons/DonutIcon";
 
 const Home = () => {
-  const [generateIcon] = useIcons();
-  const StatIcon = generateIcon("stats");
   const currentDate = new Date();
 
   return (
     <Page>
       <TitledSection
         title={`תמונת מצב לשנת ${currentDate.getFullYear()}`}
-        TitleIcon={StatIcon}
+        TitleIcon={DonutIcon}
       >
         <BuildingsStatsContainer />
       </TitledSection>

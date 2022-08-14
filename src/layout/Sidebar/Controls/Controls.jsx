@@ -2,8 +2,8 @@ import React from "react";
 import { css } from "emotion";
 import SpinningButton from "../../../components/buttons/SpinningButton/SpinningButton";
 import VolumeButton from "../Controls/VolumeButton/VolumeButton";
-import useIcons from "../../../customHooks/useIcons";
 import MoreMenu from "./MoreMenu/MoreMenu";
+import SettingsIcon from "../../../components/Icons/SettingsIcon";
 
 const container = css`
   display: flex;
@@ -75,8 +75,6 @@ const settingsBtn = css`
 `;
 
 const Controls = ({ routes }) => {
-  const [generateIcon] = useIcons();
-  const SettingsIcon = generateIcon("settings");
   return (
     <div className={container}>
       <MoreMenu active={routes.active.state.buildingName === "ניהול"} />

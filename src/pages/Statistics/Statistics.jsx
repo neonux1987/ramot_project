@@ -9,9 +9,9 @@ import ChartSelectorNav from "../../components/charts/ChartSelectorNav";
 import { Box } from "@material-ui/core";
 import useBuildingColor from "../../customHooks/useBuildingColor";
 import TitledSection from "../../components/Section/TitledSection";
-import useIcons from "../../customHooks/useIcons";
 import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
 import MonthsChartContainer from "./charts/MonthsChartContainer";
+import StatsIcon from "../../components/Icons/StatsIcon";
 
 const PAGE_NAME = "statistics";
 
@@ -22,8 +22,6 @@ const TOP_EXPANSES_TITLE = "טופ הוצאות";
 
 const Statistics = (props) => {
   const { buildingId, buildingName } = props.location.state;
-
-  const [generateIcon] = useIcons();
 
   const { selectedChart } = useSelector(
     (store) => store.statistics[buildingId]
@@ -49,14 +47,12 @@ const Statistics = (props) => {
     );
   }, [onClick, selectedChart]);
 
-  const SectionIcon = generateIcon("סטטיסטיקה");
-
   return (
     <Page>
       <TitledSection
         bgColor={buildingColor}
         title={selectedChart}
-        TitleIcon={SectionIcon}
+        TitleIcon={StatsIcon}
         extraDetails={<ExtraDetails />}
         collapsable={false}
       >

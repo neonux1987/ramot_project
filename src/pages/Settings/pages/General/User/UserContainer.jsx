@@ -10,13 +10,12 @@ import {
 import { selectFolderDialog } from "../../../../../services/electronDialogs.svc";
 import { openItem } from "../../../../../services/mainProcess.svc";
 import { setDirty } from "../../../../../redux/actions/routerPromptActions";
-import useIcons from "../../../../../customHooks/useIcons";
+import UserIcon from "../../../../../components/Icons/UserIcon";
 
 const SETTINGS_NAME = "user";
 
 const UserContainer = () => {
   const dispatch = useDispatch();
-  const [generateIcon] = useIcons();
   const settings = useSelector((store) => store.settings.data[SETTINGS_NAME]);
 
   const [data, setData] = useState(settings);
@@ -60,10 +59,12 @@ const UserContainer = () => {
   // open folder and ensure the dir exist
   const openFolder = () => openItem(reports_folder_path, true);
 
-  const Icon = generateIcon("user");
-
   return (
-    <SettingsExpandableSection title={"משתמש"} Icon={Icon} onSaveClick={save}>
+    <SettingsExpandableSection
+      title={"משתמש"}
+      Icon={UserIcon}
+      onSaveClick={save}
+    >
       <TitleTypography underline={false} gutterBottom="10px">
         מיקום תיקיית דוחות אקסל:
       </TitleTypography>

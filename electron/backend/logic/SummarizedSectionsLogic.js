@@ -1,17 +1,17 @@
-
-const SummarizedSectionsDao = require('../dao/SummarizedSectionsDao');
+const SummarizedSectionsDao = require("../dao/SummarizedSectionsDao");
 
 class SummarizedSectionsLogic {
-
   constructor(connection) {
     this.summarizedSectionsDao = new SummarizedSectionsDao(connection);
   }
 
-  getAllSummarizedSectionsOrderedTrx(status) {
-    if (status === "all")
-      return this.getAllSummarizedSectionsTrx();
+  getAllSummarizedSectionsOrderedTrx(status, trx) {
+    if (status === "all") return this.getAllSummarizedSectionsTrx(trx);
     else
-      return this.summarizedSectionsDao.getAllSummarizedSectionsOrderedTrx(status);
+      return this.summarizedSectionsDao.getAllSummarizedSectionsOrderedTrx(
+        status,
+        trx
+      );
   }
 
   getAllSummarizedSectionsTrx(trx) {
@@ -19,39 +19,50 @@ class SummarizedSectionsLogic {
   }
 
   async addSummarizedSection({ summarizedSection }) {
-    const result = await this.summarizedSectionsDao.getSummarizedSectionBySection(summarizedSection.section);
+    const result =
+      await this.summarizedSectionsDao.getSummarizedSectionBySection(
+        summarizedSection.section
+      );
     const returnedSummarizedSection = result[0];
 
     if (returnedSummarizedSection) {
       returnedSummarizedSection.section = summarizedSection.section;
       returnedSummarizedSection.status = "active";
 
-      await this.summarizedSectionsDao.updateSummarizedSection(returnedSummarizedSection.id, returnedSummarizedSection);
+      await this.summarizedSectionsDao.updateSummarizedSection(
+        returnedSummarizedSection.id,
+        returnedSummarizedSection
+      );
 
       return returnedSummarizedSection.id;
     } else {
       summarizedSection.status = "active";
-      return this.summarizedSectionsDao.addSummarizedSection(summarizedSection)
+      return this.summarizedSectionsDao
+        .addSummarizedSection(summarizedSection)
         .then((result) => {
           // extract the id of the added summarized
           // section from the array to retrn only the id.
           return result[0];
         });
     }
-
   }
 
   updateSummarizedSection({ id, summarizedSection }) {
-    return this.summarizedSectionsDao.updateSummarizedSection(id, summarizedSection);
+    return this.summarizedSectionsDao.updateSummarizedSection(
+      id,
+      summarizedSection
+    );
   }
 
   deleteSummarizedSection({ id }) {
     const summarizedSection = {
       status: "deleted"
-    }
-    return this.summarizedSectionsDao.updateSummarizedSection(id, summarizedSection);
+    };
+    return this.summarizedSectionsDao.updateSummarizedSection(
+      id,
+      summarizedSection
+    );
   }
-
 }
 
 module.exports = SummarizedSectionsLogic;

@@ -1,16 +1,9 @@
 import React from "react";
 import SlashModeButton from "./SlashModeButton";
-import useIcons from "../../customHooks/useIcons";
+import AddIcon from "../Icons/AddIcon";
 
-const AddNewButton = (props) => {
-  const [generateIcon] = useIcons();
-  return (
-    <SlashModeButton
-      {...props}
-      Icon={generateIcon("add")}
-      iconColor="#ffffff"
-    />
-  );
-};
+const AddNewButton = (props) => (
+  <SlashModeButton {...props} Icon={AddIcon} iconColor="#ffffff" />
+);
 
 export default AddNewButton;

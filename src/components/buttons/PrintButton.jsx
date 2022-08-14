@@ -1,16 +1,9 @@
 import React from "react";
 import SquareButton from "./SquareButton";
-import useIcons from "../../customHooks/useIcons";
+import PrintIcon from "../Icons/PrintIcon";
 
-const PrintButton = ({ onClick }) => {
-  const [generateIcon] = useIcons();
-  return (
-    <SquareButton
-      Icon={generateIcon("print")}
-      onClick={onClick}
-      iconColor="#ffffff"
-    />
-  );
-};
+const PrintButton = ({ onClick }) => (
+  <SquareButton Icon={PrintIcon} onClick={onClick} iconColor="#ffffff" />
+);
 
 export default PrintButton;

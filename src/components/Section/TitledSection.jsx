@@ -52,13 +52,15 @@ const TitledSection = ({
           borderRadius="4px"
           width="52px"
           height="52px"
-          padding="6px"
+          justifyContent="center"
+          alignItems="center"
+          display="flex"
           style={{
             background:
               "linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.25) 100%) rgb(81, 89, 103)"
           }}
         >
-          {TitleIcon}
+          <TitleIcon width="40px" height="40px" />
         </Box>
         <Box flexGrow="1">
           <Typography

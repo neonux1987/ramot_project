@@ -12,13 +12,12 @@ import { soundManager } from "../../../../../soundManager/SoundManager";
 import Divider from "../../../../../components/Divider/Divider";
 import { setDirty } from "../../../../../redux/actions/routerPromptActions";
 import { openItem } from "../../../../../services/mainProcess.svc";
-import useIcons from "../../../../../customHooks/useIcons";
+import AndroidIcon from "../../../../../components/Icons/AndroidIcon";
 
 const SETTINGS_NAME = "system";
 
 const SystemContainer = () => {
   const dispatch = useDispatch();
-  const [generateIcon] = useIcons();
   const settings = useSelector((store) => store.settings.data[SETTINGS_NAME]);
   const [data, setData] = useState(settings);
 
@@ -57,10 +56,12 @@ const SystemContainer = () => {
     });
   };
 
-  const Icon = generateIcon("android");
-
   return (
-    <SettingsExpandableSection title={"מערכת"} Icon={Icon} onSaveClick={save}>
+    <SettingsExpandableSection
+      title={"מערכת"}
+      Icon={AndroidIcon}
+      onSaveClick={save}
+    >
       <TitleTypography gutterBottom>הגדרות צלילי מערכת:</TitleTypography>
 
       <Sound

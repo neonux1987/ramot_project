@@ -22,13 +22,12 @@ import { setDirty } from "../../../../../redux/actions/routerPromptActions";
 import { toastManager } from "../../../../../toasts/toastManager";
 import useModalLogic from "../../../../../customHooks/useModalLogic";
 import Note from "../../../../../components/Note/Note";
-import useIcons from "../../../../../customHooks/useIcons";
+import BackupIcon from "../../../../../components/Icons/BackupIcon";
 
 const SETTINGS_NAME = "db_backup";
 
 const BackupContainer = () => {
   const dispatch = useDispatch();
-  const [generateIcon] = useIcons();
   const { showModal } = useModalLogic();
   const settings = useSelector((store) => store.settings.data[SETTINGS_NAME]);
   const [data, setData] = useState(settings);
@@ -60,27 +59,27 @@ const BackupContainer = () => {
       defaultPath: data.path
     };
     selectFolderDialog(options).then(({ canceled, filePaths }) => {
-      if (!canceled) {
-        if (data.path !== filePaths[0]) {
-          dispatch(
-            showModal(ConfirmDbPathChangeModel, {
-              onAgreeHandler: () => {
-                const newPath = filePaths[0];
-                setData({
-                  ...data,
-                  path: newPath
-                });
+      if (canceled) return;
 
-                dispatch(setDirty());
-                dispatch(initializeRegisteredBackups()).catch((result) => {
-                  toastManager.error(result.error);
-                });
-              }
-            }) // end show modal
-          ); // end dispatch
-        } // end if
-      } // end if
-    }); //end selectFolderDialog
+      if (data.path !== filePaths[0]) {
+        const modalProps = {
+          onAgreeHandler: () => {
+            const newPath = filePaths[0];
+            setData({
+              ...data,
+              path: newPath
+            });
+
+            dispatch(setDirty());
+            dispatch(initializeRegisteredBackups()).catch((result) => {
+              toastManager.error(result.error);
+            });
+          }
+        };
+
+        dispatch(showModal(ConfirmDbPathChangeModel, modalProps));
+      }
+    });
   };
 
   const dbIndependentBackupHandler = () => {
@@ -111,12 +110,10 @@ const BackupContainer = () => {
     );
   }
 
-  const Icon = generateIcon("backup");
-
   return (
     <SettingsExpandableSection
       title={"גיבוי בסיס נתונים"}
-      Icon={Icon}
+      Icon={BackupIcon}
       onSaveClick={save}
     >
       <Note

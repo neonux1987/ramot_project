@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import useIcons from "../../../customHooks/useIcons";
 import Menu from "./Menu";
 import pages from "../../../helpers/pages";
 import ExpandableMenuItem from "./ExpandableMenuItem/ExpandableMenuItem";
 import Menuitem from "./MenuItem/Menuitem";
 import { updateRoute } from "../../../redux/actions/routesActions";
 import HomeButton from "../HomeButton/HomeButton";
+import HomeIcon from "../../../components/Icons/HomeIcon";
+import { generateIcon } from "./util";
 
 const DEFAULT_PAGE = "הוצאות חודשיות";
 
@@ -16,8 +17,6 @@ const MenuContainer = ({ routes, data }) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const [generateIcon] = useIcons();
 
   const [state, setState] = React.useState(() => {
     let newState = {};
@@ -114,7 +113,7 @@ const MenuContainer = ({ routes, data }) => {
     return (
       <ExpandableMenuItem
         label={buildingName}
-        Icon={generateIcon("home")}
+        Icon={HomeIcon}
         onClick={() => expandHandleClick(item)}
         open={state[buildingId].open}
         key={buildingId}

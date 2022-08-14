@@ -1,6 +1,8 @@
 import React from "react";
 import { css } from "emotion";
-import useIcons from "../../../customHooks/useIcons";
+import MinimizeIcon from "../../../components/Icons/MinimizeIcon";
+import MaximizeIcon from "../../../components/Icons/MaximizeIcon";
+import CloseIcon from "../../../components/Icons/CloseIcon";
 
 const style = css`
   display: flex;
@@ -46,24 +48,18 @@ const maximizeIcon = css`
   margin-top: 0px;
 `;
 
-const FrameControls = ({ onMinimize, onMaximize, onClose }) => {
-  const [generateIcon] = useIcons();
-  const CloseIcon = generateIcon("close");
-  const MaximizeIcon = generateIcon("maximize");
-  const MinimizeIcon = generateIcon("minimize");
-  return (
-    <div className={style}>
-      <button className={button} onClick={onMinimize}>
-        <MinimizeIcon className={icon} />
-      </button>
-      <button className={button} onClick={onMaximize}>
-        <MaximizeIcon className={maximizeIcon} />
-      </button>
-      <button className={`${button} ${close}`} onClick={onClose}>
-        <CloseIcon className={icon} />
-      </button>
-    </div>
-  );
-};
+const FrameControls = ({ onMinimize, onMaximize, onClose }) => (
+  <div className={style}>
+    <button className={button} onClick={onMinimize}>
+      <MinimizeIcon className={icon} />
+    </button>
+    <button className={button} onClick={onMaximize}>
+      <MaximizeIcon className={maximizeIcon} />
+    </button>
+    <button className={`${button} ${close}`} onClick={onClose}>
+      <CloseIcon className={icon} />
+    </button>
+  </div>
+);
 
 export default FrameControls;

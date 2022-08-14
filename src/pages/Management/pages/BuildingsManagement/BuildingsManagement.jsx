@@ -3,13 +3,11 @@ import BuildingsManagementTableContainer from "./BuildingsManagementTableContain
 import Page from "../../../../components/Page/Page";
 import Note from "../../../../components/Note/Note";
 import TitledSection from "../../../../components/Section/TitledSection";
-import useIcons from "../../../../customHooks/useIcons";
+import TableIcon from "../../../../components/Icons/TableIcon";
 
 const TABLE_TITLE = "ניהול בניינים";
 
 const BuildingsManagement = () => {
-  const [generateIcon] = useIcons();
-  const TableIcon = generateIcon("table");
   return (
     <Page>
       <TitledSection title={TABLE_TITLE} TitleIcon={TableIcon} margin="0">

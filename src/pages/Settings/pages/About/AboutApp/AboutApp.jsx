@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ExpandableSection from "../../../../../components/Section/ExpandableSection";
 import BoldUnderlineLabel from "../../../../../components/BoldUnderlineLabel/BoldUnderlineLabel";
-import useIcons from "../../../../../customHooks/useIcons";
 import { getAppInfo } from "../../../../../services/mainProcess.svc";
+import AboutIcon from "../../../../../components/Icons/AboutIcon";
 
 const AboutApp = () => {
-  const [generateIcon] = useIcons();
-  const AboutIcon = generateIcon("about");
   const [appInfo, setAppInfo] = useState(null);
 
   useEffect(() => {

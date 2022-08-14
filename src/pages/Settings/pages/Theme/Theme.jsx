@@ -10,13 +10,12 @@ import {
   saveSettings
 } from "../../../../redux/actions/settingsActions";
 import { setDirty } from "../../../../redux/actions/routerPromptActions";
-import useIcons from "../../../../customHooks/useIcons";
+import StyleIcon from "../../../../components/Icons/StyleIcon";
 
 const SETTINGS_NAME = "theme";
 
 export const Theme = () => {
   const dispatch = useDispatch();
-  const [generateIcon] = useIcons();
   const settings = useSelector((store) => store.settings.data.theme);
   const [data, setData] = useState(settings);
 
@@ -39,11 +38,13 @@ export const Theme = () => {
     dispatch(setDirty(true));
   };
 
-  const Icon = generateIcon("style");
-
   return (
     <Page>
-      <SettingsExpandableSection title={"עיצוב"} Icon={Icon} onSaveClick={save}>
+      <SettingsExpandableSection
+        title={"עיצוב"}
+        Icon={StyleIcon}
+        onSaveClick={save}
+      >
         <TitleTypography>סדרת צבעים:</TitleTypography>
 
         <Note

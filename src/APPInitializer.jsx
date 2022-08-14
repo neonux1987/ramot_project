@@ -9,7 +9,7 @@ import AppLoader from "./components/AnimatedLoaders/AppLoader";
 import AppLoadingView from "./WindowViews/AppLoadingView/AppLoadingView";
 import ChartExportView from "./WindowViews/ChartExportView/ChartExportView";
 
-// get url query param for the view manager
+// get url query param for the views
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const viewName = urlParams.get("view");

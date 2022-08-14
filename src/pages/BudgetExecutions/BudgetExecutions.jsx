@@ -5,8 +5,9 @@ import QuarterStatsContainer from "./QuarterStatsContainer";
 import BudgetExecutionsTableContainer from "./BudgetExecutionsTableContainer";
 import Page from "../../components/Page/Page";
 import { fetchBudgetExecutions } from "../../redux/actions/budgetExecutionsActions";
-import useIcons from "../../customHooks/useIcons";
 import TitledSection from "../../components/Section/TitledSection";
+import DonutIcon from "../../components/Icons/DonutIcon";
+import TableIcon from "../../components/Icons/TableIcon";
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";
@@ -14,7 +15,6 @@ const STATS_TITLE = "סטטיסטיקה";
 
 const BudgetExecutions = () => {
   const dispatch = useDispatch();
-  const [generateIcon] = useIcons();
   const { buildingName, buildingId } = useLocation().state;
   const { date, data, isFetching } = useSelector(
     (store) => store.budgetExecutions[buildingId]
@@ -33,11 +33,9 @@ const BudgetExecutions = () => {
     }
   }, [dispatch, buildingId, buildingName, date]);
 
-  const TableIcon = generateIcon("table");
-  const StatIcon = generateIcon("stats");
   return (
     <Page>
-      <TitledSection title={STATS_TITLE} TitleIcon={StatIcon} id="be-stats">
+      <TitledSection title={STATS_TITLE} TitleIcon={DonutIcon} id="be-stats">
         <QuarterStatsContainer
           buildingId={buildingId}
           date={date}

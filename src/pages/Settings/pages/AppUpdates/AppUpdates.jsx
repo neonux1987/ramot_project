@@ -20,17 +20,20 @@ import {
 } from "../../../../redux/actions/settingsActions";
 import { toastManager } from "../../../../toasts/toastManager";
 import WhiteButton from "../../../../components/buttons/WhiteButton";
-import useIcons from "../../../../customHooks/useIcons";
 
 // ELECTRON
 import { ipcRenderer } from "electron";
+import UpdateIco from "../../../../components/Icons/UpdateIcon";
+
+const UpdateIcon = (props) => (
+  <UpdateIco width="30px" height="30px" {...props} />
+);
 
 const SETTINGS_NAME = "appUpdates";
 
 const AppUpdates = () => {
   const isCancelled = useRef(false);
   const dispatch = useDispatch();
-  const [generateIcon] = useIcons();
   const [isChecking, setIsChecking] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
   const [progress, setProgress] = useState(progressState());
@@ -257,13 +260,11 @@ const AppUpdates = () => {
 
   const content = isChecking ? <CheckingUpdates /> : renderNewUpdate();
 
-  const Icon = generateIcon("update");
-
   return (
     <Page>
       <ExpandableSection
         title={"עדכוני תוכנה"}
-        Icon={Icon}
+        Icon={UpdateIcon}
         extraDetails={<WhiteButton onClick={refreshHandler}>רענן</WhiteButton>}
       >
         {content}

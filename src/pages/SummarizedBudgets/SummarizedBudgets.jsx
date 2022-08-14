@@ -5,8 +5,9 @@ import YearStatsContainer from "./YearStatsContainer";
 import SummarizedBudgetsTableContainer from "./SummarizedBudgetsTableContainer";
 import { fetchSummarizedBudgets } from "../../redux/actions/summarizedBudgetActions";
 import { useDispatch, useSelector } from "react-redux";
-import useIcons from "../../customHooks/useIcons";
 import TitledSection from "../../components/Section/TitledSection";
+import DonutIcon from "../../components/Icons/DonutIcon";
+import TableIcon from "../../components/Icons/TableIcon";
 
 const PAGE_NAME = "summarizedBudgets";
 const PAGE_TITLE = "סיכום תקציבי";
@@ -15,7 +16,6 @@ const STATS_TITLE = "סטטיסטיקה";
 
 const SummarizedBudgets = () => {
   const dispatch = useDispatch();
-  const [generateIcon] = useIcons();
   const { buildingName, buildingId } = useLocation().state;
   const { date, data, isFetching } = useSelector(
     (store) => store.summarizedBudgets[buildingId]
@@ -29,11 +29,9 @@ const SummarizedBudgets = () => {
     }
   }, [buildingId, dispatch, date]);
 
-  const TableIcon = generateIcon("table");
-  const StatsIcon = generateIcon("stats");
   return (
     <Page>
-      <TitledSection title={STATS_TITLE} TitleIcon={StatsIcon}>
+      <TitledSection title={STATS_TITLE} TitleIcon={DonutIcon}>
         <YearStatsContainer
           buildingId={buildingId}
           date={date}

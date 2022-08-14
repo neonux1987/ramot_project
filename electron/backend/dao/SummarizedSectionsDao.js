@@ -8,8 +8,8 @@ class SummarizedSectionsDao {
     this.connection = connectionPool.getConnection();
   }
 
-  getAllSummarizedSectionsOrderedTrx(status) {
-    return this.connection
+  getAllSummarizedSectionsOrderedTrx(status, trx = this.connection) {
+    return trx
       .select()
       .from("summarized_sections")
       .where({ status })

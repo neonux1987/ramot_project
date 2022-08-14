@@ -22,11 +22,6 @@ const _container = css`
   }
 `;
 
-const _icon = css`
-  color: #ffffff;
-  font-size: 24px;
-`;
-
 const SquareButton = ({
   className = "",
   margin = "0 5px",
@@ -40,16 +35,14 @@ const SquareButton = ({
     background: ${bgColor};
     margin: ${margin};
   `;
-  const iconStyle = css`
-    color: ${iconColor};
-  `;
+
   return (
     <ButtonWithSound
       disabled={disabled}
       className={`${_container} ${buttonStyle} ${className}`}
       onClick={onClick}
     >
-      <Icon className={`${_icon} ${iconStyle}`} />
+      <Icon color={iconColor} />
     </ButtonWithSound>
   );
 };

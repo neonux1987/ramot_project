@@ -484,7 +484,10 @@ class BudgetExecutionLogic {
       // populate the budget execution table with sections data
       // and inserts it to the database
       const defaultSections =
-        await this.summarizedSectionsLogic.getAllSummarizedSectionsTrx(trx);
+        await this.summarizedSectionsLogic.getAllSummarizedSectionsOrderedTrx(
+          "active",
+          trx
+        );
       const preparedDefaultSections = this.prepareBatchInsertion(
         defaultSections,
         date,
