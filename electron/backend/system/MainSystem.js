@@ -77,10 +77,23 @@ class MainSystem {
 
   async startSystem() {
     try {
+      // before the system starts, ensure
+      // all the configuration files exist
+      // if not create them
+      const SettingsLogic = require("../logic/SettingsLogic");
+      const RegisteredBackupsLogic = require("../logic/RegisteredBackupsLogic");
+      const settingsLogic = new SettingsLogic();
+      const registeredBackupsLogic = new RegisteredBackupsLogic();
+      await settingsLogic.ensureConfigFileExistAndCreate();
+      await registeredBackupsLogic.ensureConfigFileExistAndCreate();
+
       const SetupLogic = require("../logic/SetupLogic");
       const UpdatesLogic = require("../logic/UpdatesLogic");
+
       const connectionPool = require("../connection/ConnectionPool");
+
       const setupLogic = new SetupLogic();
+      const updatesLogic = new UpdatesLogic();
 
       // must run first
       await connectionPool.init();
@@ -91,8 +104,6 @@ class MainSystem {
 
       // set up the db connection
       await connectionPool.createConnection();
-
-      const updatesLogic = new UpdatesLogic();
 
       await updatesLogic.runUpdateLogic();
 

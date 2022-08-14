@@ -70,8 +70,6 @@ async function createWindow() {
           // Open the DevTools.
           mainWindow.webContents.openDevTools();
           process.traceProcessWarnings = true;
-        } else {
-          process.env.NODE_ENV = "production";
         }
 
         mainWindow.on("closed", () => (mainWindow = null));

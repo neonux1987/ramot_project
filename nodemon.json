@@ -4,7 +4,7 @@
     "**/src/**",
     ".git",
     "**/node_modules/**/node_modules",
-    "**/database/**",
+    "**/dev/**",
     "**/extraResources/**"
   ]
 }
