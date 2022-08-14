@@ -17,10 +17,10 @@ import { purgeCache } from "../../../../redux/actions/persistorActions";
 import { refreshView, restartApp } from "../../../../services/mainProcess.svc";
 import MoreMenuNavLinkItem from "../../../../components/moreMenu/MoreMenuNavLinkItem";
 import MoreMenuItem from "../../../../components/moreMenu/MoreMenuItem";
-import { CgMathPercent } from "react-icons/cg";
 import MoreButton from "../MoreButton/MoreButton";
 import useModalLogic from "../../../../customHooks/useModalLogic";
 import EditVatModal from "../../../../components/modals/EditVatModal/EditVatModal";
+import PercentIcon from "../../../../components/Icons/PercentIcon";
 
 const MoreMenu = ({ active }) => {
   const [open, setOpen] = React.useState(false);
@@ -171,7 +171,7 @@ const MoreMenu = ({ active }) => {
         />
 
         <MoreMenuItem
-          icon={<SvgIcon component={CgMathPercent} />}
+          icon={<PercentIcon width="18px" height="18px" />}
           label={`שינוי מע"מ`}
           onClick={taxClickHandler}
         />

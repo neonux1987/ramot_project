@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RiFileExcel2Line } from "react-icons/ri";
 import Helper from "../../../../../helpers/Helper";
 import { exportReports } from "../../../../../services/reports.svc";
 import {
@@ -15,6 +14,7 @@ import StyledSection from "../../../../../components/Section/StyledSection";
 import ExcelReportsGenerator from "./ExcelReportsGenerator";
 import BuildingPicker from "./BuildingPicker/BuildingPicker";
 import Box from "@material-ui/core/Box";
+import ExcelIcon from "../../../../../components/Icons/ExcelIcon";
 
 const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   const date = new Date(); //current date
@@ -109,7 +109,7 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   return (
     <StyledSection
       title={"הפקת דוחות אקסל"}
-      Icon={RiFileExcel2Line}
+      Icon={ExcelIcon}
       bgColor="#1ead82"
       padding={"30px 20px 50px"}
       loading={

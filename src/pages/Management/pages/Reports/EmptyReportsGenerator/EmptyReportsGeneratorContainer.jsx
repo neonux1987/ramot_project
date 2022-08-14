@@ -1,6 +1,5 @@
 // LIBRARIES
 import React, { useCallback, useState } from "react";
-import { Description } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import EmptyReportsGenerator from "./EmptyReportsGenerator";
 import StyledSection from "../../../../../components/Section/StyledSection";
@@ -13,6 +12,7 @@ import {
 } from "../../../../../redux/actions/reportsActions";
 import CheckboxWithLabel from "../../../../../components/Checkboxes/CheckboxWithLabel";
 import Box from "@material-ui/core/Box";
+import DescriptionIcon from "../../../../../components/Icons/DescriptionIcon";
 
 const years = generateYears(new Date().getFullYear());
 const quarters = Helper.getYearQuarters();
@@ -84,7 +84,7 @@ const EmptyReportsGeneratorContainer = ({ emptyReports, isFetching }) => {
   return (
     <StyledSection
       title={"הפקת דוחות ריקים - רבעוניים"}
-      Icon={Description}
+      Icon={DescriptionIcon}
       loading={isFetching}
       noData={!isFetching & (checkedBuildings.length === 0)}
       noDataText="לא קיימים בניינים"

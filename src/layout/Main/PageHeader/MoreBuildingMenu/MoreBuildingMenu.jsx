@@ -1,16 +1,17 @@
 // LIBRARIES
 import React from "react";
 import { Menu, useTheme } from "@material-ui/core";
-import { MdColorLens, MdDescription } from "react-icons/md";
 import MoreMenuItem from "../../../../components/moreMenu/MoreMenuItem";
 import SvgIcon from "../../../../components/SvgIcon/SvgIcon";
+import DescriptionIcon from "../../../../components/Icons/DescriptionIcon";
+import ColorPaletteIcon from "../../../../components/Icons/ColorPaletteIcon";
 
 const MoreBuildingMenu = ({
   anchorEl,
   handleClose,
   onExcelReportsHandler,
   onEmptyReportsHandler,
-  onChangeBuildingColorHandler,
+  onChangeBuildingColorHandler
 }) => {
   const theme = useTheme();
   const primaryColor = theme.palette.primary.main;
@@ -42,20 +43,20 @@ const MoreBuildingMenu = ({
       disableAutoFocusItem
     >
       <MoreMenuItem
-        icon={<SvgIcon Icon={MdDescription} color={primaryColor} />}
+        icon={<DescriptionIcon color={primaryColor} />}
         label="הפקת דוחות ריקים"
         onClick={onEmptyReportsClick}
       />
 
       <MoreMenuItem
-        icon={<SvgIcon Icon={MdDescription} color={primaryColor} />}
+        icon={<DescriptionIcon color={primaryColor} />}
         iconColor="#000000"
         label="הפקת דוחות אקסל"
         onClick={onExcelReportsClick}
       />
 
       <MoreMenuItem
-        icon={<SvgIcon Icon={MdColorLens} color={primaryColor} />}
+        icon={<ColorPaletteIcon color={primaryColor} />}
         iconColor="#000000"
         label="שנה צבע בניין"
         onClick={onChangeBuildingColorClick}

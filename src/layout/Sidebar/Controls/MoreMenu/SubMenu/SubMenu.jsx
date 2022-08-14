@@ -1,9 +1,10 @@
-import React from 'react';
-import { css } from 'emotion';
-import { Collapse, List, SvgIcon } from '@material-ui/core';
-import { Replay, Backup } from '@material-ui/icons';
-import { RiFolderHistoryLine } from 'react-icons/ri';
-import MoreMenuItem from '../../../../../components/moreMenu/MoreMenuItem';
+import React from "react";
+import { css } from "emotion";
+import { Collapse, List } from "@material-ui/core";
+import MoreMenuItem from "../../../../../components/moreMenu/MoreMenuItem";
+import HistoryIcon from "../../../../../components/Icons/HistoryIcon";
+import BackupIcon from "../../../../../components/Icons/BackupIcon";
+import ResetIcon from "../../../../../components/Icons/ResetIcon";
 
 const nested = css`
   padding-right: 32px;
@@ -11,32 +12,32 @@ const nested = css`
 `;
 
 const SubMenu = ({ open, restartAppHandler, dbBackupHandler, purgeCache }) => {
-  return <Collapse in={open} timeout="auto" unmountOnExit>
-    <List component="div" disablePadding>
+  return (
+    <Collapse in={open} timeout="auto" unmountOnExit>
+      <List component="div" disablePadding>
+        <MoreMenuItem
+          icon={<BackupIcon />}
+          label="גבה בסיס נתונים"
+          onClick={dbBackupHandler}
+          listItemClass={nested}
+        />
 
-      <MoreMenuItem
-        icon={<Backup />}
-        label="גבה בסיס נתונים"
-        onClick={dbBackupHandler}
-        listItemClass={nested}
-      />
+        <MoreMenuItem
+          icon={<HistoryIcon />}
+          label="מחק היסטוריית מטמון"
+          onClick={purgeCache}
+          listItemClass={nested}
+        />
 
-      <MoreMenuItem
-        icon={<SvgIcon component={RiFolderHistoryLine} />}
-        label="מחק היסטוריית מטמון"
-        onClick={purgeCache}
-        listItemClass={nested}
-      />
-
-      <MoreMenuItem
-        icon={<Replay />}
-        label="אתחל אפליקציה"
-        onClick={restartAppHandler}
-        listItemClass={nested}
-      />
-
-    </List>
-  </Collapse>;
+        <MoreMenuItem
+          icon={<ResetIcon />}
+          label="אתחל אפליקציה"
+          onClick={restartAppHandler}
+          listItemClass={nested}
+        />
+      </List>
+    </Collapse>
+  );
 };
 
 export default SubMenu;

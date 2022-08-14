@@ -1,12 +1,9 @@
-import React from 'react';
-import CloseIcon from '@material-ui/icons/Close';
-import styles from './CustomCloseButton.module.css';
+import React from "react";
+import styles from "./CustomCloseButton.module.css";
+import CloseIcon from "../../Icons/CloseIcon";
 
 const CustomCloseButton = ({ closeToast }) => (
-  <i
-    className={styles.button}
-    onClick={closeToast}
-  >
+  <i className={styles.button} onClick={closeToast}>
     <CloseIcon />
   </i>
 );

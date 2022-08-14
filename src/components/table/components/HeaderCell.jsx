@@ -1,24 +1,21 @@
-import React from 'react';
-import { FiEdit } from 'react-icons/fi';
-import { css } from 'emotion';
-import Cell from './Cell';
+import React from "react";
+import { css } from "emotion";
+import Cell from "./Cell";
+import TableEditIcon from "../../Icons/TableEditIcon";
 
 const icon = css`
-  width: 14px;
-  height: 14px;
   margin-left: 3px;
-  margin-top: -2px;
 `;
 
-const HeaderCell = props => {
-  return <Cell
-    className="headerCell"
-    {...props}
-  >
-    {props.editMode ?
-      <FiEdit className={icon} /> : null}
-    {props.children}
-  </Cell>;
+const HeaderCell = (props) => {
+  return (
+    <Cell className="headerCell" {...props}>
+      {props.editMode ? (
+        <TableEditIcon width="16px" height="16px" className={icon} />
+      ) : null}
+      {props.children}
+    </Cell>
+  );
 };
 
 export default HeaderCell;

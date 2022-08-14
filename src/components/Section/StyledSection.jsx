@@ -1,9 +1,9 @@
-import React from 'react';
-import { css } from 'emotion';
-import classnames from 'classnames';
-import { Typography } from '@material-ui/core';
-import CenteredLoader from '../AnimatedLoaders/CenteredLoader';
-import { AlignCenterMiddle } from '../AlignCenterMiddle/AlignCenterMiddle';
+import React from "react";
+import { css } from "emotion";
+import classnames from "classnames";
+import { Typography } from "@material-ui/core";
+import CenteredLoader from "../AnimatedLoaders/CenteredLoader";
+import { AlignCenterMiddle } from "../AlignCenterMiddle/AlignCenterMiddle";
 
 const _container = css`
   margin: 30px 0 20px;
@@ -35,11 +35,6 @@ const _iconWrapper = css`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const _icon = css`
-  color: #ffffff;
-  font-size: 24px;
 `;
 
 const _titleWrapper = css`
@@ -90,7 +85,6 @@ const noDataStyle = css`
 const StyledSection = ({
   title,
   Icon,
-  bgColor = "#0e7ab9",
   extraDetails = null,
   children,
   isFullscreen = false,
@@ -99,48 +93,50 @@ const StyledSection = ({
   noDataText = "אין נתונים"
 }) => {
   const content = loading ? <CenteredLoader /> : children;
-  const render = noData ? <AlignCenterMiddle className={noDataStyle}>{noDataText}</AlignCenterMiddle> : content;
+  const render = noData ? (
+    <AlignCenterMiddle className={noDataStyle}>{noDataText}</AlignCenterMiddle>
+  ) : (
+    content
+  );
 
-  return <div className={classnames(_container, isFullscreen ? fullscreenStyle : "")} id="styledSection">
-
-    {/* header */}
-    <div className={_header} id="styledSection-header">
-
-      {/* title box */}
-      <div className={_titleBox}>
-
-        {/* icon */}
-        <div className={_iconWrapper}>
-          <Icon className={_icon} />
+  return (
+    <div
+      className={classnames(_container, isFullscreen ? fullscreenStyle : "")}
+      id="styledSection"
+    >
+      {/* header */}
+      <div className={_header} id="styledSection-header">
+        {/* title box */}
+        <div className={_titleBox}>
+          {/* icon */}
+          <div className={_iconWrapper}>
+            <Icon color="#ffffff" />
+          </div>
+          {/* end icon */}
         </div>
-        {/* end icon */}
+        {/* end title box */}
 
+        {/* title */}
+        <div className={_titleWrapper}>
+          <Typography className={_titleTypography} variant="h6">
+            {title}
+          </Typography>
+        </div>
+        {/* end title */}
+
+        {/* extra details */}
+        <div className={_extraDetails}>{extraDetails}</div>
+        {/* end extra details */}
       </div>
-      {/* end title box */}
+      {/* end header */}
 
-      {/* title */}
-      <div className={_titleWrapper}>
-        <Typography className={_titleTypography} variant="h6">{title}</Typography>
+      {/* content */}
+      <div className={_content} id="styledSection-content">
+        {render}
       </div>
-      {/* end title */}
-
-      {/* extra details */}
-      <div className={_extraDetails}>
-        {extraDetails}
-      </div>
-      {/* end extra details */}
-
+      {/* end content */}
     </div>
-    {/* end header */}
-
-    {/* content */}
-    <div className={_content} id="styledSection-content">
-      {render}
-    </div>
-    {/* end content */}
-
-  </div>
-
-}
+  );
+};
 
 export default StyledSection;
