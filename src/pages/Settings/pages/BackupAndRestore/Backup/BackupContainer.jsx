@@ -28,11 +28,14 @@ const SETTINGS_NAME = "db_backup";
 
 const LastUpdated = ({ last_update }) => {
   const date = new Date(last_update);
-  const locale = date.toLocaleString();
-  const backupDateTime = locale.slice(0, locale.length - 3);
+  const formatter = new Intl.DateTimeFormat("he-IL", {
+    dateStyle: "short",
+    timeStyle: "short"
+  });
+  const formattedDate = formatter.format(date);
 
   return (
-    <Note text={`גיבוי אחרון בוצע ב- ${backupDateTime}`} margin="0 0 20px 0" />
+    <Note text={`גיבוי אחרון בוצע ב- ${formattedDate}`} margin="0 0 20px 0" />
   );
 };
 

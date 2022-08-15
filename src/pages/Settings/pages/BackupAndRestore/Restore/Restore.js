@@ -43,12 +43,15 @@ const Restore = () => {
     data.length > 0 ? (
       data.map((backup, index) => {
         const date = new Date(backup.backupDateTime);
-        const locale = date.toLocaleString();
-        //to get rid off of the AM or PM
-        const newLocaleDateTime = locale.slice(0, locale.length - 3);
+        const formatter = new Intl.DateTimeFormat("he-IL", {
+          dateStyle: "short",
+          timeStyle: "short"
+        });
+        const formattedDate = formatter.format(date);
+
         return (
           <MenuItem value={backup.fileName} key={index}>
-            {newLocaleDateTime}
+            {formattedDate}
           </MenuItem>
         );
       })

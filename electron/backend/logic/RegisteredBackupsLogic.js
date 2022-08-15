@@ -27,7 +27,6 @@ class RegisteredBackupsLogic {
       const files = await fse.readdir(SystemPaths.paths.db_backups_folder_path);
 
       const backups = [];
-      const lastUpdateDate = null;
 
       if (files.length > 0) {
         files.forEach((fileName) => {
@@ -39,6 +38,21 @@ class RegisteredBackupsLogic {
           };
 
           backups.push(payload);
+        });
+
+        // sort the backups by date,
+        // make the newest date first
+        backups.sort((a, b) => {
+          const dateA = new Date(a.backupDateTime);
+          const dateB = new Date(b.backupDateTime);
+          if (dateB < dateA) {
+            return -1;
+          }
+          if (dateB > dateA) {
+            return 1;
+          }
+
+          return 0;
         });
 
         // update settings in config file
