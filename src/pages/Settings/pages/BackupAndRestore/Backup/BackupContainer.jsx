@@ -26,6 +26,16 @@ import BackupIcon from "../../../../../components/Icons/BackupIcon";
 
 const SETTINGS_NAME = "db_backup";
 
+const LastUpdated = ({ last_update }) => {
+  const date = new Date(last_update);
+  const locale = date.toLocaleString();
+  const backupDateTime = locale.slice(0, locale.length - 3);
+
+  return (
+    <Note text={`גיבוי אחרון בוצע ב- ${backupDateTime}`} margin="0 0 20px 0" />
+  );
+};
+
 const BackupContainer = () => {
   const dispatch = useDispatch();
   const { showModal } = useModalLogic();
@@ -96,11 +106,6 @@ const BackupContainer = () => {
     });
   };
 
-  //to render the last update of the backup
-  const date = new Date(data.last_update);
-  const locale = date.toLocaleString();
-  const backupDateTime = locale.slice(0, locale.length - 3);
-
   let backups_to_save = [];
   for (let i = 1; i <= data.max_num_of_history_backups; i++) {
     backups_to_save.push(
@@ -116,10 +121,7 @@ const BackupContainer = () => {
       Icon={BackupIcon}
       onSaveClick={save}
     >
-      <Note
-        text={`גיבוי אחרון בוצע ב- ${backupDateTime}`}
-        margin="0 0 20px 0"
-      />
+      {data.last_update && <LastUpdated last_update={data.last_update} />}
 
       <TitleTypography>כללי:</TitleTypography>
 

@@ -108,8 +108,6 @@ const Restore = () => {
     <DefaultLoader loading={isFetching} />
   ) : (
     <Fragment>
-      {/* <Typography className={styles.restoreLastUpdate} variant="subtitle1">{`גיבוי אחרון בוצע ב- ${12321}`}</Typography> */}
-
       <RestoreFromList
         onBackupDateChangeHandler={onBackupDateChangeHandler}
         selectedBackupDate={selectedBackupDate}

@@ -142,7 +142,6 @@ class SetupLogic {
         enabled: true,
         last_update: "",
         max_num_of_history_backups: 7,
-        path: "",
         restart_required: true,
         backup_on_exit: true,
         currentDate: "",
@@ -177,6 +176,8 @@ class SetupLogic {
         log_file_path: ""
       }
     };
+
+    await fse.ensureDir(SystemPaths.paths.config_folder_path);
 
     return fse.writeJson(SystemPaths.paths.config_file_path, cleanConfig);
   }
