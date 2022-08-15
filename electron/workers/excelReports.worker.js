@@ -8,7 +8,8 @@ async function exportExcel({
   date,
   data,
   colorSet,
-  fileName
+  fileName,
+  withExt = true
 }) {
   try {
     // fill the workbook with data
@@ -20,7 +21,12 @@ async function exportExcel({
       colorSet
     );
 
-    await finishedWorkbook.xlsx.writeFile(`${fileName}.xlsx`);
+    // when exporting a single excel from a specific ui page
+    // we need to remove the extension and let the dialog
+    // filter extension add it to the filename
+    await finishedWorkbook.xlsx.writeFile(
+      withExt ? `${fileName}.xlsx` : fileName
+    );
 
     return Promise.resolve(true);
   } catch (error) {

@@ -262,7 +262,7 @@ async function exportReport({
   }
 
   await exportExcel([
-    { buildingName, pageName, fileName, date, data, colorSet }
+    { buildingName, pageName, fileName, date, data, colorSet, withExt: false }
   ]);
 
   return data;
