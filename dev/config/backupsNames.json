@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "backupDateTime": "Mon Aug 15 2022 23:48:20 GMT+0300 (Israel Daylight Time)",
+    "fileName": "ramot-group-db-D-15-8-2022-T-23-48-20.sqlite"
+  },
+  {
+    "backupDateTime": "Mon Aug 15 2022 23:48:24 GMT+0300 (Israel Daylight Time)",
+    "fileName": "ramot-group-db-D-15-8-2022-T-23-48-24.sqlite"
+  }
+]

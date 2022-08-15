@@ -1,5 +1,6 @@
 // LIBRARIES
 const { sendToWindow } = require("../../helpers/utils");
+const CustomError = require("../customErrors/CustomError");
 
 class MainSystem {
   async initializeIpcs() {
@@ -80,19 +81,20 @@ class MainSystem {
       // before the system starts, ensure
       // all the configuration files exist
       // if not create them
-      const RegisteredBackupsLogic = require("../logic/RegisteredBackupsLogic");
+      const AppLogic = require("../logic/AppLogic");
       const SetupLogic = require("../logic/SetupLogic");
       const UpdatesLogic = require("../logic/UpdatesLogic");
       const connectionPool = require("../connection/ConnectionPool");
 
+      const appLogic = new AppLogic();
       const setupLogic = new SetupLogic();
       const updatesLogic = new UpdatesLogic();
-      const registeredBackupsLogic = new RegisteredBackupsLogic();
 
-      await setupLogic.ensureAppFoldersAndSettingsExist();
-      await registeredBackupsLogic.ensureConfigFileExistAndCreate();
+      // ensures all the app folders and config files exist
+      // in case if dabase file not exisiting it will throw an error
+      await appLogic.ensureAppFoldersAndConfigFiles();
 
-      // must run first
+      // must run first for knex configuration file
       await connectionPool.init();
 
       // if the app runs for the first time
@@ -114,10 +116,12 @@ class MainSystem {
       // TODO
       // if error type is of custom error or
       // it's children, don't log
-      const logManager = require("../logger/LogManager");
-      const logger = logManager.getLogger();
+      if (error.constructor !== CustomError) {
+        const logManager = require("../logger/LogManager");
+        const logger = logManager.getLogger();
 
-      logger.error(error.toString());
+        logger.error(error);
+      }
 
       throw error;
     }
