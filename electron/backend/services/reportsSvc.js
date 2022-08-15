@@ -215,6 +215,11 @@ async function exportReport({
   data
 }) {
   const { exportExcel } = require("./excel/excelSvc");
+  const SettingsLogic = require("../logic/SettingsLogic");
+  const settingsLogic = new SettingsLogic();
+
+  const themeSettings = await settingsLogic.getThemeSettings();
+  const colorSet = themeSettings.colorSet;
 
   switch (pageName) {
     case "budgetExecutions":
@@ -256,7 +261,9 @@ async function exportReport({
     default:
   }
 
-  await exportExcel({ buildingName, pageName, fileName, date, data });
+  await exportExcel([
+    { buildingName, pageName, fileName, date, data, colorSet }
+  ]);
 
   return data;
 }

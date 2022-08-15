@@ -67,9 +67,9 @@ const BackupContainer = () => {
     dispatch(setDirty());
   };
 
-  const dbSelectFolderHandler = (name) => {
+  const dbSelectFolderHandler = () => {
     const options = {
-      defaultPath: data.path
+      defaultPath: data.db_backups_folder_path
     };
     selectFolderDialog(options).then(({ canceled, filePaths }) => {
       if (canceled) return;
