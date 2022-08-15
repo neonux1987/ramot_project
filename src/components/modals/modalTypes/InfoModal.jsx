@@ -1,20 +1,18 @@
+import React from "react";
 
-import React from 'react';
-import Info from '@material-ui/icons/Info';
+import Modal from "../Modal";
+import InfoIcon from "../../Icons/InfoIcon";
 
-import Modal from '../Modal';
-
-const InfoModal = props => {
-
+const InfoModal = (props) => {
   return (
     <Modal
-      Icon={Info}
+      Icon={InfoIcon}
       title={"הודעה"}
       agreeBtnText={"המשך"}
       iconColor={"rgb(28, 148, 234)"}
       {...props}
     />
   );
-}
+};
 
 export default InfoModal;

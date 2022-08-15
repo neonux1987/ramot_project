@@ -4,7 +4,7 @@
   },
   "system": {
     "soundEnabled": true,
-    "soundVolume": 0.15,
+    "soundVolume": 0.24,
     "config_folder_path": "E:\\developer\\mezach\\ramot_project\\dev\\config",
     "db_file_path": "E:\\developer\\mezach\\ramot_project\\devData\\database\\ramot-group-db.sqlite",
     "db_folder_path": "E:\\developer\\mezach\\ramot_project\\devData\\database",

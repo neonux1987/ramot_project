@@ -1,4 +1,4 @@
-const EditIcon = ({
+const FilledEditIcon = ({
   width = "24px",
   height = "24px",
   color,
@@ -13,18 +13,17 @@ const EditIcon = ({
       width={width}
       height={height}
       preserveAspectRatio="xMidYMid meet"
-      viewBox="0 0 36 36"
+      viewBox="0 0 24 24"
       color={color}
       style={style}
       className={className}
     >
       <path
         fill="currentColor"
-        d="M33.87 8.32L28 2.42a2.07 2.07 0 0 0-2.92 0L4.27 23.2l-1.9 8.2a2.06 2.06 0 0 0 2 2.5a2.14 2.14 0 0 0 .43 0l8.29-1.9l20.78-20.76a2.07 2.07 0 0 0 0-2.92ZM12.09 30.2l-7.77 1.63l1.77-7.62L21.66 8.7l6 6ZM29 13.25l-6-6l3.48-3.46l5.9 6Z"
+        d="M4.42 20.579a1 1 0 0 1-.737-.326a.988.988 0 0 1-.263-.764l.245-2.694L14.983 5.481l3.537 3.536L7.205 20.33l-2.694.245a.95.95 0 0 1-.091.004ZM19.226 8.31L15.69 4.774l2.121-2.121a1 1 0 0 1 1.415 0l2.121 2.121a1 1 0 0 1 0 1.415l-2.12 2.12l-.001.001Z"
       />
-      <path fill="none" d="M0 0h36v36H0z" />
     </svg>
   );
 };
 
-export default EditIcon;
+export default FilledEditIcon;

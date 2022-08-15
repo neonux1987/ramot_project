@@ -1,4 +1,4 @@
-const EditIcon = ({
+const ExpandLessIcon = ({
   width = "24px",
   height = "24px",
   color,
@@ -13,18 +13,17 @@ const EditIcon = ({
       width={width}
       height={height}
       preserveAspectRatio="xMidYMid meet"
-      viewBox="0 0 36 36"
+      viewBox="0 0 24 24"
       color={color}
       style={style}
       className={className}
     >
       <path
         fill="currentColor"
-        d="M33.87 8.32L28 2.42a2.07 2.07 0 0 0-2.92 0L4.27 23.2l-1.9 8.2a2.06 2.06 0 0 0 2 2.5a2.14 2.14 0 0 0 .43 0l8.29-1.9l20.78-20.76a2.07 2.07 0 0 0 0-2.92ZM12.09 30.2l-7.77 1.63l1.77-7.62L21.66 8.7l6 6ZM29 13.25l-6-6l3.48-3.46l5.9 6Z"
+        d="M6.7 14.675q-.275-.275-.275-.7q0-.425.275-.7l4.6-4.6q.15-.15.325-.213Q11.8 8.4 12 8.4t.375.062q.175.063.325.213l4.625 4.625q.275.275.275.675t-.3.7q-.275.275-.7.275q-.425 0-.7-.275l-3.9-3.9L8.075 14.7q-.275.275-.675.275t-.7-.3Z"
       />
-      <path fill="none" d="M0 0h36v36H0z" />
     </svg>
   );
 };
 
-export default EditIcon;
+export default ExpandLessIcon;

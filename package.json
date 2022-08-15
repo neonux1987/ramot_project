@@ -101,7 +101,6 @@
   },
   "devDependencies": {
     "@material-ui/core": "^4.12.3",
-    "@material-ui/icons": "^4.9.1",
     "@rescripts/cli": "0.0.14",
     "@rescripts/rescript-env": "0.0.12",
     "chart.js": "^3.8.0",

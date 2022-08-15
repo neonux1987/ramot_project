@@ -1,4 +1,4 @@
-const EditIcon = ({
+const DeleteForeverIcon = ({
   width = "24px",
   height = "24px",
   color,
@@ -13,18 +13,17 @@ const EditIcon = ({
       width={width}
       height={height}
       preserveAspectRatio="xMidYMid meet"
-      viewBox="0 0 36 36"
+      viewBox="0 0 24 24"
       color={color}
       style={style}
       className={className}
     >
       <path
         fill="currentColor"
-        d="M33.87 8.32L28 2.42a2.07 2.07 0 0 0-2.92 0L4.27 23.2l-1.9 8.2a2.06 2.06 0 0 0 2 2.5a2.14 2.14 0 0 0 .43 0l8.29-1.9l20.78-20.76a2.07 2.07 0 0 0 0-2.92ZM12.09 30.2l-7.77 1.63l1.77-7.62L21.66 8.7l6 6ZM29 13.25l-6-6l3.48-3.46l5.9 6Z"
+        d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12m2.46-7.12l1.41-1.41L12 12.59l2.12-2.12l1.41 1.41L13.41 14l2.12 2.12l-1.41 1.41L12 15.41l-2.12 2.12l-1.41-1.41L10.59 14l-2.13-2.12M15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5Z"
       />
-      <path fill="none" d="M0 0h36v36H0z" />
     </svg>
   );
 };
 
-export default EditIcon;
+export default DeleteForeverIcon;

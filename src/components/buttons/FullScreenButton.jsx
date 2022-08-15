@@ -5,7 +5,9 @@ import EnterFullscreenIcon from "../Icons/EnterFullscreenIcon";
 
 const FullScreenButton = ({ isFullscreen, onClick }) => {
   const Icon = isFullscreen ? ExitFullscreenIcon : EnterFullscreenIcon;
-  return <SquareButton Icon={Icon} onClick={onClick} iconColor="#ffffff" />;
+  return (
+    <SquareButton Icon={Icon} onClick={onClick} iconColor="#ffffff" withHover />
+  );
 };
 
 export default FullScreenButton;

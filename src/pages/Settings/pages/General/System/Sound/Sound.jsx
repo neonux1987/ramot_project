@@ -1,7 +1,8 @@
 // LIBRARIES
-import React, { useState } from 'react';
-import { Typography, Grid } from '@material-ui/core';
-import { VolumeDown, VolumeUp } from '@material-ui/icons';
+import React, { useState } from "react";
+import { Typography, Grid } from "@material-ui/core";
+import VolumeOffIcon from "../../../../../../components/Icons/VolumeOffIcon";
+import VolumeOnIcon from "../../../../../../components/Icons/VolumeOnIcon";
 
 // CSS
 import {
@@ -9,27 +10,25 @@ import {
   soundEnabledContainer,
   soundVolumeContainer,
   volumeSlider
-} from './Sound.module.css';
+} from "./Sound.module.css";
 
 // COMPONENTS WITH SOUND
-import SliderWithSound from '../../../../../../componentsWithSound/SliderWithSound/SliderWithSound';
-import SwitchWithSound from '../../../../../../componentsWithSound/SwitchWithSound/SwitchWithSound';
+import SliderWithSound from "../../../../../../componentsWithSound/SliderWithSound/SliderWithSound";
+import SwitchWithSound from "../../../../../../componentsWithSound/SwitchWithSound/SwitchWithSound";
 
 const Sound = ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur }) => {
-
   const [sliderValue, setSliderValue] = useState(soundVolume);
 
-  const onVolumeChange = (event, value) => {
+  const onVolumeChange = (_, value) => {
     setSliderValue(value);
-  }
+  };
 
   const onChangeCommitted = () => {
     onSliderBlur(sliderValue);
-  }
+  };
 
   return (
     <div className={container}>
-
       <div className={soundEnabledContainer}>
         <SwitchWithSound
           checked={soundEnabled}
@@ -39,20 +38,21 @@ const Sound = ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur }) => {
           reverse={1}
         />
 
-        <Typography>
-          הפעל צלילים
-        </Typography>
+        <Typography>הפעל צלילים</Typography>
       </div>
-
 
       <div className={soundVolumeContainer}>
         <Typography id="continuous-slider" gutterBottom>
           ווליום
-      </Typography>
+        </Typography>
 
         <Grid className={volumeSlider} container spacing={2}>
           <Grid item>
-            <VolumeDown />
+            <VolumeOffIcon
+              width="20px"
+              height="20px"
+              style={{ marginTop: "3px" }}
+            />
           </Grid>
           <Grid item xs>
             <SliderWithSound
@@ -66,12 +66,16 @@ const Sound = ({ soundEnabled, soundVolume, onSoundCheck, onSliderBlur }) => {
             />
           </Grid>
           <Grid item>
-            <VolumeUp />
+            <VolumeOnIcon
+              width="20px"
+              height="20px"
+              style={{ marginTop: "3px" }}
+            />
           </Grid>
         </Grid>
       </div>
     </div>
   );
-}
+};
 
 export default Sound;

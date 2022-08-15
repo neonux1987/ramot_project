@@ -1,9 +1,9 @@
-import React from 'react';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { css } from 'emotion';
+import React from "react";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { css } from "emotion";
 
 const _header = css`
-  display: flex; 
+  display: flex;
   align-items: center;
   border-bottom: 1px solid #dddddd;
   background-color: #ffffff;
@@ -16,24 +16,24 @@ const _dialogTitle = css`
   color: #000000;
 `;
 
+const _icon = css`
+  margin-right: 15px;
+`;
+
 const ModalHeader = (props) => {
+  const { iconColor = "#000000", title, Icon } = props;
 
-  const {
-    iconColor = "#000000",
-    title,
-    Icon
-  } = props;
-
-  return <div className={_header}>
-    <Icon
-      className={css`
-    margin-right: 15px;
-    color: ${iconColor};
-    font-size: 28px;
-  `}
-    />
-    <DialogTitle id="alert-dialog-slide-title" classes={{ root: _dialogTitle }}>{title}</DialogTitle>
-  </div>;
-}
+  return (
+    <div className={_header}>
+      <Icon className={_icon} color={iconColor} />
+      <DialogTitle
+        id="alert-dialog-slide-title"
+        classes={{ root: _dialogTitle }}
+      >
+        {title}
+      </DialogTitle>
+    </div>
+  );
+};
 
 export default ModalHeader;

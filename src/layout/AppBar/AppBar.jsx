@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MuiAppBar from "@material-ui/core/AppBar";
 import DraggableFrame from "../../components/DraggableFrame/DraggableFrame";
 import FrameControls from "./FrameControls/FrameControls";
-import ToggleButtonDefault from "../ToggleButton/ToggleButtonDefault";
+import ToggleButton from "../ToggleButton/ToggleButton";
 
 const drawerWidth = 240;
 
@@ -16,29 +16,29 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     zIndex: 885,
     padding: "10px 10px 0",
-    position: "fixed",
+    position: "fixed"
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeInOut,
-      duration: theme.transitions.duration.standard,
+      duration: theme.transitions.duration.standard
     }),
-    width: `calc(100% - 0px)`,
+    width: `calc(100% - 0px)`
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   menuButton: {
-    marginRight: "25px",
+    marginRight: "25px"
   },
   hide: {
-    display: "none",
-  },
+    display: "none"
+  }
 }));
 
 const AppBar = ({ onClose, onMaximize, onMinimize, showSidebar }) => {
@@ -51,13 +51,13 @@ const AppBar = ({ onClose, onMaximize, onMinimize, showSidebar }) => {
         className={clsx(
           classes.appBar,
           {
-            [classes.appBarShift]: showSidebar,
+            [classes.appBarShift]: showSidebar
           },
           classes.root
         )}
         id="toolbar"
       >
-        <ToggleButtonDefault />
+        <ToggleButton />
         <FrameControls
           onMinimize={onMinimize}
           onMaximize={onMaximize}

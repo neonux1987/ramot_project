@@ -15,7 +15,9 @@ const _container = css`
   width: 40px;
   height: 40px;
   box-shadow: none;
+`;
 
+const _hover = css`
   :hover {
     margin-bottom: 8px;
     transition: margin-bottom 0.2s;
@@ -29,7 +31,8 @@ const SquareButton = ({
   onClick,
   bgColor = "none",
   iconColor = "#ffffff",
-  disabled
+  disabled,
+  withHover = false
 }) => {
   const buttonStyle = css`
     background: ${bgColor};
@@ -39,7 +42,9 @@ const SquareButton = ({
   return (
     <ButtonWithSound
       disabled={disabled}
-      className={`${_container} ${buttonStyle} ${className}`}
+      className={`${_container} ${buttonStyle} ${className} ${
+        withHover ? _hover : ""
+      }`}
       onClick={onClick}
     >
       <Icon color={iconColor} />

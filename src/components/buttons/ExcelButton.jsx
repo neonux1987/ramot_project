@@ -3,7 +3,12 @@ import SquareButton from "./SquareButton";
 import ExcelIcon from "../Icons/ExcelIcon";
 
 const ExcelButton = ({ onClick }) => (
-  <SquareButton Icon={ExcelIcon} onClick={onClick} iconColor="#ffffff" />
+  <SquareButton
+    Icon={ExcelIcon}
+    onClick={onClick}
+    iconColor="#ffffff"
+    withHover
+  />
 );
 
 export default ExcelButton;

@@ -26,6 +26,7 @@ const SlashModeButton = ({ Icon, iconColor, onClick, on = false }) => {
       Icon={Icon}
       onClick={onClick}
       iconColor={iconColor}
+      withHover
     />
   );
 };

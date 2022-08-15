@@ -1,14 +1,7 @@
 // LIBRARIES
 import React from "react";
-import { Menu, Divider, SvgIcon, Box } from "@material-ui/core";
+import { Menu, Divider, Box } from "@material-ui/core";
 import styles from "./MoreMenu.module.css";
-import {
-  ExpandLess,
-  ExpandMore,
-  Description,
-  ListAlt,
-  Home
-} from "@material-ui/icons";
 import SubMenu from "./SubMenu/SubMenu";
 import { initiateDbBackup } from "../../../../services/dbBackup.svc";
 import { toastManager } from "../../../../toasts/toastManager";
@@ -21,6 +14,10 @@ import MoreButton from "../MoreButton/MoreButton";
 import useModalLogic from "../../../../customHooks/useModalLogic";
 import EditVatModal from "../../../../components/modals/EditVatModal/EditVatModal";
 import PercentIcon from "../../../../components/Icons/PercentIcon";
+import RotatingExpandLessIcon from "../../../../components/Icons/RotatingExpandLessIcon";
+import DescriptionIcon from "../../../../components/Icons/DescriptionIcon";
+import HomeIcon from "../../../../components/Icons/HomeIcon";
+import ListIcon from "../../../../components/Icons/ListIcon";
 
 const MoreMenu = ({ active }) => {
   const [open, setOpen] = React.useState(false);
@@ -115,7 +112,7 @@ const MoreMenu = ({ active }) => {
         getContentAnchorEl={null}
       >
         <MoreMenuNavLinkItem
-          icon={<Description />}
+          icon={<DescriptionIcon />}
           label="הפקת דוחות"
           onClick={upgradedHandleClose}
           to={{
@@ -129,7 +126,7 @@ const MoreMenu = ({ active }) => {
         />
 
         <MoreMenuNavLinkItem
-          icon={<Home />}
+          icon={<HomeIcon />}
           label="ניהול בניינים"
           onClick={upgradedHandleClose}
           to={{
@@ -143,7 +140,7 @@ const MoreMenu = ({ active }) => {
         />
 
         <MoreMenuNavLinkItem
-          icon={<ListAlt />}
+          icon={<ListIcon />}
           label="ניהול קודי הנהלת חשבונות"
           onClick={upgradedHandleClose}
           to={{
@@ -157,7 +154,7 @@ const MoreMenu = ({ active }) => {
         />
 
         <MoreMenuNavLinkItem
-          icon={<ListAlt style={{ color: "#0e7ab9" }} />}
+          icon={<ListIcon style={{ color: "#0e7ab9" }} />}
           label="ניהול סעיפים מסכמים"
           onClick={upgradedHandleClose}
           to={{
@@ -179,7 +176,7 @@ const MoreMenu = ({ active }) => {
         <Divider style={{ margin: "8px" }} />
 
         <MoreMenuItem label="עוד..." onClick={expandClick}>
-          {open ? <ExpandLess /> : <ExpandMore />}
+          <RotatingExpandLessIcon open={open} />
         </MoreMenuItem>
 
         <SubMenu

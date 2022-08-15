@@ -2,7 +2,6 @@
 import React from "react";
 import { Menu, useTheme } from "@material-ui/core";
 import MoreMenuItem from "../../../../components/moreMenu/MoreMenuItem";
-import SvgIcon from "../../../../components/SvgIcon/SvgIcon";
 import DescriptionIcon from "../../../../components/Icons/DescriptionIcon";
 import ColorPaletteIcon from "../../../../components/Icons/ColorPaletteIcon";
 
