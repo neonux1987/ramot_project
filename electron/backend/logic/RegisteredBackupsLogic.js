@@ -30,44 +30,16 @@ class RegisteredBackupsLogic {
       const lastUpdateDate = null;
 
       if (files.length > 0) {
-        files.forEach((fileName, index) => {
-          const dIndex = fileName.indexOf("D");
-          const tIndex = fileName.indexOf("T");
-          const dotIndex = fileName.indexOf(".");
+        files.forEach((fileName) => {
+          const date = parseDate(fileName);
 
-          // current date
-          let date = new Date();
-          // convert date to local date he-il to
-          // get the correct time
-          const dateLocalString = date.toLocaleString();
-          // set the curret time in the new date
-          date = new Date(dateLocalString);
-          date.se;
-          // date
-          const extractedDateString = fileName.slice(dIndex + 2, tIndex - 1);
-          const dateArr = extractedDateString.split("-");
-          date.setFullYear(Number.parseInt(dateArr[2]));
-          date.setMonth(Number.parseInt(dateArr[0] - 1));
-          date.setDate(Number.parseInt(dateArr[1]));
-
-          // time
-          const extractedTimeString = fileName.slice(tIndex + 2, dotIndex);
-          const timeArr = extractedTimeString.split("-");
-          date.setHours(Number.parseInt(timeArr[0]));
-          date.setMinutes(Number.parseInt(timeArr[1]));
-          date.setSeconds(Number.parseInt(timeArr[2]));
-
-          const backupDetails = {
-            backupDateTime: date.toISOString(),
-            fileName: `${SystemPaths.info.db_file_name}-D-${date.getDate()}-${
-              date.getMonth() + 1
-            }-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.sqlite`
+          const payload = {
+            backupDateTime: date.toString(),
+            fileName
           };
 
-          backups.push(backupDetails);
+          backups.push(payload);
         });
-
-        await this.updateRegisteredBackups(backups);
 
         // update settings in config file
         await settingsLogic.updateSpecificSetting(
@@ -78,6 +50,8 @@ class RegisteredBackupsLogic {
           }
         );
       }
+
+      await this.updateRegisteredBackups(backups);
     }
   }
 
@@ -90,6 +64,34 @@ class RegisteredBackupsLogic {
   initializeBackupsList() {
     return this.updateRegisteredBackups([]);
   }
+}
+
+function parseDate(filename) {
+  const dIndex = filename.indexOf("D");
+  const tIndex = filename.indexOf("T");
+  const dotIndex = filename.indexOf(".");
+
+  let date = new Date();
+
+  // date
+  const extractedDateString = filename.slice(dIndex + 2, tIndex - 1);
+  const dateArr = extractedDateString.split("-");
+  date.setFullYear(Number.parseInt(dateArr[2]));
+  date.setMonth(Number.parseInt(dateArr[1] - 1));
+  date.setDate(Number.parseInt(dateArr[0]));
+
+  // time
+  const extractedTimeString = filename.slice(tIndex + 2, dotIndex);
+  const timeArr = extractedTimeString.split("-");
+  date.setHours(Number.parseInt(timeArr[0]));
+  date.setMinutes(Number.parseInt(timeArr[1]));
+  date.setSeconds(Number.parseInt(timeArr[2]));
+
+  // convert date to local date he-il to
+  // get the correct time gmt time +3 or +2
+  //date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+
+  return date;
 }
 
 module.exports = RegisteredBackupsLogic;

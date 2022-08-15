@@ -26,7 +26,7 @@ const BACKUPS_NAMES_FILE_PATH = path.join(
 // database folder and database file location
 const DB_FILE_NAME = "ramot-group-db";
 const DB_FOLDER_PATH = isDev
-  ? path.join(__dirname, "../../../devData/database")
+  ? path.join(__dirname, "../../../dev/database")
   : path.join(RAMOT_GROUP_FOLDER_PATH, "db");
 const DB_FILE_PATH = path.join(DB_FOLDER_PATH, `${DB_FILE_NAME}.sqlite`);
 process.env.RAMOT_DB_FILE_PATH = DB_FILE_PATH;

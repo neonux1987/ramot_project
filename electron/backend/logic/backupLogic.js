@@ -50,10 +50,8 @@ class BackupLogic {
     // current date
     let date = new Date();
     // convert date to local date he-il to
-    // get the correct time
-    const dateLocalString = date.toLocaleString();
-    // set the curret time in the new date
-    date = new Date(dateLocalString);
+    // get the correct time gmt time +3 or +2
+    //date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 
     // filename of the file to save
     const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${
@@ -80,7 +78,10 @@ class BackupLogic {
     await fse.copy(system.db_file_path, path);
 
     // store the new backup details
-    registeredBackups.push({ backupDateTime: date, fileName: fileName });
+    registeredBackups.push({
+      backupDateTime: date.toString(),
+      fileName: fileName
+    });
 
     // update settings
     settings.db_backup.last_update = date.toJSON();
