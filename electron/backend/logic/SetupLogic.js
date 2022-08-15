@@ -32,7 +32,7 @@ class SetupLogic {
 
         // will create a new database file and
         // run migrations automatically
-        cp.createDbIfNoneExist();
+        await cp.createDbIfNoneExist();
 
         await this.setLocations();
 

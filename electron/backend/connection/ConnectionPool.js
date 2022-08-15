@@ -35,7 +35,7 @@ class ConnectionPool {
           resolve();
         })
         .catch((error) => {
-          const msg = `המערכת נכשלה בהתחברות לבסיס נתונים.`;
+          const msg = `המערכת נכשלה בהתחברות לבסיס נתונים`;
           const newError = new DbError(msg, FILENAME, error);
           reject(newError);
         });

@@ -85,6 +85,7 @@ class MainSystem {
       const settingsLogic = new SettingsLogic();
       const registeredBackupsLogic = new RegisteredBackupsLogic();
       await settingsLogic.ensureConfigFileExistAndCreate();
+      await registeredBackupsLogic.ensureBackupsFolder();
       await registeredBackupsLogic.ensureConfigFileExistAndCreate();
 
       const SetupLogic = require("../logic/SetupLogic");
