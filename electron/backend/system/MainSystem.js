@@ -100,7 +100,10 @@ class MainSystem {
 
       // if the app runs for the first time
       await setupLogic.firstTimeSetup();
-      //await setupLogic.setLocations();
+
+      if (process.env.NODE_ENV === "development") {
+        await setupLogic.setLocations();
+      }
 
       // set up the db connection
       await connectionPool.createConnection();

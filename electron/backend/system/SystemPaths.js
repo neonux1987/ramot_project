@@ -22,7 +22,6 @@ const BACKUPS_NAMES_FILE_PATH = path.join(
   CONFIG_FOLDER_PATH,
   "backupsNames.json"
 );
-const SERVICES_FILE_PATH = path.join(CONFIG_FOLDER_PATH, "services.json");
 
 // database folder and database file location
 const DB_FILE_NAME = "ramot-group-db";
@@ -59,7 +58,6 @@ class SystemPaths {
     config_folder_path: CONFIG_FOLDER_PATH,
     config_file_path: CONFIG_FILE_PATH,
     backups_names_file_path: BACKUPS_NAMES_FILE_PATH,
-    services_file_path: SERVICES_FILE_PATH,
     db_folder_path: DB_FOLDER_PATH,
     db_file_path: DB_FILE_PATH,
     db_backups_folder_path: DB_BACKUPS_FOLDER_PATH,

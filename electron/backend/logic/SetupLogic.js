@@ -26,10 +26,6 @@ class SetupLogic {
         // create clean config file in the config file path location
         await this.createCleanSettingsFile();
 
-        await this.createCleanServicesConfigFile(
-          SystemPaths.paths.services_file_path
-        );
-
         await this.createCleanBackupsNamesConfigFile(
           SystemPaths.paths.backups_names_file_path
         );
@@ -60,8 +56,6 @@ class SetupLogic {
     config.system.db_folder_path = SystemPaths.paths.db_folder_path;
     config.system.config_folder_path = SystemPaths.paths.config_folder_path;
     config.system.config_file_path = SystemPaths.paths.config_file_path;
-    config.system.services_file_path = SystemPaths.paths.services_file_path;
-    config.system.config_file_path = SystemPaths.paths.config_file_path;
     config.system.logs_folder_path = SystemPaths.paths.logs_folder_path;
     config.system.log_file_path = SystemPaths.paths.log_file_path;
 
@@ -69,6 +63,19 @@ class SetupLogic {
       SystemPaths.paths.db_backups_folder_path;
     config.db_backup.backups_names_file_path =
       SystemPaths.paths.backups_names_file_path;
+
+    config.locations.db_file_path = SystemPaths.paths.db_file_path;
+    config.locations.db_folder_path = SystemPaths.paths.db_folder_path;
+    config.locations.db_backups_folder_path =
+      SystemPaths.paths.db_backups_folder_path;
+    config.locations.reports_folder_path =
+      SystemPaths.paths.reports_folder_path;
+    config.locations.config_folder_path = SystemPaths.paths.config_folder_path;
+    config.locations.config_file_path = SystemPaths.paths.config_file_path;
+    config.locations.backups_names_file_path =
+      SystemPaths.paths.backups_names_file_path;
+    config.locations.logs_folder_path = SystemPaths.paths.logs_folder_path;
+    config.locations.log_file_path = SystemPaths.paths.log_file_path;
 
     await fse.writeJSON(SystemPaths.paths.config_file_path, config);
   }
@@ -85,7 +92,6 @@ class SetupLogic {
         db_file_path: "",
         db_folder_path: "",
         config_file_path: "",
-        services_file_path: "",
         logs_folder_path: "",
         log_file_path: ""
       },
@@ -168,42 +174,19 @@ class SetupLogic {
         config_file_path: "",
         backups_names_file_path: "",
         logs_folder_path: "",
-        log_file_path: "",
-        services_file_path: ""
+        log_file_path: ""
       }
     };
-    console.log("config", SystemPaths.paths.config_file_path);
-    return fse.writeJson(SystemPaths.paths.config_file_path, cleanConfig);
-  }
 
-  async createCleanServicesConfigFile() {
-    const cleanConfig = {
-      db_backup: {
-        enabled: true,
-        serviceName: "db_backup",
-        serviceNameHeb: "גיבוי בסיס נתונים",
-        restartRequired: false,
-        restart_required: false
-      },
-      empty_reports_generator: {
-        enabled: false,
-        serviceName: "empty_reports_generator",
-        serviceNameHeb: "מחולל דוחות ריקים",
-        restartRequired: false,
-        restart_required: false
-      }
-    };
-    console.log("services", SystemPaths.paths.backups_names_file_path);
-    return fse.writeJson(
-      SystemPaths.paths.backups_names_file_path,
-      cleanConfig
-    );
+    return fse.writeJson(SystemPaths.paths.config_file_path, cleanConfig);
   }
 
   async createCleanBackupsNamesConfigFile() {
     const cleanConfig = [];
-    console.log("backup", SystemPaths.paths.services_file_path);
-    return fse.writeJson(SystemPaths.paths.services_file_path, cleanConfig);
+    return fse.writeJson(
+      SystemPaths.paths.backups_names_file_path,
+      cleanConfig
+    );
   }
 }
 
