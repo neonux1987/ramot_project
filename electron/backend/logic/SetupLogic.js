@@ -1,6 +1,7 @@
 const path = require("path");
 const fse = require("fs-extra");
 const SystemPaths = require("../system/SystemPaths");
+const logManager = require("../logger/LogManager");
 
 class SetupLogic {
   async firstTimeSetup() {
@@ -15,23 +16,10 @@ class SetupLogic {
 
       if (setupConfigFile.firstTime) {
         // create the dir structure for the config
-        // files, db file etc...
-        await fse.ensureDir(SystemPaths.paths.ramot_group_folder_path);
-        await fse.ensureDir(SystemPaths.paths.config_folder_path);
-        await fse.ensureDir(SystemPaths.paths.db_folder_path);
-        await fse.ensureDir(SystemPaths.paths.db_backups_folder_path);
-        await fse.ensureDir(SystemPaths.paths.user_main_folder);
-        await fse.ensureDir(SystemPaths.paths.user_reports_folder);
+        // files, db file etc... and the configs
+        await this.ensureAppFoldersAndSettingsExist();
 
-        // create clean config file in the config file path location
-        await this.createCleanSettingsFile();
-
-        await this.createCleanBackupsNamesConfigFile(
-          SystemPaths.paths.backups_names_file_path
-        );
-
-        // will create a new database file and
-        // run migrations automatically
+        // create a new db only if it do not exist!!!!!
         await cp.createDbIfNoneExist();
 
         await this.setLocations();
@@ -78,6 +66,24 @@ class SetupLogic {
     config.locations.log_file_path = SystemPaths.paths.log_file_path;
 
     await fse.writeJSON(SystemPaths.paths.config_file_path, config);
+  }
+
+  async ensureAppFoldersAndSettingsExist() {
+    await this.ensureAppFoldersExist();
+
+    // create clean config file in the config file path location
+    await this.createCleanSettingsFile();
+
+    await this.createCleanBackupsNamesConfigFile();
+  }
+
+  async ensureAppFoldersExist() {
+    await fse.ensureDir(SystemPaths.paths.ramot_group_folder_path);
+    await fse.ensureDir(SystemPaths.paths.config_folder_path);
+    await fse.ensureDir(SystemPaths.paths.db_folder_path);
+    await fse.ensureDir(SystemPaths.paths.db_backups_folder_path);
+    await fse.ensureDir(SystemPaths.paths.user_main_folder);
+    await fse.ensureDir(SystemPaths.paths.user_reports_folder);
   }
 
   async createCleanSettingsFile() {
@@ -179,15 +185,27 @@ class SetupLogic {
 
     await fse.ensureDir(SystemPaths.paths.config_folder_path);
 
-    return fse.writeJson(SystemPaths.paths.config_file_path, cleanConfig);
+    const exists = await fse.pathExists(SystemPaths.paths.config_file_path);
+
+    if (exists) return false;
+
+    await fse.writeJson(SystemPaths.paths.config_file_path, cleanConfig);
+
+    return true;
   }
 
   async createCleanBackupsNamesConfigFile() {
     const cleanConfig = [];
-    return fse.writeJson(
-      SystemPaths.paths.backups_names_file_path,
-      cleanConfig
+
+    const exists = await fse.pathExists(
+      SystemPaths.paths.backups_names_file_path
     );
+
+    if (exists) return false;
+
+    await fse.writeJson(SystemPaths.paths.backups_names_file_path, cleanConfig);
+
+    return true;
   }
 }
 

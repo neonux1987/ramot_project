@@ -2,6 +2,7 @@ const knex = require("knex");
 const DbError = require("../customErrors/DbError");
 const knexFile = require("./knexFile");
 const logManager = require("../logger/LogManager");
+const fse = require("fs-extra");
 
 const FILENAME = "ConnectionPool.js";
 
@@ -27,6 +28,15 @@ class ConnectionPool {
 
   async createConnection() {
     return new Promise(async (resolve, reject) => {
+      if (!(await this.dbFileExists())) {
+        const newError = new DbError(
+          "קובץ בסיס נתונים לא קיים, הפעל אשף שיחזור",
+          FILENAME
+        );
+        reject(newError);
+        return;
+      }
+
       // in order to test knex to see if the connection was successful
       // we must query, and if the query will return error then connection was unsuccessful
       this.knex("buildings")
@@ -44,6 +54,8 @@ class ConnectionPool {
 
   // used for first time setup
   async createDbIfNoneExist() {
+    if (await this.dbFileExists()) return;
+
     const sqlite3 = require("sqlite3").verbose();
     const db = new sqlite3.Database(this.config.connection.filename);
     db.close();
@@ -51,6 +63,10 @@ class ConnectionPool {
     // run latest migrations
     await this.knex.migrate.latest();
     await this.knex.seed.run();
+  }
+
+  async dbFileExists() {
+    return await fse.pathExists(this.config.connection.filename);
   }
 
   getConnection() {

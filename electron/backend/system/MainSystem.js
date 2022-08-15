@@ -80,21 +80,17 @@ class MainSystem {
       // before the system starts, ensure
       // all the configuration files exist
       // if not create them
-      const SettingsLogic = require("../logic/SettingsLogic");
       const RegisteredBackupsLogic = require("../logic/RegisteredBackupsLogic");
-      const settingsLogic = new SettingsLogic();
-      const registeredBackupsLogic = new RegisteredBackupsLogic();
-      await settingsLogic.ensureConfigFileExistAndCreate();
-      await registeredBackupsLogic.ensureBackupsFolder();
-      await registeredBackupsLogic.ensureConfigFileExistAndCreate();
-
       const SetupLogic = require("../logic/SetupLogic");
       const UpdatesLogic = require("../logic/UpdatesLogic");
-
       const connectionPool = require("../connection/ConnectionPool");
 
       const setupLogic = new SetupLogic();
       const updatesLogic = new UpdatesLogic();
+      const registeredBackupsLogic = new RegisteredBackupsLogic();
+
+      await setupLogic.ensureAppFoldersAndSettingsExist();
+      await registeredBackupsLogic.ensureConfigFileExistAndCreate();
 
       // must run first
       await connectionPool.init();

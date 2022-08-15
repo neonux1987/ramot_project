@@ -12,9 +12,11 @@ module.exports = async (properties) => {
       devTools: false,
       webSecurity: false
     },
+    width: 1280,
+    height: 720,
     frame: false,
-    resizeable: false,
-    show: false,
+    resizeable: true,
+    show: true,
     ...properties
   });
 

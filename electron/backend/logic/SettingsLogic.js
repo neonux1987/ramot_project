@@ -9,26 +9,6 @@ class SettingsLogic {
     return fse.readJson(CONFIG_LOCATION);
   }
 
-  async ensureConfigFileExistAndCreate() {
-    try {
-      // will throw and error if settings file do not exist
-      await this.getSettings();
-    } catch (error) {
-      if (error.message.includes("ENOENT") === false)
-        throw new LogicError(
-          "קיימת בעיה בקריאה של קובץ הגדרות",
-          "SettingsLogic.js",
-          error
-        );
-
-      const SetupLogic = require("./SetupLogic");
-      const setupLogic = new SetupLogic();
-
-      await setupLogic.createCleanSettingsFile();
-      await setupLogic.setLocations();
-    }
-  }
-
   getSpecificSetting(settingName) {
     return this.getSettings().then((settings) => {
       return settings[settingName];

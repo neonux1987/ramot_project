@@ -9,21 +9,12 @@ class RegisteredBackupsLogic {
     return fse.readJSON(CONFIG_BACKUPS_NAMES);
   }
 
-  async ensureBackupsFolder() {
-    return fse.ensureDir(SystemPaths.paths.db_backups_folder_path);
-  }
-
   async ensureConfigFileExistAndCreate() {
     try {
       // will throw and error if settings file do not exist
       await this.getRegisteredBackups();
     } catch (error) {
-      if (error.message.includes("ENOENT") === false)
-        throw new LogicError(
-          "קיימת בעיה בקריאה של קובץ הגדרות רשימת גיבויים",
-          "RegisteredBackupsLogic.js",
-          error
-        );
+      if (error.message.includes("ENOENT") !== false) return;
 
       const SettingsLogic = require("./SettingsLogic");
       const settingsLogic = new SettingsLogic();
