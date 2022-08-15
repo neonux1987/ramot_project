@@ -111,6 +111,9 @@ class MainSystem {
       // between the main process and the renderer
       await this.initializeIpcs();
     } catch (error) {
+      // TODO
+      // if error type is of custom error or
+      // it's children, don't log
       const logManager = require("../logger/LogManager");
       const logger = logManager.getLogger();
 
