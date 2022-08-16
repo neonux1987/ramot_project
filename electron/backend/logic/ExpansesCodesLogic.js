@@ -50,6 +50,7 @@ class ExpansesCodesLogic {
         );
       }
 
+      data.status = "active";
       const returnedData = await this.expansesCodesDao.addExpanseCode(data);
       return returnedData[0];
     }

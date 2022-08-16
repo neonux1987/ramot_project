@@ -6,7 +6,7 @@ exports.up = function (knex) {
     table.string("color").notNullable();
     table.string("path").notNullable();
     table.integer("order").notNullable();
-    table.string("status", 20).notNullable();
+    table.string("status", 20).notNullable().defaultTo("active");
     table.string("deletionDate");
   });
 };

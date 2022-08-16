@@ -2,7 +2,7 @@ exports.up = function (knex) {
   return knex.schema.createTable("summarized_sections", (table) => {
     table.increments("id").notNullable().unique();
     table.string("section");
-    table.string("status", 20);
+    table.string("status", 20).defaultTo("active");
   });
 };
 

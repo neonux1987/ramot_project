@@ -1,5 +1,4 @@
 const fse = require("fs-extra");
-const LogicError = require("../customErrors/LogicError");
 const SystemPaths = require("../system/SystemPaths");
 
 class AppLogic {
@@ -11,9 +10,6 @@ class AppLogic {
 
     // create backupsNames.json if not exist
     await this.createCleanBackupsNamesConfigFile();
-
-    // check if the database file exists
-    await this.checkDBFileExists();
   }
 
   async ensureAppFoldersExist() {
@@ -21,8 +17,6 @@ class AppLogic {
     await fse.ensureDir(SystemPaths.paths.config_folder_path);
     await fse.ensureDir(SystemPaths.paths.db_folder_path);
     await fse.ensureDir(SystemPaths.paths.db_backups_folder_path);
-    await fse.ensureDir(SystemPaths.paths.user_main_folder);
-    await fse.ensureDir(SystemPaths.paths.user_reports_folder);
   }
 
   async createCleanSettingsFile() {
@@ -145,16 +139,6 @@ class AppLogic {
     await fse.writeJson(SystemPaths.paths.backups_names_file_path, cleanConfig);
 
     await this.ensureConfigFileExistAndCreate();
-  }
-
-  async checkDBFileExists() {
-    const exists = await fse.pathExists(SystemPaths.paths.db_file_path);
-
-    if (!exists)
-      throw new LogicError(
-        "קובץ בסיס הנתונים לא קיים, אנא הפעל אשף שיחזור נתונים",
-        "AppLogic.js"
-      );
   }
 
   async ensureConfigFileExistAndCreate() {

@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "emotion";
 
 const wrapper = css`
-  height: 0;
+  max-height: 0;
   background: #ffffff;
   overflow: hidden;
   display: flex;
@@ -19,16 +19,16 @@ const childrenWrapper = css`
 `;
 
 const transitionOut = css`
-  height: 0px;
+  max-height: 0;
   opacity: 0;
   overflow: hidden;
-  transition: height ease 200ms, opacity ease 200ms;
+  transition: max-height ease 200ms, opacity ease 200ms;
 `;
 
 const transitionIn = css`
-  height: 75px;
+  max-height: 140px;
   opacity: 1;
-  transition: height ease 200ms, opacity 100ms ease 100ms;
+  transition: max-height ease 200ms, opacity 100ms ease 100ms;
   overflow: initial;
 `;
 

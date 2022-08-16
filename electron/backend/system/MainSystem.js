@@ -78,9 +78,6 @@ class MainSystem {
 
   async startSystem() {
     try {
-      // before the system starts, ensure
-      // all the configuration files exist
-      // if not create them
       const AppLogic = require("../logic/AppLogic");
       const SetupLogic = require("../logic/SetupLogic");
       const UpdatesLogic = require("../logic/UpdatesLogic");
@@ -91,7 +88,7 @@ class MainSystem {
       const updatesLogic = new UpdatesLogic();
 
       // ensures all the app folders and config files exist
-      // in case if dabase file not exisiting it will throw an error
+      // in case the database file do not exist, it will throw an error
       await appLogic.ensureAppFoldersAndConfigFiles();
 
       // must run first for knex configuration file
@@ -100,6 +97,9 @@ class MainSystem {
       // if the app runs for the first time
       await setupLogic.firstTimeSetup();
 
+      // used because the project is developed on
+      // 2 separate computers
+      // TODO: remove when the app is finished
       if (process.env.NODE_ENV === "development") {
         await setupLogic.setLocations();
       }
@@ -113,10 +113,7 @@ class MainSystem {
       // between the main process and the renderer
       await this.initializeIpcs();
     } catch (error) {
-      // TODO
-      // if error type is of custom error or
-      // it's children, don't log
-      if (error.constructor !== CustomError) {
+      if (!(error instanceof CustomError)) {
         const logManager = require("../logger/LogManager");
         const logger = logManager.getLogger();
 
