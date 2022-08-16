@@ -10,7 +10,7 @@ module.exports = () => {
     height: 720,
     title: "אשף שיחזור בסיס נתונים",
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: false,
       devTools: false,
       webSecurity: false
@@ -26,7 +26,7 @@ module.exports = () => {
       ? "http://localhost:3000/?view=RestoreWizardView"
       : `file://${path.join(
           __dirname,
-          "../build/index.html?view=RestoreWizardView"
+          "../../build/index.html?view=RestoreWizardView"
         )}`
   );
   restoreDbWindow.show();
