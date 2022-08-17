@@ -114,9 +114,7 @@ class MainSystem {
       await this.initializeIpcs();
     } catch (error) {
       if (!(error instanceof CustomError)) {
-        const logManager = require("../logger/LogManager");
-        const logger = logManager.getLogger();
-
+        const logger = require("../logger/LogManager").getLogger();
         logger.error(error);
       }
 
@@ -125,44 +123,9 @@ class MainSystem {
   }
 
   async scheduledTasks() {
-    await this.deleteBuildingsInQueue();
-  }
-
-  /**
-   * if 30 days or more passed since the user changed
-   * the status of the buildings to deleted, notify the renderer
-   * to delete the buildings
-   */
-  async deleteBuildingsInQueue() {
     const BuildingsLogic = require("../logic/BuildingsLogic");
     const buildingsLogic = new BuildingsLogic();
-
-    const currentDateTime = new Date().getTime();
-
-    const buildings = await buildingsLogic.getAllBuildings();
-
-    const buildingsForDeletion = [];
-
-    buildings.forEach(({ buildingName, status, deletionDate, id }) => {
-      if (status === "מחוק") {
-        const deletionDateTime = Date.parse(deletionDate);
-
-        const differenceTime = currentDateTime - deletionDateTime;
-
-        // To calculate the no. of days between two dates
-        const differenceDays = differenceTime / (1000 * 3600 * 24);
-
-        if (differenceDays > 30) {
-          buildingsForDeletion.push({
-            id,
-            buildingName
-          });
-        }
-      }
-    });
-
-    if (buildingsForDeletion.length > 0)
-      sendToWindow("buildings-for-deletion-data", buildingsForDeletion);
+    await buildingsLogic.deleteBuildingsInQueue();
   }
 }
 

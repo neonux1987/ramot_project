@@ -1,5 +1,4 @@
 const { app, dialog, shell, BrowserWindow } = require("electron");
-const path = require("path");
 
 const SystemPaths = require("../backend/system/SystemPaths");
 
@@ -10,7 +9,7 @@ exports.asyncForEach = async function (array, callback) {
 };
 
 function openLogFile() {
-  shell.showItemInFolder(SystemPaths.paths.log_file_path);
+  shell.openPath(SystemPaths.paths.log_file_path);
 }
 exports.openLogFile = openLogFile;
 
@@ -48,37 +47,6 @@ function getWindow(id) {
 
 exports.getWindow = getWindow;
 
-function createRestoreDbWindow() {
-  const icon = path.join(app.getAppPath(), "Icon/ramot-group-icon.png");
-  const isDev = process.env.NODE_ENV === "development";
-
-  const restoreDbWindow = new BrowserWindow({
-    minWidth: 1280,
-    minHeight: 720,
-    width: 1280,
-    height: 720,
-    title: "אשף שיחזור בסיס נתונים",
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: false
-    },
-    backgroundColor: "#eee",
-    icon,
-    resizeable: false,
-    show: false
-  });
-
-  restoreDbWindow.loadURL(
-    isDev
-      ? "http://localhost:3000/?view=RestoreWizardView"
-      : `file://${path.join(
-          __dirname,
-          "../build/index.html?view=RestoreWizardView"
-        )}`
-  );
-  restoreDbWindow.show();
-}
-
 exports.AppErrorDialog = async () => {
   const title = "שגיאת הפעלה";
   const message = `
@@ -86,6 +54,27 @@ exports.AppErrorDialog = async () => {
       לפרטים נוספים יש לקרוא את יומן האירועים שנמצא בתיקייה
       ${SystemPaths.paths.logs_folder_path}
       `;
+
+  const loadingWindow = getWindow("loadingWindow");
+  if (loadingWindow) loadingWindow.hide();
+
+  const dialogData = await dialog.showMessageBox({
+    title,
+    message,
+    type: "error",
+    buttons: ["פתח יומן אירועים", "סגור את האפליקציה"]
+  });
+
+  if (dialogData.response === 0) {
+    openLogFile();
+    app.quit(0);
+  } else if (dialogData.response === 2) app.quit(0);
+};
+
+exports.NoDBErorDialog = async () => {
+  const createRestoreDbWindow = require("../windows/restore_window");
+  const title = "שגיאת קובץ בסיס נתונים";
+  const message = "המערכת נכשלה בקריאת קובץ בסיס הנתונים מכיוון שלא קיים.";
 
   const loadingWindow = getWindow("loadingWindow");
   if (loadingWindow) loadingWindow.hide();
@@ -120,4 +109,24 @@ exports.AppErrorDialog = async () => {
     openLogFile();
     app.quit(0);
   } else if (dialogData.response === 2) app.quit(0);
+};
+
+exports.compressToZip = async function (filesList = [], zipfilePath) {
+  const AdmZip = require("adm-zip");
+
+  const zip = new AdmZip();
+
+  filesList.forEach(({ filename, content }) => {
+    zip.addFile(filename, content);
+  });
+
+  // write to disk
+  zip.writeZip(zipfilePath);
+};
+
+exports.extractZip = async function (zipfilePath, targetPath) {
+  const AdmZip = require("adm-zip");
+
+  const zip = new AdmZip(zipfilePath);
+  zip.extractAllTo(targetPath);
 };

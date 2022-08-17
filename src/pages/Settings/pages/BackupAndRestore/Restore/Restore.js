@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandableSection from "../../../../../components/Section/ExpandableSection";
@@ -14,6 +14,7 @@ import useModalLogic from "../../../../../customHooks/useModalLogic";
 import ConfirmDbRestoreModal from "../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal";
 import WhiteButton from "../../../../../components/buttons/WhiteButton";
 import RestoreIco from "../../../../../components/Icons/RestoreIcon";
+import CheckboxWithLabel from "../../../../../components/Checkboxes/CheckboxWithLabel";
 
 const RestoreIcon = (props) => (
   <RestoreIco width="30px" height="30px" {...props} />
@@ -31,6 +32,7 @@ const Restore = () => {
     byList: true,
     byFile: false
   });
+  const [withConfig, setWithConfig] = useState(true);
 
   useEffect(() => {
     dispatch(fetchRegisteredBackups()).then(({ data }) => {
@@ -89,13 +91,20 @@ const Restore = () => {
       });
   };
 
+  const onCheckBoxWithConfigChangeHandler = () => {
+    setWithConfig((prev) => !prev);
+  };
+
   const restoreHandler = () => {
     const { byList, byFile } = checkBoxValue;
 
     // if the byList is checked then set the file name
     // from the list, otherwise byFile is checked so
     // set the name of the user selected file
-    const payload = byList ? selectedBackupDate : selectedFile;
+    const payload = {
+      fileName: byList ? selectedBackupDate : selectedFile,
+      withConfig
+    };
 
     if (byFile && selectedFile === null) toastManager.error("לא נבחר קובץ");
     else {
@@ -110,7 +119,7 @@ const Restore = () => {
   const render = isFetching ? (
     <DefaultLoader loading={isFetching} />
   ) : (
-    <Fragment>
+    <>
       <RestoreFromList
         onBackupDateChangeHandler={onBackupDateChangeHandler}
         selectedBackupDate={selectedBackupDate}
@@ -129,6 +138,15 @@ const Restore = () => {
         initSelectedFile={initSelectedFile}
       />
 
+      <CheckboxWithLabel
+        label="כולל שיחזור של קובץ הגדרות?"
+        checked={withConfig}
+        onChange={onCheckBoxWithConfigChangeHandler}
+        name="withConfig"
+      />
+
+      <Separator title={""} />
+
       <Typography variant="body2">
         *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה
         חירום.
@@ -137,11 +155,11 @@ const Restore = () => {
       <WhiteButton margin="8px 0 0" onClick={restoreHandler}>
         בצע שיחזור
       </WhiteButton>
-    </Fragment>
+    </>
   );
 
   return (
-    <ExpandableSection title={"שיחזור בסיס נתונים"} Icon={RestoreIcon}>
+    <ExpandableSection title={"שיחזור בסיס נתונים והגדרות"} Icon={RestoreIcon}>
       {render}
     </ExpandableSection>
   );

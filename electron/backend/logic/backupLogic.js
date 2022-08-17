@@ -4,6 +4,7 @@ const RegisteredBackupsLogic = require("./RegisteredBackupsLogic");
 const ServiceError = require("../customErrors/ServiceError");
 const DbError = require("../customErrors/DbError");
 const SystemPaths = require("../system/SystemPaths");
+const { compressToZip } = require("../../helpers/utils");
 
 const FILENAME = "DbBackupSvc.js";
 
@@ -44,20 +45,18 @@ class BackupLogic {
 
     const settings = await this.settingsLogic.getSettings();
     const { db_backup, system } = settings;
+
     const registeredBackups =
       await this.registeredBackupsLogic.getRegisteredBackups();
 
     // current date
     let date = new Date();
-    // convert date to local date he-il to
-    // get the correct time gmt time +3 or +2
-    //date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 
     // filename of the file to save
-    const fileName = `${DB_BACKUP_FILENAME}-D-${date.getDate()}-${
+    const zipFileName = `ramot-group-backup-D-${date.getDate()}-${
       date.getMonth() + 1
-    }-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.sqlite`;
-    const path = `${db_backup.db_backups_folder_path}/${fileName}`;
+    }-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.zip`;
+    const zipPath = `${db_backup.db_backups_folder_path}/${zipFileName}`;
 
     // limit up to number of backups_to_save
     if (registeredBackups.length >= db_backup.backups_to_save) {
@@ -74,13 +73,28 @@ class BackupLogic {
       registeredBackups.shift();
     }
 
-    // write the file physically to the drive
-    await fse.copy(system.db_file_path, path);
+    // read the database file
+    let sqliteFile = await fse.readFile(system.db_file_path);
+
+    // compress and save
+    await compressToZip(
+      [
+        {
+          filename: `${DB_BACKUP_FILENAME}.sqlite`,
+          content: sqliteFile
+        },
+        {
+          filename: "config.json",
+          content: Buffer.from(JSON.stringify(settings), "utf8")
+        }
+      ],
+      zipPath
+    );
 
     // store the new backup details
     registeredBackups.push({
       backupDateTime: date.toString(),
-      fileName: fileName
+      fileName: zipFileName
     });
 
     // update settings
@@ -106,13 +120,26 @@ class BackupLogic {
       throw new ServiceError("המיקום של התיקייה לא תקין", FILENAME, error);
     }
 
-    let systemSettings = await this.settingsLogic.getSystemSettings();
+    const config = await this.settingsLogic.getSettings();
+    const configBuffer = Buffer.from(JSON.stringify(config), "utf8");
 
     // read the database file
-    let fileToBackup = await fse.readFile(systemSettings.db_file_path);
+    let fileToBackup = await fse.readFile(config.system.db_file_path);
 
-    // save the databse to a location
-    await fse.writeFile(fullPath, fileToBackup);
+    // compress and save
+    await compressToZip(
+      [
+        {
+          filename: `${DB_BACKUP_FILENAME}.sqlite`,
+          content: fileToBackup
+        },
+        {
+          filename: "config.json",
+          content: configBuffer
+        }
+      ],
+      fullPath
+    );
   }
 }
 

@@ -15,7 +15,7 @@ process.env.NODE_ENV = isDev ? "development" : "production";
 const createMainWindow = require("./windows/main_window");
 const createLoadingWindow = require("./windows/loading_window");
 const mainSystem = require("./backend/system/MainSystem");
-const { AppErrorDialog } = require("./helpers/utils");
+const { AppErrorDialog, NoDBErorDialog } = require("./helpers/utils");
 
 contextMenu({
   prepend: () => [
@@ -99,11 +99,16 @@ async function createWindow() {
         powerMonitor.on("resume", () => {
           // we want to cover more ways to run up the task
           // of deleting buildings except the start of the app
-          mainSystem.deleteBuildingsInQueue();
+          mainSystem.scheduledTasks();
         });
       })
-      .catch(async () => {
-        await AppErrorDialog();
+      .catch(async (error) => {
+        if (
+          error.message === "קובץ בסיס נתונים לא קיים" ||
+          error.message === "המערכת נכשלה בהתחברות לבסיס הנתונים"
+        )
+          await NoDBErorDialog();
+        else await AppErrorDialog();
       });
     /* end start system */
   });

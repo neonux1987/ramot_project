@@ -21,7 +21,7 @@ const RestoreFromFile = (props) => {
     <div className={container}>
       <div className={chooseFileWrapper}>
         <CheckboxWithLabel
-          label="מתוך קובץ גיבוי שנמצא במחשבך:"
+          label="שיחזור מתוך קובץ גיבוי שנמצא במחשבך:"
           checked={byFile}
           onChange={onCheckBoxChangeHandler}
           name="byFile"

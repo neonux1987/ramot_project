@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import { initStore } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import LoadingCircle from "./components/LoadingCircle";
-import ViewManager from "./ViewManager/ViewManager";
 import { getAllBuildings, getSettings } from "./services/mainProcess.svc";
 import AppLoader from "./components/AnimatedLoaders/AppLoader";
 import AppLoadingView from "./WindowViews/AppLoadingView/AppLoadingView";
 import ChartExportView from "./WindowViews/ChartExportView/ChartExportView";
+import RestoreWizard from "./WindowViews/RestoreWizardView/RestoreWizardView";
+import AppContainer from "./AppContainer";
 
 // get url query param for the views
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const viewName = urlParams.get("view");
+
+const StoreWrapper = ({ children, store, persistor }) => (
+  <Provider store={store}>
+    <PersistGate loading={<LoadingCircle />} persistor={persistor}>
+      {children}
+    </PersistGate>
+  </Provider>
+);
 
 // because redux reducers depend on some data from the backend
 // we must fetch it first before creating the store and especially
@@ -54,7 +64,10 @@ const APPInitializer = () => {
   }, []);
 
   useEffect(() => {
-    if (settingsReady && buildingsDataReady) {
+    if (
+      (settingsReady && buildingsDataReady) ||
+      viewName === "RestoreWizardView"
+    ) {
       const setupStore = async () => {
         const { persistor, store } = await initStore();
 
@@ -74,6 +87,16 @@ const APPInitializer = () => {
   // to avoid the overhead of using the redux store
   if (viewName === "ChartExportView") return <ChartExportView />;
 
+  if (viewName === "RestoreWizardView")
+    return (
+      store &&
+      persistor && (
+        <StoreWrapper store={store} persistor={persistor}>
+          <RestoreWizard />
+        </StoreWrapper>
+      )
+    );
+
   if (
     !buildingsDataReady ||
     !settingsReady ||
@@ -83,11 +106,11 @@ const APPInitializer = () => {
     return <AppLoader text="טוען הגדרות אפליקציה" />;
   //persistor.purge();
   return (
-    <Provider store={store}>
-      <PersistGate loading={<LoadingCircle />} persistor={persistor}>
-        <ViewManager viewName={viewName} />
-      </PersistGate>
-    </Provider>
+    <StoreWrapper store={store} persistor={persistor}>
+      <MemoryRouter>
+        <AppContainer />
+      </MemoryRouter>
+    </StoreWrapper>
   );
 };
 

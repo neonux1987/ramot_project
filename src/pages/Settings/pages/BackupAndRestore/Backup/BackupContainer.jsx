@@ -96,14 +96,20 @@ const BackupContainer = () => {
   };
 
   const dbIndependentBackupHandler = () => {
-    const currentDate = new Date();
+    const date = new Date();
 
-    const fileName = `ramot-group-db-backup-${currentDate.getDay()}-${currentDate.getDate()}-${currentDate.getFullYear()}.sqlite`;
+    const fileName = `ramot-group-backup-D-${date.getDate()}-${
+      date.getMonth() + 1
+    }-${date.getFullYear()}-T-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
 
-    saveToFileDialog(fileName, undefined).then(({ canceled, filePath }) => {
+    let diaogOptions = {
+      filters: [{ name: "Zip", extensions: ["zip"] }]
+    };
+
+    saveToFileDialog(fileName, diaogOptions).then(({ canceled, filePath }) => {
       if (!canceled) {
         dbIndependentBackup(filePath).then(() => {
-          toastManager.success("ייצוא בסיס הנתונים הסתיים בהצלחה.");
+          toastManager.success("גיבוי לקובץ zip בוצע בהצלחה");
         });
       }
     });
@@ -120,7 +126,7 @@ const BackupContainer = () => {
 
   return (
     <SettingsExpandableSection
-      title={"גיבוי בסיס נתונים"}
+      title={"גיבוי בסיס נתונים והגדרות"}
       Icon={BackupIcon}
       onSaveClick={save}
     >

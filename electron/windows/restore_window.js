@@ -1,5 +1,6 @@
 module.exports = () => {
   const { BrowserWindow, app } = require("electron");
+  const path = require("path");
   const icon = path.join(app.getAppPath(), "Icon/ramot-group-icon.png");
   const isDev = process.env.NODE_ENV === "development";
 
@@ -12,7 +13,7 @@ module.exports = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: false,
+      devTools: true,
       webSecurity: false
     },
     backgroundColor: "#eee",

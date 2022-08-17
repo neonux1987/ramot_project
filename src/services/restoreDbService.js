@@ -5,7 +5,7 @@ import ToastRender from "../components/ToastRender/ToastRender";
 import { restartApp } from "./mainProcess.svc";
 import { purgeCache } from "../redux/actions/persistorActions";
 
-export const restore = (payload, byList) => {
+export const restore = ({ fileName, withConfig }, byList) => {
   const toastId = toastManager.info(
     <ToastRender
       spinner={true}
@@ -19,7 +19,10 @@ export const restore = (payload, byList) => {
   return ipcSendReceive({
     send: {
       channel: byList ? "restore-from-list" : "restore-from-file",
-      params: payload
+      params: {
+        fileName,
+        withConfig
+      }
     },
     receive: {
       channel: byList ? "db-restored-from-list" : "db-restored-from-file"

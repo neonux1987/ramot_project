@@ -29,10 +29,7 @@ class ConnectionPool {
   async createConnection() {
     return new Promise(async (resolve, reject) => {
       if (!(await this.dbFileExists())) {
-        const newError = new DbError(
-          "קובץ בסיס נתונים לא קיים, הפעל אשף שיחזור",
-          FILENAME
-        );
+        const newError = new DbError("קובץ בסיס נתונים לא קיים", FILENAME);
         reject(newError);
         return;
       }
@@ -45,7 +42,7 @@ class ConnectionPool {
           resolve();
         })
         .catch((error) => {
-          const msg = `המערכת נכשלה בהתחברות לבסיס נתונים`;
+          const msg = "המערכת נכשלה בהתחברות לבסיס הנתונים";
           const newError = new DbError(msg, FILENAME, error);
           reject(newError);
         });

@@ -164,14 +164,14 @@ class AppLogic {
       });
 
       // sort the backups by date,
-      // make the newest date first
+      // make the newest date last
       backups.sort((a, b) => {
         const dateA = new Date(a.backupDateTime);
         const dateB = new Date(b.backupDateTime);
-        if (dateB < dateA) {
+        if (dateA < dateB) {
           return -1;
         }
-        if (dateB > dateA) {
+        if (dateA > dateB) {
           return 1;
         }
 
@@ -182,7 +182,7 @@ class AppLogic {
       await settingsLogic.updateSpecificSetting(
         SettingsLogic.SETTINGS_NAMES.DB_BACKUP,
         {
-          last_update: backups[0].backupDateTime,
+          last_update: backups[backups.length - 1].backupDateTime,
           executed_backups: backups.length
         }
       );

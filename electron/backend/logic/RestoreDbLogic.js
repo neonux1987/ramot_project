@@ -1,46 +1,67 @@
-const LogicError = require('../customErrors/LogicError');
-const SettingsLogic = require('../logic/SettingsLogic');
-const path = require('path');
+const LogicError = require("../customErrors/LogicError");
+const SettingsLogic = require("../logic/SettingsLogic");
+const path = require("path");
 
 const EXT = "sqlite";
 
 class RestoreDbLogic {
-
   constructor() {
     this.settingsLogic = new SettingsLogic();
   }
 
-  async restoreFromList(fileName) {
-
+  async restoreFromList(fileName, withConfig) {
     const backupSettings = await this.settingsLogic.getDbBackupSettings();
 
     const backupsFolder = backupSettings.db_backups_folder_path;
     const fullFilePath = path.join(backupsFolder, fileName);
 
-    return await this.restore(fullFilePath);
+    return await this.restore(fullFilePath, withConfig);
   }
 
-  async restoreFromFile(filePath) {
-    return await this.restore(filePath);
+  async restoreFromFile(filePath, withConfig) {
+    return await this.restore(filePath, withConfig);
   }
 
-  async restore(path) {
-    const FileType = require('file-type');
-    const fse = require('fs-extra');
-    const connectionPool = require('../connection/ConnectionPool');
+  async restore(path, withConfig = true) {
+    const FileType = require("file-type");
+    const fse = require("fs-extra");
+    const connectionPool = require("../connection/ConnectionPool");
+    const { extractZip } = require("../../helpers/utils");
+    const SystemPaths = require("../system/SystemPaths");
 
-    const fileType = await FileType.fromFile(path);
-    if (fileType === undefined || fileType.ext !== EXT)
-      throw new LogicError(`הקובץ שבחרת הוא לא קובץ בסיס נתונים מסוג ${EXT}`);
+    const extractedFolderPath =
+      SystemPaths.paths.db_backups_folder_path + "/extracted";
+    const extractedDbFilePath = extractedFolderPath + "/ramot-group-db.sqlite";
+    const extractedConfigFilePath = extractedFolderPath + "/config.json";
 
+    await extractZip(path, extractedFolderPath);
+
+    // if the db file is not a sqlite file, throw an error
+    const sqliteFileType = await FileType.fromFile(extractedDbFilePath);
+    if (sqliteFileType === undefined || sqliteFileType.ext !== EXT)
+      throw new LogicError(`הקובץ שנבחר הוא לא קובץ בסיס נתונים מסוג ${EXT}`);
+
+    // destroy database connection
     await connectionPool.destroy();
 
-    const systemSettings = await this.settingsLogic.getSystemSettings();
+    // restore database from backup
+    await fse.copy(extractedDbFilePath, SystemPaths.paths.db_file_path);
 
-    // replace the old database 
-    await fse.copy(path, systemSettings.db_file_path);
+    // restore config from backup
+    if (withConfig) {
+      try {
+        await extractedConfigFilePath;
+        await fse.copy(
+          extractedConfigFilePath,
+          SystemPaths.paths.config_file_path
+        );
+      } catch (error) {
+        throw new LogicError(
+          "קרתה תקלה בזמן קריאת קובץ הגדרות ייתכן שהקובץ הוא לא מסוג json"
+        );
+      }
+    }
   }
-
 }
 
 module.exports = RestoreDbLogic;

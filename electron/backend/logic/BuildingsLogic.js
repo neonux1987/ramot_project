@@ -129,6 +129,40 @@ class BuildingsLogic {
   }
 
   /**
+   * if 30 days or more passed since the user changed
+   * the status of the buildings to deleted, notify the renderer
+   * to delete the buildings
+   */
+  async deleteBuildingsInQueue() {
+    const currentDateTime = new Date().getTime();
+
+    const buildings = await this.getAllBuildings();
+
+    const buildingsForDeletion = [];
+
+    buildings.forEach(({ buildingName, status, deletionDate, id }) => {
+      if (status === "מחוק") {
+        const deletionDateTime = Date.parse(deletionDate);
+
+        const differenceTime = currentDateTime - deletionDateTime;
+
+        // To calculate the no. of days between two dates
+        const differenceDays = differenceTime / (1000 * 3600 * 24);
+
+        if (differenceDays > 30) {
+          buildingsForDeletion.push({
+            id,
+            buildingName
+          });
+        }
+      }
+    });
+
+    if (buildingsForDeletion.length > 0)
+      sendToWindow("buildings-for-deletion-data", buildingsForDeletion);
+  }
+
+  /**
    * remove list of buildings
    * @param {*} buildingsForDeletion list of buildings to delete
    */
