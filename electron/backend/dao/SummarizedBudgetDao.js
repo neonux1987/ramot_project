@@ -60,6 +60,7 @@ class SummarizedBudgetDao {
         "building.summarized_section_id",
         "sc.id"
       )
+      .orderBy("section")
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני סיכום שנתי לבניין ${buildingName} לפי שנה ${date.year}`;
         throw new DbError(msg, FILENAME, error);

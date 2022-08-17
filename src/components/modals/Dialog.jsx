@@ -12,7 +12,8 @@ const Dialog = (props) => {
     children,
     onKeyPressHandler,
     invisibleBackdrop = false,
-    onClose
+    onClose,
+    minWidth = "300px"
   } = props;
 
   return (
@@ -27,6 +28,7 @@ const Dialog = (props) => {
       onClose={onClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
+      PaperProps={{ style: { minWidth } }}
     >
       {children}
     </Dlg>

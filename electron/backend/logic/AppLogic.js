@@ -18,6 +18,7 @@ class AppLogic {
     await fse.ensureDir(SystemPaths.paths.db_folder_path);
     await fse.ensureDir(SystemPaths.paths.db_backups_folder_path);
     await fse.ensureDir(SystemPaths.paths.app_temp_folder);
+    await fse.ensureDir(SystemPaths.paths.logs_folder_path);
   }
 
   async createCleanSettingsFile() {

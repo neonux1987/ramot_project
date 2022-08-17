@@ -56,7 +56,7 @@ class SummarizedBudgetLogic {
     );
   }
 
-  addSummarizedBudgetTrx(buildingName = String, payload = Object, trx) {
+  addSummarizedBudgetTrx(buildingId = String, payload = Object, trx) {
     return this.summarizedBudgetDao.addSummarizedBudgetTrx(
       buildingId,
       payload,

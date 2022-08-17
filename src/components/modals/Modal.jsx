@@ -21,7 +21,8 @@ const Modal = (props) => {
     contentText,
     Icon,
     children,
-    invisibleBackdrop
+    invisibleBackdrop,
+    minWidth
   } = props;
 
   const [open, setOpen] = React.useState(true);
@@ -71,6 +72,7 @@ const Modal = (props) => {
       invisibleBackdrop={invisibleBackdrop}
       onKeyPressHandler={onKeyPressHandler}
       onClose={handleClose}
+      minWidth={minWidth}
     >
       <ModalHeader title={title} Icon={Icon} iconColor={iconColor} />
 

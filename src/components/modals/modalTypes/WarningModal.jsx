@@ -10,6 +10,7 @@ const WarningModal = (props) => {
       title={"אזהרה"}
       agreeBtnText={"המשך"}
       iconColor={"rgb(231, 234, 28)"}
+      minWidth="450px"
       {...props}
     />
   );

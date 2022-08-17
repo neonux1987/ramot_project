@@ -44,7 +44,10 @@ const APP_TEMP_FOLDER = path.join(app.getPath("temp"), "ramot-group-temp");
 // log sub folder and file location
 const USER_MAIN_FOLDER = path.join(app.getPath("documents"), `קבוצת רמות`);
 const USER_REPORTS_FOLDER = path.join(USER_MAIN_FOLDER, `דוחות`);
-const LOGS_FOLDER_PATH = path.join(RAMOT_GROUP_FOLDER_PATH, `יומן אירועים`);
+const LOGS_FOLDER_PATH = path.join(
+  isDev ? devDataFolder : RAMOT_GROUP_FOLDER_PATH,
+  "logs"
+);
 const LOG_FILE_PATH = path.join(LOGS_FOLDER_PATH, `ramot-group-errors.log`);
 
 // ramot group resources folder location for setup

@@ -1,0 +1,8 @@
+[2022-08-17 18:01:31.328] [error] Error: asdas
+    at MainSystem.startSystem (E:\developer\mezach\ramot_project\electron\backend\system\MainSystem.js:93:13)
+[2022-08-17 18:19:13.216] [error] {
+  name: 'Error',
+  message: "לא ניתן להוסיף שורה עם סעיף מסכם 'חדש' שכבר קיים",
+  stack: "Error: לא ניתן להוסיף שורה עם סעיף מסכם 'חדש' שכבר קיים\n" +
+    '    at BudgetExecutionLogic.addBudgetExecutionTrx (E:\\developer\\mezach\\ramot_project\\electron\\backend\\logic\\BudgetExecutionLogic.js:107:13)'
+}
