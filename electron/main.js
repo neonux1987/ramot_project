@@ -84,7 +84,7 @@ async function createWindow() {
           loadingWindow.destroy();
           loadingWindow = null;
 
-          mainSystem.scheduledTasks();
+          mainSystem.deleteBuildingsInQueueTask();
         });
         // long loading html
         mainWindow.loadURL(
@@ -99,7 +99,7 @@ async function createWindow() {
         powerMonitor.on("resume", () => {
           // we want to cover more ways to run up the task
           // of deleting buildings except the start of the app
-          mainSystem.scheduledTasks();
+          mainSystem.deleteBuildingsInQueueTask();
         });
       })
       .catch(async (error) => {

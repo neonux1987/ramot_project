@@ -30,7 +30,7 @@ async function exportCharts(reportsQueue) {
       }
     }
 
-    //chartExportWindow.destroy();
+    chartExportWindow.destroy();
   } catch (error) {
     console.log(error);
     throw new ServiceError(

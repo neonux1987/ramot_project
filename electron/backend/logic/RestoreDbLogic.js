@@ -2,7 +2,8 @@ const LogicError = require("../customErrors/LogicError");
 const SettingsLogic = require("../logic/SettingsLogic");
 const path = require("path");
 
-const EXT = "sqlite";
+const DB_FILE_EXT = "sqlite";
+const BACKUP_FILE_EXTENSION = "zip";
 
 class RestoreDbLogic {
   constructor() {
@@ -18,9 +19,14 @@ class RestoreDbLogic {
 
     // destroy connection
     await connectionPool.destroy();
+
     // remove old database
     await fse.remove(SystemPaths.paths.db_file_path);
-    //  create new database file and run
+
+    // prepare knex configuration
+    await connectionPool.init();
+
+    // create new database file and run
     // migrations and seeds
     await connectionPool.createDbIfNoneExist();
 
@@ -57,12 +63,21 @@ class RestoreDbLogic {
     const extractedDbFilePath = extractedFolderPath + "/ramot-group-db.sqlite";
     const extractedConfigFilePath = extractedFolderPath + "/config.json";
 
+    // if the db file is not a sqlite file, throw an error
+    const zipFileType = await FileType.fromFile(path);
+    if (zipFileType === undefined || zipFileType.ext !== BACKUP_FILE_EXTENSION)
+      throw new LogicError(
+        `הקובץ שנבחר הוא לא קובץ מסוג ${BACKUP_FILE_EXTENSION}`
+      );
+
     await extractZip(path, extractedFolderPath);
 
     // if the db file is not a sqlite file, throw an error
     const sqliteFileType = await FileType.fromFile(extractedDbFilePath);
-    if (sqliteFileType === undefined || sqliteFileType.ext !== EXT)
-      throw new LogicError(`הקובץ שנבחר הוא לא קובץ בסיס נתונים מסוג ${EXT}`);
+    if (sqliteFileType === undefined || sqliteFileType.ext !== DB_FILE_EXT)
+      throw new LogicError(
+        `הקובץ ב- zip הוא לא קובץ בסיס נתונים מסוג ${DB_FILE_EXT}`
+      );
 
     // destroy database connection
     await connectionPool.destroy();
@@ -85,7 +100,7 @@ class RestoreDbLogic {
       }
     }
 
-    await fse.emptyDir(extractedFolderPath);
+    await fse.remove(extractedFolderPath);
   }
 }
 

@@ -18,7 +18,9 @@ export const selectFileDialog = () => {
 export const selectFolderDialog = async (options = {}) => {
   const copiedOptions = {
     properties: ["openDirectory"],
-    defaultPath: options.defaultPath ? options.defaultPath : os.homedir(),
+    defaultPath: options.defaultPath
+      ? options.defaultPath
+      : os.homedir() + "\\Desktop\\",
     ...options
   };
 

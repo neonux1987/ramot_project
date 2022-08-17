@@ -86,13 +86,11 @@ const SummarizedSectionsTableContainer = () => {
     dispatch(updateSummarizedSection(newCopy, oldCopy, index));
   };
 
-  const isDataExist = (id, section) => {
+  const isDataExist = (section) => {
     let valid = false;
 
     data.forEach((item) => {
-      if (item.section === section && item.id !== id) {
-        valid = true;
-      }
+      if (item.section === section) valid = true;
     });
 
     return valid;

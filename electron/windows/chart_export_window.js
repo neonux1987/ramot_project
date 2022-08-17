@@ -14,7 +14,7 @@ module.exports = async (properties) => {
     },
     frame: false,
     resizeable: false,
-    show: true,
+    show: false,
     ...properties
   });
 

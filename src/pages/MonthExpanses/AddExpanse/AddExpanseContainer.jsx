@@ -29,7 +29,7 @@ let keys = {
   6: "submit"
 };
 
-const AddExpanseContainer = ({ data, buildingId, show, tax, date }) => {
+const AddExpanseContainer = ({ buildingId, show, tax, date }) => {
   const [formInputs, setFormInputs] = useState({
     code: null,
     codeName: null,

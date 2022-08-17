@@ -30,7 +30,7 @@ const restoreDbIpc = () => {
     restoreDbLogic
       .resetDB(withConfig)
       .then((result) => {
-        event.reply("reset-db", { data: result });
+        event.reply("db-resetted", { data: result });
       })
       .catch((error) => {
         event.reply("db-resetted", { error: error.message });

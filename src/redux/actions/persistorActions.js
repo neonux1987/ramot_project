@@ -1,5 +1,5 @@
 import { getPersistor } from "../store";
 
-export const purgeCache = () => {
-  return getPersistor().purge();
+export const purgeCache = async () => {
+  return await getPersistor().purge();
 };

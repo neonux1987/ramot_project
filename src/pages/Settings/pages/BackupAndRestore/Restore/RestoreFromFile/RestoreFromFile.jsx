@@ -21,7 +21,7 @@ const RestoreFromFile = (props) => {
     <div className={container}>
       <div className={chooseFileWrapper}>
         <CheckboxWithLabel
-          label="שיחזור מתוך קובץ גיבוי שנמצא במחשבך:"
+          label="שיחזור מתוך קובץ גיבוי zip שנמצא במחשבך:"
           checked={byFile}
           onChange={onCheckBoxChangeHandler}
           name="byFile"
@@ -34,7 +34,7 @@ const RestoreFromFile = (props) => {
 
       {selectedFile && (
         <div className={chosenfile}>
-          <WhiteButton onClick={initSelectedFile}>
+          <WhiteButton onClick={initSelectedFile} style={{ minWidth: 0 }}>
             <CloseIcon color="red" width="16px" height="16px" />
           </WhiteButton>
           {`נבחר קובץ ${selectedFile}`}

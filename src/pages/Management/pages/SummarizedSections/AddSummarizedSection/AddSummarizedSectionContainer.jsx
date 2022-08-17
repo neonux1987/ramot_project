@@ -40,6 +40,7 @@ const AddSummarizedSectionContainer = ({ show, dataExist }) => {
     };
 
     dispatch(addSummarizedSection({ summarizedSection }));
+    onReset();
   };
 
   const validateFormInputs = (formInputs) => {

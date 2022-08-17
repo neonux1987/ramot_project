@@ -122,7 +122,7 @@ class MainSystem {
     }
   }
 
-  async scheduledTasks() {
+  async deleteBuildingsInQueueTask() {
     const BuildingsLogic = require("../logic/BuildingsLogic");
     const buildingsLogic = new BuildingsLogic();
     await buildingsLogic.deleteBuildingsInQueue();

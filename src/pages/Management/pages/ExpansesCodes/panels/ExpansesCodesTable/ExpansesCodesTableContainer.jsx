@@ -134,12 +134,12 @@ const ExpansesCodes = () => {
     return sections[id];
   };
 
-  const isDataExist = (id, code) => {
+  const isDataExist = (code) => {
     let valid = false;
     const parsedCode = Number.parseInt(code);
 
     expansesCodes.data.forEach((item) => {
-      if (item.code === parsedCode && item.id !== id) {
+      if (item.code === parsedCode) {
         valid = true;
       }
     });

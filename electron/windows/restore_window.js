@@ -13,7 +13,7 @@ module.exports = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true,
+      devTools: false,
       webSecurity: false
     },
     backgroundColor: "#eee",

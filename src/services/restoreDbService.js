@@ -33,7 +33,6 @@ export const restore = ({ fileName, withConfig }, byList) => {
         type: toastManager.types.SUCCESS,
         delay: 2000,
         autoClose: 500,
-        onChange: () => console.log("what change"),
         onClose: () =>
           toastManager.info(
             "המערכת תבצע איתחול בשביל שהשינויים ייכנסו לתוקף.",
@@ -77,13 +76,12 @@ export const resetDB = ({ withConfig }, byList) => {
     receive: {
       channel: "db-resetted"
     },
-    onSuccess: () =>
+    onSuccess: () => {
       toastManager.update(toastId, {
         render: <ToastRender done={true} message={"האיפוס בוצע בהצלחה"} />,
         type: toastManager.types.SUCCESS,
         delay: 2000,
         autoClose: 500,
-        onChange: () => console.log("what change"),
         onClose: () =>
           toastManager.info(
             "המערכת תבצע איתחול בשביל שהשינויים ייכנסו לתוקף.",
@@ -94,7 +92,8 @@ export const resetDB = ({ withConfig }, byList) => {
               }
             }
           )
-      }),
+      });
+    },
     onError: (result) =>
       toastManager.update(toastId, {
         render: result.error,
