@@ -55,3 +55,53 @@ export const restore = ({ fileName, withConfig }, byList) => {
     withErrorNotification: false
   });
 };
+
+export const resetDB = ({ withConfig }, byList) => {
+  const toastId = toastManager.info(
+    <ToastRender
+      spinner={true}
+      message={"המערכת מבצעת שיחזור של הבסיס נתונים..."}
+    />,
+    {
+      autoClose: false
+    }
+  );
+
+  return ipcSendReceive({
+    send: {
+      channel: "reset-db",
+      params: {
+        withConfig
+      }
+    },
+    receive: {
+      channel: "db-resetted"
+    },
+    onSuccess: () =>
+      toastManager.update(toastId, {
+        render: <ToastRender done={true} message={"האיפוס בוצע בהצלחה"} />,
+        type: toastManager.types.SUCCESS,
+        delay: 2000,
+        autoClose: 500,
+        onChange: () => console.log("what change"),
+        onClose: () =>
+          toastManager.info(
+            "המערכת תבצע איתחול בשביל שהשינויים ייכנסו לתוקף.",
+            {
+              onClose: async () => {
+                await purgeCache();
+                restartApp();
+              }
+            }
+          )
+      }),
+    onError: (result) =>
+      toastManager.update(toastId, {
+        render: result.error,
+        type: toastManager.types.ERROR,
+        delay: 2000,
+        autoClose: 3000
+      }),
+    withErrorNotification: false
+  });
+};

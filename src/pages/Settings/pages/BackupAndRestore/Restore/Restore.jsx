@@ -8,13 +8,15 @@ import RestoreFromFile from "./RestoreFromFile/RestoreFromFile";
 import { fetchRegisteredBackups } from "../../../../../redux/actions/registeredBackupsActions";
 import DefaultLoader from "../../../../../components/AnimatedLoaders/DefaultLoader";
 import { selectFileDialog } from "../../../../../services/electronDialogs.svc";
-import { restore } from "../../../../../services/restoreDbService";
+import { resetDB, restore } from "../../../../../services/restoreDbService";
 import { toastManager } from "../../../../../toasts/toastManager";
 import useModalLogic from "../../../../../customHooks/useModalLogic";
 import ConfirmDbRestoreModal from "../../../../../components/modals/ConfirmDbRestoreModal/ConfirmDbRestoreModal";
 import WhiteButton from "../../../../../components/buttons/WhiteButton";
 import RestoreIco from "../../../../../components/Icons/RestoreIcon";
 import CheckboxWithLabel from "../../../../../components/Checkboxes/CheckboxWithLabel";
+import ResetDB from "./ResetDB/ReseDB";
+import ConfirmReset from "../../../../../components/modals/ConfirmReset/ConfirmReset";
 
 const RestoreIcon = (props) => (
   <RestoreIco width="30px" height="30px" {...props} />
@@ -79,16 +81,28 @@ const Restore = () => {
   const onCheckBoxChangeHandler = (event) => {
     const { name } = event.target;
 
-    if (name === "byList")
-      setCheckBoxValue({
-        byFile: false,
-        byList: true
-      });
-    else
-      setCheckBoxValue({
-        byList: false,
-        byFile: true
-      });
+    switch (name) {
+      case "byList":
+        setCheckBoxValue({
+          byFile: false,
+          byList: true,
+          byReset: false
+        });
+        break;
+      case "byFile":
+        setCheckBoxValue({
+          byList: false,
+          byFile: true,
+          byReset: false
+        });
+        break;
+      default:
+        setCheckBoxValue({
+          byFile: false,
+          byList: false,
+          byReset: true
+        });
+    }
   };
 
   const onCheckBoxWithConfigChangeHandler = () => {
@@ -106,12 +120,20 @@ const Restore = () => {
       withConfig
     };
 
-    if (byFile && selectedFile === null) toastManager.error("לא נבחר קובץ");
-    else {
-      showModal(ConfirmDbRestoreModal, {
-        onAgreeHandler: () => restore(payload, byList)
-      });
+    if (byFile && selectedFile === null) {
+      toastManager.error("לא נבחר קובץ");
+      return;
     }
+
+    showModal(ConfirmDbRestoreModal, {
+      onAgreeHandler: () => restore(payload, byList)
+    });
+  };
+
+  const resetHandler = () => {
+    showModal(ConfirmReset, {
+      onAgreeHandler: () => resetDB({ withConfig })
+    });
   };
 
   const initSelectedFile = () => setSelectedFile(null);
@@ -138,23 +160,44 @@ const Restore = () => {
         initSelectedFile={initSelectedFile}
       />
 
+      <Separator title={"או"} />
+
+      <ResetDB
+        onCheckBoxChangeHandler={onCheckBoxChangeHandler}
+        byReset={checkBoxValue.byReset}
+      />
+
+      <Separator title={""} />
+      <Separator title={""} />
+
       <CheckboxWithLabel
-        label="כולל שיחזור של קובץ הגדרות?"
+        label={`כולל ${
+          checkBoxValue.byReset ? "איפוס" : "שיחזור"
+        } של קובץ הגדרות?`}
         checked={withConfig}
         onChange={onCheckBoxWithConfigChangeHandler}
         name="withConfig"
       />
 
       <Separator title={""} />
+      <Separator title={""} />
 
       <Typography variant="body2">
-        *לתשומת ליבך, לפני ביצוע שיחזור אנא גבה את בסיס הנתונים באופן ידני למקרה
-        חירום.
+        *לתשומת ליבך, לפני ביצוע שיחזור או איפוס, אנא בצע גיבוי ידני למקרה חירום
+        במידה ויש אפשרות
       </Typography>
 
-      <WhiteButton margin="8px 0 0" onClick={restoreHandler}>
-        בצע שיחזור
-      </WhiteButton>
+      {(checkBoxValue.byFile || checkBoxValue.byList) && (
+        <WhiteButton margin="8px 0 0" onClick={restoreHandler}>
+          בצע שיחזור
+        </WhiteButton>
+      )}
+
+      {checkBoxValue.byReset && (
+        <WhiteButton margin="8px 0 0" onClick={resetHandler}>
+          בצע איפוס
+        </WhiteButton>
+      )}
     </>
   );
 

@@ -2,11 +2,11 @@ import React from "react";
 
 import WarningModal from "../modalTypes/WarningModal";
 
-const ConfirmDbRestoreModal = (props) => {
+const ConfirmReset = (props) => {
   return (
     <WarningModal
       contentText={`
-      המערכת תבצע שיחזור ותדרוס את הקבצים הקיימים
+      המערכת תבצע איפוס ותדרוס קבצים קיימים
       האם ברצונך להמשיך?
       `}
       {...props}
@@ -14,4 +14,4 @@ const ConfirmDbRestoreModal = (props) => {
   );
 };
 
-export default ConfirmDbRestoreModal;
+export default ConfirmReset;

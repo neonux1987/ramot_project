@@ -9,6 +9,29 @@ class RestoreDbLogic {
     this.settingsLogic = new SettingsLogic();
   }
 
+  async resetDB(withConfig) {
+    const fse = require("fs-extra");
+    const connectionPool = require("../connection/ConnectionPool");
+    const SystemPaths = require("../system/SystemPaths");
+    const AppLogic = require("./AppLogic");
+    const appLogic = new AppLogic();
+
+    // destroy connection
+    await connectionPool.destroy();
+    // remove old database
+    await fse.remove(SystemPaths.paths.db_file_path);
+    //  create new database file and run
+    // migrations and seeds
+    await connectionPool.createDbIfNoneExist();
+
+    if (withConfig) {
+      // remove old database
+      await fse.remove(SystemPaths.paths.config_file_path);
+      // create new config file
+      await appLogic.createCleanSettingsFile();
+    }
+  }
+
   async restoreFromList(fileName, withConfig) {
     const backupSettings = await this.settingsLogic.getDbBackupSettings();
 
@@ -30,7 +53,7 @@ class RestoreDbLogic {
     const SystemPaths = require("../system/SystemPaths");
 
     const extractedFolderPath =
-      SystemPaths.paths.db_backups_folder_path + "/extracted";
+      SystemPaths.paths.app_temp_folder + "/extracted";
     const extractedDbFilePath = extractedFolderPath + "/ramot-group-db.sqlite";
     const extractedConfigFilePath = extractedFolderPath + "/config.json";
 
@@ -61,6 +84,8 @@ class RestoreDbLogic {
         );
       }
     }
+
+    await fse.emptyDir(extractedFolderPath);
   }
 }
 

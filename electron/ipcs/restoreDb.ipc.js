@@ -25,6 +25,17 @@ const restoreDbIpc = () => {
         event.reply("db-restored-from-file", { error: error.message });
       });
   });
+
+  ipcMain.on("reset-db", (event, { withConfig }) => {
+    restoreDbLogic
+      .resetDB(withConfig)
+      .then((result) => {
+        event.reply("reset-db", { data: result });
+      })
+      .catch((error) => {
+        event.reply("db-resetted", { error: error.message });
+      });
+  });
 };
 
 module.exports = restoreDbIpc;
