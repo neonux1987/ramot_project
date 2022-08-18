@@ -71,6 +71,29 @@ exports.AppErrorDialog = async () => {
   } else if (dialogData.response === 2) app.quit(0);
 };
 
+exports.loadRestoreWindow = async () => {
+  // close main window so it won't
+  // interfer with the restore db window
+  const mainWindow = getWindow("mainWindow");
+  if (mainWindow) mainWindow.close();
+
+  const loadingWindow = getWindow("loadingWindow");
+  if (loadingWindow) loadingWindow.hide();
+
+  const createRestoreDbWindow = require("../windows/restore_window");
+  const registeredBackupsIpc = require("../ipcs/registeredBackups.ipc");
+  const restoreDbIpc = require("../ipcs/restoreDb.ipc");
+  const mainProcessIpc = require("../ipcs/mainProcess.ipc");
+  // need the registered backups ipc in order for the restore
+  // renderer be able to fetch backups from the backend
+  registeredBackupsIpc();
+  restoreDbIpc();
+  mainProcessIpc();
+  createRestoreDbWindow();
+
+  if (loadingWindow) loadingWindow.close();
+};
+
 exports.NoDBErorDialog = async () => {
   const createRestoreDbWindow = require("../windows/restore_window");
   const title = "שגיאת קובץ בסיס נתונים";

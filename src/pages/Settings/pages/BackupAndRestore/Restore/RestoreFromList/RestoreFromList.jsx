@@ -1,7 +1,7 @@
 import React from "react";
 import { FormControl, Select } from "@material-ui/core";
 import { restoreDateSelect, container } from "./RestoreFromList.module.css";
-import CheckboxWithLabel from "../../../../../../components/Checkboxes/CheckboxWithLabel";
+import RadioWithLabel from "../../../../../../components/Radio/RadioWithLabel";
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
@@ -16,7 +16,7 @@ const RestoreFromList = (props) => {
 
   return (
     <div className={container}>
-      <CheckboxWithLabel
+      <RadioWithLabel
         label="שיחזור מתוך רשימת גיבויים"
         checked={byList}
         onChange={onCheckBoxChangeHandler}

@@ -6,7 +6,7 @@ module.exports = {
     connection: {
       filename: path.join(
         __dirname,
-        "../../../dev/database",
+        "../../../dev/ramot group data/database",
         "ramot-group-db.sqlite"
       )
     },

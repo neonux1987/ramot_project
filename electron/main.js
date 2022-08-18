@@ -15,7 +15,11 @@ process.env.NODE_ENV = isDev ? "development" : "production";
 const createMainWindow = require("./windows/main_window");
 const createLoadingWindow = require("./windows/loading_window");
 const mainSystem = require("./backend/system/MainSystem");
-const { AppErrorDialog, NoDBErorDialog } = require("./helpers/utils");
+const {
+  AppErrorDialog,
+  NoDBErorDialog,
+  loadRestoreWindow
+} = require("./helpers/utils");
 
 contextMenu({
   prepend: () => [
@@ -48,13 +52,21 @@ let mainWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();
 
 async function createWindow() {
-  // regster protocal to remove the file:/// prefix
-  // this will allow to load local resource
-  /* protocol.registerFileProtocol("file", (request, callback) => {
-    const pathname = decodeURI(request.url.replace("file:///", ""));
-    callback(pathname);
+  let restoreMode = false;
+  process.argv.forEach((arg) => {
+    if (arg.includes("--restoreMode")) {
+      equalsIndex = arg.indexOf("=");
+      const result = arg.substring(equalsIndex + 1, arg.length);
+
+      if (result === "true") restoreMode = true;
+    }
   });
- */
+
+  if (restoreMode === true) {
+    await loadRestoreWindow();
+    return;
+  }
+
   let loadingWindow = createLoadingWindow({ icon });
 
   loadingWindow.once("show", () => {

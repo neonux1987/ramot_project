@@ -5,8 +5,8 @@ import {
   chosenfile
 } from "./RestoreFromFile.module.css";
 import WhiteButton from "../../../../../../components/buttons/WhiteButton";
-import CheckboxWithLabel from "../../../../../../components/Checkboxes/CheckboxWithLabel";
 import CloseIcon from "../../../../../../components/Icons/CloseIcon";
+import RadioWithLabel from "../../../../../../components/Radio/RadioWithLabel";
 
 const RestoreFromFile = (props) => {
   const {
@@ -20,7 +20,7 @@ const RestoreFromFile = (props) => {
   return (
     <div className={container}>
       <div className={chooseFileWrapper}>
-        <CheckboxWithLabel
+        <RadioWithLabel
           label="שיחזור מתוך קובץ גיבוי zip שנמצא במחשבך:"
           checked={byFile}
           onChange={onCheckBoxChangeHandler}

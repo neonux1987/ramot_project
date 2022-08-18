@@ -1,8 +1,8 @@
 import React from "react";
-import CheckboxWithLabel from "../../../../../../components/Checkboxes/CheckboxWithLabel";
+import RadioWithLabel from "../../../../../../components/Radio/RadioWithLabel";
 
 const ResetDB = ({ byReset, onCheckBoxChangeHandler }) => (
-  <CheckboxWithLabel
+  <RadioWithLabel
     label="איפוס בסיס הנתונים"
     checked={byReset}
     onChange={onCheckBoxChangeHandler}
