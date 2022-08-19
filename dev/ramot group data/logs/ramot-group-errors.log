@@ -1,0 +1,71 @@
+[2022-08-19 01:28:52.287] [info]  Checking for update
+[2022-08-19 01:28:52.767] [error] Error: Error: Unable to find latest version on GitHub (https://github.com/repos/neonux1987/ramot_project/releases/latest), please ensure a production release exists: HttpError: 404 
+"method: GET url: https://github.com/repos/neonux1987/ramot_project/releases/latest\n\nPlease double check that your authentication token is correct. Due to security reasons, actual status maybe not reported, but 404.\n"
+Headers: {
+  "server": "GitHub.com",
+  "date": "Thu, 18 Aug 2022 22:28:52 GMT",
+  "content-type": "text/plain; charset=utf-8",
+  "vary": "X-PJAX, X-PJAX-Container, Turbo-Visit, Turbo-Frame, Accept-Encoding, Accept, X-Requested-With",
+  "permissions-policy": "interest-cohort=()",
+  "cache-control": "no-cache",
+  "set-cookie": [
+    "logged_in=no; domain=.github.com; path=/; expires=Fri, 18 Aug 2023 22:28:52 GMT; secure; HttpOnly; SameSite=Lax"
+  ],
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "0",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "expect-ct": "max-age=2592000, report-uri=\"https://api.github.com/_private/browser/errors\"",
+  "content-security-policy": "default-src 'none'; base-uri 'self'; connect-src 'self'; form-action 'self'; img-src 'self' data:; script-src 'self'; style-src 'unsafe-inline'",
+  "content-encoding": "gzip",
+  "x-github-request-id": "3D56:3F7D:1A224B7:1BA592F:62FEBD24"
+}
+    at createHttpError (E:\developer\mezach\ramot_project\node_modules\builder-util-runtime\out\httpExecutor.js:14:12)
+    at ElectronHttpExecutor.handleResponse (E:\developer\mezach\ramot_project\node_modules\builder-util-runtime\out\httpExecutor.js:116:20)
+    at ClientRequest.<anonymous> (E:\developer\mezach\ramot_project\node_modules\builder-util-runtime\out\httpExecutor.js:82:26)
+    at ClientRequest.emit (node:events:526:28)
+    at SimpleURLLoaderWrapper.<anonymous> (node:electron/js2c/browser_init:101:6917)
+    at SimpleURLLoaderWrapper.emit (node:events:526:28)
+    at Object.newError (E:\developer\mezach\ramot_project\node_modules\builder-util-runtime\out\index.js:47:19)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:73:42)
+    at async PrivateGitHubProvider.getLatestVersion (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:25:29)
+    at async NsisUpdater.getUpdateInfoAndProvider (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\AppUpdater.js:298:19)
+    at async NsisUpdater.doCheckForUpdates (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\AppUpdater.js:312:24)
+    at async IpcMainImpl.<anonymous> (E:\developer\mezach\ramot_project\electron\ipcs\updates.ipc.js:32:20)
+[2022-08-19 01:30:28.116] [info]  Checking for update
+[2022-08-19 01:30:28.475] [error] Error: Error: Unable to find latest version on GitHub (https://github.com/repos/neonux1987/ramot_project/releases/latest), please ensure a production release exists: HttpError: 404 
+"method: GET url: https://github.com/repos/neonux1987/ramot_project/releases/latest\n\nPlease double check that your authentication token is correct. Due to security reasons, actual status maybe not reported, but 404.\n"
+Headers: {
+  "server": "GitHub.com",
+  "date": "Thu, 18 Aug 2022 22:30:28 GMT",
+  "content-type": "text/plain; charset=utf-8",
+  "vary": "X-PJAX, X-PJAX-Container, Turbo-Visit, Turbo-Frame, Accept-Encoding, Accept, X-Requested-With",
+  "permissions-policy": "interest-cohort=()",
+  "cache-control": "no-cache",
+  "set-cookie": [
+    "logged_in=no; domain=.github.com; path=/; expires=Fri, 18 Aug 2023 22:30:28 GMT; secure; HttpOnly; SameSite=Lax"
+  ],
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "0",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "expect-ct": "max-age=2592000, report-uri=\"https://api.github.com/_private/browser/errors\"",
+  "content-security-policy": "default-src 'none'; base-uri 'self'; connect-src 'self'; form-action 'self'; img-src 'self' data:; script-src 'self'; style-src 'unsafe-inline'",
+  "content-encoding": "gzip",
+  "x-github-request-id": "3DB8:1F25:14343F5:15A9673:62FEBD84"
+}
+    at createHttpError (E:\developer\mezach\ramot_project\node_modules\builder-util-runtime\out\httpExecutor.js:14:12)
+    at ElectronHttpExecutor.handleResponse (E:\developer\mezach\ramot_project\node_modules\builder-util-runtime\out\httpExecutor.js:116:20)
+    at ClientRequest.<anonymous> (E:\developer\mezach\ramot_project\node_modules\builder-util-runtime\out\httpExecutor.js:82:26)
+    at ClientRequest.emit (node:events:526:28)
+    at SimpleURLLoaderWrapper.<anonymous> (node:electron/js2c/browser_init:101:6917)
+    at SimpleURLLoaderWrapper.emit (node:events:526:28)
+    at Object.newError (E:\developer\mezach\ramot_project\node_modules\builder-util-runtime\out\index.js:47:19)
+    at PrivateGitHubProvider.getLatestVersionInfo (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:73:42)
+    at async PrivateGitHubProvider.getLatestVersion (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\providers\PrivateGitHubProvider.js:25:29)
+    at async NsisUpdater.getUpdateInfoAndProvider (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\AppUpdater.js:298:19)
+    at async NsisUpdater.doCheckForUpdates (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\AppUpdater.js:312:24)
+    at async IpcMainImpl.<anonymous> (E:\developer\mezach\ramot_project\electron\ipcs\updates.ipc.js:32:20)
+[2022-08-19 01:46:21.383] [info]  Skip checkForUpdatesAndNotify because application is not packed

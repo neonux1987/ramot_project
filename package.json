@@ -87,7 +87,7 @@
     "dotenv": "^9.0.2",
     "electron-context-menu": "^3.2.0",
     "electron-log": "^4.3.4",
-    "electron-updater": "^4.6.5",
+    "electron-updater": "^5.2.1",
     "exceljs": "^4.2.0",
     "file-type": "^16.5.4",
     "fs-extra": "^9.0.1",
