@@ -26,7 +26,8 @@ class SetupLogic {
         );
       }
     } catch (error) {
-      console.log(error);
+      const LogicError = require("../customErrors/LogicError");
+      throw new LogicError("First time setup failed.", "SetupLogic.js", error);
     }
   }
 

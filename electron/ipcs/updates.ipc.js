@@ -14,7 +14,6 @@ const updatesIpc = () => {
       owner: "neonux1987",
       repo: "ramot_project",
       private: true,
-      token: "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",
       releaseType: "release"
     };
 

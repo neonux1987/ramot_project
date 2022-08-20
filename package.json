@@ -1,7 +1,6 @@
 {
   "name": "ramot-group-income-outcome-management",
   "version": "1.0.2",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/neonux1987/ramot_project.git"
@@ -32,7 +31,6 @@
       {
         "provider": "github",
         "owner": "neonux1987",
-        "private": true,
         "releaseType": "release",
         "protocol": "https",
         "repo": "ramot_project",
@@ -63,13 +61,15 @@
     "build": "rescripts build",
     "test": "rescripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron --restoreMode=true .\"",
+    "dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "npm run build",
-    "electron-pack": "electron-builder --win --publish never",
-    "electron-deploy": "npm run build && electron-builder --win --publish always",
+    "electron-pack": "npm run before-pack && electron-builder --win --publish never && npm run after-pack",
+    "electron-deploy": "npm run before-pack && npm run build && electron-builder --win --publish always && npm run after-pack",
     "migrate": "knex migrate:latest --knexfile electron/backend/connection/knexFile.js",
-    "seed": "knex seed:run --knexfile electron/backend/connection/knexFile.js"
+    "seed": "knex seed:run --knexfile electron/backend/connection/knexFile.js",
+    "before-pack": "node ./scripts/beforePack.js",
+    "after-pack": "node ./scripts/afterPack.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -87,7 +87,7 @@
     "dotenv": "^9.0.2",
     "electron-context-menu": "^3.2.0",
     "electron-log": "^4.3.4",
-    "electron-updater": "^5.2.1",
+    "electron-updater": "^4.4.0",
     "exceljs": "^4.2.0",
     "file-type": "^16.5.4",
     "fs-extra": "^9.0.1",

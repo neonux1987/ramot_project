@@ -1,8 +1,0 @@
-appId: com.my-website.ramot-group-income-outcome-management
-publish:
-  provider: github
-  repo: ramot_project
-  releaseType: release
-  token: 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
-  private: true
-  host: github.com

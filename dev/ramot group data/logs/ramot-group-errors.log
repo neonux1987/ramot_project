@@ -69,3 +69,4 @@ Headers: {
     at async NsisUpdater.doCheckForUpdates (E:\developer\mezach\ramot_project\node_modules\electron-updater\out\AppUpdater.js:312:24)
     at async IpcMainImpl.<anonymous> (E:\developer\mezach\ramot_project\electron\ipcs\updates.ipc.js:32:20)
 [2022-08-19 01:46:21.383] [info]  Skip checkForUpdatesAndNotify because application is not packed
+[2022-08-19 21:10:56.364] [info]  Skip checkForUpdatesAndNotify because application is not packed
