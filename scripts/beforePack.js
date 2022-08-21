@@ -1,11 +1,22 @@
 const path = require("path");
 const fse = require("fs-extra");
 
+const appDir = path.join(__dirname, "../");
+const resourcesFolderPath = path.join(appDir, "extraResources");
+const installerNshPath = path.join(resourcesFolderPath, "installer.nsh");
+const buildFolderPath = path.join(appDir, "build");
+const setupConfigPath = path.join(resourcesFolderPath, "setupConfig.json");
+
 function execute() {
-  const setupConfigPath = path.join(
-    __dirname,
-    "../extraResources",
-    "setupConfig.json"
+  // ensures th build folder exist for the
+  // copy operation of installer.nsh
+  fse.ensureDirSync(buildFolderPath);
+
+  // copy install.nsh to build folder for custom
+  // installer script
+  fse.copyFileSync(
+    installerNshPath,
+    path.join(buildFolderPath, "installer.nsh")
   );
 
   const setupConfigFile = fse.readJsonSync(setupConfigPath);
