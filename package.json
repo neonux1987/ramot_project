@@ -45,9 +45,10 @@
     },
     "nsis": {
       "allowToChangeInstallationDirectory": false,
-      "oneClick": true,
+      "oneClick": false,
       "createDesktopShortcut": true,
-      "deleteAppDataOnUninstall": true
+      "deleteAppDataOnUninstall": true,
+      "include": "build/installer.nsh"
     },
     "directories": {
       "buildResources": "assets"
