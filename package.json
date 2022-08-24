@@ -48,7 +48,7 @@
       "oneClick": false,
       "createDesktopShortcut": true,
       "deleteAppDataOnUninstall": true,
-      "include": "build/uninstaller.nsh",
+      "include": "nsis/uninstaller.nsh",
       "warningsAsErrors": false,
       "perMachine": false
     },

@@ -1,10 +1,17 @@
 !include nsDialogs.nsh
+!include LogicLib.nsh
 
 XPStyle on
 Var /GLOBAL Dialog_1
 Var /GLOBAL CheckBox_1
 Var /GLOBAL Checkbox_State
+Var /GLOBAL processFound
 
+!macro FindProc result processName
+    nsProcess::_FindProcess processName
+    Pop result ; The handle for the process
+!macroend
+ 
 ;------------ uninstall custom page -----------------
 UninstPage custom un.removeFiles un.removeFilesLeave
 
@@ -36,29 +43,19 @@ Function un.removeFilesLeave
       Goto done
     done: 
   ${EndIf}
+
+  !insertmacro FindProc $processFound "Ramot Group Income Outcome Management.exe"
+
+  ${If} $processFound == 1
+    MessageBox MB_OK "You must quit the app Ramot Group Income Outcome Management before uninstallig" IDOK ok
+    ok: 
+    Abort
+  ${EndIf}
 FunctionEnd
 
 ;------------ uninstall custom page end -----------------
 
-!define FindProc_NOT_FOUND 1
-!define FindProc_FOUND 0
-!macro FindProc result processName
-    ExecCmd::exec "%SystemRoot%\System32\tasklist /NH /FI $\"IMAGENAME eq ${processName}$\" | %SystemRoot%\System32\find /I $\"${processName}$\"" 
-    Pop $0 ; The handle for the process
-    ExecCmd::wait $0
-    Pop ${result} ; The exit code
-!macroend
- 
-Var /GLOBAL processFound
-
 !macro customUnInstall
-  !insertmacro FindProc $processFound "Ramot Group Income Outcome Management.exe"
-
-  ${If} $processFound == true
-    MessageBox MB_OK "You must quit the app Ramot Group Income Outcome Management before uninstallig" IDNO
-    no:
-  ${EndIf}
-
   ${if} $Checkbox_State == 1
     RMDir /r "$AppData\Ramot Group Data\config"
     RMDir /r "$AppData\Ramot Group Data\database"
