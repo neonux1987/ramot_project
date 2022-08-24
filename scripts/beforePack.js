@@ -3,7 +3,7 @@ const fse = require("fs-extra");
 
 const appDir = path.join(__dirname, "../");
 const resourcesFolderPath = path.join(appDir, "extraResources");
-const installerNshPath = path.join(resourcesFolderPath, "installer.nsh");
+const installerNshPath = path.join(resourcesFolderPath, "uninstaller.nsh");
 const buildFolderPath = path.join(appDir, "build");
 const setupConfigPath = path.join(resourcesFolderPath, "setupConfig.json");
 
@@ -16,7 +16,7 @@ function execute() {
   // installer script
   fse.copyFileSync(
     installerNshPath,
-    path.join(buildFolderPath, "installer.nsh")
+    path.join(buildFolderPath, "uninstaller.nsh")
   );
 
   const setupConfigFile = fse.readJsonSync(setupConfigPath);

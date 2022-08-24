@@ -12,7 +12,7 @@
   },
   "build": {
     "appId": "com.my-website.ramot-group-income-outcome-management",
-    "productName": "קבוצת רמות ניהול הוצאות והכנסות",
+    "productName": "Ramot Group Income Outcome Management",
     "copyright": "Copyright © 2019 ${author}",
     "extends": null,
     "files": [
@@ -48,7 +48,9 @@
       "oneClick": false,
       "createDesktopShortcut": true,
       "deleteAppDataOnUninstall": true,
-      "include": "build/installer.nsh"
+      "include": "build/uninstaller.nsh",
+      "warningsAsErrors": false,
+      "perMachine": false
     },
     "directories": {
       "buildResources": "assets"
