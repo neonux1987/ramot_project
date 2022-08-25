@@ -8,7 +8,7 @@ Var /GLOBAL Checkbox_State
 Var /GLOBAL processFound
 
 ;------------ uninstall custom page -----------------
-  UninstPage custom un.removeFiles un.removeFilesLeave
+UninstPage custom un.removeFiles un.removeFilesLeave
 
 Function un.removeFiles
 
