@@ -71,7 +71,25 @@ exports.AppErrorDialog = async () => {
   } else if (dialogData.response === 2) app.quit(0);
 };
 
-exports.NoDBErorDialog = async () => {
+exports.NoAdminPrivilegesErrorDialog = async () => {
+  const title = "שגיאת אין הרשאות מנהל מערכת";
+  const message = `נא להפעיל את האפליקציה עם הרשאות מנהל מערכת!
+  
+  `;
+
+  const loadingWindow = getWindow("loadingWindow");
+
+  const dialogData = await dialog.showMessageBox(loadingWindow, {
+    title,
+    message,
+    type: "error",
+    buttons: ["סגור"]
+  });
+
+  if (dialogData.response === 0) app.quit(0);
+};
+
+exports.NoDBErrorDialog = async () => {
   const createRestoreDbWindow = require("../windows/restore_window");
   const title = "שגיאת קובץ בסיס נתונים";
   const message = "המערכת נכשלה בקריאת קובץ בסיס הנתונים מכיוון שלא קיים.";
@@ -109,6 +127,17 @@ exports.NoDBErorDialog = async () => {
     openLogFile();
     app.quit(0);
   } else if (dialogData.response === 2) app.quit(0);
+};
+
+exports.checkIsElevated = async () => {
+  const isElevated = require("native-is-elevated")();
+
+  if (isElevated) {
+    this.NoAdminPrivilegesErrorDialog();
+    throw new Error("The app needs admin privileges in order to run");
+  }
+
+  return isElevated;
 };
 
 exports.compressToZip = async function (filesList = [], zipfilePath) {

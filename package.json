@@ -44,13 +44,14 @@
       "icon": "./Icon/ramot-group-icon.ico"
     },
     "nsis": {
-      "allowToChangeInstallationDirectory": false,
+      "allowToChangeInstallationDirectory": true,
       "oneClick": false,
       "createDesktopShortcut": true,
       "deleteAppDataOnUninstall": true,
       "include": "nsis/uninstaller.nsh",
       "warningsAsErrors": false,
-      "perMachine": false
+      "perMachine": false,
+      "allowElevation": false
     },
     "directories": {
       "buildResources": "assets"
@@ -97,6 +98,7 @@
     "knex": "^0.21.11",
     "nanoid": "^3.1.22",
     "nanoid-dictionary": "^4.3.0",
+    "native-is-elevated": "^0.5.0",
     "nesthydrationjs": "^2.0.0",
     "pdf-lib": "^1.16.0",
     "pdf-to-printer": "^5.3.0",

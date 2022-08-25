@@ -15,7 +15,11 @@ process.env.NODE_ENV = isDev ? "development" : "production";
 const createMainWindow = require("./windows/main_window");
 const createLoadingWindow = require("./windows/loading_window");
 const mainSystem = require("./backend/system/MainSystem");
-const { AppErrorDialog, NoDBErorDialog } = require("./helpers/utils");
+const {
+  AppErrorDialog,
+  NoDBErrorDialog,
+  checkIsElevated
+} = require("./helpers/utils");
 
 contextMenu({
   prepend: () => [
@@ -50,7 +54,9 @@ const gotTheLock = app.requestSingleInstanceLock();
 async function createWindow() {
   let loadingWindow = createLoadingWindow({ icon });
 
-  loadingWindow.once("show", () => {
+  loadingWindow.once("show", async () => {
+    await checkIsElevated();
+
     /* start system */
     mainSystem
       .startSystem()
@@ -100,7 +106,7 @@ async function createWindow() {
           error.message === "קובץ בסיס נתונים לא קיים" ||
           error.message === "המערכת נכשלה בהתחברות לבסיס הנתונים"
         )
-          await NoDBErorDialog();
+          await NoDBErrorDialog();
         else await AppErrorDialog();
       });
     /* end start system */

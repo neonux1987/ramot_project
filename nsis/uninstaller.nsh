@@ -39,8 +39,7 @@ Function un.removeFilesLeave
     done: 
   ${EndIf}
 
-  nsProcess::_FindProcess "Ramot Group Income Outcome Management.exe" $processFound 
-  Pop $processFound
+  
 
   ${If} $processFound == 0
     MessageBox MB_OK "The app Ramot Group Income Outcome Management is still running. you must quit it before uninstalling" IDOK ok
