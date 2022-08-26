@@ -1,6 +1,7 @@
 {
   "name": "ramot-group-income-outcome-management",
   "version": "1.0.0",
+  "private": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/neonux1987/ramot_project.git"
@@ -26,16 +27,6 @@
     ],
     "asarUnpack": [
       "node_modules/highcharts-export-server/**/*"
-    ],
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "neonux1987",
-        "releaseType": "release",
-        "protocol": "https",
-        "repo": "ramot_project",
-        "host": "github.com"
-      }
     ],
     "win": {
       "target": [

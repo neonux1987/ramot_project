@@ -4,4 +4,3 @@ repo: ramot_project
 provider: github
 host: github.com
 updaterCacheDirName: ramot-group-income-outcome-management-updater
-private: true

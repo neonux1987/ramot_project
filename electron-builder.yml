@@ -1,0 +1,7 @@
+appId: com.my-website.ramot-group-income-outcome-management
+publish:
+  provider: github
+  repo: ramot_project
+  releaseType: release
+  host: github.com
+  private: false
