@@ -132,7 +132,10 @@ exports.NoDBErrorDialog = async () => {
 exports.checkIsNeedAdminRights = async () => {
   const isElevated = require("native-is-elevated")();
 
-  if (app.getAppPath().includes(process.env.SystemDrive) && !isElevated) {
+  if (
+    app.getAppPath().includes(`${process.env.SystemDrive}\\Program Files`) &&
+    !isElevated
+  ) {
     this.NoAdminPrivilegesErrorDialog();
     throw new Error("The app needs admin privileges in order to run");
   }

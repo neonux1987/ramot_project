@@ -50,7 +50,9 @@ FunctionEnd
 
 ;------------ uninstall custom page end -----------------
 
-!macro customUnInstall
+!macro customRemoveFiles
+  MessageBox MB_OK "$AppData"
+  SetShellVarContext current
   ${if} $Checkbox_State == 1
     RMDir /r "$AppData\Ramot Group Data\config"
     RMDir /r "$AppData\Ramot Group Data\database"
