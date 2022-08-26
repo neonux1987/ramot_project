@@ -1,0 +1,7 @@
+appId: com.my-website.ramot-group-income-outcome-management
+owner: neonux1987
+repo: ramot_project
+provider: github
+host: github.com
+updaterCacheDirName: ramot-group-income-outcome-management-updater
+private: true

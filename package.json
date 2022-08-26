@@ -44,14 +44,14 @@
       "icon": "./Icon/ramot-group-icon.ico"
     },
     "nsis": {
-      "allowToChangeInstallationDirectory": true,
+      "allowToChangeInstallationDirectory": false,
       "oneClick": false,
       "createDesktopShortcut": true,
       "deleteAppDataOnUninstall": true,
       "include": "nsis/uninstaller.nsh",
       "warningsAsErrors": false,
       "perMachine": false,
-      "allowElevation": false
+      "allowElevation": true
     },
     "directories": {
       "buildResources": "assets"

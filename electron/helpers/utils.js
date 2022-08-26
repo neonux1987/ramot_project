@@ -129,15 +129,13 @@ exports.NoDBErrorDialog = async () => {
   } else if (dialogData.response === 2) app.quit(0);
 };
 
-exports.checkIsElevated = async () => {
+exports.checkIsNeedAdminRights = async () => {
   const isElevated = require("native-is-elevated")();
 
-  if (isElevated) {
+  if (app.getAppPath().includes(process.env.SystemDrive) && !isElevated) {
     this.NoAdminPrivilegesErrorDialog();
     throw new Error("The app needs admin privileges in order to run");
   }
-
-  return isElevated;
 };
 
 exports.compressToZip = async function (filesList = [], zipfilePath) {

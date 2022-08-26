@@ -18,7 +18,7 @@ const mainSystem = require("./backend/system/MainSystem");
 const {
   AppErrorDialog,
   NoDBErrorDialog,
-  checkIsElevated
+  checkIsNeedAdminRights
 } = require("./helpers/utils");
 
 contextMenu({
@@ -55,7 +55,7 @@ async function createWindow() {
   let loadingWindow = createLoadingWindow({ icon });
 
   loadingWindow.once("show", async () => {
-    await checkIsElevated();
+    await checkIsNeedAdminRights();
 
     /* start system */
     mainSystem
