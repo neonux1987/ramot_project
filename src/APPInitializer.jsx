@@ -104,7 +104,7 @@ const APPInitializer = () => {
     persistor === null
   )
     return <AppLoader text="טוען הגדרות אפליקציה" />;
-  persistor.purge();
+  //persistor.purge();
   return (
     <StoreWrapper store={store} persistor={persistor}>
       <MemoryRouter>
