@@ -61,7 +61,8 @@ class SettingsLogic {
     THEME: "theme",
     LOCATIONS: "locations",
     DB_BACKUP: "db_backup",
-    DB_RESTORE: "db_restore"
+    DB_RESTORE: "db_restore",
+    REDUX: "redux"
   };
 }
 

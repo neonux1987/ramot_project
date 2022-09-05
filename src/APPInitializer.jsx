@@ -10,6 +10,7 @@ import AppLoadingView from "./WindowViews/AppLoadingView/AppLoadingView";
 import ChartExportView from "./WindowViews/ChartExportView/ChartExportView";
 import RestoreWizard from "./WindowViews/RestoreWizardView/RestoreWizardView";
 import AppContainer from "./AppContainer";
+import { purgeCacheAfterRestore } from "./services/restoreDbService";
 
 // get url query param for the views
 const queryString = window.location.search;
@@ -73,6 +74,9 @@ const APPInitializer = () => {
 
         setStore(store);
         setPersistor(persistor);
+        await store.dispatch(purgeCacheAfterRestore());
+        console.log(store.getState());
+        console.log(JSON.parse(localStorage.getItem("buildings")));
       };
 
       setupStore();
@@ -104,7 +108,7 @@ const APPInitializer = () => {
     persistor === null
   )
     return <AppLoader text="טוען הגדרות אפליקציה" />;
-  //persistor.purge();
+
   return (
     <StoreWrapper store={store} persistor={persistor}>
       <MemoryRouter>

@@ -3,7 +3,8 @@ import { ipcSendReceive } from "../redux/actions/util/util";
 import { toastManager } from "../toasts/toastManager";
 import ToastRender from "../components/ToastRender/ToastRender";
 import { restartApp } from "./mainProcess.svc";
-import { purgeCache } from "../redux/actions/persistorActions";
+import { flushCache, purgeCache } from "../redux/actions/persistorActions";
+import { saveSettings, updateSettings } from "../redux/actions/settingsActions";
 
 export const restore = ({ fileName, withConfig }, byList) => {
   const toastId = toastManager.info(
@@ -37,8 +38,7 @@ export const restore = ({ fileName, withConfig }, byList) => {
           toastManager.info(
             "המערכת תבצע איתחול בשביל שהשינויים ייכנסו לתוקף.",
             {
-              onClose: async () => {
-                await purgeCache();
+              onClose: () => {
                 restartApp();
               }
             }
@@ -55,7 +55,7 @@ export const restore = ({ fileName, withConfig }, byList) => {
   });
 };
 
-export const resetDB = ({ withConfig }, byList) => {
+export const resetDB = ({ withConfig }) => {
   const toastId = toastManager.info(
     <ToastRender
       spinner={true}
@@ -86,8 +86,7 @@ export const resetDB = ({ withConfig }, byList) => {
           toastManager.info(
             "המערכת תבצע איתחול בשביל שהשינויים ייכנסו לתוקף.",
             {
-              onClose: async () => {
-                await purgeCache();
+              onClose: () => {
                 restartApp();
               }
             }
@@ -103,4 +102,20 @@ export const resetDB = ({ withConfig }, byList) => {
       }),
     withErrorNotification: false
   });
+};
+
+export const purgeCacheAfterRestore = () => {
+  return async (dispatch, getState) => {
+    const reduxSettings = getState().settings.data.redux;
+
+    if (reduxSettings.purgeCache) {
+      const payload = {
+        purgeCache: false
+      };
+      dispatch(updateSettings("redux", payload));
+      await dispatch(saveSettings(false));
+      await purgeCache();
+      console.log("im here");
+    }
+  };
 };

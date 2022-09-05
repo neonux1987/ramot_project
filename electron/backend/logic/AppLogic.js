@@ -119,6 +119,9 @@ class AppLogic {
         backups_names_file_path: "",
         logs_folder_path: "",
         log_file_path: ""
+      },
+      redux: {
+        purgeCache: false
       }
     };
 

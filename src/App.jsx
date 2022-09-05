@@ -24,10 +24,7 @@ const App = ({ theme, settings, mainContainerRef }) => {
             <CssBaseline />
             <AppBarContainer />
             <SidebarContainer />
-            <MainContainer
-              mainContainerRef={mainContainerRef}
-              settings={settings}
-            />
+            <MainContainer mainContainerRef={mainContainerRef} />
           </AppWrapper>
 
           <CustomToastContainer />

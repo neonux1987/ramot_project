@@ -15,6 +15,8 @@ class RestoreDbLogic {
     const connectionPool = require("../connection/ConnectionPool");
     const SystemPaths = require("../system/SystemPaths");
     const AppLogic = require("./AppLogic");
+    const SettingsLogic = require("../logic/SettingsLogic");
+    const settingsLogic = new SettingsLogic();
     const appLogic = new AppLogic();
 
     // destroy connection
@@ -36,6 +38,16 @@ class RestoreDbLogic {
       // create new config file
       await appLogic.createCleanSettingsFile();
     }
+
+    // when replacing the database, we also need
+    // to purge the redux cache from old database data
+    // otherwise it will throw errors on the client side
+    await settingsLogic.updateSpecificSetting(
+      SettingsLogic.SETTINGS_NAMES.REDUX,
+      {
+        purgeCache: true
+      }
+    );
   }
 
   async restoreFromList(fileName, withConfig) {
@@ -57,6 +69,8 @@ class RestoreDbLogic {
     const connectionPool = require("../connection/ConnectionPool");
     const { extractZip } = require("../../helpers/utils");
     const SystemPaths = require("../system/SystemPaths");
+    const SettingsLogic = require("../logic/SettingsLogic");
+    const settingsLogic = new SettingsLogic();
 
     const extractedFolderPath =
       SystemPaths.paths.app_temp_folder + "/extracted";
@@ -101,6 +115,16 @@ class RestoreDbLogic {
     }
 
     await fse.remove(extractedFolderPath);
+
+    // when replacing the database, we also need
+    // to purge the redux cache from old database data
+    // otherwise it will throw errors on the client side
+    await settingsLogic.updateSpecificSetting(
+      SettingsLogic.SETTINGS_NAMES.REDUX,
+      {
+        purgeCache: true
+      }
+    );
   }
 }
 
