@@ -3,7 +3,6 @@ import { ipcSendReceive } from "../redux/actions/util/util";
 import { toastManager } from "../toasts/toastManager";
 import ToastRender from "../components/ToastRender/ToastRender";
 import { restartApp } from "./mainProcess.svc";
-import { flushCache, purgeCache } from "../redux/actions/persistorActions";
 import { saveSettings, updateSettings } from "../redux/actions/settingsActions";
 
 export const restore = ({ fileName, withConfig }, byList) => {
@@ -59,7 +58,7 @@ export const resetDB = ({ withConfig }) => {
   const toastId = toastManager.info(
     <ToastRender
       spinner={true}
-      message={"המערכת מבצעת שיחזור של הבסיס נתונים..."}
+      message={"המערכת מבצעת איפוס בסיס נתונים והגדרות..."}
     />,
     {
       autoClose: false
@@ -104,7 +103,7 @@ export const resetDB = ({ withConfig }) => {
   });
 };
 
-export const purgeCacheAfterRestore = () => {
+export const purgeCacheAfterRestore = (persistor) => {
   return async (dispatch, getState) => {
     const reduxSettings = getState().settings.data.redux;
 
@@ -114,7 +113,8 @@ export const purgeCacheAfterRestore = () => {
       };
       dispatch(updateSettings("redux", payload));
       await dispatch(saveSettings(false));
-      await purgeCache();
+      await persistor.purge();
+      await persistor.persist();
       console.log("im here");
     }
   };

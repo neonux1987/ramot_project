@@ -74,9 +74,13 @@ const APPInitializer = () => {
 
         setStore(store);
         setPersistor(persistor);
-        await store.dispatch(purgeCacheAfterRestore());
+
+        // in case of database restore, purge the cache
+        // and persist the new state
+        if (store.getState().settings.data.redux.purgeCache) {
+          await store.dispatch(purgeCacheAfterRestore(persistor));
+        }
         console.log(store.getState());
-        console.log(JSON.parse(localStorage.getItem("buildings")));
       };
 
       setupStore();
