@@ -114,8 +114,6 @@ export const purgeCacheAfterRestore = (persistor) => {
       dispatch(updateSettings("redux", payload));
       await dispatch(saveSettings(false));
       await persistor.purge();
-      await persistor.persist();
-      console.log("im here");
     }
   };
 };

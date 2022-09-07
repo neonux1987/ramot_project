@@ -24,7 +24,7 @@ export const restartApp = () => {
 };
 
 export const refreshView = () => {
-  ipcRenderer.send("refresh-webContent-view");
+  return ipcRenderer.invoke("refresh-webContent-view");
 };
 
 export const showItemInFolder = (path) => {

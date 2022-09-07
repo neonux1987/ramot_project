@@ -4,7 +4,11 @@ import { MemoryRouter } from "react-router-dom";
 import { initStore } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import LoadingCircle from "./components/LoadingCircle";
-import { getAllBuildings, getSettings } from "./services/mainProcess.svc";
+import {
+  getAllBuildings,
+  getSettings,
+  refreshView
+} from "./services/mainProcess.svc";
 import AppLoader from "./components/AnimatedLoaders/AppLoader";
 import AppLoadingView from "./WindowViews/AppLoadingView/AppLoadingView";
 import ChartExportView from "./WindowViews/ChartExportView/ChartExportView";
@@ -79,8 +83,8 @@ const APPInitializer = () => {
         // and persist the new state
         if (store.getState().settings.data.redux.purgeCache) {
           await store.dispatch(purgeCacheAfterRestore(persistor));
+          await refreshView();
         }
-        console.log(store.getState());
       };
 
       setupStore();
