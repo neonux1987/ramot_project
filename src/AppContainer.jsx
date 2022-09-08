@@ -7,7 +7,6 @@ import AppLoader from "./components/AnimatedLoaders/AppLoader";
 import useServices from "./customHooks/useServices";
 import generalSettingsActions from "./redux/actions/generalSettingsActions";
 import "react-toastify/dist/ReactToastify.css";
-import "./assets/css/style.css";
 import App from "./App";
 
 const theme = createTheme(

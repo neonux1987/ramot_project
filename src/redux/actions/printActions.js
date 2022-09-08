@@ -133,7 +133,9 @@ function createBlobFromHtml(componentRef) {
   let ownerDocument = componentRef.current.ownerDocument;
   const headElement = ownerDocument.head.cloneNode(true);
   const targetElement = componentRef.current.cloneNode(true);
-
+  console.log(
+    document.querySelector("link[rel=stylesheet]").getAttribute("href")
+  );
   const doc = document.implementation.createDocument(
     "http://www.w3.org/1999/xhtml",
     "html",

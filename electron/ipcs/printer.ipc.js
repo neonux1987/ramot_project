@@ -4,7 +4,7 @@ const printerIpc = () => {
   ipcMain.on("print-pdf", async (event, options = {}, blobUrl = null) => {
     let win = new BrowserWindow({
       title: "Print Preview",
-      show: false,
+      show: true,
       autoHideMenuBar: true
     });
 
@@ -31,7 +31,7 @@ const printerIpc = () => {
         return;
       }
 
-      win.destroy();
+      //win.destroy();
 
       const { pageCount, output } = await addPageNumbers(data);
 
