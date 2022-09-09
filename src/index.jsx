@@ -1,4 +1,4 @@
 import ReactDOM from "react-dom";
-import APPInitializer from "./APPInitializer";
+import ViewManager from "./WindowViews/ViewManager";
 
-ReactDOM.render(<APPInitializer />, document.getElementById("root"));
+ReactDOM.render(<ViewManager />, document.getElementById("root"));
