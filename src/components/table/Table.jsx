@@ -71,10 +71,6 @@ const Table = ({
         {totalCount > 0 ? HeaderComponent && HeaderComponent() : null}
       </Thead>
 
-      <Tfoot printMode={printMode}>
-        <div className="page-number"></div>
-      </Tfoot>
-
       <Tbody
         printMode={printMode}
         divProps={{
@@ -91,6 +87,10 @@ const Table = ({
         {/* TABLE */}
         {totalCount > 0 && !isFetching ? table : null}
       </Tbody>
+
+      <Tfoot printMode={printMode}>
+        <div className="page-number"></div>
+      </Tfoot>
     </TableWrapper>
   );
 };

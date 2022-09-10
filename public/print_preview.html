@@ -18,6 +18,7 @@
 
     ipcRenderer.once("print-preview-data", (_, data) => {
       bodyElement.innerHTML = data;
+      ipcRenderer.send("print-preview-ready", true);
     });
   </script>
 </html>

@@ -4,7 +4,7 @@ const printerIpc = () => {
   ipcMain.on("print-pdf", async (event, options = {}, blobUrl = null) => {
     let win = new BrowserWindow({
       title: "Print Preview",
-      show: true,
+      show: false,
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
@@ -35,16 +35,31 @@ const printerIpc = () => {
     win.webContents.once("did-finish-load", async () => {
       win.webContents.send("print-preview-data", blobUrl);
 
+      const isReady = await new Promise((resolve) => {
+        ipcMain.once("print-preview-ready", (_, isReady) => {
+          resolve(isReady);
+        });
+      });
+
+      // continue only when html data is set
+      // in print.html
+      if (!isReady) {
+        win.destroy();
+        return;
+      }
+
       const data = await win.webContents.printToPDF(pageSetup);
 
       if (data === undefined || data === null) {
         event.sender.send("pdf-printed", {
           error: `המערכת לא הצליחה לקרוא את קובץ ה-pdf לתצוגת הדפסה`
         });
+
+        win.destroy();
         return;
       }
 
-      //win.destroy();
+      win.destroy();
 
       const { pageCount, output } = await addPageNumbers(data);
 
