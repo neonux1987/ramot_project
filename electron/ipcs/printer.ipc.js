@@ -5,7 +5,11 @@ const printerIpc = () => {
     let win = new BrowserWindow({
       title: "Print Preview",
       show: true,
-      autoHideMenuBar: true
+      autoHideMenuBar: true,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false
+      }
     });
 
     const pageSetup = {
@@ -19,9 +23,18 @@ const printerIpc = () => {
       ...options
     };
 
-    win.loadURL(blobUrl);
+    win.loadURL(
+      process.env.NODE_ENV === "development"
+        ? `http://localhost:3000/print_preview.html`
+        : `file://${path.join(
+            __dirname,
+            `../../public/print-preview.html?blob=${blobUrl}`
+          )}`
+    );
 
     win.webContents.once("did-finish-load", async () => {
+      win.webContents.send("print-preview-data", blobUrl);
+
       const data = await win.webContents.printToPDF(pageSetup);
 
       if (data === undefined || data === null) {

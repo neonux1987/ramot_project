@@ -1,0 +1,200 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#table {
+  border-radius: 0px;
+  background: #fff;
+  width: 100%;
+  position: relative;
+  z-index: 6;
+  border-collapse: collapse;
+  padding: 20px;
+  padding-top: 0;
+}
+
+th,
+td {
+  padding: 0;
+  margin: 0;
+}
+
+._tableBody {
+  display: grid;
+  direction: rtl;
+  background: #fff;
+  color: #000000;
+  text-align: left;
+  position: relative;
+  border-top: none;
+  height: -moz-calc(100vh - 252px);
+  height: -webkit-calc(100vh - 252px);
+  height: calc(100vh - 252px);
+  border: 1px solid #dddddd;
+  border-top: none;
+}
+
+.tableBodyNoGroupHeader {
+  height: -moz-calc(100vh - 299px);
+  height: -webkit-calc(100vh - 299px);
+  height: calc(100vh - 299px);
+}
+
+.tableRow {
+  min-height: 35px;
+  display: grid;
+  border-bottom: 1px solid #dddddd;
+}
+
+.tableCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: center;
+  overflow: hidden;
+  border-right: 1px solid #dddddd;
+  font-size: 16px;
+  min-height: 40px;
+}
+
+.tableCellInner {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: #000000;
+}
+
+.tableCell:first-child {
+  border-right: none;
+}
+
+.groupRow {
+  border-bottom: none !important;
+  position: relative;
+  border: 1px solid #dddddd;
+  border-bottom: none;
+  /* border-radius: 6px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; */
+}
+
+.headerRow {
+  grid-template-columns: minmax(60px, 5%) repeat(12, 1fr);
+  border: 1px solid #dddddd;
+  /* border-bottom: 4px solid #dddddd; */
+  position: relative;
+  box-shadow: rgb(0 0 0 / 4%) 0px 8px 12px -4px;
+  z-index: 2;
+  /* background-color: #fdfdfd; */
+}
+
+.groupCell {
+  font-weight: 600;
+  font-size: 14px;
+  height: 45px;
+  border-right: none;
+}
+
+.headerCell {
+  font-weight: 600;
+  font-size: 14px;
+  height: 45px;
+  border-right: none;
+}
+
+#table {
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  background: white !important;
+  color: black !important;
+}
+
+table {
+  page-break-before: always !important;
+  padding: 1px;
+  border-collapse: collapse;
+  display: table;
+  counter-reset: page;
+}
+
+._tableBody {
+  border: none !important;
+}
+
+._tableBody > div {
+  position: relative !important;
+}
+
+._tableBody > div > div {
+  position: relative !important;
+}
+
+thead {
+  position: relative !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  page-break-before: avoid;
+}
+
+th,
+td {
+  padding: 0;
+  margin: 0;
+}
+
+tr {
+  display: table-row;
+}
+
+td {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+tfoot {
+  display: none;
+  page-break-before: avoid;
+  break-inside: avoid;
+}
+
+.groupRow {
+  background-color: #f9f9f9 !important;
+  border: none !important;
+  border-top: thin solid black !important;
+  border-radius: 0 !important;
+}
+
+.headerRow {
+  background-color: #f9f9f9 !important;
+  border-top: thin solid black !important;
+  border-left: thin solid black !important;
+  box-shadow: none !important;
+  border-right: none !important;
+}
+
+.tableRow {
+  border-bottom: thin solid black !important;
+  border-left: thin solid black !important;
+  overflow: hidden !important;
+}
+
+.tableCell:last-child {
+  padding-left: 0 !important;
+}
+
+.tableCell:first-child {
+  border-right: thin solid black !important;
+}
+
+.tableCell:hover {
+  background-color: initial;
+}
+
+.tableCell {
+  border-right: thin solid black !important;
+}
