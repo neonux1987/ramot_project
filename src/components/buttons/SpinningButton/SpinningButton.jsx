@@ -6,7 +6,7 @@ import {
   navLink,
   minWidth,
   animatedIn,
-  animatedOut,
+  animatedOut
 } from "./SpinnerButton.module.css";
 import ButtonNavLink from "../ButtonNavLink";
 
@@ -17,8 +17,7 @@ const SpinnerButton = ({ Icon, to = {}, active = false, className }) => {
         className,
         navLink,
         minWidth,
-        active ? animatedIn : animatedOut,
-        active ? "activeExpandItem" : ""
+        active ? "activeControl" : ""
       )}
       to={to}
       draggable={false}

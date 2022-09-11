@@ -8,7 +8,7 @@ const MoreButton = ({ className = "", onClick, active }) => {
   return (
     <ButtonWithSound
       onClick={onClick}
-      className={classnames(className, active ? "activeExpandItem" : "")}
+      className={classnames(className, active ? "activeControl" : "")}
     >
       <MenuIcon />
     </ButtonWithSound>
