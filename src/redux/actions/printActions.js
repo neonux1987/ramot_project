@@ -143,8 +143,5 @@ function createBlobFromHtml(componentRef) {
   doc.documentElement.appendChild(body);
   body.append(targetElement);
 
-  let blob = new Blob([doc.documentElement.outerHTML], {
-    type: "text/html;charset=utf-8"
-  });
   return body.innerHTML;
 }

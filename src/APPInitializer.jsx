@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { initStore } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import LoadingCircle from "./components/LoadingCircle";
 import {
@@ -64,6 +63,7 @@ const APPInitializer = ({ viewName }) => {
   useEffect(() => {
     if (settingsReady && buildingsDataReady) {
       const setupStore = async () => {
+        const { initStore } = await import("./redux/store");
         const { persistor, store } = await initStore();
 
         setStore(store);
