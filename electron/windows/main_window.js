@@ -1,5 +1,6 @@
 module.exports = (properties) => {
   const { BrowserWindow } = require("electron");
+  const path = require("path");
 
   const mainWindow = new BrowserWindow({
     minWidth: 1280,
@@ -11,7 +12,12 @@ module.exports = (properties) => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true
+      devTools: true,
+      preload: path.join(
+        __dirname,
+        "../preload_scripts",
+        "main_window.preload.js"
+      )
     },
     frame: false,
     resizeable: false,

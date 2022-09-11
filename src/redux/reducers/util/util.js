@@ -1,7 +1,6 @@
-const buildings = JSON.parse(localStorage.getItem("buildings")) || [];
-const pages = JSON.parse(localStorage.getItem("pages")) || [];
-console.log(buildings);
-console.log(pages);
+const buildings = JSON.parse(localStorage.getItem("buildings"));
+const pages = JSON.parse(localStorage.getItem("pages"));
+
 export function updateGlobalBuilding(buildingId, payload) {
   buildings.forEach(({ id }, index) => {
     if (id === buildingId)
@@ -58,7 +57,7 @@ export const initBuildingState = (initState) => {
   const buildingsState = {};
 
   buildings.forEach((building) => {
-    const singleBuildingState = (buildingsState[building.id] = {});
+    const singleBuildingState = (buildingsState[building.buildingId] = {});
     const pagesState = (singleBuildingState.pages = {});
 
     pages.forEach((page) => {
@@ -75,7 +74,7 @@ export const initState = (initState) => {
   const state = {};
 
   buildings.forEach((building) => {
-    state[building.id] = {
+    state[building.buildingId] = {
       ...initState
     };
   });

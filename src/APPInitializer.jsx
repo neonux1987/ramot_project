@@ -3,11 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import LoadingCircle from "./components/LoadingCircle";
-import {
-  getAllBuildings,
-  getSettings,
-  refreshView
-} from "./services/mainProcess.svc";
+import { refreshView } from "./services/mainProcess.svc";
 import AppLoader from "./components/AnimatedLoaders/AppLoader";
 import RestoreWizard from "./WindowViews/RestoreWizardView/RestoreWizardView";
 import AppContainer from "./AppContainer";
@@ -29,64 +25,29 @@ const StoreWrapper = ({ children, store, persistor }) => (
 // future projects will have a better structure that will avoid this
 // design mistake
 const APPInitializer = ({ viewName }) => {
-  const [buildingsDataReady, setBuildingsDataReady] = useState(false);
-  const [settingsReady, setSettingsReady] = useState(false);
   const [store, setStore] = useState(null);
   const [persistor, setPersistor] = useState(null);
 
   useEffect(() => {
-    getAllBuildings((result) => {
-      if (result.data) {
-        localStorage.setItem("buildings", JSON.stringify(result.data));
-        setBuildingsDataReady(true);
-      }
-    });
+    const setupStore = async () => {
+      const { initStore } = await import("./redux/store");
+      const { persistor, store } = await initStore();
 
-    getSettings((result) => {
-      if (result.data) {
-        localStorage.setItem("settings", JSON.stringify(result.data));
-        setSettingsReady(true);
-      }
-    });
+      setStore(store);
+      setPersistor(persistor);
 
-    localStorage.setItem(
-      "pages",
-      JSON.stringify([
-        "monthExpanses",
-        "budgetExecutions",
-        "summarizedBudgets",
-        "statistics"
-      ])
-    );
+      // in case of database restore, purge the cache
+      // and persist the new state
+      if (store.getState().settings.data.redux.purgeCache) {
+        await store.dispatch(purgeCacheAfterRestore(persistor));
+        await refreshView();
+      }
+    };
+
+    setupStore();
   }, []);
 
-  useEffect(() => {
-    if (settingsReady && buildingsDataReady) {
-      const setupStore = async () => {
-        const { initStore } = await import("./redux/store");
-        const { persistor, store } = await initStore();
-
-        setStore(store);
-        setPersistor(persistor);
-
-        // in case of database restore, purge the cache
-        // and persist the new state
-        if (store.getState().settings.data.redux.purgeCache) {
-          await store.dispatch(purgeCacheAfterRestore(persistor));
-          await refreshView();
-        }
-      };
-
-      setupStore();
-    }
-  }, [settingsReady, buildingsDataReady]);
-
-  if (
-    !buildingsDataReady ||
-    !settingsReady ||
-    store === null ||
-    persistor === null
-  )
+  if (store === null || persistor === null)
     return <AppLoader text="טוען הגדרות אפליקציה" />;
 
   if (viewName === "RestoreWizardView")
