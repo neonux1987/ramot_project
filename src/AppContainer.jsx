@@ -24,15 +24,6 @@ const theme = createTheme(
         main: "#001120"
       }
     }
-    // breakpoints: {
-    //   values: {
-    //     xs: 1280,
-    //     sm: 1400,
-    //     md: 1600,
-    //     lg: 1900,
-    //     xl: 1920
-    //   }
-    // }
   },
   heIL
 );

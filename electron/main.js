@@ -108,10 +108,9 @@ async function createWindow() {
         ) {
           const { ipcMain } = require("electron");
 
-          // in case of app data cache is deleted
-          // and there's not database we want to get
-          // the settings for restore wizard to
-          // function in the renderer
+          // in case of app cache folder deletion and database
+          // we want to get the settings for restore wizard to
+          // function correctly in the renderer
           ipcMain.handleOnce("restore-get-settings", async () => {
             const SettingsLogic = require("./backend/logic/SettingsLogic");
             const settingsLogic = new SettingsLogic();
