@@ -13,8 +13,13 @@ module.exports = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true,
-      webSecurity: false
+      devTools: false,
+      webSecurity: false,
+      preload: path.join(
+        __dirname,
+        "../preload_scripts",
+        "restore_window.preload.js"
+      )
     },
     backgroundColor: "#eee",
     icon,

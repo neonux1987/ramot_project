@@ -1,6 +1,6 @@
 import { TYPES } from "../actions/settingsActions";
 
-const settings = JSON.parse(localStorage.getItem("settings"));
+const settings = JSON.parse(localStorage.getItem("settings")) || {};
 
 const initState = {
   isFetching: true,

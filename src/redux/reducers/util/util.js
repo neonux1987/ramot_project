@@ -1,5 +1,5 @@
-const buildings = JSON.parse(localStorage.getItem("buildings"));
-const pages = JSON.parse(localStorage.getItem("pages"));
+const buildings = JSON.parse(localStorage.getItem("buildings")) || [];
+const pages = JSON.parse(localStorage.getItem("pages")) || [];
 
 export function updateGlobalBuilding(buildingId, payload) {
   buildings.forEach(({ id }, index) => {

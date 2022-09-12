@@ -153,7 +153,7 @@ export const addBuilding = (payload) => {
         // global shared object of previous data
         const buildings = JSON.parse(localStorage.getItem("buildings"));
         buildings.push(result.data);
-        localStorage.getItem("buildings", JSON.stringify(buildings));
+        localStorage.setItem("buildings", JSON.stringify(buildings));
       },
       onError: (result) => {
         toastManager.error(result.error);

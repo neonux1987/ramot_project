@@ -105,9 +105,22 @@ async function createWindow() {
         if (
           error.message === "קובץ בסיס נתונים לא קיים" ||
           error.message === "המערכת נכשלה בהתחברות לבסיס הנתונים"
-        )
+        ) {
+          const { ipcMain } = require("electron");
+
+          // in case of app data cache is deleted
+          // and there's not database we want to get
+          // the settings for restore wizard to
+          // function in the renderer
+          ipcMain.handleOnce("restore-get-settings", async () => {
+            const SettingsLogic = require("./backend/logic/SettingsLogic");
+            const settingsLogic = new SettingsLogic();
+
+            return await settingsLogic.getSettings();
+          });
+
           await NoDBErrorDialog();
-        else await AppErrorDialog();
+        } else await AppErrorDialog();
       });
     /* end start system */
   });

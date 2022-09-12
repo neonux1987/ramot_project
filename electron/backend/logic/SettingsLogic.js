@@ -1,5 +1,4 @@
 const fse = require("fs-extra");
-const LogicError = require("../customErrors/LogicError");
 const SystemPaths = require("../system/SystemPaths");
 
 const CONFIG_LOCATION = SystemPaths.paths.config_file_path;
