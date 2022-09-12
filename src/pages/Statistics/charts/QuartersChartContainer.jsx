@@ -7,6 +7,7 @@ import { updateDate } from "../../../redux/actions/quartersChartActions";
 import Tab from "../../../components/Tab/Tab";
 import YearOnlyDatePicker from "../../../components/DatePicker/YearOnlyDatePicker";
 import useIsMounted from "../../../customHooks/useIsMounted";
+import { setPrintableComponentRef } from "../../../redux/actions/printActions";
 
 const QuartersChartContainer = (props) => {
   //building name
@@ -73,6 +74,8 @@ const QuartersChartContainer = (props) => {
 
   useEffect(() => {
     if (date.year !== undefined && isMounted()) fetchAndPrepareData();
+
+    return () => dispatch(setPrintableComponentRef(null));
   }, [dispatch, fetchAndPrepareData, date.year, isMounted]);
 
   return (

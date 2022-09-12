@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { useDispatch } from "react-redux";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,9 +10,7 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import HorizontalBarChartPrint from "./HorizontalBarChartPrint";
-import { useSelector } from "react-redux";
+import { setPrintableComponentRef } from "../../redux/actions/printActions";
 
 ChartJS.register(
   CategoryScale,
@@ -21,9 +21,14 @@ ChartJS.register(
   Legend
 );
 
-const HorizontalBarChart = ({ data, title }) => {
-  const printMode = useSelector((store) => store.print.printMode);
-  const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
+const HorizontalBarChartPrint = ({ printMode, data, title }) => {
+  const ref = useRef();
+  const [chartReady, setChartReady] = useState(false);
+  const dispatch = useDispatch();
+
+  const done = () => {
+    setChartReady(true);
+  };
 
   const [options] = useState({
     responsive: true,
@@ -65,6 +70,9 @@ const HorizontalBarChart = ({ data, title }) => {
         grace: "5%"
       }
     },
+    animation: {
+      onComplete: done
+    },
     plugins: {
       legend: {
         position: "top",
@@ -79,7 +87,7 @@ const HorizontalBarChart = ({ data, title }) => {
         }
       },
       title: {
-        display: false,
+        display: true,
         text: title,
         color: "#000000",
         font: {
@@ -89,23 +97,33 @@ const HorizontalBarChart = ({ data, title }) => {
     }
   });
 
+  useEffect(() => {
+    if (chartReady && printMode) {
+      const chart = ref.current;
+      const div = document.createElement("div");
+      const img = document.createElement("img");
+
+      const dataUrl = chart.toBase64Image("image/png", 1);
+
+      img.setAttribute("src", dataUrl);
+      div.appendChild(img);
+
+      dispatch(setPrintableComponentRef({ current: div }));
+    }
+  }, [chartReady, printMode, dispatch]);
+
   return (
     <div
       style={{
-        position: "relative",
-        height: isFullscreen ? "calc(100vh - 220px)" : "600px"
+        width: "1280px",
+        height: "780px",
+        visibility: "hidden",
+        position: "absolute"
       }}
     >
-      {printMode && (
-        <HorizontalBarChartPrint
-          printMode={printMode}
-          data={data}
-          title={title}
-        />
-      )}
-      <Bar options={options} data={data} />
+      <Bar ref={ref} options={options} data={data} />
     </div>
   );
 };
 
-export default HorizontalBarChart;
+export default HorizontalBarChartPrint;

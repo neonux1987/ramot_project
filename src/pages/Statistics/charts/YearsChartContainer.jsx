@@ -9,6 +9,7 @@ import DateRangePicker from "../../../components/DateRangePicker/DateRangePicker
 import Tab from "../../../components/Tab/Tab";
 import BarChart from "../../../components/charts/BarChart";
 import useIsMounted from "../../../customHooks/useIsMounted";
+import { setPrintableComponentRef } from "../../../redux/actions/printActions";
 
 const YearsChartContainer = (props) => {
   //building name
@@ -89,7 +90,9 @@ const YearsChartContainer = (props) => {
   useEffect(() => {
     if (date.fromYear !== "" && date.toYear !== "" && isMounted())
       fetchAndPrepareData();
-  }, [isMounted, fetchAndPrepareData, date]);
+
+    return () => dispatch(setPrintableComponentRef(null));
+  }, [isMounted, fetchAndPrepareData, date, dispatch]);
 
   const submit = (date) => {
     if (date.fromYear > date.toYear)
