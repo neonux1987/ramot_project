@@ -1,4 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { useDispatch } from "react-redux";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,12 +11,6 @@ import {
   Legend
 } from "chart.js";
 
-import { Bar } from "react-chartjs-2";
-import { setPrintableComponentRef } from "../../redux/actions/printActions";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import BarChartPrint from "./BarChartPrint";
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,11 +20,9 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = ({ data, title }) => {
+const BarChartPrint = ({ printMode, data, title }) => {
   const ref = useRef();
   const [chartReady, setChartReady] = useState(false);
-  const printMode = useSelector((store) => store.print.printMode);
-  const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
   const dispatch = useDispatch();
 
   const done = () => {
@@ -101,45 +95,11 @@ const BarChart = ({ data, title }) => {
     }
   });
 
-  /* 
-    resize the chart to the desirable print 
-  */
-  useEffect(() => {
-    if (chartReady && printMode) {
-      const chart = ref.current;
-      const div = document.createElement("div");
-      var img = document.createElement("img");
-
-      // enable the title while in print mode
-      chart.config._config.options.plugins.title.display = true;
-      chart.resize(1280, 780);
-
-      const dataUrl = chart.toBase64Image("image/png", 1);
-
-      // restore to normal
-      chart.config._config.options.plugins.title.display = false;
-      chart.resize();
-
-      img.setAttribute("src", dataUrl);
-      div.appendChild(img);
-
-      dispatch(setPrintableComponentRef({ current: div }));
-    }
-  }, [chartReady, printMode, dispatch]);
-
   return (
-    <div
-      style={{
-        position: "relative",
-        height: isFullscreen ? "calc(100vh - 220px)" : "600px"
-      }}
-    >
-      {printMode && (
-        <BarChartPrint printMode={printMode} data={data} title={title} />
-      )}
+    <div style={{ width: "1280px", height: "780px" }}>
       <Bar ref={ref} options={options} data={data} />
     </div>
   );
 };
 
-export default BarChart;
+export default BarChartPrint;
