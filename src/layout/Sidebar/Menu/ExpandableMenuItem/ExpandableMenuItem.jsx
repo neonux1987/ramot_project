@@ -28,7 +28,7 @@ const ExpandableMenuItem = (props) => {
   } = props;
 
   const [buildingColor] = useBuildingColor(buildingId);
-
+  //console.log(buildingColor);
   return (
     <Fragment>
       <ListItem

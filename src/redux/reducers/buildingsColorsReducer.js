@@ -1,10 +1,10 @@
-import { TYPES } from '../actions/buildingsColorsActions';
-import { getBuildings } from './util/util';
+import { TYPES } from "../actions/buildingsColorsActions";
+import { getBuildings } from "./util/util";
 
-const initState = {}
+const initState = {};
 
-getBuildings().forEach(({ id, color }) => {
-  initState[id] = color;
+getBuildings().forEach(({ buildingId, color }) => {
+  initState[buildingId] = color;
 });
 
 const buildingsColorsReducer = (state = initState, action) => {
@@ -14,9 +14,10 @@ const buildingsColorsReducer = (state = initState, action) => {
       return {
         ...state,
         [buildingId]: color
-      }
-    default: return state;
+      };
+    default:
+      return state;
   }
-}
+};
 
 export default buildingsColorsReducer;
