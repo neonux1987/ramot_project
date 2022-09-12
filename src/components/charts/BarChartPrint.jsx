@@ -100,14 +100,9 @@ const BarChartPrint = ({ printMode, data, title }) => {
     if (chartReady && printMode) {
       const chart = ref.current;
       const div = document.createElement("div");
-      var img = document.createElement("img");
-
-      chart.resize(1280, 780);
+      const img = document.createElement("img");
 
       const dataUrl = chart.toBase64Image("image/png", 1);
-
-      // restore to normal
-      chart.resize();
 
       img.setAttribute("src", dataUrl);
       div.appendChild(img);
@@ -117,7 +112,14 @@ const BarChartPrint = ({ printMode, data, title }) => {
   }, [chartReady, printMode, dispatch]);
 
   return (
-    <div style={{ width: "1280px", height: "780px" }}>
+    <div
+      style={{
+        width: "1280px",
+        height: "780px",
+        visibility: "hidden",
+        position: "absolute"
+      }}
+    >
       <Bar ref={ref} options={options} data={data} />
     </div>
   );
