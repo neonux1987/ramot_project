@@ -8,6 +8,7 @@ import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
 import DateRangePicker from "../../../components/DateRangePicker/DateRangePicker";
 import Tab from "../../../components/Tab/Tab";
 import BarChart from "../../../components/charts/BarChart";
+import useIsMounted from "../../../customHooks/useIsMounted";
 
 const YearsChartContainer = (props) => {
   //building name
@@ -23,6 +24,7 @@ const YearsChartContainer = (props) => {
 
   const [ready, setReady] = useState(false);
 
+  const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
   const [chartData, setChartData] = useState({
@@ -30,60 +32,54 @@ const YearsChartContainer = (props) => {
     datasets: []
   });
 
-  const fetchData = useCallback(
-    (date) => {
-      const params = {
-        buildingId,
-        pageName,
-        fromYear: date.fromYear,
-        toYear: date.toYear
-      };
+  const fetchData = useCallback(() => {
+    const params = {
+      buildingId,
+      pageName,
+      fromYear: date.fromYear,
+      toYear: date.toYear
+    };
 
-      return dispatch(fetchYearStatsByYearRange(params));
-    },
-    [dispatch, buildingId, pageName]
-  );
+    return dispatch(fetchYearStatsByYearRange(params));
+  }, [dispatch, buildingId, pageName, date.fromYear, date.toYear]);
 
-  const fetchAndPrepareData = useCallback(
-    async (date) => {
-      const promise = await fetchData(date);
+  const fetchAndPrepareData = useCallback(async () => {
+    const promise = await fetchData();
 
-      if (promise !== undefined) {
-        const labels = [];
-        const incomeData = [];
-        const outcomeData = [];
+    if (promise !== undefined) {
+      const labels = [];
+      const incomeData = [];
+      const outcomeData = [];
 
-        promise.data.forEach((element) => {
-          labels.push(element.year);
-          incomeData.push(element.income);
-          outcomeData.push(element.outcome);
-        });
+      promise.data.forEach((element) => {
+        labels.push(element.year);
+        incomeData.push(element.income);
+        outcomeData.push(element.outcome);
+      });
 
-        setChartData(() => {
-          return {
-            labels,
-            datasets: [
-              {
-                label: "הוצאות",
-                data: outcomeData,
-                backgroundColor: "#30a3fc99",
-                borderColor: "#30a3fc"
-              },
-              {
-                label: "הכנסות",
-                data: incomeData,
-                backgroundColor: "#30e8aa99",
-                borderColor: "#30e8aa"
-              }
-            ]
-          };
-        });
-      }
+      setChartData(() => {
+        return {
+          labels,
+          datasets: [
+            {
+              label: "הוצאות",
+              data: outcomeData,
+              backgroundColor: "#30a3fc99",
+              borderColor: "#30a3fc"
+            },
+            {
+              label: "הכנסות",
+              data: incomeData,
+              backgroundColor: "#30e8aa99",
+              borderColor: "#30e8aa"
+            }
+          ]
+        };
+      });
+    }
 
-      setReady(() => true);
-    },
-    [fetchData]
-  );
+    setReady(() => true);
+  }, [fetchData]);
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingId }));
@@ -91,16 +87,15 @@ const YearsChartContainer = (props) => {
 
   // load on start the previous selected data
   useEffect(() => {
-    fetchAndPrepareData(date);
-    //eslint-disable-next-line
-  }, []);
+    if (date.fromYear !== "" && date.toYear !== "" && isMounted())
+      fetchAndPrepareData();
+  }, [isMounted, fetchAndPrepareData, date]);
 
   const submit = (date) => {
     if (date.fromYear > date.toYear)
       toastManager.error("תאריך התחלה לא יכול להיות יותר גדול מתאריך סוף.");
     else {
       dispatch(updateDate(buildingId, date));
-      fetchAndPrepareData(date);
     }
   };
 
@@ -109,11 +104,12 @@ const YearsChartContainer = (props) => {
       <DateRangePicker
         years={registeredYears.data}
         date={date}
+        updateDate={updateDate}
         submit={submit}
         loading={registeredYears.isFetching}
       />
 
-      <ChartWrapper itemCount={data.length} isFetching={isFetching || !ready}>
+      <ChartWrapper itemCount={data.length} isFetching={isFetching && !ready}>
         <BarChart
           title={`${buildingName} - הוצאות והכנסות מ- ${date.fromYear} עד- ${date.toYear}`}
           data={chartData}

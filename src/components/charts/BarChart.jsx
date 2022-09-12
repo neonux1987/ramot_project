@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,9 +10,7 @@ import {
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
-import { setPrintableComponentRef } from "../../redux/actions/printActions";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import BarChartPrint from "./BarChartPrint";
 
 ChartJS.register(
@@ -25,15 +23,8 @@ ChartJS.register(
 );
 
 const BarChart = ({ data, title }) => {
-  const ref = useRef();
-  const [chartReady, setChartReady] = useState(false);
   const printMode = useSelector((store) => store.print.printMode);
   const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
-  const dispatch = useDispatch();
-
-  const done = () => {
-    setChartReady(true);
-  };
 
   const [options] = useState({
     responsive: true,
@@ -74,9 +65,6 @@ const BarChart = ({ data, title }) => {
         }
       }
     },
-    animation: {
-      onComplete: done
-    },
     plugins: {
       legend: {
         position: "top",
@@ -101,32 +89,6 @@ const BarChart = ({ data, title }) => {
     }
   });
 
-  /* 
-    resize the chart to the desirable print 
-  */
-  useEffect(() => {
-    if (chartReady && printMode) {
-      const chart = ref.current;
-      const div = document.createElement("div");
-      var img = document.createElement("img");
-
-      // enable the title while in print mode
-      chart.config._config.options.plugins.title.display = true;
-      chart.resize(1280, 780);
-
-      const dataUrl = chart.toBase64Image("image/png", 1);
-
-      // restore to normal
-      chart.config._config.options.plugins.title.display = false;
-      chart.resize();
-
-      img.setAttribute("src", dataUrl);
-      div.appendChild(img);
-
-      dispatch(setPrintableComponentRef({ current: div }));
-    }
-  }, [chartReady, printMode, dispatch]);
-
   return (
     <div
       style={{
@@ -137,7 +99,7 @@ const BarChart = ({ data, title }) => {
       {printMode && (
         <BarChartPrint printMode={printMode} data={data} title={title} />
       )}
-      <Bar ref={ref} options={options} data={data} />
+      <Bar options={options} data={data} />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import BarChart from "../../../components/charts/BarChart";
 import { updateDate } from "../../../redux/actions/quartersChartActions";
 import Tab from "../../../components/Tab/Tab";
 import YearOnlyDatePicker from "../../../components/DatePicker/YearOnlyDatePicker";
+import useIsMounted from "../../../customHooks/useIsMounted";
 
 const QuartersChartContainer = (props) => {
   //building name
@@ -15,6 +16,8 @@ const QuartersChartContainer = (props) => {
     (store) => store.quarterlyStats[buildingId].pages[pageName]
   );
   const date = useSelector((store) => store.quartersChart[buildingId].date);
+
+  const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
   const [chartData, setChartData] = useState({
@@ -69,8 +72,8 @@ const QuartersChartContainer = (props) => {
   }, [fetchMonthsData]);
 
   useEffect(() => {
-    if (date.year !== undefined) fetchAndPrepareData();
-  }, [dispatch, fetchAndPrepareData, date.year]);
+    if (date.year !== undefined && isMounted()) fetchAndPrepareData();
+  }, [dispatch, fetchAndPrepareData, date.year, isMounted]);
 
   return (
     <Tab>

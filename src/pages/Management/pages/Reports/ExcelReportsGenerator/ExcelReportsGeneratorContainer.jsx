@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Helper from "../../../../../helpers/Helper";
 import { exportReports } from "../../../../../services/reports.svc";
@@ -15,6 +15,7 @@ import ExcelReportsGenerator from "./ExcelReportsGenerator";
 import BuildingPicker from "./BuildingPicker/BuildingPicker";
 import Box from "@material-ui/core/Box";
 import ExcelIcon from "../../../../../components/Icons/ExcelIcon";
+import useIsMounted from "../../../../../customHooks/useIsMounted";
 
 const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   const date = new Date(); //current date
@@ -23,7 +24,8 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   const [quarter, setQuarter] = useState(
     Helper.getCurrentQuarter(date.getMonth())
   );
-  const isMounted = useRef(true);
+
+  const isMounted = useIsMounted();
 
   const { checkedBuildings, isAllChecked } = excelReports;
 
@@ -33,7 +35,7 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   const registeredReports = useSelector((store) => store.registeredReports);
 
   useEffect(() => {
-    if (isMounted.current === true) {
+    if (isMounted()) {
       dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
         const yearsData = result.data;
 
@@ -51,14 +53,10 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
         }
       });
     }
-
-    return () => {
-      isMounted.current = false;
-    };
-  }, [dispatch]);
+  }, [dispatch, isMounted]);
 
   const onYearChangeHandler = (event) => {
-    if (isMounted.current === true) {
+    if (isMounted()) {
       const { value } = event.target;
       setYear(value);
 

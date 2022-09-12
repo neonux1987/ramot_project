@@ -13,6 +13,7 @@ import BarChart from "../../../components/charts/BarChart";
 import { updateDate } from "../../../redux/actions/monthsChartAction";
 import YearOnlyDatePicker from "../../../components/DatePicker/YearOnlyDatePicker";
 import Tab from "../../../components/Tab/Tab";
+import useIsMounted from "../../../customHooks/useIsMounted";
 
 const MonthsChartContainer = (props) => {
   //building name
@@ -22,6 +23,8 @@ const MonthsChartContainer = (props) => {
     (store) => store.monthlyStats[buildingId].pages[pageName]
   );
   const date = useSelector((store) => store.monthsChart[buildingId].date);
+
+  const isMounted = useIsMounted();
 
   const dispatch = useDispatch();
 
@@ -76,8 +79,8 @@ const MonthsChartContainer = (props) => {
   }, [fetchMonthsData]);
 
   useEffect(() => {
-    if (date.year !== undefined) fetchAndPrepareData();
-  }, [dispatch, fetchAndPrepareData, date.year]);
+    if (date.year !== undefined && isMounted()) fetchAndPrepareData();
+  }, [dispatch, fetchAndPrepareData, date.year, isMounted]);
 
   return (
     <Tab>

@@ -10,6 +10,7 @@ import ChartWrapper from "../../../components/ChartWrapper/ChartWrapper";
 import DateRangePicker from "../../../components/DateRangePicker/DateRangePicker";
 import Tab from "../../../components/Tab/Tab";
 import HorizontalBarChart from "../../../components/charts/HorizontalBarChart";
+import useIsMounted from "../../../customHooks/useIsMounted";
 
 const TopChartContainer = (props) => {
   //building name
@@ -24,6 +25,7 @@ const TopChartContainer = (props) => {
 
   const [ready, setReady] = useState(false);
 
+  const isMounted = useIsMounted();
   const dispatch = useDispatch();
 
   const [chartData, setChartData] = useState({
@@ -45,7 +47,7 @@ const TopChartContainer = (props) => {
   }, [dispatch, buildingId, date.fromYear, date.toYear]);
 
   const fetchAndPrepareData = useCallback(async () => {
-    const promise = await fetchData(date);
+    const promise = await fetchData();
 
     if (promise !== undefined) {
       const labels = [];
@@ -72,7 +74,7 @@ const TopChartContainer = (props) => {
     }
 
     setReady(() => true);
-  }, [fetchData, date]);
+  }, [fetchData]);
 
   useEffect(() => {
     dispatch(fetchRegisteredYears({ buildingId }));
@@ -80,8 +82,9 @@ const TopChartContainer = (props) => {
 
   // load on start the previous selected data
   useEffect(() => {
-    if (date.fromYear !== "" && date.toYear !== "") fetchAndPrepareData();
-  }, [date, fetchAndPrepareData]);
+    if (date.fromYear !== "" && date.toYear !== "" && isMounted())
+      fetchAndPrepareData();
+  }, [date, fetchAndPrepareData, isMounted]);
 
   const submit = (date) => {
     if (date.fromYear > date.toYear)

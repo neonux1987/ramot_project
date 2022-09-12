@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { useDispatch } from "react-redux";
 import {
@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
+import { setPrintableComponentRef } from "../../redux/actions/printActions";
 
 ChartJS.register(
   CategoryScale,
@@ -85,7 +86,7 @@ const BarChartPrint = ({ printMode, data, title }) => {
         }
       },
       title: {
-        display: false,
+        display: true,
         text: title,
         color: "#000000",
         font: {
@@ -94,6 +95,26 @@ const BarChartPrint = ({ printMode, data, title }) => {
       }
     }
   });
+
+  useEffect(() => {
+    if (chartReady && printMode) {
+      const chart = ref.current;
+      const div = document.createElement("div");
+      var img = document.createElement("img");
+
+      chart.resize(1280, 780);
+
+      const dataUrl = chart.toBase64Image("image/png", 1);
+
+      // restore to normal
+      chart.resize();
+
+      img.setAttribute("src", dataUrl);
+      div.appendChild(img);
+
+      dispatch(setPrintableComponentRef({ current: div }));
+    }
+  }, [chartReady, printMode, dispatch]);
 
   return (
     <div style={{ width: "1280px", height: "780px" }}>
