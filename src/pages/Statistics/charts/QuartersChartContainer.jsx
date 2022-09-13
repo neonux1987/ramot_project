@@ -11,7 +11,7 @@ import { setPrintableComponentRef } from "../../../redux/actions/printActions";
 
 const QuartersChartContainer = (props) => {
   //building name
-  const { buildingId, buildingName, pageName } = props;
+  const { buildingId, buildingName, pageName, setIsDataExist } = props;
 
   const { isFetching, data } = useSelector(
     (store) => store.quarterlyStats[buildingId].pages[pageName]
@@ -77,6 +77,12 @@ const QuartersChartContainer = (props) => {
 
     return () => dispatch(setPrintableComponentRef(null));
   }, [dispatch, fetchAndPrepareData, date.year, isMounted]);
+
+  useEffect(() => {
+    if (data.length > 0) setIsDataExist(true);
+
+    return () => setIsDataExist(false);
+  }, [data, setIsDataExist]);
 
   return (
     <Tab>

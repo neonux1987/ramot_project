@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Page from "../../components/Page/Page";
 import YearsChartContainer from "./charts/YearsChartContainer";
@@ -26,6 +26,8 @@ const Statistics = (props) => {
   const { selectedChart } = useSelector(
     (store) => store.statistics[buildingId]
   );
+
+  const [isDataExist, setIsDataExist] = useState(false);
 
   const dispatch = useDispatch();
   const [buildingColor] = useBuildingColor(buildingId);
@@ -60,7 +62,7 @@ const Statistics = (props) => {
           print={true}
           printProps={{
             pageName: PAGE_NAME,
-            dataExist: true
+            dataExist: isDataExist
           }}
         />
 
@@ -69,6 +71,7 @@ const Statistics = (props) => {
             buildingId={buildingId}
             pageName={PAGE_NAME}
             buildingName={buildingName}
+            setIsDataExist={setIsDataExist}
           />
         </Box>
       </TitledSection>

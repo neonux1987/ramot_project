@@ -14,7 +14,7 @@ import useIsMounted from "../../../customHooks/useIsMounted";
 
 const TopChartContainer = (props) => {
   //building name
-  const { buildingId, pageName } = props;
+  const { buildingId, pageName, setIsDataExist } = props;
 
   const registeredYears = useSelector(
     (store) => store.registeredYears[buildingId]
@@ -85,6 +85,12 @@ const TopChartContainer = (props) => {
     if (date.fromYear !== "" && date.toYear !== "" && isMounted())
       fetchAndPrepareData();
   }, [date, fetchAndPrepareData, isMounted]);
+
+  useEffect(() => {
+    if (data.length > 0) setIsDataExist(true);
+
+    return () => setIsDataExist(false);
+  }, [data, setIsDataExist]);
 
   const submit = (date) => {
     if (date.fromYear > date.toYear)
