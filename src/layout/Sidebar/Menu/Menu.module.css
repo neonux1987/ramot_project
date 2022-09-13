@@ -36,6 +36,7 @@
 
 .list::-webkit-scrollbar-thumb:hover {
   background-color: #000000c2;
+  background-clip: padding-box;
 }
 
 .list::-webkit-scrollbar-button {
