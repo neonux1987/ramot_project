@@ -2,14 +2,18 @@ const printerIpc = () => {
   const { ipcMain, BrowserWindow, dialog } = require("electron");
 
   ipcMain.on("print-pdf", async (event, options = {}, blobUrl = null) => {
+    const path = require("path");
+
     let win = new BrowserWindow({
       title: "Print Preview",
       show: false,
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
-        contextIsolation: false
-      }
+        contextIsolation: false,
+        devTools: false
+      },
+      frame: false
     });
 
     const pageSetup = {
@@ -26,10 +30,7 @@ const printerIpc = () => {
     win.loadURL(
       process.env.NODE_ENV === "development"
         ? `http://localhost:3000/print_preview.html`
-        : `file://${path.join(
-            __dirname,
-            `../../public/print-preview.html?blob=${blobUrl}`
-          )}`
+        : `file://${path.join(__dirname, "../../build/print_preview.html")}`
     );
 
     win.webContents.once("did-finish-load", async () => {
