@@ -70,6 +70,8 @@ class RestoreDbLogic {
     const { extractZip } = require("../../helpers/utils");
     const SystemPaths = require("../system/SystemPaths");
     const SettingsLogic = require("../logic/SettingsLogic");
+    const SetupLogic = require("../logic/SetupLogic");
+    const setupLogic = new SetupLogic();
     const settingsLogic = new SettingsLogic();
 
     const extractedFolderPath =
@@ -125,6 +127,8 @@ class RestoreDbLogic {
         purgeCache: true
       }
     );
+
+    await setupLogic.setLocations();
   }
 }
 
