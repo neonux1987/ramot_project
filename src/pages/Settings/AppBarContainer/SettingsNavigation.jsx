@@ -27,7 +27,8 @@ const SettingsNavigation = (props) => {
             pathname: `${match.path}/כללי`,
             state: {
               page: "כללי",
-              buildingName: "הגדרות"
+              buildingName: "הגדרות",
+              buildingId: "settings"
             }
           }}
           active={page === "כללי" ? true : false}
@@ -38,7 +39,8 @@ const SettingsNavigation = (props) => {
             pathname: `${match.path}/עיצוב`,
             state: {
               page: "עיצוב",
-              buildingName: "הגדרות"
+              buildingName: "הגדרות",
+              buildingId: "settings"
             }
           }}
           active={page === "עיצוב" ? true : false}
@@ -49,7 +51,8 @@ const SettingsNavigation = (props) => {
             pathname: `${match.path}/גיבוי ושחזור`,
             state: {
               page: "גיבוי ושחזור",
-              buildingName: "הגדרות"
+              buildingName: "הגדרות",
+              buildingId: "settings"
             }
           }}
           active={page === "גיבוי ושחזור" ? true : false}
@@ -60,7 +63,8 @@ const SettingsNavigation = (props) => {
             pathname: `${match.path}/עדכוני תוכנה`,
             state: {
               page: "עדכוני תוכנה",
-              buildingName: "הגדרות"
+              buildingName: "הגדרות",
+              buildingId: "settings"
             }
           }}
           active={page === "עדכוני תוכנה" ? true : false}
@@ -71,7 +75,8 @@ const SettingsNavigation = (props) => {
             pathname: `${match.path}/אודות`,
             state: {
               page: "אודות",
-              buildingName: "הגדרות"
+              buildingName: "הגדרות",
+              buildingId: "settings"
             }
           }}
           active={page === "אודות" ? true : false}

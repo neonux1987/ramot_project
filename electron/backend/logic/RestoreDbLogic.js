@@ -104,11 +104,13 @@ class RestoreDbLogic {
     // restore config from backup
     if (withConfig) {
       try {
-        await extractedConfigFilePath;
         await fse.copy(
           extractedConfigFilePath,
           SystemPaths.paths.config_file_path
         );
+        // after restore, update locations in
+        // the restored config file
+        await setupLogic.setLocations();
       } catch (error) {
         throw new LogicError(
           "קרתה תקלה בזמן קריאת קובץ הגדרות ייתכן שהקובץ הוא לא מסוג json"
@@ -127,8 +129,6 @@ class RestoreDbLogic {
         purgeCache: true
       }
     );
-
-    await setupLogic.setLocations();
   }
 }
 
