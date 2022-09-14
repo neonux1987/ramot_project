@@ -98,6 +98,7 @@ export const saveSettings = (notifOn = true) => {
         channel: "saved-settings"
       },
       onSuccess: () => {
+        localStorage.setItem("settings", JSON.stringify(state.settings.data));
         if (notifOn) toastManager.success("ההגדרות נשמרו בהצלחה.");
       },
       onError: (result) => dispatch(fetchingFailed(result.error))

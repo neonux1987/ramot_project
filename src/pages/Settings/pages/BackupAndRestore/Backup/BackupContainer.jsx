@@ -44,7 +44,7 @@ const BackupContainer = () => {
   const { showModal } = useModalLogic();
   const settings = useSelector((store) => store.settings.data[SETTINGS_NAME]);
   const [data, setData] = useState(settings);
-  console.log(data);
+
   const save = async (event) => {
     event.stopPropagation();
 
@@ -82,6 +82,14 @@ const BackupContainer = () => {
               ...data,
               db_backups_folder_path: newPath
             });
+
+            // also must update db_backups_folder_path
+            // in locations
+            dispatch(
+              updateSettings("locations", {
+                db_backups_folder_path: newPath
+              })
+            );
 
             dispatch(setDirty());
             dispatch(initializeRegisteredBackups()).catch((result) => {

@@ -39,6 +39,8 @@ class RestoreDbLogic {
       await appLogic.createCleanSettingsFile();
     }
 
+    await fse.writeJSON(SystemPaths.paths.backups_names_file_path, []);
+
     // when replacing the database, we also need
     // to purge the redux cache from old database data
     // otherwise it will throw errors on the client side
@@ -122,8 +124,8 @@ class RestoreDbLogic {
         restoredConfigFile.db_backup.db_backups_folder_path =
           extractedConfigFile.db_backup.db_backups_folder_path;
         restoredConfigFile.locations.db_backups_folder_path =
-          extractedConfigFile.locations.db_backups_folder_path;
-
+          extractedConfigFile.db_backup.db_backups_folder_path;
+        console.log(extractedConfigFile);
         await settingsLogic.updateSettings(restoredConfigFile);
       } catch (error) {
         throw new LogicError(
