@@ -44,7 +44,7 @@ const BackupContainer = () => {
   const { showModal } = useModalLogic();
   const settings = useSelector((store) => store.settings.data[SETTINGS_NAME]);
   const [data, setData] = useState(settings);
-
+  console.log(data);
   const save = async (event) => {
     event.stopPropagation();
 
@@ -80,7 +80,7 @@ const BackupContainer = () => {
             const newPath = filePaths[0];
             setData({
               ...data,
-              path: newPath
+              db_backups_folder_path: newPath
             });
 
             dispatch(setDirty());
@@ -90,7 +90,7 @@ const BackupContainer = () => {
           }
         };
 
-        dispatch(showModal(ConfirmDbPathChangeModel, modalProps));
+        showModal(ConfirmDbPathChangeModel, modalProps);
       }
     });
   };
