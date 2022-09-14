@@ -135,12 +135,13 @@ const BackupContainer = () => {
       <TitleTypography>כללי:</TitleTypography>
 
       <CheckboxWithLabel
+        mb="20px"
         label="גיבוי ביציאה"
         checked={data.backup_on_exit}
         onChange={onBackupOnExitChange}
       />
 
-      <TitleTypography underline={false} gutterBottom="10px">
+      <TitleTypography underline={false} gutterBottom="10px" gutterTop="20px">
         תיקיית גיבויים:
       </TitleTypography>
 
