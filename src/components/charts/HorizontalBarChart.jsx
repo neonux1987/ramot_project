@@ -70,6 +70,7 @@ const HorizontalBarChart = ({ data, title }) => {
         position: "top",
         rtl: true,
         reverse: true,
+        onClick: null,
         labels: {
           color: "#000000",
           font: {

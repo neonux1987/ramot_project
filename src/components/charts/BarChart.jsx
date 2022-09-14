@@ -12,6 +12,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import BarChartPrint from "./BarChartPrint";
+import { useEffect } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -25,6 +26,7 @@ ChartJS.register(
 const BarChart = ({ data, title }) => {
   const printMode = useSelector((store) => store.print.printMode);
   const isFullscreen = useSelector((store) => store.fullscreen.isFullscreen);
+  const [chartData, setChartData] = useState(data);
 
   const [options] = useState({
     responsive: true,
@@ -70,6 +72,22 @@ const BarChart = ({ data, title }) => {
         position: "top",
         rtl: true,
         reverse: true,
+        onClick: (event, legendItem, legend) => {
+          // for print
+          setChartData((prev) => {
+            const dataCopy = {
+              ...prev,
+              datasets: [...prev.datasets]
+            };
+            dataCopy.datasets[legendItem.datasetIndex].hidden =
+              !dataCopy.datasets[legendItem.datasetIndex].hidden;
+
+            return dataCopy;
+          });
+
+          // default behavior
+          ChartJS.defaults.plugins.legend.onClick(event, legendItem, legend);
+        },
         labels: {
           color: "#000000",
           font: {
@@ -89,6 +107,10 @@ const BarChart = ({ data, title }) => {
     }
   });
 
+  useEffect(() => {
+    setChartData(data);
+  }, [data]);
+
   return (
     <div
       style={{
@@ -97,7 +119,7 @@ const BarChart = ({ data, title }) => {
       }}
     >
       {printMode && (
-        <BarChartPrint printMode={printMode} data={data} title={title} />
+        <BarChartPrint printMode={printMode} data={chartData} title={title} />
       )}
       <Bar options={options} data={data} />
     </div>

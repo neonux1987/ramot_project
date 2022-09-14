@@ -71,7 +71,8 @@ const HorizontalBarChartPrint = ({ printMode, data, title }) => {
       }
     },
     animation: {
-      onComplete: done
+      onComplete: done,
+      duration: 0
     },
     plugins: {
       legend: {
