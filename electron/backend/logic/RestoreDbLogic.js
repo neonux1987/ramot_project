@@ -111,6 +111,20 @@ class RestoreDbLogic {
         // after restore, update locations in
         // the restored config file
         await setupLogic.setLocations();
+
+        const extractedConfigFile = await fse.readJSON(extractedConfigFilePath);
+        const restoredConfigFile = await settingsLogic.getSettings();
+
+        // because setLocations erases the user's chosed
+        // db backups folder path, we need to take it from
+        // the extracted config and override in the already
+        // restored config
+        restoredConfigFile.db_backup.db_backups_folder_path =
+          extractedConfigFile.db_backup.db_backups_folder_path;
+        restoredConfigFile.locations.db_backups_folder_path =
+          extractedConfigFile.locations.db_backups_folder_path;
+
+        await settingsLogic.updateSettings(restoredConfigFile);
       } catch (error) {
         throw new LogicError(
           "קרתה תקלה בזמן קריאת קובץ הגדרות ייתכן שהקובץ הוא לא מסוג json"
