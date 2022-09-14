@@ -23,6 +23,7 @@ import { toastManager } from "../../../../../toasts/toastManager";
 import useModalLogic from "../../../../../customHooks/useModalLogic";
 import Note from "../../../../../components/Note/Note";
 import BackupIcon from "../../../../../components/Icons/BackupIcon";
+import { openItem } from "../../../../../services/mainProcess.svc";
 
 const SETTINGS_NAME = "db_backup";
 
@@ -132,6 +133,8 @@ const BackupContainer = () => {
     );
   }
 
+  const openFolder = () => openItem(data.db_backups_folder_path, true);
+
   return (
     <SettingsExpandableSection
       title={"גיבוי בסיס נתונים והגדרות"}
@@ -155,6 +158,7 @@ const BackupContainer = () => {
 
       <FileSelector
         onChangeClick={dbSelectFolderHandler}
+        onOpenClick={openFolder}
         value={data.db_backups_folder_path}
       />
 

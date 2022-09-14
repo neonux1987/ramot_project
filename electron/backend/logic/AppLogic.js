@@ -146,13 +146,15 @@ class AppLogic {
     await this.ensureConfigFileExistAndCreate();
   }
 
-  async ensureConfigFileExistAndCreate() {
+  async ensureConfigFileExistAndCreate(
+    path = SystemPaths.paths.db_backups_folder_path
+  ) {
     const SettingsLogic = require("./SettingsLogic");
     const RegisteredBackupsLogic = require("./RegisteredBackupsLogic");
     const settingsLogic = new SettingsLogic();
     const registeredBackupsLogic = new RegisteredBackupsLogic();
 
-    const files = await fse.readdir(SystemPaths.paths.db_backups_folder_path);
+    const files = await fse.readdir(path);
 
     const backups = [];
 
