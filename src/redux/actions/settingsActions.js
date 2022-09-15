@@ -1,6 +1,6 @@
 import { toastManager } from "../../toasts/toastManager";
 import { ipcSendReceive } from "./util/util";
-
+import { setItem } from "../../localStorage/localStorage";
 // TYPES
 export const TYPES = {
   SETTINGS_REQUEST: "SETTINGS_REQUEST",
@@ -113,7 +113,7 @@ export const saveSettings = (notifOn = true) => {
         channel: "saved-settings"
       },
       onSuccess: () => {
-        localStorage.setItem("settings", JSON.stringify(state.settings.data));
+        setItem("settings", state.settings.data);
         if (notifOn) toastManager.success("ההגדרות נשמרו בהצלחה.");
       },
       onError: (result) => dispatch(fetchingFailed(result.error))

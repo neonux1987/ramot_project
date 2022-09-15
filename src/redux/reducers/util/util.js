@@ -1,5 +1,7 @@
-const buildings = JSON.parse(localStorage.getItem("buildings")) || [];
-const pages = JSON.parse(localStorage.getItem("pages")) || [];
+import { getItem } from "../../../localStorage/localStorage";
+
+const buildings = getItem("buildings") || [];
+const pages = getItem("pages") || [];
 
 export function updateGlobalBuilding(buildingId, payload) {
   buildings.forEach(({ id }, index) => {

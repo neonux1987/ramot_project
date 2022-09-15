@@ -1,6 +1,8 @@
 import { batch } from "react-redux";
 import { toastManager } from "../../toasts/toastManager";
 import { ipcSendReceive } from "./util/util";
+import { getItem, setItem } from "../../localStorage/localStorage";
+
 import {
   addBuilding as be_ADD,
   removeBuilding as be_REMOVE
@@ -94,7 +96,7 @@ export const updateBuilding = (id, payload, oldCopy, index) => {
 
     dispatch(updateBuildingsInStore(index, payload));
     const updatedBuildings = updateGlobalBuilding(id, payload);
-    localStorage.getItem("buildings", JSON.stringify(updatedBuildings));
+    setItem("buildings", updatedBuildings);
 
     return ipcSendReceive({
       send: {
@@ -108,7 +110,7 @@ export const updateBuilding = (id, payload, oldCopy, index) => {
         dispatch(updateBuildingsInStore(oldCopy));
 
         const updatedBuildings = updateGlobalBuilding(id, payload);
-        localStorage.getItem("buildings", JSON.stringify(updatedBuildings));
+        setItem("buildings", updatedBuildings);
 
         toastManager.error(result.error);
       }
@@ -151,9 +153,9 @@ export const addBuilding = (payload) => {
         // we also need to add the new building to the global
         // shared object, otherwise on refresh it will use the
         // global shared object of previous data
-        const buildings = JSON.parse(localStorage.getItem("buildings"));
+        const buildings = getItem("buildings");
         buildings.push(result.data);
-        localStorage.setItem("buildings", JSON.stringify(buildings));
+        setItem("buildings", buildings);
       },
       onError: (result) => {
         toastManager.error(result.error);
@@ -173,7 +175,7 @@ export const removeBuildings = (buildingsToRemove) => {
         channel: "buildings-removed"
       },
       onSuccess: () => {
-        const buildings = JSON.parse(localStorage.getItem("buildings"));
+        const buildings = getItem("buildings");
 
         buildingsToRemove.forEach(({ id }) => {
           dispatch(removeBuildingInStore(id));
@@ -204,7 +206,7 @@ export const removeBuildings = (buildingsToRemove) => {
           });
         });
 
-        localStorage.getItem("buildings", JSON.stringify(buildings));
+        setItem("buildings", buildings);
 
         toastManager.success("הבניינים נמחקו לצמיתות בהצלחה");
       },

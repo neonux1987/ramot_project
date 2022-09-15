@@ -3,11 +3,11 @@ import error from "../assets/audio/error.wav";
 import message from "../assets/audio/message.wav";
 import welcome from "../assets/audio/welcome.wav";
 import update from "../assets/audio/update.wav";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { getItem } from "../localStorage/localStorage";
 
-const settings = JSON.parse(localStorage.getItem("settings"));
+const settings = getItem("settings");
 const TYPES = {
   action: "action",
   error: "error",

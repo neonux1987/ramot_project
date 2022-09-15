@@ -64,9 +64,15 @@ const BackupContainer = () => {
     await dispatch(saveSettings());
     await dispatch(setDirty(false));
 
-    if (initBackupsFolder) await dispatch(initializeRegisteredBackups());
+    if (initBackupsFolder) {
+      await dispatch(initializeRegisteredBackups());
+      setInitBackupsFolder(false);
+    }
 
-    if (restoreOldBackups) await registerOldBackups();
+    if (restoreOldBackups) {
+      setRestoreOldBackups(false);
+      await registerOldBackups();
+    }
   };
 
   const updatePaths = (path) => {
