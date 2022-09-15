@@ -1,16 +1,16 @@
-import React, { useCallback, useState } from 'react';
-import Helper from '../../helpers/Helper';
-import EmptyReportsGenerator from '../../pages/Management/pages/Reports/EmptyReportsGenerator/EmptyReportsGenerator';
-import { generateEmptyReports } from '../../services/emptyReportsGenerator.svc';
-import CheckboxWithLabel from '../Checkboxes/CheckboxWithLabel';
-import Box from '@material-ui/core/Box';
-import EditModal from './modalTypes/EditModal';
+import React, { useCallback, useState } from "react";
+import Helper from "../../helpers/Helper";
+import EmptyReportsGenerator from "../../pages/Management/pages/Reports/EmptyReportsGenerator/EmptyReportsGenerator";
+import { generateEmptyReports } from "../../services/emptyReportsGenerator.svc";
+import CheckboxWithLabel from "../Checkboxes/CheckboxWithLabel";
+import Box from "@material-ui/core/Box";
+import EditModal from "./modalTypes/EditModal";
 
 const years = generateYears(new Date().getFullYear());
 const quarters = Helper.getYearQuarters();
 
 const GenerateEmptyReportsModal = ({ buildingName, buildingId }) => {
-  const date = new Date();//current date
+  const date = new Date(); //current date
 
   const [selectDate, setSelectDate] = useState({
     year: date.getFullYear(),
@@ -29,7 +29,7 @@ const GenerateEmptyReportsModal = ({ buildingName, buildingId }) => {
       ...selectDate,
       [name]: Number.parseInt(value)
     });
-  }
+  };
 
   const onClickHandler = async () => {
     const newDate = {
@@ -37,17 +37,22 @@ const GenerateEmptyReportsModal = ({ buildingName, buildingId }) => {
       quarter: selectDate.quarter,
       quarterHeb: Helper.getQuarterHeb(selectDate.quarter),
       quarterEng: Helper.convertQuarterToEng(selectDate.quarter)
-    }
+    };
 
-    generateEmptyReports({ date: newDate, buildings: [{ buildingName, buildingId }], fromPreviousReports });
-  }
+    generateEmptyReports({
+      date: newDate,
+      buildings: [{ buildingName, buildingId }],
+      fromPreviousReports
+    });
+  };
 
-  const onCheckedHandler = useCallback(event => {
+  const onCheckedHandler = useCallback((event) => {
     setFromPreviousReports(event.target.checked);
   }, []);
 
   return (
     <EditModal
+      id={GenerateEmptyReportsModal}
       title={`הפקת דוחות אקסל לבניין ${buildingName}`}
       hideAgreeButton={true}
       cancelBtnText="סגור"
@@ -72,15 +77,14 @@ const GenerateEmptyReportsModal = ({ buildingName, buildingId }) => {
       </Box>
     </EditModal>
   );
-}
+};
 
 export default GenerateEmptyReportsModal;
 
 function generateYears(currentYear) {
   const arr = [];
   const backToYearLimit = currentYear - 5;
-  for (let i = currentYear; i > backToYearLimit; i--)
-    arr.push(i);
+  for (let i = currentYear; i > backToYearLimit; i--) arr.push(i);
 
   return arr;
 }

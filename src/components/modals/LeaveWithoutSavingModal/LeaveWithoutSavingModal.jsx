@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import InfoModal from '../modalTypes/InfoModal';
+import InfoModal from "../modalTypes/InfoModal";
 
-const LeaveWithoutSavingModal = props => {
-
+const LeaveWithoutSavingModal = (props) => {
   return (
     <InfoModal
+      id={LeaveWithoutSavingModal}
       cancelBtnText={"הישאר"}
       contentText={`
       האם אתה בטוח שברצונך להמשיך ללא שמירת ההגדרות?
@@ -13,6 +13,6 @@ const LeaveWithoutSavingModal = props => {
       {...props}
     />
   );
-}
+};
 
 export default LeaveWithoutSavingModal;

@@ -17,6 +17,7 @@ import RestoreIco from "../../../../../components/Icons/RestoreIcon";
 import CheckboxWithLabel from "../../../../../components/Checkboxes/CheckboxWithLabel";
 import ResetDB from "./ResetDB/ReseDB";
 import ConfirmReset from "../../../../../components/modals/ConfirmReset/ConfirmReset";
+import useIsMounted from "../../../../../customHooks/useIsMounted";
 
 const RestoreIcon = (props) => (
   <RestoreIco width="30px" height="30px" {...props} />
@@ -35,13 +36,16 @@ const Restore = () => {
     byFile: false
   });
   const [withConfig, setWithConfig] = useState(true);
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     dispatch(fetchRegisteredBackups()).then(({ data }) => {
+      if (!isMounted()) return;
+
       if (data.length === 0) setSelectedBackupDate(NO_BACKUPS_MESSAGE);
       else setSelectedBackupDate(data[0].fileName);
     });
-  }, [dispatch]);
+  }, [dispatch, isMounted]);
 
   const backupsNamesRender =
     data.length > 0 ? (

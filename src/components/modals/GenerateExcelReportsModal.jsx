@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Helper from '../../helpers/Helper';
-import ExcelReportsGenerator from '../../pages/Management/pages/Reports/ExcelReportsGenerator/ExcelReportsGenerator';
-import { fetchRegisteredReportsByYear, fetchRegisteredReportsGroupedByYear } from '../../redux/actions/registeredReportsActions';
-import { exportReports } from '../../services/reports.svc';
-import EditModal from './modalTypes/EditModal';
-import Box from '@material-ui/core/Box';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Helper from "../../helpers/Helper";
+import ExcelReportsGenerator from "../../pages/Management/pages/Reports/ExcelReportsGenerator/ExcelReportsGenerator";
+import {
+  fetchRegisteredReportsByYear,
+  fetchRegisteredReportsGroupedByYear
+} from "../../redux/actions/registeredReportsActions";
+import { exportReports } from "../../services/reports.svc";
+import EditModal from "./modalTypes/EditModal";
+import Box from "@material-ui/core/Box";
 
 const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
-  const date = new Date();//current date
+  const date = new Date(); //current date
 
   const [year, setYear] = useState(date.getFullYear());
-  const [quarter, setQuarter] = useState(Helper.getCurrentQuarter(date.getMonth()));
+  const [quarter, setQuarter] = useState(
+    Helper.getCurrentQuarter(date.getMonth())
+  );
 
   const dispatch = useDispatch();
 
   const [quarters, setQuarters] = useState([]);
-  const registeredReports = useSelector(store => store.registeredReports);
+  const registeredReports = useSelector((store) => store.registeredReports);
 
   useEffect(() => {
     dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
@@ -33,13 +38,8 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
               return data;
             });
         }); // end dispatch
-
       } // end if
-
-
     }); // end dispatch
-
-
   }, [dispatch]);
 
   const onYearChangeHandler = (event) => {
@@ -53,12 +53,12 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
           return data;
         });
     }); // end dispatch
-  }
+  };
 
   const onQuarterChangeHandler = (event) => {
     const { value } = event.target;
     setQuarter(value);
-  }
+  };
 
   const onClickHandler = () => {
     const newDate = {
@@ -66,13 +66,14 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
       quarter,
       quarterHeb: Helper.getQuarterHeb(quarter),
       quarterEng: Helper.convertQuarterToEng(quarter)
-    }
+    };
 
     exportReports(newDate, [{ buildingName, buildingId }]);
-  }
+  };
 
   return (
     <EditModal
+      id={GenerateExcelReportsModal}
       title={`הפקת דוחות אקסל לבניין ${buildingName}`}
       hideAgreeButton={true}
       cancelBtnText="סגור"
@@ -90,6 +91,6 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
       </Box>
     </EditModal>
   );
-}
+};
 
 export default GenerateExcelReportsModal;

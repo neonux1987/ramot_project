@@ -17,7 +17,7 @@ const RouterPrompt = () => {
   const onAgreeLogicRef = useRef();
 
   onAgreeLogicRef.current = () => {
-    hideModal();
+    hideModal(LeaveWithoutSavingModal);
     dispatch(setDirty(false));
     history.push(currentPath.pathname, currentPath.state);
     setAgree(false);
@@ -48,7 +48,7 @@ const RouterPrompt = () => {
   };
 
   const onCancelHandler = () => {
-    hideModal();
+    hideModal(LeaveWithoutSavingModal);
   };
 
   const onAgreeHandler = () => {

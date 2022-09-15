@@ -1,15 +1,12 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
 const ModalRoot = () => {
+  const { modals } = useSelector((store) => store.modal);
 
-  const { ModalComponent, props } = useSelector(store => store.modal);
-
-  if (!ModalComponent) {
-    return null;
-  }
-
-  return <ModalComponent {...props} />
-}
+  return modals.map(({ ModalComponent, props }) => (
+    <ModalComponent {...props} key={ModalComponent.name} />
+  ));
+};
 
 export default ModalRoot;

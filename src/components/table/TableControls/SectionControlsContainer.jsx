@@ -6,7 +6,7 @@ import { setPrintMode } from "../../../redux/actions/printActions";
 import { saveToFileDialog } from "../../../services/electronDialogs.svc";
 import { exportToExcel } from "../../../services/reports.svc";
 import { toastManager } from "../../../toasts/toastManager";
-import PrintModal from "../../modals/PrintModal/PrintModal";
+import PrintModalWrapper from "../../modals/PrintModal/PrintModalWrapper";
 import SectionControls from "./SectionControls";
 
 let excelDiaogOptions = {
@@ -30,7 +30,7 @@ const SectionControlsContainer = ({
   const dispatch = useDispatch();
   const { showModal, hideModal } = useModalLogic();
 
-  const onClose = useCallback(() => hideModal(), [hideModal]);
+  const onClose = useCallback(() => hideModal(PrintModalWrapper), [hideModal]);
 
   const OnFullscreenClick = useCallback(() => {
     dispatch(toggleFullScreenMode());
@@ -39,7 +39,7 @@ const SectionControlsContainer = ({
   const onPrintClick = () => {
     dispatch(setPrintMode(true));
 
-    showModal(PrintModal, {
+    showModal(PrintModalWrapper, {
       ...printProps,
       onClose
     });

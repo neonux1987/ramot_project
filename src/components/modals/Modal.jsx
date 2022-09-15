@@ -22,7 +22,8 @@ const Modal = (props) => {
     Icon,
     children,
     invisibleBackdrop,
-    minWidth
+    minWidth,
+    id
   } = props;
 
   const [open, setOpen] = React.useState(true);
@@ -43,7 +44,7 @@ const Modal = (props) => {
   const handleClose = () => {
     onBackdropClickHandler && onBackdropClickHandler();
     setOpen(false);
-    hideModal();
+    hideModal(id);
   };
 
   const onKeyPressHandler = (event) => {

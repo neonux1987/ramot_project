@@ -17,7 +17,7 @@ import {
   saveSettings,
   updateSettings
 } from "../../../../../redux/actions/settingsActions";
-import { initializeRegisteredBackups } from "../../../../../redux/actions/registeredBackupsActions";
+import { checkForBackupsInFolder } from "../../../../../redux/actions/registeredBackupsActions";
 import { setDirty } from "../../../../../redux/actions/routerPromptActions";
 import { toastManager } from "../../../../../toasts/toastManager";
 import useModalLogic from "../../../../../customHooks/useModalLogic";
@@ -93,9 +93,7 @@ const BackupContainer = () => {
             );
 
             dispatch(setDirty());
-            dispatch(initializeRegisteredBackups()).catch((result) => {
-              toastManager.error(result.error);
-            });
+            dispatch(checkForBackupsInFolder());
           }
         };
 

@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import WarningModal from '../modalTypes/WarningModal';
+import WarningModal from "../modalTypes/WarningModal";
 
-const ConfirmBuildingsDeletion = props => {
+const ConfirmBuildingsDeletion = (props) => {
   const buildingsForDeletion = props.buildingsForDeletion;
 
   const buildingNames = buildingsForDeletion.map(({ buildingName }) => {
@@ -11,6 +11,7 @@ const ConfirmBuildingsDeletion = props => {
 
   return (
     <WarningModal
+      id={ConfirmBuildingsDeletion}
       contentText={`
       הבניינים '${buildingNames}' הועברו לססטוס מחיקה לפני 30 יום או יותר.
       האם למחוק אותם לצמיתות?
@@ -18,6 +19,6 @@ const ConfirmBuildingsDeletion = props => {
       {...props}
     />
   );
-}
+};
 
 export default ConfirmBuildingsDeletion;

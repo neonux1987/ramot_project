@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import WarningModal from '../modalTypes/WarningModal';
+import WarningModal from "../modalTypes/WarningModal";
 
-const ConfirmDeleteBudgetExecution = props => {
-
+const ConfirmDeleteBudgetExecution = (props) => {
   return (
     <WarningModal
+      id={ConfirmDeleteBudgetExecution}
       contentText={`
       מחיקת סעיף זה יגרור למחיקה של סעיף בטבלת מעקב שנתית בעמוד סיכום תקציבי.
       המחיקה היא לצמיתות. לאישור לחץ המשך.
@@ -13,6 +13,6 @@ const ConfirmDeleteBudgetExecution = props => {
       {...props}
     />
   );
-}
+};
 
 export default ConfirmDeleteBudgetExecution;
