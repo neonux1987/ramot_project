@@ -4,7 +4,7 @@ import SettingsExpandableSection from "../../../../../components/Section/Setting
 import FileSelector from "../../../../../components/FileSelector/FileSelector";
 import TitleTypography from "../../../../../components/Typographies/TitleTypography";
 import {
-  updateSettings,
+  updateSpecificSettings,
   saveSettings
 } from "../../../../../redux/actions/settingsActions";
 import { selectFolderDialog } from "../../../../../services/electronDialogs.svc";
@@ -27,7 +27,7 @@ const UserContainer = () => {
 
     const dataCopy = { ...data };
 
-    dispatch(updateSettings(SETTINGS_NAME, dataCopy));
+    dispatch(updateSpecificSettings(SETTINGS_NAME, dataCopy));
 
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
       dispatch(setDirty(false));

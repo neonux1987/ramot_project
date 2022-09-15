@@ -8,7 +8,7 @@ const ConfirmBackupsRestore = (props) => {
       id={ConfirmBackupsRestore}
       contentText={`
       המערכת זיהתה גיבויים קודמים בתיקיית הגיבויים:
-      ${props.data}
+      ${JSON.stringify(props.data, null, "\t").replace(/[[\]']+/g, "")}
       האם להוסיף אותם לרשימת הגיבויים במערכת?
       `}
       {...props}

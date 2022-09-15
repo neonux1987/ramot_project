@@ -25,8 +25,6 @@ import Note from "../../../../../components/Note/Note";
 import BackupIcon from "../../../../../components/Icons/BackupIcon";
 import { openItem } from "../../../../../services/mainProcess.svc";
 
-const SETTINGS_NAME = "db_backup";
-
 const LastUpdated = ({ last_update }) => {
   const date = new Date(last_update);
   const formatter = new Intl.DateTimeFormat("he-IL", {
@@ -43,17 +41,20 @@ const LastUpdated = ({ last_update }) => {
 const BackupContainer = () => {
   const dispatch = useDispatch();
   const { showModal } = useModalLogic();
-  const settings = useSelector((store) => store.settings.data[SETTINGS_NAME]);
+  const settings = useSelector((store) => store.settings.data);
   const [data, setData] = useState(settings);
+
+  const { db_backup } = data;
 
   const save = async (event) => {
     event.stopPropagation();
 
     const dataCopy = { ...data };
-    dataCopy.restart_required = true;
+    dataCopy.db_backup.restart_required = true;
 
-    dispatch(updateSettings(SETTINGS_NAME, dataCopy));
-    dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
+    dispatch(updateSettings(dataCopy));
+
+    dispatch(saveSettings()).then(() => {
       dispatch(setDirty(false));
     });
   };
@@ -70,30 +71,29 @@ const BackupContainer = () => {
 
   const dbSelectFolderHandler = () => {
     const options = {
-      defaultPath: data.db_backups_folder_path
+      defaultPath: db_backup.db_backups_folder_path
     };
     selectFolderDialog(options).then(({ canceled, filePaths }) => {
       if (canceled) return;
 
-      if (data.path !== filePaths[0]) {
+      if (db_backup.db_backups_folder_path !== filePaths[0]) {
         const modalProps = {
           onAgreeHandler: () => {
             const newPath = filePaths[0];
-            setData({
-              ...data,
-              db_backups_folder_path: newPath
-            });
-
-            // also must update db_backups_folder_path
-            // in locations
-            dispatch(
-              updateSettings("locations", {
+            setData((prev) => ({
+              ...prev,
+              db_backup: {
+                ...prev.db_backup,
                 db_backups_folder_path: newPath
-              })
-            );
+              },
+              locations: {
+                ...prev.locations,
+                db_backups_folder_path: newPath
+              }
+            }));
 
             dispatch(setDirty());
-            dispatch(checkForBackupsInFolder());
+            dispatch(checkForBackupsInFolder(newPath));
           }
         };
 
@@ -123,7 +123,7 @@ const BackupContainer = () => {
   };
 
   let backups_to_save = [];
-  for (let i = 1; i <= data.max_num_of_history_backups; i++) {
+  for (let i = 1; i <= db_backup.max_num_of_history_backups; i++) {
     backups_to_save.push(
       <MenuItem value={i} key={i}>
         {i}
@@ -131,7 +131,7 @@ const BackupContainer = () => {
     );
   }
 
-  const openFolder = () => openItem(data.db_backups_folder_path, true);
+  const openFolder = () => openItem(db_backup.db_backups_folder_path, true);
 
   return (
     <SettingsExpandableSection
@@ -139,14 +139,16 @@ const BackupContainer = () => {
       Icon={BackupIcon}
       onSaveClick={save}
     >
-      {data.last_update && <LastUpdated last_update={data.last_update} />}
+      {db_backup.last_update && (
+        <LastUpdated last_update={db_backup.last_update} />
+      )}
 
       <TitleTypography>כללי:</TitleTypography>
 
       <CheckboxWithLabel
         mb="20px"
         label="גיבוי ביציאה"
-        checked={data.backup_on_exit}
+        checked={db_backup.backup_on_exit}
         onChange={onBackupOnExitChange}
       />
 
@@ -157,7 +159,7 @@ const BackupContainer = () => {
       <FileSelector
         onChangeClick={dbSelectFolderHandler}
         onOpenClick={openFolder}
-        value={data.db_backups_folder_path}
+        value={db_backup.db_backups_folder_path}
       />
 
       <Divider margin="40px 0 20px" />

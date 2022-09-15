@@ -19,15 +19,40 @@ class RegisteredBackupsLogic {
     return this.updateRegisteredBackups([]);
   }
 
-  async checkForBackupsInFolder() {
-    const SettingsLogic = require("./SettingsLogic");
-    const settingsLogic = new SettingsLogic();
+  /**
+   * scan for backups in a chosen folder
+   * @param {*} folderPath the path of the folder to scan for backups
+   * @returns array of valid backups if exist in the chosen folder path
+   */
+  async checkForBackupsInFolder(folderPath) {
+    const AdmZip = require("adm-zip");
+    const path = require("path");
+    const validBackups = [];
+    const files = await fse.readdir(folderPath);
 
-    const settings = await settingsLogic.getSpecificSetting(
-      SettingsLogic.SETTINGS_NAMES.DB_BACKUP
-    );
+    for (let file of files) {
+      if (!file.endsWith(".zip")) continue;
 
-    return fse.readdir(settings.db_backups_folder_path);
+      const zipfilePath = path.join(folderPath, file);
+      const zip = new AdmZip(zipfilePath);
+      const zipEntries = zip.getEntries();
+
+      let valid = false;
+
+      zipEntries.forEach(function ({ entryName }) {
+        if (
+          (entryName == "ramot-group-db.sqlite" &&
+            entryName == "config.json") ||
+          entryName == "ramot-group-db.sqlite"
+        ) {
+          valid = true;
+        }
+      });
+
+      if (valid) validBackups.push(file);
+    }
+
+    return validBackups;
   }
 
   async scanForBackupsAndRegister(path) {

@@ -6,7 +6,7 @@ import Page from "../../../../components/Page/Page";
 import ColorSeries from "./ColorSeries";
 import Note from "../../../../components/Note/Note";
 import {
-  updateSettings,
+  updateSpecificSettings,
   saveSettings
 } from "../../../../redux/actions/settingsActions";
 import { setDirty } from "../../../../redux/actions/routerPromptActions";
@@ -24,7 +24,7 @@ export const Theme = () => {
 
     const dataCopy = { ...data };
 
-    dispatch(updateSettings(SETTINGS_NAME, dataCopy));
+    dispatch(updateSpecificSettings(SETTINGS_NAME, dataCopy));
     dispatch(saveSettings(SETTINGS_NAME, dataCopy)).then(() => {
       dispatch(setDirty(false));
     });

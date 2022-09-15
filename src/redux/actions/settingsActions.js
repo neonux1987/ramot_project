@@ -7,6 +7,7 @@ export const TYPES = {
   SETTINGS_RECEIVE: "SETTINGS_RECEIVE",
   SETTINGS_FETCHING_FAILED: "SETTINGS_FETCHING_FAILED",
   SETTINGS_UPDATE: "SETTINGS_UPDATE",
+  SETTINGS_UPDATE_SEPCIFIC: "SETTINGS_UPDATE_SEPCIFIC",
   SETTINGS_DB_BACKUP_UPDATE: "SETTINGS_DB_BACKUP_UPDATE",
   SETTINGS_CLEANUP: "SETTINGSS_CLEANUP"
 };
@@ -70,18 +71,32 @@ const fetchingFailed = function (error) {
   };
 };
 
-const updateSettingsInStore = function (settingName, payload) {
+const updateSpecificSettingsInStore = function (settingName, payload) {
   return {
-    type: TYPES.SETTINGS_UPDATE,
+    type: TYPES.SETTINGS_UPDATE_SEPCIFIC,
     settingName,
     payload
   };
 };
 
-export const updateSettings = (settingName, payload) => {
+const updateSettingsInStore = function (payload) {
+  return {
+    type: TYPES.SETTINGS_UPDATE,
+    payload
+  };
+};
+
+export const updateSpecificSettings = (settingName, payload) => {
   return (dispatch) => {
     // update in store for better user experience
-    dispatch(updateSettingsInStore(settingName, payload));
+    dispatch(updateSpecificSettingsInStore(settingName, payload));
+  };
+};
+
+export const updateSettings = (payload) => {
+  return (dispatch) => {
+    // update in store for better user experience
+    dispatch(updateSettingsInStore(payload));
   };
 };
 

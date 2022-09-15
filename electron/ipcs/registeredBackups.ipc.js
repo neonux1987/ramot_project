@@ -28,9 +28,9 @@ const registeredBackupsIpc = () => {
       });
   });
 
-  ipcMain.handle("check-for-backups-in-folder", async (event) => {
+  ipcMain.handle("check-for-backups-in-folder", async (_, path) => {
     try {
-      const data = await registeredBackupsLogic.checkForBackupsInFolder();
+      const data = await registeredBackupsLogic.checkForBackupsInFolder(path);
       return { data };
     } catch (error) {
       return { error: error.message };

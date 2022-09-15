@@ -3,7 +3,10 @@ import { ipcSendReceive } from "../redux/actions/util/util";
 import { toastManager } from "../toasts/toastManager";
 import ToastRender from "../components/ToastRender/ToastRender";
 import { restartApp } from "./mainProcess.svc";
-import { saveSettings, updateSettings } from "../redux/actions/settingsActions";
+import {
+  saveSettings,
+  updateSpecificSettings
+} from "../redux/actions/settingsActions";
 
 export const restore = ({ fileName, withConfig }, byList) => {
   const toastId = toastManager.info(
@@ -111,7 +114,7 @@ export const purgeCacheAfterRestore = (persistor) => {
       const payload = {
         purgeCache: false
       };
-      dispatch(updateSettings("redux", payload));
+      dispatch(updateSpecificSettings("redux", payload));
       await dispatch(saveSettings(false));
       await persistor.purge();
     }

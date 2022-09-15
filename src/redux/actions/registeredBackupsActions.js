@@ -58,10 +58,11 @@ const fetchingFailed = function (error) {
   };
 };
 
-export const checkForBackupsInFolder = () => {
+export const checkForBackupsInFolder = (path) => {
   return async (dispatch) => {
     const { data, error } = await ipcRenderer.invoke(
-      "check-for-backups-in-folder"
+      "check-for-backups-in-folder",
+      path
     );
 
     if (error) {
@@ -73,11 +74,11 @@ export const checkForBackupsInFolder = () => {
       const props = {
         onAgreeHandler: async () => {
           //await registerOldBackups();
-          console.log("hello");
+          console.log("onAgreeHandler");
         },
         data
       };
-      console.log("yes");
+
       dispatch(show(ConfirmBackupsRestore, props));
     } else {
       console.log("im in else");

@@ -5,7 +5,7 @@ import SettingsExpandableSection from "../../../../../components/Section/Setting
 import FileSelector from "../../../../../components/FileSelector/FileSelector";
 import TitleTypography from "../../../../../components/Typographies/TitleTypography";
 import {
-  updateSettings,
+  updateSpecificSettings,
   saveSettings
 } from "../../../../../redux/actions/settingsActions";
 import { soundManager } from "../../../../../soundManager/SoundManager";
@@ -47,7 +47,7 @@ const SystemContainer = () => {
 
     const dataCopy = { ...data };
 
-    dispatch(updateSettings(SETTINGS_NAME, dataCopy));
+    dispatch(updateSpecificSettings(SETTINGS_NAME, dataCopy));
 
     soundManager.reload();
 

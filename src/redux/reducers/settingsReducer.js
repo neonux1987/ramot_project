@@ -1,6 +1,6 @@
 import { TYPES } from "../actions/settingsActions";
 
-const settings = JSON.parse(localStorage.getItem("settings")) || {};
+let settings = JSON.parse(localStorage.getItem("settings")) || {};
 
 const initState = {
   isFetching: true,
@@ -32,6 +32,23 @@ const settingsReducer = (state = initState, action) => {
         error: action.payload
       };
     case TYPES.SETTINGS_UPDATE: {
+      const { payload } = action;
+      const newState = {
+        ...state,
+        data: {
+          ...state.data,
+          ...payload
+        }
+      };
+      //update settings in the shared object
+      settings = {
+        ...settings,
+        ...payload
+      };
+
+      return newState;
+    }
+    case TYPES.SETTINGS_UPDATE_SEPCIFIC: {
       const { settingName, payload } = action;
       const newState = {
         ...state,
