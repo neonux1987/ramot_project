@@ -17,13 +17,18 @@ import {
   saveSettings,
   updateSettings
 } from "../../../../../redux/actions/settingsActions";
-import { checkForBackupsInFolder } from "../../../../../redux/actions/registeredBackupsActions";
+import {
+  checkForBackupsInFolder,
+  initializeRegisteredBackups,
+  registerOldBackups
+} from "../../../../../redux/actions/registeredBackupsActions";
 import { setDirty } from "../../../../../redux/actions/routerPromptActions";
 import { toastManager } from "../../../../../toasts/toastManager";
 import useModalLogic from "../../../../../customHooks/useModalLogic";
 import Note from "../../../../../components/Note/Note";
 import BackupIcon from "../../../../../components/Icons/BackupIcon";
 import { openItem } from "../../../../../services/mainProcess.svc";
+import ConfirmBackupsRestore from "../../../../../components/modals/ConfirmBackupsRestore/ConfirmBackupsRestore";
 
 const LastUpdated = ({ last_update }) => {
   const date = new Date(last_update);
@@ -42,30 +47,84 @@ const BackupContainer = () => {
   const dispatch = useDispatch();
   const { showModal } = useModalLogic();
   const settings = useSelector((store) => store.settings.data);
-  const [data, setData] = useState(settings);
+  const [settingsData, setSettingsData] = useState(settings);
+  const [initBackupsFolder, setInitBackupsFolder] = useState(false);
+  const [restoreOldBackups, setRestoreOldBackups] = useState(false);
 
-  const { db_backup } = data;
+  const { db_backup } = settingsData;
 
-  const save = async (event) => {
+  const saveEventHandler = async (event) => {
     event.stopPropagation();
-
-    const dataCopy = { ...data };
+    const dataCopy = { ...settingsData };
     dataCopy.db_backup.restart_required = true;
 
-    dispatch(updateSettings(dataCopy));
+    if (initBackupsFolder) dataCopy.db_backup.last_update = "";
 
-    dispatch(saveSettings()).then(() => {
-      dispatch(setDirty(false));
-    });
+    await dispatch(updateSettings(dataCopy));
+    await dispatch(saveSettings());
+    await dispatch(setDirty(false));
+
+    if (initBackupsFolder) await dispatch(initializeRegisteredBackups());
+
+    if (restoreOldBackups) await registerOldBackups();
+  };
+
+  const updatePaths = (path) => {
+    setSettingsData((prev) => ({
+      ...prev,
+      db_backup: {
+        ...prev.db_backup,
+        db_backups_folder_path: path
+      },
+      locations: {
+        ...prev.locations,
+        db_backups_folder_path: path
+      }
+    }));
+  };
+
+  const dbBackupsFolderChangedHandler = async (oldPath, newPath) => {
+    const { success, data } = await checkForBackupsInFolder(newPath);
+
+    if (!success) {
+      const ConfirmDbPathChangeModelProps = {
+        onAgreeHandler: () => {
+          setInitBackupsFolder(true);
+          dispatch(setDirty());
+        },
+        onCancelHandler: () => {
+          updatePaths(oldPath);
+          dispatch(setDirty(false));
+        }
+      };
+
+      showModal(ConfirmDbPathChangeModel, ConfirmDbPathChangeModelProps);
+
+      return;
+    }
+
+    const ConfirmBackupsRestoreProps = {
+      onAgreeHandler: () => {
+        setRestoreOldBackups(true);
+        dispatch(setDirty());
+      },
+      onCancelHandler: () => {
+        setInitBackupsFolder(true);
+        dispatch(setDirty());
+      },
+      data
+    };
+
+    showModal(ConfirmBackupsRestore, ConfirmBackupsRestoreProps);
   };
 
   const onBackupOnExitChange = (event) => {
     const { checked } = event.target;
 
-    setData({
-      ...data,
+    setSettingsData((prev) => ({
+      ...prev,
       backup_on_exit: checked
-    });
+    }));
     dispatch(setDirty());
   };
 
@@ -77,27 +136,14 @@ const BackupContainer = () => {
       if (canceled) return;
 
       if (db_backup.db_backups_folder_path !== filePaths[0]) {
-        const modalProps = {
-          onAgreeHandler: () => {
-            const newPath = filePaths[0];
-            setData((prev) => ({
-              ...prev,
-              db_backup: {
-                ...prev.db_backup,
-                db_backups_folder_path: newPath
-              },
-              locations: {
-                ...prev.locations,
-                db_backups_folder_path: newPath
-              }
-            }));
+        const newPath = filePaths[0];
 
-            dispatch(setDirty());
-            dispatch(checkForBackupsInFolder(newPath));
-          }
-        };
+        updatePaths(newPath);
 
-        showModal(ConfirmDbPathChangeModel, modalProps);
+        dbBackupsFolderChangedHandler(
+          db_backup.db_backups_folder_path,
+          newPath
+        );
       }
     });
   };
@@ -137,7 +183,7 @@ const BackupContainer = () => {
     <SettingsExpandableSection
       title={"גיבוי בסיס נתונים והגדרות"}
       Icon={BackupIcon}
-      onSaveClick={save}
+      onSaveClick={saveEventHandler}
     >
       {db_backup.last_update && (
         <LastUpdated last_update={db_backup.last_update} />

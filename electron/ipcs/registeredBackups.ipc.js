@@ -8,7 +8,6 @@ const registeredBackupsIpc = () => {
     registeredBackupsLogic
       .getRegisteredBackups()
       .then((result) => {
-        //let data = nestHydrationJS.nest(result, DEFINITION);
         event.reply("registered-backups-data", { data: result });
       })
       .catch((error) => {
@@ -20,7 +19,6 @@ const registeredBackupsIpc = () => {
     registeredBackupsLogic
       .initializeBackupsList()
       .then((result) => {
-        //let data = nestHydrationJS.nest(result, DEFINITION);
         event.reply("registered-backups-initialized", { data: result });
       })
       .catch((error) => {
@@ -37,7 +35,7 @@ const registeredBackupsIpc = () => {
     }
   });
 
-  ipcMain.handle("scan-for-backups-and-register", async (event) => {
+  ipcMain.handle("scan-for-backups-and-register", async (_) => {
     try {
       const SettingsLogic = require("../backend/logic/SettingsLogic");
       const settingsLogic = new SettingsLogic();
@@ -49,6 +47,8 @@ const registeredBackupsIpc = () => {
       await registeredBackupsLogic.scanForBackupsAndRegister(
         settings.db_backups_folder_path
       );
+
+      return {};
     } catch (error) {
       return { error: error.message };
     }

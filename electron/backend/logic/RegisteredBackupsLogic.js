@@ -61,7 +61,7 @@ class RegisteredBackupsLogic {
     const settingsLogic = new SettingsLogic();
     const registeredBackupsLogic = new RegisteredBackupsLogic();
 
-    const files = await fse.readdir(path);
+    const files = await this.checkForBackupsInFolder(path);
 
     const backups = [];
 

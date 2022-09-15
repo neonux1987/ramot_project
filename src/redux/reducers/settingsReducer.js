@@ -1,6 +1,7 @@
 import { TYPES } from "../actions/settingsActions";
+import { getItem, setItem } from "../../localStorage/localStorage";
 
-let settings = JSON.parse(localStorage.getItem("settings")) || {};
+let settings = getItem("settings") || {};
 
 const initState = {
   isFetching: true,
@@ -40,11 +41,14 @@ const settingsReducer = (state = initState, action) => {
           ...payload
         }
       };
+
       //update settings in the shared object
-      settings = {
-        ...settings,
+      let sharedSettings = getItem("settings");
+      sharedSettings = {
+        ...sharedSettings,
         ...payload
       };
+      setItem("settings", sharedSettings);
 
       return newState;
     }

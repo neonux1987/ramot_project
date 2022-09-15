@@ -1,7 +1,5 @@
 import { ipcRenderer } from "electron";
-import ConfirmBackupsRestore from "../../components/modals/ConfirmBackupsRestore/ConfirmBackupsRestore";
 import { toastManager } from "../../toasts/toastManager";
-import { show } from "./modalActions";
 import { ipcSendReceive } from "./util/util";
 
 export const TYPES = {
@@ -58,33 +56,29 @@ const fetchingFailed = function (error) {
   };
 };
 
-export const checkForBackupsInFolder = (path) => {
-  return async (dispatch) => {
-    const { data, error } = await ipcRenderer.invoke(
-      "check-for-backups-in-folder",
-      path
-    );
+export const checkForBackupsInFolder = async (path) => {
+  const { data, error } = await ipcRenderer.invoke(
+    "check-for-backups-in-folder",
+    path
+  );
 
-    if (error) {
-      toastManager.error("המערכת לא הצליחה לבצע סריקה של גיבויים ישנים");
-      return;
-    }
+  if (error) {
+    toastManager.error("המערכת לא הצליחה לבצע סריקה של גיבויים ישנים");
+    return {
+      success: false
+    };
+  }
 
-    if (data.length > 0) {
-      const props = {
-        onAgreeHandler: async () => {
-          //await registerOldBackups();
-          console.log("onAgreeHandler");
-        },
-        data
-      };
-
-      dispatch(show(ConfirmBackupsRestore, props));
-    } else {
-      console.log("im in else");
-      //dispatch(initializeRegisteredBackups());
-    }
-  };
+  if (data.length > 0) {
+    return {
+      success: true,
+      data
+    };
+  } else {
+    return {
+      success: false
+    };
+  }
 };
 
 export const registerOldBackups = async () => {
@@ -94,8 +88,6 @@ export const registerOldBackups = async () => {
     toastManager.error("המערכת לא הצליחה לבצע רישום של הגיבויים");
     return;
   }
-
-  toastManager.success("רישום הגיבויים בוצע בהצלחה");
 };
 
 export const initializeRegisteredBackups = () => {
