@@ -7,7 +7,7 @@ const ConfirmBackupsRestore = (props) => {
     <WarningModal
       id={ConfirmBackupsRestore}
       contentText={`
-      המערכת זיהתה גיבויים קודמים בתיקיית הגיבויים:
+      המערכת זיהתה גיבויים קודמים בתיקייה החדשה:
       ${JSON.stringify(props.data, null, "\t").replace(/[[\]']+/g, "")}
       האם להוסיף אותם לרשימת הגיבויים במערכת?
       `}

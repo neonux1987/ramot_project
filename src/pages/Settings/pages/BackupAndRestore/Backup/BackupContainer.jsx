@@ -14,11 +14,13 @@ import {
 } from "../../../../../services/electronDialogs.svc";
 import { dbIndependentBackup } from "../../../../../services/dbBackup.svc";
 import {
+  fetchSettings,
   saveSettings,
   updateSettings
 } from "../../../../../redux/actions/settingsActions";
 import {
   checkForBackupsInFolder,
+  fetchRegisteredBackups,
   initializeRegisteredBackups,
   registerOldBackups
 } from "../../../../../redux/actions/registeredBackupsActions";
@@ -29,6 +31,8 @@ import Note from "../../../../../components/Note/Note";
 import BackupIcon from "../../../../../components/Icons/BackupIcon";
 import { openItem } from "../../../../../services/mainProcess.svc";
 import ConfirmBackupsRestore from "../../../../../components/modals/ConfirmBackupsRestore/ConfirmBackupsRestore";
+import { useEffect } from "react";
+import useIsMounted from "../../../../../customHooks/useIsMounted";
 
 const LastUpdated = ({ last_update }) => {
   const date = new Date(last_update);
@@ -46,12 +50,28 @@ const LastUpdated = ({ last_update }) => {
 const BackupContainer = () => {
   const dispatch = useDispatch();
   const { showModal } = useModalLogic();
+  const isMounted = useIsMounted();
+
   const settings = useSelector((store) => store.settings.data);
   const [settingsData, setSettingsData] = useState(settings);
   const [initBackupsFolder, setInitBackupsFolder] = useState(false);
   const [restoreOldBackups, setRestoreOldBackups] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const { db_backup } = settingsData;
+
+  useEffect(() => {
+    if (refresh) {
+      dispatch(fetchSettings());
+    }
+  }, [dispatch, refresh]);
+
+  useEffect(() => {
+    if (isMounted()) {
+      setSettingsData(settings);
+      setRefresh(false);
+    }
+  }, [settings, isMounted]);
 
   const saveEventHandler = async (event) => {
     event.stopPropagation();
@@ -73,6 +93,12 @@ const BackupContainer = () => {
       setRestoreOldBackups(false);
       await registerOldBackups();
     }
+
+    // to re-update backups list in restore component
+    if (initBackupsFolder || restoreOldBackups)
+      dispatch(fetchRegisteredBackups());
+
+    setRefresh(true);
   };
 
   const updatePaths = (path) => {

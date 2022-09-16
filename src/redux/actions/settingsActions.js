@@ -25,7 +25,10 @@ export const fetchSettings = (settingName) => {
       receive: {
         channel: "settings-data"
       },
-      onSuccess: (result) => dispatch(receiveSettings(result.data)),
+      onSuccess: (result) => {
+        dispatch(receiveSettings(result.data));
+        setItem("settings", result.data);
+      },
       onError: (result) => dispatch(fetchingFailed(result.error))
     });
   };

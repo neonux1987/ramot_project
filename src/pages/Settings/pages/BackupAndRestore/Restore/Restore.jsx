@@ -18,6 +18,7 @@ import CheckboxWithLabel from "../../../../../components/Checkboxes/CheckboxWith
 import ResetDB from "./ResetDB/ReseDB";
 import ConfirmReset from "../../../../../components/modals/ConfirmReset/ConfirmReset";
 import useIsMounted from "../../../../../customHooks/useIsMounted";
+import useRefresh from "../../../../../customHooks/useRefresh";
 
 const RestoreIcon = (props) => (
   <RestoreIco width="30px" height="30px" {...props} />
@@ -28,6 +29,9 @@ const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 const Restore = () => {
   const dispatch = useDispatch();
   const { showModal } = useModalLogic();
+  const isMounted = useIsMounted();
+  const [refresh, setRefresh] = useRefresh();
+
   const { isFetching, data } = useSelector((store) => store.registeredBackups);
   const [selectedBackupDate, setSelectedBackupDate] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -36,16 +40,18 @@ const Restore = () => {
     byFile: false
   });
   const [withConfig, setWithConfig] = useState(true);
-  const isMounted = useIsMounted();
 
   useEffect(() => {
-    dispatch(fetchRegisteredBackups()).then(({ data }) => {
-      if (!isMounted()) return;
+    if (refresh) {
+      dispatch(fetchRegisteredBackups()).then(({ data }) => {
+        if (!isMounted()) return;
 
-      if (data.length === 0) setSelectedBackupDate(NO_BACKUPS_MESSAGE);
-      else setSelectedBackupDate(data[0].fileName);
-    });
-  }, [dispatch, isMounted]);
+        if (data.length === 0) setSelectedBackupDate(NO_BACKUPS_MESSAGE);
+        else setSelectedBackupDate(data[0].fileName);
+      });
+      setRefresh(false);
+    }
+  }, [dispatch, isMounted, refresh, setRefresh]);
 
   const backupsNamesRender =
     data.length > 0 ? (

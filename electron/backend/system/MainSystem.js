@@ -100,9 +100,9 @@ class MainSystem {
       // used because the project is developed on
       // 2 separate computers
       // TODO: remove when the app is finished
-      if (process.env.NODE_ENV === "development") {
+      /* if (process.env.NODE_ENV === "development") {
         await setupLogic.setLocations();
-      }
+      } */
 
       // set up the db connection
       await connectionPool.createConnection();

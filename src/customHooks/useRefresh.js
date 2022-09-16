@@ -8,7 +8,7 @@ import useIsMounted from "./useIsMounted";
 */
 const useRefresh = () => {
   const [refresh, setRefresh] = useState(false);
-  const isMounted = useIsMounted;
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     const listener = () => {
