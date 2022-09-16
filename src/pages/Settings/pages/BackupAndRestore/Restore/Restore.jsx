@@ -19,6 +19,7 @@ import ResetDB from "./ResetDB/ReseDB";
 import ConfirmReset from "../../../../../components/modals/ConfirmReset/ConfirmReset";
 import useIsMounted from "../../../../../customHooks/useIsMounted";
 import useRefresh from "../../../../../customHooks/useRefresh";
+import { useCallback } from "react";
 
 const RestoreIcon = (props) => (
   <RestoreIco width="30px" height="30px" {...props} />
@@ -41,17 +42,25 @@ const Restore = () => {
   });
   const [withConfig, setWithConfig] = useState(true);
 
-  useEffect(() => {
-    if (refresh) {
-      dispatch(fetchRegisteredBackups()).then(({ data }) => {
-        if (!isMounted()) return;
+  const fetch = useCallback(() => {
+    dispatch(fetchRegisteredBackups()).then(({ data }) => {
+      if (!isMounted()) return;
 
-        if (data.length === 0) setSelectedBackupDate(NO_BACKUPS_MESSAGE);
-        else setSelectedBackupDate(data[0].fileName);
-      });
+      if (data.length === 0) setSelectedBackupDate(NO_BACKUPS_MESSAGE);
+      else setSelectedBackupDate(data[0].fileName);
+    });
+  }, [isMounted, dispatch]);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  /* useEffect(() => {
+    if (refresh) {
+      fetch();
       setRefresh(false);
     }
-  }, [dispatch, isMounted, refresh, setRefresh]);
+  }, [dispatch, isMounted, refresh, setRefresh, fetch]); */
 
   const backupsNamesRender =
     data.length > 0 ? (
@@ -147,6 +156,16 @@ const Restore = () => {
   };
 
   const initSelectedFile = () => setSelectedFile(null);
+  console.log("waza");
+  const isExist = () => {
+    let exist = false;
+
+    data.forEach((fileName) => {
+      if (fileName === selectedBackupDate) exist = true;
+    });
+
+    return exist;
+  };
 
   const render = isFetching ? (
     <DefaultLoader loading={isFetching} />
@@ -158,6 +177,7 @@ const Restore = () => {
         backupsNamesRender={backupsNamesRender}
         onCheckBoxChangeHandler={onCheckBoxChangeHandler}
         byList={checkBoxValue.byList}
+        isExist={isExist}
       />
 
       <Separator title={"או"} />

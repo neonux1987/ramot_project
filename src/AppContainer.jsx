@@ -30,8 +30,6 @@ const theme = createTheme(
 
 const AppContainer = () => {
   const mainContainerRef = useRef(null);
-
-  const settings = useSelector((store) => store.settings);
   const generalSettings = useSelector((store) => store.generalSettings);
 
   const dispatch = useDispatch();
@@ -53,13 +51,7 @@ const AppContainer = () => {
     return <AppLoader text={"טוען הגדרות אפליקציה"} />;
   }
 
-  return (
-    <App
-      theme={theme}
-      mainContainerRef={mainContainerRef}
-      settings={settings}
-    />
-  );
+  return <App theme={theme} mainContainerRef={mainContainerRef} />;
 };
 
 export default React.memo(AppContainer);

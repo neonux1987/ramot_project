@@ -33,6 +33,7 @@ import { openItem } from "../../../../../services/mainProcess.svc";
 import ConfirmBackupsRestore from "../../../../../components/modals/ConfirmBackupsRestore/ConfirmBackupsRestore";
 import { useEffect } from "react";
 import useIsMounted from "../../../../../customHooks/useIsMounted";
+import { ipcRenderer } from "electron";
 
 const LastUpdated = ({ last_update }) => {
   const date = new Date(last_update);
@@ -99,6 +100,7 @@ const BackupContainer = () => {
       dispatch(fetchRegisteredBackups());
 
     setRefresh(true);
+    ipcRenderer.send("refresh-renderer");
   };
 
   const updatePaths = (path) => {

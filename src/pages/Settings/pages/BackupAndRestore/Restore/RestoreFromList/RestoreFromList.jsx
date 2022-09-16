@@ -11,8 +11,14 @@ const RestoreFromList = (props) => {
     onBackupDateChangeHandler,
     backupsNamesRender,
     onCheckBoxChangeHandler,
-    byList
+    byList,
+    isExist
   } = props;
+
+  const selectValue =
+    selectedBackupDate === NO_BACKUPS_MESSAGE
+      ? NO_BACKUPS_MESSAGE
+      : selectedBackupDate;
 
   return (
     <div className={container}>
@@ -25,11 +31,7 @@ const RestoreFromList = (props) => {
 
       <FormControl className={restoreDateSelect}>
         <Select
-          value={
-            selectedBackupDate === NO_BACKUPS_MESSAGE
-              ? NO_BACKUPS_MESSAGE
-              : selectedBackupDate
-          }
+          value={isExist() ? selectValue : ""}
           onChange={onBackupDateChangeHandler}
           inputProps={{
             name: "backupsDates",

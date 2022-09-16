@@ -7,17 +7,17 @@ import AppBarContainer from "./layout/AppBar/AppBarContainer";
 import SidebarContainer from "./layout/Sidebar/SidebarContainer";
 import MainContainer from "./layout/Main/MainContainer";
 import CustomToastContainer from "./toasts/CustomToastContainer/CustomToastContainer";
-import ThemeContext from "./context/ThemeContext";
 import AppWrapper from "./components/AppWrapper/AppWrapper";
 import ScrollToTop from "./containers/ScrollToTop/ScrollToTop";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/css/style.css";
+import ThemeContextWrapper from "./components/ThemeContextWrapper/ThemeContextWrapper";
 
-const App = ({ theme, settings, mainContainerRef }) => {
+const App = ({ theme, mainContainerRef }) => {
   return (
     <RTL>
       <MuiThemeProvider theme={theme}>
-        <ThemeContext.Provider value={settings.data.theme}>
+        <ThemeContextWrapper>
           <ScrollToTop mainContainer={mainContainerRef} />
 
           <AppWrapper>
@@ -28,7 +28,7 @@ const App = ({ theme, settings, mainContainerRef }) => {
           </AppWrapper>
 
           <CustomToastContainer />
-        </ThemeContext.Provider>
+        </ThemeContextWrapper>
         <ModalRoot />
       </MuiThemeProvider>
     </RTL>
