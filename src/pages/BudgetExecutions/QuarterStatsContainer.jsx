@@ -1,16 +1,16 @@
 // LIBRARIES IMPORTS
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Helper from "../../helpers/Helper";
 import Stats from "../../components/Stats/Stats";
 import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
 import { fetchAllMonthsStatsByQuarter } from "../../redux/actions/monthlyStatsActions";
 import { fetchQuarterStats } from "../../redux/actions/quarterlyStatsActions";
-import ThemeContext from "../../context/ThemeContext";
 import SliderStatBox from "../../components/Stats/SliderStatBox";
+import useTheme from "../../customHooks/useTheme";
 
 const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
-  const { colorSet } = useContext(ThemeContext);
+  const { colorSet } = useTheme();
   const dispatch = useDispatch();
 
   const monthlyStats = useSelector(

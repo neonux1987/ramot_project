@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 // ACTIONS
@@ -10,9 +10,6 @@ import {
 
 // UTILS
 import Helper from "../../helpers/Helper";
-
-// CONTEXT
-import ThemeContext from "../../context/ThemeContext";
 
 // COMPONENTS
 import GroupCell from "../../components/table/components/GroupCell";
@@ -34,6 +31,7 @@ import useModalLogic from "../../customHooks/useModalLogic";
 import AddBudgetExecutionContainer from "./AddNewContainer/AddBudgetExecutionContainer";
 import useTableLogic from "../../customHooks/useTableLogic";
 import useDifferenceColor from "../../customHooks/useDifferenceColor";
+import useTheme from "../../customHooks/useTheme";
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -58,7 +56,7 @@ const BudgetExecutionsTableContainer = (props) => {
     numberInput
   } = useTableLogic();
 
-  const themeContext = useContext(ThemeContext);
+  const theme = useTheme();
   const { showModal } = useModalLogic();
   const dispatch = useDispatch();
 
@@ -178,7 +176,7 @@ const BudgetExecutionsTableContainer = (props) => {
   );
 
   const HeaderGroups = () => {
-    const { colorSet } = themeContext;
+    const { colorSet } = theme;
     const { quarter } = date;
 
     const months = Helper.getQuarterMonths(quarter);

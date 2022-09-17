@@ -11,24 +11,21 @@ import AppWrapper from "./components/AppWrapper/AppWrapper";
 import ScrollToTop from "./containers/ScrollToTop/ScrollToTop";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/css/style.css";
-import ThemeContextWrapper from "./components/ThemeContextWrapper/ThemeContextWrapper";
 
 const App = ({ theme, mainContainerRef }) => {
   return (
     <RTL>
       <MuiThemeProvider theme={theme}>
-        <ThemeContextWrapper>
-          <ScrollToTop mainContainer={mainContainerRef} />
+        <ScrollToTop mainContainer={mainContainerRef} />
 
-          <AppWrapper>
-            <CssBaseline />
-            <AppBarContainer />
-            <SidebarContainer />
-            <MainContainer mainContainerRef={mainContainerRef} />
-          </AppWrapper>
+        <AppWrapper>
+          <CssBaseline />
+          <AppBarContainer />
+          <SidebarContainer />
+          <MainContainer mainContainerRef={mainContainerRef} />
+        </AppWrapper>
 
-          <CustomToastContainer />
-        </ThemeContextWrapper>
+        <CustomToastContainer />
         <ModalRoot />
       </MuiThemeProvider>
     </RTL>

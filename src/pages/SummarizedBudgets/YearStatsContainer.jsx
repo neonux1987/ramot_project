@@ -1,5 +1,5 @@
 // LIBRARIES IMPORTS
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Helper from "../../helpers/Helper";
 import SliderStatBox from "../../components/Stats/SliderStatBox";
@@ -7,10 +7,10 @@ import Stats from "../../components/Stats/Stats";
 import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
 import { fetchAllQuartersStatsByYear } from "../../redux/actions/quarterlyStatsActions";
 import { fetchYearStats } from "../../redux/actions/yearlyStatsActions";
-import ThemeContext from "../../context/ThemeContext";
+import useTheme from "../../customHooks/useTheme";
 
 const YearStatsContainer = ({ buildingId, pageName, date }) => {
-  const { colorSet } = useContext(ThemeContext);
+  const { colorSet } = useTheme();
   const dispatch = useDispatch();
 
   const quarterlyStats = useSelector(
@@ -24,7 +24,7 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
     const params = {
       buildingId: buildingId,
       pageName: pageName,
-      date: date,
+      date: date
     };
 
     //fetch quarter months stats

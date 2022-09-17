@@ -1,5 +1,5 @@
 // LIBRARIES
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 // ACTIONS
@@ -10,9 +10,6 @@ import {
 
 // UTILS
 import Helper from "../../helpers/Helper";
-
-// CONTEXT
-import ThemeContext from "../../context/ThemeContext";
 
 // COMPONENTS
 import HeaderRow from "../../components/table/components/HeaderRow";
@@ -30,6 +27,7 @@ import SectionControlsContainer from "../../components/table/TableControls/Secti
 
 // HOC
 import useTableLogic from "../../customHooks/useTableLogic";
+import useTheme from "../../customHooks/useTheme";
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -48,7 +46,7 @@ const SummarizedBudgetsTableContainer = (props) => {
   const { toggleEditMode, editMode, textAreaInput, numberInput } =
     useTableLogic();
 
-  const themeContext = useContext(ThemeContext);
+  const theme = useTheme();
   const dispatch = useDispatch();
 
   const onBlurHandler = (e) => {
@@ -95,7 +93,7 @@ const SummarizedBudgetsTableContainer = (props) => {
   );
 
   const HeaderGroups = () => {
-    const { colorSet } = themeContext;
+    const { colorSet } = theme;
     const { quarter, year } = date;
 
     const quarters = Helper.getYearQuarters(quarter);
