@@ -2,6 +2,7 @@ import React from "react";
 import { FormControl, Select } from "@material-ui/core";
 import { restoreDateSelect, container } from "./RestoreFromList.module.css";
 import RadioWithLabel from "../../../../../../components/Radio/RadioWithLabel";
+import { MenuItem } from "@material-ui/core";
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
@@ -15,11 +16,6 @@ const RestoreFromList = (props) => {
     isExist
   } = props;
 
-  const selectValue =
-    selectedBackupDate === NO_BACKUPS_MESSAGE
-      ? NO_BACKUPS_MESSAGE
-      : selectedBackupDate;
-
   return (
     <div className={container}>
       <RadioWithLabel
@@ -31,7 +27,11 @@ const RestoreFromList = (props) => {
 
       <FormControl className={restoreDateSelect}>
         <Select
-          value={isExist() ? selectValue : ""}
+          value={
+            !isExist() && NO_BACKUPS_MESSAGE !== selectedBackupDate
+              ? NO_BACKUPS_MESSAGE
+              : selectedBackupDate
+          }
           onChange={onBackupDateChangeHandler}
           inputProps={{
             name: "backupsDates",
@@ -42,6 +42,11 @@ const RestoreFromList = (props) => {
           disabled={!byList}
         >
           {backupsNamesRender}
+          {!isExist() && NO_BACKUPS_MESSAGE !== selectedBackupDate && (
+            <MenuItem value="לא קיימים גיבויים שמורים" disabled>
+              לא קיימים גיבויים
+            </MenuItem>
+          )}
         </Select>
       </FormControl>
     </div>

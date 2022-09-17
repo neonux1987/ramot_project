@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Typography, MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandableSection from "../../../../../components/Section/ExpandableSection";
@@ -19,7 +19,6 @@ import ResetDB from "./ResetDB/ReseDB";
 import ConfirmReset from "../../../../../components/modals/ConfirmReset/ConfirmReset";
 import useIsMounted from "../../../../../customHooks/useIsMounted";
 import useRefresh from "../../../../../customHooks/useRefresh";
-import { useCallback } from "react";
 
 const RestoreIcon = (props) => (
   <RestoreIco width="30px" height="30px" {...props} />
@@ -43,11 +42,12 @@ const Restore = () => {
   const [withConfig, setWithConfig] = useState(true);
 
   const fetch = useCallback(() => {
+    if (isMounted()) setSelectedBackupDate("");
+
     dispatch(fetchRegisteredBackups()).then(({ data }) => {
       if (!isMounted()) return;
 
-      if (data.length === 0) setSelectedBackupDate(NO_BACKUPS_MESSAGE);
-      else setSelectedBackupDate(data[0].fileName);
+      if (data.length > 0) setSelectedBackupDate(data[0].fileName);
     });
   }, [isMounted, dispatch]);
 
@@ -55,34 +55,27 @@ const Restore = () => {
     fetch();
   }, [fetch]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     if (refresh) {
       fetch();
       setRefresh(false);
     }
-  }, [dispatch, isMounted, refresh, setRefresh, fetch]); */
+  }, [dispatch, isMounted, refresh, setRefresh, fetch]);
+  console.log("hello");
+  const backupsNamesRender = data.map((backup, index) => {
+    const date = new Date(backup.backupDateTime);
+    const formatter = new Intl.DateTimeFormat("he-IL", {
+      dateStyle: "short",
+      timeStyle: "short"
+    });
+    const formattedDate = formatter.format(date);
 
-  const backupsNamesRender =
-    data.length > 0 ? (
-      data.map((backup, index) => {
-        const date = new Date(backup.backupDateTime);
-        const formatter = new Intl.DateTimeFormat("he-IL", {
-          dateStyle: "short",
-          timeStyle: "short"
-        });
-        const formattedDate = formatter.format(date);
-
-        return (
-          <MenuItem value={backup.fileName} key={index}>
-            {formattedDate}
-          </MenuItem>
-        );
-      })
-    ) : (
-      <MenuItem value="לא קיימים גיבויים שמורים" disabled>
-        לא קיימים גיבויים
+    return (
+      <MenuItem value={backup.fileName} key={index}>
+        {formattedDate}
       </MenuItem>
     );
+  });
 
   const onBackupDateChangeHandler = (event) => {
     const { value } = event.target;
@@ -156,7 +149,7 @@ const Restore = () => {
   };
 
   const initSelectedFile = () => setSelectedFile(null);
-  console.log("waza");
+
   const isExist = () => {
     let exist = false;
 
@@ -238,4 +231,4 @@ const Restore = () => {
   );
 };
 
-export default Restore;
+export default React.memo(Restore);
