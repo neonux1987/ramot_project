@@ -20,7 +20,6 @@ import {
 } from "../../../../../redux/actions/settingsActions";
 import {
   checkForBackupsInFolder,
-  fetchRegisteredBackups,
   initializeRegisteredBackups,
   registerOldBackups
 } from "../../../../../redux/actions/registeredBackupsActions";
@@ -96,11 +95,10 @@ const BackupContainer = () => {
     }
 
     // to re-update backups list in restore component
-    if (initBackupsFolder || restoreOldBackups)
-      dispatch(fetchRegisteredBackups());
-
-    setRefresh(true);
-    ipcRenderer.send("refresh-renderer");
+    if (initBackupsFolder || restoreOldBackups) {
+      setRefresh(true);
+      ipcRenderer.send("refresh-renderer");
+    }
   };
 
   const updatePaths = (path) => {

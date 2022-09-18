@@ -26,28 +26,36 @@ const RestoreIcon = (props) => (
 
 const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
+const fromListDataDefaultState = {
+  selectedBackupDate: NO_BACKUPS_MESSAGE,
+  data: []
+};
+
 const Restore = () => {
   const dispatch = useDispatch();
   const { showModal } = useModalLogic();
   const isMounted = useIsMounted();
   const [refresh, setRefresh] = useRefresh();
 
-  const { isFetching, data } = useSelector((store) => store.registeredBackups);
-  const [selectedBackupDate, setSelectedBackupDate] = useState("");
+  const { isFetching } = useSelector((store) => store.registeredBackups);
   const [selectedFile, setSelectedFile] = useState(null);
   const [checkBoxValue, setCheckBoxValue] = useState({
     byList: true,
     byFile: false
   });
   const [withConfig, setWithConfig] = useState(true);
+  const [fromListData, setFromListData] = useState(fromListDataDefaultState);
 
   const fetch = useCallback(() => {
-    if (isMounted()) setSelectedBackupDate("");
-
     dispatch(fetchRegisteredBackups()).then(({ data }) => {
       if (!isMounted()) return;
 
-      if (data.length > 0) setSelectedBackupDate(data[0].fileName);
+      if (data.length > 0)
+        setFromListData({
+          selectedBackupDate: data[0].fileName,
+          data
+        });
+      else setFromListData(fromListDataDefaultState);
     });
   }, [isMounted, dispatch]);
 
@@ -61,8 +69,8 @@ const Restore = () => {
       setRefresh(false);
     }
   }, [dispatch, isMounted, refresh, setRefresh, fetch]);
-  console.log("hello");
-  const backupsNamesRender = data.map((backup, index) => {
+
+  const backupsNamesRender = fromListData.data.map((backup, index) => {
     const date = new Date(backup.backupDateTime);
     const formatter = new Intl.DateTimeFormat("he-IL", {
       dateStyle: "short",
@@ -79,7 +87,10 @@ const Restore = () => {
 
   const onBackupDateChangeHandler = (event) => {
     const { value } = event.target;
-    setSelectedBackupDate(value);
+    setFromListData((prev) => ({
+      ...prev,
+      selectFileDialog: value
+    }));
   };
 
   const selectDbFileHandler = () => {
@@ -128,7 +139,7 @@ const Restore = () => {
     // from the list, otherwise byFile is checked so
     // set the name of the user selected file
     const payload = {
-      fileName: byList ? selectedBackupDate : selectedFile,
+      fileName: byList ? fromListData.selectedBackupDate : selectedFile,
       withConfig
     };
 
@@ -150,27 +161,16 @@ const Restore = () => {
 
   const initSelectedFile = () => setSelectedFile(null);
 
-  const isExist = () => {
-    let exist = false;
-
-    data.forEach((fileName) => {
-      if (fileName === selectedBackupDate) exist = true;
-    });
-
-    return exist;
-  };
-
   const render = isFetching ? (
     <DefaultLoader loading={isFetching} />
   ) : (
     <>
       <RestoreFromList
         onBackupDateChangeHandler={onBackupDateChangeHandler}
-        selectedBackupDate={selectedBackupDate}
         backupsNamesRender={backupsNamesRender}
         onCheckBoxChangeHandler={onCheckBoxChangeHandler}
         byList={checkBoxValue.byList}
-        isExist={isExist}
+        fromListData={fromListData}
       />
 
       <Separator title={"או"} />

@@ -8,12 +8,11 @@ const NO_BACKUPS_MESSAGE = "לא קיימים גיבויים שמורים";
 
 const RestoreFromList = (props) => {
   const {
-    selectedBackupDate,
     onBackupDateChangeHandler,
     backupsNamesRender,
     onCheckBoxChangeHandler,
     byList,
-    isExist
+    fromListData
   } = props;
 
   return (
@@ -27,23 +26,18 @@ const RestoreFromList = (props) => {
 
       <FormControl className={restoreDateSelect}>
         <Select
-          value={
-            !isExist() && NO_BACKUPS_MESSAGE !== selectedBackupDate
-              ? NO_BACKUPS_MESSAGE
-              : selectedBackupDate
-          }
+          value={fromListData.selectedBackupDate}
           onChange={onBackupDateChangeHandler}
           inputProps={{
             name: "backupsDates",
             id: "backupsDates-label-placeholder"
           }}
-          displayEmpty
           name="backupsDates"
           disabled={!byList}
         >
           {backupsNamesRender}
-          {!isExist() && NO_BACKUPS_MESSAGE !== selectedBackupDate && (
-            <MenuItem value="לא קיימים גיבויים שמורים" disabled>
+          {fromListData.selectedBackupDate === NO_BACKUPS_MESSAGE && (
+            <MenuItem value={NO_BACKUPS_MESSAGE} disabled>
               לא קיימים גיבויים
             </MenuItem>
           )}
