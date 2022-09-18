@@ -15,7 +15,7 @@ import {
 } from "../../../../services/updates.svc";
 import { initiateDbBackup } from "../../../../services/dbBackup.svc";
 import {
-  updateSettings,
+  updateSpecificSettings,
   saveSettings
 } from "../../../../redux/actions/settingsActions";
 import { toastManager } from "../../../../toasts/toastManager";
@@ -134,7 +134,7 @@ const AppUpdates = () => {
     // reset settings
     if (promise) {
       await dispatch(
-        updateSettings(SETTINGS_NAME, {
+        updateSpecificSettings(SETTINGS_NAME, {
           availableUpdate: false,
           updateVersion: "",
           releaseDate: "",
@@ -176,7 +176,7 @@ const AppUpdates = () => {
 
       if (!updateDownloaded || version !== updateVersion) {
         await dispatch(
-          updateSettings(SETTINGS_NAME, {
+          updateSpecificSettings(SETTINGS_NAME, {
             availableUpdate: true,
             updateVersion: version,
             releaseDate,
@@ -192,7 +192,7 @@ const AppUpdates = () => {
       if (!isCancelled.current) setIsChecking(false);
 
       await dispatch(
-        updateSettings(SETTINGS_NAME, {
+        updateSpecificSettings(SETTINGS_NAME, {
           availableUpdate: false,
           updateVersion: "",
           releaseDate: "",
@@ -212,7 +212,7 @@ const AppUpdates = () => {
       if (!isCancelled.current) setIsDownloading(false);
 
       await dispatch(
-        updateSettings(SETTINGS_NAME, {
+        updateSpecificSettings(SETTINGS_NAME, {
           updateDownloaded: true,
           updateFilePath: result.data.downloadedFile
         })

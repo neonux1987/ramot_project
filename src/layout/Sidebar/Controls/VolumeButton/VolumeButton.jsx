@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  updateSettings,
+  updateSpecificSettings,
   saveSettings
 } from "../../../../redux/actions/settingsActions";
 import { soundManager } from "../../../../soundManager/SoundManager";
@@ -17,7 +17,7 @@ const VolumeButton = ({ className = "", offClassName = "" }) => {
 
   const onClick = () => {
     dispatch(
-      updateSettings("system", {
+      updateSpecificSettings("system", {
         soundEnabled: !soundEnabled
       })
     );
