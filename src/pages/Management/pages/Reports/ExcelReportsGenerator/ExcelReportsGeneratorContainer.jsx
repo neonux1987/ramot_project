@@ -44,11 +44,11 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
           setYear(() => lastYear);
 
           dispatch(fetchRegisteredReportsByYear(lastYear)).then(({ data }) => {
-            if (data.length > 0)
-              setQuarters(() => {
-                setQuarter(() => data[0].quarter);
-                return data;
-              });
+            if (data.length > 0) {
+              setQuarter(() => data[0].quarter);
+
+              setQuarters(() => data);
+            }
           });
         }
       });
