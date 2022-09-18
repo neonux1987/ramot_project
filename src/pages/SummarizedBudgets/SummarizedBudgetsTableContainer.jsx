@@ -18,7 +18,6 @@ import HeaderCell from "../../components/table/components/HeaderCell";
 import TableRow from "../../components/table/components/TableRow";
 import Cell from "../../components/table/components/Cell";
 import NonZeroCell from "../../components/table/components/NonZeroCell";
-import TableActions from "../../components/table/TableActions/TableActions";
 import TableContainer from "../../components/table/TableContainer";
 import GroupRow from "../../components/table/components/GroupRow";
 import YearOnlyDatePicker from "../../components/DatePicker/YearOnlyDatePicker";
@@ -29,7 +28,7 @@ import SectionControlsContainer from "../../components/table/TableControls/Secti
 import useTableLogic from "../../customHooks/useTableLogic";
 import useTheme from "../../customHooks/useTheme";
 
-const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(13,1fr)";
+const EDITMODE_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 
 const SummarizedBudgetsTableContainer = (props) => {
@@ -79,8 +78,6 @@ const SummarizedBudgetsTableContainer = (props) => {
     e.target.blur();
   };
 
-  const deleteHandler = (id, summarized_section_id) => {};
-
   const getGridTemplateColumns = useCallback(() => {
     return editMode ? EDITMODE_TEMPLATE : DEFAULT_TEMPLATE;
   }, [editMode]);
@@ -108,7 +105,6 @@ const SummarizedBudgetsTableContainer = (props) => {
 
     return (
       <GroupRow gridTemplateColumns={getGridTemplateColumns()}>
-        {editMode ? <GroupCell></GroupCell> : null}
         <GroupCell></GroupCell>
         <GroupCell></GroupCell>
         {quarterColumns}
@@ -128,7 +124,6 @@ const SummarizedBudgetsTableContainer = (props) => {
 
     return (
       <HeaderRow gridTemplateColumns={getGridTemplateColumns()}>
-        {editMode ? <HeaderCell>{"פעולות"}</HeaderCell> : null}
         <HeaderCell>{"שורה"}</HeaderCell>
         <HeaderCell>{"סעיף"}</HeaderCell>
 
@@ -165,11 +160,6 @@ const SummarizedBudgetsTableContainer = (props) => {
 
     return (
       <TableRow key={index} gridTemplateColumns={getGridTemplateColumns()}>
-        {editMode ? (
-          <TableActions
-            deleteHandler={() => deleteHandler(rowData.id, index)}
-          />
-        ) : null}
         <Cell>{index + 1}</Cell>
         <Cell>{rowData["section"]}</Cell>
         {quarterColumns}
