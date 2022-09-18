@@ -1,4 +1,5 @@
 const fse = require("fs-extra");
+const LogicError = require("../customErrors/LogicError");
 const SystemPaths = require("../system/SystemPaths");
 
 const CONFIG_BACKUPS_NAMES = SystemPaths.paths.backups_names_file_path;
@@ -28,7 +29,17 @@ class RegisteredBackupsLogic {
     const AdmZip = require("adm-zip");
     const path = require("path");
     const validBackups = [];
-    const files = await fse.readdir(folderPath);
+    let files = [];
+
+    try {
+      files = await fse.readdir(folderPath);
+    } catch (error) {
+      throw new LogicError(
+        "המערכת נכשלה בקריאת תיקיית גיבויים",
+        "RegisteredBackupsLogic.js",
+        error
+      );
+    }
 
     for (let file of files) {
       if (!file.endsWith(".zip")) continue;

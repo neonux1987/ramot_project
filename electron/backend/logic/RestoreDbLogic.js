@@ -16,6 +16,8 @@ class RestoreDbLogic {
     const SystemPaths = require("../system/SystemPaths");
     const AppLogic = require("./AppLogic");
     const SettingsLogic = require("../logic/SettingsLogic");
+    const SetupLogic = require("../logic/SetupLogic");
+    const setupLogic = new SetupLogic();
     const settingsLogic = new SettingsLogic();
     const appLogic = new AppLogic();
 
@@ -37,6 +39,8 @@ class RestoreDbLogic {
       await fse.remove(SystemPaths.paths.config_file_path);
       // create new config file
       await appLogic.createCleanSettingsFile();
+
+      await setupLogic.setLocations();
     }
 
     await fse.writeJSON(SystemPaths.paths.backups_names_file_path, []);
@@ -73,8 +77,10 @@ class RestoreDbLogic {
     const SystemPaths = require("../system/SystemPaths");
     const SettingsLogic = require("../logic/SettingsLogic");
     const SetupLogic = require("../logic/SetupLogic");
+    const RegisteredBackupsLogic = require("../logic/RegisteredBackupsLogic");
     const setupLogic = new SetupLogic();
     const settingsLogic = new SettingsLogic();
+    const registeredBackupsLogic = new RegisteredBackupsLogic();
 
     const extractedFolderPath =
       SystemPaths.paths.app_temp_folder + "/extracted";
@@ -117,19 +123,33 @@ class RestoreDbLogic {
         const extractedConfigFile = await fse.readJSON(extractedConfigFilePath);
         const restoredConfigFile = await settingsLogic.getSettings();
 
-        // because setLocations erases the user's chosed
-        // db backups folder path, we need to take it from
-        // the extracted config and override in the already
-        // restored config
-        restoredConfigFile.db_backup.db_backups_folder_path =
-          extractedConfigFile.db_backup.db_backups_folder_path;
-        restoredConfigFile.locations.db_backups_folder_path =
-          extractedConfigFile.db_backup.db_backups_folder_path;
-        console.log(extractedConfigFile);
+        const exist = await fse.pathExists(
+          extractedConfigFile.db_backup.db_backups_folder_path
+        );
+
+        if (exist) {
+          // because setLocations erases the user's chosed
+          // db backups folder path, we need to take it from
+          // the extracted config and override in the already
+          // restored config
+          restoredConfigFile.db_backup.db_backups_folder_path =
+            extractedConfigFile.db_backup.db_backups_folder_path;
+          restoredConfigFile.locations.db_backups_folder_path =
+            extractedConfigFile.db_backup.db_backups_folder_path;
+        }
+
+        // if we restore the config file, we want to re-scan the db backups
+        // folder of the extracted config to register them back to the system
+        await registeredBackupsLogic.scanForBackupsAndRegister(
+          restoredConfigFile.db_backup.db_backups_folder_path
+        );
+
         await settingsLogic.updateSettings(restoredConfigFile);
       } catch (error) {
         throw new LogicError(
-          "קרתה תקלה בזמן קריאת קובץ הגדרות ייתכן שהקובץ הוא לא מסוג json"
+          "קרתה תקלה בזמן שיחזור קובץ הגדרות",
+          "RestoreDbLogic.js",
+          error
         );
       }
     }
