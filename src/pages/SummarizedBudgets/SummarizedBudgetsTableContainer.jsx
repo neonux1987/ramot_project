@@ -23,8 +23,6 @@ import GroupRow from "../../components/table/components/GroupRow";
 import YearOnlyDatePicker from "../../components/DatePicker/YearOnlyDatePicker";
 import TableSection from "../../components/Section/TableSection";
 import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
-
-// HOC
 import useTableLogic from "../../customHooks/useTableLogic";
 import useTheme from "../../customHooks/useTheme";
 
@@ -232,7 +230,7 @@ const SummarizedBudgetsTableContainer = (props) => {
   const dataExist = data.length > 0;
 
   return (
-    <TableSection>
+    <TableSection editMode={editMode}>
       <SectionControlsContainer
         edit={true}
         editModeProps={{
@@ -256,6 +254,7 @@ const SummarizedBudgetsTableContainer = (props) => {
           dataExist
         }}
       />
+
       <YearOnlyDatePicker
         date={date}
         buildingId={buildingId}

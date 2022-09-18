@@ -249,7 +249,7 @@ const ExpansesCodes = () => {
   const dataExist = data.length > 0;
 
   return (
-    <TableSection>
+    <TableSection editMode={editMode}>
       <SectionControlsContainer
         edit={true}
         editModeProps={{
