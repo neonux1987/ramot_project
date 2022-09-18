@@ -52,7 +52,11 @@ const exportReports = async (date, buildings) => {
     const { buildingName, buildingId } = building;
 
     const reports =
-      await registeredReportsLogic.getRegisteredReportsByBuildingId(buildingId);
+      await registeredReportsLogic.getRegisteredReportsByYearAndQuarter(
+        buildingId,
+        year,
+        quarter
+      );
 
     if (reports.length === 0) {
       return;
