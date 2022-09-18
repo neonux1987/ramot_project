@@ -11,7 +11,6 @@ export const TYPES = {
 
 export const fetchBuildings = () => {
   return async (dispatch) => {
-    //let react know that the fetching is started
     dispatch(requestBuildings());
 
     const { data, error } = await ipcRenderer.invoke(
