@@ -155,7 +155,10 @@ const BackupContainer = () => {
 
     setSettingsData((prev) => ({
       ...prev,
-      backup_on_exit: checked
+      db_backup: {
+        ...prev.db_backup,
+        backup_on_exit: checked
+      }
     }));
     dispatch(setDirty());
   };
