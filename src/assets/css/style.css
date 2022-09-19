@@ -96,6 +96,12 @@ a {
   background: rgb(46, 55, 62);
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .activeExpandItem,
 .activeExpandItem:hover {
   background: #0000001f;
