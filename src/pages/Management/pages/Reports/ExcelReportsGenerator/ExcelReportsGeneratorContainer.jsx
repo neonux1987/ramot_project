@@ -35,24 +35,22 @@ const ExcelReportsGeneratorContainer = ({ excelReports, isFetching }) => {
   const registeredReports = useSelector((store) => store.registeredReports);
 
   useEffect(() => {
-    if (isMounted()) {
-      dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
-        const yearsData = result.data;
+    dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
+      const yearsData = result.data;
 
-        if (yearsData.length > 0) {
-          const lastYear = yearsData[0].year;
-          setYear(() => lastYear);
+      if (yearsData.length > 0 && isMounted()) {
+        const lastYear = yearsData[0].year;
+        setYear(() => lastYear);
 
-          dispatch(fetchRegisteredReportsByYear(lastYear)).then(({ data }) => {
-            if (data.length > 0) {
-              setQuarter(() => data[0].quarter);
+        dispatch(fetchRegisteredReportsByYear(lastYear)).then(({ data }) => {
+          if (data.length > 0 && isMounted()) {
+            setQuarter(() => data[0].quarter);
 
-              setQuarters(() => data);
-            }
-          });
-        }
-      });
-    }
+            setQuarters(() => data);
+          }
+        });
+      }
+    });
   }, [dispatch, isMounted]);
 
   const onYearChangeHandler = (event) => {

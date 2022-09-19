@@ -1,4 +1,4 @@
-import { ipcSendReceive } from './util/util';
+import { ipcSendReceive } from "./util/util";
 
 // TYPES
 export const TYPES = {
@@ -6,10 +6,10 @@ export const TYPES = {
   REGISTERED_REPORTS_RECEIVE: "REGISTERED_REPORTS_RECEIVE",
   REGISTERED_REPORTS_FETCHING_FAILED: "REGISTERED_REPORTS_FETCHING_FAILED",
   REGISTERED_REPORTS_CLEANUP: "REGISTERED_REPORTS_CLEANUP"
-}
+};
 
 export const fetchRegisteredReportsGroupedByYear = () => {
-  return dispatch => {
+  return (dispatch) => {
     //let react know that the fetching is started
     dispatch(requestRegisteredReports());
 
@@ -20,15 +20,14 @@ export const fetchRegisteredReportsGroupedByYear = () => {
       receive: {
         channel: "registered-reports-grouped-by-year-data"
       },
-      onSuccess: result => dispatch(receiveRegisteredReports(result.data)),
-      onError: result => dispatch(fetchingFailed(result.error))
+      onSuccess: (result) => dispatch(receiveRegisteredReports(result.data)),
+      onError: (result) => dispatch(fetchingFailed(result.error))
     });
-  }
+  };
 };
 
 export const fetchRegisteredReportsByYear = (year) => {
-  return dispatch => {
-
+  return (dispatch) => {
     return ipcSendReceive({
       send: {
         channel: "get-registered-reports-by-year",
@@ -38,14 +37,14 @@ export const fetchRegisteredReportsByYear = (year) => {
         channel: "registered-reports-by-year-data"
       }
     });
-  }
+  };
 };
 
 export const requestRegisteredReports = function (page) {
   return {
     type: TYPES.REGISTERED_REPORTS_REQUEST,
     page
-  }
+  };
 };
 
 export const receiveRegisteredReports = function (data, page) {
@@ -53,18 +52,18 @@ export const receiveRegisteredReports = function (data, page) {
     type: TYPES.REGISTERED_REPORTS_RECEIVE,
     data,
     page
-  }
-}
+  };
+};
 
 export const fetchingFailed = function (error) {
   return {
     type: TYPES.REGISTERED_REPORTS_FETCHING_FAILED,
     payload: error
-  }
+  };
 };
 
 export const cleanupRegisteredReports = () => {
   return {
     type: TYPES.REGISTERED_REPORTS_CLEANUP
-  }
-}
+  };
+};
