@@ -1,11 +1,11 @@
 import React from "react";
 import classnames from "classnames";
 import { spinner, icon, navLink, minWidth } from "./SpinnerButton.module.css";
-import ButtonNavLink from "../ButtonNavLink";
+import ButtonNavLinkWithSound from "../../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound";
 
 const SpinnerButton = ({ Icon, to = {}, active = false, className }) => {
   return (
-    <ButtonNavLink
+    <ButtonNavLinkWithSound
       className={classnames(
         className,
         navLink,
@@ -16,7 +16,7 @@ const SpinnerButton = ({ Icon, to = {}, active = false, className }) => {
       draggable={false}
     >
       <Icon className={classnames(icon, spinner)} />
-    </ButtonNavLink>
+    </ButtonNavLinkWithSound>
   );
 };
 
