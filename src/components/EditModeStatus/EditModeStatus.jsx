@@ -16,13 +16,16 @@ const EditModeStatus = ({ editMode }) => {
     <>
       {editMode !== undefined ? (
         <div className={container}>
-          <span>מצב עריכה: </span>
+          <span>מצב עריכה:</span>
           <span
             className={css`
-              background-color: ${editMode ? "green" : "red"};
+              background-color: ${editMode
+                ? "rgb(16, 177, 16)"
+                : "rgb(255, 0, 0)"};
               color: #ffffff;
               padding: 2px 8px;
               border-radius: 6px;
+              margin-right: 5px;
             `}
           >
             {statusLabel}

@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import EditableInputCell from '../components/table/components/EditableInputCell';
-import EditableTextareaCell from '../components/table/components/EditableTextareaCell';
+import { useState } from "react";
+import EditableInputCell from "../components/table/components/EditableInputCell";
+import EditableTextareaCell from "../components/table/components/EditableTextareaCell";
 
 /* 
   this hooks provides multiple table components and logic
 */
 const useTableLogic = () => {
-
   const [editMode, setEditMode] = useState(false);
   const [addNewMode, setAddNewMode] = useState(false);
 
@@ -37,27 +36,31 @@ const useTableLogic = () => {
   };
 
   const textAreaInput = (key, value, index, onBlurHandler) => {
-    return <EditableTextareaCell
-      value={value}
-      key={key}
-      data-key={key}
-      data-index={index}
-      onBlur={onBlurHandler}
-      onFocus={editableDivOnFocusHandler}
-    />
+    return (
+      <EditableTextareaCell
+        value={value}
+        key={key}
+        data-key={key}
+        data-index={index}
+        onBlur={onBlurHandler}
+        onFocus={editableDivOnFocusHandler}
+      />
+    );
   };
 
   const textInput = (key, value, index, onBlurHandler, type = "text") => {
-    return <EditableInputCell
-      value={value}
-      type={type}
-      key={key}
-      data-key={key}
-      data-index={index}
-      onBlur={onBlurHandler}
-      onKeyPress={onKeyPressHandler}
-      onFocus={inputOnFocusHandler}
-    />
+    return (
+      <EditableInputCell
+        value={value}
+        type={type}
+        key={key}
+        data-key={key}
+        data-index={index}
+        onBlur={onBlurHandler}
+        onKeyPress={onKeyPressHandler}
+        onFocus={inputOnFocusHandler}
+      />
+    );
   };
 
   const numberInput = (key, value, index, onBlurHandler) => {
@@ -75,8 +78,8 @@ const useTableLogic = () => {
     onKeyPressHandler,
     textAreaInput,
     numberInput,
-    textInput,
-  }
+    textInput
+  };
 };
 
 export default useTableLogic;

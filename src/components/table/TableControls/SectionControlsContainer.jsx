@@ -37,6 +37,8 @@ const SectionControlsContainer = ({
   }, [dispatch]);
 
   const onPrintClick = () => {
+    if (editModeProps && editModeProps.editMode) editModeProps.toggleEditMode();
+
     dispatch(setPrintMode(true));
 
     showModal(PrintModalWrapper, {
