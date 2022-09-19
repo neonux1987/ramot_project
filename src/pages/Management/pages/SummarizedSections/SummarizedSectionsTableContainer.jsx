@@ -17,6 +17,7 @@ import AddSummarizedSectionContainer from "./AddSummarizedSection/AddSummarizedS
 import { toastManager } from "../../../../toasts/toastManager";
 import useTableLogic from "../../../../customHooks/useTableLogic";
 import SectionControlsContainer from "../../../../components/table/TableControls/SectionControlsContainer";
+import SubSectionControls from "../../../../components/table/TableControls/SubSectionControls";
 
 const EDITMODE_TEMPLATE = "minmax(250px,5%) minmax(250px,5%) 1fr";
 const DEFAULT_TEMPLATE = "minmax(250px,5%) 1fr";
@@ -146,7 +147,7 @@ const SummarizedSectionsTableContainer = () => {
   const dataExist = data.length > 0;
 
   return (
-    <TableSection editMode={editMode}>
+    <TableSection>
       <SectionControlsContainer
         edit={true}
         editModeProps={{
@@ -171,6 +172,8 @@ const SummarizedSectionsTableContainer = () => {
         show={addNewMode}
         dataExist={isDataExist}
       />
+
+      <SubSectionControls editMode={editMode} />
 
       <TableContainer
         Row={Row}

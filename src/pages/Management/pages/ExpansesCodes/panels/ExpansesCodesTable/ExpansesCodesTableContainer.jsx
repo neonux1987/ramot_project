@@ -20,6 +20,7 @@ import useTableLogic from "../../../../../../customHooks/useTableLogic";
 import TableSection from "../../../../../../components/Section/TableSection";
 import SectionControlsContainer from "../../../../../../components/table/TableControls/SectionControlsContainer";
 import AddExpanseCodeContainer from "./AddExpanseCode/AddExpanseCodeContainer";
+import SubSectionControls from "../../../../../../components/table/TableControls/SubSectionControls";
 
 const EDITMODE_TEMPLATE = "minmax(100px,5%) minmax(150px,5%) repeat(4,1fr)";
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
@@ -249,7 +250,7 @@ const ExpansesCodes = () => {
   const dataExist = data.length > 0;
 
   return (
-    <TableSection editMode={editMode}>
+    <TableSection>
       <SectionControlsContainer
         edit={true}
         editModeProps={{
@@ -275,6 +276,8 @@ const ExpansesCodes = () => {
         show={addNewMode}
         dataExist={isDataExist}
       />
+
+      <SubSectionControls editMode={editMode} />
 
       <TableContainer
         Row={Row}

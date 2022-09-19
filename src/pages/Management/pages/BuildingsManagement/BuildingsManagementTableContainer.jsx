@@ -23,6 +23,7 @@ import AddBuildingContainer from "./AddBuilding/AddBuildingContainer";
 
 // HOOKS
 import useTableLogic from "../../../../customHooks/useTableLogic";
+import SubSectionControls from "../../../../components/table/TableControls/SubSectionControls";
 
 const DEFAULT_TEMPLATE = "minmax(150px,5%) repeat(4,1fr)";
 
@@ -145,7 +146,7 @@ const BuildingsManagementTableContainer = () => {
   const dataExist = data.length > 0;
 
   return (
-    <TableSection editMode={editMode}>
+    <TableSection>
       <SectionControlsContainer
         edit={true}
         editModeProps={{
@@ -164,6 +165,8 @@ const BuildingsManagementTableContainer = () => {
         show={addNewMode}
         isBuildingExist={isBuildingExist}
       />
+
+      <SubSectionControls editMode={editMode} />
 
       <TableContainer
         Row={Row}

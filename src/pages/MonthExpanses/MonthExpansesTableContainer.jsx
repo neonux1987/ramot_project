@@ -29,6 +29,7 @@ import AddExpanseContainer from "./AddExpanse/AddExpanseContainer";
 
 // HOOKS
 import useTableLogic from "../../customHooks/useTableLogic";
+import SubSectionControls from "../../components/table/TableControls/SubSectionControls";
 
 const MonthExpansesTableContainer = (props) => {
   const {
@@ -190,7 +191,7 @@ const MonthExpansesTableContainer = (props) => {
   const dataExist = data.length > 0;
 
   return (
-    <TableSection editMode={editMode}>
+    <TableSection>
       <SectionControlsContainer
         edit={true}
         editModeProps={{
@@ -229,7 +230,9 @@ const MonthExpansesTableContainer = (props) => {
         date={date}
       />
 
-      <MonthExpansesDatePicker date={date} buildingId={buildingId} />
+      <SubSectionControls editMode={editMode}>
+        <MonthExpansesDatePicker date={date} buildingId={buildingId} />
+      </SubSectionControls>
 
       <TableContainer
         Row={Row}

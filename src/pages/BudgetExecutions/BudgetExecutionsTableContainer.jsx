@@ -32,6 +32,7 @@ import AddBudgetExecutionContainer from "./AddNewContainer/AddBudgetExecutionCon
 import useTableLogic from "../../customHooks/useTableLogic";
 import useDifferenceColor from "../../customHooks/useDifferenceColor";
 import useTheme from "../../customHooks/useTheme";
+import SubSectionControls from "../../components/table/TableControls/SubSectionControls";
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";
@@ -347,7 +348,7 @@ const BudgetExecutionsTableContainer = (props) => {
   const dataExist = data.length > 0;
 
   return (
-    <TableSection editMode={editMode}>
+    <TableSection>
       <SectionControlsContainer
         edit={true}
         editModeProps={{
@@ -383,8 +384,9 @@ const BudgetExecutionsTableContainer = (props) => {
         date={date}
         buildingId={buildingId}
       />
-
-      <BudgetExecutionsDatePicker date={date} buildingId={buildingId} />
+      <SubSectionControls editMode={editMode}>
+        <BudgetExecutionsDatePicker date={date} buildingId={buildingId} />
+      </SubSectionControls>
 
       <TableContainer
         Row={Row}

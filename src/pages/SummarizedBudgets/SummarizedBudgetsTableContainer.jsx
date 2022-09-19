@@ -25,6 +25,7 @@ import TableSection from "../../components/Section/TableSection";
 import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
 import useTableLogic from "../../customHooks/useTableLogic";
 import useTheme from "../../customHooks/useTheme";
+import SubSectionControls from "../../components/table/TableControls/SubSectionControls";
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
@@ -230,7 +231,7 @@ const SummarizedBudgetsTableContainer = (props) => {
   const dataExist = data.length > 0;
 
   return (
-    <TableSection editMode={editMode}>
+    <TableSection>
       <SectionControlsContainer
         edit={true}
         editModeProps={{
@@ -255,11 +256,14 @@ const SummarizedBudgetsTableContainer = (props) => {
         }}
       />
 
-      <YearOnlyDatePicker
-        date={date}
-        buildingId={buildingId}
-        updateDate={updateDate}
-      />
+      <SubSectionControls editMode={editMode}>
+        <YearOnlyDatePicker
+          date={date}
+          buildingId={buildingId}
+          updateDate={updateDate}
+        />
+      </SubSectionControls>
+
       <TableContainer
         Row={Row}
         GroupComponent={HeaderGroups}

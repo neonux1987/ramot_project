@@ -5,8 +5,8 @@ const container = css`
   position: absolute;
   font-weight: 600;
   font-size: 14px;
-  top: 95px;
   right: 25px;
+  bottom: 25px;
 `;
 
 const EditModeStatus = ({ editMode }) => {
