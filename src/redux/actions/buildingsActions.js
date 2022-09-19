@@ -156,6 +156,8 @@ export const addBuilding = (payload) => {
         const buildings = getItem("buildings");
         buildings.push(result.data);
         setItem("buildings", buildings);
+
+        toastManager.success("הבניין החדש נוסף בהצלחה");
       },
       onError: (result) => {
         toastManager.error(result.error);
