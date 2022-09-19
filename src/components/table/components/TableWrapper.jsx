@@ -9,8 +9,8 @@ const TableWrapper = ({
   isFullscreen = false,
   tableRef
 }) => {
-  const fullscreenPadding = isFullscreen ? "20px 0 0" : "20px 20px 20px";
-  const printModePadding = printMode ? "0" : "20px 20px 20px";
+  const fullscreenPadding = isFullscreen ? "20px 0 0" : "20px";
+  const printModePadding = printMode ? "0" : "20px";
   return printMode ? (
     <table
       id={id}
