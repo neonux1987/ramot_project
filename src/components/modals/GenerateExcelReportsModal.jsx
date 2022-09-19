@@ -28,7 +28,7 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
   useEffect(() => {
     dispatch(fetchRegisteredReportsByBuildingId(buildingId)).then((result) => {
       const yearsData = result.data;
-      console.log("yearsData", yearsData);
+
       if (yearsData.length > 0 && isMounted()) {
         const lastYear = yearsData[0].year;
         setYear(() => lastYear);
@@ -36,7 +36,6 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
         dispatch(
           fetchRegisteredReportsByYearByBuildingId(buildingId, lastYear)
         ).then(({ data }) => {
-          console.log("quarter", data[0].quarter);
           if (data.length > 0 && isMounted())
             setQuarters(() => {
               setQuarter(() => data[0].quarter);
