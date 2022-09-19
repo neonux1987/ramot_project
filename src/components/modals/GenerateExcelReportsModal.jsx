@@ -9,30 +9,32 @@ import {
 import { exportReports } from "../../services/reports.svc";
 import EditModal from "./modalTypes/EditModal";
 import Box from "@material-ui/core/Box";
+import useIsMounted from "../../customHooks/useIsMounted";
 
 const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
   const date = new Date(); //current date
+
+  const dispatch = useDispatch();
+  const isMounted = useIsMounted();
 
   const [year, setYear] = useState(date.getFullYear());
   const [quarter, setQuarter] = useState(
     Helper.getCurrentQuarter(date.getMonth())
   );
-
-  const dispatch = useDispatch();
-
   const [quarters, setQuarters] = useState([]);
+
   const registeredReports = useSelector((store) => store.registeredReports);
 
   useEffect(() => {
     dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
       const yearsData = result.data;
 
-      if (yearsData.length > 0) {
+      if (yearsData.length > 0 && isMounted()) {
         const lastYear = yearsData[0].year;
         setYear(() => lastYear);
 
         dispatch(fetchRegisteredReportsByYear(lastYear)).then(({ data }) => {
-          if (data.length > 0)
+          if (data.length > 0 && isMounted())
             setQuarters(() => {
               setQuarter(() => data[0].quarter);
               return data;
@@ -70,7 +72,7 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
 
     exportReports(newDate, [{ buildingName, buildingId }]);
   };
-
+  console.log(registeredReports);
   return (
     <EditModal
       id={GenerateExcelReportsModal}

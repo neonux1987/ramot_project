@@ -26,6 +26,24 @@ export const fetchRegisteredReportsGroupedByYear = () => {
   };
 };
 
+export const fetchRegisteredReportsByBuildingIdGroupedByYear = (buildingId) => {
+  return (dispatch) => {
+    //let react know that the fetching is started
+    dispatch(requestRegisteredReports());
+
+    return ipcSendReceive({
+      send: {
+        channel: "get-registered-reports-grouped-by-year"
+      },
+      receive: {
+        channel: "registered-reports-grouped-by-year-data"
+      },
+      onSuccess: (result) => dispatch(receiveRegisteredReports(result.data)),
+      onError: (result) => dispatch(fetchingFailed(result.error))
+    });
+  };
+};
+
 export const fetchRegisteredReportsByYear = (year) => {
   return (dispatch) => {
     return ipcSendReceive({
