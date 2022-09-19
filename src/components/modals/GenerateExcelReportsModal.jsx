@@ -93,6 +93,7 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
           onClickHandler={onClickHandler}
           onQuarterChangeHandler={onQuarterChangeHandler}
           onYearChangeHandler={onYearChangeHandler}
+          noDataText="לא קימים דוחות בבסיס נתונים לבניין זה ולכן לא ניתן להפיק דוחות אקסל"
         />
       </Box>
     </EditModal>
