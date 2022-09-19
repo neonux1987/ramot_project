@@ -26,17 +26,18 @@ export const fetchRegisteredReportsGroupedByYear = () => {
   };
 };
 
-export const fetchRegisteredReportsByBuildingIdGroupedByYear = (buildingId) => {
+export const fetchRegisteredReportsByBuildingId = (buildingId) => {
   return (dispatch) => {
     //let react know that the fetching is started
     dispatch(requestRegisteredReports());
 
     return ipcSendReceive({
       send: {
-        channel: "get-registered-reports-grouped-by-year"
+        channel: "get-registered-reports-by-buildingId",
+        params: buildingId
       },
       receive: {
-        channel: "registered-reports-grouped-by-year-data"
+        channel: "registered-reports-by-buildingId-data"
       },
       onSuccess: (result) => dispatch(receiveRegisteredReports(result.data)),
       onError: (result) => dispatch(fetchingFailed(result.error))
@@ -45,7 +46,7 @@ export const fetchRegisteredReportsByBuildingIdGroupedByYear = (buildingId) => {
 };
 
 export const fetchRegisteredReportsByYear = (year) => {
-  return (dispatch) => {
+  return () => {
     return ipcSendReceive({
       send: {
         channel: "get-registered-reports-by-year",
@@ -53,6 +54,20 @@ export const fetchRegisteredReportsByYear = (year) => {
       },
       receive: {
         channel: "registered-reports-by-year-data"
+      }
+    });
+  };
+};
+
+export const fetchRegisteredReportsByYearByBuildingId = (buildingId, year) => {
+  return () => {
+    return ipcSendReceive({
+      send: {
+        channel: "get-registered-reports-by-year-grouped-by-buildingId",
+        params: { buildingId, year }
+      },
+      receive: {
+        channel: "registered-reports-by-year-grouped-by-buildingId-data"
       }
     });
   };

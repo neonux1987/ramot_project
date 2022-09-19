@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Helper from "../../helpers/Helper";
 import ExcelReportsGenerator from "../../pages/Management/pages/Reports/ExcelReportsGenerator/ExcelReportsGenerator";
 import {
-  fetchRegisteredReportsByYear,
-  fetchRegisteredReportsGroupedByYear
+  fetchRegisteredReportsByYearByBuildingId,
+  fetchRegisteredReportsByBuildingId
 } from "../../redux/actions/registeredReportsActions";
 import { exportReports } from "../../services/reports.svc";
 import EditModal from "./modalTypes/EditModal";
@@ -26,14 +26,17 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
   const registeredReports = useSelector((store) => store.registeredReports);
 
   useEffect(() => {
-    dispatch(fetchRegisteredReportsGroupedByYear()).then((result) => {
+    dispatch(fetchRegisteredReportsByBuildingId(buildingId)).then((result) => {
       const yearsData = result.data;
-
+      console.log("yearsData", yearsData);
       if (yearsData.length > 0 && isMounted()) {
         const lastYear = yearsData[0].year;
         setYear(() => lastYear);
 
-        dispatch(fetchRegisteredReportsByYear(lastYear)).then(({ data }) => {
+        dispatch(
+          fetchRegisteredReportsByYearByBuildingId(buildingId, lastYear)
+        ).then(({ data }) => {
+          console.log("quarter", data[0].quarter);
           if (data.length > 0 && isMounted())
             setQuarters(() => {
               setQuarter(() => data[0].quarter);
@@ -42,19 +45,21 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
         }); // end dispatch
       } // end if
     }); // end dispatch
-  }, [dispatch]);
+  }, [dispatch, isMounted, buildingId]);
 
   const onYearChangeHandler = (event) => {
     const { value } = event.target;
     setYear(value);
 
-    dispatch(fetchRegisteredReportsByYear(value)).then(({ data }) => {
-      if (data.length > 0)
-        setQuarters(() => {
-          setQuarter(() => data[0].quarter);
-          return data;
-        });
-    }); // end dispatch
+    dispatch(fetchRegisteredReportsByYearByBuildingId(buildingId, value)).then(
+      ({ data }) => {
+        if (data.length > 0)
+          setQuarters(() => {
+            setQuarter(() => data[0].quarter);
+            return data;
+          });
+      }
+    ); // end dispatch
   };
 
   const onQuarterChangeHandler = (event) => {
@@ -72,7 +77,7 @@ const GenerateExcelReportsModal = ({ buildingName, buildingId }) => {
 
     exportReports(newDate, [{ buildingName, buildingId }]);
   };
-  console.log(registeredReports);
+
   return (
     <EditModal
       id={GenerateExcelReportsModal}

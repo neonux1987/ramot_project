@@ -4,9 +4,6 @@ const connectionPool = require("../connection/ConnectionPool");
 const FILENAME = "RegisteredReportsDao.js";
 
 class RegisteredReportsDao {
-  /**
-   * get registered reports
-   */
   getRegisteredReports(trx = connectionPool.getConnection()) {
     return trx
       .select()
@@ -48,6 +45,22 @@ class RegisteredReportsDao {
       });
   }
 
+  getRegisteredReportsByYearByBuildingId(
+    buildingId,
+    year,
+    trx = connectionPool.getConnection()
+  ) {
+    return trx
+      .select()
+      .from("registered_reports")
+      .where({ year, buildingId })
+      .groupBy("quarter")
+      .catch((error) => {
+        const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לפי שנה ${date.year} לבניין ${buildingId}`;
+        throw new DbError(msg, FILENAME, error);
+      });
+  }
+
   getRegisteredReportsByBuildingId(
     buildingId,
     trx = connectionPool.getConnection()
@@ -56,7 +69,8 @@ class RegisteredReportsDao {
       .select()
       .from("registered_reports")
       .where({ buildingId })
-      .groupBy("quarter")
+      .groupBy("year")
+      .orderBy("year", "desc")
       .catch((error) => {
         const msg = `המערכת לא הצליחה לשלוף נתוני הדוחות הרשומים לבניין ${buildingId}`;
         throw new DbError(msg, FILENAME, error);
