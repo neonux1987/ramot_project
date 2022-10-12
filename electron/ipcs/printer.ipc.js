@@ -103,7 +103,8 @@ const printerIpc = () => {
     // editable and small size pdf and it's a lot faster
     if (options.printer.toUpperCase().includes("PDF")) {
       const { canceled, filePath } = await dialog.showSaveDialog(null, {
-        title: "שמירת קובץ PDF"
+        title: "שמירת קובץ PDF",
+        filters: [{ name: "PDF", extensions: ["pdf"] }]
       });
       if (!canceled) {
         await fse.copy(tempFilePath, filePath);
