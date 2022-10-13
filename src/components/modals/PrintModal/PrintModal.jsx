@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
 import { Modal } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPrintMode, setOutput } from "../../../redux/actions/printActions";
-import SidebarContainer from "./layout/Sidebar/SidebarContainer";
-import Content from "./layout/Content/Content";
-import Container from "./Container";
+import { setOutput, setPrintMode } from "../../../redux/actions/printActions";
 import CenteredLoader from "../../AnimatedLoaders/CenteredLoader";
+import Container from "./Container";
+import Content from "./layout/Content/Content";
+import SidebarContainer from "./layout/Sidebar/SidebarContainer";
 
 const PrintModal = (props) => {
   const { onClose, pageName } = props;

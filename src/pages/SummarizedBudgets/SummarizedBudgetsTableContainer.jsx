@@ -4,28 +4,28 @@ import { useDispatch } from "react-redux";
 
 // ACTIONS
 import {
-  updateSummarizedBudget,
-  updateDate
+  updateDate,
+  updateSummarizedBudget
 } from "../../redux/actions/summarizedBudgetActions";
 
 // UTILS
 import Helper from "../../helpers/Helper";
 
 // COMPONENTS
-import HeaderRow from "../../components/table/components/HeaderRow";
-import GroupCell from "../../components/table/components/GroupCell";
-import HeaderCell from "../../components/table/components/HeaderCell";
-import TableRow from "../../components/table/components/TableRow";
-import Cell from "../../components/table/components/Cell";
-import NonZeroCell from "../../components/table/components/NonZeroCell";
-import TableContainer from "../../components/table/TableContainer";
-import GroupRow from "../../components/table/components/GroupRow";
 import YearOnlyDatePicker from "../../components/DatePicker/YearOnlyDatePicker";
 import TableSection from "../../components/Section/TableSection";
+import Cell from "../../components/table/components/Cell";
+import GroupCell from "../../components/table/components/GroupCell";
+import GroupRow from "../../components/table/components/GroupRow";
+import HeaderCell from "../../components/table/components/HeaderCell";
+import HeaderRow from "../../components/table/components/HeaderRow";
+import NonZeroCell from "../../components/table/components/NonZeroCell";
+import TableRow from "../../components/table/components/TableRow";
+import TableContainer from "../../components/table/TableContainer";
 import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
+import SubSectionControls from "../../components/table/TableControls/SubSectionControls";
 import useTableLogic from "../../customHooks/useTableLogic";
 import useTheme from "../../customHooks/useTheme";
-import SubSectionControls from "../../components/table/TableControls/SubSectionControls";
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(13,1fr)";

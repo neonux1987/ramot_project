@@ -4,35 +4,35 @@ import { useDispatch } from "react-redux";
 
 // ACTIONS
 import {
-  updateBudgetExecution,
-  deleteBudgetExecution
+  deleteBudgetExecution,
+  updateBudgetExecution
 } from "../../redux/actions/budgetExecutionsActions";
 
 // UTILS
 import Helper from "../../helpers/Helper";
 
 // COMPONENTS
+import ConfirmDeleteBudgetExecution from "../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution";
+import TableSection from "../../components/Section/TableSection";
+import Cell from "../../components/table/components/Cell";
 import GroupCell from "../../components/table/components/GroupCell";
+import GroupRow from "../../components/table/components/GroupRow";
+import HeaderCell from "../../components/table/components/HeaderCell";
 import HeaderRow from "../../components/table/components/HeaderRow";
-import TableRow from "../../components/table/components/TableRow";
 import NonZeroCell from "../../components/table/components/NonZeroCell";
+import TableRow from "../../components/table/components/TableRow";
 import TableActions from "../../components/table/TableActions/TableActions";
 import TableContainer from "../../components/table/TableContainer";
-import GroupRow from "../../components/table/components/GroupRow";
-import ConfirmDeleteBudgetExecution from "../../components/modals/ConfirmDeleteBudgetExecution/ConfirmDeleteBudgetExecution";
-import HeaderCell from "../../components/table/components/HeaderCell";
-import Cell from "../../components/table/components/Cell";
-import TableSection from "../../components/Section/TableSection";
-import BudgetExecutionsDatePicker from "./BudgetExecutionsDatePicker";
 import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
+import BudgetExecutionsDatePicker from "./BudgetExecutionsDatePicker";
 
 // HOOKS
-import useModalLogic from "../../customHooks/useModalLogic";
-import AddBudgetExecutionContainer from "./AddNewContainer/AddBudgetExecutionContainer";
-import useTableLogic from "../../customHooks/useTableLogic";
-import useDifferenceColor from "../../customHooks/useDifferenceColor";
-import useTheme from "../../customHooks/useTheme";
 import SubSectionControls from "../../components/table/TableControls/SubSectionControls";
+import useDifferenceColor from "../../customHooks/useDifferenceColor";
+import useModalLogic from "../../customHooks/useModalLogic";
+import useTableLogic from "../../customHooks/useTableLogic";
+import useTheme from "../../customHooks/useTheme";
+import AddBudgetExecutionContainer from "./AddNewContainer/AddBudgetExecutionContainer";
 
 const EDITMODE_TEMPLATE = "minmax(60px,5%) minmax(60px,5%) repeat(12,1fr)";
 const DEFAULT_TEMPLATE = "minmax(60px,5%) repeat(12,1fr)";

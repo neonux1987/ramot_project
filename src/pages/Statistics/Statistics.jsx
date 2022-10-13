@@ -1,17 +1,17 @@
+import { Box } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Page from "../../components/Page/Page";
-import YearsChartContainer from "./charts/YearsChartContainer";
-import QuartersChartContainer from "./charts/QuartersChartContainer";
-import TopChartContainer from "./charts/TopChartContainer";
-import { updateSelectedChart } from "../../redux/actions/statisticsActions";
 import ChartSelectorNav from "../../components/charts/ChartSelectorNav";
-import { Box } from "@material-ui/core";
-import useBuildingColor from "../../customHooks/useBuildingColor";
+import StatsIcon from "../../components/Icons/StatsIcon";
+import Page from "../../components/Page/Page";
 import TitledSection from "../../components/Section/TitledSection";
 import SectionControlsContainer from "../../components/table/TableControls/SectionControlsContainer";
+import useBuildingColor from "../../customHooks/useBuildingColor";
+import { updateSelectedChart } from "../../redux/actions/statisticsActions";
 import MonthsChartContainer from "./charts/MonthsChartContainer";
-import StatsIcon from "../../components/Icons/StatsIcon";
+import QuartersChartContainer from "./charts/QuartersChartContainer";
+import TopChartContainer from "./charts/TopChartContainer";
+import YearsChartContainer from "./charts/YearsChartContainer";
 
 const PAGE_NAME = "statistics";
 

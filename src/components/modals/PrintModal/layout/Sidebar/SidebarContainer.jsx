@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
+import { validatePageRanges } from "../../../../../helpers/utils";
 import {
   getPrinters,
   print,
@@ -8,7 +8,7 @@ import {
   setColors
 } from "../../../../../redux/actions/printActions";
 import { updateTemplate } from "../../../../../redux/actions/printTemplatesActions";
-import { validatePageRanges } from "../../../../../helpers/utils";
+import Sidebar from "./Sidebar";
 
 const SidebarContainer = (props) => {
   const { pdf, onClose, pageName } = props;
