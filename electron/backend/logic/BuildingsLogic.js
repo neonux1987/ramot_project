@@ -1,4 +1,4 @@
-const { asyncForEach } = require("../../helpers/utils");
+const { asyncForEach, sendToWindow } = require("../../helpers/utils");
 const ConnectionPool = require("../connection/ConnectionPool");
 const BuildingsDao = require("../dao/BuildingsDao");
 
