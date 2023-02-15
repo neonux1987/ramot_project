@@ -6,6 +6,7 @@ import MoreBuildingMenu from "./MoreBuildingMenu/MoreBuildingMenu";
 
 const container = css`
   margin: 15px;
+  border: 1px solid #dddddd;
   display: flex;
   align-items: center;
   padding: 0 20px;
