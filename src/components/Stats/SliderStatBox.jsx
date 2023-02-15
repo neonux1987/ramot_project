@@ -1,8 +1,8 @@
-import React from "react";
-import StatBox from "./StatBox/StatBox";
 import { css } from "emotion";
+import React from "react";
 import SliderChart from "../charts/SliderChart";
 import FadedDivider from "../CustomDivider/FadedDivider";
+import StatBox from "./StatBox/StatBox";
 
 const wrapper = css`
   flex-grow: 1;
@@ -13,7 +13,6 @@ const lastStyle = css`
   border-left: none;
   position: absolute;
   top: -10px;
-  border: 2px solid #dddddd;
   left: -1px;
   right: -10px;
   bottom: -10px;
@@ -81,17 +80,14 @@ const titleStyle = css`
   font-weight: 500;
   margin-right: 0px;
   color: #000000;
-  background: #2271c3;
   color: #fff;
   border-radius: 10px;
   max-width: 180px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 80px;
   flex-grow: 1;
-  box-shadow: rgba(0, 20, 20, 0.12) 0rem 0.25rem 0.375rem -0.0625rem,
-    rgba(20, 20, 20, 0.07) 0rem 0.125rem 0.25rem -0.0625rem;
 
   @media (max-width: 1400px) {
     font-size: 32px;
@@ -107,7 +103,7 @@ const SliderStatBox = ({
   index = 1,
   border,
   xs,
-  last = false,
+  last = false
 }) => {
   const total = income + outcome;
   const outcomePercentage = total === 0 ? 0 : (outcome / total) * 100;
@@ -127,18 +123,16 @@ const SliderStatBox = ({
       xs={xs}
     >
       <div
-        className={`${wrapper} ${last ? lastStyle : ""} ${
-          last ? lastBorderStyle : ""
-        }`}
+        className={`${wrapper} ${last ? lastStyle : ""}`}
         style={{
-          borderLeft: border ? "1px solid #dddddd" : "none",
+          borderLeft: border ? "1px solid #dddddd" : "none"
         }}
       >
         <div className={headerWrapper}>
           <h2
             className={titleStyle}
             style={{
-              background: `linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.25) 100%) ${color}`,
+              color
             }}
           >
             <span>{title}</span>
