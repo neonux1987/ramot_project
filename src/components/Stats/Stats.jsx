@@ -5,7 +5,7 @@ import React from "react";
 const Stats = ({ stats, spacing = 2 }) => (
   <Box
     id="stats"
-    boxShadow="rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem"
+    boxShadow="0 0 12px 4px #00000012"
     borderRadius="14px"
     bgcolor="#ffffff"
     //overflow="hidden"

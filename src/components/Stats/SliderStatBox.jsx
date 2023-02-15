@@ -7,16 +7,21 @@ import StatBox from "./StatBox/StatBox";
 const wrapper = css`
   flex-grow: 1;
   padding: 0 0 40px;
-  border: 1px solid rgb(221, 221, 221);
-  margin: 10px;
-  border-radius: 14px;
 `;
 
 const lastStyle = css`
+  position: absolute;
+  border: 1px solid #ddd;
+  top: -10px;
+  left: -1px;
+  right: -10px;
+  bottom: -10px;
   background: #fff;
+  box-shadow: rgb(0 0 0 / 23%) 0rem 1.25rem 1.6875rem 0rem;
   padding-top: 0;
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
   border-radius: 14px;
-  border: 2px solid rgb(221, 221, 221);
 `;
 
 const row = css`
@@ -118,9 +123,7 @@ const SliderStatBox = ({
       xs={xs}
     >
       <div
-        className={`${wrapper} ${last ? lastStyle : ""}  ${
-          last ? lastBorderStyle : ""
-        }`}
+        className={`${wrapper} ${last ? lastStyle : ""}`}
         style={{
           borderLeft: border ? "1px solid #dddddd" : "none"
         }}

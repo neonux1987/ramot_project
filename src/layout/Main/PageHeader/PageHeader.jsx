@@ -1,12 +1,11 @@
-import React from "react";
 import { css } from "emotion";
-import MoreBuildingMenu from "./MoreBuildingMenu/MoreBuildingMenu";
-import BreadcrumbsContainer from "../../AppBar/Breadcrumbs/BreadcrumbsContainer";
+import React from "react";
 import SelectButton from "../../../components/buttons/SelectButton";
+import BreadcrumbsContainer from "../../AppBar/Breadcrumbs/BreadcrumbsContainer";
+import MoreBuildingMenu from "./MoreBuildingMenu/MoreBuildingMenu";
 
 const container = css`
   margin: 15px;
-  border: 1px solid #dddddd;
   display: flex;
   align-items: center;
   padding: 0 20px;
