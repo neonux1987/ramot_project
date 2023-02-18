@@ -1,8 +1,8 @@
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleSidebar } from "../../redux/actions/toggleSidebarActions";
-import { makeStyles } from "@material-ui/core/styles";
 import SwitchWithSound from "../../componentsWithSound/SwitchWithSound/SwitchWithSound";
+import { toggleSidebar } from "../../redux/actions/toggleSidebarActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.common.white,
       "& + $track": {
         background:
-          "linear-gradient( 45deg, rgba(0,0,0,0) 0%, rgba(255,255,255,0.25) 100% ) rgb(23,110,193)",
+          "linear-gradient( 45deg, rgba(0,0,0,0) 0%, rgba(255,255,255,0.25) 100% ) #1fb562",
         opacity: 1,
         border: "none"
       }

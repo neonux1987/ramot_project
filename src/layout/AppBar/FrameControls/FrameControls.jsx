@@ -1,8 +1,8 @@
-import React from "react";
 import { css } from "emotion";
-import MinimizeIcon from "../../../components/Icons/MinimizeIcon";
-import MaximizeIcon from "../../../components/Icons/MaximizeIcon";
+import React from "react";
 import CloseIcon from "../../../components/Icons/CloseIcon";
+import MaximizeIcon from "../../../components/Icons/MaximizeIcon";
+import MinimizeIcon from "../../../components/Icons/MinimizeIcon";
 
 const style = css`
   display: flex;
@@ -25,7 +25,7 @@ const button = css`
   border-radius: 0;
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
-  color: #000000;
+  color: #ffffff;
 
   :hover {
     background-color: rgb(255 255 255 / 20%);
