@@ -1,13 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import Logo from "./Logo/Logo";
-import Credits from "./Credits/Credits";
-import MenuContainer from "./Menu/MenuContainer";
-import CenteredLoader from "../../components/AnimatedLoaders/CenteredLoader";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import { useSelector } from "react-redux";
+import CenteredLoader from "../../components/AnimatedLoaders/CenteredLoader";
 import FadedDivider from "../../components/CustomDivider/FadedDivider";
 import ControlsContainer from "./Controls/ControlsContainer";
+import Credits from "./Credits/Credits";
+import Logo from "./Logo/Logo";
+import MenuContainer from "./Menu/MenuContainer";
 
 const drawerWidth = 240;
 
@@ -16,13 +16,18 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     zIndex: 5,
-    overflow: "unset"
+    overflow: "unset",
+    marginTop: "64px",
+    zIndex: "1200",
+    position: "relative"
   },
   drawerPaper: {
     width: drawerWidth,
     borderRight: "none",
-    boxShadow: "2px 0px 14px 1px #00000012", //2px 0px 14px 1px #00000012
-    overflow: "hidden"
+    //boxShadow: "2px 0px 14px 1px #00000012", //2px 0px 14px 1px #00000012
+    overflow: "hidden",
+    background: "none",
+    position: "unset"
   },
   drawerHeader: {
     display: "flex",
