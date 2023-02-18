@@ -1,9 +1,9 @@
-import React from "react";
 import { css } from "emotion";
+import React from "react";
 
 const style = css`
   position: absolute;
-  height: 50px;
+  height: 84px;
   display: flex;
   top: 4px;
   left: 4px;
