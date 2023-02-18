@@ -14,11 +14,11 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    zIndex: 5,
     overflow: "unset",
     marginTop: "104px",
-    zIndex: "1200",
-    position: "relative"
+    zIndex: 1200,
+    position: "relative",
+    marginLeft: "15px"
   },
   drawerPaper: {
     width: drawerWidth,

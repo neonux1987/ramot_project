@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 889,
     position: "sticky",
     margin: "15px 11px",
-    border: "1px solid #dddddd",
     alignItems: "center",
     padding: "0 20px",
     borderRadius: "14px",
