@@ -6,7 +6,6 @@ import CenteredLoader from "../../components/AnimatedLoaders/CenteredLoader";
 import FadedDivider from "../../components/CustomDivider/FadedDivider";
 import ControlsContainer from "./Controls/ControlsContainer";
 import Credits from "./Credits/Credits";
-import Logo from "./Logo/Logo";
 import MenuContainer from "./Menu/MenuContainer";
 
 const drawerWidth = 240;
@@ -57,7 +56,6 @@ const Sidebar = ({ routes, isFetching, data }) => {
       id="sidebar"
       style={{ display: isFullscreen ? "none" : "initial" }}
     >
-      <Logo />
       <FadedDivider />
       <ControlsContainer routes={routes} />
       <FadedDivider />
