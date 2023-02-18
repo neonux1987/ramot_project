@@ -1,7 +1,6 @@
 import { Box } from "@material-ui/core";
 import MuiAppBar from "@material-ui/core/AppBar";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import React from "react";
 import DraggableFrame from "../../components/DraggableFrame/DraggableFrame";
 import Logo from "../Sidebar/Logo/Logo";
@@ -14,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     zIndex: 889,
     position: "sticky",
-    margin: "15px",
+    margin: "15px 11px",
     border: "1px solid #dddddd",
     alignItems: "center",
     padding: "0 20px",
@@ -22,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     background: "rgb(23, 110, 193)",
     boxShadow: "rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem",
     height: "70px",
-    flexGrow: "1"
+    flexGrow: "1",
+    width: "unset"
   },
   menuButton: {
     marginRight: "25px"
@@ -34,7 +34,7 @@ const AppBar = ({ onClose, onMaximize, onMinimize, showSidebar }) => {
 
   return (
     <DraggableFrame>
-      <Box className={classes.root} id="toolbar">
+      <MuiAppBar className={classes.root} id="toolbar">
         <Logo />
         <ToggleButton />
         <FrameControls
@@ -42,7 +42,7 @@ const AppBar = ({ onClose, onMaximize, onMinimize, showSidebar }) => {
           onMaximize={onMaximize}
           onClose={onClose}
         />
-      </Box>
+      </MuiAppBar>
     </DraggableFrame>
   );
 };
