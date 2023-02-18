@@ -6,7 +6,7 @@ import { Route } from "react-router-dom";
 import PageHeaderContainer from "./PageHeader/PageHeaderContainer";
 import Routes from "./Routes";
 
-const drawerWidth = 240;
+const drawerWidth = 255;
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     zIndex: 990,
     position: "relative",
-    marginTop: "64px"
+    marginTop: "89px",
+    paddingTop: "15px"
   },
   mainShift: {
     transition: theme.transitions.create("margin", {
@@ -47,7 +48,7 @@ const Main = ({ mainContainerRef }) => {
       className={clsx(classes.main, {
         [classes.mainShift]: showSidebar
       })}
-      style={{ marginTop: isFullscreen ? "0" : "104px" }}
+      style={{ marginTop: isFullscreen ? "0" : "89px" }}
     >
       <div className={classes.content} ref={mainContainerRef} id="mainContent">
         <PageHeaderContainer />

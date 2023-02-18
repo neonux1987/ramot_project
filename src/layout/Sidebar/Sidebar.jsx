@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     overflow: "unset",
-    marginTop: "104px",
+    marginTop: "89px",
     zIndex: 1200,
     position: "relative",
     marginLeft: "15px"
@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     //boxShadow: "2px 0px 14px 1px #00000012", //2px 0px 14px 1px #00000012
     overflow: "hidden",
     background: "none",
-    position: "unset"
+    position: "unset",
+    paddingTop: "30px"
   },
   drawerHeader: {
     display: "flex",
