@@ -1,10 +1,10 @@
-import React from "react";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Route } from "react-router-dom";
-import Routes from "./Routes";
 import PageHeaderContainer from "./PageHeader/PageHeaderContainer";
+import Routes from "./Routes";
 
 const drawerWidth = 240;
 
@@ -47,7 +47,7 @@ const Main = ({ mainContainerRef }) => {
       className={clsx(classes.main, {
         [classes.mainShift]: showSidebar
       })}
-      style={{ marginTop: isFullscreen ? "0" : "64px" }}
+      style={{ marginTop: isFullscreen ? "0" : "104px" }}
     >
       <div className={classes.content} ref={mainContainerRef} id="mainContent">
         <PageHeaderContainer />
