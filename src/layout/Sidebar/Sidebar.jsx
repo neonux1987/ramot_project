@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     zIndex: 5,
     overflow: "unset",
-    marginTop: "64px",
+    marginTop: "104px",
     zIndex: "1200",
     position: "relative"
   },
