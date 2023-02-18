@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import React from "react";
 import DraggableFrame from "../../components/DraggableFrame/DraggableFrame";
+import Logo from "../Sidebar/Logo/Logo";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import FrameControls from "./FrameControls/FrameControls";
 
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "row",
-    zIndex: 999,
+    zIndex: 889,
     position: "sticky",
     margin: "15px",
     border: "1px solid #dddddd",
@@ -34,6 +35,7 @@ const AppBar = ({ onClose, onMaximize, onMinimize, showSidebar }) => {
   return (
     <DraggableFrame>
       <Box className={classes.root} id="toolbar">
+        <Logo />
         <ToggleButton />
         <FrameControls
           onMinimize={onMinimize}
