@@ -1,7 +1,7 @@
-import React from "react";
 import { Fade, Grid, Paper } from "@material-ui/core";
-import Spinner from "../../Spinner/Spinner";
+import React from "react";
 import { AlignCenterMiddle } from "../../AlignCenterMiddle/AlignCenterMiddle";
+import Spinner from "../../Spinner/Spinner";
 import { paper } from "./StatBox.module.css";
 
 const StatBox = ({

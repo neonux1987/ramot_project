@@ -101,7 +101,7 @@ const SliderStatBox = ({
   color,
   loading = true,
   index = 1,
-  border,
+  border = false,
   xs,
   last = false
 }) => {

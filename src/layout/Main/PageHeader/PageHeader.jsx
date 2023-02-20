@@ -6,13 +6,11 @@ import MoreBuildingMenu from "./MoreBuildingMenu/MoreBuildingMenu";
 
 const container = css`
   margin: 15px;
-  border: 1px solid #dddddd;
   display: flex;
   align-items: center;
   padding: 0 20px;
   border-radius: 14px;
   background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem;
   height: 70px;
 `;
 

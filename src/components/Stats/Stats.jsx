@@ -5,10 +5,9 @@ import React from "react";
 const Stats = ({ stats, spacing = 2 }) => (
   <Box
     id="stats"
-    boxShadow="0 0 12px 4px #00000012"
-    border="1px solid #dddddd"
     borderRadius="14px"
     bgcolor="#ffffff"
+    spacing="2"
     //overflow="hidden"
   >
     <Grid container spacing={spacing} style={{ padding: "0" }}>

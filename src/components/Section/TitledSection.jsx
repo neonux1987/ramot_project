@@ -1,9 +1,9 @@
-import React from "react";
-import Box from "@material-ui/core/Box";
 import { Collapse, Typography } from "@material-ui/core";
-import ExpandButton from "../buttons/ExpandButton";
+import Box from "@material-ui/core/Box";
 import { css } from "emotion";
+import React from "react";
 import { useSelector } from "react-redux";
+import ExpandButton from "../buttons/ExpandButton";
 
 const fullscreenStyle = css`
   margin: 0;
