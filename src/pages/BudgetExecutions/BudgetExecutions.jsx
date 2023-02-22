@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import QuarterStatsContainer from "./QuarterStatsContainer";
-import BudgetExecutionsTableContainer from "./BudgetExecutionsTableContainer";
-import Page from "../../components/Page/Page";
-import { fetchBudgetExecutions } from "../../redux/actions/budgetExecutionsActions";
-import TitledSection from "../../components/Section/TitledSection";
+import { useLocation } from "react-router-dom";
 import DonutIcon from "../../components/Icons/DonutIcon";
 import TableIcon from "../../components/Icons/TableIcon";
+import Page from "../../components/Page/Page";
+import TitledSection from "../../components/Section/TitledSection";
+import { fetchBudgetExecutions } from "../../redux/actions/budgetExecutionsActions";
+import BudgetExecutionsTableContainer from "./BudgetExecutionsTableContainer";
+import QuarterStatsContainer from "./QuarterStatsContainer";
 
 const PAGE_NAME = "budgetExecutions";
 const PAGE_TITLE = "ביצוע מול תקציב";

@@ -11,7 +11,6 @@ const wrapper = css`
 
 const lastStyle = css`
   position: absolute;
-  border: 1px solid #ddd;
   top: -10px;
   left: -1px;
   right: -10px;

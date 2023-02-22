@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 20px",
     borderRadius: "14px",
     background: "#3774b3",
-    boxShadow: "rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem",
+    boxShadow: "none",
     height: "70px",
     flexGrow: "1",
     width: "unset"

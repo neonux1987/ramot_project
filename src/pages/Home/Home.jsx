@@ -1,8 +1,8 @@
 import React from "react";
-import BuildingsStatsContainer from "./BuildingsStatsContainer";
+import DonutIcon from "../../components/Icons/DonutIcon";
 import Page from "../../components/Page/Page";
 import TitledSection from "../../components/Section/TitledSection";
-import DonutIcon from "../../components/Icons/DonutIcon";
+import BuildingsStatsContainer from "./BuildingsStatsContainer";
 
 const Home = () => {
   const currentDate = new Date();

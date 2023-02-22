@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Helper from "../../helpers/Helper";
-import DonutStatBox from "../../components/Stats/DonutStatBox";
-import { fetchAllBuildingsStatsByYear } from "../../redux/actions/homeActions";
-import HomeStats from "../../components/Stats/HomeStats";
 import HomeIcon from "../../components/Icons/HomeIcon";
+import DonutStatBox from "../../components/Stats/DonutStatBox";
+import HomeStats from "../../components/Stats/HomeStats";
+import Helper from "../../helpers/Helper";
+import { fetchAllBuildingsStatsByYear } from "../../redux/actions/homeActions";
 
 const BuildingIcon = () => (
   <HomeIcon width="60%" height="60%" color="#ffffff" />
@@ -16,7 +16,7 @@ const BuildingsStatsContainer = () => {
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
-    dispatch(fetchAllBuildingsStatsByYear(currentYear));
+    dispatch(fetchAllBuildingsStatsByYear(2022));
   }, [dispatch]);
 
   const generateBuildingsStats = (data, isFetching) => {
