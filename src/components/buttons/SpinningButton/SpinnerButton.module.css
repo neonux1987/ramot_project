@@ -17,22 +17,14 @@
 }
 
 .icon {
-  color: #ffffff;
+  color: #000000;
   font-size: 1.5rem;
 }
 
 .navLink {
   display: flex;
-  box-shadow: rgba(0, 20, 20, 0.12) 0rem 0.25rem 0.375rem -0.0625rem,
-    rgba(20, 20, 20, 0.07) 0rem 0.125rem 0.25rem -0.0625rem;
   margin: 0 10px;
   border-radius: 4px;
-  background: linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(255, 255, 255, 0.25) 100%
-    )
-    rgb(81, 89, 103);
   width: 34px;
   height: 32px;
 }

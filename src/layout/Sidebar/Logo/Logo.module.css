@@ -8,18 +8,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 25px;
 }
 
 .mainTitle {
   font-size: 36px;
   font-weight: 600;
-  color: #ffffff;
+  color: rgb(45, 147, 219);
 }
 
 .subtitle {
   width: 120px;
-  line-height: 14px;
-  color: #ffffff;
+  line-height: 13px;
+  color: #000000;
   padding-top: 2px;
   margin-right: 5px;
+}
+
+.extraTitleWrapper {
+  display: flex;
+  padding-right: 25px;
+  margin-top: -15px;
+}
+
+.extraTitle {
+  font-size: 12px;
 }

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box } from '@material-ui/core';
-import { css } from 'emotion';
+import { Box } from "@material-ui/core";
+import { css } from "emotion";
+import React from "react";
 
 const container = css`
   position: relative;
@@ -29,18 +29,20 @@ const Section = ({
   id = "section",
   style = {}
 }) => {
-
-  return <Box
-    mt={marginTop}
-    mb={marginBottom}
-    mx={"20px 40px"}
-    className={`${container} ${isFullscreen ? fullscreenStyle : ""} ${className}`}
-    style={style}
-    id={id}
-  >
-    {children}
-  </Box>
-
-}
+  return (
+    <Box
+      mt={marginTop}
+      mb={marginBottom}
+      mx={"20px 40px"}
+      className={`${container} ${
+        isFullscreen ? fullscreenStyle : ""
+      } ${className}`}
+      style={style}
+      id={id}
+    >
+      {children}
+    </Box>
+  );
+};
 
 export default Section;

@@ -6,6 +6,7 @@ import CenteredLoader from "../../components/AnimatedLoaders/CenteredLoader";
 import FadedDivider from "../../components/CustomDivider/FadedDivider";
 import ControlsContainer from "./Controls/ControlsContainer";
 import Credits from "./Credits/Credits";
+import Logo from "./Logo/Logo";
 import MenuContainer from "./Menu/MenuContainer";
 
 const drawerWidth = 240;
@@ -15,10 +16,14 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     overflow: "unset",
-    marginTop: "89px",
+    marginTop: "10px",
+    backgroundColor: "#ffffff",
     zIndex: 1200,
     position: "relative",
-    marginLeft: "15px"
+    marginLeft: "10px",
+    marginBottom: "10px",
+    border: "1px solid #e5e5e5",
+    borderRadius: "8px"
   },
   drawerPaper: {
     width: drawerWidth,
@@ -27,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     background: "none",
     position: "unset",
-    paddingTop: "30px"
+    paddingTop: "10px"
   },
   drawerHeader: {
     display: "flex",
@@ -57,7 +62,7 @@ const Sidebar = ({ routes, isFetching, data }) => {
       id="sidebar"
       style={{ display: isFullscreen ? "none" : "initial" }}
     >
-      <FadedDivider />
+      <Logo />
       <ControlsContainer routes={routes} />
       <FadedDivider />
       {isFetching ? (
