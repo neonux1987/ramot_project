@@ -17,13 +17,10 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     overflow: "unset",
     marginTop: "10px",
-    backgroundColor: "#ffffff",
     zIndex: 1200,
     position: "relative",
     marginLeft: "10px",
-    marginBottom: "10px",
-    border: "1px solid #e5e5e5",
-    borderRadius: "8px"
+    marginBottom: "10px"
   },
   drawerPaper: {
     width: drawerWidth,
@@ -32,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     background: "none",
     position: "unset",
-    paddingTop: "10px"
+    paddingTop: "10px",
+    border: "1px solid #e5e5e5",
+    borderRadius: "8px",
+    backgroundColor: "#ffffff"
   },
   drawerHeader: {
     display: "flex",

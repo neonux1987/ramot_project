@@ -1,13 +1,11 @@
-import { Box } from "@material-ui/core";
 import MuiAppBar from "@material-ui/core/AppBar";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import DraggableFrame from "../../components/DraggableFrame/DraggableFrame";
-import Logo from "../Sidebar/Logo/Logo";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import FrameControls from "./FrameControls/FrameControls";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     flexDirection: "row",
@@ -21,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     height: "70px",
     flexGrow: "1",
-    width: "unset"
+    width: "unset",
+    "webkit-app-region": "drag"
   },
   menuButton: {
     marginRight: "25px"
@@ -34,7 +33,6 @@ const AppBar = ({ onClose, onMaximize, onMinimize, showSidebar }) => {
   return (
     <DraggableFrame>
       <MuiAppBar className={classes.root} id="toolbar">
-        <Logo />
         <ToggleButton />
         <FrameControls
           onMinimize={onMinimize}
