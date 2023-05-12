@@ -102,7 +102,7 @@ const QuarterStatsContainer = ({ buildingId, pageName, date }) => {
       generateQuarterStats(quarterlyStats.data[0], quarterlyStats.isFetching)
     );
 
-    return <Stats stats={stats} spacing={0} />;
+    return <Stats stats={stats} spacing={2} />;
   }
 };
 

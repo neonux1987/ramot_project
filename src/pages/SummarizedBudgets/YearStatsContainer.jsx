@@ -1,13 +1,13 @@
 // LIBRARIES IMPORTS
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Helper from "../../helpers/Helper";
+import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
 import SliderStatBox from "../../components/Stats/SliderStatBox";
 import Stats from "../../components/Stats/Stats";
-import { AlignCenterMiddle } from "../../components/AlignCenterMiddle/AlignCenterMiddle";
+import useTheme from "../../customHooks/useTheme";
+import Helper from "../../helpers/Helper";
 import { fetchAllQuartersStatsByYear } from "../../redux/actions/quarterlyStatsActions";
 import { fetchYearStats } from "../../redux/actions/yearlyStatsActions";
-import useTheme from "../../customHooks/useTheme";
 
 const YearStatsContainer = ({ buildingId, pageName, date }) => {
   const { colorSet } = useTheme();
@@ -100,7 +100,7 @@ const YearStatsContainer = ({ buildingId, pageName, date }) => {
     //generate quarter total stats
     stats.push(generateYearStats(yearlyStats.data[0], yearlyStats.isFetching));
 
-    return <Stats stats={stats} spacing={0} />;
+    return <Stats stats={stats} spacing={2} />;
   }
 };
 

@@ -1,26 +1,12 @@
 import { css } from "emotion";
 import React from "react";
-import SliderChart from "../charts/SliderChart";
 import FadedDivider from "../CustomDivider/FadedDivider";
+import TrendingDownIcon from "../Icons/TrendingDownIcon";
+import TrendingUpIcon from "../Icons/TrendingUpIcon";
 import StatBox from "./StatBox/StatBox";
 
 const wrapper = css`
-  flex-grow: 1;
   padding: 0 0 40px;
-`;
-
-const lastStyle = css`
-  position: absolute;
-  top: -10px;
-  left: -1px;
-  right: -10px;
-  bottom: -10px;
-  background: #fff;
-  box-shadow: rgb(0 0 0 / 23%) 0rem 1.25rem 1.6875rem 0rem;
-  padding-top: 0;
-  border-top-left-radius: 14px;
-  border-bottom-left-radius: 14px;
-  border-radius: 14px;
 `;
 
 const row = css`
@@ -36,7 +22,7 @@ const label = css`
 const text = css`
   font-size: 32px;
   font-weight: 400;
-  color: #000000;
+  color: #ffffff;
   line-height: 32px;
   margin-bottom: 10px;
 
@@ -45,12 +31,12 @@ const text = css`
   }
 `;
 
-const blue = css`
-  color: rgb(23 146 239);
+const red = css`
+  color: red;
 `;
 
 const green = css`
-  color: rgb(23 208 145);
+  color: green;
 `;
 
 const sliderWrapper = css`
@@ -60,32 +46,29 @@ const sliderWrapper = css`
   padding-bottom: 0;
   position: relative;
   overflow: hidden;
+  border-radius: 8px;
 `;
 
 const slider = css`
-  padding: 10px 30px;
+  padding: 15px 30px;
   position: relative;
 `;
 
 const headerWrapper = css`
-  padding: 20px 30px 10px;
+  padding: 10px;
   display: flex;
   align-items: center;
 `;
 
 const titleStyle = css`
   margin: 0;
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 500;
   margin-right: 0px;
   color: #000000;
-  color: #fff;
-  border-radius: 10px;
-  max-width: 180px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 80px;
   flex-grow: 1;
 
   @media (max-width: 1400px) {
@@ -101,16 +84,13 @@ const SliderStatBox = ({
   loading = true,
   index = 1,
   border = false,
-  xs,
-  last = false
+  xs
 }) => {
-  const total = income + outcome;
-  const outcomePercentage = total === 0 ? 0 : (outcome / total) * 100;
-  const incomePercentage = total === 0 ? 0 : (income / total) * 100;
+  //const total = income + outcome;
+  //const outcomePercentage = total === 0 ? 0 : (outcome / total) * 100;
+  //const incomePercentage = total === 0 ? 0 : (income / total) * 100;
 
-  const lastBorderStyle = css`
-    border: 2px solid ${color} !important;
-  `;
+  let trendingUp = outcome > income;
 
   return (
     <StatBox
@@ -121,28 +101,25 @@ const SliderStatBox = ({
       border={border}
       xs={xs}
     >
-      <div
-        className={`${wrapper} ${last ? lastStyle : ""}`}
-        style={{
-          borderLeft: border ? "1px solid #dddddd" : "none"
-        }}
-      >
+      <div className={wrapper}>
         <div className={headerWrapper}>
-          <h2
-            className={titleStyle}
-            style={{
-              color
-            }}
-          >
+          <h2 className={titleStyle}>
             <span>{title}</span>
           </h2>
+          {trendingUp ? (
+            <TrendingUpIcon className={red} />
+          ) : (
+            <TrendingDownIcon className={green} />
+          )}
         </div>
 
         <FadedDivider />
 
-        <div className={sliderWrapper}>
+        <div className={sliderWrapper} style={{ backgroundColor: color }}>
           <div className={slider}>
-            <div className={blue} style={{ fontWeight: 500, fontSize: "14px" }}>
+            <div
+              style={{ fontWeight: 500, fontSize: "14px", color: "#ffffff" }}
+            >
               הוצאות
             </div>
 
@@ -151,16 +128,13 @@ const SliderStatBox = ({
                 <span>{outcome}</span>
               </div>
             </div>
-
-            <SliderChart value={outcomePercentage} color={"rgb(23 146 239)"} />
           </div>
 
           <FadedDivider />
 
           <div className={slider}>
             <div
-              className={green}
-              style={{ fontWeight: 500, fontSize: "14px" }}
+              style={{ fontWeight: 500, fontSize: "14px", color: "#ffffff" }}
             >
               הכנסות
             </div>
@@ -170,8 +144,6 @@ const SliderStatBox = ({
                 <span>{income}</span>
               </div>
             </div>
-
-            <SliderChart value={incomePercentage} color={"rgb(23 208 145)"} />
           </div>
         </div>
       </div>
