@@ -1,20 +1,19 @@
-import React from "react";
+import Collapse from "@material-ui/core/Collapse";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import { Fragment } from "react";
 import classnames from "classnames";
+import React, { Fragment } from "react";
 
-import {
-  listItemIcon,
-  listItemText,
-  collapse,
-  listItem
-} from "./ExpandableMenuItem.module.css";
-import useBuildingColor from "../../../../customHooks/useBuildingColor";
 import RotatingExpandLessIcon from "../../../../components/Icons/RotatingExpandLessIcon";
+import useBuildingColor from "../../../../customHooks/useBuildingColor";
+import {
+  collapse,
+  listItem,
+  listItemIcon,
+  listItemText
+} from "./ExpandableMenuItem.module.css";
 
 const ExpandableMenuItem = (props) => {
   const {
@@ -40,7 +39,7 @@ const ExpandableMenuItem = (props) => {
           {Icon && <Icon color={buildingColor} />}
         </ListItemIcon>
         <ListItemText className={listItemText} primary={label} />
-        <RotatingExpandLessIcon open={open} />
+        <RotatingExpandLessIcon style={{ color: "#e5e5e5" }} open={open} />
       </ListItem>
 
       <Collapse

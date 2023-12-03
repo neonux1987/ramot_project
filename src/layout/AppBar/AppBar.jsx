@@ -19,8 +19,7 @@ const useStyles = makeStyles(() => ({
     boxShadow: "none",
     height: "70px",
     flexGrow: "1",
-    width: "unset",
-    "webkit-app-region": "drag"
+    width: "unset"
   },
   menuButton: {
     marginRight: "25px"

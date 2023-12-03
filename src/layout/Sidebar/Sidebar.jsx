@@ -2,6 +2,7 @@ import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useSelector } from "react-redux";
+import SiderBarBg from "../../assets/images/sidebar.jpg";
 import CenteredLoader from "../../components/AnimatedLoaders/CenteredLoader";
 import FadedDivider from "../../components/CustomDivider/FadedDivider";
 import ControlsContainer from "./Controls/ControlsContainer";
@@ -20,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1200,
     position: "relative",
     marginLeft: "10px",
-    marginBottom: "10px"
+    marginBottom: "10px",
+    borderRadius: "8px",
+    background: `url(${SiderBarBg}) no-repeat`
   },
   drawerPaper: {
     width: drawerWidth,
@@ -29,9 +32,9 @@ const useStyles = makeStyles((theme) => ({
     background: "none",
     position: "unset",
     paddingTop: "10px",
-    border: "1px solid #e5e5e5",
+    //border: "1px solid #e5e5e5",
     borderRadius: "8px",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#0000009e"
   },
   drawerHeader: {
     display: "flex",
