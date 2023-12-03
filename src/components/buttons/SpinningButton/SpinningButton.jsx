@@ -1,7 +1,7 @@
-import React from "react";
 import classnames from "classnames";
-import { spinner, icon, navLink, minWidth } from "./SpinnerButton.module.css";
+import React from "react";
 import ButtonNavLinkWithSound from "../../../componentsWithSound/ButtonNavLinkWithSound/ButtonNavLinkWithSound";
+import { icon, minWidth, navLink, spinner } from "./SpinnerButton.module.css";
 
 const SpinnerButton = ({ Icon, to = {}, active = false, className }) => {
   return (

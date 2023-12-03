@@ -1,7 +1,7 @@
 import { css } from "emotion";
 import React from "react";
-import SpinningButton from "../../../components/buttons/SpinningButton/SpinningButton";
 import SettingsIcon from "../../../components/Icons/SettingsIcon";
+import SpinningButton from "../../../components/buttons/SpinningButton/SpinningButton";
 import VolumeButton from "../Controls/VolumeButton/VolumeButton";
 import MoreMenu from "./MoreMenu/MoreMenu";
 
@@ -12,6 +12,7 @@ const container = css`
   z-index: 3;
   position: relative;
   margin: 10px 0;
+  color: #e5e5e5 !important;
 `;
 
 const volumeBtn = css`
@@ -21,7 +22,7 @@ const volumeBtn = css`
   border: none;
   outline: none;
   cursor: pointer;
-  color: #000000;
+  color: #e5e5e5;
   min-width: 0;
   margin: 0 10px;
   border-radius: 4px;
@@ -62,7 +63,7 @@ const offStyle = css`
 const settingsBtn = css`
   margin: 0 10px;
   -webkit-app-region: no-drag;
-  color: #000000 !important;
+  color: #e5e5e5 !important;
 `;
 
 const Controls = ({ routes }) => {
