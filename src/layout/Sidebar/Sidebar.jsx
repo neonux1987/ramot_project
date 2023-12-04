@@ -18,12 +18,11 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     overflow: "unset",
     marginTop: "10px",
-    zIndex: 1200,
-    position: "relative",
+    //zIndex: 1200,
+    //position: "relative",
     marginLeft: "10px",
     marginBottom: "10px",
-    borderRadius: "8px",
-    background: `url(${SiderBarBg}) no-repeat`
+    borderRadius: "8px"
   },
   drawerPaper: {
     width: drawerWidth,
@@ -31,18 +30,14 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     background: "none",
     position: "unset",
-    paddingTop: "10px",
     //border: "1px solid #e5e5e5",
     borderRadius: "8px",
-    backgroundColor: "#0000009e"
+    background: `url(${SiderBarBg}) no-repeat`
   },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end"
+  divWrapper: {
+    backgroundColor: "#0000009e",
+    paddingTop: "10px",
+    height: "100%"
   }
 }));
 
@@ -54,25 +49,27 @@ const Sidebar = ({ routes, isFetching, data }) => {
 
   return (
     <Drawer
-      className={classes.drawer}
       variant="persistent"
-      anchor="left"
-      open={showSidebar}
+      className={classes.drawer}
       classes={{
         paper: classes.drawerPaper
       }}
+      anchor="left"
+      open={showSidebar}
       id="sidebar"
       style={{ display: isFullscreen ? "none" : "initial" }}
     >
-      <Logo />
-      <ControlsContainer routes={routes} />
-      <FadedDivider />
-      {isFetching ? (
-        <CenteredLoader text="טוען תפריט" color="#000000" />
-      ) : (
-        <MenuContainer routes={routes} data={data} />
-      )}
-      <Credits />
+      <div className={classes.divWrapper}>
+        <Logo />
+        <ControlsContainer routes={routes} />
+        <FadedDivider />
+        {isFetching ? (
+          <CenteredLoader text="טוען תפריט" color="#000000" />
+        ) : (
+          <MenuContainer routes={routes} data={data} />
+        )}
+        <Credits />
+      </div>
     </Drawer>
   );
 };
